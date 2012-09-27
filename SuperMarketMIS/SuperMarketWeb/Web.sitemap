@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<siteMap xmlns="http://schemas.microsoft.com/AspNet/SiteMap-File-1.0" >
+    <siteMapNode url="Index.aspx" title="超市首页"  description="超市商品信息">
+   
+      <siteMapNode url="ManagerIndex.aspx" title="管理员首页"  description="管理员首页">
+        <siteMapNode url="LoginMarketMIS.aspx" title="管理员登陆"  description="管理员登陆" />
+      </siteMapNode>
+      <siteMapNode url="CashierManage/Index.aspx" title="收银管理" description="收银管理">
+        <siteMapNode url="CashierManage/Cashier.aspx" title="收银员管理"  description="收银员管理" />
+        <siteMapNode url="CashierManage/CashierRegisterMachines.aspx" title="收银机管理"  description="收银机管理" />
+        <siteMapNode url="CashierManage/CashierConsole.aspx" title="收银台管理"  description="收银台管理" />
+      </siteMapNode>
+      
+      <siteMapNode  title="商品管理" description="商品管理">
+        <siteMapNode url="GoodsManage/BaseInfo.aspx" title="商品基本信息管理" description="商品基本信息管理"/>
+        <siteMapNode url="GoodsManage/StockInfo.aspx" title="存货信息管理" description="存货信息管理"/>
+      </siteMapNode>
+      <siteMapNode url="EmployeeManage/Index.aspx" title="雇员管理" description="雇员管理">
+
+      </siteMapNode>
+      <siteMapNode url="CustomerManage/Index.aspx" title="客户管理" description="客户管理">
+
+      </siteMapNode>
+      <siteMapNode url="FacilityManage/Index.aspx" title="设备管理" description="设备管理">
+
+      </siteMapNode>
+    </siteMapNode>
+   
+</siteMap>

@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 44
+/svn/pdfnet/!svn/ver/20/PWMIS.Core/Interface
+END
+IReadData.cs
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/pdfnet/!svn/ver/52/PWMIS.Core/Interface/IReadData.cs
+END
+IQueryControl.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/pdfnet/!svn/ver/3/PWMIS.Core/Interface/IQueryControl.cs
+END
+IDataControl.cs
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/pdfnet/!svn/ver/3/PWMIS.Core/Interface/IDataControl.cs
+END
+IEntity.cs
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/pdfnet/!svn/ver/20/PWMIS.Core/Interface/IEntity.cs
+END

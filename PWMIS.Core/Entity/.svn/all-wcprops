@@ -1,0 +1,77 @@
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/pdfnet/!svn/ver/24/PWMIS.Core/Entity
+END
+EntityCommand.cs
+K 25
+svn:wc:ra_dav:version-url
+V 57
+/svn/pdfnet/!svn/ver/3/PWMIS.Core/Entity/EntityCommand.cs
+END
+EntityQueryAnonymous.cs
+K 25
+svn:wc:ra_dav:version-url
+V 65
+/svn/pdfnet/!svn/ver/49/PWMIS.Core/Entity/EntityQueryAnonymous.cs
+END
+OQL.cs
+K 25
+svn:wc:ra_dav:version-url
+V 48
+/svn/pdfnet/!svn/ver/27/PWMIS.Core/Entity/OQL.cs
+END
+Entity.cs
+K 25
+svn:wc:ra_dav:version-url
+V 50
+/svn/pdfnet/!svn/ver/3/PWMIS.Core/Entity/Entity.cs
+END
+EntityContainer.cs
+K 25
+svn:wc:ra_dav:version-url
+V 59
+/svn/pdfnet/!svn/ver/3/PWMIS.Core/Entity/EntityContainer.cs
+END
+EntityQuery.cs
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/pdfnet/!svn/ver/54/PWMIS.Core/Entity/EntityQuery.cs
+END
+EntityFields.cs
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/pdfnet/!svn/ver/3/PWMIS.Core/Entity/EntityFields.cs
+END
+EntitySerializable.cs
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/pdfnet/!svn/ver/21/PWMIS.Core/Entity/EntitySerializable.cs
+END
+PropertyNameValues.cs
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/svn/pdfnet/!svn/ver/21/PWMIS.Core/Entity/PropertyNameValues.cs
+END
+QueryParameter.cs
+K 25
+svn:wc:ra_dav:version-url
+V 58
+/svn/pdfnet/!svn/ver/3/PWMIS.Core/Entity/QueryParameter.cs
+END
+EntityBase.cs
+K 25
+svn:wc:ra_dav:version-url
+V 55
+/svn/pdfnet/!svn/ver/38/PWMIS.Core/Entity/EntityBase.cs
+END
+PdfNetSerialize.cs
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/pdfnet/!svn/ver/14/PWMIS.Core/Entity/PdfNetSerialize.cs
+END
