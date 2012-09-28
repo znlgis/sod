@@ -1,8 +1,0 @@
-  [System.Drawing.ToolboxBitmap(typeof(ControlIcon), "DataCalendar.bmp")]
-
-namespace PWMIS.Web
-{
-    public class ControlIcon
-    {
-    }
-}
