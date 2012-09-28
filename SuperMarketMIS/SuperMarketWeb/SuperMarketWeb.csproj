@@ -43,14 +43,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PWMIS.Core, Version=4.1.11.511, Culture=neutral, PublicKeyToken=17ba13a12b9fd814, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DllRef\PWMIS.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="PWMIS.Web, Version=4.0.1.34054, Culture=neutral, PublicKeyToken=17ba13a12b9fd814, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\DllRef\PWMIS.Web.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -297,6 +289,14 @@
     <Content Include="System\WebControls\tree_open.gif" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\PWMIS.Core\PWMIS.Core.csproj">
+      <Project>{8F0F4237-4D13-40DD-AE8A-C3DE748B26E0}</Project>
+      <Name>PWMIS.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PWMIS.Web\PWMIS.Web.csproj">
+      <Project>{F44AFFAC-9042-47E5-B5E5-921A7AAFF603}</Project>
+      <Name>PWMIS.Web</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SuperMarketBLL\SuperMarketBLL.csproj">
       <Project>{32A14B75-6845-48B0-9FB9-9F0DD4D58369}</Project>
       <Name>SuperMarketBLL</Name>

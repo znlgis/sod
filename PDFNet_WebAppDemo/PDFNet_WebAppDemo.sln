@@ -19,6 +19,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMarketTestConsole", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMarketWeb", "..\SuperMarketMIS\SuperMarketWeb\SuperMarketWeb.csproj", "{FE0F02EB-3D0B-43FD-B37E-7D191549C757}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EBB208A6-0039-4507-A441-DF88931A31CA}"
+	ProjectSection(SolutionItems) = preProject
+		..\说明.txt = ..\说明.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 8
