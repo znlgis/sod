@@ -14,8 +14,13 @@ http://pwmis.codeplex.com/
 
 首先，打开DAL项目Entity目录下面的Sql文件，在本地数据库中创建一个SuperMarket数据库，然后修改Web.Config对应的连接字符串。
 然后，就可以运行项目了。
+本项目是一个DDD 驱动的项目实例，有关该项目的信息，请参考：
+
+“领域驱动开发”实例之旅（1）--不一样的开发模式
+http://www.cnblogs.com/bluedoctor/archive/2011/06/24/2088392.html
 
 
+********************************************
 
 PDF.NET官网地址：http://www.pwmis.com/sqlmap
 有关获取框架完整源码的事宜，请参看官网。
