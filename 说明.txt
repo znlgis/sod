@@ -21,7 +21,7 @@ http://www.cnblogs.com/bluedoctor/archive/2012/09/28/2707093.html
 2，PDF.NET数据开发框架之超市管理系统实例程序
 ------------------------------------------
 
-首先，打开DAL项目Entity目录下面的Sql文件，在本地数据库中创建一个名为"SuperMarket"的数据库，然后执行该Sql建表脚本，
+首先，打开DAL项目Entity目录下面的Sql文件，在本地SqlServer中创建一个名为"SuperMarket"的数据库，然后执行该Sql建表脚本，
 接着修改Web.Config对应的连接字符串(默认使用Windows集成登录，不需要修改连接字符串)，最后，就可以运行项目了。
 
 
@@ -35,6 +35,7 @@ http://www.cnblogs.com/bluedoctor/archive/2011/06/24/2088392.html
 用户名：SuperMarket
 密码：PDF.NET
 
+登录系统后添加雇员、收银员、收音机、商品等信息后，就可以开始“营业”了：）
 
 ********************************************
 
@@ -55,5 +56,7 @@ http://www.cnblogs.com/bluedoctor/archive/2011/09/29/2195751.html
 
 2012.9.28
 深蓝医生
+
+本文更新时间：2012.10.9
 
 
