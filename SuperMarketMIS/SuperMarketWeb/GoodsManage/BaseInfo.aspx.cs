@@ -46,6 +46,11 @@ namespace SuperMarketWeb.GoodsManage
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
+            if (dbtSN.Text.Trim() == "")
+            {
+                lblMsg.Text = "没有条码号，请输入!";
+                return;
+            }
             //实例化一个控件数据映射对象
             ControlDataMap cdm = new ControlDataMap();
             //收集数据到实体对象

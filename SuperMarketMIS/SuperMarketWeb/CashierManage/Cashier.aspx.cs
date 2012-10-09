@@ -30,8 +30,16 @@ namespace SuperMarketWeb.CashierManage
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            PWMIS.DataProvider.Adapter.MyWebForm.Instance.AutoUpdateIBFormData(this.Controls);
-            lblMsg.Text = "修改成功！";
+            if (dtbWorkNumber.Text == "")
+            {
+                lblMsg.Text = "请先选择一条记录进行修改（如果没记录请先进行[雇员管理]）！";
+            }
+            else
+            {
+                PWMIS.DataProvider.Adapter.MyWebForm.Instance.AutoUpdateIBFormData(this.Controls);
+                lblMsg.Text = "修改成功！";
+            }
+            
         }
     }
 }
