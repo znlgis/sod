@@ -19,7 +19,8 @@
  * 修改说明：实现OQLCompare对象比较的时候操作符重载，修复在多实体连接下面的SQL函数问题。
  * 
  *  * 修改这：         时间：2012-10-11
- *  修改了 CompareType 的枚举名称定义，使之可读性更好
+ * 修改说明：修复在多实体连接查询的时候，OrderBy 字段名丢失的问题。
+ *           修改了 CompareType 的枚举名称定义，使之可读性更好
  * ========================================================================
 */
 using System;
@@ -803,6 +804,10 @@ namespace PWMIS.DataMap.Entity
             if (string.IsNullOrEmpty(orderType))
                 orderType = "ASC";
 
+            if (string.IsNullOrEmpty(currFieldName)) //可能是多实体连接的情况，没有获取到当前选取的字段
+            {
+                currFieldName = string.Format("[{0}].[{1}]", this.CurrOQL.getingTableName, this.CurrOQL.getingPropertyName);
+            }
             orderString += "," + currFieldName + " " + orderType;
             return this;
         }
