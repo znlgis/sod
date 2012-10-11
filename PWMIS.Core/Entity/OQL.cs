@@ -7,7 +7,7 @@
  * 该类的作用
  * 
  * 作者：邓太华     时间：2008-10-12
- * 版本：V4.3
+ * 版本：V4.5
  * 
  * 修改者：         时间：2011-4-17                
  * 修改说明：为所有字段增加括号，以兼容其它数据库
@@ -17,6 +17,9 @@
  * 
  *  * 修改者：         时间：2012-2-28                
  * 修改说明：实现OQLCompare对象比较的时候操作符重载，修复在多实体连接下面的SQL函数问题。
+ * 
+ *  * 修改这：         时间：2012-10-11
+ *  修改了 CompareType 的枚举名称定义，使之可读性更好
  * ========================================================================
 */
 using System;
@@ -1262,15 +1265,15 @@ namespace PWMIS.DataMap.Entity
             /// <summary>
             /// 不大于（小于或等于）
             /// </summary>
-            NoGreater,
+            LessThanOrEqual,
             /// <summary>
             /// 小于
             /// </summary>
-            Smaller,
+            LessThan,
             /// <summary>
             /// 不小于（大于或等于）
             /// </summary>
-            NoSmaller,
+            GreaterThanOrEqual,
             /// <summary>
             /// 相等
             /// </summary>
@@ -1673,10 +1676,10 @@ namespace PWMIS.DataMap.Entity
                 case CompareType.Equal: typeStr = "="; break;
                 case CompareType.Greater: typeStr = ">"; break;
                 case CompareType.Like: typeStr = " LIKE "; break;
-                case CompareType.NoGreater: typeStr = "<="; break;
-                case CompareType.NoSmaller: typeStr = ">="; break;
+                case CompareType.LessThanOrEqual: typeStr = "<="; break;
+                case CompareType.GreaterThanOrEqual: typeStr = ">="; break;
                 case CompareType.NotEqual: typeStr = "<>"; break;
-                case CompareType.Smaller: typeStr = "<"; break;
+                case CompareType.LessThan: typeStr = "<"; break;
                 case CompareType.IN: typeStr = " IN "; break;
                 case CompareType.IS: typeStr = " IS "; break;
                 case CompareType.NotIn: typeStr = " NOT IN "; break;
