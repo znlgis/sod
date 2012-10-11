@@ -35,8 +35,10 @@ http://www.cnblogs.com/bluedoctor/archive/2011/06/24/2088392.html
 用户名：SuperMarket
 密码：PDF.NET
 
+
 登录系统后添加雇员、收银员、收音机、商品等信息后，就可以开始“营业”了：）
 
+注意：该Demo程序需要IE支持。
 ********************************************
 
 PDF.NET官网地址：http://www.pwmis.com/sqlmap
