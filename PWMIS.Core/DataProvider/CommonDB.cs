@@ -25,7 +25,7 @@
        <add key="SQLiteHelperType" value="CommonDataProvider.Data.SQLite"></add>
  * 
  * 作者：邓太华     时间：2008-10-12
- * 版本：V4.3
+ * 版本：V4.5.12.1012
  * 
  * 修改者：         时间：2010-3-24                
  * 修改说明：在参数设置的时候，如果有null值的参数，将在数据库设置NULL值。
@@ -35,6 +35,9 @@
  * 
  * * 修改者：         时间：2012-5-11                
  * 修改说明：增加命令执行的超时时间设定。
+ * 
+ * 修改者：         时间：2012-10-12                
+ * 修改说明：增加连接会话功能，以便在一个连接中执行多次查询（不同于事务）。
  * ========================================================================
 */
 
@@ -52,7 +55,7 @@ namespace PWMIS.DataProvider.Data
     /// <summary>
     /// 公共数据访问基础类
     /// </summary>
-    public abstract class CommonDB
+    public abstract class CommonDB:IDisposable
     {
         private string _connString = string.Empty;
         private string _errorMessage = string.Empty;
@@ -65,6 +68,9 @@ namespace PWMIS.DataProvider.Data
         private string appRootPath = "";
 
         private int transCount;//事务计数器
+        private IDbConnection sessionConnection = null;//会话使用的连接
+        private bool disposed;
+
         //		//日志相关
         //		private string DataLogFile ;
         //		private bool SaveCommandLog;
@@ -196,7 +202,9 @@ namespace PWMIS.DataProvider.Data
         /// 获取连接字符串构造类
         /// </summary>
         public abstract DbConnectionStringBuilder ConnectionStringBuilder { get; }
-
+        /// <summary>
+        /// 连接数据库用户的ID
+        /// </summary>
         public abstract string ConnectionUserID { get; }
 
         /// <summary>
@@ -240,11 +248,17 @@ namespace PWMIS.DataProvider.Data
         /// <returns>数据连结对象</returns>
         protected virtual IDbConnection GetConnection() //
         {
+            //优先使用事务的连接
             if (Transaction != null)
             {
                 IDbTransaction trans = Transaction;
                 if (trans.Connection != null)
                     return trans.Connection;
+            }
+            //如果开启连接会话，则使用该连接
+            if (sessionConnection != null)
+            {
+                return sessionConnection;
             }
             return null;
         }
@@ -429,8 +443,9 @@ namespace PWMIS.DataProvider.Data
             transCount--;
             if (_transation != null && _transation.Connection != null && transCount == 0)
                 _transation.Commit();
-            if (_connection != null && _connection.State == ConnectionState.Open && transCount == 0)
-                _connection.Close();
+           
+            if (transCount == 0)
+                CloseGlobalConnection();
             CommandLog.Instance.WriteLog("提交事务并关闭连接", "AdoHelper");
         }
 
@@ -441,10 +456,39 @@ namespace PWMIS.DataProvider.Data
         {
             if (_transation != null && _transation.Connection != null)
                 _transation.Rollback();
-            if (_connection != null && _connection.State == ConnectionState.Open)
-                _connection.Close();
+            CloseGlobalConnection();
             CommandLog.Instance.WriteLog("回滚事务并关闭连接", "AdoHelper");
         }
+
+        /// <summary>
+        /// 打开一个数据库连接会话，你可以在其中执行一系列AdoHelper查询
+        /// </summary>
+        /// <returns>连接会话对象</returns>
+        public ConnectionSession OpenSession()
+        {
+            this.ErrorMessage = "";
+            sessionConnection = GetConnection();//在子类中将会获取连接对象实例
+            if (sessionConnection.State != ConnectionState.Open)
+                sessionConnection.Open();
+
+            CommandLog.Instance.WriteLog("打开会话连接", "ConnectionSession");
+            return new ConnectionSession (sessionConnection);
+        }
+
+        /// <summary>
+        /// 关闭连接会话
+        /// </summary>
+        public void CloseSession()
+        {
+            if (sessionConnection != null && sessionConnection.State == ConnectionState.Open)
+            {
+                sessionConnection.Close();
+                sessionConnection.Dispose();
+                sessionConnection = null;
+            }
+        }
+
+      
 
         private bool _sqlServerCompatible = true;
         /// <summary>
@@ -578,8 +622,9 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                    conn.Close();
+                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
+                //    conn.Close();
+                CloseConnection(conn, cmd);
             }
 
             cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
@@ -653,8 +698,9 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                    conn.Close();
+                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
+                //    conn.Close();
+                CloseConnection(conn, cmd);
             }
 
             cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
@@ -710,8 +756,9 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                    conn.Close();
+                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
+                //    conn.Close();
+                CloseConnection(conn, cmd);
             }
 
             cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
@@ -805,8 +852,9 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                    conn.Close();
+                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
+                //    conn.Close();
+                CloseConnection(conn, cmd);
             }
             return ds;
         }
@@ -844,8 +892,9 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                    conn.Close();
+                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
+                //    conn.Close();
+                CloseConnection(conn, cmd);
             }
 
             cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
@@ -886,8 +935,9 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                    conn.Close();
+                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
+                //    conn.Close();
+                CloseConnection(conn, cmd);
             }
 
             cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
@@ -1003,8 +1053,9 @@ namespace PWMIS.DataProvider.Data
             {
                 ErrorMessage = ex.Message;
                 //只有出现了错误而且没有开启事务，可以关闭连结
-                if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                    conn.Close();
+                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
+                //    conn.Close();
+                CloseConnection(conn, cmd);
 
                 bool inTransaction = cmd.Transaction == null ? false : true;
                 cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
@@ -1019,5 +1070,31 @@ namespace PWMIS.DataProvider.Data
             return reader;
         }
 
+        /// <summary>
+        /// 关闭连接
+        /// </summary>
+        /// <param name="conn">连接对象</param>
+        /// <param name="cmd">命令对象</param>
+        private void CloseConnection(IDbConnection conn, IDbCommand cmd)
+        {
+            if (cmd.Transaction == null && conn!=sessionConnection  && conn.State == ConnectionState.Open)
+                conn.Close();
+        }
+
+        private void CloseGlobalConnection()
+        {
+            if (_connection != null && _connection.State == ConnectionState.Open)
+                _connection.Close();
+        }
+
+        void IDisposable.Dispose()
+        {
+            if (!disposed)
+            {
+                CloseGlobalConnection();
+                CloseSession();
+                disposed = true;
+            }
+        }
     }
 }
