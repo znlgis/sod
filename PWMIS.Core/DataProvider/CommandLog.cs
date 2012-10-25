@@ -242,12 +242,26 @@ namespace PWMIS.DataProvider.Data
 		/// <param name="log"></param>
 		private void WriteLog(string log)
 		{
-            lock (lockObj)
+            //edit at 2012.10.17 改成无锁异步写如日志文件
+            using (FileStream fs = new FileStream(DataLogFile, FileMode.Append, FileAccess.Write, FileShare.Write, 1024, FileOptions.Asynchronous))
             {
-                StreamWriter sw = File.AppendText(DataLogFile); ;
-                sw.WriteLine(log);
-                sw.Close();
+                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(log+"\r\n");
+                IAsyncResult writeResult = fs.BeginWrite(buffer, 0, buffer.Length,
+                    (asyncResult) =>
+                    {
+                        FileStream fStream = (FileStream)asyncResult.AsyncState;
+                        fStream.EndWrite(asyncResult);
+                    },
+                    fs);
+                //fs.EndWrite(writeResult);//这种方法异步起不到效果
+                fs.Close();
             }
+            //lock (lockObj)
+            //{
+            //    StreamWriter sw = File.AppendText(DataLogFile); ;
+            //    sw.WriteLine(log);
+            //    sw.Close();
+            //}
 		}
 	}
 }

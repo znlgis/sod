@@ -18,9 +18,12 @@
  *  * 修改者：         时间：2012-2-28                
  * 修改说明：实现OQLCompare对象比较的时候操作符重载，修复在多实体连接下面的SQL函数问题。
  * 
- *  * 修改这：         时间：2012-10-11
+ *  * 修改者：         时间：2012-10-11                
  * 修改说明：修复在多实体连接查询的时候，OrderBy 字段名丢失的问题。
  *           修改了 CompareType 的枚举名称定义，使之可读性更好
+ *           
+ *  * 修改者：         时间：2012-10-25                
+ * 修改说明：OQLCompare 对象执行比较的时候，支持SQL函数格式串。
  * ========================================================================
 */
 using System;
@@ -297,7 +300,7 @@ namespace PWMIS.DataMap.Entity
             {
                 string propName = "[" + tableName + "].[" + propertyName + "]";
                 this.currJoinEntity.AddJoinFieldName(propName);
-             
+
             }
             else
             {
@@ -1516,6 +1519,24 @@ namespace PWMIS.DataMap.Entity
 
         }
 
+        private string getCompareFieldString(string sqlFunctionFormat)
+        {
+            string compareFieldString = string.Empty;
+            if (!string.IsNullOrEmpty(sqlFunctionFormat))
+            {
+                if (sqlFunctionFormat.Contains("--"))
+                    throw new Exception("SQL 函数格式串中有危险的内容");
+                if (!sqlFunctionFormat.Contains("{0}"))
+                    throw new Exception("SQL 函数格式串未指定替换位置{0}");
+                compareFieldString = string.Format(sqlFunctionFormat, this.currPropName);
+            }
+            else
+            {
+                compareFieldString = this.currPropName;
+            }
+            return compareFieldString;
+        }
+
         /// <summary>
         /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
         /// </summary>
@@ -1525,46 +1546,66 @@ namespace PWMIS.DataMap.Entity
         /// <returns>比较表达式</returns>
         public OQLCompare Comparer(object field, CompareType type, object Value)
         {
-
-            //string typeStr = "";
-            //switch (type)
+            //this.compareIndex++;
+            //OQLCompare cmp = new OQLCompare();
+            //if (type == CompareType.IS)
             //{
-            //    case CompareType.Equal: typeStr = "="; break;
-            //    case CompareType.Greater: typeStr = ">"; break;
-            //    case CompareType.Like: typeStr = "LIKE"; break;
-            //    case CompareType.NoGreater: typeStr = "<="; break;
-            //    case CompareType.NoSmaller: typeStr = ">="; break;
-            //    case CompareType.NotEqual: typeStr = "<>"; break;
-            //    case CompareType.Smaller: typeStr = "<"; break;
-            //    default: typeStr = "="; break;
+            //    cmp.CompareString = this.currPropName + " IS " + Value.ToString();//此处可能不安全
             //}
-            //this._DbCompareTypeStr = typeStr;
-            //this._CompareValue = Value;
-            //
+            //else if (type == CompareType.IN)
+            //{
+            //    cmp.CompareString = this.currPropName + " IN ( " + Value.ToString() + " )";//此处可能不安全
+            //}
+            //else if (type == CompareType.NotIn)
+            //{
+            //    cmp.CompareString = this.currPropName + " NOT IN ( " + Value.ToString() + " )";//此处可能不安全
+            //}
+            //else
+            //{
+            //    string paraName = "@CP" + this.compareIndex;
+            //    cmp.compareValueList.Add(paraName.Substring(1), Value);
 
-            //
-            //this.CompareString = this.CompareFieldName + typeStr+" @" + this.CompareFieldName;   
+            //    cmp.CompareString = this.currPropName + GetDbCompareTypeStr(type) + paraName;
+            //}
+            //return cmp;
+            return Comparer(field, type, Value, null);
+        }
+
+        /// <summary>
+        /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
+        /// </summary>
+        /// <param name="field">实体对象属性</param>
+        /// <param name="type">比较类型枚举</param>
+        /// <param name="Value">要比较的值</param>
+        /// <param name="sqlFunctionFormat">SQL 函数格式串，例如 "DATEPART(hh, {0})"</param>
+        /// <returns>比较表达式</returns>
+        public OQLCompare Comparer(object field, CompareType type, object Value, string sqlFunctionFormat)
+        {
+            string compareFieldString = this.getCompareFieldString(sqlFunctionFormat);
+
             this.compareIndex++;
             OQLCompare cmp = new OQLCompare();
             if (type == CompareType.IS)
             {
-                cmp.CompareString = this.currPropName + " IS " + Value.ToString();//此处可能不安全
+                string isValue = Value.ToString().Trim().ToUpper();
+                if (isValue != "NULL" || isValue != "NOT NULL")
+                    throw new Exception("IS 只能操作NULL或者NOT NULL");
+                cmp.CompareString = compareFieldString + " IS " + isValue;
             }
             else if (type == CompareType.IN)
             {
-                cmp.CompareString = this.currPropName + " IN ( " + Value.ToString() + " )";//此处可能不安全
+                cmp.CompareString = compareFieldString + " IN ( " + Value.ToString() + " )";//此处可能不安全
             }
             else if (type == CompareType.NotIn)
             {
-                cmp.CompareString = this.currPropName + " NOT IN ( " + Value.ToString() + " )";//此处可能不安全
+                cmp.CompareString = compareFieldString + " NOT IN ( " + Value.ToString() + " )";//此处可能不安全
             }
             else
             {
                 string paraName = "@CP" + this.compareIndex;
                 cmp.compareValueList.Add(paraName.Substring(1), Value);
-                //cmp.compareTypeList.Add(type);
-                //cmp.propertyList.Add(this.currPropName);
-                cmp.CompareString = this.currPropName + GetDbCompareTypeStr(type) + paraName;
+
+                cmp.CompareString = compareFieldString + GetDbCompareTypeStr(type) + paraName;
             }
             return cmp;
         }
@@ -1577,6 +1618,60 @@ namespace PWMIS.DataMap.Entity
         /// <param name="Value">要比较的值</param>
         /// <returns>比较表达式</returns>
         public OQLCompare Comparer(object field, string compareTypeString, object Value)
+        {
+            //string[] cmpStrs = { "=", ">", "<", "<>", ">=", "<=", "like", "is", "in", "not in" };
+            //if (String.IsNullOrEmpty(compareTypeString))
+            //    compareTypeString = "=";
+            //else
+            //    compareTypeString = compareTypeString.Trim().ToLower();
+            //bool flag = false;
+            //foreach (string str in cmpStrs)
+            //{
+            //    if (compareTypeString == str)
+            //    {
+            //        flag = true;
+            //        break;
+            //    }
+            //}
+            //if (!flag)
+            //    throw new Exception("比较符号必须是 =,>,<,>=,<=,<>,like,is,in,not in 中的一种。");
+
+
+            //this.compareIndex++;
+            //OQLCompare cmp = new OQLCompare();
+            //if (compareTypeString == "is")
+            //{
+            //    cmp.CompareString = this.currPropName + " IS " + Value.ToString();//此处可能不安全，IS NULL，IS NOT NULL
+            //}
+            //else if (compareTypeString == "in")
+            //{
+            //    cmp.CompareString = this.currPropName + " IN ( " + Value.ToString() + " )";//此处可能不安全
+
+            //}
+            //else if (compareTypeString == "not in")
+            //{
+            //    cmp.CompareString = this.currPropName + " NOT IN ( " + Value.ToString() + " )";//此处可能不安全
+
+            //}
+            //else
+            //{
+            //    string paraName = "@CP" + this.compareIndex;
+            //    cmp.compareValueList.Add(paraName.Substring(1), Value);
+            //    cmp.CompareString = this.currPropName + " " + compareTypeString + " " + paraName;
+            //}
+            //return cmp;
+            return Comparer(field, compareTypeString, Value, null);
+        }
+
+        /// <summary>
+        /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
+        /// </summary>
+        /// <param name="field">实体对象属性</param>
+        /// <param name="compareTypeString">数据库比较类型字符串</param>
+        /// <param name="Value">要比较的值</param>
+        /// <param name="sqlFunctionFormat">SQL 函数格式串，例如 "DATEPART(hh, {0})"</param>
+        /// <returns>比较表达式</returns>
+        public OQLCompare Comparer(object field, string compareTypeString, object Value, string sqlFunctionFormat)
         {
             string[] cmpStrs = { "=", ">", "<", "<>", ">=", "<=", "like", "is", "in", "not in" };
             if (String.IsNullOrEmpty(compareTypeString))
@@ -1595,28 +1690,29 @@ namespace PWMIS.DataMap.Entity
             if (!flag)
                 throw new Exception("比较符号必须是 =,>,<,>=,<=,<>,like,is,in,not in 中的一种。");
 
+            string compareFieldString = this.getCompareFieldString(sqlFunctionFormat);
 
             this.compareIndex++;
             OQLCompare cmp = new OQLCompare();
             if (compareTypeString == "is")
             {
-                cmp.CompareString = this.currPropName + " IS " + Value.ToString();//此处可能不安全，IS NULL，IS NOT NULL
+                cmp.CompareString = compareFieldString + " IS " + Value.ToString();//此处可能不安全，IS NULL，IS NOT NULL
             }
             else if (compareTypeString == "in")
             {
-                cmp.CompareString = this.currPropName + " IN ( " + Value.ToString() + " )";//此处可能不安全
+                cmp.CompareString = compareFieldString + " IN ( " + Value.ToString() + " )";//此处可能不安全
 
             }
             else if (compareTypeString == "not in")
             {
-                cmp.CompareString = this.currPropName + " NOT IN ( " + Value.ToString() + " )";//此处可能不安全
+                cmp.CompareString = compareFieldString + " NOT IN ( " + Value.ToString() + " )";//此处可能不安全
 
             }
             else
             {
                 string paraName = "@CP" + this.compareIndex;
                 cmp.compareValueList.Add(paraName.Substring(1), Value);
-                cmp.CompareString = this.currPropName + " " + compareTypeString + " " + paraName;
+                cmp.CompareString = compareFieldString + " " + compareTypeString + " " + paraName;
             }
             return cmp;
         }
