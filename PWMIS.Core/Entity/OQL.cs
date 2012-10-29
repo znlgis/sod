@@ -1588,7 +1588,7 @@ namespace PWMIS.DataMap.Entity
             if (type == CompareType.IS)
             {
                 string isValue = Value.ToString().Trim().ToUpper();
-                if (isValue != "NULL" || isValue != "NOT NULL")
+                if (isValue != "NULL" && isValue != "NOT NULL")
                     throw new Exception("IS 只能操作NULL或者NOT NULL");
                 cmp.CompareString = compareFieldString + " IS " + isValue;
             }
