@@ -25,7 +25,7 @@
        <add key="SQLiteHelperType" value="CommonDataProvider.Data.SQLite"></add>
  * 
  * 作者：邓太华     时间：2008-10-12
- * 版本：V4.5.12.1012
+ * 版本：V4.5.12.1030
  * 
  * 修改者：         时间：2010-3-24                
  * 修改说明：在参数设置的时候，如果有null值的参数，将在数据库设置NULL值。
@@ -38,6 +38,9 @@
  * 
  * 修改者：         时间：2012-10-12                
  * 修改说明：增加连接会话功能，以便在一个连接中执行多次查询（不同于事务）。
+ * 
+ * 修改者：         时间：2012-10-30                
+ * 修改说明：使用MySQL等PDF.NET外部数据访问提供程序的时候，改进实例对象的创建效率。
  * ========================================================================
 */
 
@@ -49,6 +52,7 @@ using System.Reflection;
 using PWMIS.Common;
 using PWMIS.Core;
 using System.Data.Common;
+using System.Collections.Generic;
 
 namespace PWMIS.DataProvider.Data
 {
@@ -110,6 +114,7 @@ namespace PWMIS.DataProvider.Data
             return DBMSType.UNKNOWN;
         }
 
+        private static Dictionary<string, Type> cacheHelper = null;
         /// <summary>
         /// 创建公共数据访问类的实例
         /// </summary>
@@ -118,12 +123,26 @@ namespace PWMIS.DataProvider.Data
         /// <returns></returns>
         public static AdoHelper CreateInstance(string providerAssembly, string providerType)
         {
+            //使用Activator.CreateInstance 效率远高于assembly.CreateInstance
+            //所以首先检查缓存里面是否数据访问实例对象的类型
+            //详细内容请参看 http://www.cnblogs.com/leven/archive/2009/12/08/instanse_create_comparison.html
+            //
+            if (cacheHelper == null)
+                cacheHelper = new Dictionary<string, Type>();
+            string key = string.Format("{0}_{1}", providerAssembly, providerType);
+            if (cacheHelper.ContainsKey(key))
+            {
+                return (AdoHelper)Activator.CreateInstance(cacheHelper[key]);
+            }
+
             Assembly assembly = Assembly.Load(providerAssembly);
             object provider = assembly.CreateInstance(providerType);
 
             if (provider is AdoHelper)
             {
-                return provider as AdoHelper;
+                AdoHelper result = provider as AdoHelper;
+                cacheHelper[key] = result.GetType();//加入缓存
+                return result;
             }
             else
             {
