@@ -24,9 +24,22 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\说明.txt = ..\说明.txt
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{2927FA6B-62EB-403B-B70A-D396FE473B14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebApp", "TestWebApp\TestWebApp.csproj", "{79804C76-774C-465E-937A-98AE73237883}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.SQLite.Mono40", "..\PWMIS.DataProvider.SQLite.mono40\PWMIS.DataProvider.SQLite.Mono40.csproj", "{A9413DFE-AF90-41BC-8811-92C4EA9CBA9E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.SQLite", "..\PWMIS.DataProvider.Data.SQLite\PWMIS.DataProvider.Data.SQLite.csproj", "{EA876B64-CFF0-4985-B59C-1602B3486D3D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RefDll", "RefDll", "{507240B9-9FCB-423E-AEDA-328C406542D8}"
+	ProjectSection(SolutionItems) = preProject
+		..\RefDll\SQLite\W32_net35\System.Data.SQLite.dll = ..\RefDll\SQLite\W32_net35\System.Data.SQLite.dll
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 8
+		SccNumberOfProjects = 11
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
 		SccLocalPath0 = .
@@ -58,6 +71,18 @@ Global
 		SccProjectTopLevelParentUniqueName7 = PDFNet_WebAppDemo.sln
 		SccProjectName7 = ../SuperMarketMIS/SuperMarketWeb
 		SccLocalPath7 = ..\\SuperMarketMIS\\SuperMarketWeb
+		SccProjectUniqueName8 = TestWebApp\\TestWebApp.csproj
+		SccProjectTopLevelParentUniqueName8 = PDFNet_WebAppDemo.sln
+		SccProjectName8 = TestWebApp
+		SccLocalPath8 = TestWebApp
+		SccProjectUniqueName9 = ..\\PWMIS.DataProvider.SQLite.mono40\\PWMIS.DataProvider.SQLite.Mono40.csproj
+		SccProjectTopLevelParentUniqueName9 = PDFNet_WebAppDemo.sln
+		SccProjectName9 = ../PWMIS.DataProvider.SQLite.mono40
+		SccLocalPath9 = ..\\PWMIS.DataProvider.SQLite.mono40
+		SccProjectUniqueName10 = ..\\PWMIS.DataProvider.Data.SQLite\\PWMIS.DataProvider.Data.SQLite.csproj
+		SccProjectTopLevelParentUniqueName10 = PDFNet_WebAppDemo.sln
+		SccProjectName10 = ../PWMIS.DataProvider.Data.SQLite
+		SccLocalPath10 = ..\\PWMIS.DataProvider.Data.SQLite
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +117,18 @@ Global
 		{FE0F02EB-3D0B-43FD-B37E-7D191549C757}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE0F02EB-3D0B-43FD-B37E-7D191549C757}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE0F02EB-3D0B-43FD-B37E-7D191549C757}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79804C76-774C-465E-937A-98AE73237883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79804C76-774C-465E-937A-98AE73237883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79804C76-774C-465E-937A-98AE73237883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79804C76-774C-465E-937A-98AE73237883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9413DFE-AF90-41BC-8811-92C4EA9CBA9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9413DFE-AF90-41BC-8811-92C4EA9CBA9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9413DFE-AF90-41BC-8811-92C4EA9CBA9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9413DFE-AF90-41BC-8811-92C4EA9CBA9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA876B64-CFF0-4985-B59C-1602B3486D3D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA876B64-CFF0-4985-B59C-1602B3486D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA876B64-CFF0-4985-B59C-1602B3486D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA876B64-CFF0-4985-B59C-1602B3486D3D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -99,10 +136,14 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F44AFFAC-9042-47E5-B5E5-921A7AAFF603} = {A95BD869-20DE-4024-B469-C7C3A84B6969}
 		{8F0F4237-4D13-40DD-AE8A-C3DE748B26E0} = {A95BD869-20DE-4024-B469-C7C3A84B6969}
+		{A9413DFE-AF90-41BC-8811-92C4EA9CBA9E} = {A95BD869-20DE-4024-B469-C7C3A84B6969}
+		{EA876B64-CFF0-4985-B59C-1602B3486D3D} = {A95BD869-20DE-4024-B469-C7C3A84B6969}
 		{32A14B75-6845-48B0-9FB9-9F0DD4D58369} = {C3D57C83-D054-457C-A7AC-C1D5573EA242}
 		{B685E0F6-0082-453F-9494-4EEA87E204EB} = {C3D57C83-D054-457C-A7AC-C1D5573EA242}
 		{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4} = {C3D57C83-D054-457C-A7AC-C1D5573EA242}
 		{783A0458-39C6-44A1-927F-3DC075749CC8} = {C3D57C83-D054-457C-A7AC-C1D5573EA242}
 		{FE0F02EB-3D0B-43FD-B37E-7D191549C757} = {C3D57C83-D054-457C-A7AC-C1D5573EA242}
+		{507240B9-9FCB-423E-AEDA-328C406542D8} = {EBB208A6-0039-4507-A441-DF88931A31CA}
+		{79804C76-774C-465E-937A-98AE73237883} = {2927FA6B-62EB-403B-B70A-D396FE473B14}
 	EndGlobalSection
 EndGlobal
