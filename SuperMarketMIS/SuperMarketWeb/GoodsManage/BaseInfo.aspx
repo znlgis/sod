@@ -23,7 +23,8 @@
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td>[保质期]</td><td >
            <cc1:DataTextBox ID="DataTextBox4" runat="server" LinkObject="GoodsBaseInfo" 
-               LinkProperty="CanUserMonth" SysTypeCode="Int32"></cc1:DataTextBox>
+               LinkProperty="CanUserMonth" SysTypeCode="Int32" OftenType="整数" 
+               Type="Integer"></cc1:DataTextBox>
            月</td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td >&nbsp;</td><td >

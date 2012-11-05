@@ -13,7 +13,10 @@ namespace TestWebApp
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            {
+                int i = 10;
+                i = 1;
+            }
         }
 
         protected void Button1_Click(object sender, EventArgs e)
@@ -25,7 +28,7 @@ namespace TestWebApp
             string sql = @"
 DROP TABLE IF EXISTS  Table1;
 CREATE TABLE Table1(
-[ID] int,
+[ID] integer primary key autoincrement,
 [Name] varchar(20),
 [AddTime] datetime
 );
@@ -56,13 +59,17 @@ CREATE TABLE Table1(
                 int id = int.Parse(this.txtID.Text);
                 string name = this.txtName.Text;
                 System.Data.IDataParameter[] paras = { 
-                                            MyDB.Instance.GetParameter("ID",id),
-                                            MyDB.Instance.GetParameter("Name",name),
-                                            MyDB.Instance.GetParameter("At",DateTime.Now)
+                                            //MyDB.Instance.GetParameter("ID",id),
+                                            MyDB.Instance.GetParameter("Name",name) ,
+                                            MyDB.Instance.GetParameter("At",DateTime.Now) //使用参数化查询，即可解决SQLite的日期字段问题
                                                      };
-                ((System.Data.IDbDataParameter)paras[1]).Size=20;
+                //((System.Data.IDbDataParameter)paras[1]).Size=20;
+                ((System.Data.IDbDataParameter)paras[0]).Size = 20;
 
-                int count = MyDB.Instance.ExecuteNonQuery("insert into Table1(ID,Name,AddTime) values(@ID,@Name,@At)", System.Data.CommandType.Text, paras);
+                //int count = MyDB.Instance.ExecuteNonQuery("insert into Table1(ID,Name,AddTime) values(@ID,@Name,@At)", System.Data.CommandType.Text, paras);
+                int count = MyDB.Instance.ExecuteNonQuery("insert into Table1(Name,AddTime) values(@Name,@At)", System.Data.CommandType.Text, paras);
+                //SQLite 日期型字段不插入值，空值DataSet也是可以读取出来的
+                //int count = MyDB.Instance.ExecuteNonQuery("insert into Table1(Name) values(@Name)", System.Data.CommandType.Text, paras);
                 if (count > 0)
                 {
                     this.Label1.Text = "插入成功 ！";

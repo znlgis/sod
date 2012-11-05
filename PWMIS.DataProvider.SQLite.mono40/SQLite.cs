@@ -1,4 +1,20 @@
-﻿using System;
+﻿/*
+ * ========================================================================
+ * Copyright(c) 2006-2012 PWMIS, All Rights Reserved.
+ * Welcom use the PDF.NET (PWMIS Data Process Framework).
+ * See more information,Please goto http://www.pwmis.com/sqlmap 
+ * ========================================================================
+ * 该类是一个Linux下的SQLite的PDF.NET驱动程序类，不可以在Windows系统下使用。
+ * 注意需要区分引用的SQLite版本和所在的操作系统版本（32位或者64位）。
+ * 
+ * 作者：深蓝医生    时间：2012-11-1
+ * 版本：V4.5
+ * 
+ * 修改者：         时间：                
+ * 修改说明：
+ * ========================================================================
+*/
+using System;
 using System.Data;
 using Mono.Data.Sqlite;
 using PWMIS.DataProvider.Data;
@@ -108,7 +124,7 @@ namespace PWMIS.DataProvider.Data
 
         public override PWMIS.Common.DBMSType CurrentDBMSType
         {
-            get { throw new NotImplementedException(); }
+            get { return PWMIS.Common.DBMSType.SQLite; }
         }
 
         public override string GetParameterChar
@@ -122,6 +138,19 @@ namespace PWMIS.DataProvider.Data
         public override DataTable GetSchema(string collectionName, string[] restrictionValues)
         {
             throw new NotImplementedException();
+        }
+
+        public override string InsertKey
+        {
+            get
+            {
+                base.InsertKey = "select last_insert_rowid();";
+                return base.InsertKey;
+            }
+            set
+            {
+                base.InsertKey = value;
+            }
         }
 	}
 }

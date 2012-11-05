@@ -19,7 +19,8 @@
        <td >[商品名称]</td><td >
            <cc1:DataDropDownList ID="ddlGoodsNames" runat="server" LinkObject="" 
                LinkProperty="" SysTypeCode="String" AutoPostBack="True" 
-               onselectedindexchanged="ddlGoodsNames_SelectedIndexChanged">
+               onselectedindexchanged="ddlGoodsNames_SelectedIndexChanged" 
+               >
            </cc1:DataDropDownList>
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
@@ -35,12 +36,14 @@
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td >[售价]</td><td >
                                 <cc1:DataTextBox ID="DataTextBox3" runat="server" LinkObject="存货信息表" 
-                                    LinkProperty="售价" SysTypeCode="Decimal" Width="128px" Type="Currency"></cc1:DataTextBox>
+                                    LinkProperty="售价" SysTypeCode="Decimal" Width="128px" Type="Currency" 
+                                    isNull="False" OftenType="浮点数"></cc1:DataTextBox>
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td>[成本价]</td><td >
            <cc1:DataTextBox ID="DataTextBox4" runat="server" LinkObject="存货信息表" 
-               LinkProperty="成本价" SysTypeCode="Decimal" width="128px"></cc1:DataTextBox>
+               LinkProperty="成本价" SysTypeCode="Decimal" width="128px" isNull="False" 
+               OftenType="浮点数"></cc1:DataTextBox>
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td>[生产日期]</td><td >
@@ -55,7 +58,8 @@
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td>[库存数量]</td><td >
            <cc1:DataTextBox ID="DataTextBox6" runat="server" LinkObject="存货信息表" 
-               LinkProperty="库存数量" SysTypeCode="Int32" Type="Integer"></cc1:DataTextBox>
+               LinkProperty="库存数量" SysTypeCode="Int32" Type="Integer" isNull="False" 
+               OftenType="整数"></cc1:DataTextBox>
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td >&nbsp;</td><td >

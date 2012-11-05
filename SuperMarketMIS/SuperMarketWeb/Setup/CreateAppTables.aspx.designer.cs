@@ -7,64 +7,55 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace SuperMarketWeb.GoodsManage {
+namespace SuperMarketWeb.Setup {
     
     
-    public partial class BaseInfo {
+    public partial class CreateAppTables {
         
         /// <summary>
-        /// tbGoosBaseInfo 控件。
+        /// form1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable tbGoosBaseInfo;
+        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
         
         /// <summary>
-        /// dbtSN 控件。
+        /// lblProviderName 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::PWMIS.Web.Controls.DataTextBox dbtSN;
+        protected global::System.Web.UI.WebControls.Label lblProviderName;
         
         /// <summary>
-        /// DataTextBox2 控件。
+        /// lblConnName 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::PWMIS.Web.Controls.DataTextBox DataTextBox2;
+        protected global::System.Web.UI.WebControls.Label lblConnName;
         
         /// <summary>
-        /// DataTextBox3 控件。
+        /// lblScript 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::PWMIS.Web.Controls.DataTextBox DataTextBox3;
+        protected global::System.Web.UI.WebControls.Label lblScript;
         
         /// <summary>
-        /// DataTextBox4 控件。
+        /// Button1 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::PWMIS.Web.Controls.DataTextBox DataTextBox4;
-        
-        /// <summary>
-        /// btnSave 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnSave;
+        protected global::System.Web.UI.WebControls.Button Button1;
         
         /// <summary>
         /// lblMsg 控件。
@@ -74,23 +65,5 @@ namespace SuperMarketWeb.GoodsManage {
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblMsg;
-        
-        /// <summary>
-        /// GridView1 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView1;
-        
-        /// <summary>
-        /// ProPageToolBar1 控件。
-        /// </summary>
-        /// <remarks>
-        /// 自动生成的字段。
-        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
-        /// </remarks>
-        protected global::PWMIS.Web.Controls.ProPageToolBar ProPageToolBar1;
     }
 }

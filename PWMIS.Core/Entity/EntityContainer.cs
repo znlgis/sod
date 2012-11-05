@@ -1,10 +1,22 @@
 ﻿/*
+ * ========================================================================
+ * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
+ * Welcom use the PDF.NET (PWMIS Data Process Framework).
+ * See more information,Please goto http://www.pwmis.com/sqlmap 
+ * ========================================================================
  * PDF.NET 数据开发框架
  * http://www.pwmis.com/sqlmap
  * 
  * 详细内容，请参看“打造轻量级的实体类数据容器”
  * （ http://www.cnblogs.com/bluedoctor/archive/2011/05/23/2054541.html）
- */
+ * 
+ * 作者：邓太华     时间：2008-10-12
+ * 版本：V4.5
+ * 
+ * 修改者：         时间：2012-11-2                
+ * 修改说明：修复一个复杂查询时候的分页错误
+ * ========================================================================
+*/
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -38,8 +50,8 @@ namespace PWMIS.DataMap.Entity
         /// 默认构造函数
         /// </summary>
         public EntityContainer()
-        { 
-        
+        {
+
         }
 
         /// <summary>
@@ -98,17 +110,18 @@ namespace PWMIS.DataMap.Entity
                     case PWMIS.Common.DBMSType.Access:
                     case PWMIS.Common.DBMSType.SqlServer:
                     case PWMIS.Common.DBMSType.SqlServerCe:
-                        if (oql.HaveJoinOpt )
+                        if (oql.HaveJoinOpt)
                         {
                             if (oql.PageNumber <= 1) //仅限定记录条数
                             {
-                                sql = "Select Top " +oql.PageSize +" "+ sql.Trim().Substring("SELECT ".Length);
+                                sql = "Select Top " + oql.PageSize + " " + sql.Trim().Substring("SELECT ".Length);
 
                             }
                             else //必须采用复杂分页方案
                             {
-                                sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.SqlServer, sql, "", oql.PageSize, oql.PageNumber, 999);
-                            
+                                //edit at 2012.10.2 oql.PageWithAllRecordCount
+                                sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.SqlServer, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
+
                             }
                         }
                         else
@@ -119,7 +132,7 @@ namespace PWMIS.DataMap.Entity
                             else
                                 sql = PWMIS.Common.SQLPage.GetAscPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields, oql.sql_table, oql.PageField, oql.sql_condition);
                         }
-                        
+
                         break;
                     case PWMIS.Common.DBMSType.Oracle:
                         sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.Oracle, sql, "", oql.PageSize, oql.PageNumber, 999);
@@ -182,7 +195,7 @@ namespace PWMIS.DataMap.Entity
                 fieldNames = new string[fcount];
                 if (reader.Read())
                 {
-                    
+
                     object[] values = null;
 
                     for (int i = 0; i < fcount; i++)
@@ -233,9 +246,9 @@ namespace PWMIS.DataMap.Entity
             if (this.Values == null)
             {
                 int rowsCount = this.Execute();
-                if(rowsCount<=0)
+                if (rowsCount <= 0)
                     yield break;
-            
+
             }
             if (this.Values != null && this.fieldNames != null)
             {
@@ -254,8 +267,8 @@ namespace PWMIS.DataMap.Entity
                     {
                         for (int j = 0; j < entity.PropertyNames.Length; j++)
                         {
-                            string cmpString = "[" + entity.TableName + "].[" + entity.PropertyNames[j]+"]";
-                            if (this.OQL.sql_fields.Contains(cmpString ) )
+                            string cmpString = "[" + entity.TableName + "].[" + entity.PropertyNames[j] + "]";
+                            if (this.OQL.sql_fields.Contains(cmpString))
                             {
                                 dictNameIndex[this.fieldNames[i]] = i;
                             }
@@ -277,7 +290,7 @@ namespace PWMIS.DataMap.Entity
                         }
                     }
                 }
-                
+
                 //没有匹配的，提前结束
                 if (dictNameIndex.Count == 0)
                     yield break;
@@ -289,7 +302,7 @@ namespace PWMIS.DataMap.Entity
                     {
                         //将容器的值赋值给实体的值元素
                         string key = entity.PropertyNames[m];
-                        if(dictNameIndex.ContainsKey (key))
+                        if (dictNameIndex.ContainsKey(key))
                             entity.PropertyValues[m] = itemValues[dictNameIndex[key]];
                     }
                     yield return entity;

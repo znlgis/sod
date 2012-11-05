@@ -1,10 +1,10 @@
-<%@ Page Title="" Language="C#" MasterPageFile="~/Site2.Master" AutoEventWireup="true" CodeBehind="PayForGoods.aspx.cs" Inherits="SuperMarketWeb.PayForGoods" %>
+ï»¿<%@ Page Title="" Language="C#" MasterPageFile="~/Site2.Master" AutoEventWireup="true" CodeBehind="PayForGoods.aspx.cs" Inherits="SuperMarketWeb.PayForGoods" %>
 <%@ Import Namespace="SuperMarketModel"  %>
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
 
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-ÄúºÃ£¬»¶Ó­ÄúÀ´µ½ÊÕÒøÌ¨£¬ÇëÑ¡ÔñÎªÄú·þÎñµÄÊÕÒøÔ±£º
+æ‚¨å¥½ï¼Œæ¬¢è¿Žæ‚¨æ¥åˆ°æ”¶é“¶å°ï¼Œè¯·é€‰æ‹©ä¸ºæ‚¨æœåŠ¡çš„æ”¶é“¶å‘˜ï¼š
 <asp:GridView ID="GridView1" runat="server" BackColor="#DEBA84" 
         BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" 
         CellSpacing="2" onselectedindexchanged="GridView1_SelectedIndexChanged" 
@@ -15,9 +15,9 @@
         <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />
         <HeaderStyle BackColor="#A55129" Font-Bold="True" ForeColor="White" />
         <Columns>
-            <asp:ButtonField CommandName="Select" HeaderText="Ñ¡Ôñ" ShowHeader="True" 
-                Text="Ñ¡Ôñ" />
-            <asp:TemplateField HeaderText="ÊÕÒøÔ±">
+            <asp:ButtonField CommandName="Select" HeaderText="é€‰æ‹©" ShowHeader="True" 
+                Text="é€‰æ‹©" />
+            <asp:TemplateField HeaderText="æ”¶é“¶å‘˜">
                 <ItemTemplate>
                     <%# ((SuperMarketBLL.CashierRegisterBIZ)Container.DataItem).CurrCashier.CashierName  %>
                 </ItemTemplate>
@@ -25,13 +25,13 @@
                 <ItemStyle Width="100px" />
                
             </asp:TemplateField>
-            <asp:TemplateField HeaderText="¹¤ºÅ">
+            <asp:TemplateField HeaderText="å·¥å·">
                 <ItemTemplate>
                     <%# ((SuperMarketBLL.CashierRegisterBIZ)Container.DataItem).CurrCashier.WorkNumber  %>
                 </ItemTemplate>
                 <ItemStyle Width="100px" />
             </asp:TemplateField>
-            <asp:TemplateField HeaderText="ÊÕÒø»úºÅ">
+            <asp:TemplateField HeaderText="æ”¶é“¶æœºå·">
                 <ItemTemplate>
                      <%# ((SuperMarketBLL.CashierRegisterBIZ)Container.DataItem).CurrCRManchines.CashRegisterNo   %>
                 </ItemTemplate>
@@ -40,12 +40,12 @@
         </Columns>
     </asp:GridView>
     <p>
-        <asp:Button ID="btnWaite" runat="server" Text="ÔÚ´ËÊÕÒøÌ¨ÅÅ¶Ó" 
+        <asp:Button ID="btnWaite" runat="server" Text="åœ¨æ­¤æ”¶é“¶å°æŽ’é˜Ÿ" 
             onclick="btnWaite_Click" OnClientClick ="" />
         <asp:Label ID="lblQueue" runat="server"></asp:Label>
     </p>
     <p>
-        Äú±¾´ÎµÄ¹ºÎï¼Û¸ñÇåµ¥£º
+        æ‚¨æœ¬æ¬¡çš„è´­ç‰©ä»·æ ¼æ¸…å•ï¼š
     <asp:GridView ID="gvSPCart" runat="server" BackColor="#DEBA84" 
         BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" 
         CellSpacing="2"  
@@ -57,31 +57,31 @@
         <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="White" />
         <HeaderStyle BackColor="#A55129" Font-Bold="True" ForeColor="White" />
         <Columns>
-            <asp:ButtonField CommandName="Select" HeaderText="Ñ¡Ôñ" ShowHeader="True" 
-                Text="Ñ¡Ôñ" />
-            <asp:BoundField DataField="SerialNumber" HeaderText="ÌõÂëºÅ" ReadOnly="True" />
-            <asp:BoundField DataField="GoodsName" HeaderText="ÉÌÆ·Ãû³Æ" ReadOnly="True" />
-            <asp:BoundField DataField="GoodsPrice" HeaderText="µ¥¼Û" ReadOnly="True" />
-            <asp:BoundField DataField="DiscountPrice" HeaderText="ÕÛ¿Û¼Û" ReadOnly="True" />
-            <asp:BoundField DataField="GoodsNumber" HeaderText="¹ºÂòÊýÁ¿" />
-            <asp:BoundField DataField="GoodsMoney" HeaderText="ÊµÊÕ½ð¶î" />
+            <asp:ButtonField CommandName="Select" HeaderText="é€‰æ‹©" ShowHeader="True" 
+                Text="é€‰æ‹©" />
+            <asp:BoundField DataField="SerialNumber" HeaderText="æ¡ç å·" ReadOnly="True" />
+            <asp:BoundField DataField="GoodsName" HeaderText="å•†å“åç§°" ReadOnly="True" />
+            <asp:BoundField DataField="GoodsPrice" HeaderText="å•ä»·" ReadOnly="True" />
+            <asp:BoundField DataField="DiscountPrice" HeaderText="æŠ˜æ‰£ä»·" ReadOnly="True" />
+            <asp:BoundField DataField="GoodsNumber" HeaderText="è´­ä¹°æ•°é‡" />
+            <asp:BoundField DataField="GoodsMoney" HeaderText="å®žæ”¶é‡‘é¢" />
             <asp:CommandField ShowDeleteButton="True" />
         </Columns>
     </asp:GridView>  
     </p>
     <p>
-        ËµÃ÷£ºÕâÀïµÄ¹ºÂòÊýÁ¿¸Ä±äÎª0£¬±íÊ¾Êµ¼Ê¿â´æÎª0£¬²»¿ÉÏúÊÛ¡£</p>
+        è¯´æ˜Žï¼šè¿™é‡Œçš„è´­ä¹°æ•°é‡æ”¹å˜ä¸º0ï¼Œè¡¨ç¤ºå®žé™…åº“å­˜ä¸º0ï¼Œä¸å¯é”€å”®ã€‚</p>
     <p>
-    ¡¾ºÏ¼Æ¡¿<asp:Label ID ="lblAmout" runat="server"></asp:Label> Ôª 
+    ã€åˆè®¡ã€‘<asp:Label ID ="lblAmout" runat="server"></asp:Label> å…ƒ 
     </p>
     <p>
-    &nbsp;<asp:Button ID="btnOK" runat="server" onclick="btnOK_Click" Text="Í¬ÒâÖ§¸¶" />
+    &nbsp;<asp:Button ID="btnOK" runat="server" onclick="btnOK_Click" Text="åŒæ„æ”¯ä»˜" />
 &nbsp;
-        <asp:Button ID="btnCancel" runat="server" Text="·µ»Ø¼ÌÐø¹ºÎï" 
+        <asp:Button ID="btnCancel" runat="server" Text="è¿”å›žç»§ç»­è´­ç‰©" 
             onclick="btnCancel_Click" />
     &nbsp;
         <asp:Button ID="btnQuitBuy" runat="server" onclick="btnQuitBuy_Click" 
-            Text="·ÅÆú±¾´Î¹ºÎï" />
+            Text="æ”¾å¼ƒæœ¬æ¬¡è´­ç‰©" />
     </p>
 
 </asp:Content>

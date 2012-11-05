@@ -54,7 +54,7 @@
             </ul>
         </td>
         <td>
-        <img src ="images/ShoppingCar.jpg" alt="购物车"/><br />已选购商品 购物车"/><br />已选购商品 <asp:Label ID ="lblGoodsCount" runat="server"></asp:Label>种
+        <img src ="images/ShoppingCar.JPG" alt="购物车"/><br />已选购商品 购物车<br />已选购商品 <asp:Label ID ="lblGoodsCount" runat="server"></asp:Label>种
         &nbsp;<a href ="ShoppingCart.aspx">详细</a>
         <table style="border-style: double; background-color :#DEBA84">
         <tr>
@@ -80,7 +80,8 @@
         <td><asp:Button ID="btnBuy" runat="server" Text="加入购物车" onclick="btnBuy_Click" />  </td>
         </tr>
         </table>
-            
+          
+  
 &nbsp;</td>
         </tr>
         </table>

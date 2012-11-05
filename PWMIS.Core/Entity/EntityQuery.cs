@@ -7,7 +7,7 @@
  * 该类的作用
  * 
  * 作者：邓太华     时间：2008-10-12
- * 版本：V3.0
+ * 版本：V4.5
  * 
  * 修改者：         时间：2010-07-12                
  * 修改说明：改进对象操作数据的线程安全性
@@ -23,6 +23,8 @@
  *        2012.7.12  ver 4.3 增加了以实体类改变了值的属性，作为查询条件的方法（网友[左眼]贡献代码）
  *        2012.8.27  ver 4.5 增加了对POCO实体类的支持，该实体类实现IReadData 接口即可。
  *        可以单独调用EntityQueryAnonymous.ExecuteDataList<T>(IDataReader reader) 来实现。 
+ *        2012.11.4  ver 4.5 修正了实体类的时候没有属性被修改但试图更新实体类到数据库发生的错。
+ *        
  * -----------------------------------------------------------------
  * 以下例子说明了如何使用本类：
  * 
@@ -1133,8 +1135,11 @@ namespace PWMIS.DataMap.Entity
 
         }
 
+        //如果没有字段需要更新,则退出 update at 2012.11.4
         private static int UpdateInner(T entity, List<string> objFields, CommonDB DB)
         {
+            if (objFields == null || objFields.Count == 0)
+                return 0;
             if (entity.PrimaryKeys.Count == 0)
                 throw new Exception("EntityQuery Error:当前实体类未指定主键字段");
             int fieldCount = objFields.Count + entity.PrimaryKeys.Count;

@@ -1,4 +1,4 @@
-﻿--创建超市信息表，数据库类型：SqlServer
+﻿--创建超市信息表，数据库类型：SQLite
 
 
 
@@ -12,7 +12,7 @@ create table [客户表]
 [联系地址] varchar(200) null,
 [积分] int
 )
-go
+;
 
 create table [雇员表]
 (
@@ -23,7 +23,7 @@ create table [雇员表]
 [入职时间] datetime not null,
 [职务名称] varchar(10) null
 )
-go
+;
 
 create table [设备表]
 (
@@ -33,7 +33,7 @@ create table [设备表]
 [购置时间] datetime null,
 [备注] varchar(250) null
 )
-go
+;
 
 create table [商品信息表]
 (
@@ -42,11 +42,11 @@ create table [商品信息表]
 [厂商名称] varchar(50) null,
 [保质期] int null
 )
-go
+;
 
 create table [存货信息表]
 (
-[存货记录号] int identity(1,1) primary key,
+[存货记录号] integer primary key autoincrement,
 [条码号] varchar(38) not null,
 [售价] money not null,
 [成本价] money not null,
@@ -54,25 +54,25 @@ create table [存货信息表]
 [上货时间] datetime ,
 [库存数量] int not null
 )
-go
+;
 
 create table [商品销售单据表]
 (
-[销售单号] int identity(1,1) primary key,
+[销售单号] integer primary key autoincrement,
 [销售日期] datetime not null,
 [终端号] varchar(38) null,
 [客户号] varchar(38) null,
 [销售员号] varchar(38) null,
 [销售类别] varchar(10)
 )
-go
+;
 
 create table [商品销售记录表]
 (
-[销售记录号]  int identity(1,1) primary key,
+[销售记录号]  integer primary key autoincrement,
 [销售单号] int not null,
 [商品条码] varchar(38) not null,
 [单价] money not null,
 [数量] int not null
 )
-go
+;

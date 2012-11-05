@@ -1,3 +1,4 @@
+//ver 4.5 dbmstype auto get;
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -88,6 +89,9 @@ namespace PWMIS.Web.Controls
                 }
                 if (_DAO == null)
                     throw new Exception("未实例化数据访问组件,请确认已经进行了正确的配置！");
+
+                //edit dbmstype:
+                this.DBMSType = _DAO.CurrentDBMSType;
                 return _DAO;
             }
             set

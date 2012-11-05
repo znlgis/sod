@@ -14,6 +14,10 @@
         {
             width: 191px;
         }
+        .style4
+        {
+            font-size: xx-large;
+        }
     </style>
     <script type ="text/javascript">
         function CancelInput() {
@@ -26,7 +30,9 @@
 
     <form id="form1" runat="server">
     <div style="background-color: #FFCC99; border-style: groove">
-    <img  src="images/MarketLog.jpg" alt ="PDF.NET SupperMarket"/><br />
+    <img  src="images/MarketLog.jpg" alt ="PDF.NET SupperMarket"/><span class="style4"><a 
+            href="http://www.pwmis.com/sqlmap">PDF.NET 框架</a>之<a 
+            href="http://pwmis.codeplex.com">超市管理系统 Demo实例程序</a></span><br />
         欢迎光临本超市，请输入你的会员号：<br />
         <table>
         <tr><td class="style3">
@@ -116,9 +122,22 @@
 
           <asp:Label ID="lblMsg" runat="server"></asp:Label>
         </div>
+        <br />
+        服务器操作系统：<%=Environment.OSVersion.ToString() %> <%=Environment.Is64BitOperatingSystem? 64:32 %>位系统
+        <br />
+        .NET 运行库版本：<%=Environment.Version.ToString() %>
+         <br />
+        Web服务器版本:(<span  style=" color:Red; font-size: 16pt;"> <%:Request.ServerVariables["Server_SoftWare"]%></span>)
+       
+        <hr />
+        本系统基于<a href="http://www.pwmis.com/sqlmap">PDF.NET</a> Ver 4.5 构建，<a href="index.htm">系统说明</a>
+        <br />
+        使用的数据驱动程序：<%: ConfigurationManager.ConnectionStrings[ConfigurationManager.ConnectionStrings.Count - 1].ProviderName%>
+        <br />
+        
          </form>
 <hr />
 请使用IE浏览器使用本系统！
 
-</body>
+</body>  
 </html>

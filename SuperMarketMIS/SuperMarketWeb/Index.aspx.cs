@@ -31,7 +31,9 @@ namespace SuperMarketWeb
                 btnEditBuyCount.Enabled = false;
                 lblGoodsCount.Text = customer.Goodss.Count.ToString();
 
-                ((Site2)this.Master).NavigateMessage = "今日商品信息"; 
+                ((Site2)this.Master).NavigateMessage = "今日商品信息";
+
+                
             }
         }
 

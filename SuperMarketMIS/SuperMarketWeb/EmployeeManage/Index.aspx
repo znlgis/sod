@@ -10,7 +10,8 @@
        <tr style="color:#8C4510;background-color:#FFF7E7;">
 <td >[工号]*</td><td >
            <cc1:DataTextBox ID="dtbWorkNumber" runat="server" LinkObject="雇员表" 
-               LinkProperty="工号" PrimaryKey="True" Width="256px" SysTypeCode="String"></cc1:DataTextBox>
+               LinkProperty="工号" PrimaryKey="True" Width="256px" SysTypeCode="String" 
+               ErrorMessage="工号不能为空" isNull="False" MessageType="提示框"></cc1:DataTextBox>
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td >[姓名]</td><td >
@@ -19,10 +20,12 @@
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td >[性别]</td><td >
-           <cc1:DataRadioButton ID="DataRadioButton1" runat="server" LinkObject="雇员表" 
-               LinkProperty="性别" Text="男" SysTypeCode="Boolean" Value="True" GroupName="Sex" />
-&nbsp;<cc1:DataRadioButton ID="DataRadioButton2" runat="server" LinkObject="雇员表" 
-               LinkProperty="性别" Text="女" SysTypeCode="Boolean" Value="False" GroupName="Sex" />
+           <cc1:DataRadioButton ID="rdbSexMan" runat="server" LinkObject="雇员表" 
+               LinkProperty="性别" Text="男" SysTypeCode="Boolean" Value="True" 
+               GroupName="Sex" isNull="False" />
+&nbsp;<cc1:DataRadioButton ID="rdbSexWomen" runat="server" LinkObject="雇员表" 
+               LinkProperty="性别" Text="女" SysTypeCode="Boolean" Value="False" 
+               GroupName="Sex" isNull="False" />
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td>[出生日期]</td><td >

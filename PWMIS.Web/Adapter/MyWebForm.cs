@@ -7,10 +7,10 @@
  * 该类的作用
  * 
  * 作者：邓太华     时间：2008-10-12
- * 版本：V3.0
+ * 版本：V4.5
  * 
- * 修改者：         时间：                
- * 修改说明：
+ * 修改者：         时间：2012-11-1                
+ * 修改说明：收集数据的时候，改进对SQLite的支持
  * ========================================================================
 */
 using System;
@@ -294,7 +294,7 @@ namespace PWMIS.DataProvider.Adapter
 		/// <returns>
 		/// ArrayList 中的成员为 IBCommand 对象，包含具体的CRUD SQL
 		///</returns>
-        public static List<IBCommand> GetIBFormData(ControlCollection Controls)
+        public static List<IBCommand> GetIBFormData(ControlCollection Controls,CommonDB DB)
 		{
             List<IDataControl> IBControls = new List<IDataControl>();
 			findIBControls(IBControls ,Controls );
@@ -346,7 +346,13 @@ namespace PWMIS.DataProvider.Adapter
 										if(ibCtr.SysTypeCode==System.TypeCode.Boolean )
 											cValue=(cValue.ToUpper ()=="TRUE"?"1":"0");
 										else if(ibCtr.SysTypeCode==System.TypeCode.DateTime )
-											cValue="'"+ cValue +"'";//SQL SERVER 日期格式
+                                        {
+                                            if (DB.CurrentDBMSType == DBMSType.SQLite)
+                                                cValue = "'" + DateTime.Parse(cValue).ToString("s") + "'";
+                                            else
+                                                cValue = "'" + cValue + "'";//SQL SERVER 日期格式
+                                        
+                                        }
 										else if(ibCtr.SysTypeCode==System.TypeCode.DBNull )
 										{
 											cValue="NULL";
@@ -427,7 +433,7 @@ namespace PWMIS.DataProvider.Adapter
         /// <returns></returns>
         public List<IBCommand> AutoUpdateIBFormData(ControlCollection Controls)
 		{
-			List<IBCommand > ibCommandList=GetIBFormData(Controls);
+			List<IBCommand > ibCommandList=GetIBFormData(Controls,this.DAO);
 			int result=0;
 			foreach(object item in ibCommandList)
 			{
@@ -454,23 +460,23 @@ namespace PWMIS.DataProvider.Adapter
 		}
 
         /// <summary>
-        /// 自动更新含有GUID主键的窗体数据，注该GUID控件必须设置PrimaryKey属性
+        /// 自动更新含有GUID主键或字符型主键的窗体数据，注该控件必须设置PrimaryKey属性
         /// </summary>
         /// <param name="Controls">控件集合</param>
-        /// <param name="guidControl">Gudi控件</param>
+        /// <param name="guidControl">Gudi或字符型主键控件</param>
         /// <returns>更新是否成功</returns>
         public bool  AutoUpdateIBFormData(ControlCollection Controls,  IDataControl guidControl)
         {
             object  guidObj=guidControl.GetValue();
             if (guidObj == null || guidObj.ToString() == "")
-                throw new Exception("GUID 主键列更新数据不能为空！");
+                throw new Exception("GUID 主键或字符型主键列更新数据不能为空！");
             if (guidControl.ReadOnly  )
-                throw new Exception("GUID 主键列更新数据时不能设置为只读！");
+                throw new Exception("GUID 主键或字符型主键列更新数据时不能设置为只读！");
             if (!guidControl.PrimaryKey )
-                throw new Exception("GUID 主键列更新数据时必须设置PrimaryKey属性！");
+                throw new Exception("GUID 主键或字符型主键列更新数据时必须设置PrimaryKey属性！");
 
             string guidText = guidObj.ToString();
-            List<IBCommand> ibCommandList = GetIBFormData(Controls);
+            List<IBCommand> ibCommandList = GetIBFormData(Controls,this.DAO);
             int result = 0;
             foreach (IBCommand command in ibCommandList)
             {

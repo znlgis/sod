@@ -25,7 +25,7 @@
        <add key="SQLiteHelperType" value="CommonDataProvider.Data.SQLite"></add>
  * 
  * 作者：邓太华     时间：2008-10-12
- * 版本：V4.5.12.1030
+ * 版本：V4.5.12.1101
  * 
  * 修改者：         时间：2010-3-24                
  * 修改说明：在参数设置的时候，如果有null值的参数，将在数据库设置NULL值。
@@ -41,6 +41,9 @@
  * 
  * 修改者：         时间：2012-10-30                
  * 修改说明：使用MySQL等PDF.NET外部数据访问提供程序的时候，改进实例对象的创建效率。
+ * 
+ * 修改者：         时间：2012-11-01                
+ * 修改说明：为支持扩展SQLite驱动，改进了本类的某些成员的访问级别。
  * ========================================================================
 */
 
@@ -67,7 +70,7 @@ namespace PWMIS.DataProvider.Data
         private bool _onErrorThrow = true;
         private IDbConnection _connection = null;
         private IDbTransaction _transation = null;
-        private long _elapsedMilliseconds = 0;
+        protected long _elapsedMilliseconds = 0;
 
         private string appRootPath = "";
 
@@ -1094,7 +1097,7 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         /// <param name="conn">连接对象</param>
         /// <param name="cmd">命令对象</param>
-        private void CloseConnection(IDbConnection conn, IDbCommand cmd)
+        protected void CloseConnection(IDbConnection conn, IDbCommand cmd)
         {
             if (cmd.Transaction == null && conn!=sessionConnection  && conn.State == ConnectionState.Open)
                 conn.Close();

@@ -17,11 +17,27 @@ namespace SuperMarketWeb.EmployeeManage
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            //保存数据
-            List<IBCommand> ibCommandList = MyWebForm.Instance.AutoUpdateIBFormData(this.Controls);
-            lblMsg.Text = "保存成功！";
-            //重新绑定数据
-            this.ProPageToolBar1.ReBindResultData();
+            if (!this.rdbSexMan.Checked && !this.rdbSexWomen.Checked)
+            {
+                lblMsg.Text = "请选择性别！";
+            }
+            else
+            {
+                //保存数据
+                bool result = MyWebForm.Instance.AutoUpdateIBFormData(this.Controls, this.dtbWorkNumber);
+                if (result)
+                {
+                    lblMsg.Text = "保存成功！";
+                    //重新绑定数据
+                    this.ProPageToolBar1.ReBindResultData();
+                }
+                else
+                {
+                    lblMsg.Text = "保存失败！[数据库操作异常，详细信息请检查SQL日志]";
+                }
+            }
+            
+            
         }
 
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
