@@ -9,8 +9,8 @@
  * 作者：邓太华     时间：2008-10-12
  * 版本：V3.0
  * 
- * 修改者：         时间：                
- * 修改说明：
+ * 修改者：         时间：2012-11-6                
+ * 修改说明：补充Oracle参数名前缀
  * ========================================================================
 */
 using System;
@@ -131,6 +131,20 @@ namespace PWMIS.DataProvider.Data
         {
             get { return ((OracleConnectionStringBuilder)ConnectionStringBuilder).UserID; }
         }
+
+        /// <summary>
+        /// 获取Oracle数据库参数前缀资费
+        /// <remarks>由网友路人甲.aspx 补充</remarks>
+        /// </summary>
+        public override string GetParameterChar
+        {
+            get
+            {
+                return ":";
+            }
+        }
+
+
 //		/// <summary>
 //		/// 执行不返回值得查询
 //		/// </summary>

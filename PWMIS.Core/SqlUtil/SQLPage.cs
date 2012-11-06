@@ -432,7 +432,7 @@ namespace PWMIS.Common
 
             string SqlTemplate = @"SELECT * FROM
  (SELECT rownum r_n,temptable.* FROM  
-   ( @@SourceSQL ) temptable Where rowmun <= @@RecEnd
+   ( @@SourceSQL ) temptable Where rownum <= @@RecEnd
  ) temptable2 WHERE r_n > @@RecStart ";
 
             int iRecStart = (PageNumber - 1) * PageSize + 1;

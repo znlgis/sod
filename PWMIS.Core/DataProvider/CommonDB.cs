@@ -44,6 +44,9 @@
  * 
  * 修改者：         时间：2012-11-01                
  * 修改说明：为支持扩展SQLite驱动，改进了本类的某些成员的访问级别。
+ * 
+ * 修改者：         时间：2012-11-06
+ * 为提高效率，不再继续内部进行参数克隆处理，请多条SQL语句不要使用同名的参数对象
  * ========================================================================
 */
 
@@ -532,6 +535,7 @@ namespace PWMIS.DataProvider.Data
         }
         /// <summary>
         /// 完善命令对象,处理命令对象关联的事务和连接，如果未打开连接这里将打开它
+        /// 注意：为提高效率，不再继续内部进行参数克隆处理，请多条SQL语句不要使用同名的参数对象
         /// </summary>
         /// <param name="cmd">命令对象</param>
         /// <param name="SQL">SQL</param>
@@ -551,7 +555,8 @@ namespace PWMIS.DataProvider.Data
                     {
                         if (commandType != CommandType.StoredProcedure)
                         {
-                            IDataParameter para = (IDataParameter)((ICloneable)parameters[i]).Clone();
+                            //IDataParameter para = (IDataParameter)((ICloneable)parameters[i]).Clone();
+                            IDataParameter para = parameters[i];
                             if (para.Value == null)
                                 para.Value = DBNull.Value;
                             cmd.Parameters.Add(para);
