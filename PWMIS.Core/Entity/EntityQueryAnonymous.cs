@@ -1,4 +1,29 @@
-﻿#define CMD_FAST //定义快速的命令对象等方案，用于解决大批量快速更新的问题
+﻿/*
+ * ========================================================================
+ * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
+ * Welcom use the PDF.NET (PWMIS Data Process Framework).
+ * See more information,Please goto http://www.pwmis.com/sqlmap 
+ * ========================================================================
+ * PDF.NET 数据开发框架
+ * http://www.pwmis.com/sqlmap
+ * 
+ * 详细内容，请参看“打造轻量级的实体类数据容器”
+ * （ http://www.cnblogs.com/bluedoctor/archive/2011/05/23/2054541.html）
+ * 
+ * 作者：邓太华     时间：2008-10-12
+ * 版本：V4.5
+ * 
+ * 修改者：         时间：2012-11-16                
+ * 修改说明：修复使用自定义查询（类似建立一个视图查询）的实体类的时候，在OQL中使用Where方法的一个问题。
+ * Bug发现：JasonWong²º¹²
+ * 
+ * 修改者：         时间：2012-11-29                
+ * 修改说明：修复使用自定义查询（类似建立一个视图查询）的实体类的时候，多次以不同的条件使用这个实体查询的问题。
+ * Bug发现：JasonWong²º¹²
+ * ========================================================================
+*/
+
+#define CMD_FAST //定义快速的命令对象等方案，用于解决大批量快速更新的问题
 //#define CMD_NORMAR //普通模式
 
 using System;
@@ -23,13 +48,16 @@ namespace PWMIS.DataMap.Entity
         /// <summary>
         /// 操作需要的数据库实例，如果不设定将采用默认实例
         /// </summary>
-        public  AdoHelper DefaultDataBase {
-            get {
+        public AdoHelper DefaultDataBase
+        {
+            get
+            {
                 if (_DefaultDataBase == null)
-                    _DefaultDataBase = MyDB.Instance ;
+                    _DefaultDataBase = MyDB.Instance;
                 return _DefaultDataBase;
             }
-            set {
+            set
+            {
                 _DefaultDataBase = value;
             }
         }
@@ -53,7 +81,7 @@ namespace PWMIS.DataMap.Entity
 #if(CMD_FAST)
 
             //如果是SQLSERVER，考虑批量复制的方式
-            if (bulkCopyModel>0 && db is SqlServer)
+            if (bulkCopyModel > 0 && db is SqlServer)
             {
                 if (bulkCopyModel == 1)
                 {
@@ -70,7 +98,7 @@ namespace PWMIS.DataMap.Entity
                         throw ex;
                     }
                 }
-                
+
                 //执行大批量复制
                 DataTable source = EntitysToDataTable<EntityBase>(entityList);
                 SqlServer.BulkCopy(source, db.ConnectionString, source.TableName, 500);
@@ -114,7 +142,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="PropertyNames"></param>
         /// <param name="DB"></param>
         /// <returns></returns>
-        private List<string> GetTargetFields(string tableName, string[] PropertyNames,CommonDB DB)
+        private List<string> GetTargetFields(string tableName, string[] PropertyNames, CommonDB DB)
         {
             //有可能目标库的字段数量跟实体类定义的不一致，需要先到目标库查询有哪些实际的字段
             DataSet dsTemp = DB.ExecuteDataSetSchema("select * from " + tableName, CommandType.Text, null);
@@ -149,7 +177,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="entityList">同一实体类集合</param>
         /// <param name="DB">数据访问对象实例</param>
         /// <returns>操作受影响的行数</returns>
-        private  int ImportDataInner(List<EntityBase> entityList, CommonDB DB)
+        private int ImportDataInner(List<EntityBase> entityList, CommonDB DB)
         {
             //必须保证集合中的元素都是同一个类型
             if (entityList == null || entityList.Count == 0)
@@ -163,7 +191,7 @@ namespace PWMIS.DataMap.Entity
                 throw new Exception("EntityQuery Error:实体类属性字段数量为0");
 
             string tableName = entity.TableName;
-            for (int i =1; i < entityList.Count; i++)
+            for (int i = 1; i < entityList.Count; i++)
             {
                 if (entityList[0].TableName != tableName)
                     throw new Exception("当前实体类集合的元素类型不一致，对应的表是：" + entityList[0].TableName);
@@ -190,7 +218,7 @@ namespace PWMIS.DataMap.Entity
             ////构造Insert语句
             //string sql_insert = "INSERT INTO " + entity.TableName;
             //string fields = "";
-          
+
             //IDataParameter[] paras_insert = new IDataParameter[fieldCount];
             //index = 0;
 
@@ -212,7 +240,7 @@ namespace PWMIS.DataMap.Entity
 
             EntityCommand ec = new EntityCommand(entity, DB);
             ec.IdentityEnable = true;//导入数据，不考虑自增列问题
-            ec.TargetFields = GetTargetFields(tableName, entity.PropertyNames, DB).ToArray ();
+            ec.TargetFields = GetTargetFields(tableName, entity.PropertyNames, DB).ToArray();
 
             string sql_delte = ec.DeleteCommand;
             IDataParameter[] paras_delete = ec.DeleteParameters;
@@ -225,11 +253,11 @@ namespace PWMIS.DataMap.Entity
             int count = 0;
 
             foreach (EntityBase item in entityList)
-            { 
+            {
                 //执行删除
                 foreach (IDataParameter para in paras_delete)
                 {
-                    para.Value = item.PropertyList(para.SourceColumn );
+                    para.Value = item.PropertyList(para.SourceColumn);
                 }
                 count += DB.ExecuteNonQuery(sql_delte, CommandType.Text, paras_delete);
                 //执行插入
@@ -242,8 +270,8 @@ namespace PWMIS.DataMap.Entity
                 }
                 count += DB.ExecuteNonQuery(sql_insert, CommandType.Text, paras_insert);
             }
-            
-            return count ;
+
+            return count;
         }
 
         private int DeleteDataInner(List<EntityBase> entityList, CommonDB DB)
@@ -267,7 +295,7 @@ namespace PWMIS.DataMap.Entity
             }
             //先将主键对应的记录删除，再插入
             #region 构造查询语句
-            
+
 
             EntityCommand ec = new EntityCommand(entity, DB);
             ec.IdentityEnable = true;//导入数据，不考虑自增列问题
@@ -288,7 +316,7 @@ namespace PWMIS.DataMap.Entity
                     para.Value = item.PropertyList(para.SourceColumn);
                 }
                 count += DB.ExecuteNonQuery(sql_delte, CommandType.Text, paras_delete);
-                
+
             }
 
             return count;
@@ -338,12 +366,12 @@ namespace PWMIS.DataMap.Entity
             //    index++;
             //}
 
-           
+
             //sql = sql + values.TrimStart(',') + " WHERE " + condition.Substring(" AND ".Length);
 
             EntityCommand ec = new EntityCommand(entity, DB);
-            ec.TargetFields = GetTargetFields(entity.TableName , entity.PropertyNames, DB).ToArray();
-            
+            ec.TargetFields = GetTargetFields(entity.TableName, entity.PropertyNames, DB).ToArray();
+
             int all_count = 0;
             int updateCount = 0;
             int insertCount = 0;
@@ -394,29 +422,29 @@ namespace PWMIS.DataMap.Entity
             {
                 foreach (string field in ec.TargetFields)
                 {
-                    string paraName =DB.GetParameterChar + field.Replace(" ", "");
+                    string paraName = DB.GetParameterChar + field.Replace(" ", "");
                     ((IDataParameter)insertCmd.Parameters[paraName]).Value = item.PropertyList(field);
                     ((IDataParameter)updateCmd.Parameters[paraName]).Value = item.PropertyList(field);
                 }
                 //先做一部分修改，如果不成功就插入
                 //直接使用Command对象的 ExecuteNonQuery ，加快处理速度
-                int count = updateCmd.ExecuteNonQuery ();
+                int count = updateCmd.ExecuteNonQuery();
                 if (count <= 0)
-                    insertCount += insertCmd.ExecuteNonQuery ();
+                    insertCount += insertCmd.ExecuteNonQuery();
                 else
                     updateCount += count;
             }
-           
-           
+
+
 
 #endif
-            all_count = insertCount + updateCount * (entityList.Count +1);
+            all_count = insertCount + updateCount * (entityList.Count + 1);
             /* 更新或者修改计算方式
              * x + y * (C+1)=Z;{c=List Count;}
              * x + y = C;
              *   => y-y * (C+1)=C-Z => y(1-C-1)=C-Z => y * -C =C-Z => y= (C-Z) / -C 
              * 在本例中，y=update,x=insert
-             */ 
+             */
             return all_count;
         }
 
@@ -428,14 +456,14 @@ namespace PWMIS.DataMap.Entity
         /// <param name="insertCount">插入的条数</param>
         /// <param name="updateCount">修改的条数</param>
         /// <returns></returns>
-        public bool ParseInsertOrUpdateCount(int allCount,int listCount,out int insertCount,out int updateCount)
+        public bool ParseInsertOrUpdateCount(int allCount, int listCount, out int insertCount, out int updateCount)
         {
             insertCount = 0;
             updateCount = 0;
-            if (allCount < listCount || listCount<=0)
+            if (allCount < listCount || listCount <= 0)
                 return false;
 
-            updateCount = (listCount - allCount) /  - listCount;
+            updateCount = (listCount - allCount) / -listCount;
             insertCount = listCount - updateCount;
             return true;
         }
@@ -547,11 +575,11 @@ namespace PWMIS.DataMap.Entity
         /// <param name="sql"></param>
         /// <param name="paraName"></param>
         /// <returns></returns>
-        private static string FindFieldNameInSql(string sql,string paraName)
+        private static string FindFieldNameInSql(string sql, string paraName)
         {
             if (!paraName.StartsWith("@"))
                 paraName = "@" + paraName;
-            string whereTempStr = sql.Substring(sql.IndexOf("Where",StringComparison.OrdinalIgnoreCase) + 5).Trim();
+            string whereTempStr = sql.Substring(sql.IndexOf("Where", StringComparison.OrdinalIgnoreCase) + 5).Trim();
             string fildTempStr = whereTempStr.Substring(0, whereTempStr.IndexOf(paraName));
             int a = fildTempStr.LastIndexOf('[');
             int b = fildTempStr.LastIndexOf(']');
@@ -567,23 +595,25 @@ namespace PWMIS.DataMap.Entity
         /// <param name="factEntityType">实体类类型</param>
         /// <param name="single">是否只查询一条记录</param>
         /// <returns>DataReader</returns>
-        public static IDataReader ExecuteDataReader(OQL oql, AdoHelper db, Type factEntityType,bool single)
+        public static IDataReader ExecuteDataReader(OQL oql, AdoHelper db, Type factEntityType, bool single)
         {
             string sql = "";
-            Dictionary<string,object> Parameters=null;
+            Dictionary<string, object> Parameters = null;
             //处理用户查询映射的实体类
             if (oql.EntityMap == PWMIS.Common.EntityMapType.SqlMap)
             {
                 if (CommonUtil.CacheEntityMapSql == null)
                     CommonUtil.CacheEntityMapSql = new Dictionary<string, string>();
-                if (CommonUtil.CacheEntityMapSql.ContainsKey(oql.sql_table))
-                    sql = CommonUtil.CacheEntityMapSql[oql.sql_table];
-                else
+                if (!CommonUtil.CacheEntityMapSql.ContainsKey(oql.sql_table))
                 {
-                    sql = oql.GetMapSQL(GetMapSql(factEntityType));
-                    CommonUtil.CacheEntityMapSql.Add(oql.sql_table, sql);
+                    string tempView = GetMapSql(factEntityType);
+                    CommonUtil.CacheEntityMapSql.Add(oql.sql_table, tempView);
                 }
-                Parameters = oql.InitParameters;
+                sql = oql.GetMapSQL(CommonUtil.CacheEntityMapSql[oql.sql_table]);
+
+
+                //如果用户本身没有初始化参数对象，则这里声明一个 edit at 2012.11.16
+                Parameters = oql.InitParameters ?? new Dictionary<string, object>();
                 if (oql.Parameters != null && oql.Parameters.Count > 0)
                 {
                     foreach (string name in oql.Parameters.Keys)
@@ -593,7 +623,8 @@ namespace PWMIS.DataMap.Entity
                 }
 
             }
-            else if (oql.EntityMap == PWMIS.Common.EntityMapType.StoredProcedure) {
+            else if (oql.EntityMap == PWMIS.Common.EntityMapType.StoredProcedure)
+            {
                 string script = "";
                 if (CommonUtil.CacheEntityMapSql == null)
                     CommonUtil.CacheEntityMapSql = new Dictionary<string, string>();
@@ -609,7 +640,7 @@ namespace PWMIS.DataMap.Entity
                 SqlMap.SqlMapper mapper = new PWMIS.DataMap.SqlMap.SqlMapper();
                 mapper.DataBase = db;
                 //解析存储过程名称
-                sql = mapper.FindWords( mapper.GetScriptInfo(script),0,255); //由于是存储过程，需要特殊处理，调用 FindWords方法
+                sql = mapper.FindWords(mapper.GetScriptInfo(script), 0, 255); //由于是存储过程，需要特殊处理，调用 FindWords方法
                 //解析参数
                 IDataParameter[] paras = mapper.GetParameters(script);
                 if (oql.InitParameters != null && oql.InitParameters.Count > 0)
@@ -630,7 +661,7 @@ namespace PWMIS.DataMap.Entity
                     {
                         throw ex;
                     }
-                   
+
                 }
                 else
                 {
@@ -650,14 +681,14 @@ namespace PWMIS.DataMap.Entity
             if (oql.PageEnable && !single)
             {
                 switch (db.CurrentDBMSType)
-                { 
+                {
                     case PWMIS.Common.DBMSType.Access:
                     case PWMIS.Common.DBMSType.SqlServer:
                     case PWMIS.Common.DBMSType.SqlServerCe:
                         //如果含有Order By 子句，则不能使用主键分页
                         if (oql.HaveJoinOpt || sql.IndexOf("order by", StringComparison.OrdinalIgnoreCase) > 0)
                         {
-                            sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.SqlServer, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount );
+                            sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.SqlServer, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
                         }
                         else
                         {
@@ -677,12 +708,12 @@ namespace PWMIS.DataMap.Entity
                     //case PWMIS.Common.DBMSType.PostgreSQL:
                     //    sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.PostgreSQL, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
                     //    break;
-                    default :
+                    default:
                         sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(db.CurrentDBMSType, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
                         break;
 
                 }
-               
+
             }
 
             IDataReader reader = null;
@@ -704,7 +735,7 @@ namespace PWMIS.DataMap.Entity
                     index++;
                 }
                 if (single)
-                    reader = db.ExecuteDataReaderWithSingleRow(sql,paras );
+                    reader = db.ExecuteDataReaderWithSingleRow(sql, paras);
                 else
                     reader = db.ExecuteDataReader(sql, CommandType.Text, paras);
             }
@@ -727,7 +758,7 @@ namespace PWMIS.DataMap.Entity
         {
             string typeFullName = entityType.FullName;
             string[] arrTemp = new string[2];
-           
+
             int at = typeFullName.LastIndexOf('.');
             if (at > 0)
             {
@@ -760,7 +791,7 @@ namespace PWMIS.DataMap.Entity
                 return SqlText.InnerText;
             }
             return "";
-            
+
         }
 
         ///// <summary>
@@ -770,7 +801,7 @@ namespace PWMIS.DataMap.Entity
         ///// <returns>映射的SQL语句</returns>
         //public static string GetMapSql(string fullName)
         //{
-            
+
         //}
 
         /// <summary>
@@ -798,7 +829,7 @@ namespace PWMIS.DataMap.Entity
             {
                 return db.ExecuteScalar(oql.ToString());
             }
-           
+
         }
 
         /// <summary>

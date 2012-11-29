@@ -62,7 +62,9 @@
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="Setup\CreateAppTables.aspx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuyGoodsOK.aspx.cs">
@@ -345,7 +347,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>10187</DevelopmentServerPort>
+          <DevelopmentServerPort>10720</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>
