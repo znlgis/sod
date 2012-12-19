@@ -11,6 +11,9 @@
  * 
  * 修改者：         时间：2010-07-12                
  * 修改说明：改进对象操作数据的线程安全性
+ * 
+ * 修改者：         时间：2012-12-20                
+ * 修改说明：更新数据的时候，Access 参数顺序问题（感谢网友THIRDEYE 发现的问题）
  * ========================================================================
 */
 
@@ -183,8 +186,8 @@ namespace PWMIS.DataMap.Entity
         /// 默认构造函数
         /// </summary>
         public EntityQuery()
-        { 
-        
+        {
+
         }
 
         /// <summary>
@@ -202,25 +205,28 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         public static EntityQuery<T> Instance
         {
-            get {
+            get
+            {
                 if (_instance == null)
                     _instance = new EntityQuery<T>();
                 return _instance;
             }
         }
 
-        private  AdoHelper _DefaultDataBase;
+        private AdoHelper _DefaultDataBase;
         /// <summary>
         /// 获取或者设置默认的数据库操作对象，如果未设置将采用默认的配置进行实例化数据库操作对象
         /// </summary>
-        public  AdoHelper DefaultDataBase
+        public AdoHelper DefaultDataBase
         {
-            get {
+            get
+            {
                 if (_DefaultDataBase == null)
-                    _DefaultDataBase = MyDB .Instance ;
+                    _DefaultDataBase = MyDB.Instance;
                 return _DefaultDataBase;
             }
-            set {
+            set
+            {
                 _DefaultDataBase = value;
             }
         }
@@ -241,7 +247,7 @@ namespace PWMIS.DataMap.Entity
             string condition = "";
             int index = 0;
 
-           
+
             foreach (string key in entity.PrimaryKeys)
             {
                 string paraName = DefaultDataBase.GetParameterChar + "P" + index.ToString();
@@ -251,10 +257,10 @@ namespace PWMIS.DataMap.Entity
             }
 
             sql = sql + " FROM [" + entity.TableName + "] WHERE " + condition.Substring(" AND ".Length);
-            object obj= DefaultDataBase.ExecuteScalar(sql, CommandType.Text, paras);
+            object obj = DefaultDataBase.ExecuteScalar(sql, CommandType.Text, paras);
             int count = Convert.ToInt32(obj);
-           
-            return count >0;
+
+            return count > 0;
         }
 
         /// <summary>
@@ -262,13 +268,13 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="entity">实体对象实例，必须为主键字段属性设置值</param>
         /// <returns>返回填充是否成功</returns>
-        public  bool FillEntity(T entity)
+        public bool FillEntity(T entity)
         {
             if (entity.PrimaryKeys.Count == 0)
                 throw new Exception("EntityQuery Error:当前实体类未指定主键字段");
             if (entity.PropertyNames == null)
                 throw new Exception("EntityQuery Error:当前实体类属性字段未初始化");
-            int fieldCount = entity.PropertyNames.Length  ;
+            int fieldCount = entity.PropertyNames.Length;
             if (fieldCount == 0)
                 throw new Exception("EntityQuery Error:实体类属性字段数量为0");
             IDataParameter[] paras = new IDataParameter[entity.PrimaryKeys.Count];
@@ -334,7 +340,7 @@ namespace PWMIS.DataMap.Entity
 
                         int fcount = reader.FieldCount;
                         //string[] names =fields.TrimStart(',').Split (',');//  new string[fcount];
-                        
+
                         //for (int i = 0; i < fcount; i++)
                         //    names[i] = reader.GetName(i);
 
@@ -502,7 +508,7 @@ namespace PWMIS.DataMap.Entity
                 }
                 sql = sql.ToUpper();
                 int whereIndex = sql.IndexOf(" WHERE", System.StringComparison.Ordinal);
-                
+
                 condition = string.IsNullOrEmpty(condition) ? "" : condition.Substring(" AND ".Length) + " AND";
                 sql = sql.Substring(0, whereIndex + 6) + condition
                     + sql.Substring(whereIndex + 6);
@@ -550,7 +556,7 @@ namespace PWMIS.DataMap.Entity
         /// <returns>返回填充是否成功</returns>
         public static bool Fill(T entity)
         {
-            return EntityQuery<T>.Instance.FillEntity(entity); 
+            return EntityQuery<T>.Instance.FillEntity(entity);
         }
 
         /// <summary>
@@ -574,7 +580,7 @@ namespace PWMIS.DataMap.Entity
         {
             return QueryObject(oql, MyDB.Instance);
         }
-       
+
         /// <summary>
         /// 根据实体查询表达式对象，查询符合条件的一个实体对象。如果数据访问对象未在事务中，方法执行完后将自动关闭数据库连接。
         /// </summary>
@@ -621,7 +627,7 @@ namespace PWMIS.DataMap.Entity
                 {
                     int fcount = reader.FieldCount;
                     string[] names = new string[fcount];
-                   
+
                     for (int i = 0; i < fcount; i++)
                         names[i] = reader.GetName(i);
 
@@ -649,7 +655,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="oql">实体对象查询表达式</param>
         /// <returns></returns>
-        public static  List<T> QueryList(OQL oql)
+        public static List<T> QueryList(OQL oql)
         {
             return QueryList(oql, MyDB.Instance);
         }
@@ -660,7 +666,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="oql">实体查询表达式对象</param>
         /// <param name="db">数据库操作对象</param>
         /// <returns>实体对象集合</returns>
-        public static  List<T> QueryList(OQL oql,AdoHelper db)
+        public static List<T> QueryList(OQL oql, AdoHelper db)
         {
             //string sql = "";
             ////处理用户查询映射的实体类
@@ -675,7 +681,7 @@ namespace PWMIS.DataMap.Entity
             //        sql = oql.GetMapSQL(GetMapSql(oql.sql_table, typeof(T)));
             //        CommonUtil.CacheEntityMapSql.Add(oql.sql_table, sql);
             //    }
-            
+
             //}
             //else
             //    sql = oql.ToString();
@@ -727,15 +733,15 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="entityType">根据当前实体类所在程序集，获取其中的嵌入式EntityMapSql 文件</param>
         /// <returns>映射的SQL语句</returns>
-        public static  string GetMapSql(Type entityType)
+        public static string GetMapSql(Type entityType)
         {
             //string[] arrTemp=fullName .Split ('.');
             //if (arrTemp.Length != 2)
             //    throw new Exception("EntityMapSql的全名称格式错误，正确的格式应该： 名称空间名字.SQL名字");
-         
+
             //string resourceName = "EntitySqlMap.config";
             //string xmlConfig=   CommonUtil.GetAssemblyResource(entityType, resourceName);
-           
+
             //XmlDocument doc = new XmlDocument();
             //doc.LoadXml(xmlConfig);
             //XmlNode SqlText = default(XmlNode);
@@ -811,37 +817,37 @@ namespace PWMIS.DataMap.Entity
         {
             AdoHelper db = MyDB.Instance;
             T entity = new T();
-            string sql = "SELECT " + string.Join(",", CommonUtil.PrepareSqlFields(entity.PropertyNames)) + " FROM [" + entity.TableName +"]";
+            string sql = "SELECT " + string.Join(",", CommonUtil.PrepareSqlFields(entity.PropertyNames)) + " FROM [" + entity.TableName + "]";
             IDataReader reader = db.ExecuteDataReader(sql);
             List<T> list = new List<T>();
             using (reader)
             {
-                int fcount = entity.PropertyNames.Length ;
+                int fcount = entity.PropertyNames.Length;
                 while (reader.Read())
                 {
-                    object[] values =  new object[fcount];
+                    object[] values = new object[fcount];
                     reader.GetValues(values);
 
                     T t = new T();
                     t.PropertyNames = entity.PropertyNames;
                     t.PropertyValues = values;
 
-                    if(condition(t)) //根据条件过滤
+                    if (condition(t)) //根据条件过滤
                         list.Add(t);
                 }
             }
             return list;
         }
 
-        
+
         /// <summary>
         /// 插入一个实体对象
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public  int Insert(T entity)
+        public int Insert(T entity)
         {
-            int fieldCount = entity.PropertyNames .Length ;
+            int fieldCount = entity.PropertyNames.Length;
             if (fieldCount == 0)
                 throw new Exception("EntityQuery Error:实体类属性字段数量为0");
 
@@ -858,7 +864,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="entityList">实体对象集合</param>
         /// <returns>受影响的行数</returns>
-        public  int Insert(List<T> entityList )
+        public int Insert(List<T> entityList)
         {
             int count = 0;
             if (entityList.Count > 0)
@@ -887,17 +893,17 @@ namespace PWMIS.DataMap.Entity
             }
             return count;
         }
-       
+
 
         /// <summary>
         /// 修改一个实体对象
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public  int Update(T entity)
+        public int Update(T entity)
         {
             //T temp = new T();
-            
+
             //List<string> list = new List<string>();
             //foreach (string key in entity.PropertyList.Keys)
             //{ 
@@ -919,7 +925,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="entityList">实体类集合</param>
         /// <returns>受影响的行数</returns>
-        public  int Update(List<T> entityList)
+        public int Update(List<T> entityList)
         {
             T temp = new T();
             //List<string> list = new List<string>();
@@ -952,13 +958,13 @@ namespace PWMIS.DataMap.Entity
             return count;
         }
 
-       /// <summary>
+        /// <summary>
         /// 从数据库删除实体对象对应的记录
-       /// </summary>
-       /// <param name="entity"></param>
-       /// <param name="DB">数据访问对象实例</param>
-       /// <returns></returns>
-        private  static int DeleteInnerByDB(T entity, CommonDB DB)
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="DB">数据访问对象实例</param>
+        /// <returns></returns>
+        private static int DeleteInnerByDB(T entity, CommonDB DB)
         {
             if (entity.PrimaryKeys.Count == 0)
                 throw new Exception("EntityQuery Error:当前实体类未指定主键字段");
@@ -993,7 +999,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="entity">实体对象</param>
         /// <returns></returns>
-        public  int Delete(T entity)
+        public int Delete(T entity)
         {
             return DeleteInnerByDB(entity, DefaultDataBase);
         }
@@ -1003,7 +1009,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="entityList">实体类集合</param>
         /// <returns>受影响的行数</returns>
-        public  int Delete(List<T> entityList)
+        public int Delete(List<T> entityList)
         {
             int count = 0;
             AdoHelper db = DefaultDataBase;
@@ -1030,7 +1036,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="oql">实体查询表达式</param>
         /// <returns>受影响的行数</returns>
-        public  int ExecuteOql(OQL oql)
+        public int ExecuteOql(OQL oql)
         {
             //string sql = oql.ToString();
 
@@ -1059,7 +1065,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="oql"></param>
         /// <param name="db"></param>
         /// <returns></returns>
-        public static int ExecuteOql(OQL oql,AdoHelper db)
+        public static int ExecuteOql(OQL oql, AdoHelper db)
         {
             string sql = oql.ToString();
 
@@ -1091,7 +1097,7 @@ namespace PWMIS.DataMap.Entity
             //CommonDB DB = MyDB.GetDBHelper();
 
 
-            string sql = "INSERT INTO [" + entity.TableName+"]";
+            string sql = "INSERT INTO [" + entity.TableName + "]";
             string fields = "";
             string values = "";
             int index = 0;
@@ -1100,16 +1106,16 @@ namespace PWMIS.DataMap.Entity
             {
                 if (entity.IdentityName != field)
                 {
-                    fields += ",[" + field+"]";
+                    fields += ",[" + field + "]";
                     string paraName = DB.GetParameterChar + "P" + index.ToString();
                     values += "," + paraName;
                     paras[index] = DB.GetParameter(paraName, entity.PropertyList(field));
                     //为字符串类型的参数指定长度 edit at 2012.4.23
-                    if( paras[index].Value!=null && paras[index].Value.GetType()==typeof(string))
+                    if (paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
                     {
                         ((IDbDataParameter)paras[index]).Size = entity.GetStringFieldSize(field);
                     }
-                    
+
                     index++;
                 }
             }
@@ -1153,22 +1159,35 @@ namespace PWMIS.DataMap.Entity
             string condition = "";
             int index = 0;
 
-
+            //为解决Access问题，必须确保参数的顺序，故对条件参数的处理分开2次循环
+            List<string> pkFields = new List<string>();
+            //先处理更新的字段
             foreach (string field in objFields)
             {
-                string paraName =DB.GetParameterChar + "P" + index.ToString();
                 if (entity.PrimaryKeys.Contains(field))
                 {
-                    //当前字段为主键，不能被更新
-                    condition += " AND [" + field + "]=" + paraName;
-                    paras[index] = DB.GetParameter(paraName, entity.PropertyList(field));
+                    pkFields.Add(field);
+                    continue;
                 }
-                else
-                {
-                    values += ",[" + field + "]=" + paraName;
-                    paras[index] = DB.GetParameter(paraName, entity.PropertyList(field));
+                string paraName = DB.GetParameterChar + "P" + index.ToString();
+                values += ",[" + field + "]=" + paraName;
+                paras[index] = DB.GetParameter(paraName, entity.PropertyList(field));
 
+                //为字符串类型的参数指定长度 edit at 2012.4.23
+                if (paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
+                {
+                    ((IDbDataParameter)paras[index]).Size = entity.GetStringFieldSize(field);
                 }
+                index++;
+            }
+            //再处理条件
+            foreach (string field in pkFields)
+            {
+                string paraName = DB.GetParameterChar + "P" + index.ToString();
+                //当前字段为主键，不能被更新
+                condition += " AND [" + field + "]=" + paraName;
+                paras[index] = DB.GetParameter(paraName, entity.PropertyList(field));
+
                 //为字符串类型的参数指定长度 edit at 2012.4.23
                 if (paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
                 {
@@ -1197,7 +1216,7 @@ namespace PWMIS.DataMap.Entity
         }
 
 
-       
+
 
 
         #endregion
@@ -1205,7 +1224,7 @@ namespace PWMIS.DataMap.Entity
         #region 实体操作实例方法
 
         private T currEntity;
-        private bool isNew=false;//当前实体是否是一个新实体（对应数据库而言）
+        private bool isNew = false;//当前实体是否是一个新实体（对应数据库而言）
         private List<string> changedFields = new List<string>();
         private List<string> selectFields = new List<string>();
 
@@ -1215,18 +1234,18 @@ namespace PWMIS.DataMap.Entity
         /// <param name="entity">实体类</param>
         public EntityQuery(T entity)
         {
-            isNew =! ExistsEntity (entity);//已经存在，说明实体是旧的
+            isNew = !ExistsEntity(entity);//已经存在，说明实体是旧的
             init(entity);
         }
 
-      
+
 
         /// <summary>
         /// 使用一个实体类初始化本类，并指明该实体类持久化时新增还是修改
         /// </summary>
         /// <param name="entity">实体类</param>
         /// <param name="newEntity">是否是新实体</param>
-        public EntityQuery(T entity,bool newEntity)
+        public EntityQuery(T entity, bool newEntity)
         {
             isNew = newEntity;
             init(entity);
@@ -1256,7 +1275,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="fields">实体类属性值列表</param>
         /// <returns>操作数据库影响的行数</returns>
-        public int Save(params object [] fields)
+        public int Save(params object[] fields)
         {
             return Save(DefaultDataBase, fields);
         }
@@ -1352,7 +1371,7 @@ namespace PWMIS.DataMap.Entity
             //}
 
 
-            return UpdateInner(entity, entity.PropertyChangedList , db);
+            return UpdateInner(entity, entity.PropertyChangedList, db);
         }
 
 
@@ -1373,15 +1392,15 @@ namespace PWMIS.DataMap.Entity
             //foreach (string key in entity.PropertyList.Keys)
             //    list.Add(key);
 
-            return InsertInner(entity, entity.PropertyChangedList , db);
+            return InsertInner(entity, entity.PropertyChangedList, db);
         }
 
 
 
-        
+
         #endregion
 
     }
 
-    
+
 }
