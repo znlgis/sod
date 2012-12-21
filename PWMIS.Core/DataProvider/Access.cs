@@ -42,7 +42,7 @@ namespace PWMIS.DataProvider.Data
             get
             {
                 if (string.IsNullOrEmpty(_insertKey))
-                    return "@@IDENTITY";
+                    return "SELECT @@IDENTITY";
                 else
                     return _insertKey;
             }
