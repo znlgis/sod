@@ -24,6 +24,9 @@
  *           
  *  * 修改者：         时间：2012-10-25                
  * 修改说明：OQLCompare 对象执行比较的时候，支持SQL函数格式串。
+ * 
+ *  * 修改者：         时间：2012-12-26                
+ * 修改说明：OQL 相关对象实现IDisposable，避免在MVVM应用中可能的内存泄漏问题。
  * ========================================================================
 */
 using System;
@@ -37,7 +40,7 @@ namespace PWMIS.DataMap.Entity
     /// <summary>
     /// 实体对象查询表达式
     /// </summary>
-    public class OQL
+    public class OQL : IDisposable
     {
         private OQL1 oql1;
         private PWMIS.Common.EntityMapType _mapType;
@@ -538,12 +541,21 @@ namespace PWMIS.DataMap.Entity
             return sql;
         }
 
+        /// <summary>
+        /// 释放资源，取消事件订阅
+        /// </summary>
+        public void Dispose()
+        {
+            this.currEntity.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(currEntity_PropertyGetting);
+            this.oql1.Dispose();
+            //System.Diagnostics.Debug.WriteLine("dispose in oql");
+        }
     }
 
     /// <summary>
     /// 基本表达式
     /// </summary>
-    public class OQL1
+    public class OQL1 : IDisposable
     {
         /// <summary>
         /// 基本表达式中的当前实体对象
@@ -645,6 +657,7 @@ namespace PWMIS.DataMap.Entity
 
             useWhereMethod = true;
             //this.CurrEntity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
+            c.Dispose();
             return this;
         }
 
@@ -660,6 +673,7 @@ namespace PWMIS.DataMap.Entity
 
             useWhereMethod = true;
             //this.CurrEntity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
+            compare.Dispose();
             return this;
         }
 
@@ -921,12 +935,18 @@ namespace PWMIS.DataMap.Entity
             get { return this.CurrOQL; }
         }
 
+
+        public void Dispose()
+        {
+            this.CurrEntity.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
+            //System.Diagnostics.Debug.WriteLine("dispose in oql1");
+        }
     }
 
     /// <summary>
     /// 条件表达式
     /// </summary>
-    public class OQL2
+    public class OQL2 : IDisposable
     {
         private EntityBase CurrEntity;
         private Dictionary<string, object> paras = new Dictionary<string, object>();
@@ -1227,13 +1247,19 @@ namespace PWMIS.DataMap.Entity
             }
         }
 
+
+        public void Dispose()
+        {
+            this.CurrEntity.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
+            //System.Diagnostics.Debug.WriteLine("dispose in oql2");
+        }
     }
 
 
     /// <summary>
     /// 实体对象条件比较类，用于复杂条件比较表达式
     /// </summary>
-    public class OQLCompare
+    public class OQLCompare : IDisposable
     {
         private EntityBase CurrEntity;
         private List<EntityBase> joinedEntityList;
@@ -1607,6 +1633,7 @@ namespace PWMIS.DataMap.Entity
 
                 cmp.CompareString = compareFieldString + GetDbCompareTypeStr(type) + paraName;
             }
+            this.Dispose();
             return cmp;
         }
 
@@ -1714,6 +1741,7 @@ namespace PWMIS.DataMap.Entity
                 cmp.compareValueList.Add(paraName.Substring(1), Value);
                 cmp.CompareString = compareFieldString + " " + compareTypeString + " " + paraName;
             }
+            this.Dispose();
             return cmp;
         }
 
@@ -1897,6 +1925,13 @@ namespace PWMIS.DataMap.Entity
             return compare;
         }
 
+
+        public void Dispose()
+        {
+            if(this.CurrEntity!=null)
+                this.CurrEntity.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
+            //System.Diagnostics.Debug.WriteLine("dispose in OQLCompare.");
+        }
     }
 
     public class JoinEntity
