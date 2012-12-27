@@ -26,7 +26,7 @@
  * 修改说明：OQLCompare 对象执行比较的时候，支持SQL函数格式串。
  * 
  *  * 修改者：         时间：2012-12-26                
- * 修改说明：OQL 相关对象实现IDisposable，避免在MVVM应用中可能的内存泄漏问题。
+ * 修改说明：OQL 相关对象实现IDisposable接口，避免OQL对象使用了具有长生命周期的实体类导致可能的内存泄漏问题。
  * ========================================================================
 */
 using System;
@@ -542,7 +542,8 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 释放资源，取消事件订阅
+        /// 释放资源，取消事件订阅。
+        /// 注意，如果OQL构造函数使用的实体类对象是一个不会释放的对象（长生命周期），那么请使用using语句块或者手动调用本方法。
         /// </summary>
         public void Dispose()
         {
@@ -1633,7 +1634,7 @@ namespace PWMIS.DataMap.Entity
 
                 cmp.CompareString = compareFieldString + GetDbCompareTypeStr(type) + paraName;
             }
-            this.Dispose();
+            //this.Dispose(); //不能调用此方法，因为当前对象还可能继续使用，进行复杂的组合，需要用户手工调用
             return cmp;
         }
 
@@ -1741,7 +1742,7 @@ namespace PWMIS.DataMap.Entity
                 cmp.compareValueList.Add(paraName.Substring(1), Value);
                 cmp.CompareString = compareFieldString + " " + compareTypeString + " " + paraName;
             }
-            this.Dispose();
+            //this.Dispose(); //不能调用此方法，因为当前对象还可能继续使用，进行复杂的组合，需要用户手工调用
             return cmp;
         }
 
@@ -1925,7 +1926,10 @@ namespace PWMIS.DataMap.Entity
             return compare;
         }
 
-
+        /// <summary>
+        /// 释放资源，取消事件订阅。
+        /// 注意，如果OQLCompare构造函数使用的实体类对象是一个不会释放的对象（长生命周期），那么请使用using语句块或者手动调用本方法。
+        /// </summary>
         public void Dispose()
         {
             if(this.CurrEntity!=null)
