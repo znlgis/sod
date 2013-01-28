@@ -8,6 +8,21 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCS.DomainModel", "PCS.DomainModel\PCS.DomainModel.csproj", "{A7063044-E1F3-4557-B485-CE010E81C075}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ModelingProject\\ModelingProject.modelproj
+		SccProjectName1 = ModelingProject
+		SccLocalPath1 = ModelingProject
+		SccProjectUniqueName2 = ModelingProjectLib\\ModelingProjectLib.csproj
+		SccProjectName2 = ModelingProjectLib
+		SccLocalPath2 = ModelingProjectLib
+		SccProjectUniqueName3 = PCS.DomainModel\\PCS.DomainModel.csproj
+		SccProjectName3 = PCS.DomainModel
+		SccLocalPath3 = PCS.DomainModel
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

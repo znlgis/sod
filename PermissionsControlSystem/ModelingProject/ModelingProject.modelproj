@@ -8,6 +8,10 @@
     <ArchitectureToolsVersion>1.0.0.0</ArchitectureToolsVersion>
     <Name>ModelingProject</Name>
     <RootNamespace>ModelingProject</RootNamespace>
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\Debug\</OutputPath>
