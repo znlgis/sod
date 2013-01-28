@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F088123C-0E9E-452A-89E6-6BA2F21D5CAC}") = "ModelingProject", "ModelingProject\ModelingProject.modelproj", "{794DD203-5506-49C7-8B26-6B5A94E3D61C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModelingProjectLib", "ModelingProjectLib\ModelingProjectLib.csproj", "{12CDBFC6-A83B-47BF-8BAF-DC749C21E9CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PCS.DomainModel", "PCS.DomainModel\PCS.DomainModel.csproj", "{A7063044-E1F3-4557-B485-CE010E81C075}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{794DD203-5506-49C7-8B26-6B5A94E3D61C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{794DD203-5506-49C7-8B26-6B5A94E3D61C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{794DD203-5506-49C7-8B26-6B5A94E3D61C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{794DD203-5506-49C7-8B26-6B5A94E3D61C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{12CDBFC6-A83B-47BF-8BAF-DC749C21E9CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12CDBFC6-A83B-47BF-8BAF-DC749C21E9CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12CDBFC6-A83B-47BF-8BAF-DC749C21E9CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12CDBFC6-A83B-47BF-8BAF-DC749C21E9CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7063044-E1F3-4557-B485-CE010E81C075}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7063044-E1F3-4557-B485-CE010E81C075}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7063044-E1F3-4557-B485-CE010E81C075}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7063044-E1F3-4557-B485-CE010E81C075}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

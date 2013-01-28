@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<useCaseModelRoot xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm10="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" dslVersion="1.0.0.0" Id="d4cdbd1e-02f2-449c-b181-93cccfd27e82" name="UMLUseCaseDiagram2" linkedPackageId="f4cd36eb-b57a-4fe2-ba4a-f640fc3f019f" xmlns="http://schemas.microsoft.com/dsltools/UseCaseModel">
+  <ownedCommentsInternal>
+    <comment Id="5fe6de7d-c1bd-4adb-b183-63ea189b4569">
+      <elementDefinition Id="b8699dcf-722e-43eb-9de9-da08068d982d" />
+      <body>文件、文件夹是资源的实例</body>
+    </comment>
+    <comment Id="a8f9dbe2-7c0a-4d1b-9241-4acdd3d989e4">
+      <elementDefinition Id="a140f9fc-9927-4272-8566-9a09dc42a913" />
+      <body>文件的创建、读取、修改、删除是文件系统资源固有的操作</body>
+    </comment>
+  </ownedCommentsInternal>
+  <appliedStereotypesInternal>
+    <stereotypeInstance Id="b4e13ee7-c902-4213-b790-469941e72af4" name="namespace" profile="CSharpProfile">
+      <elementDefinition Id="e7ea9907-44ca-4b4d-a088-8ed9cfc0a843" />
+      <propertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="83e11eee-95f8-40e9-9c0f-3f426df48f7d">
+          <propertyInstance Id="e0dfd49c-89fd-452f-9e46-a404e1d9e5f2" name="BaseName">
+            <elementDefinition Id="fd273941-d940-4cab-ab98-897422e1c98e" />
+          </propertyInstance>
+          <elementDefinition Id="89022399-036f-4fcc-9804-0b39c42f478e" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="2a481019-0ce1-4494-92cd-fceec20f27c3">
+          <propertyInstance Id="4e71ffec-b424-4c88-8ebd-137b88c4376c" name="ClrAttributes">
+            <elementDefinition Id="e63cf4ae-6fb4-4870-ba0a-4e6e8d825bc1" />
+          </propertyInstance>
+          <elementDefinition Id="57cb2858-21be-4d56-809f-b8d70f78e72e" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="82813d4c-e5fb-44e1-b0f6-1c66e63c630b">
+          <propertyInstance Id="d50bd5a9-4883-4bba-914d-87e00892dba1" name="Usings">
+            <elementDefinition Id="6bba8ae3-a930-40f4-bbbe-be94d5e8ce9b" />
+          </propertyInstance>
+          <elementDefinition Id="b8bfeb0b-2ac7-405c-9bc1-3a4429740cb2" />
+        </stereotypeInstanceHasPropertyInstances>
+      </propertyInstances>
+    </stereotypeInstance>
+    <stereotypeInstance Id="ec05e5a2-2148-47f4-90a4-05bc41bce937" name="TextTemplateBindings" profile="TextTemplateBindings">
+      <elementDefinition Id="a371c2c8-c003-428a-b9b4-c3dfe22ecbcc" />
+      <propertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="601606db-a6cc-49a7-866d-b9f2bff48dc2">
+          <propertyInstance Id="6d7e8b61-32bf-434e-a93b-accfaf613e4c" name="Alias" value="ClassTemplate|EnumTemplate|InterfaceTemplate|StructTemplate">
+            <elementDefinition Id="b4f366aa-b742-4ea1-9b3e-10d2ccdbe5c2" />
+          </propertyInstance>
+          <elementDefinition Id="07045091-5b43-446c-bc82-2a66b1e017f9" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="0ef7936d-d18b-4c3d-87ba-0ffe7e979774">
+          <propertyInstance Id="b71564b1-435d-456a-bc22-4267ea3cf02b" name="TemplateFilePath" value="ClassTemplate=D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\ClassTemplate.t4|EnumTemplate=D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\EnumTemplate.t4|InterfaceTemplate=D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\InterfaceTemplate.t4|StructTemplate=D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\StructTemplate.t4">
+            <elementDefinition Id="807b49ca-5778-4206-b682-85cf404a5d43" />
+          </propertyInstance>
+          <elementDefinition Id="e353b989-4457-4d33-a1e2-e4e24aecb674" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="380f65c4-47db-4342-9150-8b6f6eb567d4">
+          <propertyInstance Id="d9d473e1-14c7-4d12-b0ee-8b0acbf53554" name="ProjectPath" value="ClassTemplate=..\ModelingProjectLib\ModelingProjectLib.csproj|EnumTemplate=..\ModelingProjectLib\ModelingProjectLib.csproj|InterfaceTemplate=..\ModelingProjectLib\ModelingProjectLib.csproj|StructTemplate=..\ModelingProjectLib\ModelingProjectLib.csproj">
+            <elementDefinition Id="fd42118e-1f6e-4fbb-9ffc-29e76b5c776b" />
+          </propertyInstance>
+          <elementDefinition Id="b2b49a68-5cbd-428c-a0e3-2d18e512c068" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="8c724f72-5624-4d01-b18f-cad0203ac362">
+          <propertyInstance Id="2c2248bb-4027-4f4c-bb56-de0faf532980" name="TargetDirectory" value="ClassTemplate=GeneratedCode\{PackageStructure}|EnumTemplate=GeneratedCode\{PackageStructure}|InterfaceTemplate=GeneratedCode\{PackageStructure}|StructTemplate=GeneratedCode\{PackageStructure}">
+            <elementDefinition Id="780d7e7c-59b9-407c-83dc-b35bb10f8cf3" />
+          </propertyInstance>
+          <elementDefinition Id="9bd8f404-0bb1-436d-bc7a-d018e0bbe0f2" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="c6b121d3-90df-4e55-bc81-af568a0e65ff">
+          <propertyInstance Id="0cc2c993-f2f8-47bc-983a-31084bb8d750" name="TargetName" value="ClassTemplate={Name}|EnumTemplate={Name}|InterfaceTemplate={Name}|StructTemplate={Name}">
+            <elementDefinition Id="038f0b35-0d25-4a53-888f-f47e72d72971" />
+          </propertyInstance>
+          <elementDefinition Id="48468a88-171d-4db2-afaf-2e6d5b2a7f54" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="119bd2f2-cf4f-4e94-86fe-6b0847824951">
+          <propertyInstance Id="88e669e0-0df9-41c7-9fd7-5975e07bef7c" name="Overwrite" value="ClassTemplate=True|EnumTemplate=True|InterfaceTemplate=True|StructTemplate=True">
+            <elementDefinition Id="d26f7e2a-2bfd-4f01-8e58-6d1473178a85" />
+          </propertyInstance>
+          <elementDefinition Id="c2146124-7aa6-4dac-a3d1-0ead2d785f26" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="9bbf33f2-a3ac-490f-8e89-4661e85bf617">
+          <propertyInstance Id="9353a4f9-5da6-4551-b69f-4adbe66331d6" name="Parameters">
+            <elementDefinition Id="f699355a-484f-4cb4-939e-f6a2e3661beb" />
+          </propertyInstance>
+          <elementDefinition Id="3adbd455-1d6d-4c94-9ec6-01efc9b846b8" />
+        </stereotypeInstanceHasPropertyInstances>
+      </propertyInstances>
+    </stereotypeInstance>
+  </appliedStereotypesInternal>
+  <profileInstances>
+    <packageHasProfileInstances Id="6cdc22f0-7ca5-43d7-80d1-de7e66b3e8a9">
+      <profileInstance Id="9765b61b-56cb-46f9-bf62-0dfd113fb51b" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="b2ba8324-96c1-4c77-bc0b-c627c1ffaf05">
+      <profileInstance Id="f2692df7-bf4f-4e49-aabe-c3c708faa4b6" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="9e983c5d-985e-465a-a834-e30d87cca73d">
+      <profileInstance Id="9c0eaa12-3364-4c19-914e-8c51ed7a383c" name="CSharpProfile">
+        <elementDefinition Id="f646fbc0-1533-4aeb-85ba-7ee4fbade0ea" />
+      </profileInstance>
+      <elementDefinition Id="2cfaaf75-e4cd-41c1-ac3d-88de08b69e39" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="af07e369-ab5e-4f24-9019-1755ce1e47bb">
+      <profileInstance Id="29d25945-669a-40f6-ac92-444284ece39c" name="TextTemplateBindings">
+        <elementDefinition Id="d9c9a27d-17c3-49a5-9a86-47fe6e01ee32" />
+      </profileInstance>
+      <elementDefinition Id="27f3c88d-a59a-41cd-9a9b-eb2649ede23a" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <useCaseModelRootHasTypes>
+      <actor Id="40e2c435-7c0a-4430-b9b8-0024966fc788" name="A用户" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="aa0aaacf-34da-4b92-ba2e-0433767f0064" />
+        <generalsInternal>
+          <generalization Id="3f9e9381-b0f5-43d6-87aa-9eca03b292b4" isSubstitutable="false">
+            <actorMoniker Id="844fccbb-2e92-433a-90a3-c5c696dd168e" LastKnownName="抽象用户" />
+            <elementDefinition Id="0dae1735-acf0-44b4-b3fe-5df9f22a8d06" />
+          </generalization>
+        </generalsInternal>
+        <targetEnds>
+          <association Id="4198bda5-52d8-4c2b-bb24-0c41c7346c4e" isDerived="false" sourceEndRoleName="用户" targetEndRoleName="文件" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="e97e0e45-b94b-4859-9703-22ecdc4973f4" LastKnownName="XX文件" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="bd8135ce-830c-4e9c-81b1-f90958109595" name="用户" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="3c50af33-e34c-4cf2-91fa-7916757f5acc" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="a6728cc0-5682-4758-825b-b8a0ab8af526" name="文件" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="648b045b-b51a-4e74-914c-20902a2a6614" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="c85469a0-78ec-46ac-9a83-185ac2381da8" />
+          </association>
+          <association Id="80f28bd8-6e4a-4b45-af44-25f0f8d0f410" isDerived="false" sourceEndRoleName="用户" targetEndRoleName="文件夹" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="ab5cb549-e276-4b6a-b935-3d3418611974" LastKnownName="YY文件夹" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="d5a5e493-ef52-405c-bebb-a501468f4705" name="用户" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="f13bcdd8-54f7-4023-bd82-f185254a0ed7" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="ecb42347-bcdb-4497-b304-a12bff58142d" name="文件夹" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="d7c9cb4b-e186-4a3c-a74e-851ae7bdc905" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="0bfb1353-44c1-4392-9645-412f4b1e7e41" />
+          </association>
+        </targetEnds>
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <actor Id="fffab56d-0255-4916-8490-16dddf9e0487" name="B用户组" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="ca0e491b-f17e-4615-b68a-2d2f8c53b8a5" />
+        <generalsInternal>
+          <generalization Id="6d326303-b2c7-4c49-8ad7-e3fb7f99884f" isSubstitutable="false">
+            <actorMoniker Id="844fccbb-2e92-433a-90a3-c5c696dd168e" LastKnownName="抽象用户" />
+            <elementDefinition Id="999ef2b3-ba8c-4a79-b71b-c4af45b6445d" />
+          </generalization>
+        </generalsInternal>
+        <targetEnds>
+          <association Id="ae3cb888-d8fa-4a90-912d-9ec854874d40" isDerived="false" sourceEndRoleName="用户组" targetEndRoleName="文件夹" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="ab5cb549-e276-4b6a-b935-3d3418611974" LastKnownName="YY文件夹" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="77f9f6c6-67d5-49b4-9bf3-77cad77547ac" name="用户组" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="8c01eb77-559d-494c-b321-ad1a443ee334" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="4dc37045-1fd4-40f2-8d4b-a5980df34ef1" name="文件夹" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="b71fa879-c79a-485c-b4fe-82c0913d7165" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="c83200f3-b101-40cf-87af-7a67cb33d3b8" />
+          </association>
+          <association Id="616c7054-930f-4ade-9cb2-3958493daf6e" isDerived="false" sourceEndRoleName="用户组" targetEndRoleName="文件" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="e97e0e45-b94b-4859-9703-22ecdc4973f4" LastKnownName="XX文件" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="140f5da5-a20b-42ce-b10d-d175217d7a07" name="用户组" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="544c45ff-2b01-4980-93b6-6776d68a91bd" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="c05c8618-5a46-4faa-ae07-ccecd15a9bbb" name="文件" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="7a94ac12-8bd1-41a7-9943-3eb91a0316ef" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="fd303111-1a7e-427b-b233-4fa2b67de7c5" />
+          </association>
+        </targetEnds>
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <useCase Id="e97e0e45-b94b-4859-9703-22ecdc4973f4" name="XX文件" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="6e78ec04-f7ac-464c-99c2-83c5c1ee40e5" />
+        <suppliersInternal>
+          <dependency Id="37160501-c7b4-4013-b6be-c289439de86e">
+            <useCaseMoniker Id="ab5cb549-e276-4b6a-b935-3d3418611974" LastKnownName="YY文件夹" />
+            <elementDefinition Id="f254a5a4-3446-4be1-821c-df360de6961d" />
+          </dependency>
+        </suppliersInternal>
+        <additions>
+          <include Id="4c91ed7d-b5f8-49aa-a89c-5b479880f737">
+            <useCaseMoniker Id="2d189efc-5a21-4f9b-baff-b156c2740e16" LastKnownName="创建" />
+            <elementDefinition Id="50ca2546-1530-466f-b5d3-9a764448571d" />
+          </include>
+          <include Id="e5603af6-3229-48bb-9d30-0fd00095a033">
+            <useCaseMoniker Id="1be30639-8225-49f4-b612-3f38261b665b" LastKnownName="读取" />
+            <elementDefinition Id="d1b294f5-191c-44ce-b9a8-16804830f436" />
+          </include>
+          <include Id="fbc541a8-528a-4827-8033-e2a141e1ebae">
+            <useCaseMoniker Id="cc59c18c-471b-4268-a658-40fae0827dba" LastKnownName="修改" />
+            <elementDefinition Id="c57b7f21-931f-4ed7-a754-667f0b5cf463" />
+          </include>
+          <include Id="4bffcfd1-e4d6-4276-bfca-d0082d51da26">
+            <useCaseMoniker Id="3af40207-cfb6-4b8c-b53c-845c47df09f0" LastKnownName="删除" />
+            <elementDefinition Id="9d61f3b7-289b-4ceb-aab2-859b46a4407b" />
+          </include>
+        </additions>
+      </useCase>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <useCase Id="ab5cb549-e276-4b6a-b935-3d3418611974" name="YY文件夹" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="a047c4a3-8239-453e-8707-7b623f546e7a" />
+      </useCase>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <useCase Id="2d189efc-5a21-4f9b-baff-b156c2740e16" name="创建" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="08208c32-f2b0-4762-907d-385b57adc565" />
+        <targetEnds>
+          <association Id="38b28424-ecc6-4b54-9a44-c4bed46c5072" isDerived="false" sourceEndRoleName="创建" targetEndRoleName="磁盘存储介质" isLeaf="false" isAbstract="false">
+            <actorMoniker Id="1e8a02ed-8a17-4119-817e-994596470dda" LastKnownName="磁盘存储介质" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="b7f27d7f-24f5-4086-ac3c-dfaca1b75ac2" name="创建" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="701bc2a2-5e91-4e8f-bdd8-9e6f15ac14d3" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="bfc36f0a-6a2c-4910-b54c-7414be475fee" name="磁盘存储介质" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="f56fa330-9c66-482e-b12f-47e68b7be5b4" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="426a59f3-4ddb-46c9-887a-90184d65edbd" />
+          </association>
+        </targetEnds>
+      </useCase>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <useCase Id="cc59c18c-471b-4268-a658-40fae0827dba" name="修改" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="67b26854-8807-4626-8751-60110e2f68b6" />
+        <targetEnds>
+          <association Id="db56d478-661c-42f2-a919-29da00e86ea4" isDerived="false" sourceEndRoleName="修改" targetEndRoleName="磁盘存储介质" isLeaf="false" isAbstract="false">
+            <actorMoniker Id="1e8a02ed-8a17-4119-817e-994596470dda" LastKnownName="磁盘存储介质" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="26be91d4-644f-4e8a-a743-1335974b7db4" name="修改" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="793790c3-2e51-4440-af3c-6341c70a07fa" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="71eb18b7-b732-471c-b8a0-fae784fe3ae0" name="磁盘存储介质" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="4e840696-3c03-4fa8-8ecc-868f3c2eccc0" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="b5768419-ca5f-41d6-a9f7-d925af8bc85e" />
+          </association>
+        </targetEnds>
+      </useCase>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <useCase Id="3af40207-cfb6-4b8c-b53c-845c47df09f0" name="删除" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="efc55a40-870c-4d1c-9d0f-a5785d6277f6" />
+        <targetEnds>
+          <association Id="ba14b351-f16a-4fdd-8c2c-6882d7e09857" isDerived="false" sourceEndRoleName="删除" targetEndRoleName="磁盘存储介质" isLeaf="false" isAbstract="false">
+            <actorMoniker Id="1e8a02ed-8a17-4119-817e-994596470dda" LastKnownName="磁盘存储介质" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="819339f4-6c16-48de-8592-7549b28059b7" name="删除" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="391cb98b-5ade-497a-9244-94bc9c3ad842" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="9664bdab-363a-4f29-ab5a-6650712f76c4" name="磁盘存储介质" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="2680e510-232d-440e-b067-dc22ab1ac567" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="8e3f1f7e-10e4-48c2-ad93-c4d9ca188d60" />
+          </association>
+        </targetEnds>
+      </useCase>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <useCase Id="1be30639-8225-49f4-b612-3f38261b665b" name="读取" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="604e175a-9218-4ade-84fe-f814e43f572c" />
+        <targetEnds>
+          <association Id="6586da9b-11f1-4663-b57a-2189743325e7" isDerived="false" sourceEndRoleName="读取" targetEndRoleName="磁盘存储介质" isLeaf="false" isAbstract="false">
+            <actorMoniker Id="1e8a02ed-8a17-4119-817e-994596470dda" LastKnownName="磁盘存储介质" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="1b5656f8-a708-4c4f-a0c5-864c489c6243" name="读取" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="eed1de32-f674-434b-ad4e-4650c470172d" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="7e8cb3c3-3171-44da-b5ab-85a23e687fee" name="磁盘存储介质" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="a5fdc107-7928-4714-a6be-e6de13be0b46" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="b82dd84f-3c4c-428c-ac01-7c8a803409ef" />
+          </association>
+        </targetEnds>
+      </useCase>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <actor Id="1e8a02ed-8a17-4119-817e-994596470dda" name="磁盘存储介质" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="f55a0d9c-95c3-4ca4-9e10-75f7cdcd4aa1" />
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <actor Id="844fccbb-2e92-433a-90a3-c5c696dd168e" name="抽象用户" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="14a8c67f-611e-45dc-b394-8f8745131cd8" />
+      </actor>
+    </useCaseModelRootHasTypes>
+  </packagedElements>
+  <package Id="f4cd36eb-b57a-4fe2-ba4a-f640fc3f019f" name="ModelingProject">
+    <elementDefinition Id="610a5d4c-1b69-4087-a250-93ca67f282ae" />
+  </package>
+</useCaseModelRoot>
