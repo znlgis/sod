@@ -26,8 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{2927FA6B-62EB-403B-B70A-D396FE473B14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebApp", "TestWebApp\TestWebApp.csproj", "{79804C76-774C-465E-937A-98AE73237883}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.SQLite.Mono40", "..\PWMIS.DataProvider.SQLite.mono40\PWMIS.DataProvider.SQLite.Mono40.csproj", "{A9413DFE-AF90-41BC-8811-92C4EA9CBA9E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.SQLite", "..\PWMIS.DataProvider.Data.SQLite\PWMIS.DataProvider.Data.SQLite.csproj", "{EA876B64-CFF0-4985-B59C-1602B3486D3D}"
@@ -36,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RefDll", "RefDll", "{507240
 	ProjectSection(SolutionItems) = preProject
 		..\RefDll\SQLite\W32_net35\System.Data.SQLite.dll = ..\RefDll\SQLite\W32_net35\System.Data.SQLite.dll
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebApp", "..\TestWebApp\TestWebApp.csproj", "{79804C76-774C-465E-937A-98AE73237883}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -71,18 +71,18 @@ Global
 		SccProjectTopLevelParentUniqueName7 = PDFNet_WebAppDemo.sln
 		SccProjectName7 = ../SuperMarketMIS/SuperMarketWeb
 		SccLocalPath7 = ..\\SuperMarketMIS\\SuperMarketWeb
-		SccProjectUniqueName8 = TestWebApp\\TestWebApp.csproj
+		SccProjectUniqueName8 = ..\\PWMIS.DataProvider.SQLite.mono40\\PWMIS.DataProvider.SQLite.Mono40.csproj
 		SccProjectTopLevelParentUniqueName8 = PDFNet_WebAppDemo.sln
-		SccProjectName8 = TestWebApp
-		SccLocalPath8 = TestWebApp
-		SccProjectUniqueName9 = ..\\PWMIS.DataProvider.SQLite.mono40\\PWMIS.DataProvider.SQLite.Mono40.csproj
+		SccProjectName8 = ../PWMIS.DataProvider.SQLite.mono40
+		SccLocalPath8 = ..\\PWMIS.DataProvider.SQLite.mono40
+		SccProjectUniqueName9 = ..\\PWMIS.DataProvider.Data.SQLite\\PWMIS.DataProvider.Data.SQLite.csproj
 		SccProjectTopLevelParentUniqueName9 = PDFNet_WebAppDemo.sln
-		SccProjectName9 = ../PWMIS.DataProvider.SQLite.mono40
-		SccLocalPath9 = ..\\PWMIS.DataProvider.SQLite.mono40
-		SccProjectUniqueName10 = ..\\PWMIS.DataProvider.Data.SQLite\\PWMIS.DataProvider.Data.SQLite.csproj
+		SccProjectName9 = ../PWMIS.DataProvider.Data.SQLite
+		SccLocalPath9 = ..\\PWMIS.DataProvider.Data.SQLite
+		SccProjectUniqueName10 = ..\\TestWebApp\\TestWebApp.csproj
 		SccProjectTopLevelParentUniqueName10 = PDFNet_WebAppDemo.sln
-		SccProjectName10 = ../PWMIS.DataProvider.Data.SQLite
-		SccLocalPath10 = ..\\PWMIS.DataProvider.Data.SQLite
+		SccProjectName10 = ../TestWebApp
+		SccLocalPath10 = ..\\TestWebApp
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -117,10 +117,6 @@ Global
 		{FE0F02EB-3D0B-43FD-B37E-7D191549C757}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE0F02EB-3D0B-43FD-B37E-7D191549C757}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE0F02EB-3D0B-43FD-B37E-7D191549C757}.Release|Any CPU.Build.0 = Release|Any CPU
-		{79804C76-774C-465E-937A-98AE73237883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{79804C76-774C-465E-937A-98AE73237883}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{79804C76-774C-465E-937A-98AE73237883}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{79804C76-774C-465E-937A-98AE73237883}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A9413DFE-AF90-41BC-8811-92C4EA9CBA9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A9413DFE-AF90-41BC-8811-92C4EA9CBA9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9413DFE-AF90-41BC-8811-92C4EA9CBA9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -129,6 +125,10 @@ Global
 		{EA876B64-CFF0-4985-B59C-1602B3486D3D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA876B64-CFF0-4985-B59C-1602B3486D3D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA876B64-CFF0-4985-B59C-1602B3486D3D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79804C76-774C-465E-937A-98AE73237883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79804C76-774C-465E-937A-98AE73237883}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79804C76-774C-465E-937A-98AE73237883}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79804C76-774C-465E-937A-98AE73237883}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
