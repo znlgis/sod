@@ -452,9 +452,8 @@
                   <elementDefinition Id="b93df227-5207-4491-8176-7d5290f79e8e" />
                   <ownedParameters>
                     <operationHasOwnedParameters>
-                      <parameter Id="76639cce-892b-4a75-81d8-fbd1894549e7" name="group" direction="In">
-                        <description>子用户组</description>
-                        <elementDefinition Id="19413d61-897f-4724-aca9-950818b7d3df" />
+                      <parameter Id="64443023-3b98-4ad7-8c7f-e2084fa3534f" name="group" direction="In" isUnique="false">
+                        <elementDefinition Id="8ca1b36d-5d2d-4b6d-9393-8c280f24053b" />
                         <type_NamedElement>
                           <referencedTypeMoniker Id="59e88ab6-3859-4892-a9de-13aca6bc2834" LastKnownName="UserGroup" />
                         </type_NamedElement>
