@@ -8,13 +8,18 @@ namespace UserSystem
 {
     public abstract partial class UserGroup 
     {
+        public UserGroup()
+        {
+            this.ChildGroups = new List<UserGroup>();
+            this.ChildUsers = new List<User>();
+        }
         /// <summary>
         /// 增加子用户
         /// </summary>
         /// <param name="user">用户</param>
         public virtual void AddUser(User user)
         {
-            throw new System.NotImplementedException();
+            ((List<User>)this.ChildUsers).Add(user);
         }
 
         /// <summary>
@@ -23,7 +28,7 @@ namespace UserSystem
         /// <param name="group">用户组</param>
         public virtual void AddChildGroup(UserGroup group)
         {
-            throw new System.NotImplementedException();
+            ((List<UserGroup>)this.ChildGroups).Add(group);
         }
 
         /// <summary>
@@ -32,52 +37,34 @@ namespace UserSystem
         /// <param name="user">所属的用户</param>
         public virtual void RemoveUser(User user)
         {
-            throw new System.NotImplementedException();
+             ((List<User>)this.ChildUsers).Remove(user);
         }
 
         /// <summary>
         /// 移除子用户组
         /// </summary>
         /// <param name="group">子用户组</param>
-        public virtual void RemoveChildGrooup(UserGroup group)
+        public virtual void RemoveChildGroup(UserGroup group)
         {
-            throw new System.NotImplementedException();
+            ((List<UserGroup>)this.ChildGroups).Remove(group);
         }
 
         public int ID
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
         public string Name
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
         public bool IsLeaf
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
     }
 }

@@ -100,12 +100,12 @@ namespace FileSystem
             throw new NotImplementedException();
         }
 
-        public bool Read()
+        public string Read()
         {
             throw new NotImplementedException();
         }
 
-        public bool Update()
+        public bool Update(string text)
         {
             throw new NotImplementedException();
         }

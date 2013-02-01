@@ -158,11 +158,11 @@
             <OperationElementListCompartment Id="f90b108f-498d-4786-a90e-0c8dbcac8dbb" absoluteBounds="5.39, 4.6443660481770834, 1.5950000000000002, 0.21221923828125" name="OperationsCompartment" titleTextColor="Black" itemTextColor="Black" />
           </nestedChildShapes>
         </interfaceShape>
-        <interfaceShape Id="0f198c7d-3bb9-494b-b8f2-4c116d8dafa4" absoluteBounds="8.125, 1.125, 1.875, 1.2890641276041666" hideQualifiedName="false" increaseHeight="0.1971044921875" customColor="207, 223, 191">
+        <interfaceShape Id="0f198c7d-3bb9-494b-b8f2-4c116d8dafa4" absoluteBounds="8.125, 1.125, 1.875, 1.6241064453125005" hideQualifiedName="false" increaseHeight="0.1971044921875" customColor="207, 223, 191">
           <interfaceMoniker Id="00b60d39-2550-40d2-a3b0-63585b967874" LastKnownName="IOperation" />
           <nestedChildShapes>
-            <AttributeElementListCompartment Id="97cbefab-3f9b-4a06-b774-5b2c21848b10" absoluteBounds="8.14, 1.7121044921875002, 1.8450000000000002, 0.37974039713541663" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
-            <OperationElementListCompartment Id="a0ee974d-c157-4ec0-8cfd-724fbea37aa0" absoluteBounds="8.14, 2.1018448893229165, 1.8450000000000002, 0.21221923828125022" name="OperationsCompartment" titleTextColor="Black" itemTextColor="Black" />
+            <AttributeElementListCompartment Id="97cbefab-3f9b-4a06-b774-5b2c21848b10" absoluteBounds="8.14, 1.7121044921875002, 1.8450000000000002, 0.54726155598958326" name="AttributesCompartment" titleTextColor="Black" itemTextColor="Black" />
+            <OperationElementListCompartment Id="a0ee974d-c157-4ec0-8cfd-724fbea37aa0" absoluteBounds="8.14, 2.2693660481770834, 1.8450000000000002, 0.37974039713541663" name="OperationsCompartment" titleTextColor="Black" itemTextColor="Black" />
           </nestedChildShapes>
         </interfaceShape>
         <classShape Id="1d75889b-ffac-44fa-876e-0b4712a172f3" absoluteBounds="1.125, 1, 1.5, 1.2233626302083334" hideQualifiedName="false" increaseHeight="0.1971044921875" customColor="181, 193, 223">
@@ -213,11 +213,11 @@
         <interfaceShapeMoniker Id="fb4bc99e-6708-43f9-946f-b480b725793c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7 : 4.07616569227567); (8.61337434717504 : 4.07616569227567); (8.61337434717504 : 2.41406412760417)]" fixedFrom="NotFixed" fixedTo="NotFixed" customColor="113, 111, 110" sourceMultiplicity="1" targetMultiplicity="1">
+    <associationConnector edgePoints="[(7 : 4.06056123182575); (9.03125 : 4.06056123182575); (9.03125 : 2.7491064453125)]" fixedFrom="Algorithm" fixedTo="Algorithm" customColor="113, 111, 110" sourceMultiplicity="1" targetMultiplicity="1">
       <associationMoniker Id="fdb6f80d-fe1d-4c52-8bb7-d3af2e5c177d" />
       <relativeChildShapes />
       <moveableDecoratorHostShapes>
-        <moveableDecoratorHostShape manuallyPlaced="true" absoluteBounds="7, 3.8122274288545355, 0.71567785739898682, 0.1571044921875" shapeFieldName="SourceRoleName" />
+        <moveableDecoratorHostShape manuallyPlaced="true" absoluteBounds="7, 3.79662296840462, 0.71567785739898682, 0.1571044921875" shapeFieldName="SourceRoleName" />
       </moveableDecoratorHostShapes>
       <nodes>
         <interfaceShapeMoniker Id="bf81682d-f581-4ee5-8aca-747eeed6a99d" />
@@ -256,7 +256,7 @@
         <interfaceShapeMoniker Id="fb4bc99e-6708-43f9-946f-b480b725793c" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(10.78125 : 3.625); (10.78125 : 1.76953206380208); (10 : 1.76953206380208)]" fixedFrom="NotFixed" fixedTo="NotFixed" customColor="113, 111, 110" sourceMultiplicity="1" targetMultiplicity="1..*">
+    <associationConnector edgePoints="[(10.78125 : 3.625); (10.78125 : 1.93705322265625); (10 : 1.93705322265625)]" fixedFrom="Algorithm" fixedTo="Algorithm" customColor="113, 111, 110" sourceMultiplicity="1" targetMultiplicity="1..*">
       <associationMoniker Id="1763640a-63fa-4657-b269-d7bd4e2ef80a" />
       <relativeChildShapes />
       <nodes>

@@ -77,10 +77,10 @@ namespace PermissionControlSystem
 		}
 
 		/// <summary>
-		/// 获取访问者是否拥有权限
+		/// 获取访问者拥有的所有权限
 		/// </summary>
 		/// <param name="visitor">访问者</param>
-		public virtual IPermission GetPermission(IVisitor visitor)
+		public virtual IEnumerable<IPermission> GetPermissions(IVisitor visitor)
 		{
 			throw new System.NotImplementedException();
 		}

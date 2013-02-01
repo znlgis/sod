@@ -47,6 +47,7 @@
     <Compile Include="FileSystem\Directory.cs" />
     <Compile Include="FileSystem\DirectoryPartial.cs" />
     <Compile Include="FileSystem\File.cs" />
+    <Compile Include="FileSystem\FileOperation.cs" />
     <Compile Include="FileSystem\FilePartial.cs" />
     <Compile Include="FileSystem\IFileSystem.cs" />
     <Compile Include="PermissionControlSystem\IOperation.cs" />

@@ -30,15 +30,16 @@ namespace FileSystem
 		/// </summary>
 		bool Create();
 
-		/// <summary>
-		/// 读取文件或者目录的信息（不是内容）
-		/// </summary>
-		bool Read();
+        /// <summary>
+        /// 读取文件或者目录的信息（不是内容）
+        /// </summary>
+        string Read();
 
-		/// <summary>
-		/// 修改文件或者目录的内容
-		/// </summary>
-		bool Update();
+        /// <summary>
+        /// 修改文件或者目录的内容
+        /// </summary>
+        /// <param name="text">要修改的内容</param>
+        bool Update(string text);
 
 		/// <summary>
 		/// 删除文件或者目录

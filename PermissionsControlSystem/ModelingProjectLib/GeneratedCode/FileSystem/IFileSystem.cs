@@ -33,12 +33,13 @@ namespace FileSystem
 		/// <summary>
 		/// 读取文件或者目录的信息（不是内容）
 		/// </summary>
-		bool Read();
+		string Read();
 
 		/// <summary>
 		/// 修改文件或者目录的内容
 		/// </summary>
-		bool Update();
+		/// <param name="text">要修改的内容</param>
+		bool Update(string text);
 
 		/// <summary>
 		/// 删除文件或者目录

@@ -948,7 +948,7 @@
                       <parameter Id="b2dfa8af-0c75-4a08-a307-62b9b653fc78" direction="Return">
                         <elementDefinition Id="57a3f2db-59ed-491c-90a2-af7e7ff08a11" />
                         <type_NamedElement>
-                          <referencedTypeMoniker Id="785f6b4b-6c4b-4ee7-9e6e-0e7011f1d432" LastKnownName="Boolean" />
+                          <referencedTypeMoniker Id="266b4b6c-0062-40ae-acc5-a21b38e9fb8d" LastKnownName="String" />
                         </type_NamedElement>
                       </parameter>
                     </operationHasOwnedParameters>
@@ -1000,6 +1000,15 @@
                         <elementDefinition Id="e54ec65f-dca5-4c86-9473-16e50ed1bc2d" />
                         <type_NamedElement>
                           <referencedTypeMoniker Id="4a63724e-8e57-44ec-88b4-9389403ac10f" LastKnownName="Boolean" />
+                        </type_NamedElement>
+                      </parameter>
+                    </operationHasOwnedParameters>
+                    <operationHasOwnedParameters>
+                      <parameter Id="c5d11924-121a-4724-92fa-407d941a624f" name="text" direction="In">
+                        <description>要修改的内容</description>
+                        <elementDefinition Id="97a98721-c31d-4af7-b305-8bb2da685c8b" />
+                        <type_NamedElement>
+                          <referencedTypeMoniker Id="e5f84e80-5361-4378-b5fd-c6d8f69a8996" LastKnownName="String" />
                         </type_NamedElement>
                       </parameter>
                     </operationHasOwnedParameters>
@@ -1728,7 +1737,73 @@
                     <referencedTypeMoniker Id="7179d7cc-3f7f-45e6-afad-1d2d7a9ac191" LastKnownName="String" />
                   </type_NamedElement>
                 </property>
+                <property Id="ac717fa6-0356-430f-a206-8fbd45cb4c27" name="Parameters" isLeaf="false" isStatic="false" isReadOnly="false" isUnique="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <description>操作的参数</description>
+                  <appliedStereotypesInternal>
+                    <stereotypeInstance Id="5c00a4ca-1337-412d-b72f-b085f051ba73" name="property" profile="CSharpProfile">
+                      <elementDefinition Id="f5194a7c-1da1-4754-a5d8-a5fd58e9e47a" />
+                      <propertyInstances>
+                        <stereotypeInstanceHasPropertyInstances Id="e1c21516-ce9f-47b7-8637-72a99f2e75ad">
+                          <propertyInstance Id="d8b5abd5-89dd-448b-a0f6-d823faf4f0a7" name="ClrAttributes">
+                            <elementDefinition Id="e9a7a1b5-46f5-4be4-ae7e-492001010bfe" />
+                          </propertyInstance>
+                          <elementDefinition Id="3c4a6414-f2c4-4c33-8a32-4f2cad5d3a02" />
+                        </stereotypeInstanceHasPropertyInstances>
+                        <stereotypeInstanceHasPropertyInstances Id="7a7745fd-40d3-4510-b566-b8ccf24f8658">
+                          <propertyInstance Id="3038228d-c067-4f67-a614-e1fe4379d3fc" name="Get" value="none">
+                            <elementDefinition Id="6a95bbc0-25e6-4e94-8132-1b06edde25f6" />
+                          </propertyInstance>
+                          <elementDefinition Id="e5cabca9-ec13-4b74-9ed4-c8042c0e5be8" />
+                        </stereotypeInstanceHasPropertyInstances>
+                        <stereotypeInstanceHasPropertyInstances Id="e6189cb3-b12d-4c52-a623-d77262521904">
+                          <propertyInstance Id="0909b474-fb7d-4b3f-a4ad-137b990ad5e4" name="HasBody" value="false">
+                            <elementDefinition Id="72d8d001-9448-4964-8061-f6ddba28a84a" />
+                          </propertyInstance>
+                          <elementDefinition Id="8021881d-d477-4b84-8d35-c4019d895d2e" />
+                        </stereotypeInstanceHasPropertyInstances>
+                        <stereotypeInstanceHasPropertyInstances Id="c62092ac-3b2f-4f3c-b4cf-9c1f1fddc93f">
+                          <propertyInstance Id="b2b3ace6-91b2-4016-944a-3fe7012f3803" name="IsUnsafe" value="false">
+                            <elementDefinition Id="2d1ba4f9-24cf-4591-b18e-93a8f5924adf" />
+                          </propertyInstance>
+                          <elementDefinition Id="f1abd76e-788f-4661-9295-9d7caa734ba9" />
+                        </stereotypeInstanceHasPropertyInstances>
+                        <stereotypeInstanceHasPropertyInstances Id="6bda73fb-9ca1-481c-bb2a-b6bd91504826">
+                          <propertyInstance Id="20dfceb2-aa1c-48fe-9dd9-e7f83ef50849" name="PackageVisibility" value="internal">
+                            <elementDefinition Id="ffb47944-dc31-4347-bee6-71150661bceb" />
+                          </propertyInstance>
+                          <elementDefinition Id="a1aab694-1241-4533-bcdc-67bfcb326060" />
+                        </stereotypeInstanceHasPropertyInstances>
+                        <stereotypeInstanceHasPropertyInstances Id="c7e5b87d-fd7d-465d-a68e-ff75aac8cf4b">
+                          <propertyInstance Id="782e985e-a87f-4d26-a549-ef2a97d3bb99" name="Set" value="none">
+                            <elementDefinition Id="932acb43-8d6e-4a26-bcad-473245e0a597" />
+                          </propertyInstance>
+                          <elementDefinition Id="23132489-5c5c-4752-ab92-f98d6f18d076" />
+                        </stereotypeInstanceHasPropertyInstances>
+                      </propertyInstances>
+                    </stereotypeInstance>
+                  </appliedStereotypesInternal>
+                  <elementDefinition Id="1c388adb-cb82-461c-b850-2b74cdd0bf4c" />
+                  <type_NamedElement>
+                    <referencedTypeMoniker Id="b944c94f-d28f-4216-a391-112c010e3515" LastKnownName="object[]" />
+                  </type_NamedElement>
+                </property>
               </ownedAttributes>
+              <ownedOperations>
+                <operation Id="1e48c331-342b-40e9-aaab-c36ff3a9b1e7" name="Execute" isLeaf="false" isStatic="false" isAbstract="true" concurrency="Sequential" isQuery="false">
+                  <description>执行操作</description>
+                  <elementDefinition Id="0bcbf209-54b7-4d9a-bcde-fd04c65355b0" />
+                  <ownedParameters>
+                    <operationHasOwnedParameters>
+                      <parameter Id="a00410df-1950-4e1a-ad1c-0f3eea729cf5" direction="Return">
+                        <elementDefinition Id="2d145986-1fd6-438a-97d3-85155ef4a8be" />
+                        <type_NamedElement>
+                          <referencedTypeMoniker Id="a3af9219-687e-44cc-9fd3-687cacb1ee77" LastKnownName="object" />
+                        </type_NamedElement>
+                      </parameter>
+                    </operationHasOwnedParameters>
+                  </ownedParameters>
+                </operation>
+              </ownedOperations>
             </Interface>
           </packageHasNamedElement>
           <packageHasNamedElement>
@@ -2615,8 +2690,8 @@
                     </operationHasOwnedParameters>
                   </ownedParameters>
                 </operation>
-                <operation Id="2fc7d1c1-ea69-471a-b391-c79768bf8282" name="GetPermission" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
-                  <description>获取访问者是否拥有权限</description>
+                <operation Id="2fc7d1c1-ea69-471a-b391-c79768bf8282" name="GetPermissions" isLeaf="false" isStatic="false" isAbstract="false" concurrency="Sequential" isQuery="false">
+                  <description>获取访问者拥有的所有权限</description>
                   <appliedStereotypesInternal>
                     <stereotypeInstance Id="789c183b-8fe8-4bb3-94d6-1b86df3645e5" name="method" profile="CSharpProfile">
                       <elementDefinition Id="1824406e-921d-46d4-8c84-46daff8f185c" />
@@ -2667,6 +2742,17 @@
                     </operationHasOwnedParameters>
                     <operationHasOwnedParameters>
                       <parameter Id="8ac226ea-e6e2-424b-a836-60cefc06cb03" direction="Return">
+                        <description>所有的权限</description>
+                        <lowerValueInternal>
+                          <literalString Id="01608cd5-6300-4822-b789-8709d0fa2498" name="Lower" value="1">
+                            <elementDefinition Id="c4e33261-b771-4e36-931a-29a687e37474" />
+                          </literalString>
+                        </lowerValueInternal>
+                        <upperValueInternal>
+                          <literalString Id="1848ca21-ab14-4673-b2bc-b6fad4267181" name="Upper" value="*">
+                            <elementDefinition Id="5ea99a7e-2ee8-41ec-8628-e0dd6a23dc90" />
+                          </literalString>
+                        </upperValueInternal>
                         <elementDefinition Id="e2651244-107b-4f27-a55d-64805aadb5c8" />
                         <type_NamedElement>
                           <referencedTypeMoniker Id="1d654424-2659-49b5-91c6-afbc98f68a46" LastKnownName="IPermission" />
@@ -2807,11 +2893,6 @@
       </referencedType>
     </packageHasNamedElement>
     <packageHasNamedElement>
-      <referencedType Id="785f6b4b-6c4b-4ee7-9e6e-0e7011f1d432" name="Boolean" isAbstract="false" isLeaf="false" cachedFullName="Boolean">
-        <elementDefinition Id="8943dc84-709e-4f62-b15a-a3273aa6f165" />
-      </referencedType>
-    </packageHasNamedElement>
-    <packageHasNamedElement>
       <referencedType Id="4a63724e-8e57-44ec-88b4-9389403ac10f" name="Boolean" isAbstract="false" isLeaf="false" cachedFullName="Boolean">
         <elementDefinition Id="8943dc84-709e-4f62-b15a-a3273aa6f165" />
       </referencedType>
@@ -2844,6 +2925,26 @@
     <packageHasNamedElement>
       <referencedType Id="59e88ab6-3859-4892-a9de-13aca6bc2834" name="UserGroup" isAbstract="false" isLeaf="false" cachedFullName="ModelingProject::UserSystem::UserGroup">
         <elementDefinition Id="2a14d5d2-848d-4db8-9fcf-6916d2e7b9e9" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="3311cf33-74e3-49dc-b2f5-221984bffce7" name="IPermission" isAbstract="false" isLeaf="false" cachedFullName="ModelingProject::PermissionControlSystem::IPermission">
+        <elementDefinition Id="b0bb86a2-7438-4b3f-9227-ba5de37c3ad7" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="266b4b6c-0062-40ae-acc5-a21b38e9fb8d" name="String" isAbstract="false" isLeaf="false" cachedFullName="String">
+        <elementDefinition Id="59259974-6d55-42c6-b7bd-763d77ac8ef9" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="b944c94f-d28f-4216-a391-112c010e3515" name="object[]" isAbstract="false" isLeaf="false" cachedFullName="object[]">
+        <elementDefinition Id="8d428db1-0bf4-4edf-b3e3-65d4a0ce2735" />
+      </referencedType>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <referencedType Id="a3af9219-687e-44cc-9fd3-687cacb1ee77" name="object" isAbstract="false" isLeaf="false" cachedFullName="object">
+        <elementDefinition Id="4018f72f-824d-44d7-b587-ae6757bbbb97" />
       </referencedType>
     </packageHasNamedElement>
   </packagedElements>

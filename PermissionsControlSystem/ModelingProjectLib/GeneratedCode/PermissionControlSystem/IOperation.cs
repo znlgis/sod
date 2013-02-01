@@ -18,6 +18,11 @@ namespace PermissionControlSystem
 	{
 		string OperationName { get;set; }
 
+		/// <summary>
+		/// 操作的参数
+		/// </summary>
+		object[] Parameters { get;set; }
+
 	}
 }
 

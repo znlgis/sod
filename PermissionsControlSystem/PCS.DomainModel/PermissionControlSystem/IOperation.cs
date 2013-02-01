@@ -17,7 +17,8 @@ namespace PermissionControlSystem
 	public interface IOperation 
 	{
 		string OperationName { get;set; }
-
+        object[] Parameters { get; set; }
+        object Execute();
 	}
 }
 

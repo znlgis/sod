@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" xmlns:dm9="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm10="http://schemas.microsoft.com/dsltools/UseCaseModel"
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
   dslVersion="1.0.0.0"
   Id="49a20191-866a-4aae-9a4d-cc042f151d0e"
   name="PermissionControlSystem" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
@@ -344,7 +344,102 @@
                 LastKnownLocation="ModelingProject.uml" />
             </type_NamedElement>
           </property>
+          <property
+            Id="1c388adb-cb82-461c-b850-2b74cdd0bf4c"
+            name="Parameters"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isUnique="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <description>操作的参数</description>
+            <appliedStereotypesInternal>
+              <stereotypeInstance
+                Id="f5194a7c-1da1-4754-a5d8-a5fd58e9e47a"
+                name="property"
+                profile="CSharpProfile">
+                <propertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="3c4a6414-f2c4-4c33-8a32-4f2cad5d3a02">
+                    <propertyInstance
+                      Id="e9a7a1b5-46f5-4be4-ae7e-492001010bfe"
+                      name="ClrAttributes" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="e5cabca9-ec13-4b74-9ed4-c8042c0e5be8">
+                    <propertyInstance
+                      Id="6a95bbc0-25e6-4e94-8132-1b06edde25f6"
+                      name="Get"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="8021881d-d477-4b84-8d35-c4019d895d2e">
+                    <propertyInstance
+                      Id="72d8d001-9448-4964-8061-f6ddba28a84a"
+                      name="HasBody"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="f1abd76e-788f-4661-9295-9d7caa734ba9">
+                    <propertyInstance
+                      Id="2d1ba4f9-24cf-4591-b18e-93a8f5924adf"
+                      name="IsUnsafe"
+                      value="false" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="a1aab694-1241-4533-bcdc-67bfcb326060">
+                    <propertyInstance
+                      Id="ffb47944-dc31-4347-bee6-71150661bceb"
+                      name="PackageVisibility"
+                      value="internal" />
+                  </stereotypeInstanceHasPropertyInstances>
+                  <stereotypeInstanceHasPropertyInstances
+                    Id="23132489-5c5c-4752-ab92-f98d6f18d076">
+                    <propertyInstance
+                      Id="932acb43-8d6e-4a26-bcad-473245e0a597"
+                      name="Set"
+                      value="none" />
+                  </stereotypeInstanceHasPropertyInstances>
+                </propertyInstances>
+              </stereotypeInstance>
+            </appliedStereotypesInternal>
+            <type_NamedElement>
+              <undefinedTypeMoniker
+                Id="8d428db1-0bf4-4edf-b3e3-65d4a0ce2735"
+                LastKnownName="object[]"
+                LastKnownLocation="Package_1926.uml" />
+            </type_NamedElement>
+          </property>
         </ownedAttributes>
+        <ownedOperations>
+          <operation
+            Id="0bcbf209-54b7-4d9a-bcde-fd04c65355b0"
+            name="Execute"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <description>执行操作</description>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="2d145986-1fd6-438a-97d3-85155ef4a8be"
+                  direction="Return">
+                  <type_NamedElement>
+                    <undefinedTypeMoniker
+                      Id="4018f72f-824d-44d7-b587-ae6757bbbb97"
+                      LastKnownName="object"
+                      LastKnownLocation="Package_1926.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperations>
       </Interface>
     </packageHasNamedElement>
     <packageHasNamedElement>
@@ -1634,13 +1729,13 @@
           </operation>
           <operation
             Id="2d097430-28a4-4ba4-aaa6-61740a654a3f"
-            name="GetPermission"
+            name="GetPermissions"
             isLeaf="false"
             isStatic="false"
             isAbstract="false"
             concurrency="Sequential"
             isQuery="false">
-            <description>获取访问者是否拥有权限</description>
+            <description>获取访问者拥有的所有权限</description>
             <appliedStereotypesInternal>
               <stereotypeInstance
                 Id="1824406e-921d-46d4-8c84-46daff8f185c"
@@ -1703,6 +1798,19 @@
                 <parameter
                   Id="e2651244-107b-4f27-a55d-64805aadb5c8"
                   direction="Return">
+                  <description>所有的权限</description>
+                  <lowerValueInternal>
+                    <literalString
+                      Id="c4e33261-b771-4e36-931a-29a687e37474"
+                      name="Lower"
+                      value="1" />
+                  </lowerValueInternal>
+                  <upperValueInternal>
+                    <literalString
+                      Id="5ea99a7e-2ee8-41ec-8628-e0dd6a23dc90"
+                      name="Upper"
+                      value="*" />
+                  </upperValueInternal>
                   <type_NamedElement>
                     <interfaceMoniker
                       Id="b0bb86a2-7438-4b3f-9227-ba5de37c3ad7"
@@ -1715,6 +1823,16 @@
           </operation>
         </ownedOperationsInternal>
       </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="8d428db1-0bf4-4edf-b3e3-65d4a0ce2735"
+        name="object[]" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <undefinedType
+        Id="4018f72f-824d-44d7-b587-ae6757bbbb97"
+        name="object" />
     </packageHasNamedElement>
   </packagedElements>
 </package>

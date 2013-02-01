@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" xmlns:dm9="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm10="http://schemas.microsoft.com/dsltools/UseCaseModel"
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
   dslVersion="1.0.0.0"
   Id="1b077532-78ae-423c-ba12-7119d91c7322"
   name="UserSystem" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
@@ -494,7 +494,7 @@
           </operation>
           <operation
             Id="b93df227-5207-4491-8176-7d5290f79e8e"
-            name="RemoveChildGrooup"
+            name="RemoveChildGroup"
             isLeaf="false"
             isStatic="false"
             isAbstract="false"
@@ -547,10 +547,10 @@
             <ownedParameters>
               <operationHasOwnedParameters>
                 <parameter
-                  Id="19413d61-897f-4724-aca9-950818b7d3df"
+                  Id="8ca1b36d-5d2d-4b6d-9393-8c280f24053b"
                   name="group"
-                  direction="In">
-                  <description>子用户组</description>
+                  direction="In"
+                  isUnique="false">
                   <type_NamedElement>
                     <classMoniker
                       Id="2a14d5d2-848d-4db8-9fcf-6916d2e7b9e9"
