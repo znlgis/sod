@@ -37,9 +37,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RefDll", "RefDll", "{507240
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestWebApp", "..\TestWebApp\TestWebApp.csproj", "{79804C76-774C-465E-937A-98AE73237883}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.SQLite.Mono40x32", "..\PWMIS.DataProvider.SQLite.Mono40x32\PWMIS.DataProvider.SQLite.Mono40x32.csproj", "{A7E61000-125D-461B-92B7-D7D00683941C}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
+		SccNumberOfProjects = 12
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
 		SccLocalPath0 = .
@@ -83,6 +85,10 @@ Global
 		SccProjectTopLevelParentUniqueName10 = PDFNet_WebAppDemo.sln
 		SccProjectName10 = ../TestWebApp
 		SccLocalPath10 = ..\\TestWebApp
+		SccProjectUniqueName11 = ..\\PWMIS.DataProvider.SQLite.Mono40x32\\PWMIS.DataProvider.SQLite.Mono40x32.csproj
+		SccProjectTopLevelParentUniqueName11 = PDFNet_WebAppDemo.sln
+		SccProjectName11 = ../PWMIS.DataProvider.SQLite.Mono40x32
+		SccLocalPath11 = ..\\PWMIS.DataProvider.SQLite.Mono40x32
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -129,6 +135,10 @@ Global
 		{79804C76-774C-465E-937A-98AE73237883}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{79804C76-774C-465E-937A-98AE73237883}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{79804C76-774C-465E-937A-98AE73237883}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7E61000-125D-461B-92B7-D7D00683941C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7E61000-125D-461B-92B7-D7D00683941C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7E61000-125D-461B-92B7-D7D00683941C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7E61000-125D-461B-92B7-D7D00683941C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -138,6 +148,7 @@ Global
 		{8F0F4237-4D13-40DD-AE8A-C3DE748B26E0} = {A95BD869-20DE-4024-B469-C7C3A84B6969}
 		{A9413DFE-AF90-41BC-8811-92C4EA9CBA9E} = {A95BD869-20DE-4024-B469-C7C3A84B6969}
 		{EA876B64-CFF0-4985-B59C-1602B3486D3D} = {A95BD869-20DE-4024-B469-C7C3A84B6969}
+		{A7E61000-125D-461B-92B7-D7D00683941C} = {A95BD869-20DE-4024-B469-C7C3A84B6969}
 		{32A14B75-6845-48B0-9FB9-9F0DD4D58369} = {C3D57C83-D054-457C-A7AC-C1D5573EA242}
 		{B685E0F6-0082-453F-9494-4EEA87E204EB} = {C3D57C83-D054-457C-A7AC-C1D5573EA242}
 		{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4} = {C3D57C83-D054-457C-A7AC-C1D5573EA242}
