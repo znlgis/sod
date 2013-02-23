@@ -463,7 +463,7 @@ namespace PWMIS.Common
             if (AllCount == 0)
             {
                 //生成统计语句　
-                return "select count(*) from (" + strSQLInfo + ") ";
+                return "select count(*) from (" + strSQLInfo + ") t ";
             }
 
             if (PageNumber == 1)

@@ -31,11 +31,13 @@
         <br />
         <br />
         <asp:Button ID="Button1" runat="server" onclick="Button1_Click" Text="执行建表脚本" />
+        <asp:Button ID="Button2" runat="server" onclick="Button2_Click" Text="测试" />
         <br />
         <asp:Label ID="lblMsg" runat="server" Text="就绪"></asp:Label>
     <br />
 
     </div>
+    <asp:Label ID="lblErrMsg" runat="server" Text="错误信息"></asp:Label>
     </form>
 </body>
 </html>

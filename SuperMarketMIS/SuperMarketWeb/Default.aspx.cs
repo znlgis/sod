@@ -36,6 +36,8 @@ namespace SuperMarketWeb
             }
             catch (Exception ex)
             {
+                string errmsg = ex.Message;
+                Session["errmsg"] = errmsg;
                 Response.Redirect("Setup/CreateAppTables.aspx");
             }
             

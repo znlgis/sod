@@ -1,15 +1,15 @@
 ﻿--创建超市信息表，数据库类型：MySQL
+--执行前,请先创建数据库: SuperMarket
 
-create table [存货信息表]
+create table [客户表]
 (
-[存货记录号] integer not null AUTO_INCREMENT,
-[条码号] varchar(38) not null,
-[售价] money not null,
-[成本价] money not null,
-[生产日期] datetime ,
-[上货时间] datetime ,
-[库存数量] int not null,
- PRIMARY KEY ([存货记录号])
+[客户号] varchar(38) primary key, 
+[姓名] varchar(20) not null, 
+[性别] bit null,
+[出生日期] datetime null,
+[联系电话] varchar(30) not null,
+[联系地址] varchar(200) null,
+[积分] int
 )
 ;
 create table [雇员表]
