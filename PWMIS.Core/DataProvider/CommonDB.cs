@@ -366,7 +366,7 @@ namespace PWMIS.DataProvider.Data
         /// <param name="paraName">参数名</param>
         /// <param name="Value">参数值</param>
         /// <returns>特定于数据源的参数对象</returns>
-        public IDataParameter GetParameter(string paraName, object Value)
+        public virtual IDataParameter GetParameter(string paraName, object Value)
         {
             IDataParameter para = this.GetParameter();
             para.ParameterName = paraName;
