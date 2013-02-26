@@ -673,9 +673,14 @@ namespace PWMIS.DataMap.Entity
             }
             else
             {
-                sql = oql.ToString();
+                //edit at 2013-2-25 处理非SQLSERVER的参数名前缀问题
+                if (db is SqlServer)
+                    sql = oql.ToString();
+                else
+                    sql = oql.ToString().Replace("@", db.GetParameterChar);
                 Parameters = oql.Parameters;
             }
+
 
             //处理实体类分页 2010.6.20
             if (oql.PageEnable && !single)
