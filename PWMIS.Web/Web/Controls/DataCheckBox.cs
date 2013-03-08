@@ -7,10 +7,10 @@
  * 该类的作用
  * 
  * 作者：邓太华     时间：2008-10-12
- * 版本：V3.0
+ * 版本：V4.5
  * 
- * 修改者：         时间：                
- * 修改说明：
+ * 修改者：         时间：2013-3-1                
+ * 修改说明：完善了控件
  * ========================================================================
 */
 using System;
@@ -203,10 +203,81 @@ namespace PWMIS.Web.Controls
 			}
 		}
 
-		public object GetValue()
-		{
-			return this.Value.Trim();
-		}
+        public object GetValue()
+        {
+            switch (this.SysTypeCode)
+            {
+                case TypeCode.String:
+                    {
+                        return this.Value.Trim();
+                    }
+                case TypeCode.Int32:
+                    {
+                        if (this.Value.Trim() != "")
+                        {
+                            return Convert.ToInt32(this.Value.Trim());
+                        }
+                        //return 0;
+                        return DBNull.Value;
+                    }
+                case TypeCode.Decimal:
+                    {
+                        if (this.Value.Trim() != "")
+                        {
+                            return Convert.ToDecimal(this.Value.Trim());
+                        }
+                        //return 0;
+                        return DBNull.Value;
+                    }
+                case TypeCode.DateTime:
+                    if (this.Value.Trim() != "")
+                    {
+                        try
+                        {
+                            return Convert.ToDateTime(this.Value.Trim());
+                        }
+                        catch
+                        {
+                            return DBNull.Value; //"1900-1-1";
+                        }
+                    }
+                    return DBNull.Value;//"1900-1-1";
+
+                case TypeCode.Double:
+                    {
+                        if (this.Value.Trim() != "")
+                        {
+                            return Convert.ToDouble(this.Value.Trim());
+                        }
+                        //return 0;
+                        return DBNull.Value;
+                    }
+                case TypeCode.Boolean:
+                    {
+                        if (this.Value.Trim() != "")
+                        {
+                            try
+                            {
+                                return Convert.ToBoolean(this.Value.Trim());
+                            }
+                            catch
+                            {
+                                return DBNull.Value; //"1900-1-1";
+                            }
+                        }
+                        return DBNull.Value;//"1900-1-1";
+                    }
+                default:
+                    if (this.Value.Trim() == "")
+                    {
+                        return DBNull.Value;
+                    }
+                    else
+                    {
+                        return this.Value.Trim();
+                    }
+            }
+        }
 		#endregion
 
         #region IQueryControl 成员

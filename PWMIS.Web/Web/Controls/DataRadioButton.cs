@@ -9,8 +9,8 @@
  * 作者：邓太华     时间：2008-10-12
  * 版本：V3.0
  * 
- * 修改者：         时间：                
- * 修改说明：
+ * 修改者：         时间：2013-3-1                
+ * 修改说明：完善了控件
  * ========================================================================
 */
 using System;
@@ -168,19 +168,105 @@ namespace PWMIS.Web.Controls
 			if(obj!=null)
 			{
 				string SelItemValues = obj.ToString().Trim();
-			
-				if(this.Value.ToString().Trim() == SelItemValues.Trim())
+                string strValue = this.Value.Trim();
+                if (strValue == SelItemValues.Trim())
 				{
 					this.Checked=true;
+                    return;
 				}
+                //布尔值特殊处理，数据库中可能存储的值为0或者1
+                if (this.SysTypeCode == TypeCode.Boolean)
+                {
+                    if (strValue.ToLower() == "true" && SelItemValues == "1")
+                        this.Checked = true;
+                    else if (strValue.ToLower() == "false" && SelItemValues == "0")
+                        this.Checked = true;
+                }
+
 			}
 
 		}
 
 		public object GetValue()
 		{
-				return this.Checked ? this.Value.Trim():"";
+            return this.Checked ? GetValueInner() : DBNull.Value;
 		}
+
+        private object GetValueInner()
+        {
+            switch (this.SysTypeCode)
+            {
+                case TypeCode.String:
+                    {
+                        return this.Value.Trim();
+                    }
+                case TypeCode.Int32:
+                    {
+                        if (this.Value.Trim() != "")
+                        {
+                            return Convert.ToInt32(this.Value.Trim());
+                        }
+                        //return 0;
+                        return DBNull.Value;
+                    }
+                case TypeCode.Decimal:
+                    {
+                        if (this.Value.Trim() != "")
+                        {
+                            return Convert.ToDecimal(this.Value.Trim());
+                        }
+                        //return 0;
+                        return DBNull.Value;
+                    }
+                case TypeCode.DateTime:
+                    if (this.Value.Trim() != "")
+                    {
+                        try
+                        {
+                            return Convert.ToDateTime(this.Value.Trim());
+                        }
+                        catch
+                        {
+                            return DBNull.Value; //"1900-1-1";
+                        }
+                    }
+                    return DBNull.Value;//"1900-1-1";
+
+                case TypeCode.Double:
+                    {
+                        if (this.Value.Trim() != "")
+                        {
+                            return Convert.ToDouble(this.Value.Trim());
+                        }
+                        //return 0;
+                        return DBNull.Value;
+                    }
+                case TypeCode.Boolean:
+                    {
+                        if (this.Value.Trim() != "")
+                        {
+                            try
+                            {
+                                return Convert.ToBoolean(this.Value.Trim());
+                            }
+                            catch
+                            {
+                                return DBNull.Value; //"1900-1-1";
+                            }
+                        }
+                        return DBNull.Value;//"1900-1-1";
+                    }
+                default:
+                    if (this.Value.Trim() == "")
+                    {
+                        return DBNull.Value;
+                    }
+                    else
+                    {
+                        return this.Value.Trim();
+                    }
+            }
+        }
 
 		public virtual bool Validate()
 		{

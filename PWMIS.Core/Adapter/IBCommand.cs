@@ -14,6 +14,7 @@
  * ========================================================================
 */
 using System;
+using System.Data;
 
 namespace PWMIS.DataProvider.Adapter
 {
@@ -111,6 +112,9 @@ namespace PWMIS.DataProvider.Adapter
             set { _guidpk = value; }
         }
 
-
+        /// <summary>
+        /// 对应的查询参数数组
+        /// </summary>
+        public IDataParameter[] Parameters { get; set; }
 	}
 }

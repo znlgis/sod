@@ -352,7 +352,7 @@ namespace PWMIS.DataProvider.Data
         /// <param name="paraName">参数名字</param>
         /// <param name="dbType">>数据库数据类型</param>
         /// <returns>特定于数据源的参数对象</returns>
-        public IDataParameter GetParameter(string paraName, DbType dbType)
+        public  virtual IDataParameter GetParameter(string paraName, DbType dbType)
         {
             IDataParameter para = this.GetParameter();
             para.ParameterName = paraName;
@@ -1098,7 +1098,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// 关闭连接
+        /// 关闭连接，并清空参数集合 edit at 2013.3.8
         /// </summary>
         /// <param name="conn">连接对象</param>
         /// <param name="cmd">命令对象</param>
@@ -1106,6 +1106,7 @@ namespace PWMIS.DataProvider.Data
         {
             if (cmd.Transaction == null && conn!=sessionConnection  && conn.State == ConnectionState.Open)
                 conn.Close();
+            cmd.Parameters.Clear();
         }
 
         private void CloseGlobalConnection()

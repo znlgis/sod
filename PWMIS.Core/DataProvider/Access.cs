@@ -59,6 +59,27 @@ namespace PWMIS.DataProvider.Data
                 ((OleDbParameter)para).OleDbType = OleDbType.DBDate;
             return para;
         }
+
+        public override IDataParameter GetParameter(string paraName, DbType dbType)
+        {
+            IDataParameter para = this.GetParameter();
+            para.ParameterName = paraName;
+            para.DbType = dbType;
+            if(dbType== DbType.DateTime)
+                ((OleDbParameter)para).OleDbType = OleDbType.DBDate;
+            return para;
+        }
+
+        public override IDataParameter GetParameter(string paraName, System.Data.DbType dbType, int size)
+        {
+            OleDbParameter para = new OleDbParameter();
+            para.ParameterName = paraName;
+            para.DbType = dbType;
+            para.Size = size;
+            if (dbType == DbType.DateTime)
+                ((OleDbParameter)para).OleDbType = OleDbType.DBDate;
+            return para;
+        }
     }
     
 }

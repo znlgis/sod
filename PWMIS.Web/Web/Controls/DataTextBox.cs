@@ -9,8 +9,8 @@
  * 作者：邓太华     时间：2008-10-12
  * 版本：V3.0
  * 
- * 修改者：         时间：                
- * 修改说明：
+ * 修改者：         时间：2013-3-1                
+ * 修改说明：完善了控件
  * ========================================================================
 */
 
@@ -601,7 +601,7 @@ return true;
 					}
 					break;
 				case TypeCode.Decimal:
-					if(obj!=DBNull.Value&&obj.GetType()==typeof(decimal))
+                    if (obj != DBNull.Value &&( obj.GetType() == typeof(decimal) || obj.GetType() == typeof(double)))
 					{
 						if(DataFormatString!="")
 							this.Text=String.Format(DataFormatString,obj);
@@ -705,6 +705,21 @@ return true;
 					//return 0;
 					return DBNull.Value;
 				}
+                case TypeCode.Boolean:
+                {
+                    if (this.Text.Trim() != "")
+                    {
+                        try
+                        {
+                            return Convert.ToBoolean(this.Text.Trim());
+                        }
+                        catch
+                        {
+                            return DBNull.Value; //"1900-1-1";
+                        }
+                    }
+                    return DBNull.Value;//"1900-1-1";
+                }
 				default:
 					if(this.Text.Trim()=="")
 					{

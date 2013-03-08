@@ -9,8 +9,8 @@
  * 作者：邓太华     时间：2008-10-12
  * 版本：V3.0
  * 
- * 修改者：         时间：                
- * 修改说明：
+ * 修改者：         时间：2013-3-1                
+ * 修改说明：完善了控件
  * ========================================================================
 */
 using System;
@@ -228,7 +228,78 @@ namespace PWMIS.Web.Controls
 		public object GetValue()
 		{
 
-			return this.Text.Trim();
+            switch (this.SysTypeCode)
+            {
+                case TypeCode.String:
+                    {
+                        return this.Text.Trim();
+                    }
+                case TypeCode.Int32:
+                    {
+                        if (this.Text.Trim() != "")
+                        {
+                            return Convert.ToInt32(this.Text.Trim());
+                        }
+                        //return 0;
+                        return DBNull.Value;
+                    }
+                case TypeCode.Decimal:
+                    {
+                        if (this.Text.Trim() != "")
+                        {
+                            return Convert.ToDecimal(this.Text.Trim());
+                        }
+                        //return 0;
+                        return DBNull.Value;
+                    }
+                case TypeCode.DateTime:
+                    if (this.Text.Trim() != "")
+                    {
+                        try
+                        {
+                            return Convert.ToDateTime(this.Text.Trim());
+                        }
+                        catch
+                        {
+                            return DBNull.Value; //"1900-1-1";
+                        }
+                    }
+                    return DBNull.Value;//"1900-1-1";
+
+                case TypeCode.Double:
+                    {
+                        if (this.Text.Trim() != "")
+                        {
+                            return Convert.ToDouble(this.Text.Trim());
+                        }
+                        //return 0;
+                        return DBNull.Value;
+                    }
+                case TypeCode.Boolean:
+                    {
+                        if (this.Text.Trim() != "")
+                        {
+                            try
+                            {
+                                return Convert.ToBoolean(this.Text.Trim());
+                            }
+                            catch
+                            {
+                                return DBNull.Value; //"1900-1-1";
+                            }
+                        }
+                        return DBNull.Value;//"1900-1-1";
+                    }
+                default:
+                    if (this.Text.Trim() == "")
+                    {
+                        return DBNull.Value;
+                    }
+                    else
+                    {
+                        return this.Text.Trim();
+                    }
+            }
 		}
 
 		public virtual bool Validate()

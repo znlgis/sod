@@ -37,12 +37,12 @@
        <td >[售价]</td><td >
                                 <cc1:DataTextBox ID="DataTextBox3" runat="server" LinkObject="存货信息表" 
                                     LinkProperty="售价" SysTypeCode="Decimal" Width="128px" Type="Currency" 
-                                    isNull="False" OftenType="浮点数"></cc1:DataTextBox>
+                                    OftenType="浮点数"></cc1:DataTextBox>
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td>[成本价]</td><td >
            <cc1:DataTextBox ID="DataTextBox4" runat="server" LinkObject="存货信息表" 
-               LinkProperty="成本价" SysTypeCode="Decimal" width="128px" isNull="False" 
+               LinkProperty="成本价" SysTypeCode="Decimal" width="128px" 
                OftenType="浮点数"></cc1:DataTextBox>
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
@@ -58,7 +58,7 @@
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td>[库存数量]</td><td >
            <cc1:DataTextBox ID="DataTextBox6" runat="server" LinkObject="存货信息表" 
-               LinkProperty="库存数量" SysTypeCode="Int32" Type="Integer" isNull="False" 
+               LinkProperty="库存数量" SysTypeCode="Int32" Type="Integer" 
                OftenType="整数"></cc1:DataTextBox>
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">

@@ -574,11 +574,12 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="sql"></param>
         /// <param name="paraName"></param>
+        /// <param name="paraChar"></param>
         /// <returns></returns>
-        private static string FindFieldNameInSql(string sql, string paraName)
+        private static string FindFieldNameInSql(string sql, string paraName,string paraChar)
         {
-            if (!paraName.StartsWith("@"))
-                paraName = "@" + paraName;
+            if (!paraName.StartsWith(paraChar))
+                paraName = paraChar + paraName;
             string whereTempStr = sql.Substring(sql.IndexOf("Where", StringComparison.OrdinalIgnoreCase) + 5).Trim();
             string fildTempStr = whereTempStr.Substring(0, whereTempStr.IndexOf(paraName));
             int a = fildTempStr.LastIndexOf('[');
@@ -734,7 +735,7 @@ namespace PWMIS.DataMap.Entity
                     //为字符串类型的参数指定长度 edit at 2012.4.23
                     if (paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
                     {
-                        string field = FindFieldNameInSql(sql, name);
+                        string field = FindFieldNameInSql(sql, name,db.GetParameterChar);
                         ((IDbDataParameter)paras[index]).Size = EntityBase.GetStringFieldSize(oql.sql_table, field);
                     }
                     index++;
