@@ -47,6 +47,17 @@
  * 
  * 修改者：         时间：2012-11-06
  * 为提高效率，不再继续内部进行参数克隆处理，请多条SQL语句不要使用同名的参数对象
+ * 
+ * 修改者：         时间：2013-1-13
+ * 增加获取本地数据库类型的参数名称的抽象方法，增加“读写分离”功能，只需要设置
+ *   DataWriteConnectionString
+ * 属性即可，注意设置该属性不改变当前使用的数据库类型。
+ * 
+ *  修改者：         时间：2013-2-24
+ * 修改获取参数的方法为可重写，以解决Access 访问类的重写需求
+ * 
+ *  修改者：         时间：2013-3-8
+ * 执行查询后，清除参数集合，避免参数重复占用的问题。
  * ========================================================================
 */
 
@@ -65,9 +76,10 @@ namespace PWMIS.DataProvider.Data
     /// <summary>
     /// 公共数据访问基础类
     /// </summary>
-    public abstract class CommonDB:IDisposable
+    public abstract class CommonDB : IDisposable
     {
         private string _connString = string.Empty;
+        private string _writeConnString = null;
         private string _errorMessage = string.Empty;
         private bool _onErrorRollback = true;
         private bool _onErrorThrow = true;
@@ -171,7 +183,7 @@ namespace PWMIS.DataProvider.Data
         public long ElapsedMilliseconds
         {
             get { return _elapsedMilliseconds; }
-            protected set {  _elapsedMilliseconds=value; }
+            protected set { _elapsedMilliseconds = value; }
         }
 
         private string _insertKey;
@@ -220,6 +232,25 @@ namespace PWMIS.DataProvider.Data
                 //    _connString = _connString.Replace("~", appRootPath);
                 //}
                 CommonUtil.ReplaceWebRootPath(ref _connString);
+            }
+        }
+
+        /// <summary>
+        /// 写入数据的连接字符串，ExecuteNoneQuery 方法将自动使用该连接
+        /// </summary>
+        public string DataWriteConnectionString
+        {
+            get
+            {
+                //if (_writeConnString == null)
+                //    return this.ConnectionString;
+                //else
+                //    return _writeConnString;
+                return _writeConnString ?? this.ConnectionString;
+            }
+            set
+            {
+                _writeConnString = value;
             }
         }
 
@@ -352,7 +383,7 @@ namespace PWMIS.DataProvider.Data
         /// <param name="paraName">参数名字</param>
         /// <param name="dbType">>数据库数据类型</param>
         /// <returns>特定于数据源的参数对象</returns>
-        public  virtual IDataParameter GetParameter(string paraName, DbType dbType)
+        public virtual IDataParameter GetParameter(string paraName, DbType dbType)
         {
             IDataParameter para = this.GetParameter();
             para.ParameterName = paraName;
@@ -407,7 +438,12 @@ namespace PWMIS.DataProvider.Data
             para.Scale = scale;
             return para;
         }
-
+        /// <summary>
+        /// 获取当前数据库类型的参数数据类型名称
+        /// </summary>
+        /// <param name="para"></param>
+        /// <returns></returns>
+        public abstract string GetNativeDbTypeName(IDataParameter para);
         /// <summary>
         /// 返回此 SqlConnection 的数据源的架构信息。
         /// </summary>
@@ -468,7 +504,7 @@ namespace PWMIS.DataProvider.Data
             transCount--;
             if (_transation != null && _transation.Connection != null && transCount == 0)
                 _transation.Commit();
-           
+
             if (transCount == 0)
                 CloseGlobalConnection();
             CommandLog.Instance.WriteLog("提交事务并关闭连接", "AdoHelper");
@@ -497,7 +533,7 @@ namespace PWMIS.DataProvider.Data
                 sessionConnection.Open();
 
             CommandLog.Instance.WriteLog("打开会话连接", "ConnectionSession");
-            return new ConnectionSession (sessionConnection);
+            return new ConnectionSession(sessionConnection);
         }
 
         /// <summary>
@@ -513,7 +549,7 @@ namespace PWMIS.DataProvider.Data
             }
         }
 
-      
+
 
         private bool _sqlServerCompatible = true;
         /// <summary>
@@ -533,6 +569,17 @@ namespace PWMIS.DataProvider.Data
         {
             return SQL;
         }
+
+        /// <summary>
+        /// 获取经过本地数据库类型处理过的SQL语句
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        public string GetPreparedSQL(string sql)
+        {
+            return this.PrepareSQL(ref sql);
+        }
+
         /// <summary>
         /// 完善命令对象,处理命令对象关联的事务和连接，如果未打开连接这里将打开它
         /// 注意：为提高效率，不再继续内部进行参数克隆处理，请多条SQL语句不要使用同名的参数对象
@@ -621,6 +668,7 @@ namespace PWMIS.DataProvider.Data
         {
             ErrorMessage = "";
             IDbConnection conn = GetConnection();
+            conn.ConnectionString = this.DataWriteConnectionString;
             IDbCommand cmd = conn.CreateCommand();
             CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
 
@@ -1046,8 +1094,8 @@ namespace PWMIS.DataProvider.Data
         /// <returns>数据阅读器</returns>
         public IDataReader ExecuteDataReader(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
-            CommandBehavior behavior = this.Transaction == null 
-                ? CommandBehavior.SingleResult | CommandBehavior.CloseConnection 
+            CommandBehavior behavior = this.Transaction == null
+                ? CommandBehavior.SingleResult | CommandBehavior.CloseConnection
                 : CommandBehavior.SingleResult;
             return ExecuteDataReader(ref SQL, commandType, behavior, ref parameters);
         }
@@ -1098,13 +1146,13 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// 关闭连接，并清空参数集合 edit at 2013.3.8
+        /// 关闭连接
         /// </summary>
         /// <param name="conn">连接对象</param>
         /// <param name="cmd">命令对象</param>
         protected void CloseConnection(IDbConnection conn, IDbCommand cmd)
         {
-            if (cmd.Transaction == null && conn!=sessionConnection  && conn.State == ConnectionState.Open)
+            if (cmd.Transaction == null && conn != sessionConnection && conn.State == ConnectionState.Open)
                 conn.Close();
             cmd.Parameters.Clear();
         }
