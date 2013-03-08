@@ -14,25 +14,25 @@
  * ========================================================================
 */
 using System;
-using System.Data ;
-using System.Data.Odbc ;
+using System.Data;
+using System.Data.Odbc;
 
 namespace PWMIS.DataProvider.Data
 {
-	/// <summary>
-	/// ODBC 数据访问类
-	/// </summary>
-	public sealed class Odbc:AdoHelper
-	{
-		/// <summary>
-		/// 默认构造函数
-		/// </summary>
-		public Odbc()
-		{
-			//
-			// TODO: 在此处添加构造函数逻辑
-			//
-		}
+    /// <summary>
+    /// ODBC 数据访问类
+    /// </summary>
+    public sealed class Odbc : AdoHelper
+    {
+        /// <summary>
+        /// 默认构造函数
+        /// </summary>
+        public Odbc()
+        {
+            //
+            // TODO: 在此处添加构造函数逻辑
+            //
+        }
         /// <summary>
         /// 获取当前数据库类型的枚举
         /// </summary>
@@ -41,55 +41,60 @@ namespace PWMIS.DataProvider.Data
             get { return PWMIS.Common.DBMSType.UNKNOWN; }
         }
 
-		/// <summary>
-		/// 创建并且打开数据库连接
-		/// </summary>
-		/// <returns>数据库连接</returns>
-		protected override IDbConnection GetConnection()
-		{
-			IDbConnection conn=base.GetConnection ();
-			if(conn==null)
-			{
-				conn=new OdbcConnection (base.ConnectionString );
-				//conn.Open ();
-			}
-			return conn;
-		}
+        /// <summary>
+        /// 创建并且打开数据库连接
+        /// </summary>
+        /// <returns>数据库连接</returns>
+        protected override IDbConnection GetConnection()
+        {
+            IDbConnection conn = base.GetConnection();
+            if (conn == null)
+            {
+                conn = new OdbcConnection(base.ConnectionString);
+                //conn.Open ();
+            }
+            return conn;
+        }
 
-		/// <summary>
-		/// 获取数据适配器实例
-		/// </summary>
-		/// <returns>数据适配器</returns>
-		protected override IDbDataAdapter  GetDataAdapter(IDbCommand command)
-		{
-			IDbDataAdapter ada=new OdbcDataAdapter ((OdbcCommand )command);
-			return ada;
-		}
+        /// <summary>
+        /// 获取数据适配器实例
+        /// </summary>
+        /// <returns>数据适配器</returns>
+        protected override IDbDataAdapter GetDataAdapter(IDbCommand command)
+        {
+            IDbDataAdapter ada = new OdbcDataAdapter((OdbcCommand)command);
+            return ada;
+        }
 
-		/// <summary>
-		/// 获取一个新参数对象
-		/// </summary>
-		/// <returns>特定于数据源的参数对象</returns>
-		public override IDataParameter GetParameter()
-		{
-			return new OdbcParameter ();
-		}
+        /// <summary>
+        /// 获取一个新参数对象
+        /// </summary>
+        /// <returns>特定于数据源的参数对象</returns>
+        public override IDataParameter GetParameter()
+        {
+            return new OdbcParameter();
+        }
 
-		/// <summary>
-		///  获取一个新参数对象
-		/// </summary>
-		/// <param name="paraName">参数名</param>
-		/// <param name="dbType">参数数据类型</param>
-		/// <param name="size">参数大小</param>
-		/// <returns>特定于数据源的参数对象</returns>
-		public override IDataParameter GetParameter(string paraName,System.Data.DbType dbType,int size)
-		{
-			OdbcParameter para=new OdbcParameter();
-			para.ParameterName=paraName;
-			para.DbType=dbType;
-			para.Size=size;
-			return para;
-		}
+        /// <summary>
+        ///  获取一个新参数对象
+        /// </summary>
+        /// <param name="paraName">参数名</param>
+        /// <param name="dbType">参数数据类型</param>
+        /// <param name="size">参数大小</param>
+        /// <returns>特定于数据源的参数对象</returns>
+        public override IDataParameter GetParameter(string paraName, System.Data.DbType dbType, int size)
+        {
+            OdbcParameter para = new OdbcParameter();
+            para.ParameterName = paraName;
+            para.DbType = dbType;
+            para.Size = size;
+            return para;
+        }
+
+        public override string GetNativeDbTypeName(IDataParameter para)
+        {
+            return para.DbType.ToString();
+        }
 
         /// <summary>
         /// 返回此 OdbcConnection 的数据源的架构信息。
@@ -109,7 +114,7 @@ namespace PWMIS.DataProvider.Data
                 else
                     return conn.GetSchema(collectionName, restrictionValues);
             }
-            
+
         }
 
         public override System.Data.Common.DbConnectionStringBuilder ConnectionStringBuilder
@@ -119,12 +124,13 @@ namespace PWMIS.DataProvider.Data
 
         public override string ConnectionUserID
         {
-            get {
+            get
+            {
                 if (ConnectionStringBuilder.ContainsKey("User ID"))
                     return ConnectionStringBuilder["User ID"].ToString();
                 else
                     return "";
             }
         }
-	}
+    }
 }

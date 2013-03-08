@@ -39,7 +39,7 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         public override PWMIS.Common.DBMSType CurrentDBMSType
         {
-            get { return PWMIS.Common.DBMSType.SqlServerCe ; }
+            get { return PWMIS.Common.DBMSType.SqlServerCe; }
         }
 
         /// <summary>
@@ -90,6 +90,11 @@ namespace PWMIS.DataProvider.Data
             para.DbType = dbType;
             para.Size = size;
             return para;
+        }
+
+        public override string GetNativeDbTypeName(IDataParameter para)
+        {
+            return ((SqlCeParameter)para).SqlDbType.ToString();
         }
 
         /// <summary>
