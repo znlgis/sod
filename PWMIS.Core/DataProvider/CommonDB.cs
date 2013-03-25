@@ -58,6 +58,9 @@
  * 
  *  修改者：         时间：2013-3-8
  * 执行查询后，清除参数集合，避免参数重复占用的问题。
+ * 
+ * 修改者：         时间：2013-3-25
+ * 为支持本类的读写分离功能，修复了在事务中执行ExecuteNoneQuery引起了一个Bug，感谢网友“长的没礼貌”发现此Bug。
  * ========================================================================
 */
 
@@ -668,7 +671,8 @@ namespace PWMIS.DataProvider.Data
         {
             ErrorMessage = "";
             IDbConnection conn = GetConnection();
-            conn.ConnectionString = this.DataWriteConnectionString;
+            if (conn.State != ConnectionState.Open) //连接已经打开，不能切换连接字符串，感谢网友 “长的没礼貌”发现此Bug 
+                conn.ConnectionString = this.DataWriteConnectionString;
             IDbCommand cmd = conn.CreateCommand();
             CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
 
@@ -729,6 +733,8 @@ namespace PWMIS.DataProvider.Data
         public virtual int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID)
         {
             IDbConnection conn = GetConnection();
+            if (conn.State != ConnectionState.Open) //连接已经打开，不能切换连接字符串，感谢网友 “长的没礼貌”发现此Bug 
+                conn.ConnectionString = this.DataWriteConnectionString;
             IDbCommand cmd = conn.CreateCommand();
             CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
 

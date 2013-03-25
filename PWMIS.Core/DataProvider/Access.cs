@@ -11,6 +11,9 @@
  * 
  * 修改者：         时间：2013-2- 24               
  * 修改说明：解决Access 某些版本在更新DateTime类型的时候，参数化查询出现 “准表达式中数据类型不匹配”的问题。
+ * 
+ *  * 修改者：         时间：2013-3- 19               
+ * 修改说明：解决Access 生成建表脚本的问题 
  * ========================================================================
 */
 using System;
@@ -79,6 +82,16 @@ namespace PWMIS.DataProvider.Data
             if (dbType == DbType.DateTime)
                 ((OleDbParameter)para).OleDbType = OleDbType.DBDate;
             return para;
+        }
+
+        public override string GetNativeDbTypeName(IDataParameter para)
+        {
+            OleDbType type = ((OleDbParameter)para).OleDbType;
+            if (type == OleDbType.VarWChar)
+                type = OleDbType.VarChar;
+            else if (type == OleDbType.DBDate)
+                type = OleDbType.Date;
+            return type.ToString();
         }
     }
     
