@@ -9,8 +9,8 @@
  * 作者：邓太华     时间：2008-10-12
  * 版本：V3.0
  * 
- * 修改者：         时间：                
- * 修改说明：
+ * 修改者：         时间：2013-3-5                
+ * 修改说明：Oracle分页的一个问题，少一条记录（网友大大宝发现）
  * ========================================================================
 */
 //**************************************************************************
@@ -18,9 +18,10 @@
 //	用	  途：  SQL SERVER 分页处理程序
 //	创 建 人：  邓太华
 //  创建日期：  2006.7.26
-//	版 本 号：	V1.1
+//	版 本 号：	V4.6
 //	修改记录：  邓太华 2008.3.30 修改了额外查询(对@@Where条件的支持)可能引起的Bug
-//
+//              邓太华 2013.3.26 修改使用SqlServer、Access 等SQL语句中使用
+//                               Distinct 分页的问题
 //**************************************************************************
 /*简单查询分页方案 算法说明
  * SQL SERVER ：
@@ -343,10 +344,17 @@ namespace PWMIS.Common
             else
             {
                 //简单查询处理
+                string strUpperSQLInfo = strSQLInfo.ToUpper();
+                bool isDistinct = strUpperSQLInfo.IndexOf("DISTINCT") >= 7;
+                if (isDistinct)
+                    strUpperSQLInfo = strUpperSQLInfo.Replace("DISTINCT", "");
                 switch (strSQLType.ToUpper())
                 {
                     case "FIRST":
-                        SQL = strSQLInfo.ToUpper().Replace("SELECT ", "SELECT TOP @@PageSize ");
+                        if (isDistinct)
+                            SQL = strUpperSQLInfo.Replace("DISTINCT", "DISTINCT TOP @@PageSize");
+                        else
+                            SQL = strUpperSQLInfo.Replace("SELECT ", "SELECT TOP @@PageSize ");
                         SQL += "  @@Where ORDER BY " + strOrder;
                         break;
                     case "MID":
@@ -354,7 +362,10 @@ namespace PWMIS.Common
                          (SELECT Top @@PageSize * FROM
                            (
                              SELECT Top @@Page_Size_Number  ";
-                        SQL = strSQLInfo.ToUpper().Replace("SELECT ", strRep);
+                        if (isDistinct)
+                            strRep = strRep.Replace("SELECT Top @@Page_Size_Number ", "SELECT DISTINCT Top @@Page_Size_Number");
+
+                        SQL = strUpperSQLInfo.Replace("SELECT ", strRep);
                         SQL += "  @@Where ORDER BY " + strOrder;
                         SQL += "  ) P_T0 ORDER BY " + strNewOrder + " " +
                             " ) P_T1 ORDER BY " + strOrder;
@@ -362,7 +373,9 @@ namespace PWMIS.Common
                     case "LAST":
                         string strRep2 = @"SELECT * FROM (     
                           Select Top @@LeftSize ";
-                        SQL = strSQLInfo.ToUpper().Replace("SELECT ", strRep2);
+                        if (isDistinct)
+                            strRep2 = strRep2.Replace("Select Top @@LeftSize", "Select DISTINCT Top @@LeftSize");
+                        SQL = strUpperSQLInfo.Replace("SELECT ", strRep2);
                         SQL += " @@Where ORDER BY " + strNewOrder + " " +
                             " ) P_T1 ORDER BY " + strOrder;
                         break;
@@ -433,7 +446,7 @@ namespace PWMIS.Common
             string SqlTemplate = @"SELECT * FROM
  (SELECT rownum r_n,temptable.* FROM  
    ( @@SourceSQL ) temptable Where rownum <= @@RecEnd
- ) temptable2 WHERE r_n > @@RecStart ";
+ ) temptable2 WHERE r_n >= @@RecStart ";
 
             int iRecStart = (PageNumber - 1) * PageSize + 1;
             int iRecEnd = PageNumber * PageSize;
@@ -463,7 +476,7 @@ namespace PWMIS.Common
             if (AllCount == 0)
             {
                 //生成统计语句　
-                return "select count(*) from (" + strSQLInfo + ") t ";
+                return "select count(*) from (" + strSQLInfo + ") ";
             }
 
             if (PageNumber == 1)
@@ -475,7 +488,7 @@ namespace PWMIS.Common
 
         public static string MakePageSQLStringByMySQL(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
         {
-            return MakePageSQLStringByMySQL_PgSQL(strSQLInfo, strWhere, PageSize, PageNumber, AllCount,",");
+            return MakePageSQLStringByMySQL_PgSQL(strSQLInfo, strWhere, PageSize, PageNumber, AllCount, ",");
         }
 
         public static string MakePageSQLStringByPostgreSQL(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
