@@ -22,6 +22,8 @@
 //	修改记录：  邓太华 2008.3.30 修改了额外查询(对@@Where条件的支持)可能引起的Bug
 //              邓太华 2013.3.26 修改使用SqlServer、Access 等SQL语句中使用
 //                               Distinct 分页的问题
+//              网友[左眼] 2013.4.11 修复MySQL分页大于1页之后的问题
+//                               
 //**************************************************************************
 /*简单查询分页方案 算法说明
  * SQL SERVER ：
@@ -482,7 +484,10 @@ namespace PWMIS.Common
             if (PageNumber == 1)
                 return strSQLInfo + " LIMIT " + PageSize;
             int offset = PageSize * PageNumber;
-            return strSQLInfo + " LIMIT " + PageSize + offsetString + offset;
+            if(offsetString==",")//MySQL,感谢网友[左眼]发现此Bug
+                return strSQLInfo + " LIMIT " + offset + offsetString + PageSize;
+            else //PostgreSQL
+                return strSQLInfo + " LIMIT " + PageSize + offsetString + offset;
         }
 
 
