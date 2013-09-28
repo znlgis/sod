@@ -11,10 +11,16 @@
  * （ http://www.cnblogs.com/bluedoctor/archive/2011/05/23/2054541.html）
  * 
  * 作者：邓太华     时间：2008-10-12
- * 版本：V4.5
+ * 版本：V4.6.2
  * 
  * 修改者：         时间：2012-11-2                
- * 修改说明：修复一个复杂查询时候的分页错误
+ * 修改说明：修复一个复杂查询时候的分页错误 
+ * 
+ * 修改者：         时间：2013-4-7                
+ * 修改说明：新增 MapToList 方法，可以将多实体类查询结果映射到匿名列表结果类型
+ * 
+ * 修改者：         时间：2013-4-16                
+ * 修改说明：新增 MapToDataTable 方法，可以将多实体类查询结果映射到数据表
  * ========================================================================
 */
 using System;
@@ -24,9 +30,13 @@ using System.Data;
 using PWMIS.DataMap.Entity;
 using PWMIS.DataProvider.Data;
 using PWMIS.Core;
+using PWMIS.Common;
 
 namespace PWMIS.DataMap.Entity
 {
+
+    public delegate TResult ECResultFunc<TResult>(EntityContainer ec);
+
     /// <summary>
     /// 实体数据容器
     /// </summary>
@@ -45,6 +55,14 @@ namespace PWMIS.DataMap.Entity
         /// <param name="arg">参数</param>
         /// <returns></returns>
         public delegate TResult Func<TResult>(TResult arg);
+        /// <summary>
+        /// 返回一个结果类型的泛型委托函数
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <returns></returns>
+        public delegate TResult MyFunc<TResult>();
+
+        
 
         /// <summary>
         /// 默认构造函数
@@ -110,7 +128,7 @@ namespace PWMIS.DataMap.Entity
                     case PWMIS.Common.DBMSType.Access:
                     case PWMIS.Common.DBMSType.SqlServer:
                     case PWMIS.Common.DBMSType.SqlServerCe:
-                        if (oql.HaveJoinOpt)
+                        if (oql.haveJoinOpt)
                         {
                             if (oql.PageNumber <= 1) //仅限定记录条数
                             {
@@ -154,14 +172,14 @@ namespace PWMIS.DataMap.Entity
             if (oql.Parameters != null && oql.Parameters.Count > 0)
             {
                 int fieldCount = oql.Parameters.Count;
-                IDataParameter[] paras = new IDataParameter[fieldCount];
-                int index = 0;
+                IDataParameter[] paras = EntityQueryAnonymous.GetParameters(oql.Parameters, db);
+                //int index = 0;
 
-                foreach (string name in oql.Parameters.Keys)
-                {
-                    paras[index] = db.GetParameter(name, oql.Parameters[name]);
-                    index++;
-                }
+                //foreach (string name in oql.Parameters.Keys)
+                //{
+                //    paras[index] = db.GetParameter(name, oql.Parameters[name]);
+                //    index++;
+                //}
                 reader = db.ExecuteDataReader(sql, CommandType.Text, paras);
             }
             else
@@ -257,17 +275,18 @@ namespace PWMIS.DataMap.Entity
 
                 Dictionary<string, int> dictNameIndex = new Dictionary<string, int>();
                 T entity = Activator.CreateInstance<T>();
+                string tabeName = entity.TableName;
                 //查找字段匹配情况
                 //entity.PropertyNames 存储的仅仅是查询出来的列名称，由于有连表查询，
                 //如果要映射到指定的实体，还得检查当前列对应的表名称
-                if (this.OQL.sql_fields.Contains("[" + entity.TableName + "]"))
+                if (this.OQL.sql_fields.Contains("[" + tabeName + "]"))
                 {
                     //是连表查询
                     for (int i = 0; i < this.fieldNames.Length; i++)
                     {
                         for (int j = 0; j < entity.PropertyNames.Length; j++)
                         {
-                            string cmpString = "[" + entity.TableName + "].[" + entity.PropertyNames[j] + "]";
+                            string cmpString = "[" + tabeName + "].[" + entity.PropertyNames[j] + "]";
                             if (this.OQL.sql_fields.Contains(cmpString))
                             {
                                 dictNameIndex[this.fieldNames[i]] = i;
@@ -375,6 +394,140 @@ namespace PWMIS.DataMap.Entity
                     fun(t);
                     yield return t;
                 }
+            }
+            else
+            {
+                throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
+            }
+        }
+
+        /// <summary>
+        /// 将结果映射到相应类型的列表（可以使匿名类型）
+        /// <example>
+        /// <code>
+        /// <![CDATA[
+        /// OQL q=OQL.From(entity1)
+        ///          .Join(entity2).On(entity1.PK,entity2.FK)
+        ///          .Select(entity1.Field1,entity2.Field2)
+        ///       .End;
+        /// EntityContainer ec=new EntityContainer(q);
+        /// var list=ec.MapToList(()=>
+        ///          {
+        ///             return new {
+        ///                          Property1=ec.GetItemValue<int>(0), 
+        ///                          Property2=ec.GetItemValue<string>(1) 
+        ///                        };
+        ///          });
+        /// 
+        /// foreache(var item in list)
+        /// {
+        ///     Console.WriteLine("Property1={0},Property2={1}",item.Property1,item.Property2);
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// </summary>
+        /// <typeparam name="TResult">要映射的结果类型</typeparam>
+        /// <param name="fun">自定义的返回结果类型的函数</param>
+        /// <returns>结果列表</returns>
+        public IList<TResult> MapToList<TResult>(MyFunc<TResult> fun) where TResult : class
+        {
+            if (this.Values == null)
+                this.Execute();
+            List<TResult> resultList = new List<TResult>();
+            if (this.Values != null && this.fieldNames != null)
+            {
+                foreach (object[] itemValues in this.Values)
+                {
+                    
+                    this.currValue = itemValues;
+                   TResult t = fun();
+                   resultList.Add(t);
+                }
+                return resultList;
+            }
+            else
+            {
+                throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
+            }
+        }
+
+        /// <summary>
+        /// 将实体类容器转换为对象列表
+        /// <example>
+        /// <code>
+        /// <![CDATA[
+        /// OQL q=OQL.From(entity1)
+        ///          .Join(entity2).On(entity1.PK,entity2.FK)
+        ///          .Select(entity1.Field1,entity2.Field2)
+        ///       .End;
+        /// EntityContainer ec=new EntityContainer(q);
+        /// var list=ec.ToObjectList( e =>
+        ///          {
+        ///             return new {
+        ///                          Property1=e.GetItemValue<int>(0), 
+        ///                          Property2=e.GetItemValue<string>(1) 
+        ///                        };
+        ///          });
+        /// 
+        /// foreache(var item in list)
+        /// {
+        ///     Console.WriteLine("Property1={0},Property2={1}",item.Property1,item.Property2);
+        /// }
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// </summary>
+        /// <typeparam name="TResult">结果的列表元素类型</typeparam>
+        /// <param name="fun">容器结果委托函数</param>
+        /// <returns>对象列表</returns>
+        public IList<TResult> ToObjectList<TResult>(ECResultFunc<TResult> fun) where TResult : class
+        {
+            if (this.Values == null)
+                this.Execute();
+            List<TResult> resultList = new List<TResult>();
+            if (this.Values != null && this.fieldNames != null)
+            {
+                foreach (object[] itemValues in this.Values)
+                {
+
+                    this.currValue = itemValues;
+                    TResult t = fun(this);
+                    resultList.Add(t);
+                }
+                return resultList;
+            }
+            else
+            {
+                throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
+            }
+        }
+
+        /// <summary>
+        /// 将容器的结果数据映射到DataTable
+        /// </summary>
+        /// <param name="tableName">表名称</param>
+        /// <returns>DataTable</returns>
+        public DataTable MapToDataTable(string tableName)
+        {
+            if (this.Values == null)
+                this.Execute();
+            if (this.Values != null && this.fieldNames != null)
+            {
+                DataTable dt = new DataTable(tableName);
+                for (int i = 0; i < this.fieldNames.Length; i++)
+                {
+                    DataColumn col = new DataColumn(this.fieldNames[i]);
+                    object V = this.Values[0][i];
+                    col.DataType = V == null || V == DBNull.Value ? typeof(string) : V.GetType();
+                    dt.Columns.Add(col);
+                }
+
+                foreach (object[] itemValues in this.Values)
+                {
+                    dt.Rows.Add(itemValues);
+                }
+                return dt;
             }
             else
             {

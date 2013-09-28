@@ -61,6 +61,12 @@
  * 
  * 修改者：         时间：2013-3-25
  * 为支持本类的读写分离功能，修复了在事务中执行ExecuteNoneQuery引起了一个Bug，感谢网友“长的没礼貌”发现此Bug。
+ * 
+ *  修改者：         时间：2013-4-16
+ * 修复SQL日志中，没有记录参数化查询的参数值问题，感谢网友“GIV-顺德”发现此Bug。
+ * 
+ * *  修改者：         时间：2013-８-８
+ * 在事务回滚方法中递减事务计数器，并且修改数据阅读器方法判断事务数量的方式
  * ========================================================================
 */
 
@@ -82,7 +88,7 @@ namespace PWMIS.DataProvider.Data
     public abstract class CommonDB : IDisposable
     {
         private string _connString = string.Empty;
-        private string _writeConnString = null;
+        private string _writeConnString =null;
         private string _errorMessage = string.Empty;
         private bool _onErrorRollback = true;
         private bool _onErrorThrow = true;
@@ -243,16 +249,14 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         public string DataWriteConnectionString
         {
-            get
-            {
+            get {
                 //if (_writeConnString == null)
                 //    return this.ConnectionString;
                 //else
                 //    return _writeConnString;
                 return _writeConnString ?? this.ConnectionString;
             }
-            set
-            {
+            set {
                 _writeConnString = value;
             }
         }
@@ -441,6 +445,10 @@ namespace PWMIS.DataProvider.Data
             para.Scale = scale;
             return para;
         }
+
+        
+        
+
         /// <summary>
         /// 获取当前数据库类型的参数数据类型名称
         /// </summary>
@@ -508,8 +516,11 @@ namespace PWMIS.DataProvider.Data
             if (_transation != null && _transation.Connection != null && transCount == 0)
                 _transation.Commit();
 
-            if (transCount == 0)
+            if (transCount <= 0)
+            {
                 CloseGlobalConnection();
+                transCount = 0;            
+            }
             CommandLog.Instance.WriteLog("提交事务并关闭连接", "AdoHelper");
         }
 
@@ -518,6 +529,7 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         public void Rollback()
         {
+            transCount--;
             if (_transation != null && _transation.Connection != null)
                 _transation.Rollback();
             CloseGlobalConnection();
@@ -557,6 +569,7 @@ namespace PWMIS.DataProvider.Data
         private bool _sqlServerCompatible = true;
         /// <summary>
         /// SQL SERVER 兼容性设置，默认为兼容。该特性可以将SQLSERVER的语句移植到其它其它类型的数据库，例如字段分隔符号，日期函数等。
+        /// 如果是拼接字符串方式的查询，建议设置为False，避免在拼接ＳＱＬ的时候过滤掉'@'等特殊字符
         /// </summary>
         public bool SqlServerCompatible
         {
@@ -675,7 +688,7 @@ namespace PWMIS.DataProvider.Data
                 conn.ConnectionString = this.DataWriteConnectionString;
             IDbCommand cmd = conn.CreateCommand();
             CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
-
+            //cmd.Prepare();
             CommandLog cmdLog = new CommandLog(true);
 
             int result = -1;
@@ -701,13 +714,9 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                //    conn.Close();
+                cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
                 CloseConnection(conn, cmd);
             }
-
-            cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
-
             return result;
         }
 
@@ -779,13 +788,9 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                //    conn.Close();
+                cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
                 CloseConnection(conn, cmd);
             }
-
-            cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
-
             return result;
         }
 
@@ -837,13 +842,9 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                //    conn.Close();
+                cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
                 CloseConnection(conn, cmd);
             }
-
-            cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
-
             return result;
         }
 
@@ -1016,13 +1017,9 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                //    conn.Close();
+                cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
                 CloseConnection(conn, cmd);
             }
-
-            cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
-
             return schemaDataSet;
         }
 
@@ -1073,7 +1070,7 @@ namespace PWMIS.DataProvider.Data
         {
             IDataParameter[] paras = { };
             //在有事务的时候不能关闭连接 edit at 2012.7.23
-            CommandBehavior behavior = this.Transaction == null
+            CommandBehavior behavior = this.transCount == 0 //this.Transaction == null 不安全
                 ? CommandBehavior.SingleResult | CommandBehavior.CloseConnection
                 : CommandBehavior.SingleResult;
             return ExecuteDataReader(ref SQL, CommandType.Text, behavior, ref paras);
@@ -1092,7 +1089,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// 根据查询返回数据阅读器对象
+        /// 根据查询返回数据阅读器对象，但不可随机读取行内数据
         /// </summary>
         /// <param name="SQL">SQL</param>
         /// <param name="commandType">命令类型</param>
@@ -1100,7 +1097,22 @@ namespace PWMIS.DataProvider.Data
         /// <returns>数据阅读器</returns>
         public IDataReader ExecuteDataReader(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
-            CommandBehavior behavior = this.Transaction == null
+            CommandBehavior behavior = this.transCount == 0 //this.Transaction == null 不安全
+                ? CommandBehavior.SingleResult | CommandBehavior.CloseConnection
+                : CommandBehavior.SingleResult | CommandBehavior.SequentialAccess;//新增SequentialAccess 2013.9.24
+            return ExecuteDataReader(ref SQL, commandType, behavior, ref parameters);
+        }
+
+        /// <summary>
+        /// 根据查询返回数据阅读器对象,但可以随机读取行内的数据
+        /// </summary>
+        /// <param name="SQL">SQL</param>
+        /// <param name="commandType">命令类型</param>
+        /// <param name="parameters">参数数组</param>
+        /// <returns>数据阅读器</returns>
+        public IDataReader ExecuteDataReaderNotSequentialAccess(string SQL, CommandType commandType, IDataParameter[] parameters)
+        {
+            CommandBehavior behavior = this.transCount == 0 //this.Transaction == null 不安全
                 ? CommandBehavior.SingleResult | CommandBehavior.CloseConnection
                 : CommandBehavior.SingleResult;
             return ExecuteDataReader(ref SQL, commandType, behavior, ref parameters);
@@ -1147,6 +1159,7 @@ namespace PWMIS.DataProvider.Data
             }
 
             cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
+            cmd.Parameters.Clear();
 
             return reader;
         }

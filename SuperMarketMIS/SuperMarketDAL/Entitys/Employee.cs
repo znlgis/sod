@@ -26,13 +26,13 @@ namespace SuperMarketDAL.Entitys
         public string WorkNumber
         {
             get { return getProperty<string>("工号"); }
-            set { setProperty("工号", value); }
+            set { setProperty("工号", value,38); }
         }
 
         public string EmployeeName
         {
             get { return getProperty<string>("姓名"); }
-            set { setProperty("姓名", value); }
+            set { setProperty("姓名", value,20); }
         }
 
         public bool Sex
@@ -56,7 +56,7 @@ namespace SuperMarketDAL.Entitys
         public string JobName
         {
             get { return getProperty<string>("职务名称"); }
-            set { setProperty("职务名称", value); }
+            set { setProperty("职务名称", value,10); }
         }
     }
 }

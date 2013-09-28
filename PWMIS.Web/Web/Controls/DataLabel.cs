@@ -20,340 +20,184 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using PWMIS.Common;
+using PWMIS.DataMap;
 
 
 namespace PWMIS.Web.Controls
 {
-	/// <summary>
-	/// Summary description for BrainLabel.
-	/// </summary>
+    /// <summary>
+    /// Summary description for BrainLabel.
+    /// </summary>
     [System.Drawing.ToolboxBitmap(typeof(ControlIcon), "DataLable.bmp")]
-	public class DataLabel:Label,IDataControl
-	{
-		public DataLabel()
-		{
-			//
-			// TODO: Add constructor logic here
-			//
-		}
+    public class DataLabel : Label, IDataTextBox
+    {
+        public DataLabel()
+        {
+            //
+            // TODO: Add constructor logic here
+            //
+        }
 
-		#region 外观属性
+        #region 外观属性
 
-		/// <summary>
-		/// 数据呈现格式
-		/// </summary>
-		[Category("外观"),Description("数据呈现格式")]
-		public string DataFormatString
-		{
-			get
-			{
-				if(ViewState["DataFormatString"]!=null)
-					return (string)ViewState["DataFormatString"];
-				return "";
-			}
-			set
-			{
-				ViewState["DataFormatString"]=value;
-			}
-		}
-
-		#endregion
-
-		#region IBrainControl 成员
-
-		#region 数据属性
-		[Category("Data"),Description("设定对应的数据库字段是否是主键，用于自动数据查询和更新的依据")]
-		public bool PrimaryKey
-		{
-			get
-			{
-				if(ViewState["PrimaryKey"]!=null)
-					return (bool)ViewState["PrimaryKey"];
-				return false;
-			}
-			set
-			{
-				ViewState["PrimaryKey"]=value;
-			}
-		}
-
-		[Category("Data"),Description("设定对应的数据字段类型")]
-		public System.TypeCode SysTypeCode
-		{
-			get
-			{
-				if(ViewState["SysTypeCode"]!=null)
-					return (System.TypeCode)ViewState["SysTypeCode"];
-				return new System.TypeCode ();
-			}
-			set
-			{
-				ViewState["SysTypeCode"] = value;
-			}
-		}
-
-		[Category("Data"),Description("设定与数据库字段对应的数据名")]
-		public string LinkProperty
-		{
-			get
-			{
-				if(ViewState["LinkProperty"]!=null)
-					return (string)ViewState["LinkProperty"];
-				return "";
-			}
-			set
-			{
-				ViewState["LinkProperty"]=value;
-			}
-		}
-
-		[Category("Data"),Description("设定与数据库字段对应的数据表名")]
-		public string LinkObject
-		{
-			get
-			{
-				if(ViewState["LinkObject"]!=null)
-					return (string)ViewState["LinkObject"];
-				return "";
-			}
-			set
-			{
-				ViewState["LinkObject"]=value;
-			}
-		}
-
-		#endregion
-
-		#region 接口方法
-
-        public void SetValue(object obj)
-		{
-            //if(value!=null)
-            //    if(DataFormatString != "")
-            //    {
-            //        this.Text=String.Format(DataFormatString,value);
-            //    }
-            //    else
-            //    {
-            //        this.Text=value.ToString ();
-            //    }
-			    
-            //else
-            //    this.Text="";
-            if (obj == null || obj.ToString() == "")
+        /// <summary>
+        /// 数据呈现格式
+        /// </summary>
+        [Category("外观"), Description("数据呈现格式")]
+        public string DataFormatString
+        {
+            get
             {
-                this.Text = "";
-                return;
+                if (ViewState["DataFormatString"] != null)
+                    return (string)ViewState["DataFormatString"];
+                return "";
             }
-
-            // 邓太华 2006.8.11 添加单精度型和默认类型的实现
-            switch (this.SysTypeCode)
+            set
             {
-                case TypeCode.String:
-                    if (obj != DBNull.Value)
-                    {
-                        if (DataFormatString != "")
-                            this.Text = String.Format(DataFormatString, obj.ToString());
-                        else
-                            this.Text = obj.ToString().Trim();
-                    }
-                    else
-                    {
-                        this.Text = "";
-                    }
-                    break;
-                case TypeCode.Int32:
-                    if (obj != DBNull.Value && obj.GetType() == typeof(int))
-                    {
-                        this.Text = obj.ToString().Trim();
-                    }
-                    else
-                    {
-                        this.Text = "";
-                    }
-                    break;
-                case TypeCode.Decimal:
-                    if (obj != DBNull.Value && obj.GetType() == typeof(decimal))
-                    {
-                        if (DataFormatString != "")
-                            this.Text = String.Format(DataFormatString, obj);
-                        else
-                            this.Text = obj.ToString().Trim();
-                    }
-                    else
-                    {
-                        this.Text = "";
-                    }
-                    break;
-                case TypeCode.DateTime:
-                    if (obj != DBNull.Value && obj.GetType() == typeof(DateTime))
-                    {
-                        if (DataFormatString != "")
-                        {
-                            this.Text = String.Format(DataFormatString, obj);
-                        }
-                        else
-                        {
-                            //this.Text=((DateTime)obj).ToShortDateString().Trim();
-                            //没有格式化信息，保留原有数据格式 dth,2008.4.4
-                            this.Text = ((DateTime)obj).ToString();
-                        }
-                    }
-                    else
-                    {
-                        this.Text = "";
-                    }
-                    break;
-                case TypeCode.Double:
-                case TypeCode.Single:
-                    if (obj != DBNull.Value && (obj.GetType() == typeof(double) || obj.GetType() == typeof(float)))
-                    {
-                        if (DataFormatString != "")
-                            this.Text = String.Format(DataFormatString, obj);
-                        else
-                            this.Text = obj.ToString().Trim();
-                    }
-                    else
-                    {
-                        this.Text = "";
-                    }
-                    break;
-                default:
-                    this.Text = obj.ToString().Trim();
-                    break;
+                ViewState["DataFormatString"] = value;
             }
+        }
 
-		}
+        #endregion
 
-		public object GetValue()
-		{
+        #region IBrainControl 成员
 
-            switch (this.SysTypeCode)
+        #region 数据属性
+        [Category("Data"), Description("设定对应的数据库字段是否是主键，用于自动数据查询和更新的依据")]
+        public bool PrimaryKey
+        {
+            get
             {
-                case TypeCode.String:
-                    {
-                        return this.Text.Trim();
-                    }
-                case TypeCode.Int32:
-                    {
-                        if (this.Text.Trim() != "")
-                        {
-                            return Convert.ToInt32(this.Text.Trim());
-                        }
-                        //return 0;
-                        return DBNull.Value;
-                    }
-                case TypeCode.Decimal:
-                    {
-                        if (this.Text.Trim() != "")
-                        {
-                            return Convert.ToDecimal(this.Text.Trim());
-                        }
-                        //return 0;
-                        return DBNull.Value;
-                    }
-                case TypeCode.DateTime:
-                    if (this.Text.Trim() != "")
-                    {
-                        try
-                        {
-                            return Convert.ToDateTime(this.Text.Trim());
-                        }
-                        catch
-                        {
-                            return DBNull.Value; //"1900-1-1";
-                        }
-                    }
-                    return DBNull.Value;//"1900-1-1";
-
-                case TypeCode.Double:
-                    {
-                        if (this.Text.Trim() != "")
-                        {
-                            return Convert.ToDouble(this.Text.Trim());
-                        }
-                        //return 0;
-                        return DBNull.Value;
-                    }
-                case TypeCode.Boolean:
-                    {
-                        if (this.Text.Trim() != "")
-                        {
-                            try
-                            {
-                                return Convert.ToBoolean(this.Text.Trim());
-                            }
-                            catch
-                            {
-                                return DBNull.Value; //"1900-1-1";
-                            }
-                        }
-                        return DBNull.Value;//"1900-1-1";
-                    }
-                default:
-                    if (this.Text.Trim() == "")
-                    {
-                        return DBNull.Value;
-                    }
-                    else
-                    {
-                        return this.Text.Trim();
-                    }
+                if (ViewState["PrimaryKey"] != null)
+                    return (bool)ViewState["PrimaryKey"];
+                return false;
             }
-		}
+            set
+            {
+                ViewState["PrimaryKey"] = value;
+            }
+        }
 
-		public virtual bool Validate()
-		{
+        [Category("Data"), Description("设定对应的数据字段类型")]
+        public System.TypeCode SysTypeCode
+        {
+            get
+            {
+                if (ViewState["SysTypeCode"] != null)
+                    return (System.TypeCode)ViewState["SysTypeCode"];
+                return new System.TypeCode();
+            }
+            set
+            {
+                ViewState["SysTypeCode"] = value;
+            }
+        }
 
-			return true;
-		}
+        [Category("Data"), Description("设定与数据库字段对应的数据名")]
+        public string LinkProperty
+        {
+            get
+            {
+                if (ViewState["LinkProperty"] != null)
+                    return (string)ViewState["LinkProperty"];
+                return "";
+            }
+            set
+            {
+                ViewState["LinkProperty"] = value;
+            }
+        }
 
-		#endregion
+        [Category("Data"), Description("设定与数据库字段对应的数据表名")]
+        public string LinkObject
+        {
+            get
+            {
+                if (ViewState["LinkObject"] != null)
+                    return (string)ViewState["LinkObject"];
+                return "";
+            }
+            set
+            {
+                ViewState["LinkObject"] = value;
+            }
+        }
 
-		#region 默认属性
+        #endregion
 
-		public bool isClientValidation
-		{
-			get
-			{
-				
-				return false;
-			}
-		}
+        #region 接口方法
 
-		public bool isNull
-		{
+        public void SetValue(object value)
+        {
+            DataTextBoxValue dtbv = new DataTextBoxValue(this);
+            dtbv.SetValue(value);
+        }
 
-			get
-			{
-				return true;
-			}
-			set
-			{
+        public object GetValue()
+        {
+            DataTextBoxValue dtbv = new DataTextBoxValue(this);
+            return dtbv.GetValue();
+        }
 
-			}
-		}
 
-		public bool IsValid
-		{
-			get
-			{
-				return Validate();
-			}
-		}
+        public virtual bool Validate()
+        {
 
-		public bool ReadOnly
-		{
-			get
-			{
-				return true;
-			}
-			set
-			{
-			}
-		}
-		#endregion
+            return true;
+        }
 
-		#endregion
-	}
+        #endregion
+
+        #region 默认属性
+
+        public bool isClientValidation
+        {
+            get
+            {
+
+                return false;
+            }
+        }
+
+        public bool IsNull
+        {
+
+            get
+            {
+                return true;
+            }
+            set
+            {
+
+            }
+        }
+
+        public bool IsValid
+        {
+            get
+            {
+                return Validate();
+            }
+        }
+
+        public bool ReadOnly
+        {
+            get
+            {
+                return true;
+            }
+            set
+            {
+            }
+        }
+
+        public int MaxLength
+        {
+            get;
+            set;
+        }
+        #endregion
+
+        #endregion
+    }
 }

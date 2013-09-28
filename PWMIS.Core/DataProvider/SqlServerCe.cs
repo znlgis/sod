@@ -39,7 +39,7 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         public override PWMIS.Common.DBMSType CurrentDBMSType
         {
-            get { return PWMIS.Common.DBMSType.SqlServerCe; }
+            get { return PWMIS.Common.DBMSType.SqlServerCe ; }
         }
 
         /// <summary>

@@ -1,10 +1,18 @@
 ﻿/*
- * ========================================================================
- * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
- * Welcom use the PDF.NET (PWMIS Data Process Framework).
- * See more information,Please goto http://www.pwmis.com/sqlmap 
- * ========================================================================
- * 该类的作用
+ *
+ * 有关OQL的概念，参考下面的文章内容：
+ * 《ORM查询语言（OQL）简介--概念篇》 http://www.cnblogs.com/bluedoctor/archive/2012/10/06/2712699.html
+ * 
+ * 版本说明：OQL ver 5.0
+ * 当前版本是在 4.X的版本提供的功能基础上面的重构，新增了实体类内连接支持，Insert，InserForm支持，
+ * 并完全重写了内部实现，优化了代码体系，使得扩展性更好。
+ * 
+ * 注意：当前版本废除了OQL1的功能定义，与原有版本的OQL1已经完全不同，但仍可以使用OQL.Condition 对象，
+ * 使用方法不变。另外，OQL的几个构造函数已经过时，具体看源码说明。
+ * 
+ */
+#region 旧版本文件头注释信息
+/*
  * 
  * 作者：邓太华     时间：2008-10-12
  * 版本：V4.5
@@ -27,67 +35,164 @@
  * 
  *  * 修改者：         时间：2012-12-26                
  * 修改说明：OQL 相关对象实现IDisposable接口，避免OQL对象使用了具有长生命周期的实体类导致可能的内存泄漏问题。
- * ========================================================================
-*/
+ * 
+ *  修改者：         时间：2013-1-16                
+ * 修改说明：(网友[有事M我]提供 )根据传入的多字段排序，从而进行动态的排序；
+ * 适用于不能在OQL表达式里面直接指明排序方式的场景（比如需要从前台传入）。
+ * 
+ * 增加了OQLOrder对象，根据外部传入条件，动态构造排序条件供OQL使用。
+ * 
+ * 修改者：         时间：2013-1-17                
+ * 修改说明：建立PWMIS.Core.Extensions 项目，扩展OQL的使用方式；
+ * 
+ * 修改者：         时间：2013-5-27                
+ * 修改说明：修复OQL2.In 的子查询的时候，主查询采用OQLCompare 条件引起的Bug；
+ *           感谢 博客园@张善友 发现此Bug
+ *           
+ * 修改者：         时间：2013-9-17                
+ * 修改说明：修复在使用ＩＮ的子查询中使用排序，导致查询语句不正确的问题；
+ *           感谢 网友　GIV-顺德 发现此Bug
+ */
+#endregion
+
 using System;
 using System.Collections.Generic;
 using System.Text;
-using PWMIS.Core;
+using PWMIS.DataMap.Entity;
 
 namespace PWMIS.DataMap.Entity
 {
 
+    public delegate OQL OQLChildFunc(OQL parent);
     /// <summary>
-    /// 实体对象查询表达式
+    /// 获取OQL缓存的委托函数
     /// </summary>
-    public class OQL : IDisposable
+    /// <param name="paraValueObject">构造OQL对象所需要的参数值的对象，比如一个实体类</param>
+    /// <returns>OQL</returns>
+    public delegate OQL OQLCacheFunc(object paraValueObject);
+    /// <summary>
+    /// OQL排序的委托方法，用于指定排序的对象
+    /// </summary>
+    /// <param name="order">OQL排序对象</param>
+    public delegate void OQLOrderAction(OQLOrder order);
+
+    public delegate void OQLOrderAction<T>(OQLOrder order, T para) where T : class;
+    /// <summary>
+    /// 表名称字段类型。OQL内部使用
+    /// </summary>
+    public class TableNameField
     {
-        private OQL1 oql1;
-        private PWMIS.Common.EntityMapType _mapType;
-
-        private EntityBase currEntity;
-        private List<EntityBase> joinedEntitys = new List<EntityBase>();
-        protected internal bool isJoinOpt;//是否是连接操作
-        protected internal bool HaveJoinOpt;//是否已经发生了连接操作
-
-        private string joinedStringTemp = string.Empty;
-        private JoinEntity currJoinEntity;
-
-        private List<string> selectedFields = new List<string>();
-
-        private bool hasSelected = false;
-        private string optFlag = "SELECT ";
-        private string sqlUpdate = "";
-        private Dictionary<string, object> updateParameters = null;
-
-        protected internal string sql_fields = string.Empty;
-        protected internal string sql_table = string.Empty;
-        protected internal string sql_condition = string.Empty;
-        protected internal string joinedString = string.Empty;
-
-        protected internal string getingTableName = string.Empty;
-        protected internal string getingPropertyName = string.Empty;
-
         /// <summary>
-        /// 实体类映射的类型
+        /// 获取表名称
         /// </summary>
-        public PWMIS.Common.EntityMapType EntityMap
-        {
-            get { return _mapType; }
-            protected set { _mapType = value; }
-        }
-
-        /// <summary>
-        /// 条件表达式
-        /// </summary>
-        public OQL2 Condition
+        public string Name
         {
             get
             {
-                return new OQL2(this.currEntity);
+                return Entity.GetTableName();
             }
         }
+        /// <summary>
+        /// 原始字段名
+        /// </summary>
+        public string Field;
+        /// <summary>
+        /// 关联的实体类
+        /// </summary>
+        public EntityBase Entity;
+        /// <summary>
+        /// 在一系列字段使用中的索引号
+        /// </summary>
+        public int Index;
+        /// <summary>
+        /// 字段对应的值
+        /// </summary>
+        public object FieldValue;
 
+        private string _sqlFieldName;
+        /// <summary>
+        /// 在ＳＱＬ语句中使用的字段名
+        /// </summary>
+        public string SqlFieldName
+        {
+            get {
+                if (string.IsNullOrEmpty(_sqlFieldName))
+                    return this.Field;
+                else
+                    return _sqlFieldName;
+            }
+            set
+            {
+                _sqlFieldName = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// PDF.NET ORM Query Language
+    /// </summary>
+    public class OQL : IOQL, IDisposable
+    {
+        /// <summary>
+        /// SqlServer上的锁类型枚举。请注意，OQL应用这个枚举之后将只能在SqlServer上面使用。
+        /// </summary>
+        public enum SqlServerLock
+        {
+            /// <summary>
+            /// 在该表上保持共享锁，直到整个事务结束，而不是在语句执行完立即释放所添加的锁。
+            /// </summary>
+            HOLDLOCK,
+            /// <summary>
+            /// 不添加共享锁和排它锁，当这个选项生效后，可能读到未提交读的数据或“脏数据”，这个选项仅仅应用于SELECT语句
+            /// </summary>
+            NOLOCK,
+            /// <summary>
+            /// 指定添加页锁（否则通常可能添加表锁）
+            /// </summary>
+            PAGLOCK,
+            /// <summary>
+            /// 用与运行在提交读隔离级别的事务相同的锁语义执行扫描。默认情况下，SQL Server 2000 在此隔离级别上操作
+            /// </summary>
+            READCOMMITTED,
+            /// <summary>
+            /// 跳过已经加锁的数据行，这个选项将使事务读取数据时跳过那些已经被其他事务锁定的数据行，而不是阻塞直到其他事务释放锁，READPAST仅仅应用于READ COMMITTED隔离性级别下事务操作中的SELECT语句操作
+            /// </summary>
+            READPAST,
+            /// <summary>
+            /// 等同于NOLOCK
+            /// </summary>
+            READUNCOMMITTED,
+            /// <summary>
+            /// 设置事务为可重复读隔离性级别
+            /// </summary>
+            REPEATABLEREAD,
+            /// <summary>
+            /// 使用行级锁，而不使用粒度更粗的页级锁和表级锁
+            /// </summary>
+            ROWLOCK,
+            /// <summary>
+            /// 用与运行在可串行读隔离级别的事务相同的锁语义执行扫描。等同于 HOLDLOCK。
+            /// </summary>
+            SERIALIZABLE,
+            /// <summary>
+            /// 指定使用表级锁，而不是使用行级或页面级的锁，SQL Server在该语句执行完后释放这个锁，而如果同时指定了HOLDLOCK，该锁一直保持到这个事务结束
+            /// </summary>
+            TABLOCK,
+            /// <summary>
+            /// 指定在表上使用排它锁，这个锁可以阻止其他事务读或更新这个表的数据，直到这个语句或整个事务结束
+            /// </summary>
+            TABLOCKX,
+            /// <summary>
+            /// 指定在读表中数据时设置更新 锁（update lock）而不是设置共享锁，该锁一直保持到这个语句或整个事务结束，使用UPDLOCK的作用是允许用户先读取数据（而且不阻塞其他用户读数据），并且保证在后来再更新数据时，这一段时间内这些数据没有被其他用户修改
+            /// </summary>
+            UPDLOCK,
+            /// <summary>
+            /// 未知（OQL默认）
+            /// </summary>
+            UNKNOW
+        }
+
+        #region 分页相关
         /// <summary>
         /// 查询前N条记录，目前仅支持Access/SqlServer，其它数据库可以使用Limit(N) 方法替代。
         /// </summary>
@@ -166,44 +271,125 @@ namespace PWMIS.DataMap.Entity
             this.PageField = pageField;
             return this;
         }
+        #endregion
 
+        #region 旧版本保留的变量定义
         /// <summary>
-        /// 重新初始化实体对象查询表达式的内部状态
+        /// 当前实体类
         /// </summary>
-        public void ReSet()
+        protected internal EntityBase currEntity;
+        /// <summary>
+        /// 是否已经发生了连接操作
+        /// </summary>
+        protected internal bool haveJoinOpt;
+        /// <summary>
+        /// 是否有排序操作
+        /// </summary>
+        protected internal bool haveOrderBy;
+        /// <summary>
+        /// SQL选择的字段
+        /// </summary>
+        protected internal string sql_fields = string.Empty;
+        /// <summary>
+        /// 查询对应的表
+        /// </summary>
+        protected internal string sql_table = string.Empty;
+        /// <summary>
+        /// 查询条件
+        /// </summary>
+        protected internal string sql_condition = string.Empty;
+        #endregion
+
+        #region 新增变量定义
+        const int OQL_SELECT = 1, OQL_UPDATE = 2, OQL_INSERT = 3, OQL_DELETE = 4, OQL_INSERT_FROM = 5, OQL_UPDATE_SELFT = 6;
+        private Dictionary<object, string> dictAliases = null;
+        private string mainTableName = "";
+        private List<string> selectedFieldNames = new List<string>();
+        private List<string> _groupbyFieldNames;
+        private string sql_from = string.Empty;//Select时候的表名或者Upate，Insert的前缀语句
+        private char updateSelfOptChar;
+        private int paraIndex = 0;
+        private int optFlag = OQL_SELECT;
+        private OQL insertFromOql = null;
+        private OQL parentOql = null;
+        private int fieldGetingIndex = 0;//字段获取顺序的索引，如果有子查询，那么子查询使用父查询的该索引进行递增
+        private SqlServerLock serverLock = SqlServerLock.UNKNOW;
+
+        protected internal int GetFieldGettingIndex()
         {
-            selectedFields.Clear();
-            hasSelected = false;
-            isJoinOpt = false;
-            HaveJoinOpt = false;
-            optFlag = "SELECT ";
-            sqlUpdate = "";
-            updateParameters = null;
-
-            TopCount = 0;
-            PageEnable = false;
+            if (parentOql != null)
+                return parentOql.GetFieldGettingIndex();
+            return ++fieldGetingIndex;
         }
-
+        /// <summary>
+        /// 是否具有子查询
+        /// </summary>
+        protected internal bool haveChildOql = false;
 
         /// <summary>
-        /// 获取条件参数
+        /// Where之后的OQL字符串
         /// </summary>
-        public Dictionary<string, object> Parameters
+        protected internal string oqlString = "";
+        /// <summary>
+        /// 字段堆栈
+        /// </summary>
+        protected internal Stack<TableNameField> fieldStack = new Stack<TableNameField>();
+
+        //private Dictionary<string, TableNameField> dictParaNameField = new Dictionary<string, TableNameField>();
+        /// <summary>
+        /// SQL 函数
+        /// </summary>
+        protected internal string sqlFunctionString = string.Empty;
+        /// <summary>
+        /// 分组字段名
+        /// </summary>
+        protected internal List<string> GroupbyFieldNames
         {
             get
             {
-                if (optFlag == "UPDATE ")
-                {
-                    Dictionary<string, object> paras = new Dictionary<string, object>();
-                    foreach (string key in updateParameters.Keys)
-                        paras.Add(key, updateParameters[key]);
-                    foreach (string key in oql1.Parameters.Keys)
-                        paras.Add(key, oql1.Parameters[key]);
-
-                    return paras;
-                }
-                return oql1.Parameters;
+                if (_groupbyFieldNames == null)
+                    _groupbyFieldNames = new List<string>();
+                return _groupbyFieldNames;
             }
+        }
+        #endregion
+
+        #region 旧方法
+
+        private Dictionary<string, TableNameField> _parameters;
+        /// <summary>
+        /// 获取条件参数
+        /// </summary>
+        public Dictionary<string, TableNameField> Parameters
+        {
+            get
+            {
+                if (_parameters == null)
+                    _parameters = new Dictionary<string, TableNameField>();
+                return _parameters;
+            }
+        }
+
+        /// <summary>
+        /// 实体类映射的类型
+        /// </summary>
+        public PWMIS.Common.EntityMapType EntityMap
+        {
+            get;
+            protected set;
+        }
+
+        /// <summary>
+        /// 根据用户自定义的查询（临时视图），从该查询进一步获取指定的记录的查询语句
+        /// </summary>
+        /// <param name="tempViewSql">作为子表的用户查询（临时视图）</param>
+        /// <returns>符合当前限定条件的查询语句</returns>
+        public string GetMapSQL(string tempViewSql)
+        {
+            if (string.IsNullOrEmpty(tempViewSql))
+                throw new Exception("用户的子查询不能为空。");
+            this.mainTableName = " (" + tempViewSql + " ) tempView ";
+            return ToSelectString("");
         }
 
         /// <summary>
@@ -211,35 +397,584 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         public Dictionary<string, object> InitParameters { get; set; }
 
+        #endregion
+
+        #region 新增非公开方法
         /// <summary>
-        /// 使用一个实体对象初始化实体对象查询表达式
+        /// 获取OQL使用的字段名
         /// </summary>
-        /// <param name="e">实体对象</param>
+        /// <param name="tnf"></param>
+        /// <returns></returns>
+        protected internal string GetOqlFieldName(TableNameField tnf)
+        {
+            if (dictAliases == null)
+                return string.Format(" [{0}]", tnf.Field);
+            else
+            {
+                string aliases = "";
+                if (dictAliases.TryGetValue(tnf.Entity, out aliases))
+                {
+                    return string.Format(" {0}.[{1}]", aliases, tnf.Field);
+                }
+                else
+                {
+                    return string.Format(" M.[{0}]", tnf.Field);
+                }
+            }
+
+        }
+        /// <summary>
+        /// 获取表的别名
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        protected internal string GetTableAliases(EntityBase entity)
+        {
+            string aliases = "";
+            if (dictAliases.TryGetValue(entity, out aliases))
+                return aliases;
+            else
+                return "";
+        }
+        /// <summary>
+        /// 从堆栈上取一个以逗号间隔字段名数组字符串
+        /// </summary>
+        /// <returns></returns>
+        protected internal string TakeStackFields()
+        {
+            string[] fieldNames = new string[fieldStack.Count];
+            for (int i = fieldStack.Count - 1; i >= 0; i--)
+            {
+                TableNameField tnf = fieldStack.Pop();
+                fieldNames[i] = GetOqlFieldName(tnf);
+            }
+            return string.Join(",", fieldNames);
+        }
+
+        private TableNameField TackOneParentStackField()
+        {
+            if (parentOql == null)
+                throw new InvalidOperationException("OQL的父对象为空！");
+            var tnf=parentOql.TakeOneStackFields();
+            string parentField = tnf.SqlFieldName;
+            if (parentField.IndexOf('.') == -1)
+                tnf.SqlFieldName = "M." + parentField;
+
+            return tnf;
+        }
+        /// <summary>
+        /// 从堆栈上只取一个字段名
+        /// </summary>
+        /// <returns></returns>
+        protected internal TableNameField TakeOneStackFields()
+        {
+            if (fieldStack.Count == 0)
+            {
+                //如果父OQL不为空，则从父对象获取字段堆栈
+                if (parentOql != null)
+                    return TackOneParentStackField();
+                else
+                    throw new ArgumentException("OQL 字段堆栈为空！可能为方法参数未曾调用过OQL关联的实体类的属性。");
+
+            }
+            TableNameField tnf = fieldStack.Pop();
+            tnf.SqlFieldName= GetOqlFieldName(tnf);
+            return tnf;
+        }
+        /// <summary>
+        /// 从堆栈上取一个字段
+        /// </summary>
+        /// <param name="index">使用的索引号</param>
+        /// <returns></returns>
+        //protected internal string TakeOneStackFields(out int index)
+        //{
+        //    if (fieldStack.Count == 0)
+        //    {
+        //        //如果父OQL不为空，则从父对象获取字段堆栈
+        //        if (parentOql != null)
+        //            return TackOneParentStackField(out index);
+        //        else
+        //            throw new ArgumentException("OQL 字段堆栈为空！可能为方法参数未曾调用过OQL关联的实体类的属性。");
+
+        //    }
+        //    TableNameField tnf = fieldStack.Pop();
+        //    index = tnf.Index;
+        //    return GetOqlFieldName(tnf);
+        //}
+
+        /// <summary>
+        /// 尝试获取另一个堆栈中的字段，仅当堆栈中剩下一个的时候有效
+        /// </summary>
+        /// <returns></returns>
+        //protected internal string TryTakeOneStackFields()
+        //{
+        //    if (fieldStack.Count == 1)
+        //    {
+        //        TableNameField tnf = fieldStack.Pop();
+        //        return GetOqlFieldName(tnf);
+        //    }
+        //    else
+        //    {
+        //        if (parentOql != null)
+        //        {
+        //            int index = 0;
+        //            return TackOneParentStackField(out index);
+        //        }
+
+        //    }
+        //    return "";
+        //}
+
+        /// <summary>
+        /// 从堆栈上获取2个字段信息，可能只获取到一个字段信息并自动判断字段是左还是右
+        /// </summary>
+        /// <typeparam name="T">属性字段的类型</typeparam>
+        /// <param name="leftParaValue">左边参数的值</param>
+        /// <param name="leftField">输出的左字段</param>
+        /// <param name="rightField">输出的右字段</param>
+        protected internal void TakeTwoStackFields<T>(T leftParaValue, out TableNameField leftField, out TableNameField rightField)
+        {
+            leftField = null;
+            rightField = null;
+
+            int count = fieldStack.Count;
+            if (count == 0)
+            {
+                //在子查询中条件比较左右字段都用父查询的字段，是不合理的
+                throw new ArgumentException("OQL 字段堆栈为空！可能原因为方法使用的实体类不是OQL使用的，或者未使用任何实体类属性，或者使用了父查询的OQL的实体类属性。");
+            }
+            else if (count == 1)
+            {
+                TableNameField tnf = fieldStack.Pop();
+                //string fieldName = GetOqlFieldName(tnf);
+                tnf.SqlFieldName = GetOqlFieldName(tnf);
+                //如果当前是子查询，还需要检查父查询的字段堆栈
+                if (parentOql != null)
+                {
+                    var tnfParent = TackOneParentStackField();
+                    //int parentFieldIndex = tnfParent.Index;
+                    //string parentField = tnfParent.SqlFieldName;
+                    if (tnf.Index < tnfParent.Index)
+                    {
+                        leftField = tnf;
+                        rightField = tnfParent;
+                    }
+                    else
+                    {
+                        rightField = tnf;
+                        leftField = tnfParent;
+                    }
+                }
+                else
+                {
+                    //通过获取的字段名关联的值，来确定参数所在的顺序
+                    object Value = tnf.Entity.PropertyList(tnf.Field);
+                    if (Value == DBNull.Value) Value = null;
+                    if (Value != null)
+                    {
+                        //实体属性字段已经赋值过或者为string 类型
+                        if (object.Equals(leftParaValue, Value))
+                            leftField = tnf;
+                        else
+                            rightField = tnf;
+
+                    }
+                    else
+                    {
+                        //日期类型必须特殊处理，感谢网友 Sharp_C发现此问题
+                        if (typeof(T) == typeof(DateTime) && object.Equals(leftParaValue, new DateTime(1900, 1, 1)))
+                            leftField = tnf;
+                        else if (object.Equals(default(T), leftParaValue))
+                            leftField = tnf;
+                        else
+                            rightField = tnf;
+                    }
+
+                }
+            }
+            else if (count >= 2)
+            {
+                //必定是连接查询，左右参数都是字段，而不是值
+                TableNameField tnf1 = fieldStack.Pop();
+                string fieldName1 = GetOqlFieldName(tnf1);
+                tnf1.SqlFieldName = fieldName1;
+
+                TableNameField tnf2 = fieldStack.Pop();
+                string fieldName2 = GetOqlFieldName(tnf2);
+                tnf2.SqlFieldName = fieldName2;
+                //正常情况应该是 tnf1.Index > tnf2.Index
+                leftField = tnf2;
+                rightField = tnf1;
+
+                fieldStack.Clear();
+            }
+            else
+            {
+                throw new InvalidOperationException("当前OQL对象的字段堆栈出现了未期望的字段数量：" + count);
+
+            }
+
+        }
+        /// <summary>
+        /// 使用当前参数值，创建一个参数名，并将参数的值放到当前对象的参数字典中去
+        /// </summary>
+        /// <param name="Value"></param>
+        /// <returns></returns>
+        protected internal string CreateParameter(TableNameField Value)
+        {
+            string paraName = "@P" + paraIndex++;
+            Parameters.Add(paraName, Value);
+            return paraName;
+        }
+
+        protected internal string CreateParameter(TableNameField field,object Value)
+        {
+            TableNameField tnf = new TableNameField(); 
+            if (field != null)
+            {
+                tnf.Entity = field.Entity;
+                tnf.Field = field.Field;
+                tnf.Index = field.Index;
+                tnf.SqlFieldName = field.SqlFieldName;
+            }
+            tnf.FieldValue = Value;
+            return CreateParameter(tnf);
+        }
+        /// <summary>
+        /// 获取当前OQL对象正在使用的实体类
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        protected internal T GetUsedEntity<T>() where T : class
+        {
+            if (this.currEntity is T)
+                return this.currEntity as T;
+            if (dictAliases != null)
+            {
+                foreach (object key in dictAliases.Keys)
+                {
+                    if (key is T)
+                        return key as T;
+                }
+            }
+            return null;
+        }
+
+        void e_PropertyGetting(object sender, PropertyGettingEventArgs e)
+        {
+            TableNameField tnf = new TableNameField()
+            {
+                Field = e.PropertyName,
+                Entity = (EntityBase)sender,
+                Index = this.GetFieldGettingIndex()
+            };
+
+            fieldStack.Push(tnf);
+        }
+
+        private JoinEntity Join(EntityBase entity, string joinTypeString)
+        {
+            if (dictAliases == null)
+                dictAliases = new Dictionary<object, string>();
+            dictAliases.Add(entity, "T" + dictAliases.Count);
+            haveJoinOpt = true;
+            entity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(e_PropertyGetting);
+            JoinEntity je = new JoinEntity(this, entity, joinTypeString);
+
+            return je;
+        }
+
+        #endregion
+
+        #region OQL CRUD 方法
+        /// <summary>
+        /// 选取要调用的实体类属性字段。该方法可以在OQL实例对象上多次调用
+        /// </summary>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public OQL1 Select(params object[] fields)
+        {
+            //防止在调用本方法之前访问关联的实体类属性带来的问题。
+            //感谢网友 GIV-顺德 发现此问题
+            if (fields.Length > 0)
+            {
+                int count = fieldStack.Count;
+                if (count > fields.Length) //防止才执行本方法前访问了实体类的属性
+                    count = fields.Length;
+                for (int i = 0; i < count; i++)
+                {
+                    TableNameField tnf = fieldStack.Pop();
+                    selectedFieldNames.Add(string.Format("\r\n    {0}", GetOqlFieldName(tnf)));
+                }
+            }
+            fieldStack.Clear();
+            selectedFieldNames.Reverse();//恢复正常的字段选取顺序
+            return new OQL1(this);
+        }
+
+        /// <summary>
+        /// 使用是否排除重复记录的方式，来选取实体对象的属性
+        /// </summary>
+        /// <param name="distinct"></param>
+        /// <param name="fields"></param>
+        /// <returns></returns>
+        public OQL1 Select(bool distinct, params object[] fields)
+        {
+            this.Distinct = distinct;
+            return Select(fields);
+        }
+
+        private string PreUpdate()
+        {
+            string sqlUpdate = "UPDATE " + mainTableName + " SET ";
+            string[] updateFieldsString = new string[selectedFieldNames.Count];
+            //先将Where条件的参数保存起来
+            Dictionary<string, TableNameField> paraTemp = new Dictionary<string, TableNameField>();
+            foreach (string key in this.Parameters.Keys)
+                paraTemp.Add(key, this.Parameters[key]);
+            this.Parameters.Clear();
+            //
+            for (int i = 0; i < selectedFieldNames.Count; i++)
+            {
+                int a = selectedFieldNames[i].IndexOf('[');
+                int b = selectedFieldNames[i].IndexOf(']');
+                string realField = selectedFieldNames[i].Substring(a + 1, b - a - 1);
+                updateFieldsString[i] = selectedFieldNames[i];
+                object Value = currEntity.PropertyList(realField);
+
+                TableNameField tnf = new TableNameField();
+                tnf.Entity = this.currEntity;
+                tnf.Field = realField;
+                tnf.FieldValue = Value;
+                tnf.Index = i;
+                string paraName = CreateParameter(tnf);//参数应该在Ｗｈｅｒｅ的参数前面
+                updateFieldsString[i] += " = " + paraName;
+            }
+            sqlUpdate += string.Join(",", updateFieldsString);
+            //恢复条件参数
+            foreach (string key in paraTemp.Keys)
+                this.Parameters.Add(key, paraTemp[key]);
+
+            return sqlUpdate;
+        }
+
+        private string PreUpdateSelf()
+        {
+            string sqlUpdate = "UPDATE " + mainTableName + " SET ";
+            string[] updateFieldsString = new string[selectedFieldNames.Count];
+            for (int i = 0; i < selectedFieldNames.Count; i++)
+            {
+                int a = selectedFieldNames[i].IndexOf('[');
+                int b = selectedFieldNames[i].IndexOf(']');
+                string realField = selectedFieldNames[i].Substring(a + 1, b - a - 1);
+                object Value = currEntity.PropertyList(realField);
+
+                TableNameField tnf = new TableNameField();
+                tnf.Entity = this.currEntity;
+                tnf.Field = realField;
+                tnf.FieldValue = Value;
+                tnf.Index = i;
+                string paraName = CreateParameter(tnf);
+                updateFieldsString[i] = string.Format(" {0} = {1} {2} {3} "
+                    , selectedFieldNames[i], selectedFieldNames[i], this.updateSelfOptChar, paraName);
+            }
+            sqlUpdate += string.Join(",", updateFieldsString);
+            return sqlUpdate;
+        }
+
+        /// <summary>
+        /// 更新实体类的某些属性值，如果未指定条件，则使用主键值为条件。
+        /// </summary>
+        /// <param name="fields">实体熟悉列表</param>
+        /// <returns>条件表达式</returns>
+        public OQL1 Update(params object[] fields)
+        {
+            if (fields.Length == 0)
+                throw new ArgumentException("OQL Update 操作必须指定要操作的实体类的属性！");
+
+            optFlag = OQL_UPDATE;
+            OQL1 q1 = Select(fields);
+            this.sql_from = PreUpdate();
+            return q1;
+        }
+
+        /// <summary>
+        /// 执行自操作的字段更新，比如为某一个数值性字段执行累加
+        /// </summary>
+        /// <param name="selfOptChar">自操作类型，有+，-，*，/ 四种类型</param>
+        /// <param name="fields">字段列表</param>
+        /// <returns></returns>
+        public OQL1 UpdateSelf(char selfOptChar, params object[] fields)
+        {
+            if (selfOptChar == '+' || selfOptChar == '-' || selfOptChar == '*' || selfOptChar == '/')
+            {
+                optFlag = OQL_UPDATE_SELFT;
+                updateSelfOptChar = selfOptChar;
+
+                var q1 = Select(fields);
+                this.sql_from = PreUpdateSelf();
+                return q1;
+            }
+            throw new Exception("OQL的字段自操作只能是+，-，*，/ 四种类型");
+        }
+
+        public OQL Insert(params object[] fields)
+        {
+            if (fields.Length == 0)
+                throw new ArgumentException("OQL Insert 操作必须指定要操作的实体类的属性！");
+            optFlag = OQL_INSERT;
+            Select(fields);
+            return this;
+        }
+
+        public OQL InsertFrom(OQL childOql, params object[] targetTableFields)
+        {
+            if (targetTableFields.Length == 0)
+                throw new ArgumentException("OQL Insert 操作必须指定要操作的实体类的属性！");
+            optFlag = OQL_INSERT_FROM;
+            Select(targetTableFields);
+            insertFromOql = childOql;
+            return this;
+        }
+
+        /// <summary>
+        /// 删除实体类，如果未指定条件，则使用主键值为条件。
+        /// </summary>
+        /// <returns>条件表达式</returns>
+        public OQL1 Delete()
+        {
+            optFlag = OQL_DELETE;
+            return new OQL1(this);
+        }
+
+        #endregion
+
+        #region 构造或者获取实例相关
+
+        public OQL End
+        {
+            get
+            {
+                return this;
+            }
+        }
+
         public OQL(EntityBase e)
         {
-            this.currEntity = e;
-            //this.Condition = new OQL2(e);
-            this.EntityMap = e.EntityMap;
-            this.sql_table = this.currEntity.TableName;
-            this.currEntity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(currEntity_PropertyGetting);
+            currEntity = e;
+            mainTableName = "[" + e.GetTableName() + "] ";
+            sql_table = mainTableName;
+            EntityMap = e.EntityMap;
+            e.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(e_PropertyGetting);
         }
 
-        private void currEntity_PropertyGetting(object sender, PropertyGettingEventArgs e)
+
+        public OQL(EntityBase e, params EntityBase[] others)
+            : this(e)
         {
-            doPropertyGetting(((EntityBase)sender).TableName, e.PropertyName);
+            if (dictAliases == null)
+                dictAliases = new Dictionary<object, string>();
+            foreach (EntityBase entity in others)
+            {
+                string aliases = "T" + dictAliases.Count;
+                dictAliases.Add(entity, aliases);
+                entity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(e_PropertyGetting);
+                oqlString += string.Format(",[{0}] {1}", entity.GetTableName(), aliases);
+            }
         }
 
-        /// <summary>
-        /// 静态实体对象表达式
-        /// </summary>
-        /// <param name="e">实体对象实例</param>
-        /// <returns>实体对象查询表达式</returns>
+        protected internal void AddOtherEntitys(params EntityBase[] others)
+        {
+            if (dictAliases == null)
+                dictAliases = new Dictionary<object, string>();
+            foreach (EntityBase entity in others)
+            {
+                string aliases = "T" + dictAliases.Count;
+                dictAliases.Add(entity, aliases);
+                entity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(e_PropertyGetting);
+            }
+        }
+
+        public OQL(OQL parent, EntityBase e)
+            : this(e)
+        {
+            parentOql = parent;
+            parent.haveChildOql = true;
+        }
+
+
         public static OQL From(EntityBase e)
         {
             return new OQL(e);
         }
-        #region 处理实体连接
 
+        public static OQL From(EntityBase e, params EntityBase[] others)
+        {
+            return new OQL(e, others);
+        }
+
+        public static OQL From(OQL parent, EntityBase e)
+        {
+            return new OQL(parent, e);
+        }
+
+        /// <summary>
+        /// 直接返回查询所有数据的泛型OQL表达式
+        /// <example>
+        /// <code>
+        /// <![CDATA[
+        ///   List<User> users=OQL.From<User>.ToList();
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <returns>OQL表达式</returns>
+        public static GOQL<T> FromObject<T>() where T : class
+        {
+            T obj = EntityBuilder.CreateEntity<T>();
+            EntityBase eb = obj as EntityBase;
+            if (eb == null)
+                throw new ArgumentException("类型的实例必须是继承EntityBase的子类！");
+            OQL q = OQL.From(eb);
+
+            return new GOQL<T>(q, obj);
+        }
+
+        /// <summary>
+        /// 直接返回查询所有数据的OQL表达式
+        /// <example>
+        /// <code>
+        /// <![CDATA[
+        ///   List<User> users=OQL.From<User>.ToList<User>();
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <returns>OQL表达式</returns>
+        public static OQL From<T>() where T :EntityBase,new ()
+        {
+            T entity = new T();
+            return new OQL(entity);
+        }
+
+        //public static GOQL<Entity> FromObject<T, Entity>() 
+        //    where T : new() 
+        //    where Entity:EntityBase
+        //{
+        //    T entity = new T();
+        //    EntityBase eb = entity as EntityBase;
+        //    if (eb == null)
+        //        throw new ArgumentException("类型的实例必须是继承EntityBase的子类！");
+        //    OQL q = OQL.From(eb);
+        //    //return new GOQL<T>(q, entity);
+        //    return null;
+        //}
+
+        #endregion
+
+        #region 连接查询
         /// <summary>
         /// 内连接查询
         /// </summary>
@@ -278,454 +1013,345 @@ namespace PWMIS.DataMap.Entity
             return Join(e, "RIGHT JOIN");
         }
 
+        #endregion
 
-        private JoinEntity Join(EntityBase e, string joinTypeString)
+        #region 获取查询字符串 辅助内部方法
+        private string ToInsertFromString(string sql)
         {
-            this.joinedEntitys.Add(e);
-            this.isJoinOpt = true;
+            Parameters.Clear();
+            string sqlTemplate = "INSERT INTO {0}({1}\r\n\t) \r\n{2} ";
+            int count = selectedFieldNames.Count;
+            string[] insertFieldsString = new string[count];
 
-            this.joinedString += string.Format(" {0} [" + e.TableName + "] ON ", joinTypeString);
-
-            e.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(e_PropertyGetting);
-            JoinEntity je = new JoinEntity(this);
-            this.currJoinEntity = je;
-            return je;
-        }
-
-        void e_PropertyGetting(object sender, PropertyGettingEventArgs e)
-        {
-            doPropertyGetting(((EntityBase)sender).TableName, e.PropertyName);
-        }
-
-        private void doPropertyGetting(string tableName, string propertyName)
-        {
-            if (isJoinOpt)
+            for (int i = 0; i < count; i++)
             {
-                string propName = "[" + tableName + "].[" + propertyName + "]";
-                this.currJoinEntity.AddJoinFieldName(propName);
+                int a = selectedFieldNames[i].IndexOf('[');
+                int b = selectedFieldNames[i].IndexOf(']');
+                string realField = selectedFieldNames[i].Substring(a + 1, b - a - 1);
+                insertFieldsString[i] = selectedFieldNames[i];
+            }
 
+            sql = string.Format(sqlTemplate, mainTableName
+                , string.Join(",", insertFieldsString)
+                , insertFromOql);
+
+            foreach (string key in insertFromOql.Parameters.Keys)
+            {
+                Parameters.Add(key, insertFromOql.Parameters[key]);
+            }
+            return sql;
+        }
+
+        private string ToInsertString(string sql)
+        {
+            Parameters.Clear();
+            string sqlTemplate = "INSERT INTO {0}({1}) \r\nVALUES\r\n    ({2}) ";
+            int count = selectedFieldNames.Count;
+            string[] insertFieldsString = new string[count];
+            string[] valuesString = new string[count];
+            for (int i = 0; i < count; i++)
+            {
+                int a = selectedFieldNames[i].IndexOf('[');
+                int b = selectedFieldNames[i].IndexOf(']');
+                string realField = selectedFieldNames[i].Substring(a + 1, b - a - 1);
+                insertFieldsString[i] = selectedFieldNames[i];
+                object Value = currEntity.PropertyList(realField);
+
+                TableNameField tnf = new TableNameField();
+                tnf.Entity = this.currEntity;
+                tnf.Field = realField;
+                string paraName = CreateParameter(tnf,Value);
+                valuesString[i] = paraName;
+            }
+
+            sql = string.Format(sqlTemplate, mainTableName
+                , string.Join(",", insertFieldsString)
+                , string.Join(",", valuesString));
+            return sql;
+        }
+
+        private string ToUpdateString(string sql)
+        {
+            //if (selectedFieldNames.Count == 0)
+            //    throw new ArgumentException("UPDATE 操作未指定任何要更新的字段！");
+            sql = this.sql_from + GetWhereString();
+            return sql;
+        }
+
+        private string ToSelectString(string sql)
+        {
+            string sqlVar = "";
+            if (this.Distinct)
+                sqlVar += " DISTINCT ";
+            if (TopCount > 0)
+                sqlVar += " TOP " + TopCount + " ";//仅限于SQLSERVER/ACCESS
+
+            #region 校验GROUP BY 子句
+            string sqlFunTemp = string.Empty;
+            if (sqlFunctionString.Length > 0) //是否有聚合函数
+            {
+                sqlFunTemp = sqlFunctionString;
+                if (selectedFieldNames.Count > 0)
+                {
+                    //GROUP BY 
+                    if (GroupbyFieldNames.Count == 0)
+                        throw new FormatException("在SELECT 子句中使用聚合、统计函数，如果同时选取了查询的列，那么SQL必须使用GROUP BY 子句！");
+                    sqlFunTemp = "," + sqlFunTemp;
+                }
             }
             else
             {
-                string field = this.joinedString.Length > 0 ? tableName + "].[" + propertyName : propertyName;
-                if (!hasSelected && !selectedFields.Contains(field))
-                    selectedFields.Add(field);
+                //没有聚合函数，也得检查选择的字段是否在分组的字段内
+                int count = GroupbyFieldNames.Count;
+                if (count > 0)
+                {
+                    if (selectedFieldNames.Count == 0)
+                        throw new FormatException("如果使用GROUP BY 子句，那么在SELECT 子句中中必须指明要选取的列！");
+                    foreach (string str in selectedFieldNames)
+                    {
+                        string item = str.Trim();
+                        if (!GroupbyFieldNames.Contains(item))
+                            throw new FormatException("如果使用GROUP BY 子句，那么在SELECT 子句中查询的列必须也在GROUP BY 子句中出现！错误的列：" + item);
+                    }
+
+                }
             }
-            this.getingTableName = tableName;
-            this.getingPropertyName = propertyName;
+            #endregion
+
+            sql_fields = string.Join(",", selectedFieldNames.ToArray());
+
+            if (dictAliases != null)//有关联查询
+            {
+                sql_from = mainTableName + " M ";
+                if (sql_fields == "" && sqlFunctionString.Length == 0)
+                {
+                    sql_fields = "M.*";
+                    foreach (string str in dictAliases.Values)
+                    {
+                        sql_fields += string.Format(",{0}.*", str);
+                    }
+                }
+            }
+            else
+            {
+                sql_from = mainTableName;
+                if (sql_fields == "" && sqlFunctionString.Length == 0)
+                {
+                    if (SelectStar)
+                        sql_fields = "*";
+                    else
+                        sql_fields = "[" + string.Join("],[", this.currEntity.PropertyNames) + "]";// "*";
+                }
+                if (haveChildOql)
+                    sql_from = mainTableName + " M ";
+            }
+
+
+
+            sql = string.Format("SELECT {0} {1} {2} \r\nFROM {3} {4} {5} "
+                , sqlVar
+                , sql_fields
+                , sqlFunTemp
+                , sql_from
+                , serverLock == SqlServerLock.UNKNOW ? "" : "WITH(" + serverLock.ToString() + ") "
+                , oqlString);
+
+            if (this.PageEnable)
+            {
+                if (this.PageField == "" && sql.IndexOf(" order by ", StringComparison.OrdinalIgnoreCase) <= 0)
+                {
+                    if (this.currEntity.PrimaryKeys == null || this.currEntity.PrimaryKeys.Count == 0)
+                        throw new Exception("OQL 分页错误，没有指明分页标识字段，也未给当前实体类设置主键。");
+                    this.PageField = this.currEntity.PrimaryKeys[0];
+                }
+            }
+            return sql;
+        }
+
+        /// <summary>
+        /// 获取条件字符串，如果未限定条件，则使用主键的值
+        /// </summary>
+        /// <returns></returns>
+        private string GetWhereString()
+        {
+            string whereString = oqlString;
+            if (whereString.Length < 8)
+            {
+                whereString = " Where 1=1 ";
+
+                if (this.currEntity.PrimaryKeys.Count == 0)
+                    throw new Exception("未指定操作实体的范围，也未指定实体的主键。");
+                foreach (string pk in this.currEntity.PrimaryKeys)
+                {
+                    TableNameField tnf = new TableNameField();
+                    tnf.Entity = this.currEntity;
+                    tnf.Field = pk;
+                    string paraName = CreateParameter(tnf,currEntity.PropertyList(pk));
+                    whereString += " And [" + pk + "] =" + paraName + ",";
+
+                }
+                whereString = whereString.TrimEnd(',');
+                //去除下一次生成重复的条件
+                oqlString = whereString;
+            }
+            return whereString;
         }
 
         #endregion
 
+        #region 其它方法
+
+        private OQLCondition _condtion;
         /// <summary>
-        /// 选取实体对象的属性
+        /// 获取当前条件比较对象
         /// </summary>
-        /// <param name="fields">属性字段列表</param>
-        /// <returns>实体对象查询基本表达式</returns>
-        public OQL1 Select(params object[] fields)
-        {
-            hasSelected = true;
-            if (fields.Length == 0)
-                selectedFields.Clear();
-            //注意 有可能OQL对象会重复使用，所以下面的事件不能被注销
-            //this.currEntity.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(currEntity_PropertyGetting);
-
-            oql1 = new OQL1(this.currEntity, this);
-            oql1.Selected = true;
-            return oql1;
-        }
-
-
-        /// <summary>
-        /// 使用是否排除重复记录的方式，来选取实体对象的属性
-        /// </summary>
-        /// <param name="distinct"></param>
-        /// <param name="fields"></param>
-        /// <returns></returns>
-        public OQL1 Select(bool distinct, params object[] fields)
-        {
-            this.Distinct = distinct;
-            return Select(fields);
-        }
-
-        /// <summary>
-        /// 更新实体类的某些属性值，如果未指定条件，则使用主键值为条件。
-        /// </summary>
-        /// <param name="fields">实体熟悉列表</param>
-        /// <returns>条件表达式</returns>
-        public OQL1 Update(params object[] fields)
-        {
-            optFlag = "UPDATE ";
-            sqlUpdate = "UPDATE [" + this.currEntity.TableName + "] SET ";
-            updateParameters = new Dictionary<string, object>();
-            foreach (string field in selectedFields)
-            {
-                sqlUpdate += "[" + field + "]=@" + field + ",";
-                updateParameters.Add(field, this.currEntity.PropertyList(field));//某些数据库不支持"@" 格式的参数名称
-            }
-            sqlUpdate = sqlUpdate.TrimEnd(',');
-
-            oql1 = new OQL1(this.currEntity, this);
-            oql1.Selected = true;
-            return oql1;
-        }
-
-        /// <summary>
-        /// 执行自操作的字段更新，比如为某一个数值性字段执行累加
-        /// </summary>
-        /// <param name="selfOptChar">自操作类型，有+，-，*，/ 四种类型</param>
-        /// <param name="fields">字段列表</param>
-        /// <returns></returns>
-        public OQL1 UpdateSelf(char selfOptChar, params object[] fields)
-        {
-            if (selfOptChar == '+' || selfOptChar == '-' || selfOptChar == '*' || selfOptChar == '/')
-            {
-                optFlag = "UPDATE ";
-                sqlUpdate = "UPDATE [" + this.currEntity.TableName + "] SET ";
-                updateParameters = new Dictionary<string, object>();
-                foreach (string field in selectedFields)
-                {
-                    sqlUpdate += "[" + field + "]=[" + field + "] " + selfOptChar + " @" + field + ",";
-                    updateParameters.Add(field, this.currEntity.PropertyList(field));//某些数据库不支持"@" 格式的参数名称
-                }
-                sqlUpdate = sqlUpdate.TrimEnd(',');
-
-                oql1 = new OQL1(this.currEntity, this);
-                oql1.Selected = true;
-                return oql1;
-            }
-            throw new Exception("OQL的字段自操作只能是+，-，*，/ 四种类型");
-        }
-
-        /// <summary>
-        /// 删除实体类，如果未指定条件，则使用主键值为条件。
-        /// </summary>
-        /// <returns>条件表达式</returns>
-        public OQL1 Delete()
-        {
-            optFlag = "DELETE ";
-            sqlUpdate = "DELETE FROM [" + this.currEntity.TableName + "] ";
-
-            oql1 = new OQL1(this.currEntity, this);
-            oql1.Selected = true;
-            return oql1;
-        }
-
-        /// <summary>
-        /// 根据用户自定义的查询（临时视图），从该查询进一步获取指定的记录的查询语句
-        /// </summary>
-        /// <param name="tempViewSql">作为子表的用户查询（临时视图）</param>
-        /// <returns>符合当前限定条件的查询语句</returns>
-        public string GetMapSQL(string tempViewSql)
-        {
-            if (string.IsNullOrEmpty(tempViewSql))
-                throw new Exception("用户的子查询不能为空。");
-            tempViewSql = " (" + tempViewSql + " ) tempView ";
-
-            string sql = "SELECT ";
-            if (TopCount > 0)
-                sql += " TOP " + TopCount + " ";//仅限于SQLSERVER/ACCESS
-            if (selectedFields.Count == 0)
-                sql += "*";
-            else
-            {
-                foreach (string field in selectedFields)
-                {
-                    sql += "[" + field + "],";
-                }
-                sql = sql.TrimEnd(',');
-            }
-            if (this.PageEnable)
-                this.sql_fields = sql.Substring("SELECT ".Length);
-
-            string groupString = oql1.GroupByFields;
-            if (groupString.Length > 0)
-                sql = "SELECT " + oql1.GroupByFields + oql1.sqlFunctionString + " \r\n FROM " + tempViewSql + "\r\n  " + oql1.ToString();
-            else if (oql1.sqlFunctionString.Length > 0)
-                sql = "SELECT " + oql1.sqlFunctionString.Substring(1) + " \r\n FROM " + tempViewSql + "\r\n  " + oql1.ToString();
-            else
-            {
-                string condition = oql1.ToString();
-                sql += " \r\n FROM " + tempViewSql + "\r\n  " + condition;
-                if (this.PageEnable)
-                {
-                    this.sql_table = tempViewSql;
-                    int len = " Where ".Length;
-                    this.sql_condition = condition.Length > len ? condition.Substring(len) : "";
-                    if (this.PageField == "")
-                    {
-                        if (this.currEntity.PrimaryKeys == null || this.currEntity.PrimaryKeys.Count == 0)
-                            throw new Exception("OQL 分页错误，没有指明分页标识字段，也未给当前实体类设置主键。");
-                        this.PageField = this.currEntity.PrimaryKeys[0];
-                    }
-                }
-            }
-            return sql;
-        }
-
-
-
-        /// <summary>
-        /// 获取SQL表达式
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            string sql = optFlag;// "SELECT ";
-            if (optFlag == "SELECT ")
-            {
-                if (this.Distinct)
-                    sql += " DISTINCT ";
-                if (TopCount > 0)
-                    sql += " TOP " + TopCount + " ";//仅限于SQLSERVER/ACCESS
-                if (selectedFields.Count == 0)
-                {
-                    sql += string.Join(",", CommonUtil.PrepareSqlFields(this.currEntity.PropertyNames));  //edit at 11.10 取消原来的
-                }
-                else
-                {
-                    //foreach (string field in selectedFields)
-                    //{
-                    //    sql += field + ",";
-                    //}
-                    //sql = sql.TrimEnd(',');
-                    sql += string.Join(",", CommonUtil.PrepareSqlFields(selectedFields.ToArray()));
-                }
-                //if (this.PageEnable)
-                this.sql_fields = sql.Substring("SELECT ".Length);
-
-                string groupString = oql1.GroupByFields;
-                if (groupString.Length > 0)
-                    sql = "SELECT " + oql1.GroupByFields + oql1.sqlFunctionString + " \r\n FROM [" + this.currEntity.TableName + "]\r\n  " + this.joinedString + " " + oql1.ToString();
-                else if (oql1.sqlFunctionString.Length > 0)
-                    sql = "SELECT " + oql1.sqlFunctionString.Substring(1) + " \r\n FROM [" + this.currEntity.TableName + "]\r\n  " + this.joinedString + " " + oql1.ToString();
-                else
-                {
-                    string condition = oql1.ToString();
-                    sql += " \r\n FROM [" + this.currEntity.TableName + "]\r\n  " + this.joinedString + " " + condition;
-                    if (this.PageEnable)
-                    {
-
-                        int len = " WHERE ".Length;
-                        this.sql_condition = condition.Length > len ? condition.Substring(len) : "";
-                        if (this.PageField == "")
-                        {
-                            if (this.currEntity.PrimaryKeys == null || this.currEntity.PrimaryKeys.Count == 0)
-                                throw new Exception("OQL 分页错误，没有指明分页标识字段，也未给当前实体类设置主键。");
-                            this.PageField = this.currEntity.PrimaryKeys[0];
-                        }
-                    }
-                }
-
-            }
-            else
-            {
-                //如果未限定条件，则使用主键的值
-                string whereString = oql1.ToString();
-                if (whereString.Length < 8)
-                {
-                    whereString = " Where 1=1 ";
-                    //updateParameters
-                    if (this.currEntity.PrimaryKeys.Count == 0)
-                        throw new Exception("未指定更新实体的范围，也未指定实体的主键。");
-                    foreach (string pk in this.currEntity.PrimaryKeys)
-                    {
-                        whereString += " And [" + pk + "] =@" + pk + ",";
-                        updateParameters.Add(pk, this.currEntity.PropertyList(pk));
-                    }
-                    whereString = whereString.TrimEnd(',');
-                }
-                sql = sqlUpdate + "\r\n  " + whereString;
-            }
-
-            return sql;
-        }
-
-        /// <summary>
-        /// 释放资源，取消事件订阅。
-        /// 注意，如果OQL构造函数使用的实体类对象是一个不会释放的对象（长生命周期），那么请使用using语句块或者手动调用本方法。
-        /// </summary>
-        public void Dispose()
-        {
-            this.currEntity.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(currEntity_PropertyGetting);
-            this.oql1.Dispose();
-            //System.Diagnostics.Debug.WriteLine("dispose in oql");
-        }
-    }
-
-    /// <summary>
-    /// 基本表达式
-    /// </summary>
-    public class OQL1 : IDisposable
-    {
-        /// <summary>
-        /// 基本表达式中的当前实体对象
-        /// </summary>
-        protected EntityBase CurrEntity;
-
-        private OQL CurrOQL;
-
-        /// <summary>
-        /// 是否已经执行完OQL之Select方法
-        /// </summary>
-        public bool Selected = false;
-
-        string whereString = "";
-        string orderString = "";
-        string groupString = "";
-        private string currFieldName = "";
-        private bool useWhereMethod = false;
-        /// <summary>
-        /// Select 中的函数名字符串。例如Count，Max，Min 等
-        /// </summary>
-        protected internal string sqlFunctionString = "";
-
-        //private List<string> WhereFields = new List<string>();
-        private Dictionary<string, object> paras;
-        /// <summary>
-        /// 获取条件参数
-        /// </summary>
-        public Dictionary<string, object> Parameters
-        {
-            get { return paras; }
-        }
-
-        /// <summary>
-        /// 获取分组自动列表
-        /// </summary>
-        protected internal string GroupByFields
+        public OQLCondition Condition
         {
             get
             {
-                if (groupString.Length > 0)
+                if (_condtion == null)
+                    _condtion = new OQLCondition(this);
+                return _condtion;
+            }
+        }
+
+        public override string ToString()
+        {
+            string sql = string.Empty;
+            if (optFlag == OQL_SELECT)
+            {
+                sql = ToSelectString(sql);
+            }
+            else if (optFlag == OQL_UPDATE || optFlag == OQL_UPDATE_SELFT)
+            {
+                sql = ToUpdateString(sql);
+            }
+            else if (optFlag == OQL_DELETE)
+            {
+                string sqlUpdate = "DELETE FROM " + mainTableName + " ";
+                sql = sqlUpdate + GetWhereString();
+            }
+            else if (optFlag == OQL_INSERT)
+            {
+                sql = ToInsertString(sql);
+
+            }
+            else if (optFlag == OQL_INSERT_FROM)
+            {
+                sql = ToInsertFromString(sql);
+
+            }
+
+            return sql;
+        }
+
+        public string PrintParameterInfo()
+        {
+            if (Parameters == null || Parameters.Count == 0)
+                return "-------No paramter.--------\r\n";
+            StringBuilder sb = new StringBuilder();
+            foreach (var item in Parameters)
+            {
+                object fieldValue = item.Value.FieldValue;
+                string type = fieldValue == null ? "NULL" : fieldValue.GetType().Name;
+                sb.Append(string.Format("  {0}={1} \t Type:{2} \r\n", item.Key, fieldValue, type));
+            }
+            string paraInfoString = string.Format("--------OQL Parameters information----------\r\n have {0} parameter,detail:\r\n{1}", Parameters.Count, sb);
+            return paraInfoString + "------------------End------------------------\r\n";
+        }
+
+        public void Dispose()
+        {
+            this.currEntity.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(e_PropertyGetting);
+            if (this.dictAliases != null)
+            {
+                foreach (EntityBase item in dictAliases.Keys)
                 {
-                    return groupString.Substring(1);
-                }
-                return "";
-            }
-        }
-
-        /// <summary>
-        /// 使用实体对象初始化构造函数
-        /// </summary>
-        /// <param name="e"></param>
-        public OQL1(EntityBase e, OQL q)
-        {
-            this.CurrEntity = e;
-            this.CurrOQL = q;
-            this.CurrEntity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
-        }
-
-        private void CurrEntity_PropertyGetting(object sender, PropertyGettingEventArgs e)
-        {
-            string propName = "";
-            if (this.CurrOQL.HaveJoinOpt)
-            {
-                //如果是连接操作，条件字段需要增加上查询的表名称
-                string tableName = ((EntityBase)sender).TableName;
-                propName = "[" + tableName + "].[" + e.PropertyName + "]";
-            }
-            else
-            {
-                propName = "[" + e.PropertyName + "]";
-            }
-
-            if (Selected & !useWhereMethod)
-            {
-                if (paras == null)
-                    paras = new Dictionary<string, object>();
-                if (!paras.ContainsKey(propName))
-                {
-                    //在选取Where字段，Where方法尚未执行完成
-                    paras.Add(propName, this.CurrEntity.PropertyList(e.PropertyName));
+                    item.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(e_PropertyGetting);
                 }
             }
-            currFieldName = propName;// "[" + e.PropertyName + "]";
-
         }
-
-
-
         /// <summary>
-        /// 获取复杂查询条件
+        /// 如果未选择任何列，生成的SQL语句Select 后面是否用 * 代替。
+        /// 用于不想修改实体类结构但又想增加表字段的情况。
         /// </summary>
-        /// <param name="c">多条件表达式</param>
-        /// <returns>基本表达式</returns>
-        public OQL1 Where(OQL2 c)
+        public bool SelectStar { get; set; }
+        /// <summary>
+        /// 制定实体查询的时候表的锁定类型。仅支持SqlServer。
+        /// </summary>
+        /// <param name="lockType"></param>
+        /// <returns></returns>
+        public OQL With(SqlServerLock lockType)
         {
-            whereString = " Where " + c.ConditionString;
-            paras = c.Parameters;
-
-            useWhereMethod = true;
-            //this.CurrEntity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
-            c.Dispose();
+            serverLock = lockType;
             return this;
         }
 
-        /// <summary>
-        /// 获取复杂查询条件(具有逻辑优先级的复杂比较条件）
-        /// </summary>
-        /// <param name="compare">实体对象比较类</param>
-        /// <returns>基本表达式</returns>
-        public OQL1 Where(OQLCompare compare)
+        public OQL With(string sqlLockType)
         {
-            whereString = " WHERE " + compare.CompareString;
-            paras = compare.ComparedParameters;
-
-            useWhereMethod = true;
-            //this.CurrEntity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
-            compare.Dispose();
-            return this;
+            sqlLockType = sqlLockType.ToUpper();
+            try
+            {
+                SqlServerLock lockType = (SqlServerLock)Enum.Parse(typeof(SqlServerLock), sqlLockType);
+                serverLock = lockType;
+                return this;
+            }
+            catch (Exception ex)
+            {
+                throw new ArgumentException(sqlLockType + " 不是SQLSERVER 要求的锁定类型！请参见SqlServerLock 枚举定义。");
+            }
         }
 
-        /// <summary>
-        /// 获取并列查询条件，如 Where(u.Uid,u.Name);
-        /// </summary>
-        /// <param name="expression">实体属性列表</param>
-        /// <returns>基本表达式</returns>
-        public OQL1 Where(params object[] expression)
+        #endregion
+    }
+
+    public class OQL1 : OQL4, IOQL1
+    {
+        private OQL CurrentOQL;
+
+
+        private string GetWhereFields()
         {
-            if (expression.Length > 0)
+            int count = CurrentOQL.fieldStack.Count;
+            TableNameField[] tnfs = new TableNameField[count];
+            for (int i = count - 1; i >= 0; i--)
+                tnfs[i] = CurrentOQL.fieldStack.Pop();
+
+            string[] fieldNames = new string[count];
+            for (int i = 0; i < count; i++)
             {
-
-                string str = "";
-                int count = 0;
-                Dictionary<string, object> tempParas = new Dictionary<string, object>();
-                foreach (string field in paras.Keys)
-                {
-                    if (count >= expression.Length)//避免调试陷阱
-                        break;
-                    string paraName = "P" + count;
-                    tempParas.Add(paraName, paras[field]);
-
-                    str += " AND " + field + "=@" + paraName;
-                    count++;
-                }
-                if (str != "")
-                {
-                    str = str.Substring(" AND ".Length);
-                    paras = tempParas;
-                }
-
-                whereString = " Where " + str;
+                TableNameField tnf = tnfs[i];
+                string sqlField = CurrentOQL.GetOqlFieldName(tnf);
+                tnf.SqlFieldName = sqlField;
+                string paraName = CurrentOQL.CreateParameter(tnf,tnf.Entity.PropertyList(tnf.Field));
+                fieldNames[i] = string.Format("{0}={1}", sqlField, paraName);
             }
-            useWhereMethod = true;
-            //Order by 可能还需要
-            //this.CurrEntity.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
-            return this;
+            return string.Join(" AND ", fieldNames);
+        }
+
+        public OQL1(OQL oql)
+            : base(oql)
+        {
+            CurrentOQL = oql;
+        }
+
+        public OQL2 Where(OQLCondition condition)
+        {
+            CurrentOQL.sql_condition = condition.ConditionString;
+            CurrentOQL.oqlString += "\r\n     WHERE " + CurrentOQL.sql_condition;
+            return new OQL2(CurrentOQL);
         }
 
         /// <summary>
         /// 根据传入的查询参数数组，对字段名执行不区分大小写的比较，生成查询条件。
+        /// 注意目前要求QueryParameter 用的是要查询的表的字段名称，而不是实体类的属性名称
         /// </summary>
         /// <param name="queryParas">查询参数数组</param>
         /// <returns>条件表达式</returns>
-        public OQL1 Where(QueryParameter[] queryParas)
+        public OQL2 Where(QueryParameter[] queryParas)
         {
-            if (paras == null)
-                paras = new Dictionary<string, object>();
-
-            string[] fields = this.CurrEntity.PropertyNames;
+            Dictionary<string, TableNameField> paras = CurrentOQL.Parameters;
+            string[] fields = CurrentOQL.currEntity.PropertyNames;
             string str = "";
             int count = 0;
             foreach (QueryParameter para in queryParas)
@@ -737,7 +1363,7 @@ namespace PWMIS.DataMap.Entity
                         string paraName = temp + (count++);
                         if (!paras.ContainsKey(paraName))
                         {
-                            paras.Add(paraName, para.FieldValue);
+                            paras.Add(paraName, new TableNameField() { FieldValue = para.FieldValue });
                             string cmpType = "";
                             switch (para.CompareType)
                             {
@@ -785,51 +1411,126 @@ namespace PWMIS.DataMap.Entity
             if (str != "")
                 str = str.Substring(" AND ".Length);
 
-            whereString = " Where " + str;
-            useWhereMethod = true;
-            return this;
+            CurrentOQL.sql_condition = str;
+            CurrentOQL.oqlString += "\r\n     WHERE " + CurrentOQL.sql_condition;
+            return new OQL2(CurrentOQL);
         }
 
-        /// <summary>
-        /// 设定分组字段。分组字段将自动作为选择的候选字段，而且覆盖原有选择的字段。
-        /// </summary>
-        /// <param name="field">分组字段，如果有多个，请继续调用本方法</param>
-        /// <returns>OQL1</returns>
-        public OQL1 GroupBy(object field)
+        public OQL2 Where(OQLCompare cmpResult)
         {
-            if (!useWhereMethod)
-            {
-                //可能没有调用Where方法
-                paras = null;
-            }
-            groupString += "," + currFieldName;
-            return this;
+            return GetOQL2ByOQLCompare(cmpResult);
         }
 
+        public OQL2 Where(OQLCompareFunc cmpFun)
+        {
+            OQLCompare compare = new OQLCompare(this.CurrentOQL);
+            OQLCompare cmpResult = cmpFun(compare);
+
+            return GetOQL2ByOQLCompare(cmpResult);
+        }
+
+        public OQL2 Where<T>(OQLCompareFunc<T> cmpFun)
+            where T : class
+        {
+            OQLCompare compare = new OQLCompare(this.CurrentOQL);
+            T p1 = GetInstance<T>();
+
+            OQLCompare cmpResult = cmpFun(compare, p1);
+            return GetOQL2ByOQLCompare(cmpResult);
+        }
+
+        public OQL2 Where<T1, T2>(OQLCompareFunc<T1, T2> cmpFun)
+            where T1 : EntityBase
+            where T2 : EntityBase
+        {
+            OQLCompare compare = new OQLCompare(this.CurrentOQL);
+            T1 p1 = GetInstance<T1>();
+            T2 p2 = GetInstance<T2>();
+            OQLCompare cmpResult = cmpFun(compare, p1, p2);
+            return GetOQL2ByOQLCompare(cmpResult);
+        }
+
+        public OQL2 Where<T1, T2, T3>(OQLCompareFunc<T1, T2, T3> cmpFun)
+            where T1 : EntityBase
+            where T2 : EntityBase
+            where T3 : EntityBase
+        {
+            OQLCompare compare = new OQLCompare(this.CurrentOQL);
+            T1 p1 = GetInstance<T1>();
+            T2 p2 = GetInstance<T2>();
+            T3 p3 = GetInstance<T3>();
+            OQLCompare cmpResult = cmpFun(compare, p1, p2, p3);
+            return GetOQL2ByOQLCompare(cmpResult);
+        }
+
+
+        private OQL2 GetOQL2ByOQLCompare(OQLCompare cmpResult)
+        {
+            if (!object.Equals(cmpResult, null))
+            {
+                if (CurrentOQL != cmpResult.LinkedOQL)
+                    throw new ArgumentException("OQLCompare 关联的OQL 对象不是当前OQL本身对象，请使用OQLCompareFunc或者它的泛型对象。");
+                CurrentOQL.sql_condition = cmpResult.CompareString;
+                CurrentOQL.oqlString += "\r\n     WHERE " + CurrentOQL.sql_condition;
+            }
+            return new OQL2(CurrentOQL);
+        }
+        private T GetInstance<T>() where T : class
+        {
+            T entity = this.CurrentOQL.GetUsedEntity<T>();
+            if (entity == null)
+                throw new ArgumentException(typeof(T).ToString() + " 类型的实例没有被OQL对象所使用");
+
+            return entity;
+        }
+
+        #region 接口方法
         /// <summary>
-        /// 设定排序条件
+        /// 使用实体类选定的属性作为查询条件和条件的值，必须有至少一个参数。该方法不可以多次调用。
+        /// 如果想构造动态的查询条件，请使用OQLCompare 对象
         /// </summary>
-        /// <param name="field">实体对象属性</param>
-        /// <param name="orderType">排序类型 ASC，DESC</param>
+        /// <param name="fields"></param>
         /// <returns></returns>
-        public OQL1 OrderBy(object field, string orderType)
+        public OQL2 Where(params object[] fields)
         {
-            if (!useWhereMethod)
-            {
-                //可能没有调用Where方法
-                paras = null;
-            }
-            if (string.IsNullOrEmpty(orderType))
-                orderType = "ASC";
-
-            if (string.IsNullOrEmpty(currFieldName)) //可能是多实体连接的情况，没有获取到当前选取的字段
-            {
-                currFieldName = string.Format("[{0}].[{1}]", this.CurrOQL.getingTableName, this.CurrOQL.getingPropertyName);
-            }
-            orderString += "," + currFieldName + " " + orderType;
-            return this;
+            CurrentOQL.sql_condition = GetWhereFields();
+            CurrentOQL.oqlString += "\r\n     WHERE " + CurrentOQL.sql_condition;
+            return new OQL2(CurrentOQL);
+        }
+        public OQL3 GroupBy(object field)
+        {
+            string fieldName = CurrentOQL.TakeOneStackFields().SqlFieldName;
+            CurrentOQL.GroupbyFieldNames.Add(fieldName.Trim());
+            CurrentOQL.oqlString += "\r\n          GROUP BY " + fieldName;
+            return new OQL3(CurrentOQL);
         }
 
+        public OQL3 GroupBy(object field, params object[] others)
+        {
+            string strTemp = string.Empty;
+            string fieldName = CurrentOQL.TakeOneStackFields().SqlFieldName;
+            CurrentOQL.GroupbyFieldNames.Add(fieldName.Trim());
+
+            for (int i = 0; i < others.Length; i++)
+            {
+                string fieldNameTemp = CurrentOQL.TakeOneStackFields().SqlFieldName;
+                CurrentOQL.GroupbyFieldNames.Add(fieldNameTemp.Trim());
+                strTemp += "," + fieldNameTemp;
+            }
+
+            CurrentOQL.oqlString += "\r\n          GROUP BY " + fieldName + strTemp;
+            return new OQL3(CurrentOQL);
+        }
+
+        public OQL4 Having(object field, object Value, string sqlFunctionFormat)
+        {
+            OQL3 q3 = new OQL3(CurrentOQL);
+            return q3.Having(field, Value, sqlFunctionFormat);
+        }
+
+        #endregion
+
+        #region 聚合函数
         /// <summary>
         /// OQL1表达式之统计数量，请在结果实体类中使用PropertyList["字段别名"] 的方式获取查询值
         /// </summary>
@@ -838,6 +1539,7 @@ namespace PWMIS.DataMap.Entity
         /// <returns>OQL1</returns>
         public OQL1 Count(object field, string asFieldName)
         {
+            string currFieldName = CurrentOQL.TakeStackFields();
             if (string.IsNullOrEmpty(currFieldName))
                 currFieldName = "*";
             return sqlFunction("COUNT", currFieldName, asFieldName);
@@ -851,6 +1553,7 @@ namespace PWMIS.DataMap.Entity
         /// <returns>OQL1</returns>
         public OQL1 Max(object field, string asFieldName)
         {
+            string currFieldName = CurrentOQL.TakeStackFields();
             return sqlFunction("MAX", currFieldName, asFieldName);
         }
 
@@ -862,6 +1565,7 @@ namespace PWMIS.DataMap.Entity
         /// <returns>OQL1</returns>
         public OQL1 Min(object field, string asFieldName)
         {
+            string currFieldName = CurrentOQL.TakeStackFields();
             return sqlFunction("MIN", currFieldName, asFieldName);
         }
 
@@ -873,6 +1577,7 @@ namespace PWMIS.DataMap.Entity
         /// <returns>OQL1</returns>
         public OQL1 Sum(object field, string asFieldName)
         {
+            string currFieldName = CurrentOQL.TakeStackFields();
             return sqlFunction("SUM", currFieldName, asFieldName);
         }
 
@@ -884,110 +1589,336 @@ namespace PWMIS.DataMap.Entity
         /// <returns>OQL1</returns>
         public OQL1 Avg(object field, string asFieldName)
         {
+            string currFieldName = CurrentOQL.TakeStackFields();
             return sqlFunction("AVG", currFieldName, asFieldName);
         }
 
         private OQL1 sqlFunction(string sqlFunctionName, string fieldName, string asFieldName)
         {
-            //paras.Remove(currFieldName.Replace("[", "").Replace("]", "")); //必须清除Where方法之前的键
-            if (paras != null)
-                paras.Remove(currFieldName); //必须清除Where方法之前的键
-
             if (string.IsNullOrEmpty(asFieldName))
             {
-                if (this.CurrOQL.HaveJoinOpt)
-                    throw new Exception("有连接操作的时候，" + sqlFunctionName + " 结果必须指定别名！");
+                if (this.CurrentOQL.haveJoinOpt)
+                    throw new Exception("有表连接查询的时候，" + sqlFunctionName + " 结果必须指定别名！");
                 else
                     asFieldName = fieldName;
 
             }
-            if (string.IsNullOrEmpty(fieldName)) //可能是多实体连接的情况，没有获取到当前选取的字段
+            CurrentOQL.sqlFunctionString = sqlFunctionName + "(" + fieldName + ") AS " + asFieldName;
+
+            this.CurrentOQL.currEntity.setProperty(asFieldName, 0);
+            return this;
+        }
+
+        #endregion
+
+    }
+
+    public class OQL2 : OQL4, IOQL2
+    {
+        private OQL CurrentOQL;
+        public OQL2(OQL oql)
+            : base(oql)
+        {
+            CurrentOQL = oql;
+        }
+        public OQL3 GroupBy(object field)
+        {
+            string fieldName = CurrentOQL.TakeOneStackFields().SqlFieldName;
+            CurrentOQL.GroupbyFieldNames.Add(fieldName.Trim());
+            CurrentOQL.oqlString += "\r\n          GROUP BY " + fieldName;
+            return new OQL3(CurrentOQL);
+        }
+
+        public OQL3 GroupBy(object field, params object[] others)
+        {
+            string strTemp = string.Empty;
+            string fieldName = CurrentOQL.TakeOneStackFields().SqlFieldName;
+            CurrentOQL.GroupbyFieldNames.Add(fieldName.Trim());
+
+            for (int i = 0; i < others.Length; i++)
             {
-                fieldName = string.Format("[{0}].[{1}]", this.CurrOQL.getingTableName, this.CurrOQL.getingPropertyName);
+                string fieldNameTemp = CurrentOQL.TakeOneStackFields().SqlFieldName;
+                CurrentOQL.GroupbyFieldNames.Add(fieldNameTemp.Trim());
+                strTemp += "," + fieldNameTemp;
             }
-            sqlFunctionString += "," + sqlFunctionName + "(" + fieldName + ") AS " + asFieldName;
-            this.CurrEntity.setProperty(asFieldName, 0);
+
+            CurrentOQL.oqlString += "\r\n          GROUP BY " + fieldName + strTemp;
+            return new OQL3(CurrentOQL);
+        }
+        public OQL4 Having(object field, object Value, string sqlFunctionFormat)
+        {
+            OQL3 q3 = new OQL3(CurrentOQL);
+            return q3.Having(field, Value, sqlFunctionFormat);
+        }
+
+        public OQL4 Having(OQLCompareFunc cmpFun)
+        {
+            OQL3 q3 = new OQL3(CurrentOQL);
+            return q3.Having(cmpFun);
+        }
+
+    }
+
+    public class OQL3 : OQL4, IOQL3
+    {
+        private OQL CurrentOQL;
+        public OQL3(OQL oql)
+            : base(oql)
+        {
+            CurrentOQL = oql;
+        }
+        public OQL4 Having(object field, object Value, string sqlFunctionFormat)
+        {
+            if (string.IsNullOrEmpty(sqlFunctionFormat))
+                throw new ArgumentNullException("SQL 格式函数不能为空！");
+            if (sqlFunctionFormat.Contains("--") || sqlFunctionFormat.Contains("\'"))
+                throw new ArgumentException("SQL 格式函数不合法！");
+            if (sqlFunctionFormat.Contains("{0}") && sqlFunctionFormat.Contains("{1}"))
+            {
+                var tnf = CurrentOQL.TakeOneStackFields();
+                string fieldName = tnf.Field;
+                string paraName = CurrentOQL.CreateParameter(tnf);
+                string havingString = string.Format(sqlFunctionFormat, fieldName, paraName);
+                CurrentOQL.oqlString += "\r\n             HAVING " + havingString;
+                return new OQL4(CurrentOQL);
+            }
+            throw new ArgumentException("SQL 格式函数要求类似这样的格式：SUM({0}) > {1}");
+        }
+
+        public OQL4 Having(OQLCompareFunc cmpFun)
+        {
+            OQLCompare compare = new OQLCompare(this.CurrentOQL);
+            OQLCompare cmpResult = cmpFun(compare);
+
+            if (!object.Equals(cmpResult, null))
+            {
+                CurrentOQL.oqlString += "\r\n             HAVING " + cmpResult.CompareString;
+            }
+            return new OQL4(CurrentOQL);
+        }
+    }
+
+    public class OQL4 : IOQL4
+    {
+        private OQL CurrentOQL;
+
+        public OQL4(OQL oql)
+        {
+            CurrentOQL = oql;
+        }
+
+        protected internal void AddOrderType(string orderType)
+        {
+            CurrentOQL.oqlString += orderType;
+        }
+
+        public OQLOrderType OrderBy(object field)
+        {
+            string temp = CurrentOQL.haveOrderBy ? "," : "\r\n                 ORDER BY ";
+            CurrentOQL.haveOrderBy = true;
+            CurrentOQL.oqlString += temp + CurrentOQL.TakeOneStackFields().SqlFieldName;
+            return new OQLOrderType(this);
+        }
+
+        public OQL4 OrderBy(object field, string orderType)
+        {
+            string strTemp = orderType.ToLower();
+            if (strTemp != "asc" && strTemp != "desc")
+                throw new FormatException("排序类型错误！");
+            string temp = CurrentOQL.haveOrderBy ? "," : "\r\n                 ORDER BY ";
+            CurrentOQL.haveOrderBy = true;
+            CurrentOQL.oqlString += temp + CurrentOQL.TakeOneStackFields().SqlFieldName + " " + orderType;
+
+            return this;
+        }
+
+        public OQL4 OrderBy(OQLOrder order)
+        {
+            string temp = CurrentOQL.haveOrderBy ? "," : "\r\n                 ORDER BY ";
+            CurrentOQL.haveOrderBy = true;
+            CurrentOQL.oqlString += temp + order.ToString();
+
+            return this;
+        }
+
+        public OQL4 OrderBy(OQLOrderAction orderAct)
+        {
+            OQLOrder order = new OQLOrder(CurrentOQL);
+            orderAct(order);
+            return OrderBy(order);
+        }
+
+        public OQL4 OrderBy<T>(OQLOrderAction<T> orderAct) where T : class
+        {
+            OQLOrder order = new OQLOrder(CurrentOQL);
+            T para = CurrentOQL.GetUsedEntity<T>();
+            orderAct(order, para);
+            return OrderBy(order);
+        }
+
+        /// <summary>
+        /// （网友[有事M我]、[左眼]提供）根据传入的实体类的多个属性的排序信息，从而进行动态的排序；
+        /// 适用于不能在OQL表达式里面直接指明排序方式的场景（比如需要从前台传入）。
+        /// </summary>
+        /// <param name="orderStr">排序数组，形如{"ID desc","Name asc"}</param>
+        /// <returns></returns>
+        public OQL4 OrderBy(string[] orderStr)
+        {
+            if (orderStr == null || orderStr.Length <= 0)
+                return this;
+
+            string temp = CurrentOQL.haveOrderBy ? "," : "\r\n                 ORDER BY ";
+            CurrentOQL.haveOrderBy = true;
+
+            foreach (string str in orderStr)
+            {
+                string[] tempArr = str.Split(' ');
+                string[] orderArr = new string[2];
+
+                string tempArr_0 = tempArr[0].Trim();
+                //访问属性名称对应的属性值，得到真正的排序字段
+                object Value = CurrentOQL.currEntity[tempArr_0];
+                //如果要排序的属性未包含在实体类的属性定义里面，下面将出现异常
+                string orderField = CurrentOQL.TakeOneStackFields().SqlFieldName;
+                orderArr[0] = tempArr_0;
+                if (tempArr.Length == 1)
+                {
+                    orderArr[1] = "ASC";
+                }
+                else
+                {
+                    if (tempArr[1].Equals("desc", StringComparison.OrdinalIgnoreCase))//非desc则全部以asc进行排列
+                        orderArr[1] = "DESC";
+                    else
+                        orderArr[1] = "ASC";
+                }
+
+                temp = string.Format("{0} {1} {2},", temp, orderField, orderArr[1]);
+            }
+            CurrentOQL.oqlString += temp.TrimEnd(',');
             return this;
         }
 
 
-
-        /// <summary>
-        /// 获取基本的条件语句
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            string temp = "";
-            if (orderString != "")
-                temp = "    ORDER BY " + orderString.TrimStart(',');
-
-            if (this.GroupByFields.Length > 0)
-                return whereString + "    GROUP BY " + this.GroupByFields + "\r\n    " + temp;
-            else
-                return whereString + "\r\n    " + temp;
-        }
-
-        /// <summary>
-        /// OQL表达式构造结束
-        /// </summary>
         public OQL END
         {
-            get { return this.CurrOQL; }
+            get
+            {
+                return CurrentOQL;
+            }
+        }
+    }
+
+    public class OQLOrderType
+    {
+        private OQL4 CurrentOQL4;
+
+        public OQLOrderType(OQL4 oql4)
+        {
+            CurrentOQL4 = oql4;
         }
 
-
-        public void Dispose()
+        public OQL4 Desc
         {
-            this.CurrEntity.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
-            //System.Diagnostics.Debug.WriteLine("dispose in oql1");
+            get
+            {
+                CurrentOQL4.AddOrderType(" DESC ");
+                return CurrentOQL4;
+            }
+        }
+
+        public OQL4 Asc
+        {
+            get
+            {
+                CurrentOQL4.AddOrderType(" ASC ");
+                return CurrentOQL4;
+            }
+        }
+
+        public OQL END
+        {
+            get
+            {
+                return CurrentOQL4.END;
+            }
+        }
+    }
+
+    public class JoinEntity
+    {
+        private OQL _mainOql;
+        private string _joinType;
+        private EntityBase _joinedEntity;
+
+        public string JoinedString { get; private set; }
+        public string LeftString { get; private set; }
+        public string RightString { get; private set; }
+        /// <summary>
+        /// 以一个OQL对象关联本类
+        /// </summary>
+        /// <param name="mainOql"></param>
+        public JoinEntity(OQL mainOql, EntityBase entity, string joinType)
+        {
+            this._mainOql = mainOql;
+            this._joinType = joinType;
+            this._joinedEntity = entity;
+
+        }
+        /// <summary>
+        /// 指定要关联查询的实体类属性（内部对应字段）
+        /// </summary>
+        /// <param name="field1">主实体类的主键属性</param>
+        /// <param name="field2">从实体类的外键属性</param>
+        /// <returns></returns>
+        public OQL On(object field1, object field2)
+        {
+            TableNameField tnfRight = this._mainOql.fieldStack.Pop();
+            TableNameField tnfLeft = this._mainOql.fieldStack.Pop();
+            LeftString = this._mainOql.GetOqlFieldName(tnfLeft);
+            RightString = this._mainOql.GetOqlFieldName(tnfRight);
+
+            this.JoinedString = string.Format("\r\n{0} [{1}] {2}  ON {3} ={4} ", _joinType,
+                _joinedEntity.GetTableName(),
+                this._mainOql.GetTableAliases(_joinedEntity),
+                LeftString,
+                RightString);
+            this._mainOql.oqlString += this.JoinedString;
+            return this._mainOql;
+        }
+        /// <summary>
+        /// （OQL内部使用）添加要关联的字段名
+        /// </summary>
+        /// <param name="fieldName"></param>
+        public void AddJoinFieldName(string fieldName)
+        {
+            if (string.IsNullOrEmpty(this.LeftString))
+                this.LeftString = fieldName;
+            else if (string.IsNullOrEmpty(this.RightString))
+                this.RightString = fieldName;
         }
     }
 
     /// <summary>
-    /// 条件表达式
+    /// OQL 条件对象，兼容老版本的OQL2对象。建议使用OQLCompare对象构造复杂的条件
     /// </summary>
-    public class OQL2 : IDisposable
+    public class OQLCondition
     {
-        private EntityBase CurrEntity;
-        private Dictionary<string, object> paras = new Dictionary<string, object>();
-        private string currFieldName = "";
-        private string currParaName = "";
-        private string _conditionString = "";
-        private int paraIndex = 0;
+        private OQL CurrentOQL;
+        private string conditionString;
 
-        /// <summary>
-        /// 获取条件参数
-        /// </summary>
-        public Dictionary<string, object> Parameters
+        public OQLCondition(OQL oql)
         {
-            get { return paras; }
+            CurrentOQL = oql;
+            conditionString = " 1=1 ";
         }
 
-        /// <summary>
-        /// 使用一个实体对象，初始化条件表达式
-        /// </summary>
-        /// <param name="e">实体对象实例</param>
-        public OQL2(EntityBase e)
+        public string ConditionString
         {
-            this.CurrEntity = e;
-            this.CurrEntity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
+            get { return conditionString; }
         }
 
-        private void CurrEntity_PropertyGetting(object sender, PropertyGettingEventArgs e)
-        {
-            //int n = 0;
-            //while (paras.ContainsKey(e.PropertyName  + n))
-            //    n++;
-            //currParaName = e.PropertyName.Replace(" ", "") + n;//消除实际字段名中的空格
-            //PostgreSQL的dotConnect驱动不支持参数名中的中文，故注释上面的代码，采用数字编号
-            currParaName = "P" + this.paraIndex;
-            currFieldName = "[" + e.PropertyName + "]";
-            this.paraIndex++;
-
-        }
-
-        private OQL2 subCondition(string logicType, object field, string compareType, object Value)
+        private OQLCondition subCondition(string logicType, string currFieldName, string compareType, object Value)
         {
             if (compareType == null || compareType == "")
                 compareType = "=";
@@ -996,12 +1927,20 @@ namespace PWMIS.DataMap.Entity
 
             if (compareType == "=" || compareType == ">=" || compareType == ">" || compareType == "<=" || compareType == "<" || compareType == "<>" || compareType.StartsWith("like"))
             {
-                _conditionString += logicType + currFieldName + " " + compareType + " @" + currParaName;
-                paras.Add(currParaName, Value);
+                TableNameField tnf = new TableNameField();
+                tnf.Entity = this.CurrentOQL.currEntity;
+                tnf.Field = currFieldName;
+                tnf.FieldValue = Value;
+                conditionString += logicType + currFieldName + " " + compareType + " " + CurrentOQL.CreateParameter(tnf);
+
             }
             else if (compareType.StartsWith("is"))
             {
-                _conditionString += logicType + currFieldName + " IS " + Value.ToString();
+                string strValue = Value.ToString().ToUpper();
+                if (strValue == "NULL" || strValue == "NOT NULL")
+                    conditionString += logicType + currFieldName + " IS " + strValue;
+                else
+                    throw new FormatException("IS 条件只能是NULL或者 NOT NULL");
             }
             else
             {
@@ -1017,20 +1956,10 @@ namespace PWMIS.DataMap.Entity
         /// <param name="compareType">SQL 比较条件，如"=","LIKE","IS" 等</param>
         /// <param name="Value">要比较的值</param>
         /// <returns>多条件表达式</returns>
-        public OQL2 AND(object field, string compareType, object Value)
+        public OQLCondition AND(object field, string compareType, object Value)
         {
-            return subCondition(" AND ", field, compareType, Value);
-        }
-
-        /// <summary>
-        /// 获取并列条件集合（待实现）
-        /// </summary>
-        /// <param name="cmps">条件集合</param>
-        /// <returns>条件表达式</returns>
-        public OQL2 AND(params  OQLCompare[] cmps)
-        {
-
-            return this;
+            string currFieldName = CurrentOQL.TakeOneStackFields().Field;
+            return subCondition(" AND ", currFieldName, compareType, Value);
         }
 
         /// <summary>
@@ -1040,22 +1969,13 @@ namespace PWMIS.DataMap.Entity
         /// <param name="compareType">SQL 比较条件，如"=","LIKE","IS" 等</param>
         /// <param name="Value">要比较的值</param>
         /// <returns>多条件表达式</returns>
-        public OQL2 OR(object field, string compareType, object Value)
+        public OQLCondition OR(object field, string compareType, object Value)
         {
-            return subCondition(" OR  ", field, compareType, Value);
+            string currFieldName = CurrentOQL.TakeOneStackFields().Field;
+            return subCondition(" OR  ", currFieldName, compareType, Value);
 
         }
 
-        /// <summary>
-        /// 获取 或者 条件集合（待实现）
-        /// </summary>
-        /// <param name="cmps">条件集合</param>
-        /// <returns>条件表达式</returns>
-        public OQL2 OR(params  OQLCompare[] cmps)
-        {
-
-            return this;
-        }
 
         /// <summary>
         /// 选取 非 条件
@@ -1064,22 +1984,13 @@ namespace PWMIS.DataMap.Entity
         /// <param name="compareType">SQL 比较条件，如"=","LIKE","IS" 等</param>
         /// <param name="Value">要比较的值</param>
         /// <returns>多条件表达式</returns>
-        public OQL2 NOT(object field, string compareType, object Value)
+        public OQLCondition NOT(object field, string compareType, object Value)
         {
-            return subCondition(" NOT ", field, compareType, Value);
+            string currFieldName = CurrentOQL.TakeOneStackFields().Field;
+            return subCondition(" NOT ", currFieldName, compareType, Value);
 
         }
 
-        /// <summary>
-        /// 获取 非 条件集合（待实现）
-        /// </summary>
-        /// <param name="cmps">条件集合</param>
-        /// <returns>条件表达式</returns>
-        public OQL2 NOT(params  OQLCompare[] cmps)
-        {
-
-            return this;
-        }
 
         /// <summary>
         /// 选取 字段 列表条件
@@ -1087,27 +1998,9 @@ namespace PWMIS.DataMap.Entity
         /// <param name="field">实体对象的属性</param>
         /// <param name="Values">值列表</param>
         /// <returns>条件表达式</returns>
-        public OQL2 IN(object field, object[] Values)
+        public OQLCondition IN(object field, object[] Values)
         {
-            //string temp = "";
-            //foreach (object obj in Values)
-            //{
-            //    if (obj != null)
-            //    {
-            //        if (obj is string)
-            //            temp += ",'" + obj.ToString() + "'";
-            //        else
-            //            temp += "," + obj.ToString();
-            //    }
-            //    else
-            //        temp += ",NULL";
-
-            //}
-            //if (temp != "")
-            //{
-            //    _conditionString += " AND " + currFieldName + " IN("+temp.TrimStart (',')+")";
-            //}
-            _conditionString += getInCondition(Values, " IN ");
+            conditionString += getInCondition(field, Values, "IN ");
             return this;
         }
 
@@ -1117,77 +2010,49 @@ namespace PWMIS.DataMap.Entity
         /// <param name="field">字段</param>
         /// <param name="Values">值数组</param>
         /// <returns></returns>
-        public OQL2 NotIn(object field, object[] Values)
+        public OQLCondition NotIn(object field, object[] Values)
         {
-            _conditionString += getInCondition(Values, " NOT IN ");
+            conditionString += getInCondition(field, Values, " NOT IN ");
             return this;
         }
 
-
-        private string getInCondition(object[] Values, string inWords)
+        private string getInCondition(object field, object[] Values, string inType)
         {
-            string temp = "";
-            foreach (object obj in Values)
+            var tnf=CurrentOQL.TakeOneStackFields();
+            string currFieldName = tnf.Field;
+            string strInTemp = string.Empty;
+            string strResult = string.Empty;
+            if (field == null || field.GetType() == typeof(string))
             {
-                if (obj != null)
+                foreach (object obj in Values)
                 {
-                    if (obj is string)
-                        temp += ",'" + obj.ToString() + "'";
-                    else
-                        temp += "," + obj.ToString();
+                    strInTemp += "," + CurrentOQL.CreateParameter(null,obj.ToString());
                 }
-                else
-                    temp += ",NULL";
-
             }
-            if (temp != "")
+            else if (field.GetType() == typeof(DateTime))
             {
-                return " AND " + currFieldName + inWords + " (" + temp.TrimStart(',') + ")";
+                foreach (object obj in Values)
+                {
+                    strInTemp += "," + CurrentOQL.CreateParameter(null,(DateTime)obj);
+                }
             }
-            return "";
-        }
-
-        /// <summary>
-        /// 选取 字段 列表条件
-        /// </summary>
-        /// <param name="field">实体对象的属性</param>
-        /// <param name="Values">值列表</param>
-        /// <returns>条件表达式</returns>
-        public OQL2 IN(object field, string[] Values)
-        {
-            //string temp = "";
-            //foreach (string obj in Values)
-            //    temp += ",'" + obj+"'";
-            //if (temp != "")
-            //{
-            //    _conditionString += " AND " + currFieldName + " IN(" + temp.TrimStart(',') + ")";
-            //}
-            _conditionString += getStringInCondition(Values, " IN ");
-            return this;
-        }
-
-        /// <summary>
-        /// Not In 条件
-        /// </summary>
-        /// <param name="field">实体对象的属性</param>
-        /// <param name="Values">值列表</param>
-        /// <returns>条件表达式</returns>
-        public OQL2 NotIn(object field, string[] Values)
-        {
-            _conditionString += getStringInCondition(Values, " NOT IN ");
-            return this;
-        }
-
-        private string getStringInCondition(object[] Values, string inWords)
-        {
-            string temp = "";
-            foreach (string obj in Values)
-                temp += ",'" + obj + "'";
-            if (temp != "")
+            else
             {
-                return " AND " + currFieldName + inWords + " (" + temp.TrimStart(',') + ")";
+                foreach (object obj in Values)
+                {
+                    if (obj != null)
+                        strInTemp += "," + obj.ToString();
+                    else
+                        strInTemp += ",NULL";
+
+                }
             }
-            return "";
+
+            if (strInTemp != "")
+            {
+                strResult = " AND " + currFieldName + " " + inType + " (" + strInTemp.TrimStart(',') + ")";
+            }
+            return strResult;
         }
 
         /// <summary>
@@ -1197,16 +2062,8 @@ namespace PWMIS.DataMap.Entity
         /// <param name="field">属性字段</param>
         /// <param name="q">OQL表达式</param>
         /// <returns></returns>
-        public OQL2 IN(object field, OQL q)
+        public OQLCondition IN(object field, OQL q)
         {
-            //if (q.sql_fields.IndexOf(',') > 0)
-            //    throw new Exception("OQL 语法错误，包含在In查询中的子查询只能使用1个实体属性，请修改子查询的Select参数。");
-            //_conditionString += " AND " + currFieldName + " IN (\r\n" + q.ToString () + ")";
-
-            //foreach (string key in q.Parameters.Keys)
-            //    this.paras.Add(key, q.Parameters[key]);
-
-            //return this;
             return IN(field, q, true);
         }
 
@@ -1217,757 +2074,126 @@ namespace PWMIS.DataMap.Entity
         /// <param name="field">属性字段</param>
         /// <param name="q">OQL表达式</param>
         /// <returns></returns>
-        public OQL2 NotIn(object field, OQL q)
+        public OQLCondition NotIn(object field, OQL q)
         {
             return IN(field, q, false);
         }
 
-        private OQL2 IN(object field, OQL q, bool isIn)
+        private OQLCondition IN(object field, OQL q, bool isIn)
         {
             string inString = isIn ? " IN " : " NOT IN ";
+            string childSql = q.ToString().Replace("@P", "@INP").Replace("@CP", "@INCP");
             if (q.sql_fields.IndexOf(',') > 0)
                 throw new Exception("OQL 语法错误，包含在In查询中的子查询只能使用1个实体属性，请修改子查询的Select参数。");
-            string childSql = q.ToString().Replace("@P", "@INP");
 
-            _conditionString += " AND " + currFieldName + inString + "  (\r\n" + childSql + ")";
+            //２０１３．５．２７　增加替换.Replace("@CP","@INCP")，感谢张善友发现此Ｂｕｇ
+            string currFieldName = CurrentOQL.TakeOneStackFields().Field;
+            conditionString += " AND " + currFieldName + inString + "  (\r\n" + childSql + ")";
 
             foreach (string key in q.Parameters.Keys)
-                this.paras.Add("IN" + key, q.Parameters[key]);
+                CurrentOQL.Parameters.Add("IN" + key, q.Parameters[key]);
 
             return this;
         }
 
-        /// <summary>
-        /// 获取条件字符串
-        /// </summary>
-        public string ConditionString
-        {
-            get
-            {
-                return _conditionString == "" ? "" : _conditionString.Substring(" And".Length);
-            }
-        }
 
 
-        public void Dispose()
-        {
-            this.CurrEntity.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
-            //System.Diagnostics.Debug.WriteLine("dispose in oql2");
-        }
     }
 
-
     /// <summary>
-    /// 实体对象条件比较类，用于复杂条件比较表达式
+    /// OQL 动态排序对象，用于OQL表达式的OrderBy参数
     /// </summary>
-    public class OQLCompare : IDisposable
+    public class OQLOrder
     {
-        private EntityBase CurrEntity;
-        private List<EntityBase> joinedEntityList;
-        private string _compareString = "";
-        private string currPropName = "";
-        //private List<string> propertyList = new List<string>();
-        //private List<object> compareValueList = new List<object>();
-        //private List<CompareType> compareTypeList = new List<CompareType>();
-        //private List<string> compareLogicStrList = new List<string>();
-        private int compareIndex = 0;
-        private Dictionary<string, object> compareValueList = new Dictionary<string, object>();
-
-        public string GetNewParameterName()
-        {
-            this.compareIndex++;
-            string paraName = "@CP" + this.compareIndex;
-            return paraName;
-        }
+        private string orderString = string.Empty;
+        private OQL CurrentOQL;
 
         /// <summary>
-        /// 默认构造函数
+        /// 获取排序字符串，OQL内部使用
         /// </summary>
-        public OQLCompare()
+        public string OrderByString
         {
+            get { return orderString; }
+        }
 
+        public OQLOrder(OQL oql)
+        {
+            this.CurrentOQL = oql;
         }
 
         /// <summary>
-        /// 比较类别
+        /// 以一个实体类对象初始化构造函数
         /// </summary>
-        public enum CompareType
+        /// <param name="entity"></param>
+        [Obsolete("构造函数已经过时，请使用其它构造函数")]
+        public OQLOrder(EntityBase entity)
         {
-            /// <summary>
-            /// 大于
-            /// </summary>
-            Greater,
-            /// <summary>
-            /// 不大于（小于或等于）
-            /// </summary>
-            LessThanOrEqual,
-            /// <summary>
-            /// 小于
-            /// </summary>
-            LessThan,
-            /// <summary>
-            /// 不小于（大于或等于）
-            /// </summary>
-            GreaterThanOrEqual,
-            /// <summary>
-            /// 相等
-            /// </summary>
-            Equal,
-            /// <summary>
-            /// 不等于
-            /// </summary>
-            NotEqual,
-            /// <summary>
-            /// 类似于
-            /// </summary>
-            Like,
-            /// <summary>
-            /// IS NULL / IS NOT NULL
-            /// </summary>
-            IS,
-            /// <summary>
-            /// IN 查询
-            /// </summary>
-            IN,
-            /// <summary>
-            /// Not In 查询
-            /// </summary>
-            NotIn
 
         }
-
         /// <summary>
-        /// 条件表达式逻辑符号
-        /// </summary>
-        public enum CompareLogic
-        {
-            /// <summary>
-            /// 逻辑 与
-            /// </summary>
-            AND,
-            /// <summary>
-            /// 逻辑 或
-            /// </summary>
-            OR,
-            /// <summary>
-            /// 逻辑 非
-            /// </summary>
-            NOT
-        }
-
-        //public string _DbCompareTypeStr;
-        ///// <summary>
-        ///// 数据库中的比较符号，如大于，小于符号
-        ///// </summary>
-        //public string DbCompareTypeStr
-        //{
-        //    get { return _DbCompareTypeStr; }
-        //}
-        ///// <summary>
-        ///// 要比较的字段名称
-        ///// </summary>
-        //public string CompareFieldName
-        //{
-        //    get { return currPropName; }
-        //}
-        //public object _CompareValue;
-        ///// <summary>
-        ///// 要比较的值
-        ///// </summary>
-        //public object CompareValue
-        //{
-        //    get { return _CompareValue; }
-        //}
-
-        /// <summary>
-        /// （条件表达式）比较的参数信息表
-        /// </summary>
-        public Dictionary<string, object> ComparedParameters
-        {
-            get { return compareValueList; }
-        }
-
-        /// <summary>
-        /// 获取比较表达式的字符串形式
-        /// </summary>
-        public string CompareString
-        {
-            get
-            {
-                //if (_compareString != "")
-                //{
-                return _compareString;
-                //}
-                //string str = "";
-                //int j = 0;
-                //List<string> list = new List<string>();
-
-                //for (int i = 0; i < propertyList.Count; i++)
-                //{
-                //    list.Add ( propertyList[i] + this.GetDbCompareTypeStr(compareTypeList[i]) + "@P" + i);
-                //}
-
-                //for (int i = 0; i < compareLogicStrList.Count; i++)
-                //{
-                //    str +=" ("+ list[j] + compareLogicStrList[i] + list[++j]+" ) ";
-                //    j++;
-                //    if (j== list.Count-1)
-                //        break;
-                //}
-                //if (j == list.Count - 1)
-                //    str += compareLogicStrList[compareLogicStrList.Count-1] + list[list.Count - 1];
-                //return str;
-                ////return str.Length >0? str.Substring (5):"";//.TrimEnd(" AND "); 
-            }
-            protected internal set { _compareString = value; }
-        }
-
-        /// <summary>
-        /// 使用一个实体对象初始化本类
-        /// </summary>
-        /// <param name="e"></param>
-        public OQLCompare(EntityBase e)
-        {
-            this.CurrEntity = e;
-            //this.CurrEntity.ToCompareFields = true;
-            this.CurrEntity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
-        }
-
-        /// <summary>
-        /// 使用多个实体类进行连接查询的条件
+        /// 以一个或者多个实体类，来构造排序条件类。在OQL多实体类关联查询中需要使用该方法。
         /// </summary>
         /// <param name="e"></param>
         /// <param name="joinedEntitys"></param>
-        public OQLCompare(EntityBase e, params EntityBase[] joinedEntitys)
+        [Obsolete("构造函数已经过时，请使用其它构造函数")]
+        public OQLOrder(EntityBase e, params EntityBase[] joinedEntitys)
         {
-            this.CurrEntity = e;
-            this.CurrEntity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
-            //处理多个实体类
-            if (joinedEntitys != null && joinedEntitys.Length > 0)
-            {
-                this.joinedEntityList = new List<EntityBase>();
-                foreach (EntityBase item in joinedEntitys)
-                {
-                    this.joinedEntityList.Add(item);
-                    item.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
-                }
-            }
 
         }
 
-        private void dictionaryAddRange(Dictionary<string, object> dictMain, Dictionary<string, object> dictSalary)
+        private OQLOrder OrderBy(object field, string orderType)
         {
-            foreach (string key in dictSalary.Keys)
-            {
-                dictMain[key] = dictSalary[key];
-            }
-        }
-
-        /// <summary>
-        /// 对一组OQLCompare 对象，执行CompareLogic 类型的比较，通常用于构造复杂的带括号的条件查询
-        /// </summary>
-        /// <seealso cref="http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html"/>
-        /// <param name="compares">OQL比较对象列表</param>
-        /// <param name="logic">各组比较条件的组合方式，And，Or，Not</param>
-        /// <returns>新的条件比较对象</returns>
-        public OQLCompare Comparer(List<OQLCompare> compares, CompareLogic logic)
-        {
-            if (compares == null || compares.Count == 0)
-                throw new Exception("OQL 条件比较对象集合不能为空或者空引用！");
-            if (compares.Count == 1)
-                return compares[0];
-            OQLCompare cmp = new OQLCompare();
-            string typeString = logic == CompareLogic.AND ? " And " : logic == CompareLogic.OR ? " Or " : " Not ";
-            foreach (OQLCompare item in compares)
-            {
-                cmp.CompareString += item.CompareString + typeString;
-                if (item.ComparedParameters != null)
-                    foreach (string key in item.ComparedParameters.Keys)
-                    {
-                        cmp.ComparedParameters.Add(key, item.ComparedParameters[key]);
-                    }
-
-            }
-            cmp.CompareString = cmp.CompareString.Substring(0, cmp.CompareString.Length - typeString.Length);
-            cmp.CompareString = " ( " + cmp.CompareString + " ) ";
-            return cmp;
-        }
-
-        /// <summary>
-        /// 采用两个实体比较对象按照某种比较逻辑进行处理，构造一个新的实体比较对象
-        /// </summary>
-        /// <seealso cref="http://www.cnblogs.com/bluedoctor/archive/2010/11/28/1870095.html"/>
-        /// <param name="compare1">比较逻辑符号左边的实体比较对象</param>
-        /// <param name="logic">比较逻辑</param>
-        /// <param name="compare2">比较逻辑符号左边的实体比较对象</param>
-        public OQLCompare(OQLCompare compare1, CompareLogic logic, OQLCompare compare2)
-        {
-            //propertyList.AddRange(compare1.propertyList);
-            //compareValueList.AddRange(compare1.compareValueList);
-            //compareTypeList.AddRange(compare1.compareTypeList);
-
-            //propertyList.AddRange(compare2.propertyList);
-            //compareValueList.AddRange(compare2.compareValueList);
-            //compareTypeList.AddRange(compare2.compareTypeList);
-            //compareLogicStrList.AddRange(compare1.compareLogicStrList);
-
-            dictionaryAddRange(compareValueList, compare1.compareValueList);
-            dictionaryAddRange(compareValueList, compare2.compareValueList);
-
-            switch (logic)
-            {
-                case CompareLogic.AND:
-                    //this.compareLogicStrList.Add(" AND ");
-                    this.CompareString = " (" + compare1.CompareString + " AND " + compare2.CompareString + ") ";
-                    break;
-                case CompareLogic.OR:
-                    //this.compareLogicStrList.Add(" OR ");
-                    this.CompareString = " (" + compare1.CompareString + " OR " + compare2.CompareString + ") ";
-                    break;
-                //case CompareLogic.NOT :
-                //    this.compareLogicStrList.Add(" NOT ");
-                //    this.CompareString = " NOT (" + compare1.CompareString + " AND " + compare2.CompareString + ") "; 
-                //    break;
-
-            }
-        }
-
-        void CurrEntity_PropertyGetting(object sender, PropertyGettingEventArgs e)
-        {
-            if (this.joinedEntityList != null)
-            {
-                this.currPropName = "[" + ((EntityBase)sender).TableName + "].[" + e.PropertyName + "]";
-            }
-            else
-            {
-                this.currPropName = "[" + e.PropertyName + "]";
-                //propertyList.Add(e.PropertyName);
-            }
-
-        }
-
-        private string getCompareFieldString(string sqlFunctionFormat)
-        {
-            string compareFieldString = string.Empty;
-            if (!string.IsNullOrEmpty(sqlFunctionFormat))
-            {
-                if (sqlFunctionFormat.Contains("--"))
-                    throw new Exception("SQL 函数格式串中有危险的内容");
-                if (!sqlFunctionFormat.Contains("{0}"))
-                    throw new Exception("SQL 函数格式串未指定替换位置{0}");
-                compareFieldString = string.Format(sqlFunctionFormat, this.currPropName);
-            }
-            else
-            {
-                compareFieldString = this.currPropName;
-            }
-            return compareFieldString;
-        }
-
-        /// <summary>
-        /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
-        /// </summary>
-        /// <param name="field">实体对象属性</param>
-        /// <param name="type">比较类型枚举</param>
-        /// <param name="Value">要比较的值</param>
-        /// <returns>比较表达式</returns>
-        public OQLCompare Comparer(object field, CompareType type, object Value)
-        {
-            //this.compareIndex++;
-            //OQLCompare cmp = new OQLCompare();
-            //if (type == CompareType.IS)
-            //{
-            //    cmp.CompareString = this.currPropName + " IS " + Value.ToString();//此处可能不安全
-            //}
-            //else if (type == CompareType.IN)
-            //{
-            //    cmp.CompareString = this.currPropName + " IN ( " + Value.ToString() + " )";//此处可能不安全
-            //}
-            //else if (type == CompareType.NotIn)
-            //{
-            //    cmp.CompareString = this.currPropName + " NOT IN ( " + Value.ToString() + " )";//此处可能不安全
-            //}
-            //else
-            //{
-            //    string paraName = "@CP" + this.compareIndex;
-            //    cmp.compareValueList.Add(paraName.Substring(1), Value);
-
-            //    cmp.CompareString = this.currPropName + GetDbCompareTypeStr(type) + paraName;
-            //}
-            //return cmp;
-            return Comparer(field, type, Value, null);
-        }
-
-        /// <summary>
-        /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
-        /// </summary>
-        /// <param name="field">实体对象属性</param>
-        /// <param name="type">比较类型枚举</param>
-        /// <param name="Value">要比较的值</param>
-        /// <param name="sqlFunctionFormat">SQL 函数格式串，例如 "DATEPART(hh, {0})"</param>
-        /// <returns>比较表达式</returns>
-        public OQLCompare Comparer(object field, CompareType type, object Value, string sqlFunctionFormat)
-        {
-            string compareFieldString = this.getCompareFieldString(sqlFunctionFormat);
-
-            this.compareIndex++;
-            OQLCompare cmp = new OQLCompare();
-            if (type == CompareType.IS)
-            {
-                string isValue = Value.ToString().Trim().ToUpper();
-                if (isValue != "NULL" && isValue != "NOT NULL")
-                    throw new Exception("IS 只能操作NULL或者NOT NULL");
-                cmp.CompareString = compareFieldString + " IS " + isValue;
-            }
-            else if (type == CompareType.IN)
-            {
-                cmp.CompareString = compareFieldString + " IN ( " + Value.ToString() + " )";//此处可能不安全
-            }
-            else if (type == CompareType.NotIn)
-            {
-                cmp.CompareString = compareFieldString + " NOT IN ( " + Value.ToString() + " )";//此处可能不安全
-            }
-            else
-            {
-                string paraName = "@CP" + this.compareIndex;
-                cmp.compareValueList.Add(paraName.Substring(1), Value);
-
-                cmp.CompareString = compareFieldString + GetDbCompareTypeStr(type) + paraName;
-            }
-            //this.Dispose(); //不能调用此方法，因为当前对象还可能继续使用，进行复杂的组合，需要用户手工调用
-            return cmp;
-        }
-
-        /// <summary>
-        /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
-        /// </summary>
-        /// <param name="field">实体对象属性</param>
-        /// <param name="compareTypeString">数据库比较类型字符串</param>
-        /// <param name="Value">要比较的值</param>
-        /// <returns>比较表达式</returns>
-        public OQLCompare Comparer(object field, string compareTypeString, object Value)
-        {
-            //string[] cmpStrs = { "=", ">", "<", "<>", ">=", "<=", "like", "is", "in", "not in" };
-            //if (String.IsNullOrEmpty(compareTypeString))
-            //    compareTypeString = "=";
-            //else
-            //    compareTypeString = compareTypeString.Trim().ToLower();
-            //bool flag = false;
-            //foreach (string str in cmpStrs)
-            //{
-            //    if (compareTypeString == str)
-            //    {
-            //        flag = true;
-            //        break;
-            //    }
-            //}
-            //if (!flag)
-            //    throw new Exception("比较符号必须是 =,>,<,>=,<=,<>,like,is,in,not in 中的一种。");
-
-
-            //this.compareIndex++;
-            //OQLCompare cmp = new OQLCompare();
-            //if (compareTypeString == "is")
-            //{
-            //    cmp.CompareString = this.currPropName + " IS " + Value.ToString();//此处可能不安全，IS NULL，IS NOT NULL
-            //}
-            //else if (compareTypeString == "in")
-            //{
-            //    cmp.CompareString = this.currPropName + " IN ( " + Value.ToString() + " )";//此处可能不安全
-
-            //}
-            //else if (compareTypeString == "not in")
-            //{
-            //    cmp.CompareString = this.currPropName + " NOT IN ( " + Value.ToString() + " )";//此处可能不安全
-
-            //}
-            //else
-            //{
-            //    string paraName = "@CP" + this.compareIndex;
-            //    cmp.compareValueList.Add(paraName.Substring(1), Value);
-            //    cmp.CompareString = this.currPropName + " " + compareTypeString + " " + paraName;
-            //}
-            //return cmp;
-            return Comparer(field, compareTypeString, Value, null);
-        }
-
-        /// <summary>
-        /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
-        /// </summary>
-        /// <param name="field">实体对象属性</param>
-        /// <param name="compareTypeString">数据库比较类型字符串</param>
-        /// <param name="Value">要比较的值</param>
-        /// <param name="sqlFunctionFormat">SQL 函数格式串，例如 "DATEPART(hh, {0})"</param>
-        /// <returns>比较表达式</returns>
-        public OQLCompare Comparer(object field, string compareTypeString, object Value, string sqlFunctionFormat)
-        {
-            string[] cmpStrs = { "=", ">", "<", "<>", ">=", "<=", "like", "is", "in", "not in" };
-            if (String.IsNullOrEmpty(compareTypeString))
-                compareTypeString = "=";
-            else
-                compareTypeString = compareTypeString.Trim().ToLower();
-            bool flag = false;
-            foreach (string str in cmpStrs)
-            {
-                if (compareTypeString == str)
-                {
-                    flag = true;
-                    break;
-                }
-            }
-            if (!flag)
-                throw new Exception("比较符号必须是 =,>,<,>=,<=,<>,like,is,in,not in 中的一种。");
-
-            string compareFieldString = this.getCompareFieldString(sqlFunctionFormat);
-
-            this.compareIndex++;
-            OQLCompare cmp = new OQLCompare();
-            if (compareTypeString == "is")
-            {
-                cmp.CompareString = compareFieldString + " IS " + Value.ToString();//此处可能不安全，IS NULL，IS NOT NULL
-            }
-            else if (compareTypeString == "in")
-            {
-                cmp.CompareString = compareFieldString + " IN ( " + Value.ToString() + " )";//此处可能不安全
-
-            }
-            else if (compareTypeString == "not in")
-            {
-                cmp.CompareString = compareFieldString + " NOT IN ( " + Value.ToString() + " )";//此处可能不安全
-
-            }
-            else
-            {
-                string paraName = "@CP" + this.compareIndex;
-                cmp.compareValueList.Add(paraName.Substring(1), Value);
-                cmp.CompareString = compareFieldString + " " + compareTypeString + " " + paraName;
-            }
-            //this.Dispose(); //不能调用此方法，因为当前对象还可能继续使用，进行复杂的组合，需要用户手工调用
-            return cmp;
-        }
-
-        /// <summary>
-        /// 将当前实体属性的值作为比较的值，得到一个新的实体比较对象
-        /// </summary>
-        /// <param name="field">实体对象的属性字段</param>
-        /// <returns>比较表达式</returns>
-        public OQLCompare Comparer(object field)
-        {
-            //this.compareIndex++;
-            //OQLCompare cmp = new OQLCompare();
-            //string paraName = "@CP" + this.compareIndex;
-            //cmp.compareValueList.Add(paraName, field);
-            //cmp.CompareString = this.currPropName + "=" + paraName;
-            //return cmp;
-            return this.Equals(field, field);
-        }
-
-        /// <summary>
-        /// 开始字段名称的相等比较（待实现）
-        /// </summary>
-        /// <param name="field"></param>
-        /// <returns></returns>
-        public OQLCompare BeginEquals(object field)
-        {
+            if (CurrentOQL == null)
+                throw new InvalidOperationException("当前对象实例化的时候需要使用关联的OQL实例，但使用了过期的构造函数。");
+            orderString += "," + CurrentOQL.TakeStackFields() + " " + orderType;
+            CurrentOQL.fieldStack.Clear();
             return this;
         }
 
         /// <summary>
-        /// 结束字段名称的相等比较（待实现）
+        /// 默认排序（ASC）
         /// </summary>
-        /// <param name="field"></param>
+        /// <param name="field">要排序的实体属性</param>
         /// <returns></returns>
-        public OQLCompare EndEquals(object field)
+        public OQLOrder OrderBy(object field)
         {
-            return this;
+            return OrderBy(field, "ASC");
         }
-
         /// <summary>
-        /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
+        /// 升序排序ASC
         /// </summary>
-        /// <param name="field">实体对象属性</param>
-        /// <param name="Value">要比较的值</param>
-        /// <returns>比较表达式</returns>
-        public new OQLCompare Equals(object field, object Value)
-        {
-            this.compareIndex++;
-            OQLCompare cmp = new OQLCompare();
-            string paraName = "@CP" + this.compareIndex;
-            cmp.compareValueList.Add(paraName.Substring(1), Value);
-            cmp.CompareString = this.currPropName + "=" + paraName;
-            return cmp;
-        }
-
-        private string GetDbCompareTypeStr(CompareType type)
-        {
-            string typeStr = "";
-            switch (type)
-            {
-                case CompareType.Equal: typeStr = "="; break;
-                case CompareType.Greater: typeStr = ">"; break;
-                case CompareType.Like: typeStr = " LIKE "; break;
-                case CompareType.LessThanOrEqual: typeStr = "<="; break;
-                case CompareType.GreaterThanOrEqual: typeStr = ">="; break;
-                case CompareType.NotEqual: typeStr = "<>"; break;
-                case CompareType.LessThan: typeStr = "<"; break;
-                case CompareType.IN: typeStr = " IN "; break;
-                case CompareType.IS: typeStr = " IS "; break;
-                case CompareType.NotIn: typeStr = " NOT IN "; break;
-                default: typeStr = "="; break;
-            }
-            return typeStr;
-        }
-
-        /// <summary>
-        /// 将两个实体比较对象进行逻辑 与 比较，得到一个新的实体比较表达式
-        /// </summary>
-        /// <param name="compare1">左表达式</param>
-        /// <param name="compare2">右表达式</param>
-        /// <returns>实体比较表达式</returns>
-        public static OQLCompare operator &(OQLCompare compare1, OQLCompare compare2)
-        {
-            return new OQLCompare(compare1, CompareLogic.AND, compare2);
-        }
-
-        /// <summary>
-        /// 将两个实体比较对象进行逻辑 与 比较，得到一个新的实体比较表达式
-        /// </summary>
-        /// <param name="compare1">左表达式</param>
-        /// <param name="compare2">右表达式</param>
-        /// <returns>实体比较表达式</returns>
-        public static OQLCompare operator |(OQLCompare compare1, OQLCompare compare2)
-        {
-            return new OQLCompare(compare1, CompareLogic.OR, compare2);
-        }
-
-        /// <summary>
-        /// 设置等于某个实体属性的比较条件
-        /// </summary>
-        /// <param name="compare">当前实体比较对象</param>
-        /// <param name="Value">要比较的值</param>
-        /// <returns>构造的实体比较对象</returns>
-        public static OQLCompare operator ==(OQLCompare compare, object Value)
-        {
-            return BuildOperator(compare, Value, " = ");
-        }
-
-        /// <summary>
-        /// 设置不等于某个实体属性的比较条件
-        /// </summary>
-        /// <param name="compare">当前实体比较对象</param>
-        /// <param name="Value">要比较的值</param>
-        /// <returns>构造的实体比较对象</returns>
-        public static OQLCompare operator !=(OQLCompare compare, object Value)
-        {
-            return BuildOperator(compare, Value, " <> ");
-        }
-
-        /// <summary>
-        /// 设置不小于某个实体属性的比较条件
-        /// </summary>
-        /// <param name="compare">当前实体比较对象</param>
-        /// <param name="Value">要比较的值</param>
-        /// <returns>构造的实体比较对象</returns>
-        public static OQLCompare operator >=(OQLCompare compare, object Value)
-        {
-            return BuildOperator(compare, Value, " >= ");
-        }
-
-        /// <summary>
-        /// 设置不大于某个实体属性的比较条件
-        /// </summary>
-        /// <param name="compare">当前实体比较对象</param>
-        /// <param name="Value">要比较的值</param>
-        /// <returns>构造的实体比较对象</returns>
-        public static OQLCompare operator <=(OQLCompare compare, object Value)
-        {
-            return BuildOperator(compare, Value, " <= ");
-        }
-
-        /// <summary>
-        /// 设置大于某个实体属性的比较条件
-        /// </summary>
-        /// <param name="compare">当前实体比较对象</param>
-        /// <param name="Value">要比较的值</param>
-        /// <returns>构造的实体比较对象</returns>
-        public static OQLCompare operator >(OQLCompare compare, object Value)
-        {
-            return BuildOperator(compare, Value, " > ");
-        }
-
-        /// <summary>
-        /// 设置小于某个实体属性的比较条件
-        /// </summary>
-        /// <param name="compare">当前实体比较对象</param>
-        /// <param name="Value">要比较的值</param>
-        /// <returns>构造的实体比较对象</returns>
-        public static OQLCompare operator <(OQLCompare compare, object Value)
-        {
-            return BuildOperator(compare, Value, " < ");
-        }
-
-        /// <summary>
-        /// 根据实体对象的属性，获取新的条件比较对象
-        /// </summary>
-        /// <param name="field"></param>
+        /// <param name="field">要排序的实体属性</param>
         /// <returns></returns>
-        public OQLCompare Property(object field)
+        public OQLOrder Asc(object field)
         {
-            OQLCompare cmp = new OQLCompare();
-            cmp.CompareString = this.currPropName;
-            return cmp;
+            return OrderBy(field, "ASC");
         }
-
-        private static OQLCompare BuildOperator(OQLCompare compare, object Value, string operatorString)
-        {
-            string paraName = compare.GetNewParameterName();
-            compare.CompareString += operatorString + paraName;
-            compare.compareValueList.Add(paraName.Substring(1), Value);
-            return compare;
-        }
-
         /// <summary>
-        /// 释放资源，取消事件订阅。
-        /// 注意，如果OQLCompare构造函数使用的实体类对象是一个不会释放的对象（长生命周期），那么请使用using语句块或者手动调用本方法。
+        /// 倒序排序DESC
         /// </summary>
-        public void Dispose()
+        /// <param name="field">要排序的实体属性</param>
+        /// <returns></returns>
+        public OQLOrder Desc(object field)
         {
-            if(this.CurrEntity!=null)
-                this.CurrEntity.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(CurrEntity_PropertyGetting);
-            //System.Diagnostics.Debug.WriteLine("dispose in OQLCompare.");
+            return OrderBy(field, "DESC");
         }
+        /// <summary>
+        /// 重置排序状态
+        /// </summary>
+        public void ReSet()
+        {
+            //currPropName = string.Empty;
+            orderString = string.Empty;
+        }
+        /// <summary>
+        /// 获取排序信息
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return orderString.Substring(1);
+        }
+
     }
-
-    public class JoinEntity
-    {
-        private OQL _mainOql;
-        public string JoinedString { get; private set; }
-        public string LeftString { get; private set; }
-        public string RightString { get; private set; }
-
-        public JoinEntity(OQL mainOql)
-        {
-            this._mainOql = mainOql;
-        }
-
-        public OQL On(object field1, object field2)
-        {
-            //条件查询等地方可能还用的上??
-            this._mainOql.isJoinOpt = false;
-            this._mainOql.HaveJoinOpt = true;
-            this.JoinedString = string.Format(" {0} = {1} \r\n  ", LeftString, RightString);
-            this._mainOql.joinedString += this.JoinedString;
-            return this._mainOql;
-        }
-
-        public void AddJoinFieldName(string fieldName)
-        {
-            if (string.IsNullOrEmpty(this.LeftString))
-                this.LeftString = fieldName;
-            else if (string.IsNullOrEmpty(this.RightString))
-                this.RightString = fieldName;
-        }
-    }
-
 
 }

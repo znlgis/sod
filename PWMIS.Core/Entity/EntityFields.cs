@@ -5,6 +5,7 @@ using System.Reflection;
 using PWMIS.DataProvider.Data;
 using System.Data;
 using System.Data.SqlClient;
+using PWMIS.Common;
 
 namespace PWMIS.DataMap.Entity
 {
@@ -195,7 +196,7 @@ namespace PWMIS.DataMap.Entity
             }
             if (field == entity.IdentityName)
             {
-                if ( db.CurrentDBMSType == PWMIS.Common.DBMSType.SqlServer || db.CurrentDBMSType == PWMIS.Common.DBMSType.SqlServerCe)
+                if (db.CurrentDBMSType == PWMIS.Common.DBMSType.SqlServer || db.CurrentDBMSType == PWMIS.Common.DBMSType.SqlServerCe)
                 {
                     temp = temp + " IDENTITY(1,1)";
                 }

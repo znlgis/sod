@@ -102,7 +102,7 @@ namespace PWMIS.Web.Controls
 
 		public virtual bool Validate()
 		{
-			if(!isNull)
+			if(!IsNull)
 			{
 				if(this.SelectedValue.Trim()==string.Empty)
 				{
@@ -163,7 +163,7 @@ namespace PWMIS.Web.Controls
 		#region 验证属性
 
 		[Category("控件验证"),Description("设定与返回值是否可以为空")]
-		public bool isNull
+		public bool IsNull
 		{
 
 			get

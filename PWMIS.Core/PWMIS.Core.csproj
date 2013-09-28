@@ -74,22 +74,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapter\IBCommand.cs" />
+    <Compile Include="Adapter\MyDataForm.cs" />
     <Compile Include="Adapter\MyDB.cs" />
     <Compile Include="CommonType\CommonEnum.cs" />
     <Compile Include="CommonType\SqlMapEnum.cs" />
     <Compile Include="CommUtil\CommonUtil.cs" />
     <Compile Include="DataMap\ControlDataMap.cs" />
+    <Compile Include="DataMap\DataCheckBoxValue.cs" />
+    <Compile Include="DataMap\DataTextBoxValue.cs" />
     <Compile Include="DataProvider\Access.cs" />
     <Compile Include="DataProvider\AdoHelper.cs" />
     <Compile Include="DataProvider\CommandLog.cs" />
     <Compile Include="DataProvider\CommonDB.cs" />
     <Compile Include="DataProvider\ConnectionSession.cs" />
+    <Compile Include="DataProvider\DataParameterFormat.cs" />
     <Compile Include="DataProvider\ODBC.cs" />
     <Compile Include="DataProvider\OleDB.cs" />
     <Compile Include="DataProvider\Oracle.cs" />
     <Compile Include="DataProvider\QueryException.cs" />
     <Compile Include="DataProvider\SqlServer.cs" />
     <Compile Include="DataProvider\SqlServerCe.cs" />
+    <Compile Include="Entity\EntityBuilder.cs" />
     <Compile Include="Entity\EntityContainer.cs" />
     <Compile Include="Entity\Entity.cs">
       <SubType>Code</SubType>
@@ -100,7 +105,11 @@
     <Compile Include="Entity\EntityQuery.cs" />
     <Compile Include="Entity\EntityQueryAnonymous.cs" />
     <Compile Include="Entity\EntitySerializable.cs" />
+    <Compile Include="Entity\GOQL.cs" />
+    <Compile Include="Entity\IEntityQuery.cs" />
+    <Compile Include="Entity\IOQL.cs" />
     <Compile Include="Entity\OQL.cs" />
+    <Compile Include="Entity\OQLCompare.cs" />
     <Compile Include="Entity\PdfNetSerialize.cs" />
     <Compile Include="Entity\PropertyNameValues.cs" />
     <Compile Include="Entity\QueryParameter.cs" />
@@ -113,6 +122,7 @@
     <Compile Include="SqlMap\DBMapper.cs" />
     <Compile Include="SqlMap\XmlCommand.cs" />
     <Compile Include="SqlMap\SqlMapper.cs" />
+    <Compile Include="SqlUtil\SqlCache.cs" />
     <Compile Include="SqlUtil\SQLPage.cs" />
   </ItemGroup>
   <ItemGroup>

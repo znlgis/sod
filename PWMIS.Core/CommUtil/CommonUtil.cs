@@ -89,9 +89,15 @@ namespace PWMIS.Core
                string EscapedCodeBase = Assembly.GetExecutingAssembly().EscapedCodeBase;
                Uri u = new Uri(EscapedCodeBase);
                string path = Path.GetDirectoryName(u.LocalPath);
-               if (path.Length > 4)
-                   appRootPath = path.Substring(0, path.Length - 4);// 去除 \bin，获取根目录
-               sourcePath = sourcePath.Replace("~", appRootPath);
+               if (path.Length > 4 && path.EndsWith("bin", StringComparison.OrdinalIgnoreCase))
+               {
+                   appRootPath = path.Substring(0, path.Length - 4);// 去除Web项目的 \bin，获取根目录
+                   sourcePath = sourcePath.Replace("~", appRootPath);
+               }
+               else
+               {
+                   sourcePath = sourcePath.Replace("~", ".");
+               }
            }
        }
 
@@ -131,9 +137,13 @@ namespace PWMIS.Core
            }
            else
            {
-               //如果 Value为 decimal类型，Ｔ　为double 类型， (T)Value 将发生错误
                //edit at 2011.5.16
-               return (T)Convert.ChangeType(Value, typeof(T));
+               //如果 Value为 decimal类型，Ｔ　为double 类型， (T)Value 将发生错误
+               //edit at 2013.8.9 支持枚举类型
+               if (typeof(T).IsEnum)
+                   return (T)Value;
+               else
+                   return (T)Convert.ChangeType(Value, typeof(T));
            }
        }
 

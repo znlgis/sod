@@ -152,6 +152,11 @@ namespace PWMIS.DataProvider.Data
                 base.InsertKey = value;
             }
         }
+
+        public override string GetNativeDbTypeName(IDataParameter para)
+        {
+            return ((SqliteParameter)para).DbType.ToString();
+        }
 	}
 }
 

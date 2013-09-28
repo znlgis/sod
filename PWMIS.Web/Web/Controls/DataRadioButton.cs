@@ -9,8 +9,8 @@
  * 作者：邓太华     时间：2008-10-12
  * 版本：V3.0
  * 
- * 修改者：         时间：2013-3-1                
- * 修改说明：完善了控件
+ * 修改者：         时间：                
+ * 修改说明：
  * ========================================================================
 */
 using System;
@@ -20,6 +20,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using PWMIS.Common;
+using PWMIS.DataMap;
 
 
 namespace PWMIS.Web.Controls
@@ -28,7 +29,7 @@ namespace PWMIS.Web.Controls
     /// 数据复选框控件
 	/// </summary>
     [System.Drawing.ToolboxBitmap(typeof(ControlIcon), "DataRadioButton.bmp")]
-    public class DataRadioButton : RadioButton, IDataControl, IQueryControl
+    public class DataRadioButton : RadioButton, IDataCheckBox, IQueryControl
 	{
 		public DataRadioButton()
 		{
@@ -147,7 +148,7 @@ namespace PWMIS.Web.Controls
 
 		#region 借口方法
 
-		public bool isNull
+		public bool IsNull
 		{
 
 			get
@@ -162,110 +163,16 @@ namespace PWMIS.Web.Controls
 			}
 		}
 
-		public void SetValue(object obj)
-		{
-			this.Checked = false;
-			if(obj!=null)
-			{
-				string SelItemValues = obj.ToString().Trim();
-                string strValue = this.Value.Trim();
-                if (strValue == SelItemValues.Trim())
-				{
-					this.Checked=true;
-                    return;
-				}
-                //布尔值特殊处理，数据库中可能存储的值为0或者1
-                if (this.SysTypeCode == TypeCode.Boolean)
-                {
-                    if (strValue.ToLower() == "true" && SelItemValues == "1")
-                        this.Checked = true;
-                    else if (strValue.ToLower() == "false" && SelItemValues == "0")
-                        this.Checked = true;
-                }
-
-			}
-
-		}
-
-		public object GetValue()
-		{
-            return this.Checked ? GetValueInner() : DBNull.Value;
-		}
-
-        private object GetValueInner()
+        public void SetValue(object value)
         {
-            switch (this.SysTypeCode)
-            {
-                case TypeCode.String:
-                    {
-                        return this.Value.Trim();
-                    }
-                case TypeCode.Int32:
-                    {
-                        if (this.Value.Trim() != "")
-                        {
-                            return Convert.ToInt32(this.Value.Trim());
-                        }
-                        //return 0;
-                        return DBNull.Value;
-                    }
-                case TypeCode.Decimal:
-                    {
-                        if (this.Value.Trim() != "")
-                        {
-                            return Convert.ToDecimal(this.Value.Trim());
-                        }
-                        //return 0;
-                        return DBNull.Value;
-                    }
-                case TypeCode.DateTime:
-                    if (this.Value.Trim() != "")
-                    {
-                        try
-                        {
-                            return Convert.ToDateTime(this.Value.Trim());
-                        }
-                        catch
-                        {
-                            return DBNull.Value; //"1900-1-1";
-                        }
-                    }
-                    return DBNull.Value;//"1900-1-1";
+            DataCheckBoxValue dcbv = new DataCheckBoxValue(this);
+            dcbv.SetValue(value);
+        }
 
-                case TypeCode.Double:
-                    {
-                        if (this.Value.Trim() != "")
-                        {
-                            return Convert.ToDouble(this.Value.Trim());
-                        }
-                        //return 0;
-                        return DBNull.Value;
-                    }
-                case TypeCode.Boolean:
-                    {
-                        if (this.Value.Trim() != "")
-                        {
-                            try
-                            {
-                                return Convert.ToBoolean(this.Value.Trim());
-                            }
-                            catch
-                            {
-                                return DBNull.Value; //"1900-1-1";
-                            }
-                        }
-                        return DBNull.Value;//"1900-1-1";
-                    }
-                default:
-                    if (this.Value.Trim() == "")
-                    {
-                        return DBNull.Value;
-                    }
-                    else
-                    {
-                        return this.Value.Trim();
-                    }
-            }
+        public object GetValue()
+        {
+            DataCheckBoxValue dcbv = new DataCheckBoxValue(this);
+            return dcbv.GetValue();
         }
 
 		public virtual bool Validate()

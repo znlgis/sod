@@ -5,7 +5,7 @@ create table [客户表]
 (
 [客户号] varchar(38) primary key, 
 [姓名] varchar(20) not null, 
-[性别] bit null,
+[性别] BOOL null,
 [出生日期] datetime null,
 [联系电话] varchar(30) not null,
 [联系地址] varchar(200) null,
@@ -16,7 +16,7 @@ create table [雇员表]
 (
 [工号] varchar(38) primary key, 
 [姓名] varchar(20) not null, 
-[性别] bit not null,
+[性别] BOOL not null,
 [出生日期] datetime null,
 [入职时间] datetime not null,
 [职务名称] varchar(10) null

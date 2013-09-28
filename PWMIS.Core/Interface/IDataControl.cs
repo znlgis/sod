@@ -89,7 +89,7 @@ namespace PWMIS.Common
 		/// <summary>
 		///  «∑Ò‘ –Ìø’÷µ
 		/// </summary>
-		bool isNull
+		bool IsNull
 		{
 			get;
 //			set;
@@ -134,4 +134,21 @@ namespace PWMIS.Common
 		bool Validate();
 
 	}
+
+    public interface IDataTextBox : IDataControl
+    {
+        string Text { get; set; }
+        string DataFormatString { get; set; }
+        int MaxLength { get; set; }
+    }
+
+    public interface IDataCheckBox : IDataControl
+    {
+        string Value { get; set; }
+        bool Checked { get; set; }
+        string Text { get; set; }
+        event EventHandler CheckedChanged;
+    }
+
+    
 }

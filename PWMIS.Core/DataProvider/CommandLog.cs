@@ -256,11 +256,17 @@ namespace PWMIS.DataProvider.Data
                 //fs.EndWrite(writeResult);//这种方法异步起不到效果
                 fs.Close();
             }
+
             //lock (lockObj)
             //{
-            //    StreamWriter sw = File.AppendText(DataLogFile); ;
-            //    sw.WriteLine(log);
-            //    sw.Close();
+
+            //    //using (StreamWriter sw = File.AppendText(DataLogFile))
+            //    //{
+
+            //    //    sw.WriteLine(log);
+            //    //    sw.Flush();
+            //    //    sw.Close();
+            //    //}
             //}
 		}
 	}

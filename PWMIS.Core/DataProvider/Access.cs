@@ -22,10 +22,10 @@ using System.Data.OleDb;
 
 namespace PWMIS.DataProvider.Data
 {
-   /// <summary>
-   /// Access 数据库访问类
-   /// </summary>
-    public sealed class Access : OleDb 
+    /// <summary>
+    /// Access 数据库访问类
+    /// </summary>
+    public sealed class Access : OleDb
     {
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         public override PWMIS.Common.DBMSType CurrentDBMSType
         {
-            get { return PWMIS.Common.DBMSType.Access ; }
+            get { return PWMIS.Common.DBMSType.Access; }
         }
 
         private string _insertKey;
@@ -58,7 +58,7 @@ namespace PWMIS.DataProvider.Data
         public override IDataParameter GetParameter(string paraName, object Value)
         {
             IDataParameter para = base.GetParameter(paraName, Value);
-            if(Value is DateTime)
+            if (Value is DateTime)
                 ((OleDbParameter)para).OleDbType = OleDbType.DBDate;
             return para;
         }
@@ -68,7 +68,7 @@ namespace PWMIS.DataProvider.Data
             IDataParameter para = this.GetParameter();
             para.ParameterName = paraName;
             para.DbType = dbType;
-            if(dbType== DbType.DateTime)
+            if (dbType == DbType.DateTime)
                 ((OleDbParameter)para).OleDbType = OleDbType.DBDate;
             return para;
         }
@@ -94,5 +94,5 @@ namespace PWMIS.DataProvider.Data
             return type.ToString();
         }
     }
-    
+
 }

@@ -21,7 +21,7 @@ using System.ComponentModel;
 namespace PWMIS.Web.Controls
 {
     /// <summary>
-    /// DataGrid 增强半，支持动态客户端选择，鼠标动态跟随。
+    /// DataGrid 增强，支持动态客户端选择，鼠标动态跟随。
     /// 邓太华 2008.5.6 Ver 1.1
     /// </summary>
     [DefaultProperty("Text"),

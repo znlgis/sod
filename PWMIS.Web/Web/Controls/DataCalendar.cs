@@ -189,7 +189,7 @@ document.getElementById(objname).value=objwin;
         Category("Behavior"),
         DefaultValue(true)
         ]
-		public bool isNull
+		public bool IsNull
 		{
 			get
 			{

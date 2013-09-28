@@ -124,7 +124,7 @@ namespace PWMIS.DataProvider.Data
         /// <returns></returns>
         protected override string PrepareSQL(ref string SQL)
         {
-            return SQL.Replace("[", "\"").Replace("]", "\"");
+            return SQL.Replace("[", "\"").Replace("]", "\"").Replace("@", ":");
         }
 
         public override System.Data.Common.DbConnectionStringBuilder ConnectionStringBuilder

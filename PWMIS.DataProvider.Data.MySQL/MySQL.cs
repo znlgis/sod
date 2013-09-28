@@ -79,10 +79,10 @@ namespace PWMIS.DataProvider.Data
             return para;
         }
 
-        //public override string GetNativeDbTypeName(IDataParameter para)
-        //{
-        //    return ((MySqlParameter)para).MySqlDbType.ToString();
-        //}
+        public override string GetNativeDbTypeName(IDataParameter para)
+        {
+            return ((MySqlParameter)para).MySqlDbType.ToString();
+        }
 
         /// <summary>
         /// 返回此 MySqlConnection 的数据源的架构信息。
@@ -111,12 +111,11 @@ namespace PWMIS.DataProvider.Data
         /// <returns></returns>
         protected override string PrepareSQL(ref string SQL)
         {
-            return SQL.Replace("[", "`").Replace("]", "`").Replace("=@","= ?");
+            return SQL.Replace("[", "`").Replace("]", "`").Replace("@", "?");
         }
 
         /// <summary>
-        /// 获取Oracle数据库参数前缀资费
-        /// <remarks>由网友路人甲.aspx 补充</remarks>
+        /// 获取数据库参数前缀资费
         /// </summary>
         public override string GetParameterChar
         {

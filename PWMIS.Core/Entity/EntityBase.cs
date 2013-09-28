@@ -1,4 +1,27 @@
-﻿using System;
+﻿/*
+ * ========================================================================
+ * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
+ * Welcom use the PDF.NET (PWMIS Data Process Framework).
+ * See more information,Please goto http://www.pwmis.com/sqlmap 
+ * ========================================================================
+ * 该类的作用
+ * 
+ * 作者：邓太华     时间：2008-10-12
+ * 版本：V5.0
+ * 
+ * 修改者：         时间：2013-3-26                
+ * 修改说明：增加SetDefaultChanges 方法，用于跟属性默认值比较，从而设置属性是否更改过值
+ * 
+ *  * 修改者：         时间：2013-4-5\6                
+ * 修改说明：TableName 和 IdentityName 属性修改成受保护的属性，方便直接在GridView 控件中使用
+ *           增加MapNewTableName 新方法来设置要更改的表名称
+ *           
+ *  * 修改者：         时间：2013-8-16                
+ * 修改说明：增加索引器，方便属性访问
+ *           
+ * ========================================================================
+*/
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ComponentModel;
@@ -8,16 +31,13 @@ using PWMIS.Core;
 namespace PWMIS.DataMap.Entity
 {
     /// <summary>
-    /// PDF.NET 4.3 实体类基础类
+    /// PDF.NET 4.6.2 实体类基础类
     /// </summary>
     //[System.SerializableAttribute()]
     //[System.Runtime.Serialization.DataContract(Namespace = "http://schemas.datacontract.org/2004/07/")]
     public abstract class EntityBase : INotifyPropertyChanged, ICloneable, PWMIS.Common.IEntity
     {
-        /*
-        * 为了更加减少内存垃圾回收,使用下面的方式在实体类进行初始化,需要修改代码生成器
-        
-        */
+        #region 处理字符串属性与对应列的长度映射
         //为字符串字段指定长度，将有利于查询提高效率 edit at 2012.4.23
         protected internal static Dictionary<string, int> StringFieldSize = new Dictionary<string, int>();
         protected internal static int GetStringFieldSize(string tableName, string fieldName)
@@ -30,41 +50,21 @@ namespace PWMIS.DataMap.Entity
         }
         protected internal int GetStringFieldSize(string fieldName)
         {
-            return  GetStringFieldSize(this.TableName, fieldName);
+            return  GetStringFieldSize( TableName, fieldName);
         }
+        #endregion
 
+        #region 实体类基本映射信息 相关成员
         private PWMIS.Common.EntityMapType _entityMap=PWMIS .Common .EntityMapType .Table ;
         /// <summary>
         /// 实体类的映射类型
         /// </summary>
-        public PWMIS.Common.EntityMapType EntityMap
+        protected internal PWMIS.Common.EntityMapType EntityMap //
         {
             get { return _entityMap; }
-            protected internal  set { _entityMap = value; }
+            set { _entityMap = value; }
         }
-
-        //[NonSerialized()] 
-        private string[] names;
-        /// <summary>
-        /// 属性字段名列表
-        /// </summary>
-        public virtual string[] PropertyNames
-        {
-            get
-            {
-                if (names == null)
-                {
-                    this.SetFieldNames();
-                    changedlist = new bool[names.Length];
-                }
-                return names;
-            }
-            protected internal set
-            {
-                names = value;
-                changedlist = new bool[names.Length];
-            }
-        }
+       
 
         /// <summary>
         /// 设置实体类的对应的字段名称数组
@@ -75,54 +75,58 @@ namespace PWMIS.DataMap.Entity
             //this.names = names;
         }
     
-    
         //[NonSerialized()] 
-        private object[] values;
+        private string _identity = "";
+
         /// <summary>
-        /// 属性值列表
+        /// 标识字段名称（有些数据库可能内置不支持），该字段不可更新，但是插入数据的时候可以获取该字段
         /// </summary>
-        public virtual object[] PropertyValues
+        protected internal string IdentityName
         {
+            get { return _identity; }
+            set { _identity = value; }
+        }
+
+        //[NonSerialized()] 
+        private string _tableName;
+        /// <summary>
+        /// 实体类对应的数据库表名称
+        /// </summary>
+        protected internal string TableName
+        {
+            set { _tableName = value; }
             get
             {
-                if (values == null)
+                if (EntityMap == EntityMapType.SqlMap)
                 {
-                    values = new object[PropertyNames.Length];
+                    int at = _tableName.LastIndexOf('.');
+                    if (at > 0)
+                        return _tableName.Substring(at + 1);
+                    else
+                        return _tableName;
+
                 }
-                return values;
+                return _tableName;
             }
-            protected internal set { values = value; }
         }
-
         /// <summary>
-        /// 设置所有属性的值
+        /// 将实体类的表名称映射到一个新的表名称
         /// </summary>
-        /// <param name="values"></param>
-        public void SetPropertyValues(object[] values)
+        /// <param name="newTableName">新的表名称</param>
+        /// <returns>是否成功</returns>
+        public bool MapNewTableName(string newTableName)
         {
-            if (values.Length != PropertyNames.Length)
-                throw new Exception("要设置的值数组大小跟属性名数量不一致。");
-            PropertyValues = values;
+            if (EntityMap == EntityMapType.Table)
+            {
+                this.TableName = newTableName;
+                return true;
+            }
+            return false;
         }
+        #endregion
 
-      
-        ///// <summary>
-        ///// 属性字段名列表
-        ///// </summary>
-        //public string[] PropertyNames
-        //{
-        //    get { return names; }
-        //    protected internal set
-        //    {
-        //        names = value;
-        //        changedlist = new bool[names.Length];
-        //    }
-        //}
+        #region 属性状态改变状态成员
 
-        //public void FillEntity(string[] propertyNames,object[] propertyValues)
-        //{ 
-        
-        //}
         //[NonSerialized()] 
         private bool[] changedlist;
 
@@ -150,13 +154,40 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
+        /// 设置属性的值是否跟默认值一样，如果一样则表示该属性未更改过，例如在分布式系统中DTO转换到实体类对象后的处理。
+        /// <remarks>2013.3.26 增加，用在WebService或者WCF的系统中</remarks>
+        /// </summary>
+        public void SetDefaultChanges()
+        {
+            for (int i = 0; i < PropertyValues.Length; i++)
+            {
+                object value = PropertyValues[i];
+                if (value != null && value != DBNull.Value)
+                {
+                    Type type = value.GetType();
+                    if (type.IsValueType)
+                    {
+                        object newValue = Activator.CreateInstance(type);
+                        changedlist[i] = !newValue.Equals(value);//等于默认值，未改变
+                    }
+                }
+                else
+                {
+                    //该属性未设置任何值，或者是字符串属性
+                    changedlist[i] = false;
+                }
+            }
+        }
+
+        /// <summary>
         /// 属性值被改变的属性名列表
         /// </summary>
         protected internal List<string> PropertyChangedList
         {
-            get {
+            get
+            {
                 List<string> list = new List<string>();
-                if (PropertyNames .Length > 0)
+                if (PropertyNames.Length > 0)
                 {
                     for (int i = 0; i < changedlist.Length; i++)
                     {
@@ -168,11 +199,26 @@ namespace PWMIS.DataMap.Entity
             }
         }
 
-        //[NonSerialized()] 
-        private List<string> _pks = new List<string>();
-        //[NonSerialized()] 
-        private string _identity = "";
-       
+        #endregion
+
+        #region 属性获取事件相关
+
+        /// <summary>
+        /// 属性获取事件
+        /// </summary>
+        public event EventHandler<PropertyGettingEventArgs> PropertyGetting;
+        /// <summary>
+        /// 获取属性的时候
+        /// </summary>
+        /// <param name="name"></param>
+        protected virtual void OnPropertyGeting(string name)
+        {
+            if (this.PropertyGetting != null)
+            {
+                this.PropertyGetting(this, new PropertyGettingEventArgs(name));
+            }
+        }
+        #endregion
 
         #region INotifyPropertyChanged 成员
 
@@ -194,29 +240,10 @@ namespace PWMIS.DataMap.Entity
 
         #endregion
 
-        #region ICloneable 成员
-        /// <summary>
-        /// 获取当前对象的浅表副本
-        /// </summary>
-        /// <returns>当前对象的浅表副本</returns>
-        public object Clone()
-        {
-            return this.MemberwiseClone();
-        }
-
-        #endregion
-
         #region IEntity 成员
 
-        /// <summary>
-        /// 标识字段名称（有些数据库可能内置不支持），该字段不可更新，但是插入数据的时候可以获取该字段
-        /// </summary>
-        public string IdentityName
-        {
-            get { return _identity; }
-            protected set { _identity = value; }
-        }
-
+        //[NonSerialized()] 
+        private List<string> _pks = new List<string>();
         /// <summary>
         /// 主键字段名称列表
         /// </summary>
@@ -226,11 +253,21 @@ namespace PWMIS.DataMap.Entity
             get { return _pks; }
         }
 
-       /// <summary>
+        public string GetIdentityName()
+        {
+            return this.IdentityName;
+        }
+
+        public string GetTableName()
+        {
+            return this.TableName;
+        }
+
+        /// <summary>
         /// 获取属性列的值
-       /// </summary>
-       /// <param name="propertyName">属性字段名称</param>
-       /// <returns>属性值</returns>
+        /// </summary>
+        /// <param name="propertyName">属性字段名称</param>
+        /// <returns>属性值</returns>
         public object PropertyList(string propertyName)
         {
             for (int i = 0; i < PropertyNames.Length; i++)
@@ -242,58 +279,33 @@ namespace PWMIS.DataMap.Entity
             }
             return null;
         }
+
         //[NonSerialized()] 
-        private string _tableName;
+        private string[] names;
         /// <summary>
-        /// 实体类对应的数据库表名称
+        /// 属性字段名列表
         /// </summary>
-        public string TableName
+        public virtual string[] PropertyNames
         {
-            set { _tableName = value; }
-            get {
-                if (EntityMap == EntityMapType.SqlMap)
-                {
-                    int at = _tableName.LastIndexOf('.');
-                    if (at > 0)
-                        return _tableName.Substring(at+1);
-                    else
-                        return _tableName;
-
-                }
-                return _tableName; 
-            }
-        }
-
-
-        #endregion
-
-
-
-        #region IEntity 成员
-
-
-        //public Dictionary<string, object> PropertyList
-        //{
-        //    get { throw new NotImplementedException(); }
-        //}
-
-        #endregion
-
-        /// <summary>
-        /// 属性获取事件
-        /// </summary>
-        public event EventHandler<PropertyGettingEventArgs> PropertyGetting;
-        /// <summary>
-        /// 获取属性的时候
-        /// </summary>
-        /// <param name="name"></param>
-        protected virtual void OnPropertyGeting(string name)
-        {
-            if (this.PropertyGetting != null)
+            get
             {
-                this.PropertyGetting(this, new PropertyGettingEventArgs(name));
+                if (names == null)
+                {
+                    this.SetFieldNames();
+                    changedlist = new bool[names.Length];
+                }
+                return names;
+            }
+            protected internal set
+            {
+                names = value;
+                changedlist = new bool[names.Length];
             }
         }
+
+        #endregion
+
+        #region 获取或者设置属性值
         /// <summary>
         /// 获取属性值
         /// </summary>
@@ -367,7 +379,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="maxLength">最大长度</param>
         protected internal void setProperty(string name, string Value, int maxLength)
         {
-            string key=string.Format("{0}_{1}", this.TableName,name);
+            string key=string.Format("{0}_{1}", TableName,name);
             StringFieldSize[key] = maxLength;
 
             if (Value != null && maxLength > 0 && Value.Length > maxLength)
@@ -376,6 +388,10 @@ namespace PWMIS.DataMap.Entity
                 setProperty(name, Value);
         }
 
+        /// <summary>
+        /// 获取实体类的属性名值对对象
+        /// </summary>
+        /// <returns></returns>
         public PropertyNameValues GetNameValues()
         {
             PropertyNameValues result = new PropertyNameValues();
@@ -383,5 +399,93 @@ namespace PWMIS.DataMap.Entity
             result.PropertyValues = this.PropertyValues;
             return result;
         }
+
+        //[NonSerialized()] 
+        private object[] values;
+        /// <summary>
+        /// 属性值列表
+        /// </summary>
+        public virtual object[] PropertyValues
+        {
+            get
+            {
+                if (values == null)
+                {
+                    values = new object[PropertyNames.Length];
+                }
+                return values;
+            }
+            protected internal set { values = value; }
+        }
+
+        /// <summary>
+        /// 设置所有属性的值
+        /// </summary>
+        /// <param name="values"></param>
+        public void SetPropertyValues(object[] values)
+        {
+            if (values.Length != PropertyNames.Length)
+                throw new Exception("要设置的值数组大小跟属性名数量不一致。");
+            PropertyValues = values;
+        }
+
+        #endregion
+
+        #region ICloneable 成员
+        /// <summary>
+        /// 获取当前对象的浅表副本
+        /// </summary>
+        /// <returns>当前对象的浅表副本</returns>
+        public object Clone()
+        {
+            return this.MemberwiseClone();
+        }
+
+        #endregion
+
+        #region 索引器
+        /// <summary>
+        /// 获取指定属性名称的值
+        /// </summary>
+        /// <param name="propertyName">属性名称</param>
+        /// <returns></returns>
+        public object this[string propertyName]
+        {
+            get { 
+                EntityFields ef=EntityFieldsCache.Item(this.GetType());
+                string fieldName= ef.GetPropertyField(propertyName);
+                if (fieldName != null)
+                {
+                    this.OnPropertyGeting(fieldName);
+                    return PropertyList(fieldName);
+                }
+                return null;
+            }
+            protected internal set {
+                EntityFields ef = EntityFieldsCache.Item(this.GetType());
+                string fieldName = ef.GetPropertyField(propertyName);
+                if (fieldName != null)
+                {
+                    this.setProperty(fieldName, value);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 获取指定索引位置的属性的值
+        /// </summary>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public object this[int index]
+        {
+            get {
+                if (index < 0 || index > this.PropertyNames.Length)
+                    return null;
+                string fieldName = this.PropertyNames[index];
+                this.OnPropertyGeting(fieldName);
+                return PropertyList(fieldName);
+            }
+        }
+        #endregion
     }
 }

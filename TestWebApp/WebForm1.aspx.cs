@@ -31,7 +31,7 @@ namespace TestWebApp
                 OQLCompare cmp = new OQLCompare(info);
                 q.Select(info.GoodsName).Where(cmp.Comparer(info.SerialNumber, "=", "123456"));
                 string sql = q.ToString();
-                cmp.Dispose();
+                
             }
 
             DisplayMemory();

@@ -23,6 +23,7 @@ using System.Data;
 using System.Reflection;
 using PWMIS.Common;
 using System.Collections.Generic;
+using PWMIS.DataMap.Entity;
 
 namespace PWMIS.DataMap
 {
@@ -74,13 +75,14 @@ namespace PWMIS.DataMap
                 return;
             //处理实体对象
             Type type = objData.GetType();
-            Object obj = type.InvokeMember(null, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, null, null);
+            //Object obj = type.InvokeMember(null, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, null, null);
+            string typeName = type.Name;
             foreach (object control in controls)
             {
                 if (control is IDataControl)
                 {
                     IDataControl brainControl = control as IDataControl;
-                    if (brainControl.LinkObject  == obj.GetType().Name)
+                    if (brainControl.LinkObject == typeName &&  !string.IsNullOrEmpty(brainControl.LinkProperty)) // obj.GetType().Name
                     {
                         object DataObj = type.InvokeMember(brainControl.LinkProperty, BindingFlags.GetProperty, null, objData, null);
                         if (DataObj == null && (brainControl.SysTypeCode == TypeCode.DateTime))
@@ -146,45 +148,85 @@ namespace PWMIS.DataMap
             if (!isEntityClass)
                 return;
             //处理实体对象
-            Type type = objData.GetType();
-            object obj = type.InvokeMember(null, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, null, null);
-            foreach (object control in controls)
+            if (objData is EntityBase)
             {
-                if (control is IDataControl)
+                EntityBase entity = objData as EntityBase;
+
+                foreach (object control in controls)
                 {
-                    //情况单独处理
-                    IDataControl brainControl = control as IDataControl;
-                    if (brainControl.IsValid)
+                    if (control is IDataControl)
                     {
-                        //string cao = obj.GetType().Name;
-                        if (brainControl.LinkObject == obj.GetType().Name && brainControl.LinkProperty!="")
+                        //情况单独处理
+                        IDataControl brainControl = control as IDataControl;
+                        if (brainControl.IsValid)
                         {
-                            object oValue = brainControl.GetValue();
-                            //add 2008.7.22
-                            if (brainControl.SysTypeCode != TypeCode.String && (oValue == null || oValue.ToString() == ""))
-                                continue;
-
-                            //EditFlag 邓太华 2006.9.17 处理 System.DBNull.Value 情况
-                            if (oValue == System.DBNull.Value)
+                            //string cao = obj.GetType().Name;
+                            if (brainControl.LinkObject == entity.TableName && brainControl.LinkProperty != "")
                             {
-                                type.InvokeMember(brainControl.LinkProperty, BindingFlags.SetProperty, Type.DefaultBinder, objData, new object[] { null });
-                                continue;
-                            }
+                                object oValue = brainControl.GetValue();
+                                //add 2008.7.22
+                                if (brainControl.SysTypeCode != TypeCode.String && (oValue == null || oValue.ToString() == ""))
+                                    continue;
 
-                            type.InvokeMember(brainControl.LinkProperty, BindingFlags.SetProperty, Type.DefaultBinder, objData, new object[] { Convert.ChangeType(oValue, brainControl.SysTypeCode) });
+                                //EditFlag 邓太华 2006.9.17 处理 System.DBNull.Value 情况
+                                if (oValue != System.DBNull.Value)
+                                {
+                                    entity.setProperty(brainControl.LinkProperty, oValue);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("绑定到属性字段[" + brainControl.LinkProperty + "]前未通过服务器验证！");
                         }
 
+
                     }
-                    else
-                    {
-                        throw new Exception("绑定到属性字段[" + brainControl.LinkProperty + "]前未通过服务器验证！");
-                    }
-                    
 
                 }
-
             }
+            else
+            {
+                Type type = objData.GetType();
+                object obj = type.InvokeMember(null, BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.CreateInstance, null, null, null);
+                foreach (object control in controls)
+                {
+                    if (control is IDataControl)
+                    {
+                        //情况单独处理
+                        IDataControl brainControl = control as IDataControl;
+                        if (brainControl.IsValid)
+                        {
+                            //string cao = obj.GetType().Name;
+                            if (brainControl.LinkObject == obj.GetType().Name && brainControl.LinkProperty != "")
+                            {
+                                object oValue = brainControl.GetValue();
+                                //add 2008.7.22
+                                if (brainControl.SysTypeCode != TypeCode.String && (oValue == null || oValue.ToString() == ""))
+                                    continue;
 
+                                //EditFlag 邓太华 2006.9.17 处理 System.DBNull.Value 情况
+                                if (oValue == System.DBNull.Value)
+                                {
+                                    type.InvokeMember(brainControl.LinkProperty, BindingFlags.SetProperty, Type.DefaultBinder, objData, new object[] { null });
+                                    continue;
+                                }
+                                if (brainControl.SysTypeCode == TypeCode.Empty)
+                                    throw new Exception("收集数据控件的数据失败，SysTypeCode 属性不能为Empty ！");
+                                type.InvokeMember(brainControl.LinkProperty, BindingFlags.SetProperty, Type.DefaultBinder, objData, new object[] { Convert.ChangeType(oValue, brainControl.SysTypeCode) });
+                            }
+
+                        }
+                        else
+                        {
+                            throw new Exception("绑定到属性字段[" + brainControl.LinkProperty + "]前未通过服务器验证！");
+                        }
+
+
+                    }
+
+                }
+            }
         }
 
         /// <summary>
@@ -239,7 +281,7 @@ namespace PWMIS.DataMap
                     IDataControl brainControl = control as IDataControl;
                     if (brainControl.LinkObject == TableName)
                     {
-                        if (brainControl.Validate() && !brainControl.isNull)
+                        if (brainControl.Validate() && !brainControl.IsNull)
                         {
                             dr[brainControl.LinkProperty] = brainControl.GetValue();
                         }

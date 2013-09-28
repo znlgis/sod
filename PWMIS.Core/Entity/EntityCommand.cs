@@ -22,7 +22,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using PWMIS.DataProvider.Data;
-using System.Data;
+using System.Data ;
+using PWMIS.Common;
 
 namespace PWMIS.DataMap.Entity
 {
@@ -32,6 +33,7 @@ namespace PWMIS.DataMap.Entity
     public class EntityCommand
     {
         private EntityBase currEntity;
+        private string currTableName = string.Empty;
         private CommonDB currDb;
         List<IDataParameter> _insertParas;
         List<IDataParameter> _updateParas;
@@ -46,44 +48,41 @@ namespace PWMIS.DataMap.Entity
         {
             this.currEntity = entity;
             this.currDb = db;
+            this.currTableName = entity.TableName;
         }
 
         private string[] _targetFields;
-
+ 
         /// <summary>
         /// 要操作的目标表的所有字段名
         /// </summary>
-        public string[] TargetFields
-        {
-            get
-            {
+        public string[] TargetFields {
+            get {
                 if (_targetFields == null || _targetFields.Length == 0)
                     _targetFields = this.currEntity.PropertyNames;
                 return _targetFields;
             }
-            set
-            {
+            set {
                 _targetFields = value;
             }
         }
 
         #region 命令属性
 
-        private string _insertCommand;
+        private  string _insertCommand;
         public string InsertCommand
         {
-            get
-            {
+            get {
                 if (_insertCommand == null)
                 {
                     _insertParas = new List<IDataParameter>();
 
 
 
-                    _insertCommand = "INSERT INTO [" + this.currEntity.TableName + "] ";
+                    _insertCommand = "INSERT INTO [" + currTableName +"] ";
                     string fields = "";
                     string values = "";
-
+                   
 
                     List<string> currFields = new List<string>();
                     if (this.IdentityEnable)
@@ -91,22 +90,23 @@ namespace PWMIS.DataMap.Entity
                         currFields.AddRange(this.TargetFields);
                     }
                     else
-                    {
+                    { 
+                        string identityName=currEntity.IdentityName;
                         foreach (string field in this.TargetFields)
                         {
-                            if (this.currEntity.IdentityName != field)
+                            if (identityName != field)
                                 currFields.Add(field);
                         }
                     }
 
                     foreach (string field in currFields)
                     {
-                        fields += ",[" + field + "]";
-                        string paraName = "@" + field.Replace(" ", "");
+                        fields += ",[" + field+"]";
+                        string paraName = "@" + field.Replace (" ","");
                         values += "," + paraName;
                         IDataParameter para = this.currDb.GetParameter(paraName, this.currEntity.PropertyList(field));
                         para.SourceColumn = field;
-                        _insertParas.Add(para);
+                        _insertParas.Add (para );
                     }
                     _insertCommand = _insertCommand + "(" + fields.TrimStart(',') + ") VALUES (" + values.TrimStart(',') + ")";
 
@@ -128,13 +128,13 @@ namespace PWMIS.DataMap.Entity
 
                     _updateParas = new List<IDataParameter>();
 
-                    _updateCommand = "UPDATE [" + this.currEntity.TableName + "] SET ";
+                    _updateCommand = "UPDATE [" + currTableName + "] SET ";
                     string values = "";
                     string condition = "";
-
-                    foreach (string field in this.TargetFields)
+                  
+                    foreach (string field in this.TargetFields )
                     {
-                        string paraName = "@" + field.Replace(" ", "");
+                        string paraName = "@" + field.Replace (" ","");
                         if (this.currEntity.PrimaryKeys.Contains(field))
                         {
                             //当前字段为主键，不能被更新
@@ -147,7 +147,7 @@ namespace PWMIS.DataMap.Entity
                         IDataParameter para = this.currDb.GetParameter(paraName, this.currEntity.PropertyList(field));
                         para.SourceColumn = field;
                         _updateParas.Add(para);
-
+                      
                     }
 
 
@@ -170,17 +170,17 @@ namespace PWMIS.DataMap.Entity
 
                     _deleteParas = new List<IDataParameter>();
 
-                    _deleteCommand = "DELETE FROM [" + this.currEntity.TableName + "] WHERE ";
+                    _deleteCommand="DELETE FROM [" + currTableName + "] WHERE ";
                     string condition = "";
-
+                    
                     foreach (string key in this.currEntity.PrimaryKeys)
                     {
-                        string paraName = "@P" + key.Replace(" ", "");
+                        string paraName = "@P" + key.Replace (" ","");
                         condition += " AND [" + key + "]=" + paraName;
                         IDataParameter para = this.currDb.GetParameter(paraName, this.currEntity.PropertyList(key));
                         para.SourceColumn = key;
                         this._deleteParas.Add(para);
-
+                        
                     }
                     _deleteCommand = _deleteCommand + " " + condition.Substring(" AND ".Length);
                 }
@@ -195,8 +195,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         public string CreateTableCommand
         {
-            get
-            {
+            get {
                 if (_createTableCommand == null)
                 {
                     string script = @"
@@ -208,10 +207,10 @@ CREATE TABLE @TABLENAME(
                     string fieldsText = "";
                     foreach (string field in this.currEntity.PropertyNames)
                     {
-                        string columnScript = entityFields.CreateTableColumnScript(this.currDb as AdoHelper, this.currEntity, field);
-                        fieldsText = fieldsText + "," + columnScript + "\r\n";
+                        string columnScript =entityFields.CreateTableColumnScript(this.currDb as AdoHelper, this.currEntity, field);
+                        fieldsText = fieldsText + "," + columnScript+"\r\n";
                     }
-                    string tableName = this.currDb.GetPreparedSQL("[" + this.currEntity.TableName + "]");
+                    string tableName =this.currDb.GetPreparedSQL("["+ currTableName+"]");
                     _createTableCommand = script.Replace("@TABLENAME", tableName).Replace("@FIELDS", fieldsText.Substring(1));
                 }
                 return _createTableCommand;
@@ -224,8 +223,7 @@ CREATE TABLE @TABLENAME(
         #region 参数
         public IDataParameter[] InsertParameters
         {
-            get
-            {
+            get {
                 if (_insertParas != null)
                     return _insertParas.ToArray();
                 else

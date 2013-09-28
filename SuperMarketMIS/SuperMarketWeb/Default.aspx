@@ -18,6 +18,10 @@
         {
             font-size: xx-large;
         }
+        .style5
+        {
+            font-size: x-large;
+        }
     </style>
     <script type ="text/javascript">
         function CancelInput() {
@@ -30,7 +34,9 @@
 
     <form id="form1" runat="server">
     <div style="background-color: #FFCC99; border-style: groove">
-    <img  src="images/MarketLog.jpg" alt ="PDF.NET SupperMarket"/><span class="style4"><a 
+        <a href="欢迎.htm">
+    <img  src="images/MarketLog.jpg" alt ="PDF.NET SupperMarket" 
+            style="border-width: 0px"/></a><span class="style4"><a 
             href="http://www.pwmis.com/sqlmap">PDF.NET 框架</a>之<a 
             href="http://pwmis.codeplex.com">超市管理系统 Demo实例程序</a></span><br />
         欢迎光临本超市，请输入你的会员号：<br />
@@ -57,7 +63,7 @@
          </td></tr>
          <tr>
          <td class="style2">如果你是管理员，请这里</td>
-         <td><a href="LoginMarketMIS.aspx">登录</a></td>
+         <td class="style5"><a href="LoginMarketMIS.aspx">管理员登录</a></td>
          </tr>
     </table>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

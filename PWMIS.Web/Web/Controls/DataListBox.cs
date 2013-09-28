@@ -171,7 +171,7 @@ namespace PWMIS.Web.Controls
 
 		public virtual bool Validate()
 		{
-			if(!isNull)
+			if(!IsNull)
 			{
 				if(this.SelectedValue.Trim()==string.Empty)
 				{
@@ -186,7 +186,7 @@ namespace PWMIS.Web.Controls
 
         #region ∆‰À˚ Ù–‘
 
-		public bool isNull
+		public bool IsNull
 		{
 
 			get

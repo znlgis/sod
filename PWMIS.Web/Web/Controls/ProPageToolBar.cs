@@ -4,10 +4,10 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 //using System.Drawing.Design;
-using System.Collections; 
+using System.Collections;
 using PWMIS.DataProvider.Data;
 using PWMIS.DataProvider.Adapter;
-using System.Configuration ;
+using System.Configuration;
 using PWMIS.Common;
 
 namespace PWMIS.Web.Controls
@@ -435,7 +435,7 @@ namespace PWMIS.Web.Controls
                 //Control ctr= this.Page.FindControl (BindToControlID); 
                 Control ctr = FindMyControl(this, BindToControlID);
 
-                if (ctr is GridView )
+                if (ctr is GridView)
                 {
                     ((GridView)ctr).DataSource = this.GetDataSource();
                     ctr.DataBind();
@@ -655,7 +655,7 @@ namespace PWMIS.Web.Controls
                 try
                 {
                     _ErrorMessage = "";
-                    if(DAO==null)
+                    if (DAO == null)
                         DAO = MyDB.GetDBHelper(this.DBMSType, this.ConnectionString);
                     _AutoIDB = true;
                 }
@@ -737,11 +737,11 @@ namespace PWMIS.Web.Controls
                         strConn = DAO.ConnectionString;
                     }
                 }
-                
+
                 if (strConn == null || strConn == "")
                     _AutoConfig = false;
                 else
-                    this.ConnectionString = strConn.Replace("~",Context.Request.PhysicalApplicationPath);//替换相对路径
+                    this.ConnectionString = strConn.Replace("~", Context.Request.PhysicalApplicationPath);//替换相对路径
 
                 if (!_AutoConfig)//在设计时不生成错误信息，因为VS2003设计时无法读取配置信息
                 {
@@ -929,7 +929,7 @@ namespace PWMIS.Web.Controls
             //			//在这里处理有关数据绑定属性
             //			CheckAutoConfig ();
             //			CheckAutoIDB();
-            
+
 
             if (this.Site != null && this.Site.DesignMode)//在设计时
             {
@@ -1048,7 +1048,7 @@ namespace PWMIS.Web.Controls
             this.lnkNextPage.Click += new System.EventHandler(this.lnkNextPage_Click);
             this.lnkLastPage.Click += new System.EventHandler(this.lnkLastPage_Click);
             this.lnkGo.Click += new System.EventHandler(this.lnkGo_Click);
-            
+
 
         }
         #endregion
@@ -1208,7 +1208,7 @@ namespace PWMIS.Web.Controls
             }
             catch
             {
-                this.Page.ClientScript.RegisterStartupScript(this.GetType (),"pageErr", "<script language='javascript'>alert('请填写数字页码！');</script>");
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "pageErr", "<script language='javascript'>alert('请填写数字页码！');</script>");
             }
         }
 

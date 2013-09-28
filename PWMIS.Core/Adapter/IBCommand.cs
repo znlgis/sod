@@ -94,7 +94,7 @@ namespace PWMIS.DataProvider.Adapter
 		}
 
 		/// <summary>
-		/// 插入标识，用于数据库的自增列
+		/// 插入标识，用于数据库的自增列，等于0表示还未插入，大鱼0表示已经插入过数据自增标识值，等于-2表示非数字类型的主键。
 		/// </summary>
 		public int InsertedID
 		{
@@ -116,5 +116,6 @@ namespace PWMIS.DataProvider.Adapter
         /// 对应的查询参数数组
         /// </summary>
         public IDataParameter[] Parameters { get; set; }
+
 	}
 }
