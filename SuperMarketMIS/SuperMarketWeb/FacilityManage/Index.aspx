@@ -39,7 +39,8 @@
     <br />
     <asp:GridView ID="GridView1" runat="server" BackColor="#DEBA84" 
         BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" 
-        CellSpacing="2" onselectedindexchanged="GridView1_SelectedIndexChanged">
+        CellSpacing="2" onselectedindexchanged="GridView1_SelectedIndexChanged" 
+         Width="621px">
         <RowStyle BackColor="#FFF7E7" ForeColor="#8C4510" />
         <FooterStyle BackColor="#F7DFB5" ForeColor="#8C4510" />
         <PagerStyle ForeColor="#8C4510" HorizontalAlign="Center" />
