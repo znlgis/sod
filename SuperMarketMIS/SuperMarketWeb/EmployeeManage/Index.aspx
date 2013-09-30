@@ -11,7 +11,7 @@
 <td >[工号]*</td><td >
            <cc1:DataTextBox ID="dtbWorkNumber" runat="server" LinkObject="雇员表" 
                LinkProperty="工号" PrimaryKey="True" Width="256px" SysTypeCode="String" 
-               ErrorMessage="工号不能为空" isNull="False" MessageType="提示框"></cc1:DataTextBox>
+               ErrorMessage="工号不能为空" MessageType="提示框"></cc1:DataTextBox>
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td >[姓名]</td><td >
@@ -52,6 +52,7 @@
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td >&nbsp;</td><td >
            <asp:Button ID="btnSave" runat="server" onclick="btnSave_Click" Text="保存" />
+           &nbsp;<asp:Button ID="btnNew" runat="server" onclick="btnNew_Click" Text="新建" />
            </td></tr>
        </table>
     <asp:Label ID="lblMsg" runat="server" Text="操作信息"></asp:Label>

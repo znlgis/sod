@@ -17,6 +17,11 @@ namespace SuperMarketWeb.EmployeeManage
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
+            if (this.dtbWorkNumber.Text == "")
+            {
+                lblMsg.Text = "请输入工号！";
+                return;
+            }
             if (!this.rdbSexMan.Checked && !this.rdbSexWomen.Checked)
             {
                 lblMsg.Text = "请选择性别！";
@@ -47,6 +52,11 @@ namespace SuperMarketWeb.EmployeeManage
             dtbWorkNumber.Text = GridView1.SelectedRow.Cells[1].Text;
             //填充数据
             MyWebForm.Instance.AutoSelectIBForm(this.Controls);
+        }
+
+        protected void btnNew_Click(object sender, EventArgs e)
+        {
+            MyWebForm.ClearIBData(this.Controls);
         }
     }
 }

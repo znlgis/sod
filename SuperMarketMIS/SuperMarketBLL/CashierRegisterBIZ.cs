@@ -8,6 +8,7 @@ using PWMIS.DataMap.Entity;
 using PWMIS.DataProvider.Data;
 using PWMIS.DataProvider.Adapter;
 using SuperMarketModel.ViewModel;
+using PWMIS.Core.Extensions;
 
 namespace SuperMarketBLL
 {
@@ -284,11 +285,17 @@ namespace SuperMarketBLL
                             stock.GoodsID = goods.GoodsID;
                             stock.Stocks = goods.GoodsNumber;
                             
-                            OQL q = OQL.From(stock)
-                                .UpdateSelf ('-', stock.Stocks)
-                                .Where(stock.GoodsID)
-                                .END;
-                            EntityQuery<SuperMarketDAL.Entitys.GoodsStock>.ExecuteOql(q, db);
+                            //OQL q = OQL.From(stock)
+                            //    .UpdateSelf ('-', stock.Stocks)
+                            //    .Where(stock.GoodsID)
+                            //    .END;
+                            //EntityQuery<SuperMarketDAL.Entitys.GoodsStock>.ExecuteOql(q, db);
+                            //V5 版本扩展后，支持下面的写法：
+                            int count = OQL.From(stock)
+                                    .UpdateSelf('-', stock.Stocks)
+                                    .Where(stock.GoodsID)
+                                .END
+                                .Execute(db);
 
                         }
                     }
@@ -302,11 +309,16 @@ namespace SuperMarketBLL
                         SuperMarketDAL.Entitys.CustomerContactInfo ccInfo = new CustomerContactInfo();
                         ccInfo.CustomerID = customer.CustomerID;
                         ccInfo.Integral = integral;
-                        OQL qc = OQL.From(ccInfo)
-                                .UpdateSelf('+', ccInfo.Integral )
-                                .Where(ccInfo.CustomerID )
-                                .END;
-                        EntityQuery<SuperMarketDAL.Entitys.GoodsStock>.ExecuteOql(qc, db);
+                        //OQL qc = OQL.From(ccInfo)
+                        //        .UpdateSelf('+', ccInfo.Integral )
+                        //        .Where(ccInfo.CustomerID )
+                        //        .END;
+                        //EntityQuery<SuperMarketDAL.Entitys.GoodsStock>.ExecuteOql(qc, db);
+                        OQL.From(ccInfo)
+                                .UpdateSelf('+', ccInfo.Integral)
+                                .Where(ccInfo.CustomerID)
+                        .END
+                        .Execute(db);
                     }
                 }
                 db.Commit();

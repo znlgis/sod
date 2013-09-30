@@ -13,4 +13,5 @@
     <asp:Button ID="btnLogin" runat="server" onclick="btnLogin_Click" Text="登录" />
     </td></tr>
 </table>
+不知道管理账号?<a href="index.htm">请看这里！</a>
 </asp:Content>

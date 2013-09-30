@@ -54,6 +54,11 @@ namespace PWMIS.DataMap.Entity
         {
             return currentOQL.ToString();
         }
+
+        public OQL END
+        {
+            get { return this.currentOQL; }
+        }
     }
 
     public class GOQL1<T> : GOQL2<T> where T : class

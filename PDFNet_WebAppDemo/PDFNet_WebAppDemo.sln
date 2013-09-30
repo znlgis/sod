@@ -43,9 +43,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.MyS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsoleApp", "..\TestConsoleApp\TestConsoleApp.csproj", "{E6E61854-FB37-495E-8D8D-3AC46116AE08}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.Core.Extensions", "..\PWMIS.Core.Extensions\PWMIS.Core.Extensions.csproj", "{8F1AE0DE-A9F1-43A7-ACE4-ACF667C2F813}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 14
+		SccNumberOfProjects = 15
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
 		SccLocalPath0 = .
@@ -101,6 +103,10 @@ Global
 		SccProjectTopLevelParentUniqueName13 = PDFNet_WebAppDemo.sln
 		SccProjectName13 = ../TestConsoleApp
 		SccLocalPath13 = ..\\TestConsoleApp
+		SccProjectUniqueName14 = ..\\PWMIS.Core.Extensions\\PWMIS.Core.Extensions.csproj
+		SccProjectTopLevelParentUniqueName14 = PDFNet_WebAppDemo.sln
+		SccProjectName14 = ../PWMIS.Core.Extensions
+		SccLocalPath14 = ..\\PWMIS.Core.Extensions
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +165,10 @@ Global
 		{E6E61854-FB37-495E-8D8D-3AC46116AE08}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E6E61854-FB37-495E-8D8D-3AC46116AE08}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E6E61854-FB37-495E-8D8D-3AC46116AE08}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F1AE0DE-A9F1-43A7-ACE4-ACF667C2F813}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F1AE0DE-A9F1-43A7-ACE4-ACF667C2F813}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F1AE0DE-A9F1-43A7-ACE4-ACF667C2F813}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F1AE0DE-A9F1-43A7-ACE4-ACF667C2F813}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -170,6 +180,7 @@ Global
 		{EA876B64-CFF0-4985-B59C-1602B3486D3D} = {A95BD869-20DE-4024-B469-C7C3A84B6969}
 		{A7E61000-125D-461B-92B7-D7D00683941C} = {A95BD869-20DE-4024-B469-C7C3A84B6969}
 		{765FFD9B-D356-4E02-BD56-FF52E4E6DD40} = {A95BD869-20DE-4024-B469-C7C3A84B6969}
+		{8F1AE0DE-A9F1-43A7-ACE4-ACF667C2F813} = {A95BD869-20DE-4024-B469-C7C3A84B6969}
 		{32A14B75-6845-48B0-9FB9-9F0DD4D58369} = {C3D57C83-D054-457C-A7AC-C1D5573EA242}
 		{B685E0F6-0082-453F-9494-4EEA87E204EB} = {C3D57C83-D054-457C-A7AC-C1D5573EA242}
 		{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4} = {C3D57C83-D054-457C-A7AC-C1D5573EA242}

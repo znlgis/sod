@@ -126,7 +126,7 @@
           客户号请输入您的身份证号</td></tr>
        </table>
 
-          <asp:Label ID="lblMsg" runat="server"></asp:Label>
+          <asp:Label ID="lblMsg" runat="server" BackColor="White" ForeColor="Red"></asp:Label>
         </div>
         <br />
         服务器操作系统：<%=Environment.OSVersion.ToString() %> <%=Environment.Is64BitOperatingSystem? 64:32 %>位系统

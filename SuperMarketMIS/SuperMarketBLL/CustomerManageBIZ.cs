@@ -9,6 +9,7 @@ using System.Text;
 using SuperMarketDAL.Entitys;
 using PWMIS.DataMap.Entity;
 using SuperMarketModel;
+using PWMIS.Core.Extensions;
 
 namespace SuperMarketBLL
 {
@@ -87,7 +88,8 @@ namespace SuperMarketBLL
             q.Limit(pageSize, pageNumber);
             q.PageWithAllRecordCount = allCount;
 
-            return EntityQuery<CustomerContactInfo>.QueryList(q);
+            //return EntityQuery<CustomerContactInfo>.QueryList(q);
+            return q.ToList<CustomerContactInfo>();
         }
     }
 }

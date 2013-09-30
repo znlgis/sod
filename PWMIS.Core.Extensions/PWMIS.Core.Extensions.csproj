@@ -5,21 +5,23 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{32A14B75-6845-48B0-9FB9-9F0DD4D58369}</ProjectGuid>
+    <ProjectGuid>{8F1AE0DE-A9F1-43A7-ACE4-ACF667C2F813}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SuperMarketBLL</RootNamespace>
-    <AssemblyName>SuperMarketBLL</AssemblyName>
+    <RootNamespace>PWMIS.Core.Extensions</RootNamespace>
+    <AssemblyName>PWMIS.Core.Extensions</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>false</SignAssembly>
+    <AssemblyOriginatorKeyFile>PDFKey.pfx</AssemblyOriginatorKeyFile>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <UpgradeBackupLocation />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -44,15 +46,17 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\发布目录\PWMIS.Core.Extensions.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\发布目录\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\发布目录\PWMIS.Core.Extensions.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
@@ -70,30 +74,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CashierManageBIZ.cs" />
-    <Compile Include="CashierRegisterBIZ.cs" />
-    <Compile Include="CustomerManageBIZ.cs" />
-    <Compile Include="GoodsManageBIZ.cs" />
+    <Compile Include="ModelCast.cs" />
+    <Compile Include="OQLExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SuperMarketBIZ.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PWMIS.Core.Extensions\PWMIS.Core.Extensions.csproj">
-      <Project>{8F1AE0DE-A9F1-43A7-ACE4-ACF667C2F813}</Project>
-      <Name>PWMIS.Core.Extensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PWMIS.Core\PWMIS.Core.csproj">
+    <ProjectReference Include="..\PWMIS.Core\PWMIS.Core.csproj">
       <Project>{8F0F4237-4D13-40DD-AE8A-C3DE748B26E0}</Project>
       <Name>PWMIS.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\SuperMarketDAL\SuperMarketDAL.csproj">
-      <Project>{B685E0F6-0082-453F-9494-4EEA87E204EB}</Project>
-      <Name>SuperMarketDAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SuperMarketModel\SuperMarketModel.csproj">
-      <Project>{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4}</Project>
-      <Name>SuperMarketModel</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PDFKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

@@ -9,6 +9,7 @@ using System.Text;
 using SuperMarketModel;
 using SuperMarketDAL.Entitys;
 using PWMIS.DataMap.Entity;
+using PWMIS.Core.Extensions;
 
 namespace SuperMarketBLL
 {
@@ -76,7 +77,8 @@ namespace SuperMarketBLL
                 .Where(emp.JobName)
                 .OrderBy(emp.EmployeeName, "asc")
                 .END;
-            List<Employee> list= EntityQuery<Employee>.QueryList(q);
+            //List<Employee> list= EntityQuery<Employee>.QueryList(q);
+            List<Employee> list = q.ToList<Employee>();//使用OQL扩展
             return list.ConvertAll<Cashier>(p =>
             {
                 return new Cashier() { CashierName = p.EmployeeName, WorkNumber = p.WorkNumber };

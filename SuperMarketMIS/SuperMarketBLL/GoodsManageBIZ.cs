@@ -119,10 +119,20 @@ namespace SuperMarketBLL
         /// <returns></returns>
         public List<GoodsBaseInfoVM> GetAllGoodsBaseInfoOrderByNames()
         {
-            GoodsBaseInfo info = new GoodsBaseInfo();
-            OQL q = new OQL(info);
-            q.Select(info.SerialNumber,info.GoodsName,info.Manufacturer,info.CanUserMonth )
-                .OrderBy(info.GoodsName, "asc");
+            //GoodsBaseInfo info = new GoodsBaseInfo();
+            //OQL q = new OQL(info);
+            //q.Select(info.SerialNumber,info.GoodsName,info.Manufacturer,info.CanUserMonth )
+            //    .OrderBy(info.GoodsName, "asc");
+
+            OQL q = OQL.FromObject<GoodsBaseInfo>()
+                .Select(info=>new object[]{  
+                    info.SerialNumber, 
+                    info.GoodsName, 
+                    info.Manufacturer, 
+                    info.CanUserMonth
+                })
+                .OrderBy((o,info)=>o.Asc(info.GoodsName))
+            .END;
             return GetGoodsBaseInfoList(q);
         }
 
