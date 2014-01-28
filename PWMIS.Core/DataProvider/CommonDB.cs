@@ -1072,7 +1072,7 @@ namespace PWMIS.DataProvider.Data
             //在有事务的时候不能关闭连接 edit at 2012.7.23
             CommandBehavior behavior = this.transCount == 0 //this.Transaction == null 不安全
                 ? CommandBehavior.SingleResult | CommandBehavior.CloseConnection
-                : CommandBehavior.SingleResult;
+                : CommandBehavior.SingleResult ;
             return ExecuteDataReader(ref SQL, CommandType.Text, behavior, ref paras);
         }
 
@@ -1099,22 +1099,22 @@ namespace PWMIS.DataProvider.Data
         {
             CommandBehavior behavior = this.transCount == 0 //this.Transaction == null 不安全
                 ? CommandBehavior.SingleResult | CommandBehavior.CloseConnection
-                : CommandBehavior.SingleResult | CommandBehavior.SequentialAccess;//新增SequentialAccess 2013.9.24
+                : CommandBehavior.SingleResult;
             return ExecuteDataReader(ref SQL, commandType, behavior, ref parameters);
         }
 
         /// <summary>
-        /// 根据查询返回数据阅读器对象,但可以随机读取行内的数据
+        /// 根据查询返回数据阅读器对象,可以顺序读取行内的大数据列
         /// </summary>
         /// <param name="SQL">SQL</param>
         /// <param name="commandType">命令类型</param>
         /// <param name="parameters">参数数组</param>
         /// <returns>数据阅读器</returns>
-        public IDataReader ExecuteDataReaderNotSequentialAccess(string SQL, CommandType commandType, IDataParameter[] parameters)
+        public IDataReader ExecuteDataReaderSequentialAccess(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
             CommandBehavior behavior = this.transCount == 0 //this.Transaction == null 不安全
-                ? CommandBehavior.SingleResult | CommandBehavior.CloseConnection
-                : CommandBehavior.SingleResult;
+                ? CommandBehavior.SingleResult | CommandBehavior.CloseConnection | CommandBehavior.SequentialAccess
+                : CommandBehavior.SingleResult | CommandBehavior.SequentialAccess;//新增SequentialAccess 2013.9.24
             return ExecuteDataReader(ref SQL, commandType, behavior, ref parameters);
         }
 

@@ -41,7 +41,7 @@ namespace PWMIS.Web.Validate
             ht.Add("字母", @"[A-Za-z]+");
             ht.Add("大写字母", @"[A-Z]+");
             ht.Add("小写字母", @"[a-z]+");
-            ht.Add("中文字符", @"[\u4e00-\u9fa5]");
+            ht.Add("中文字符", @"[\u4e00-\u9fa5](\s*[\u4e00-\u9fa5])*$");
 
             return ht;
         }

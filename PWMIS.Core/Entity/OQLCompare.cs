@@ -14,8 +14,8 @@
  * 作者：邓太华     时间：2013-7-1-12
  * 版本：V5.0
  * 
- * 修改者：         时间：                
- * 修改说明：
+ * 修改者：         时间：2013-10-25                
+ * 修改说明：修正OQL 高级子查询中，参数过多引起的子查询参数名错误的问题，感谢网友null 发现问题。
  *               
  * ========================================================================
 */
@@ -626,11 +626,16 @@ namespace PWMIS.DataMap.Entity
                 string childSql = Value.ToString();
                 if (Value.Parameters.Count > 0)
                 {
+                    //先备份SQL语句中的参数名 ，感谢网友 null(yoli799480165) 发现此bug
+                    foreach (string key in Value.Parameters.Keys)
+                    {
+                        childSql = childSql.Replace(key, key+"_C");
+                    }
                     foreach (string key in Value.Parameters.Keys)
                     {
                         var vtnf = Value.Parameters[key];
                         string paraName = this.LinkedOQL.CreateParameter(vtnf);
-                        childSql = childSql.Replace(key, paraName);
+                        childSql = childSql.Replace(key + "_C", paraName);
                     }
                 }
                 compare.ComparedParameterName = "\r\n(" + childSql + ")\r\n";

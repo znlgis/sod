@@ -278,22 +278,23 @@ namespace PWMIS.DataProvider.Adapter
                         type = "PWMIS.DataProvider.Data.Oracle";
                     }
                     break;
-                case "SQLITE":
-                    assembly = ConfigurationSettings.AppSettings["SQLiteHelperAssembly"];
-                    type = ConfigurationSettings.AppSettings["SQLiteHelperType"];
-                    if (string.IsNullOrEmpty(assembly))
-                    {
-                        assembly = "PWMIS.DataProvider.Data.SQLite";
-                        type = "PWMIS.DataProvider.Data.SQLite";
-                    }
-                    break;
+                //不再支持这里的SQLite类型，因为它在64位，32位，windows,linux 下面有不同的驱动程序，无法在这里确定
+                //case "SQLITE":
+                //    assembly = ConfigurationSettings.AppSettings["SQLiteHelperAssembly"];
+                //    type = ConfigurationSettings.AppSettings["SQLiteHelperType"];
+                //    if (string.IsNullOrEmpty(assembly))
+                //    {
+                //        assembly = "PWMIS.DataProvider.Data.SQLite";
+                //        type = "PWMIS.DataProvider.Data.SQLite";
+                //    }
+                //    break;
                 default:
                     assembly = "PWMIS.DataProvider.Data";
                     type = "PWMIS.DataProvider.Data.SqlServer";
                     break;
             }
 
-            return GetDBHelper(assembly, type, null);// CommonDB.CreateInstance(assembly, type);
+            return GetDBHelper(assembly, type, null);
         }
 
         #endregion

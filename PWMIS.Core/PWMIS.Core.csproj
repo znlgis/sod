@@ -79,6 +79,9 @@
     <Compile Include="CommonType\CommonEnum.cs" />
     <Compile Include="CommonType\SqlMapEnum.cs" />
     <Compile Include="CommUtil\CommonUtil.cs" />
+    <Compile Include="CommUtil\DelegatedReflectionMemberAccessor.cs" />
+    <Compile Include="CommUtil\LRUList.cs" />
+    <Compile Include="CommUtil\MemoryCache.cs" />
     <Compile Include="DataMap\ControlDataMap.cs" />
     <Compile Include="DataMap\DataCheckBoxValue.cs" />
     <Compile Include="DataMap\DataTextBoxValue.cs" />

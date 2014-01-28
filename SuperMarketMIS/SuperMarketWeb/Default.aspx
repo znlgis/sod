@@ -136,7 +136,7 @@
         Web服务器版本:(<span  style=" color:Red; font-size: 16pt;"> <%:Request.ServerVariables["Server_SoftWare"]%></span>)
        
         <hr />
-        本系统基于<a href="http://www.pwmis.com/sqlmap">PDF.NET</a> Ver 4.5 构建，<a href="index.htm">系统说明</a>
+        本系统基于<a href="http://www.pwmis.com/sqlmap">PDF.NET</a> Ver 5.1 构建，<a href="index.htm">系统说明</a>
         <br />
         使用的数据驱动程序：<%: ConfigurationManager.ConnectionStrings[ConfigurationManager.ConnectionStrings.Count - 1].ProviderName%>
         <br />

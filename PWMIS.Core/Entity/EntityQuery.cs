@@ -23,7 +23,9 @@
  *           然后执行QueryList 返回的集合中有一个“空实体”元素的问题。
  * 修改者：         时间：2013-5-25                
  * 修改说明：增加了使用接口定义实体类，并创建动态实体类的功能，为此新增非泛型类型的 EntityQuery
- *               
+ *    
+ * 修改者：         时间：2013-10-7                
+ * 修改说明：修改了QuetyList方法，加快生成实体类的效率
  * ========================================================================
 */
 
@@ -184,13 +186,13 @@ namespace PWMIS.DataMap.Entity
     /// <param name="target"></param>
     /// <returns></returns>
     public delegate bool ConditionHandle<T>(T target);
-    public delegate void SqlInfoAction(SqlInfo si,object paraValueObject);
+    public delegate void SqlInfoAction(SqlInfo si, object paraValueObject);
 
     /// <summary>
     /// 实体对象查询查询类
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class EntityQuery<T>  where T : EntityBase, new()
+    public class EntityQuery<T> where T : EntityBase, new()
     {
         /// <summary>
         /// 默认构造函数
@@ -260,7 +262,7 @@ namespace PWMIS.DataMap.Entity
         /// <returns>返回填充是否成功</returns>
         public bool FillEntity(T entity)
         {
-            return  EntityQuery.FillEntity(entity, DefaultDataBase);
+            return EntityQuery.FillEntity(entity, DefaultDataBase);
         }
 
         /// <summary>
@@ -566,7 +568,7 @@ namespace PWMIS.DataMap.Entity
         public static List<T> QueryList(OQL oql, AdoHelper db)
         {
             //如果开启了分页且记录总数为0，直接返回空集合
-            if(oql.PageEnable && oql.PageWithAllRecordCount<=0)
+            if (oql.PageEnable && oql.PageWithAllRecordCount <= 0)
                 return new List<T>();
             IDataReader reader = EntityQueryAnonymous.ExecuteDataReader(oql, db, typeof(T));
             return QueryList(reader);
@@ -580,7 +582,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="paraValueObject">相关的初始化操作的参数对象</param>
         /// <param name="db">数据访问对象</param>
         /// <returns>实体类集合</returns>
-        public static List<T> QueryListByCache(string cacheKey, OQLCacheFunc oqlFun,SqlInfoAction action
+        public static List<T> QueryListByCache(string cacheKey, OQLCacheFunc oqlFun, SqlInfoAction action
             , object paraValueObject, AdoHelper db)
         {
             SqlInfo si = SqlInfo.GetFromCache(cacheKey);
@@ -590,7 +592,7 @@ namespace PWMIS.DataMap.Entity
                 si = EntityQueryAnonymous.GetSqlInfoFromOQL(q, db, typeof(T), false);
                 SqlInfo.AddToCache(cacheKey, si);
             }
-            IDataReader reader= EntityQueryAnonymous.ExecuteDataReader(si, db, false);
+            IDataReader reader = EntityQueryAnonymous.ExecuteDataReader(si, db, false);
             return QueryList(reader);
         }
 
@@ -632,7 +634,6 @@ namespace PWMIS.DataMap.Entity
             List<T> list = new List<T>();
             using (reader)
             {
-
                 if (reader.Read())
                 {
                     int fcount = reader.FieldCount;
@@ -640,36 +641,23 @@ namespace PWMIS.DataMap.Entity
 
                     for (int i = 0; i < fcount; i++)
                         names[i] = reader.GetName(i);
-
-
-                    if (new T() is IReadData)
+                    T t0 = new T();
+                    t0.PropertyNames = names;
+                    do
                     {
-                        do
-                        {
-                            T t = new T();
-                            ((IReadData)t).ReadData(reader, fcount, names);
-                            list.Add(t);
-                        } while (reader.Read());
+                        object[] values = new object[fcount];
+                        reader.GetValues(values);
 
-                    }
-                    else
-                    {
-                        do
-                        {
-                            object[] values = new object[fcount];
-                            reader.GetValues(values);
+                        T t = (T)t0.Clone();
 
-                            T t = new T();
-                            t.PropertyNames = names;
-                            t.PropertyValues = values;
+                        //t.PropertyNames = names;
+                        t.PropertyValues = values;
 
-                            list.Add(t);
+                        list.Add(t);
 
-                        } while (reader.Read());
-                    }
+                    } while (reader.Read());
 
                 }
-
             }
             return list;
         }
@@ -705,6 +693,131 @@ namespace PWMIS.DataMap.Entity
             return list;
         }
 
+        /// <summary>
+        /// 查询实体类集合关联的子实体类
+        /// </summary>
+        /// <typeparam name="TChild"></typeparam>
+        /// <param name="entitys"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        private  List<TChild> QueryChild<TChild>(IEnumerable<T> entitys,AdoHelper db) where TChild:EntityBase,new()
+        {
+            TChild child = new TChild();
+            
+            string sql = "SELECT * FROM "+child.GetTableName()+" WHERE "+child.ForeignKey+" IN ({0})";
+            List<string> paraNames = new List<string>();
+            List<IDataParameter> paras = new List<IDataParameter>();
+            int count = 0;
+            foreach(EntityBase e in entitys)
+            {
+                string name = db.GetParameterChar+ "P"+count;
+                paraNames.Add(name);
+                paras.Add(db.GetParameter(name,e[e.PrimaryKeys[0]]));
+                count++;
+            }
+            //会有2100个参数的限制问题，下期解决
+            string objSql = string.Format(sql, string.Join(",", paraNames.ToArray()));
+            IDataReader reader = db.ExecuteDataReader(objSql, CommandType.Text, paras.ToArray());
+            return AdoHelper.QueryList<TChild>(reader);//还需要分析到对应的父实体类上
+        }
+
+        private  void QueryAndSetChild<TChild>(List<T> entitys, AdoHelper db) where TChild : EntityBase, new()
+        {
+            List<TChild> childList = QueryChild<TChild>(entitys, db);
+            string childName = GetChildEntityListPropertyName<TChild>();
+            DelegatedReflectionMemberAccessor drm = new DelegatedReflectionMemberAccessor();
+            foreach (T e in entitys)
+            {
+                List<TChild> newChilds = new List<TChild>();
+                foreach (TChild child in childList)
+                {
+                    if (child[child.ForeignKey].Equals( e[e.PrimaryKeys[0]]))
+                    {
+                        newChilds.Add(child);
+                    }
+                }
+                //为当前实体类设置子实体类集合
+                var accessor= drm.FindAccessor<T>(childName);
+                accessor.SetValue(e, newChilds);
+            }
+        }
+
+        /// <summary>
+        /// 获取当前实体类的具有枚举功能的属性的名字
+        /// </summary>
+        /// <typeparam name="TChild">子实体类集合属性的元素类型</typeparam>
+        /// <returns></returns>
+        private  string GetChildEntityListPropertyName<TChild>() where TChild : EntityBase, new()
+        {
+            var props = typeof(T).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            foreach (var p in props)
+            {
+                if (p.PropertyType.IsGenericType)
+                {
+                    Type t = p.PropertyType.GetGenericTypeDefinition();
+                    if (t == typeof(IEnumerable<>) || t.GetInterface("IEnumerable`1") != null)
+                    {
+                        //"IS IEnumerable<>"
+                        Type[] tArr = p.PropertyType.GetGenericArguments();
+                        if(tArr.Length==1 && tArr[0]==typeof(TChild))
+                            return p.Name;
+                    }
+                }
+            }
+            return null;
+        }
+
+        private  string[] GetAllChildEntityListPropertyName()
+        {
+            List<string> result = new List<string>();
+            var props = typeof(T).GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance);
+            foreach (var p in props)
+            {
+                if (p.PropertyType.IsGenericType)
+                {
+                    if (p.PropertyType.GetGenericArguments()[0].BaseType == typeof(EntityBase))
+                    {
+                        Type t = p.PropertyType.GetGenericTypeDefinition();
+                        if (t == typeof(IEnumerable<>) || t.GetInterface("IEnumerable`1") != null)
+                        {
+                            //"IS IEnumerable<>"
+                            result.Add(p.Name);
+                        }
+                    }
+                }
+            }
+            return result.ToArray();
+        }
+
+        private void QueryChildResult(string[] childPropNames, List<T> entitys, AdoHelper db)
+        {
+            foreach (string name in childPropNames)
+            {
+               Type propType = typeof(T).GetProperty(name).PropertyType.GetGenericArguments()[0];
+               var method = GetType().GetMethod("QueryAndSetChild", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+               var realMethod = method.MakeGenericMethod(propType);
+               realMethod.Invoke(this, new object[] { entitys,db });
+            }
+        }
+
+        /// <summary>
+        /// 查询实体类集合，并同时查询关联的所有的子实体类集合
+        /// </summary>
+        /// <param name="oql"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public static List<T> QueryListWithChild(OQL oql, AdoHelper db)
+        {
+            List<T> result = QueryList(oql, db);
+            if (result.Count > 0)
+            {
+                EntityQuery<T> query = new EntityQuery<T>();
+                //下面建议采取缓存方式获取属性名字数组
+                var propNames = query.GetAllChildEntityListPropertyName();
+                query.QueryChildResult(propNames, result, db);
+            }
+            return result;
+        }
 
         /// <summary>
         /// 插入一个实体对象
@@ -817,7 +930,7 @@ namespace PWMIS.DataMap.Entity
                             paras[i].Value = item.PropertyList(objFields[i]);
                         }
                         count += db.ExecuteNonQuery(sql, CommandType.Text, paras);
-                        
+
                     }
                     db.Commit();
                 }
@@ -856,7 +969,7 @@ namespace PWMIS.DataMap.Entity
             {
                 foreach (T entity in entityList)
                 {
-                    count +=EntityQuery.UpdateInner(entity, entity.PropertyChangedList, db);
+                    count += EntityQuery.UpdateInner(entity, entity.PropertyChangedList, db);
                 }
                 db.Commit();
             }
@@ -929,7 +1042,7 @@ namespace PWMIS.DataMap.Entity
             {
                 foreach (T entity in entityList)
                 {
-                    count +=EntityQuery.DeleteInnerByDB(entity, db);
+                    count += EntityQuery.DeleteInnerByDB(entity, db);
                 }
                 db.Commit();
             }
@@ -1343,10 +1456,11 @@ namespace PWMIS.DataMap.Entity
         public static int ExecuteOql(OQL oql, AdoHelper db)
         {
             string sql = oql.ToString();
+            oql.Dispose();
 
             if (oql.Parameters.Count > 0)
             {
-                IDataParameter[] paras = EntityQueryAnonymous.GetParameters(oql.Parameters,db);
+                IDataParameter[] paras = EntityQueryAnonymous.GetParameters(oql.Parameters, db);
                 return db.ExecuteNonQuery(sql, CommandType.Text, paras);
             }
             else
@@ -1356,17 +1470,18 @@ namespace PWMIS.DataMap.Entity
 
         }
 
+
         /// <summary>
-        /// 根据数据阅读器对象，查询实体对象集合(注意查询完毕将自动释放该阅读器对象)
+        /// 万能根据数据阅读器对象，将结果查询到（实体）对象集合(注意查询完毕将自动释放该阅读器对象)
         /// </summary>
+        /// <typeparam name="T">元素类型，可以是EntityBase,IReadData 派生类型，其它接口类型，或者POCO类型的对象</typeparam>
         /// <param name="reader">数据阅读器对象</param>
         /// <returns>实体类集合</returns>
-        public static List<T> QueryList<T>(System.Data.IDataReader reader) where T:class
+        public static List<T> QueryList<T>(System.Data.IDataReader reader) where T : class
         {
             List<T> list = new List<T>();
             using (reader)
             {
-
                 if (reader.Read())
                 {
                     int fcount = reader.FieldCount;
@@ -1375,24 +1490,53 @@ namespace PWMIS.DataMap.Entity
                     for (int i = 0; i < fcount; i++)
                         names[i] = reader.GetName(i);
 
-
-                    do
+                    T t = EntityBuilder.CreateEntity<T>();
+                    if (t is EntityBase)
                     {
-                        object[] values = new object[fcount];
-                        reader.GetValues(values);
-
-                        T t = EntityBuilder.CreateEntity<T>();
                         EntityBase entity = t as EntityBase;
                         entity.PropertyNames = names;
-                        entity.PropertyValues = values;
+                        do
+                        {
+                            object[] values = new object[fcount];
+                            reader.GetValues(values);
 
-                        list.Add(t);
+                            EntityBase entityNew = (EntityBase)entity.Clone();
+                            entityNew.PropertyValues = values;
 
-                    } while (reader.Read());
+                            list.Add(entityNew as T);
+                        } while (reader.Read());
+                    }
+                    else if (t is IReadData)
+                    {
+                        do
+                        {
+                            ((IReadData)t).ReadData(reader, fcount, names);
+                            list.Add(t);
+                            t = EntityBuilder.CreateEntity<T>();
 
+                        } while (reader.Read());
+                    }
+                    else
+                    {
+                        INamedMemberAccessor[] accessors = new INamedMemberAccessor[fcount];
+                        DelegatedReflectionMemberAccessor drm = new DelegatedReflectionMemberAccessor();
+                        for (int i = 0; i < fcount; i++)
+                        {
+                            accessors[i] = drm.FindAccessor<T>(reader.GetName(i));
+                        }
 
+                        do
+                        {
+                            for (int i = 0; i < fcount; i++)
+                            {
+                                if (!reader.IsDBNull(i))
+                                    accessors[i].SetValue(t, reader.GetValue(i));
+                            }
+                            list.Add(t);
+                            t = EntityBuilder.CreateEntity<T>();
+                        } while (reader.Read());
+                    }
                 }
-
             }
             return list;
         }
@@ -1426,7 +1570,7 @@ namespace PWMIS.DataMap.Entity
         }
 
 
-        public static List<T> QueryList<T>(OQL oql, AdoHelper db) where T:class
+        public static List<T> QueryList<T>(OQL oql, AdoHelper db) where T : class
         {
             //如果开启了分页且记录总数为0，直接返回空集合
             if (oql.PageEnable && oql.PageWithAllRecordCount <= 0)
@@ -1437,7 +1581,7 @@ namespace PWMIS.DataMap.Entity
 
         public static T QueryObject<T>(OQL oql, AdoHelper db) where T : class
         {
-            IDataReader reader = EntityQueryAnonymous.ExecuteDataReader(oql, db, typeof(T),true);
+            IDataReader reader = EntityQueryAnonymous.ExecuteDataReader(oql, db, typeof(T), true);
             return QueryObject<T>(reader);
         }
 
@@ -1593,7 +1737,7 @@ namespace PWMIS.DataMap.Entity
                 return 0;
 
             IDataParameter[] paras = new IDataParameter[objFields.Count];
-            
+
             string tableName = entity.TableName;
             string identityName = entity.IdentityName;
             string sql = "INSERT INTO [" + tableName + "]";

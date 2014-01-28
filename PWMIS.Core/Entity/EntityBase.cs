@@ -18,7 +18,16 @@
  *           
  *  * 修改者：         时间：2013-8-16                
  * 修改说明：增加索引器，方便属性访问
- *           
+ *  
+  *  * 修改者：         时间：2013-10-7                
+ * 修改说明：解决如果从部分选择查询出来的实体类，无法在应用中保存选择查询列之外的事实体属性值无法设置的问题。
+ * 
+ *   * 修改者：         时间：2013-11-23                
+ * 修改说明：放开实体类对索引属性访问的写入功能，例如下面的代码：
+ *          UserModels um = new UserModels();
+            um.AddPropertyName("TestName");
+            um["TestName"] = 123;
+            int testi =(int) um["TestName"];
  * ========================================================================
 */
 using System;
@@ -50,12 +59,12 @@ namespace PWMIS.DataMap.Entity
         }
         protected internal int GetStringFieldSize(string fieldName)
         {
-            return  GetStringFieldSize( TableName, fieldName);
+            return GetStringFieldSize(TableName, fieldName);
         }
         #endregion
 
         #region 实体类基本映射信息 相关成员
-        private PWMIS.Common.EntityMapType _entityMap=PWMIS .Common .EntityMapType .Table ;
+        private PWMIS.Common.EntityMapType _entityMap = PWMIS.Common.EntityMapType.Table;
         /// <summary>
         /// 实体类的映射类型
         /// </summary>
@@ -64,7 +73,7 @@ namespace PWMIS.DataMap.Entity
             get { return _entityMap; }
             set { _entityMap = value; }
         }
-       
+
 
         /// <summary>
         /// 设置实体类的对应的字段名称数组
@@ -74,7 +83,7 @@ namespace PWMIS.DataMap.Entity
         {
             //this.names = names;
         }
-    
+
         //[NonSerialized()] 
         private string _identity = "";
 
@@ -86,6 +95,11 @@ namespace PWMIS.DataMap.Entity
             get { return _identity; }
             set { _identity = value; }
         }
+
+        /// <summary>
+        /// 外键
+        /// </summary>
+        protected internal string ForeignKey { get; set; }
 
         //[NonSerialized()] 
         private string _tableName;
@@ -106,7 +120,7 @@ namespace PWMIS.DataMap.Entity
                         return _tableName;
 
                 }
-                return _tableName;
+                return this.GetTableName();
             }
         }
         /// <summary>
@@ -258,9 +272,30 @@ namespace PWMIS.DataMap.Entity
             return this.IdentityName;
         }
 
-        public string GetTableName()
+        /// <summary>
+        /// 获取表名称。如果实体类有分表策略，那么请重写该方法
+        /// </summary>
+        /// <returns></returns>
+        public virtual string GetTableName()
         {
-            return this.TableName;
+            return _tableName; ;
+        }
+
+        /// <summary>
+        /// 新增加实体虚拟字段属性，用来传递内容
+        /// </summary>
+        /// <param name="name"></param>
+        public void AddPropertyName(string name)
+        {
+            if (name == null || name.Length == 0) return;
+            var strA = string.Empty;
+
+            int count=this.PropertyNames.Length+1;
+            string[] temp = new string[count];
+            this.PropertyNames.CopyTo(temp, 0);
+            temp[count - 1] = name;
+
+            this.PropertyNames = temp;
         }
 
         /// <summary>
@@ -316,9 +351,9 @@ namespace PWMIS.DataMap.Entity
         {
             this.OnPropertyGeting(propertyName);
 
-            object Value= PropertyList(propertyName);
+            object Value = PropertyList(propertyName);
 
-            if (Value == DBNull.Value || Value ==null)
+            if (Value == DBNull.Value || Value == null)
             {
                 switch (t)
                 {
@@ -328,13 +363,13 @@ namespace PWMIS.DataMap.Entity
                     case TypeCode.Int16:
                     case TypeCode.Int32:
                     case TypeCode.Int64:
-                    case TypeCode .UInt16 :
-                    case TypeCode .UInt32 :
-                    case TypeCode .UInt64 :return 0;
-                    case TypeCode .Char :return null;
+                    case TypeCode.UInt16:
+                    case TypeCode.UInt32:
+                    case TypeCode.UInt64: return 0;
+                    case TypeCode.Char: return null;
                     default: return 0.0;
                 }
-               
+
             }
             return Value;
         }
@@ -369,6 +404,37 @@ namespace PWMIS.DataMap.Entity
                     return;
                 }
             }
+            //可能实体类来自Select 部分字段
+            //备份原来的名值组
+            Dictionary<string, object> dictTemp = new Dictionary<string, object>();
+            Dictionary<string, bool> dictChengs = new Dictionary<string, bool>();
+            for (int i = 0; i < PropertyNames.Length; i++)
+            {
+                dictTemp.Add(PropertyNames[i], PropertyValues[i]);
+                dictChengs.Add(PropertyNames[i], changedlist[i]);
+            }
+            //重置字段名数组
+            names = null;
+            values = null;
+            //复制值
+            for (int i = 0; i < PropertyNames.Length; i++)
+            {
+                PropertyValues[i] = dictTemp[PropertyNames[i]];
+                changedlist[i] = dictChengs[PropertyNames[i]];
+            }
+            // 如果propertyName 仍然不在实体类本身类型定义的字段名中，说明是非法的设置，无效；
+            //否则，重新设置当前要设置的值。
+            for (int i = 0; i < PropertyNames.Length; i++)
+            {
+                if (string.Compare(PropertyNames[i], propertyName, true) == 0)
+                {
+                    PropertyValues[i] = Value;
+
+                    this.OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
+                    changedlist[i] = true;
+                    return;
+                }
+            }
         }
 
         /// <summary>
@@ -379,7 +445,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="maxLength">最大长度</param>
         protected internal void setProperty(string name, string Value, int maxLength)
         {
-            string key=string.Format("{0}_{1}", TableName,name);
+            string key = string.Format("{0}_{1}", TableName, name);
             StringFieldSize[key] = maxLength;
 
             if (Value != null && maxLength > 0 && Value.Length > maxLength)
@@ -451,22 +517,38 @@ namespace PWMIS.DataMap.Entity
         /// <returns></returns>
         public object this[string propertyName]
         {
-            get { 
-                EntityFields ef=EntityFieldsCache.Item(this.GetType());
-                string fieldName= ef.GetPropertyField(propertyName);
+            get
+            {
+                EntityFields ef = EntityFieldsCache.Item(this.GetType());
+                string fieldName = ef.GetPropertyField(propertyName);
                 if (fieldName != null)
                 {
                     this.OnPropertyGeting(fieldName);
                     return PropertyList(fieldName);
                 }
-                return null;
+                //获取虚拟的字段值
+                return PropertyList(propertyName); ;
             }
-            protected internal set {
+            set
+            {
                 EntityFields ef = EntityFieldsCache.Item(this.GetType());
                 string fieldName = ef.GetPropertyField(propertyName);
+
                 if (fieldName != null)
                 {
+                    //如果是实体类基础定义的字段，必须检查设置的值得类型
+                    if (value != null)
+                    {
+                        Type fieldType = ef.GetPropertyType(propertyName);
+                        if (value.GetType() != fieldType)
+                            throw new ArgumentException("实体类的属性字段" + propertyName + " 需要"
+                                + fieldType.Name + " 类型的值，但准备赋予的值不是该类型！");
+                    }
                     this.setProperty(fieldName, value);
+                }
+                else
+                {
+                    this.setProperty(propertyName, value);
                 }
             }
         }
@@ -478,7 +560,8 @@ namespace PWMIS.DataMap.Entity
         /// <returns></returns>
         public object this[int index]
         {
-            get {
+            get
+            {
                 if (index < 0 || index > this.PropertyNames.Length)
                     return null;
                 string fieldName = this.PropertyNames[index];

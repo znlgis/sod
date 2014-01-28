@@ -4,6 +4,7 @@ using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
 using PWMIS.DataMap.Entity;
+using PWMIS.Common;
 
 namespace PWMIS.DataMap.Entity
 {
@@ -35,10 +36,11 @@ namespace PWMIS.DataMap.Entity
         {
             Type targetType = null;
             Type sourceType = typeof(T);
-            //if (sourceType.BaseType == typeof(EntityBase)) 
-            if (sourceType.IsSubclassOf(typeof(EntityBase))) //如果本身是实体类，则不生成
+           
+            if (sourceType.IsSubclassOf(typeof(EntityBase)) || sourceType.IsSubclassOf(typeof(IReadData)) 
+                || !sourceType.IsInterface)
             {
-                targetType = sourceType;
+               return Activator.CreateInstance<T>();
             }
             else
             {
@@ -55,8 +57,6 @@ namespace PWMIS.DataMap.Entity
                     }
                 }
             }
-            
-            
             
             T entity = (T)Activator.CreateInstance(targetType);
             return entity;

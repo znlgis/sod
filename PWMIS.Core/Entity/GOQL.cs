@@ -24,11 +24,32 @@ namespace PWMIS.DataMap.Entity
         {
             return new GOQL1<T>(this, currentOQL.Select(func(currentEntity)));
         }
+        /// <summary>
+        /// 以每页不超过 pageSize 条记录，查询第 pageNumber 页的数据
+        /// </summary>
+        /// <param name="pageSize">每页显示的记录数量</param>
+        /// <param name="pageNumber">所在页页码，从1开始</param>
+        /// <returns>GOQL对象</returns>
         public GOQL<T> Limit(int pageSize, int pageNumber)
         {
             this.currentOQL.Limit(pageSize, pageNumber);
             return this;
         }
+        /// <summary>
+        /// 以每页不超过 pageSize 条记录，查询第 pageNumber 页的数据。如果没有指定排序方法，可以不指定记录总数，
+        /// 但不可指定为0，或者使用另外一个重载。
+        /// </summary>
+        /// <param name="pageSize">每页显示的记录数量</param>
+        /// <param name="pageNumber">所在页页码，从1开始</param>
+        /// <param name="allCount">记录总数</param>
+        /// <returns></returns>
+        public GOQL<T> Limit(int pageSize, int pageNumber,int allCount)
+        {
+            this.currentOQL.PageWithAllRecordCount = allCount;
+            this.currentOQL.Limit(pageSize, pageNumber);
+            return this;
+        }
+
         public GOQL<T> Print(out string sqlInfo)
         {
             sqlInfo = string.Format("SQL:{0}\r\n{1}",currentOQL.ToString(), currentOQL.PrintParameterInfo());

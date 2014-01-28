@@ -139,9 +139,9 @@ namespace PWMIS.Core
            {
                //edit at 2011.5.16
                //如果 Value为 decimal类型，Ｔ　为double 类型， (T)Value 将发生错误
-               //edit at 2013.8.9 支持枚举类型
+               //edit at 2013.8.9 支持枚举类型，SHARP_C 发现tinyint 类型转换问题，感谢
                if (typeof(T).IsEnum)
-                   return (T)Value;
+                   return (T)Convert.ChangeType(Value, System.TypeCode.Int32);
                else
                    return (T)Convert.ChangeType(Value, typeof(T));
            }

@@ -20,6 +20,8 @@
 using System;
 using System.Data;
 using System.Collections.Generic;
+using PWMIS.Core;
+using PWMIS.DataProvider.Adapter;
 namespace PWMIS.DataProvider.Data
 {
 	/// <summary>
@@ -39,23 +41,16 @@ namespace PWMIS.DataProvider.Data
 			//
 		}
 
-//		/// <summary>
-//		/// 获取数据适配器实例
-//		/// </summary>
-//		/// <returns>数据适配器</returns>
-//		protected override IDbDataAdapter  GetDataAdapter(IDbCommand command)
-//		{
-//			return null;
-//		}
+        /// <summary>
+        /// 根据应用程序配置文件的connectionStrings 配置中的name，创建数据访问对象
+        /// </summary>
+        /// <param name="connectionName">连接字符串配置项的名字</param>
+        /// <returns>数据访问对象</returns>
+        public static AdoHelper CreateHelper(string connectionName)
+        {
+            return MyDB.GetDBHelperByConnectionName(connectionName);
+        }
 
-//		/// <summary>
-//		/// 获取一个新参数对象
-//		/// </summary>
-//		/// <returns>特定于数据源的参数对象</returns>
-//		public override IDataParameter GetParameter()
-//		{
-//			return null;
-//		}
 
 		/// <summary>
 		/// 创建公共数据访问类的实例
@@ -176,9 +171,16 @@ namespace PWMIS.DataProvider.Data
         /// <returns>数据阅读器</returns>
         public IDataReader FormatExecuteDataReader(string sqlFormat, params object[] parameters)
         {
-            DataParameterFormat formater = new DataParameterFormat(this);
-            string sql = string.Format(formater, sqlFormat, parameters);
-            return base.ExecuteDataReader(sql, CommandType.Text, formater.DataParameters);
+            if (parameters == null)
+            {
+                return base.ExecuteDataReader(sqlFormat);
+            }
+            else
+            {
+                DataParameterFormat formater = new DataParameterFormat(this);
+                string sql = string.Format(formater, sqlFormat, parameters);
+                return base.ExecuteDataReader(sql, CommandType.Text, formater.DataParameters);
+            }
         }
         /// <summary>
         /// 执行返回数据集的查询
@@ -247,6 +249,36 @@ namespace PWMIS.DataProvider.Data
                 }
             }
             return resultList;
+        }
+
+        public static List<T> QueryList<T>(IDataReader reader) where T : class, new()
+        {
+            List<T> list = new List<T>();
+            using (reader)
+            {
+                if (reader.Read())
+                {
+                    int fcount = reader.FieldCount;
+                    INamedMemberAccessor[] accessors = new INamedMemberAccessor[fcount];
+                    DelegatedReflectionMemberAccessor drm = new DelegatedReflectionMemberAccessor();
+                    for (int i = 0; i < fcount; i++)
+                    {
+                        accessors[i] = drm.FindAccessor<T>(reader.GetName(i));
+                    }
+
+                    do
+                    {
+                        T t = new T();
+                        for (int i = 0; i < fcount; i++)
+                        {
+                            if (!reader.IsDBNull(i))
+                                accessors[i].SetValue(t, reader.GetValue(i));
+                        }
+                        list.Add(t);
+                    } while (reader.Read());
+                }
+            }
+            return list;
         }
     }
 }

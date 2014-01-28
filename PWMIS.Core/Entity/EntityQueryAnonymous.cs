@@ -741,6 +741,7 @@ namespace PWMIS.DataMap.Entity
         public static IDataReader ExecuteDataReader(OQL oql, AdoHelper db, Type factEntityType,bool single)
         {
             SqlInfo si = GetSqlInfoFromOQL(oql, db, factEntityType, single);
+            oql.Dispose();
             return ExecuteDataReader(si, db, single);
         }
 

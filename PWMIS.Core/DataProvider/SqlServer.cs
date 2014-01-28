@@ -98,6 +98,100 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
+        /// 执行查询,并以指定的(具有数据架构的)数据集来填充数据
+        /// </summary>
+        /// <param name="SQL">查询语句</param>
+        /// <param name="commandType">命令类型</param>
+        /// <param name="parameters">查询参数</param>
+        /// <param name="schemaDataSet">指定的(具有数据架构的)数据集</param>
+        /// <returns>具有数据的数据集</returns>
+        public override DataSet ExecuteDataSetWithSchema(string SQL, CommandType commandType, IDataParameter[] parameters, DataSet schemaDataSet)
+        {
+            IDbConnection conn = GetConnection();
+            IDbCommand cmd = conn.CreateCommand();
+            CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
+            SqlDataAdapter ada = new SqlDataAdapter((SqlCommand)cmd);
+
+            CommandLog cmdLog = new CommandLog(true);
+
+            try
+            {
+                if (schemaDataSet.Tables.Count > 0)
+                    ada.Fill(schemaDataSet, schemaDataSet.Tables[0].TableName);
+                else
+                    ada.Fill(schemaDataSet);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                bool inTransaction = cmd.Transaction == null ? false : true;
+                cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
+                if (OnErrorThrow)
+                {
+                    throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
+                }
+            }
+            finally
+            {
+                cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
+                CloseConnection(conn, cmd);
+            }
+            return schemaDataSet;
+        }
+
+        /// <summary>
+        /// 执行强类型的数据集查询
+        /// </summary>
+        /// <param name="SQL">SQL语句</param>
+        /// <param name="commandType">命令类型</param>
+        /// <param name="parameters">查询参数</param>
+        /// <param name="schemaDataSet">强类型的数据集</param>
+        /// <param name="tableName">要填充的表名称</param>
+        /// <returns></returns>
+        public DataSet ExecuteTypedDataSet(string SQL, CommandType commandType, IDataParameter[] parameters, DataSet schemaDataSet, string tableName)
+        {
+            bool flag = false;
+            for (int i = 0; i < schemaDataSet.Tables.Count; i++)
+            {
+                if (schemaDataSet.Tables[i].TableName == tableName)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag)
+                throw new ArgumentException("在强类型的数据集中，没有找到制定的数据表明称！");
+
+            IDbConnection conn = GetConnection();
+            IDbCommand cmd = conn.CreateCommand();
+            CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
+            SqlDataAdapter ada = new SqlDataAdapter((SqlCommand)cmd);
+
+            CommandLog cmdLog = new CommandLog(true);
+
+            try
+            {
+                ada.Fill(schemaDataSet, tableName);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                bool inTransaction = cmd.Transaction == null ? false : true;
+                cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
+                if (OnErrorThrow)
+                {
+                    throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
+                }
+            }
+            finally
+            {
+                cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
+                CloseConnection(conn, cmd);
+            }
+            return schemaDataSet;
+        }
+
+        /// <summary>
         /// 返回此 SqlConnection 的数据源的架构信息。
         /// </summary>
         /// <param name="collectionName">集合名称</param>
@@ -150,126 +244,7 @@ namespace PWMIS.DataProvider.Data
             return GetSPDetail(viewName);
         }
 		
-		#region 不带事物的查询
-
-//		/// <summary>
-//		/// 执行不返回值得查询
-//		/// </summary>
-//		/// <param name="SQL">SQL</param>
-//		/// <returns>受影响的行数</returns>
-//		public override int ExecuteNonQuery(string SQL)
-//		{
-//			SqlConnection conn=(SqlConnection)GetConnection();// new SqlConnection (base.ConnectionString );
-//			SqlCommand cmd=new SqlCommand (SQL,conn);
-//			
-//			int result=0;
-//			try
-//			{
-//				result=cmd.ExecuteNonQuery ();
-//			}
-//			catch(Exception ex)
-//			{
-//				base.ErrorMessage =ex.Message ;
-//			}
-//			finally
-//			{
-//				if(conn.State ==ConnectionState.Open )
-//					conn.Close ();
-//			}
-//			return result;
-//		}
-//
-//		/// <summary>
-//		/// 执行插入数据的查询
-//		/// </summary>
-//		/// <param name="SQL">插入数据的SQL</param>
-//		/// <param name="ID">要传出的本次操作的新插入数据行的主键ID值</param>
-//		/// <returns>本次查询受影响的行数</returns>
-//		public override int ExecuteInsertQuery(string SQL,ref int ID)
-//		{
-//			SqlConnection conn=new SqlConnection (base.ConnectionString );
-//			SqlCommand cmd=new SqlCommand (SQL,conn);
-//			SqlTransaction trans=null;//=conn.BeginTransaction ();
-//			conn.Open ();
-//			int result=0;
-//			ID=0;
-//			try
-//			{
-//				trans=conn.BeginTransaction ();
-//				cmd.Transaction =trans;
-//				result=cmd.ExecuteNonQuery ();
-//				cmd.CommandText ="SELECT @@IDENTITY";
-//				//ID=(int)(cmd.ExecuteScalar ());//出错
-//				object obj=cmd.ExecuteScalar ();
-//				ID=Convert.ToInt32 (obj);
-//				trans.Commit ();
-//			}
-//			catch(Exception ex)
-//			{
-//				base.ErrorMessage=ex.Message ;
-//				if(trans!=null)
-//					trans.Rollback ();
-//			}
-//			finally
-//			{
-//				if(conn.State ==ConnectionState.Open )
-//					conn.Close ();
-//			}
-//			return result;
-//		}
-//
-//		/// <summary>
-//		/// 执行返回数据集的查询
-//		/// </summary>
-//		/// <param name="SQL">SQL</param>
-//		/// <returns>数据集</returns>
-//		public override DataSet ExecuteDataSet(string SQL)
-//		{
-//			SqlConnection conn=new SqlConnection (base.ConnectionString );
-//			SqlDataAdapter ada =new SqlDataAdapter (SQL,conn);
-//			DataSet ds=new DataSet ();
-//			try
-//			{
-//				ada.Fill (ds);
-//			}
-//			catch(Exception ex)
-//			{
-//				base.ErrorMessage=ex.Message ;
-//			}
-//			finally
-//			{
-//				if(conn.State ==ConnectionState.Open )
-//					conn.Close ();
-//			}
-//			return ds;
-//		}
-//
-//		/// <summary>
-//		/// 返回单一行的数据阅读器
-//		/// </summary>
-//		/// <param name="SQL">SQL</param>
-//		/// <returns>数据阅读器</returns>
-//		public override IDataReader ExecuteDataReaderWithSingleRow(string SQL)
-//		{
-//			SqlConnection conn=new SqlConnection (base.ConnectionString );
-//			SqlCommand cmd=new SqlCommand (SQL,conn);
-//			IDataReader reader=null;
-//			try
-//			{
-//				conn.Open ();
-//				return cmd.ExecuteReader (CommandBehavior.SingleRow | CommandBehavior.CloseConnection );
-//			}
-//			catch(Exception ex)
-//			{
-//				base.ErrorMessage=ex.Message ;
-//				if(conn.State ==ConnectionState.Open )
-//					conn.Close ();
-//			}
-//			return reader;
-//			
-//		}
-
-#endregion
+		
 
         /// <summary>
         /// SQL批量复制

@@ -52,6 +52,14 @@
  * 修改者：         时间：2013-9-17                
  * 修改说明：修复在使用ＩＮ的子查询中使用排序，导致查询语句不正确的问题；
  *           感谢 网友　GIV-顺德 发现此Bug
+ *           
+ * 修改者：         时间：2013-10-15                
+ * 修改说明：修改OQL的事件挂钩处理方式，在EntityQuery 执行后确保解除事件挂钩。
+ * 
+ * 修改者：         时间：2014-1-6                
+ * 修改说明：修复 网友※DS发现问题， 调用本方法的时候，发现调用的第一个实体类属性是bool类型，
+       引起少了一个字段查询的问题
+ *           
  */
 #endregion
 
@@ -129,7 +137,7 @@ namespace PWMIS.DataMap.Entity
     }
 
     /// <summary>
-    /// PDF.NET ORM Query Language
+    /// PDF.NET ORM Query Language。
     /// </summary>
     public class OQL : IOQL, IDisposable
     {
@@ -314,6 +322,7 @@ namespace PWMIS.DataMap.Entity
         private OQL parentOql = null;
         private int fieldGetingIndex = 0;//字段获取顺序的索引，如果有子查询，那么子查询使用父查询的该索引进行递增
         private SqlServerLock serverLock = SqlServerLock.UNKNOW;
+        private bool disposed;//是否已经调用了Dispose方法
 
         protected internal int GetFieldGettingIndex()
         {
@@ -694,6 +703,8 @@ namespace PWMIS.DataMap.Entity
         /// <returns></returns>
         public OQL1 Select(params object[] fields)
         {
+            if (disposed)
+                throw new Exception("当前OQL对象已经执行过数据查询，不能再次调用本方法。在执行查询前是可以再次调用本方法的。");
             //防止在调用本方法之前访问关联的实体类属性带来的问题。
             //感谢网友 GIV-顺德 发现此问题
             if (fields.Length > 0)
@@ -714,12 +725,23 @@ namespace PWMIS.DataMap.Entity
 
         /// <summary>
         /// 使用是否排除重复记录的方式，来选取实体对象的属性
+        /// <remarks>2014.1.6  网友※DS 调用本方法的时候，发现调用的第一个实体类属性是bool类型，
+        /// 引起少了一个字段查询的问题 </remarks>
         /// </summary>
         /// <param name="distinct"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
         public OQL1 Select(bool distinct, params object[] fields)
         {
+            int count = fieldStack.Count;
+            if (count == fields.Length + 1)
+            {
+                object[] newFields = new object[count];
+                for (int i = 1; i < count; i++)
+                    newFields[i] = fields[i - 1];
+                newFields[0] = false;
+                return Select(newFields);
+            }
             this.Distinct = distinct;
             return Select(fields);
         }
@@ -902,7 +924,11 @@ namespace PWMIS.DataMap.Entity
             parent.haveChildOql = true;
         }
 
-
+        /// <summary>
+        /// 以一个实体类实例对象初始化OQL对象。
+        /// </summary>
+        /// <param name="e"></param>
+        /// <returns></returns>
         public static OQL From(EntityBase e)
         {
             return new OQL(e);
@@ -1125,10 +1151,15 @@ namespace PWMIS.DataMap.Entity
                 sql_from = mainTableName + " M ";
                 if (sql_fields == "" && sqlFunctionString.Length == 0)
                 {
-                    sql_fields = "M.*";
-                    foreach (string str in dictAliases.Values)
+                    if (SelectStar)
+                        sql_fields = "*";//网友 大大宝 增加该分支
+                    else
                     {
-                        sql_fields += string.Format(",{0}.*", str);
+                        sql_fields = "M.*";
+                        foreach (string str in dictAliases.Values)
+                        {
+                            sql_fields += string.Format(",{0}.*", str);
+                        }
                     }
                 }
             }
@@ -1260,8 +1291,13 @@ namespace PWMIS.DataMap.Entity
             return paraInfoString + "------------------End------------------------\r\n";
         }
 
+        /// <summary>
+        /// 释放实体类事件挂钩。如果没页手工调用，该方法会在EntityQuery 调用
+        /// </summary>
         public void Dispose()
         {
+            if (disposed)
+                return;
             this.currEntity.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(e_PropertyGetting);
             if (this.dictAliases != null)
             {
@@ -1270,6 +1306,7 @@ namespace PWMIS.DataMap.Entity
                     item.PropertyGetting -= new EventHandler<PropertyGettingEventArgs>(e_PropertyGetting);
                 }
             }
+            disposed = true;
         }
         /// <summary>
         /// 如果未选择任何列，生成的SQL语句Select 后面是否用 * 代替。
@@ -1363,7 +1400,11 @@ namespace PWMIS.DataMap.Entity
                         string paraName = temp + (count++);
                         if (!paras.ContainsKey(paraName))
                         {
-                            paras.Add(paraName, new TableNameField() { FieldValue = para.FieldValue });
+                            paras.Add(paraName, new TableNameField() { 
+                                FieldValue = para.FieldValue , 
+                                Field=para.FieldName,
+                                Entity = CurrentOQL.currEntity //必须指定，网友[长得没礼貌]发现此问题
+                            });
                             string cmpType = "";
                             switch (para.CompareType)
                             {
@@ -2090,8 +2131,9 @@ namespace PWMIS.DataMap.Entity
             string currFieldName = CurrentOQL.TakeOneStackFields().Field;
             conditionString += " AND " + currFieldName + inString + "  (\r\n" + childSql + ")";
 
+            //感谢网友 null 发现下面的参数问题
             foreach (string key in q.Parameters.Keys)
-                CurrentOQL.Parameters.Add("IN" + key, q.Parameters[key]);
+                CurrentOQL.Parameters.Add(key.Replace("@P", "@INP").Replace("@CP", "@INCP"), q.Parameters[key]);
 
             return this;
         }

@@ -150,6 +150,7 @@ namespace PWMIS.Core.Extensions
             EntityContainer ec = new EntityContainer(q);
             return ec.ToObjectList<TResult>(ecFun);
         }
+
         /// <summary>
         /// 执行OQL
         /// </summary>

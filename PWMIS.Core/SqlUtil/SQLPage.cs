@@ -440,7 +440,8 @@ namespace PWMIS.Common
             if (AllCount == 0)
             {
                 //生成统计语句　
-                return "select count(*) from (" + strSQLInfo + ") P_Count  " + strWhere;
+                return "select count(*) from (" + strSQLInfo + ") P_Count  " 
+                    + (string.IsNullOrEmpty( strWhere)?"":"WHERE "+strWhere);
             }
             //分页摸板语句
 
@@ -476,8 +477,9 @@ namespace PWMIS.Common
             }
             if (AllCount == 0)
             {
-                //生成统计语句　
-                return "select count(*) from (" + strSQLInfo + ") P_Count  " + strWhere;
+                //生成统计语句，感谢网友[大大宝]发现strWhere可能的问题
+                return "select count(*) from (" + strSQLInfo + ") P_Count  " 
+                    + (string.IsNullOrEmpty(strWhere) ? "" : "WHERE " + strWhere);
             }
 
             if (PageNumber == 1)
