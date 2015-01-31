@@ -3351,6 +3351,13 @@
             <param name="allCount">记录总数</param>
             <returns></returns>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.GOQL`1.With(PWMIS.DataMap.Entity.OQL.SqlServerLock)">
+            <summary>
+            提供查询的锁限定(注意:只支持SQLSERVER)(注:本方法由网友 唔 提供)
+            </summary>
+            <param name="lockname"></param>
+            <returns></returns>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.GOQL`1.MapToPOCOList``1(PWMIS.DataProvider.Data.AdoHelper)">
             <summary>
             将查询结果映射到另外的具有同名属性的类型，比如DTO对象
