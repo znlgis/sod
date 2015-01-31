@@ -1,0 +1,417 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{17C4E2B2-878B-4674-A78C-8D446B376C23}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>PDFDotNET.My.MyApplication</StartupObject>
+    <RootNamespace>PDFDotNET</RootNamespace>
+    <AssemblyName>PDFDotNET</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>WindowsForms</MyType>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionStrict>Off</OptionStrict>
+    <OptionInfer>On</OptionInfer>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+    <ApplicationIcon>app.ico</ApplicationIcon>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>..\ToolsBin\</OutputPath>
+    <DocumentationFile>PDFDotNET.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>..\发布目录\</OutputPath>
+    <DocumentationFile>PDFDotNET.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022,42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MdiTabControl, Version=1.0.3746.40216, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\RefDll\MdiTabControl.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Drawing" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Windows.Forms" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ApplicationEvents.vb" />
+    <Compile Include="Form1.Designer.vb">
+      <DependentUpon>Form1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Form1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDataBase\frmDataQuery.Designer.vb">
+      <DependentUpon>frmDataQuery.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDataBase\frmDataQuery.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDataBase\frmDBLogin.Designer.vb">
+      <DependentUpon>frmDBLogin.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDataBase\frmDBLogin.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDataBase\frmExportData.Designer.vb">
+      <DependentUpon>frmExportData.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDataBase\frmExportData.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEntity\frmEntityCreate.Designer.vb">
+      <DependentUpon>frmEntityCreate.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEntity\frmEntityCreate.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmEntity\frmEntityFromSQL.Designer.vb">
+      <DependentUpon>frmEntityFromSQL.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmEntity\frmEntityFromSQL.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmOther\AboutBox1.Designer.vb">
+      <DependentUpon>AboutBox1.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOther\AboutBox1.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProject\frmCodeFile.Designer.vb">
+      <DependentUpon>frmCodeFile.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProject\frmCodeFile.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmDataBase\frmDataBaseExpert.Designer.vb">
+      <DependentUpon>frmDataBaseExpert.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmDataBase\frmDataBaseExpert.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmMain.Designer.vb">
+      <DependentUpon>frmMain.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmMain.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProject\frmPdfNetSlnExpert.Designer.vb">
+      <DependentUpon>frmPdfNetSlnExpert.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProject\frmPdfNetSlnExpert.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmProject\frmPropertys.Designer.vb">
+      <DependentUpon>frmPropertys.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmProject\frmPropertys.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSqlMap\frmSqlMapDesion.Designer.vb">
+      <DependentUpon>frmSqlMapDesion.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSqlMap\frmSqlMapDesion.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSqlMap\frmSqlMapExpert.Designer.vb">
+      <DependentUpon>frmSqlMapExpert.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSqlMap\frmSqlMapExpert.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSqlMap\frmSqlMapFile.Designer.vb">
+      <DependentUpon>frmSqlMapFile.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSqlMap\frmSqlMapFile.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSqlMap\frmSqlMapFileEdit.Designer.vb">
+      <DependentUpon>frmSqlMapFileEdit.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmSqlMap\frmSqlMapFileEdit.vb">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GenerateConfigItem.vb" />
+    <Compile Include="ICommand.vb" />
+    <Compile Include="Module1.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="PropertyGridFileItem.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form1.resx">
+      <DependentUpon>Form1.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDataBase\frmDataQuery.resx">
+      <DependentUpon>frmDataQuery.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDataBase\frmDBLogin.resx">
+      <DependentUpon>frmDBLogin.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDataBase\frmExportData.resx">
+      <DependentUpon>frmExportData.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEntity\frmEntityCreate.resx">
+      <DependentUpon>frmEntityCreate.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmEntity\frmEntityFromSQL.resx">
+      <DependentUpon>frmEntityFromSQL.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOther\AboutBox1.resx">
+      <DependentUpon>AboutBox1.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProject\frmCodeFile.resx">
+      <DependentUpon>frmCodeFile.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmDataBase\frmDataBaseExpert.resx">
+      <DependentUpon>frmDataBaseExpert.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmMain.resx">
+      <DependentUpon>frmMain.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProject\frmPdfNetSlnExpert.resx">
+      <DependentUpon>frmPdfNetSlnExpert.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmProject\frmPropertys.resx">
+      <DependentUpon>frmPropertys.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSqlMap\frmSqlMapDesion.resx">
+      <DependentUpon>frmSqlMapDesion.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSqlMap\frmSqlMapExpert.resx">
+      <DependentUpon>frmSqlMapExpert.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSqlMap\frmSqlMapFile.resx">
+      <DependentUpon>frmSqlMapFile.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSqlMap\frmSqlMapFileEdit.resx">
+      <DependentUpon>frmSqlMapFileEdit.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\TextTemplate.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sql.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\SqlQuery.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app.ico" />
+    <None Include="Config\DataConnectionCfg.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="pdf.net.chm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Run.ico" />
+    <None Include="Resources\run2.bmp" />
+    <None Include="Resources\数据导出.png" />
+    <Content Include="images\AppSettingNode.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\AppSettingsNode.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\ConfigurationNode.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\ConnectionStringSettingsNode.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\ConnectionStringsSectionNode.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\customizing.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\DatabaseSectionNode.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\ExternalDatabase.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\OracleConnectionElementNode.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\OraclePackageElementNode.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\ProviderMappingNode.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\ProviderMappingsNode.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\show_columns.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="images\SQLHost.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="verinfo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\PWMIS.Core\PWMIS.Core-2013.csproj">
+      <Project>{8F0F4237-4D13-40DD-AE8A-C3DE748B26E0}</Project>
+      <Name>PWMIS.Core-2013</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
