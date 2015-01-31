@@ -78,14 +78,6 @@
     <Compile Include="SuperMarketBIZ.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PWMIS.Core.Extensions\PWMIS.Core.Extensions.csproj">
-      <Project>{8F1AE0DE-A9F1-43A7-ACE4-ACF667C2F813}</Project>
-      <Name>PWMIS.Core.Extensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\PWMIS.Core\PWMIS.Core.csproj">
-      <Project>{8F0F4237-4D13-40DD-AE8A-C3DE748B26E0}</Project>
-      <Name>PWMIS.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SuperMarketDAL\SuperMarketDAL.csproj">
       <Project>{B685E0F6-0082-453F-9494-4EEA87E204EB}</Project>
       <Name>SuperMarketDAL</Name>
