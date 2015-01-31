@@ -1,0 +1,130 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Untitled Page</title>
+    <style type="text/css">
+        .style1
+        {
+            color: #0000FF;
+        }
+        .style2
+        {
+            color: #FF0000;
+        }
+    </style>
+</head>
+<body style="background-color: #FFCCCC">
+
+    <p>
+        PDF.NET Ver 5.1.0 开源版</p>
+    <p style="font-size: x-large">
+        &nbsp;&quot;<a href="Index.aspx">超市管理系统</a>&quot; 示例应用程序</p>
+    <p>
+        附注：从2013.10.1日起，原PDF.NET 将更名为<span class="style1">SOD</span>(one SQL MAP,ORM,Data Control 
+        framework)框架，详细信息请看框架官网</p>
+    <p>
+        <a href="http://www.pwmis.com/sqlmap">http://www.pwmis.com/sqlmap</a></p>
+    
+    <p>
+        &nbsp;</p>
+    <p>
+        开源项目地址： <a href="http://pwmis.codeplex.com/">http://pwmis.codeplex.com/</a>
+    </p>
+    <p>
+        开源信息介绍： 
+    </p>
+    <p>
+        <a href="http://www.cnblogs.com/bluedoctor/archive/2012/09/28/2707093.html">
+        http://www.cnblogs.com/bluedoctor/archive/2012/09/28/2707093.html</a></p>
+    <p>
+&nbsp;=========================================</p>
+    <p>
+&nbsp;开源项目解决方案运行方法：</p>
+    <p>
+&nbsp;请打开 PDFNet_WebAppDemo\PDFNet_WebAppDemo.sln 文件运行，需要VS2010。 
+    </p>
+    <p>
+        -----------------------------------------
+    </p>
+    <p>
+        本解决方案包括2部分：</p>
+    <p>
+        1，PDF.NET 核心框架组件</p>
+    <p>
+&nbsp;包含截至今天最新的更新，与“会员版本”功能无任何删减。由于是开源版本，故不提供核心组件中的PDF.NET WinForm数据控件。 
+        框架相关的外围支持工具，包括代码生成器等源码，仅对会员用户提供。 组件仅需要 .NET 2.0框架运行。 
+    </p>
+    <p>
+        2，PDF.NET数据开发框架之超市管理系统实例程序 
+    </p>
+    <p>
+        ------------------------------------------</p>
+    <p>
+&nbsp;首先，打开DAL项目Entity目录下面的Sql文件，在本地SqlServer中创建一个名为&quot;SuperMarket&quot;的数据库，然后执行该Sql建表脚本，接着修改Web.Config对应的连接字符串(默认使用Windows集成登录，不需要修改连接字符串)，最后，就可以运行项目了。</p>
+    <p>
+        &nbsp; 
+        使用其它数据库，需要修改Web.config中的连接字符串，注意只保留一个连接字符串，其余请注释。系统默认使用最后一个连接字符串配置。目前系统提供了MySQL，SQLite 
+        ，SqlServer 三种数据库建表脚本。&nbsp;</p>
+    <p>
+&nbsp;本项目是一个DDD 驱动的项目实例，有关该项目的信息，请参考： 
+    </p>
+    <p>
+        “领域驱动开发”实例之旅（1）--不一样的开发模式 
+    </p>
+    <p>
+        <a href="http://www.cnblogs.com/bluedoctor/archive/2011/06/24/2088392.html">
+        http://www.cnblogs.com/bluedoctor/archive/2011/06/24/2088392.html</a>
+    </p>
+    <p>
+        3，超市管理系统 
+    </p>
+    <p>
+        管理员账号：</p>
+    <p>
+        用户名：SuperMarket
+    </p>
+    <p>
+        密码：PDF.NET
+    </p>
+    <p>
+        登录系统后添加雇员、收银员、收音机、商品等信息后，就可以开始“营业”了：） 
+    </p>
+    <p>
+        注意：该Demo程序需要IE支持。 
+    </p>
+    <p>
+        ********************************************
+    </p>
+    <p>
+        PDF.NET官网地址：<a href="http://www.pwmis.com/sqlmap">http://www.pwmis.com/sqlmap</a>
+    </p>
+    <p>
+        有关获取框架完整源码的事宜，请参看官网。 
+    </p>
+    <p>
+        感谢所有支持PDF.NET的会员用户朋友，是他们促成了我做出最终开源的决定，感谢他们的理解和支持！</p>
+    <p>
+        感谢所有其它支持PDF.NET的朋友。 
+    </p>
+    <p>
+        最后，以此开源项目，祝大家“国庆中秋快乐”！ 
+    </p>
+    <p>
+        &nbsp;</p>
+    <p>
+        其它： PDF.NET Ver 3.0 开源地址：节前送礼：PDF.NET（PWMIS数据开发框架）V3.0版开源 
+    </p>
+    <p>
+        <a href="http://www.cnblogs.com/bluedoctor/archive/2011/09/29/2195751.html">
+        http://www.cnblogs.com/bluedoctor/archive/2011/09/29/2195751.html</a>
+    </p>
+    <p class="style2">
+        注意：</p>
+    <p>
+        为方便下载编译运行源码，程序集取消了签名，但这样不利于在严格要求程序集签名的项目中使用，请恢复项目的程序集签名，或者直接在框架的开源网站下载栏目，下载编译好的二进制包。</p>
+    <p>
+        2012.9.28 深蓝医生 本文更新时间：2012.9.30
+    </p>
+
+</body>
+</html>
