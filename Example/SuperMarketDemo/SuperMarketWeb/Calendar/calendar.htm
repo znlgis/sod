@@ -1,0 +1,44 @@
+<html>
+<head>
+<title>
+日期选择
+</title>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312">
+<script>
+function fload()
+{
+	//var obj=window.opener.document.getElementById (window.name);
+	var obj=document.all.txt1;
+	//alert(obj.value); 
+	fPopCalendar(obj, obj);
+	
+	
+}
+
+function fkeydown()
+{
+	if(event.keyCode==27){
+		event.returnValue = null;
+		window.returnValue = null;
+		window.close();
+	}
+}
+function setvalue()
+{
+//var obj=window.parent.document.getElementById (window.name);
+//obj.value=document.all.txt1.value;
+//obj.focus();
+window.returnValue=document.all.txt1.value;
+}
+
+
+
+document.onkeydown=fkeydown;
+
+</script>
+</head>
+<body onload="fload()" bgcolor='#EFEFEF' topmargin="0" leftmargin="0"  onunload="setvalue()"  >
+<script src="calendar.js"></script>
+<input type=hidden name="txt1" id=txt1 value="" >
+</body>
+</html>

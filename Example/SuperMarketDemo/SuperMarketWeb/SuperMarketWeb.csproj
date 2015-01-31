@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{FE0F02EB-3D0B-43FD-B37E-7D191549C757}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SuperMarketWeb</RootNamespace>
+    <AssemblyName>SuperMarketWeb</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <UseIISExpress>false</UseIISExpress>
+    <TargetFrameworkProfile />
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\SqlSuperMarket.mdf" />
+    <Content Include="App_Data\SqlSuperMarket_log.LDF">
+      <DependentUpon>SqlSuperMarket.mdf</DependentUpon>
+    </Content>
+    <Content Include="Default.aspx" />
+    <Content Include="index.htm" />
+    <Content Include="欢迎.htm" />
+    <Content Include="Setup\CreateAppTables.aspx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BuyGoodsOK.aspx.cs">
+      <DependentUpon>BuyGoodsOK.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BuyGoodsOK.aspx.designer.cs">
+      <DependentUpon>BuyGoodsOK.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CashierManage\Cashier.aspx.cs">
+      <DependentUpon>Cashier.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CashierManage\Cashier.aspx.designer.cs">
+      <DependentUpon>Cashier.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CashierManage\CashierConsole.aspx.cs">
+      <DependentUpon>CashierConsole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CashierManage\CashierConsole.aspx.designer.cs">
+      <DependentUpon>CashierConsole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CashierManage\CashierRegisterMachines.aspx.cs">
+      <DependentUpon>CashierRegisterMachines.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CashierManage\CashierRegisterMachines.aspx.designer.cs">
+      <DependentUpon>CashierRegisterMachines.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CashierManage\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CashierManage\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerManage\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CustomerManage\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="EmployeeManage\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="EmployeeManage\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="FacilityManage\Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="FacilityManage\Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GoodsManage\BaseInfo.aspx.cs">
+      <DependentUpon>BaseInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GoodsManage\BaseInfo.aspx.designer.cs">
+      <DependentUpon>BaseInfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GoodsManage\StockInfo.aspx.cs">
+      <DependentUpon>StockInfo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GoodsManage\StockInfo.aspx.designer.cs">
+      <DependentUpon>StockInfo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Index.aspx.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Index.aspx.designer.cs">
+      <DependentUpon>Index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LoginMarketMIS.aspx.cs">
+      <DependentUpon>LoginMarketMIS.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoginMarketMIS.aspx.designer.cs">
+      <DependentUpon>LoginMarketMIS.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ManagerIndex.aspx.cs">
+      <DependentUpon>ManagerIndex.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManagerIndex.aspx.designer.cs">
+      <DependentUpon>ManagerIndex.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="PayForGoods.aspx.cs">
+      <DependentUpon>PayForGoods.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="PayForGoods.aspx.designer.cs">
+      <DependentUpon>PayForGoods.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Setup\CreateAppTables.aspx.cs">
+      <DependentUpon>CreateAppTables.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Setup\CreateAppTables.aspx.designer.cs">
+      <DependentUpon>CreateAppTables.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ShoppingCart.aspx.cs">
+      <DependentUpon>ShoppingCart.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ShoppingCart.aspx.designer.cs">
+      <DependentUpon>ShoppingCart.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Site1.Master.cs">
+      <DependentUpon>Site1.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site1.Master.designer.cs">
+      <DependentUpon>Site1.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Site2.Master.cs">
+      <DependentUpon>Site2.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site2.Master.designer.cs">
+      <DependentUpon>Site2.Master</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="CashierManage\Cashier.aspx" />
+    <Content Include="CashierManage\CashierRegisterMachines.aspx" />
+    <Content Include="CashierManage\Index.aspx" />
+    <Content Include="Web.sitemap" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Calendar\calendar.htm" />
+    <Content Include="Calendar\calendar.js" />
+    <Content Include="Calendar\DateDialog.js" />
+    <Content Include="Calendar\in4_05.gif" />
+    <Content Include="CashierManage\CashierConsole.aspx" />
+    <Content Include="CustomerManage\Index.aspx" />
+    <Content Include="EmployeeManage\Index.aspx" />
+    <Content Include="FacilityManage\Index.aspx" />
+    <Content Include="GoodsManage\BaseInfo.aspx" />
+    <Content Include="GoodsManage\StockInfo.aspx" />
+    <Content Include="images\MarketLog.jpg" />
+    <Content Include="images\PdfNetSupperMarketLog.jpg" />
+    <Content Include="images\ShoppingCar.JPG" />
+    <Content Include="Index.aspx" />
+    <Content Include="JS\multipleTableRow.js" />
+    <Content Include="JS\SelectTextBox.js" />
+    <Content Include="JS\singleTableRow.js" />
+    <Content Include="ShoppingCart.aspx" />
+    <Content Include="Site1.Master" />
+    <Content Include="System\JS\My97DatePicker\calendar.js" />
+    <Content Include="System\JS\My97DatePicker\config.js" />
+    <Content Include="System\JS\My97DatePicker\lang\en.js" />
+    <Content Include="System\JS\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="System\JS\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="System\JS\My97DatePicker\My97DatePicker.htm" />
+    <Content Include="System\JS\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="System\JS\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="System\JS\My97DatePicker\skin\default\down.jpg" />
+    <Content Include="System\JS\My97DatePicker\skin\default\left.gif" />
+    <Content Include="System\JS\My97DatePicker\skin\default\navLeft.gif" />
+    <Content Include="System\JS\My97DatePicker\skin\default\navRight.gif" />
+    <Content Include="System\JS\My97DatePicker\skin\default\right.gif" />
+    <Content Include="System\JS\My97DatePicker\skin\default\up.jpg" />
+    <Content Include="System\JS\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\down.jpg" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\left.gif" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\navLeft.gif" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\navRight.gif" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\other\bg2.jpg" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\other\interface.jpg" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\right.gif" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\up.jpg" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\ymbg.jpg" />
+    <Content Include="System\JS\My97DatePicker\WdatePicker.js" />
+    <Content Include="System\WebControls\3.gif" />
+    <Content Include="System\WebControls\calendar.js" />
+    <Content Include="System\WebControls\Close_1.gif" />
+    <Content Include="System\WebControls\Close_2.gif" />
+    <Content Include="System\WebControls\Close_3.gif" />
+    <Content Include="System\WebControls\dtable_add.gif" />
+    <Content Include="System\WebControls\folder_close.gif" />
+    <Content Include="System\WebControls\folder_nosub.gif" />
+    <Content Include="System\WebControls\folder_open.gif" />
+    <Content Include="System\WebControls\havesub.gif" />
+    <Content Include="System\WebControls\jiantou.gif" />
+    <Content Include="System\WebControls\Open_1.gif" />
+    <Content Include="System\WebControls\Open_2.gif" />
+    <Content Include="System\WebControls\Open_4.gif" />
+    <Content Include="System\WebControls\script.js" />
+    <Content Include="System\WebControls\TIPIMG_01.gif" />
+    <Content Include="System\WebControls\TIPIMG_02.gif" />
+    <Content Include="System\WebControls\TIPIMG_03.gif" />
+    <Content Include="System\WebControls\TIPIMG_04.gif" />
+    <Content Include="System\WebControls\TIPIMG_05.gif" />
+    <Content Include="System\WebControls\TIPIMG_06.gif" />
+    <Content Include="System\WebControls\TIPIMG_07.gif" />
+    <Content Include="System\WebControls\TIPIMG_08.gif" />
+    <Content Include="System\WebControls\TIPIMG_09.gif" />
+    <Content Include="System\WebControls\TIPIMG_10.gif" />
+    <Content Include="System\WebControls\TIPIMG_11.gif" />
+    <Content Include="System\WebControls\TIPIMG_12.gif" />
+    <Content Include="System\WebControls\TIPIMG_13.gif" />
+    <Content Include="System\WebControls\TIPIMG_14.gif" />
+    <Content Include="System\WebControls\TIPIMG_15.gif" />
+    <Content Include="System\WebControls\TIPIMG_16.gif" />
+    <Content Include="System\WebControls\TIP_01.gif" />
+    <Content Include="System\WebControls\TIP_02.gif" />
+    <Content Include="System\WebControls\TIP_03.gif" />
+    <Content Include="System\WebControls\TIP_04.gif" />
+    <Content Include="System\WebControls\TIP_05.gif" />
+    <Content Include="System\WebControls\TIP_06.gif" />
+    <Content Include="System\WebControls\TIP_07.gif" />
+    <Content Include="System\WebControls\TIP_08.gif" />
+    <Content Include="System\WebControls\TIP_09.gif" />
+    <Content Include="System\WebControls\tree_close.gif" />
+    <Content Include="System\WebControls\tree_nosub.gif" />
+    <Content Include="System\WebControls\tree_open.gif" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\PWMIS\Lib\PWMIS.Core\PWMIS.Core-2013.csproj">
+      <Project>{8f0f4237-4d13-40dd-ae8a-c3de748b26e0}</Project>
+      <Name>PWMIS.Core-2013</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\PWMIS\Lib\PWMIS.Web\PWMIS.Web-2013.csproj">
+      <Project>{f44affac-9042-47e5-b5e5-921a7aaff603}</Project>
+      <Name>PWMIS.Web-2013</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SuperMarketBLL\SuperMarketBLL.csproj">
+      <Project>{32A14B75-6845-48B0-9FB9-9F0DD4D58369}</Project>
+      <Name>SuperMarketBLL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SuperMarketDAL\SuperMarketDAL.csproj">
+      <Project>{B685E0F6-0082-453F-9494-4EEA87E204EB}</Project>
+      <Name>SuperMarketDAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SuperMarketModel\SuperMarketModel.csproj">
+      <Project>{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4}</Project>
+      <Name>SuperMarketModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BuyGoodsOK.aspx" />
+    <Content Include="LoginMarketMIS.aspx" />
+    <Content Include="ManagerIndex.aspx" />
+    <Content Include="PayForGoods.aspx" />
+    <Content Include="Site2.Master" />
+    <None Include="System\WebControls\Thumbs.db" />
+  </ItemGroup>
+  <ItemGroup />
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>41110</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
