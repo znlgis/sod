@@ -43,7 +43,105 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "PDFDotNET-2013", "Tools\PDF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWIMIS.Core.AccessTest", "Test\PWIMIS.Core.Test\PWIMIS.Core.AccessTest.csproj", "{C9499804-3A9D-4694-A2A2-BB252CFF85A2}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SuperMarketDemo", "SuperMarketDemo", "{0F2BF0FB-0AD3-4C8B-9A7B-892012244F48}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMarketWeb", "PWMIS_Application\SuperMarketWeb\SuperMarketWeb.csproj", "{FE0F02EB-3D0B-43FD-B37E-7D191549C757}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMarketTestConsole", "PWMIS_Application\SuperMarketTestConsole\SuperMarketTestConsole.csproj", "{783A0458-39C6-44A1-927F-3DC075749CC8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMarketModel", "PWMIS_Application\SuperMarketModel\SuperMarketModel.csproj", "{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMarketDAL", "PWMIS_Application\SuperMarketDAL\SuperMarketDAL.csproj", "{B685E0F6-0082-453F-9494-4EEA87E204EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperMarketBLL", "PWMIS_Application\SuperMarketBLL\SuperMarketBLL.csproj", "{32A14B75-6845-48B0-9FB9-9F0DD4D58369}"
+EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 21
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Lib\\PWMIS.Core\\PWMIS.Core-2013.csproj
+		SccProjectTopLevelParentUniqueName1 = PWMIS-2013.sln
+		SccProjectName1 = Lib/PWMIS.Core
+		SccLocalPath1 = Lib\\PWMIS.Core
+		SccProjectUniqueName2 = Lib\\PWMIS.Access.Extensions\\PWMIS.Access.Extensions-2013.csproj
+		SccProjectTopLevelParentUniqueName2 = PWMIS-2013.sln
+		SccProjectName2 = Lib/PWMIS.Access.Extensions
+		SccLocalPath2 = Lib\\PWMIS.Access.Extensions
+		SccProjectUniqueName3 = Lib\\PWMIS.Core.Extensions\\PWMIS.Core.Extensions-2013.csproj
+		SccProjectTopLevelParentUniqueName3 = PWMIS-2013.sln
+		SccProjectName3 = Lib/PWMIS.Core.Extensions
+		SccLocalPath3 = Lib\\PWMIS.Core.Extensions
+		SccProjectUniqueName4 = Lib\\PWMIS.Web\\PWMIS.Web-2013.csproj
+		SccProjectTopLevelParentUniqueName4 = PWMIS-2013.sln
+		SccProjectName4 = Lib/PWMIS.Web
+		SccLocalPath4 = Lib\\PWMIS.Web
+		SccProjectUniqueName5 = Lib\\PWMIS.Windows\\PWMIS.Windows-2013.csproj
+		SccProjectTopLevelParentUniqueName5 = PWMIS-2013.sln
+		SccProjectName5 = Lib/PWMIS.Windows
+		SccLocalPath5 = Lib\\PWMIS.Windows
+		SccProjectUniqueName6 = Example\\SimpleAccessWinForm\\SimpleAccessWinForm-2013.csproj
+		SccProjectTopLevelParentUniqueName6 = PWMIS-2013.sln
+		SccProjectName6 = Example/SimpleAccessWinForm
+		SccLocalPath6 = Example\\SimpleAccessWinForm
+		SccProjectUniqueName7 = OtherProvider\\PWMIS.DataProvider.Data.MySQL\\PWMIS.DataProvider.Data.MySQL-2013.csproj
+		SccProjectTopLevelParentUniqueName7 = PWMIS-2013.sln
+		SccProjectName7 = OtherProvider/PWMIS.DataProvider.Data.MySQL
+		SccLocalPath7 = OtherProvider\\PWMIS.DataProvider.Data.MySQL
+		SccProjectUniqueName8 = OtherProvider\\PWMIS.DataProvider.Data.PostgreSQL\\PWMIS.DataProvider.Data.PostgreSQL-2013.csproj
+		SccProjectTopLevelParentUniqueName8 = PWMIS-2013.sln
+		SccProjectName8 = OtherProvider/PWMIS.DataProvider.Data.PostgreSQL
+		SccLocalPath8 = OtherProvider\\PWMIS.DataProvider.Data.PostgreSQL
+		SccProjectUniqueName9 = OtherProvider\\PWMIS.DataProvider.Data.SQLite\\PWMIS.DataProvider.Data.SQLite-2013.csproj
+		SccProjectTopLevelParentUniqueName9 = PWMIS-2013.sln
+		SccProjectName9 = OtherProvider/PWMIS.DataProvider.Data.SQLite
+		SccLocalPath9 = OtherProvider\\PWMIS.DataProvider.Data.SQLite
+		SccProjectUniqueName10 = Test\\ConsoleTest\\ConsoleTest-2013.csproj
+		SccProjectTopLevelParentUniqueName10 = PWMIS-2013.sln
+		SccProjectName10 = Test/ConsoleTest
+		SccLocalPath10 = Test\\ConsoleTest
+		SccProjectUniqueName11 = Test\\OQLTest\\OQLTest-2013.csproj
+		SccProjectTopLevelParentUniqueName11 = PWMIS-2013.sln
+		SccProjectName11 = Test/OQLTest
+		SccLocalPath11 = Test\\OQLTest
+		SccProjectUniqueName12 = Test\\WebApplication1\\WebTest-2013.csproj
+		SccProjectTopLevelParentUniqueName12 = PWMIS-2013.sln
+		SccProjectName12 = Test/WebApplication1
+		SccLocalPath12 = Test\\WebApplication1
+		SccProjectUniqueName13 = Test\\WinFormTest\\WinFormTest-2013.csproj
+		SccProjectTopLevelParentUniqueName13 = PWMIS-2013.sln
+		SccProjectName13 = Test/WinFormTest
+		SccLocalPath13 = Test\\WinFormTest
+		SccProjectUniqueName14 = Tools\\PDFDotNET\\PDFDotNET-2013.vbproj
+		SccProjectTopLevelParentUniqueName14 = PWMIS-2013.sln
+		SccProjectName14 = Tools/PDFDotNET
+		SccLocalPath14 = Tools\\PDFDotNET
+		SccProjectUniqueName15 = Test\\PWIMIS.Core.Test\\PWIMIS.Core.AccessTest.csproj
+		SccProjectTopLevelParentUniqueName15 = PWMIS-2013.sln
+		SccProjectName15 = Test/PWIMIS.Core.Test
+		SccLocalPath15 = Test\\PWIMIS.Core.Test
+		SccProjectUniqueName16 = PWMIS_Application\\SuperMarketWeb\\SuperMarketWeb.csproj
+		SccProjectTopLevelParentUniqueName16 = PWMIS-2013.sln
+		SccProjectName16 = PWMIS_Application/SuperMarketWeb
+		SccLocalPath16 = PWMIS_Application\\SuperMarketWeb
+		SccProjectUniqueName17 = PWMIS_Application\\SuperMarketTestConsole\\SuperMarketTestConsole.csproj
+		SccProjectTopLevelParentUniqueName17 = PWMIS-2013.sln
+		SccProjectName17 = PWMIS_Application/SuperMarketTestConsole
+		SccLocalPath17 = PWMIS_Application\\SuperMarketTestConsole
+		SccProjectUniqueName18 = PWMIS_Application\\SuperMarketModel\\SuperMarketModel.csproj
+		SccProjectTopLevelParentUniqueName18 = PWMIS-2013.sln
+		SccProjectName18 = PWMIS_Application/SuperMarketModel
+		SccLocalPath18 = PWMIS_Application\\SuperMarketModel
+		SccProjectUniqueName19 = PWMIS_Application\\SuperMarketDAL\\SuperMarketDAL.csproj
+		SccProjectTopLevelParentUniqueName19 = PWMIS-2013.sln
+		SccProjectName19 = PWMIS_Application/SuperMarketDAL
+		SccLocalPath19 = PWMIS_Application\\SuperMarketDAL
+		SccProjectUniqueName20 = PWMIS_Application\\SuperMarketBLL\\SuperMarketBLL.csproj
+		SccProjectTopLevelParentUniqueName20 = PWMIS-2013.sln
+		SccProjectName20 = PWMIS_Application/SuperMarketBLL
+		SccLocalPath20 = PWMIS_Application\\SuperMarketBLL
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -109,6 +207,26 @@ Global
 		{C9499804-3A9D-4694-A2A2-BB252CFF85A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9499804-3A9D-4694-A2A2-BB252CFF85A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9499804-3A9D-4694-A2A2-BB252CFF85A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE0F02EB-3D0B-43FD-B37E-7D191549C757}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE0F02EB-3D0B-43FD-B37E-7D191549C757}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE0F02EB-3D0B-43FD-B37E-7D191549C757}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE0F02EB-3D0B-43FD-B37E-7D191549C757}.Release|Any CPU.Build.0 = Release|Any CPU
+		{783A0458-39C6-44A1-927F-3DC075749CC8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{783A0458-39C6-44A1-927F-3DC075749CC8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{783A0458-39C6-44A1-927F-3DC075749CC8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{783A0458-39C6-44A1-927F-3DC075749CC8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B685E0F6-0082-453F-9494-4EEA87E204EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B685E0F6-0082-453F-9494-4EEA87E204EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B685E0F6-0082-453F-9494-4EEA87E204EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B685E0F6-0082-453F-9494-4EEA87E204EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32A14B75-6845-48B0-9FB9-9F0DD4D58369}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32A14B75-6845-48B0-9FB9-9F0DD4D58369}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32A14B75-6845-48B0-9FB9-9F0DD4D58369}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32A14B75-6845-48B0-9FB9-9F0DD4D58369}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -129,5 +247,11 @@ Global
 		{28DFD6DA-925D-41A7-ABBB-A2976CA1A1D8} = {2A4234BB-564F-402C-9C23-466843666189}
 		{EA876B64-CFF0-4985-B59C-1602B3486D3D} = {2A4234BB-564F-402C-9C23-466843666189}
 		{9338057C-0762-4A72-8B12-9EB907D1538C} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
+		{0F2BF0FB-0AD3-4C8B-9A7B-892012244F48} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
+		{FE0F02EB-3D0B-43FD-B37E-7D191549C757} = {0F2BF0FB-0AD3-4C8B-9A7B-892012244F48}
+		{783A0458-39C6-44A1-927F-3DC075749CC8} = {0F2BF0FB-0AD3-4C8B-9A7B-892012244F48}
+		{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4} = {0F2BF0FB-0AD3-4C8B-9A7B-892012244F48}
+		{B685E0F6-0082-453F-9494-4EEA87E204EB} = {0F2BF0FB-0AD3-4C8B-9A7B-892012244F48}
+		{32A14B75-6845-48B0-9FB9-9F0DD4D58369} = {0F2BF0FB-0AD3-4C8B-9A7B-892012244F48}
 	EndGlobalSection
 EndGlobal
