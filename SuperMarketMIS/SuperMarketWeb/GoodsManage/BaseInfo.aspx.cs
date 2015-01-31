@@ -17,6 +17,7 @@ using SuperMarketBLL;
 using PWMIS.Common;
 using PWMIS.DataProvider.Adapter;
 using PWMIS.Common.DataMap;
+using PWMIS.DataForms.Adapter;
 
 namespace SuperMarketWeb.GoodsManage
 {

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using SuperMarketBLL;
+using PWMIS.DataForms.Adapter;
 
 namespace SuperMarketWeb.CashierManage
 {
@@ -24,7 +25,7 @@ namespace SuperMarketWeb.CashierManage
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             dtbWorkNumber.Text  = this.GridView1.SelectedRow.Cells[2].Text;
-            PWMIS.DataProvider.Adapter.MyWebForm.Instance.AutoSelectIBForm(this.Controls);
+            MyWebForm.Instance.AutoSelectIBForm(this.Controls);
             lblMsg.Text = "修改后请保存！";
         }
 
@@ -36,7 +37,7 @@ namespace SuperMarketWeb.CashierManage
             }
             else
             {
-                PWMIS.DataProvider.Adapter.MyWebForm.Instance.AutoUpdateIBFormData(this.Controls);
+                MyWebForm.Instance.AutoUpdateIBFormData(this.Controls);
                 lblMsg.Text = "修改成功！";
             }
             

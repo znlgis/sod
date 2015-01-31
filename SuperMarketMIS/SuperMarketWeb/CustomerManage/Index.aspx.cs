@@ -9,6 +9,7 @@ using PWMIS.DataMap;
 using SuperMarketDAL.Entitys;
 using PWMIS.DataProvider.Adapter;
 using PWMIS.Common.DataMap;
+using PWMIS.DataForms.Adapter;
 
 namespace SuperMarketWeb.CustomerManage
 {

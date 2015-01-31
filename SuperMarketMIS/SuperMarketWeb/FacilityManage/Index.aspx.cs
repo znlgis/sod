@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using PWMIS.DataProvider.Adapter;
+using PWMIS.DataForms.Adapter;
 
 namespace SuperMarketWeb.FacilityManage
 {

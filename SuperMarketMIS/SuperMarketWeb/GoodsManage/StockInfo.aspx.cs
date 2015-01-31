@@ -8,6 +8,7 @@ using PWMIS.DataProvider.Adapter;
 using SuperMarketBLL;
 using SuperMarketModel.ViewModel;
 using SuperMarketDAL.Entitys;
+using PWMIS.DataForms.Adapter;
 
 namespace SuperMarketWeb.GoodsManage
 {
