@@ -1983,7 +1983,10 @@ namespace PWMIS.DataMap.Entity
                     //从缓存中获取当前field所对应的类型
                     Type fieldType = entityFieldsCache.GetPropertyType(key);
 
-                    if (fieldType == typeof(byte[]))
+                    if (fieldType == typeof(string) && paras[index].Value != null)
+                        //为字符串类型的参数指定长度 edit at 2012.4.23
+                        ((IDbDataParameter)paras[index]).Size = entity.GetStringFieldSize(key);
+                    else if (fieldType == typeof(byte[]))
                         //为字节类型指定转换类型，防止空值时被当作字符串类型
                         paras[index].DbType = DbType.Binary;
 
