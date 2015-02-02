@@ -312,11 +312,11 @@
     <Content Include="System\WebControls\tree_open.gif" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\PWMIS\Lib\PWMIS.Core\PWMIS.Core-2013.csproj">
+    <ProjectReference Include="..\..\..\Lib\PWMIS.Core\PWMIS.Core-2013.csproj">
       <Project>{8f0f4237-4d13-40dd-ae8a-c3de748b26e0}</Project>
       <Name>PWMIS.Core-2013</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\PWMIS\Lib\PWMIS.Web\PWMIS.Web-2013.csproj">
+    <ProjectReference Include="..\..\..\Lib\PWMIS.Web\PWMIS.Web-2013.csproj">
       <Project>{f44affac-9042-47e5-b5e5-921a7aaff603}</Project>
       <Name>PWMIS.Web-2013</Name>
     </ProjectReference>
