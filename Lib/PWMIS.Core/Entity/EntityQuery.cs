@@ -1858,6 +1858,9 @@ namespace PWMIS.DataMap.Entity
             string values = "";
             int index = 0;
 
+            //获取实体属性信息缓存
+            var entityFieldsCache = EntityFieldsCache.Item(entity.GetType());
+
             foreach (string field in objFields)
             {
                 if (identityName != field)
@@ -1866,11 +1869,16 @@ namespace PWMIS.DataMap.Entity
                     string paraName = DB.GetParameterChar + "P" + index.ToString();
                     values += "," + paraName;
                     paras[index] = DB.GetParameter(paraName, entity.PropertyList(field));
-                    //为字符串类型的参数指定长度 edit at 2012.4.23
-                    if (paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
-                    {
+
+                    //从缓存中获取当前field所对应的类型
+                    Type fieldType = entityFieldsCache.GetPropertyType(field);
+
+                    if (fieldType == typeof(string) && paras[index].Value != null)
+                        //为字符串类型的参数指定长度 edit at 2012.4.23
                         ((IDbDataParameter)paras[index]).Size = entity.GetStringFieldSize(field);
-                    }
+                    else if (fieldType == typeof(byte[]))
+                        //为字节类型指定转换类型，防止空值时被当作字符串类型
+                        paras[index].DbType = DbType.Binary;
 
                     index++;
                 }
@@ -1914,6 +1922,9 @@ namespace PWMIS.DataMap.Entity
             string condition = "";
             int index = 0;
 
+            //获取实体属性信息缓存
+            var entityFieldsCache = EntityFieldsCache.Item(entity.GetType());
+
             //为解决Access问题，必须确保参数的顺序，故对条件参数的处理分开2次循环
             List<string> pkFields = new List<string>();
             //先处理更新的字段，主键字段不会被更新
@@ -1928,11 +1939,16 @@ namespace PWMIS.DataMap.Entity
                 values += ",[" + field + "]=" + paraName;
                 paras[index] = DB.GetParameter(paraName, entity.PropertyList(field));
 
-                //为字符串类型的参数指定长度 edit at 2012.4.23
-                if (paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
-                {
+                //从缓存中获取当前field所对应的类型
+                Type fieldType = entityFieldsCache.GetPropertyType(field);
+
+                if (fieldType == typeof(string) && paras[index].Value != null)
+                    //为字符串类型的参数指定长度 edit at 2012.4.23
                     ((IDbDataParameter)paras[index]).Size = entity.GetStringFieldSize(field);
-                }
+                else if (fieldType == typeof(byte[]))
+                    //为字节类型指定转换类型，防止空值时被当作字符串类型
+                    paras[index].DbType = DbType.Binary;
+
                 index++;
             }
             //再处理条件
@@ -1943,11 +1959,16 @@ namespace PWMIS.DataMap.Entity
                 condition += " AND [" + field + "]=" + paraName;
                 paras[index] = DB.GetParameter(paraName, entity.PropertyList(field));
 
-                //为字符串类型的参数指定长度 edit at 2012.4.23
-                if (paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
-                {
+                //从缓存中获取当前field所对应的类型
+                Type fieldType = entityFieldsCache.GetPropertyType(field);
+
+                if (fieldType == typeof(string) && paras[index].Value != null)
+                    //为字符串类型的参数指定长度 edit at 2012.4.23
                     ((IDbDataParameter)paras[index]).Size = entity.GetStringFieldSize(field);
-                }
+                else if (fieldType == typeof(byte[]))
+                    //为字节类型指定转换类型，防止空值时被当作字符串类型
+                    paras[index].DbType = DbType.Binary;
+
                 index++;
             }
 
@@ -1958,6 +1979,14 @@ namespace PWMIS.DataMap.Entity
                     string paraName = DB.GetParameterChar + "P" + index.ToString();
                     condition += " AND [" + key + "]=" + paraName;
                     paras[index] = DB.GetParameter(paraName, entity.PropertyList(key));
+
+                    //从缓存中获取当前field所对应的类型
+                    Type fieldType = entityFieldsCache.GetPropertyType(key);
+
+                    if (fieldType == typeof(byte[]))
+                        //为字节类型指定转换类型，防止空值时被当作字符串类型
+                        paras[index].DbType = DbType.Binary;
+
                     index++;
                 }
             }
