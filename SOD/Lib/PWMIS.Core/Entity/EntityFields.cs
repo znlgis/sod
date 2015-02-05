@@ -1,4 +1,25 @@
-﻿using System;
+﻿/*
+ * ========================================================================
+ * Copyright(c) 2006-2015 PWMIS, All Rights Reserved.
+ * Welcom use the PDF.NET (PWMIS Data Process Framework).
+ * See more information,Please goto http://www.pwmis.com/sqlmap 
+ * ========================================================================
+ * PDF.NET 数据开发框架
+ * http://www.pwmis.com/sqlmap
+ * 
+ * 详细内容，请参看“打造轻量级的实体类数据容器”
+ * （ http://www.cnblogs.com/bluedoctor/archive/2011/05/23/2054541.html）
+ * 
+ * 作者：邓太华     时间：2008-10-12
+ * 版本：V5.1.2
+ * 
+ * 修改者：         时间：2015-2-5                
+ * 修改说明：修复实体类有多个普通属性（即POCO属性）的时候，获取实体类数据库元数据不正确的问题。 
+ * 
+ * 
+ * ========================================================================
+*/
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
@@ -199,6 +220,7 @@ namespace PWMIS.DataMap.Entity
                 this.typeNames = new Type[count];
 
                 count = 0;
+                string last_field = string.Empty;
 
                 for (int i = 0; i < propertys.Length; i++)
                 {
@@ -209,12 +231,17 @@ namespace PWMIS.DataMap.Entity
                     try
                     {
                         //这里需要设置属性，以便获取字段长度
-                        object Value = null;// 
-                        if (typeNames[count] != typeof(string))
+                        object Value = null;// 感谢网友 stdbool 发现byte[] 判断的问题
+                        if (typeNames[count] != typeof(string) && typeNames[count] != typeof(byte[]))
                             Value = Activator.CreateInstance(typeNames[count]);
-                        propertys[i].SetValue(entity, Value, null);
+                        propertys[i].SetValue(entity, Value, null); //这里可能有普通属性在被赋值 
                         string field= (string)methodInfo.Invoke(entity,null);
-                        fields[count] = field;
+                        if (last_field != field)
+                        {
+                            //跟之前的对比，确定当前是不是普通属性
+                            fields[count] = field;
+                            last_field = field;
+                        }
                     }
                     catch
                     {
@@ -300,7 +327,7 @@ namespace PWMIS.DataMap.Entity
                 return dict[entityType.FullName];
 
             EntityFields ef = new EntityFields();
-            if (ef.Init(entityType))
+            if (ef.InitEntity(entityType)) //2015.2.5 修改
                 dict.Add(entityType.FullName, ef);
             return ef;
         }
