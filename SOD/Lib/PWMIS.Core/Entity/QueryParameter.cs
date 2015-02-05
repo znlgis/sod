@@ -79,16 +79,17 @@ namespace PWMIS.DataMap.Entity
     }
 
     /// <summary>
-    /// 查询参数泛型类  QueryParameter&lt;T&gt;
+    /// 查询参数泛型类  QueryParameter;
     /// </summary>
     /// <example>
     /// <code>
+    /// <![CDATA[
     /// //实体类 Customers
     /// Northwind.Customers cm = new Northwind.Customers();
     /// cm.Country="中国";
     /// ....
     /// 
-    /// QueryParameter&lt;Northwind.Customers&gt; qp = new QueryParameter&lt;Northwind.Customers&gt;(cm);
+    /// QueryParameter<Northwind.Customers> qp = new QueryParameter<Northwind.Customers>(cm);
     /// 
     /// QueryParameter para1=qp.CreatePrameter(cm.Country)
     /// QueryParameter para2=qp.CreatePrameter(cm.City, enumCompare.Like, "%" + txtCity.Text + "%")
@@ -99,6 +100,7 @@ namespace PWMIS.DataMap.Entity
     /// 
     /// //获取查询结果列表
     /// return  EntityQuery&lt;Northwind.Customers&gt;.QueryList(q);
+    /// ]]>
     /// </code>
     /// </example>
     /// <typeparam name="T"></typeparam>
