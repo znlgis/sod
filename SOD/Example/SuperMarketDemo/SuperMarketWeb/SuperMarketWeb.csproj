@@ -72,6 +72,7 @@
     </Content>
     <Content Include="Default.aspx" />
     <Content Include="index.htm" />
+    <Content Include="Setup\安装说明.txt" />
     <Content Include="欢迎.htm" />
     <Content Include="Setup\CreateAppTables.aspx" />
     <Content Include="Web.config">
@@ -339,6 +340,7 @@
     <Content Include="ManagerIndex.aspx" />
     <Content Include="PayForGoods.aspx" />
     <Content Include="Site2.Master" />
+    <Content Include="Setup\SuperMarket3.db" />
     <None Include="System\WebControls\Thumbs.db" />
   </ItemGroup>
   <ItemGroup />
