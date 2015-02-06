@@ -1,19 +1,24 @@
-PDF.NET 5.1 源码使用说明
+PDF.NET SOD 5.1.2 源码使用说明
 ===============================
-请打开PWMIS目录下面的PWMIS.sln文件，解决方案采用VS2008创建，不过已经设置成支持.NET 2.0了。
+请打开SOD 目录下面的PWMIS-2013.sln文件，如果采用VS2008打开解决方案，PWMIS.sln文件即可。
+
+框架核心类库说明：
 PWMIS.Core ---框架的核心类库
 PWMIS.Windows --框架的Windows窗体开发包
 PWMIS.Web     --框架的Web应用开发包，包含一系列Web数据控件，简化表单数据处理。
-数据库工具
+数据库工具 --PDFDotNET-2013
    --框架新开发的支持工具，可以生成SQL-MAP文件，生成DAL代码，生成实体类，可以做一个简单的
      SqlServer查询分析器使用（支持多种数据库），还在完善中。
 
 
-密钥： PDFKey.pfx,password:Pdf.Net.
+项目解决方案对程序集签名，每个项目下面会有一个密钥文件 PDFKey.pfx,第一次使用的时候会要求导入秘钥，密码是:Pdf.Net.
 
 
-新版本信息请看官方网址：
+最新版本信息请看官方网址：
 http://www.pwmis.com/sqlmap
+5.1.2开源信息介绍：
+http://www.cnblogs.com/bluedoctor/p/4273610.html
+
 
 联系方式：
 QQ：45383850
