@@ -274,6 +274,8 @@ function fGetXY(aTag){
   	pt.x += oTmp.offsetLeft;
   	pt.y += oTmp.offsetTop;
   	oTmp = oTmp.offsetParent;
+  	if (oTmp == null)
+  	    break;
   } while(oTmp.tagName!="BODY");
   return pt;
 }
