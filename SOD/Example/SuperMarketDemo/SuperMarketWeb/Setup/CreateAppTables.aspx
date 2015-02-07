@@ -30,6 +30,8 @@
         <asp:Label ID="lblScript" runat="server" Text="lblScript"></asp:Label>
         <br />
         <br />
+        如果本页出现错误信息，请单击测试按钮，检查数据表是否创建，如果没有请执行建表脚本。<br />
+        <br />
         <asp:Button ID="Button1" runat="server" onclick="Button1_Click" Text="执行建表脚本" />
         <asp:Button ID="Button2" runat="server" onclick="Button2_Click" Text="测试" />
         <br />

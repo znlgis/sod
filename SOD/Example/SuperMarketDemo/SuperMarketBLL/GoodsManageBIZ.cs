@@ -95,10 +95,10 @@ namespace SuperMarketBLL
             GoodsBaseInfo info = new GoodsBaseInfo();
             OQL q = new OQL(info);
             q.Select()
-                .Count(info.SerialNumber,"Count");
+                .Count(info.SerialNumber,"MyCount");//Count 是Access 的保留字
 
             GoodsBaseInfo infoCount = EntityQuery<GoodsBaseInfo>.QueryObject(q);
-            return Convert.ToInt32(infoCount.PropertyList("Count"));
+            return Convert.ToInt32(infoCount.PropertyList("MyCount"));
         }
 
         /// <summary>

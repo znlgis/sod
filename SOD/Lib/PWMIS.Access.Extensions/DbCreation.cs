@@ -14,6 +14,11 @@ namespace PWMIS.AccessExtensions
     /// </summary>
     public static class AccessUility
     {
+        //Access 2003
+        //Provider=Microsoft.Jet.OLEDB.4.0;;Jet OLEDB:Engine Type=5;Data Source=
+        //Access 2007
+        static string providerStr = "Provider=Microsoft.ACE.OLEDB.12.0;Jet OLEDB:Engine Type=6;Data Source=";
+
         /// <summary>
         /// 指定文件名，创建Access数据库文件，适用于32位系统的Access
         /// </summary>
@@ -21,7 +26,7 @@ namespace PWMIS.AccessExtensions
         public static void CreateDataBase(string filePath)
         {
             ADOX.Catalog catalog = new Catalog();
-            catalog.Create("Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + filePath + ";Jet OLEDB:Engine Type=5");
+            catalog.Create(providerStr + filePath );
         }
 
         /// <summary>
@@ -62,7 +67,7 @@ namespace PWMIS.AccessExtensions
             //    ConfigurationManager.RefreshSection("connectionStrings");
             //}
 
-            ConfigConnectionSettings2(connectionName, "Provider=Microsoft.Jet.Oledb.4.0;Data Source=" + dbFilePath);
+            ConfigConnectionSettings2(connectionName, providerStr +dbFilePath);
         }
 
         /// <summary>
