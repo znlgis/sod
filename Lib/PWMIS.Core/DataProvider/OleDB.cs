@@ -133,6 +133,32 @@ namespace PWMIS.DataProvider.Data
             }
         }
 
+        /// <summary>
+        /// 获取当前连接字符串中的数据源字符串，如果是|DataDirectory|，将返回数据源文件对应的绝对路径。
+        /// </summary>
+        public string ConnectionDataSource
+        {
+            get {
+                if (ConnectionStringBuilder.ContainsKey("Data Source"))
+                {
+                    string path = this.ConnectionStringBuilder["Data Source"].ToString();
+                    if (path.StartsWith("|DataDirectory|", StringComparison.OrdinalIgnoreCase))
+                    {
+                        object obj = AppDomain.CurrentDomain.GetData("DataDirectory");
+                        if (obj == null)
+                            throw new InvalidOperationException("当前应用程序域未设置 DataDirectory");
+                        string dataPath = obj.ToString();
+                        string fileName = path.Substring("|DataDirectory|".Length);
+                        string dbFilePath = System.IO.Path.Combine(dataPath, fileName);
+                        return dbFilePath;
+                    }
+                    return path;
+                }
+                else
+                    return null;
+            }
+        }
+
 //		/// <summary>
 //		/// 执行不返回值得查询
 //		/// </summary>

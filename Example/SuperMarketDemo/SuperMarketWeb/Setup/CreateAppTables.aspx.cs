@@ -20,22 +20,83 @@ namespace SuperMarketWeb.Setup
                var connSetting= ConfigurationManager.ConnectionStrings[ConfigurationManager.ConnectionStrings.Count - 1];
                this.lblProviderName.Text = connSetting.ProviderName;
                this.lblConnName.Text = connSetting.Name;
-               string scriptName = string.Format("SuperMarketDAL.Entitys.CreateTables{0}.sql", connSetting.ProviderName == "SqlServer" ? "" : "_SQLite"); ;
-               string str = PWMIS.Core.CommonUtil.GetAssemblyResource("SuperMarketDAL", scriptName);
-               this.lblScript.Text = str.Substring(0, 30);
-               if(Session["errmsg"]!=null)
+               if (Session["errmsg"] != null)
                    this.lblErrMsg.Text = Session["errmsg"].ToString();
+
+               GetScriptName();
+
+               if (MyDB.Instance.CurrentDBMSType == PWMIS.Common.DBMSType.Access)
+               {
+                   Access access = MyDB.Instance as Access;
+                   string dbFilePath = access.ConnectionDataSource;
+                   if (!System.IO.File.Exists(dbFilePath))
+                   {
+                       PWMIS.AccessExtensions.AccessUility.CreateDataBase(dbFilePath);
+                       this.lblErrMsg.Text += ";Access 数据库文件已经自动创建，请刷新或者继续操作本页面。 ";
+                   }
+
+               }
             }
+        }
+
+        private string GetScriptName()
+        {
+            var dbmsType = MyDB.Instance.CurrentDBMSType;
+            string itemName = "";
+            switch (dbmsType)
+            {
+                case PWMIS.Common.DBMSType.Access:
+                case PWMIS.Common.DBMSType.SqlServer:
+                case PWMIS.Common.DBMSType.SqlServerCe:
+                    itemName = "";
+                    break;
+                case PWMIS.Common.DBMSType.MySql:
+                    itemName = "_MySQL";
+                    break;
+                case PWMIS.Common.DBMSType.SQLite:
+                    itemName = "_SQLite";
+                    break;
+                default:
+                    itemName = "No";
+                    break;
+            }
+            if (itemName != "No")
+            {
+                string scriptName = string.Format("SuperMarketDAL.Entitys.CreateTables{0}.sql", itemName);
+                //string str = PWMIS.Core.CommonUtil.GetAssemblyResource("SuperMarketDAL", scriptName);
+                this.lblScript.Text = "创建超市管理系统数据库，当前创建脚本文件名称：" + scriptName;
+               
+                return scriptName;
+            }
+            else
+            {
+                this.lblScript.Text = "暂不支持自动创建当前数据库类型的超市管理系统数据库，请手工创建数据库。";
+            }
+            return "";
         }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
             var connSetting = ConfigurationManager.ConnectionStrings[ConfigurationManager.ConnectionStrings.Count - 1];
-            string scriptName = string.Format("SuperMarketDAL.Entitys.CreateTables{0}.sql", connSetting.ProviderName == "SqlServer" ? "" : "_SQLite"); ;
+            string scriptName = GetScriptName();
             string str = PWMIS.Core.CommonUtil.GetAssemblyResource("SuperMarketDAL", scriptName);
             try
             {
-                MyDB.Instance.ExecuteNonQuery(str.Replace("go\r\n",";\r\n"));
+                var db = MyDB.Instance;
+                string createTableSql = str.Replace("go\r\n", ";\r\n");
+                if (db.CurrentDBMSType == PWMIS.Common.DBMSType.Access || db.CurrentDBMSType == PWMIS.Common.DBMSType.SqlServerCe)
+                {
+                    createTableSql = createTableSql.Replace("--创建超市信息表，数据库类型：SqlServer", "");
+                    string[] sqls = createTableSql.Split(new char[]{';'}, 7);//一共只有7个表
+                    foreach (string sql in sqls)
+                    {
+                        db.ExecuteNonQuery(sql);
+                    }
+                    
+                }
+                else
+                    db.ExecuteNonQuery(createTableSql);
+
                 this.lblMsg.Text = "初始化数据库成功！";
 
             }
