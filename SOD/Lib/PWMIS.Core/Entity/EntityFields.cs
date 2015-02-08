@@ -227,7 +227,11 @@ namespace PWMIS.DataMap.Entity
                           //获得调用的字段名称
                     propertyNames[count] = propertys[i].Name;//获得调用的实体类属性名称
                     typeNames[count] = propertys[i].PropertyType;
-
+                    if (!propertys[i].CanWrite) //只读属性，跳过
+                    {
+                        
+                        continue;
+                    }
                     try
                     {
                         //这里需要设置属性，以便获取字段长度
@@ -245,10 +249,8 @@ namespace PWMIS.DataMap.Entity
                     }
                     catch
                     {
-                        return false;
+                        //return false;
                     }
-
-
                     count++;
                 }
                 return true;
