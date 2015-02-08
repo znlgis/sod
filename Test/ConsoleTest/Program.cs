@@ -11,6 +11,7 @@ using MvcApplication1.Models;
 using System.Data;
 using LocalDB;
 using PDFNETClassLib.Model;
+using System.Reflection;
 
 namespace ConsoleTest
 {
@@ -21,6 +22,16 @@ namespace ConsoleTest
 
         static void Main(string[] args)
         {
+            Console.WriteLine("====PDF.NET SOD 控制台测试程序====");
+            Assembly coreAss = Assembly.GetAssembly(typeof(AdoHelper));//获得引用程序集
+            Console.WriteLine("PWMIS.Core Version:{0}", coreAss.GetName().Version.ToString());
+            Console.WriteLine();
+            Console.WriteLine("应用程序配置文件默认的数据库配置信息：\r\n当前使用的数据库类型是：{0}\r\n连接字符串为:{1}\r\n请确保数据库服务器和数据库是否有效且已经初始化过建表脚本（项目下的2个sql脚本文件），\r\n继续请回车，退出请输入字母 Q ."
+                , MyDB.Instance.CurrentDBMSType.ToString(), MyDB.Instance.ConnectionString);
+            string read = Console.ReadLine();
+            if (read.ToUpper() == "Q")
+                return;
+
             //测试 AdoHelper的并发能力
             //for (int i = 0; i < 100; i++)
             //{
@@ -40,6 +51,7 @@ namespace ConsoleTest
                 .Where(CsEvent.EventID)
                 .END;
             Console.WriteLine(oql.ToString());
+            Console.WriteLine("-----------------------");
 
             RoadTeam.Model.CS.TbCsEvent CsEvent2 = new RoadTeam.Model.CS.TbCsEvent();
             CsEvent.EventID = 1;
@@ -48,8 +60,10 @@ namespace ConsoleTest
                 .Where(CsEvent2.EventID)
                 .END;
             Console.WriteLine(oql2.ToString());
+            Console.WriteLine("-----------------------");
                 
-            //测试实体类动态增加虚拟属性
+            //
+            Console.WriteLine("测试实体类动态增加虚拟属性");
             UserModels um1 = new UserModels();
             um1.AddPropertyName("TestName");
             um1["TestName"] = 123;
@@ -58,13 +72,32 @@ namespace ConsoleTest
             um1["TestName"] = "abc";
             string teststr = (string)um1["TestName"];
 
-            //测试缓存
+            //
+            Console.WriteLine("测试缓存");
             var cache = PWMIS.Core.MemoryCache<EntityBase>.Default;
             cache.Add("UserModels", um1);
             var cacheData = cache.Get("UserModels");
             cache.Remove("UserModels");
 
+            //测试创建表脚本：
+            EntityCommand ecmd = new EntityCommand(new LT_Users(), MyDB.Instance);
+            Console.WriteLine(ecmd.CreateTableCommand);
+            //如果表LT_UserRoles　不存在，则执行下面以行
+            try
+            {
+                MyDB.Instance.ExecuteNonQuery(ecmd.CreateTableCommand);
+                Console.WriteLine("Create Table LT_UserRoles OK!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
+            Console.WriteLine("------------测试暂时停止，请勿继续，下面还没有验证正确运行------");
+            Console.ReadLine();
+            return;
+
+            Console.WriteLine("测试实体类的外键查询");
             TestEntityFK();
             OqlInTest();
 
@@ -74,7 +107,8 @@ namespace ConsoleTest
                 Console.WriteLine("-------------Testt No.{0}----------------",i+1);
                 TestPocoQuery();
             }
-           
+            Console.WriteLine("-----------------------");
+
             //TestInChild();
             TestFun(1, 2, 3);
 
@@ -82,11 +116,7 @@ namespace ConsoleTest
             UpdateTest();
             InsertTest();
            
-            //测试创建表脚本：
-            EntityCommand ecmd = new EntityCommand(new LT_Users(), MyDB.Instance);
-            Console.WriteLine(ecmd.CreateTableCommand);
-            //如果表LT_UserRoles　不存在，则执行下面以行
-            //MyDB.Instance.ExecuteNonQuery(ecmd.CreateTableCommand);
+           
 
             
             OqlJoinTest();
