@@ -22,12 +22,13 @@ namespace ConsoleTest
 
         static void Main(string[] args)
         {
-            Console.WriteLine("====PDF.NET SOD 控制台测试程序====");
+            Console.WriteLine("====**************** PDF.NET SOD 控制台测试程序 **************====");
             Assembly coreAss = Assembly.GetAssembly(typeof(AdoHelper));//获得引用程序集
-            Console.WriteLine("PWMIS.Core Version:{0}", coreAss.GetName().Version.ToString());
+            Console.WriteLine("框架核心程序集 PWMIS.Core Version:{0}", coreAss.GetName().Version.ToString());
             Console.WriteLine();
-            Console.WriteLine("应用程序配置文件默认的数据库配置信息：\r\n当前使用的数据库类型是：{0}\r\n连接字符串为:{1}\r\n请确保数据库服务器和数据库是否有效且已经初始化过建表脚本（项目下的2个sql脚本文件），\r\n继续请回车，退出请输入字母 Q ."
+            Console.WriteLine("  应用程序配置文件默认的数据库配置信息：\r\n  当前使用的数据库类型是：{0}\r\n  连接字符串为:{1}\r\n  请确保数据库服务器和数据库是否有效且已经初始化过建表脚本（项目下的2个sql脚本文件），\r\n继续请回车，退出请输入字母 Q ."
                 , MyDB.Instance.CurrentDBMSType.ToString(), MyDB.Instance.ConnectionString);
+            Console.WriteLine("=====Power by Bluedoctor,2015.2.8 http://www.pwmis.com/sqlmap ====");
             string read = Console.ReadLine();
             if (read.ToUpper() == "Q")
                 return;
@@ -63,7 +64,7 @@ namespace ConsoleTest
             Console.WriteLine("-----------------------");
                 
             //
-            Console.WriteLine("测试实体类动态增加虚拟属性");
+            Console.Write("测试实体类动态增加虚拟属性...");
             UserModels um1 = new UserModels();
             um1.AddPropertyName("TestName");
             um1["TestName"] = 123;
@@ -71,61 +72,66 @@ namespace ConsoleTest
 
             um1["TestName"] = "abc";
             string teststr = (string)um1["TestName"];
-
+            Console.WriteLine("OK");
             //
-            Console.WriteLine("测试缓存");
+            Console.Write("测试缓存...");
             var cache = PWMIS.Core.MemoryCache<EntityBase>.Default;
             cache.Add("UserModels", um1);
             var cacheData = cache.Get("UserModels");
             cache.Remove("UserModels");
+            Console.WriteLine("OK");
+            //
+            Console.Write("测试自动创建实体类数据库表...");
+            AutoCreateEntityTable<LT_Users>();
+            AutoCreateEntityTable<LT_UserRoles>();
+            Console.WriteLine("OK");
 
-            //测试创建表脚本：
-            EntityCommand ecmd = new EntityCommand(new LT_Users(), MyDB.Instance);
-            Console.WriteLine(ecmd.CreateTableCommand);
-            //如果表LT_UserRoles　不存在，则执行下面以行
-            try
-            {
-                MyDB.Instance.ExecuteNonQuery(ecmd.CreateTableCommand);
-                Console.WriteLine("Create Table LT_UserRoles OK!");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            Console.WriteLine("------------测试暂时停止，请勿继续，下面还没有验证正确运行------");
+            Console.WriteLine("------------测试暂时停止，回车继续运行------");
             Console.ReadLine();
-            return;
+            //return;
 
-            Console.WriteLine("测试实体类的外键查询");
+            Console.Write("测试实体类的外键查询...");
             TestEntityFK();
+            Console.WriteLine("OK");
+            Console.Write("测试实体类批量插入...");
             OqlInTest();
+            Console.WriteLine("OK");
 
+            Console.WriteLine("测试SOD POCO实体类性能...");
             Console.WriteLine("SELECT top 100000 UID,Sex,Height,Birthday,Name FROM Table_User");
             for (int i = 0; i < 10; i++)
             {
                 Console.WriteLine("-------------Testt No.{0}----------------",i+1);
                 TestPocoQuery();
             }
-            Console.WriteLine("-----------------------");
+            Console.WriteLine("--------OK---------------");
 
-            //TestInChild();
-            TestFun(1, 2, 3);
+            Console.Write("测试OQL IN 子查询...");
+            TestInChild();
+            Console.WriteLine("OK");
+            //TestFun(1, 2, 3);
 
+            Console.WriteLine("测试泛型 OQL --GOQL");
             TestGOQL();
+            Console.WriteLine("OK");
+
             UpdateTest();
-            InsertTest();
-           
-           
+            Console.WriteLine("测试批量数据插入性能....");
+            //InsertTest();
 
-            
+
+
+            Console.WriteLine("OQL 自连接...");
             OqlJoinTest();
-            //自动创建实体类测试
+            //
+            Console.Write("根据接口类型，自动创建实体类测试...");
             TestDynamicEntity();
+            Console.WriteLine("OK");
 
-            //Sql 格式化查询测试
+            //
+            Console.WriteLine("Sql 格式化查询测试( SOD 微型ORM功能)...");
             AdoHelper dbLocal = new SqlServer();
-            dbLocal.ConnectionString = "Data Source=.;Initial Catalog=LocalDB;Integrated Security=True";
+            dbLocal.ConnectionString = MyDB.Instance.ConnectionString;
             //DataSet ds = dbLocal.ExecuteDataSet("SELECT * FROM Table_User WHERE UID={0} AND Height>={1:5.2}", 1, 1.80M);
 
             var dataList = dbLocal.GetList(reader =>
@@ -136,17 +142,20 @@ namespace ConsoleTest
                     Name=reader.GetString(1)
                 };
             }, "SELECT UID,Name FROM Table_User WHERE Sex={0} And Height>={0:5.2}",1, 1.60);
+            Console.WriteLine("OK");
 
-            //测试属性拷贝
+            //
+            Console.Write("测试属性拷贝...");
             V_UserModels vum = new V_UserModels();
             vum.BIGTEAM_ID = 123;//可空属性，如果目标对象不是的话，无法拷贝
             vum.REGION_ID = 456;
             vum.SMALLTEAM_ID = 789;
 
             UserModels um = vum.CopyTo<UserModels>();
-
+            Console.WriteLine("OK");
            
-            //测试自定义查询的实体类
+            //
+            Console.Write("测试【自定义查询】的实体类...");
             UserPropertyView up = new UserPropertyView();
             OQL q11 = new OQL(up);
             OQLOrder order = new OQLOrder(q11);
@@ -157,7 +166,7 @@ namespace ConsoleTest
             var result = EntityQuery<UserPropertyView>.QueryList(q11,db11);
             //下面2行不是必须
             q11.Dispose();
-            
+            Console.WriteLine("OK");
 
             //EntityContainer ec = new EntityContainer(q11);
             //var ecResult = ec.MapToList(() => {
@@ -165,31 +174,13 @@ namespace ConsoleTest
             //});
             
             /////////////////////////////////////////////////////
+            Console.WriteLine("测试实体类【自动保存】数据...");
 
-            AuctionOperationLog log = new AuctionOperationLog();
-            log.OptID = 1;
-            log.Module = "TestTest";
-            log.Operation = "ppppppppp";
-            EntityQuery<AuctionOperationLog>.Instance.FillEntity(log);
-            EntityQuery eq = new EntityQuery(log);
-           
-            int ac = eq.Save(log.Module);
-
-            EntityQuery<AuctionOperationLog> logQuery = new EntityQuery<AuctionOperationLog>(log, true);
-            log.OperaterID = 999;
-            log.Module = "Test";
-            log.Operation = "Test Opt";
-            log.LogSource = "Test";
-
-            int affectCount = logQuery.Save();
-            Console.WriteLine("自动保存成功(insert),id={0}",log.OptID);
-
-
-            log.Operation = "Test Opt No.2";
-            affectCount = logQuery.Save();
-            Console.WriteLine("自动保存成功(update)");
+            //TestAutoSave();
 
             /////////////////测试事务////////////////////////////////////
+            Console.WriteLine("测试测试事务...");
+
             AdoHelper db = MyDB.GetDBHelper();
             EntityQuery<AuctionOperationLog> query = new EntityQuery<AuctionOperationLog>(db);
 
@@ -246,8 +237,58 @@ namespace ConsoleTest
                 Console.WriteLine("Error:"+ex.Message );
                 db.Rollback();
             }
+            Console.WriteLine("事物测试完成！");
+            Console.WriteLine("-------PDF.NET SOD 测试全部完成-------");
 
-            Console.Read();
+            Console.ReadLine();
+        }
+
+        private static void TestAutoSave()
+        {
+            AuctionOperationLog log = new AuctionOperationLog();
+            log.OptID = 1;
+            log.Module = "TestTest";
+            log.Operation = "ppppppppp";
+            log.LogSource = "test";
+            EntityQuery<AuctionOperationLog>.Instance.FillEntity(log);
+            EntityQuery eq = new EntityQuery(log);
+
+            int ac = eq.Save(log.Module);
+
+            EntityQuery<AuctionOperationLog> logQuery = new EntityQuery<AuctionOperationLog>(log, true);
+            log.OperaterID = 999;
+            log.Module = "Test";
+            log.Operation = "Test Opt";
+            log.LogSource = "Test";
+
+            int affectCount = logQuery.Save();
+            Console.WriteLine("自动保存成功(insert),id={0}", log.OptID);
+
+
+            log.Operation = "Test Opt No.2";
+            affectCount = logQuery.Save();
+            Console.WriteLine("自动保存成功(update)");
+        }
+
+        /// <summary>
+        /// 自动创建实体类表
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        private static void AutoCreateEntityTable<T>() where T:EntityBase,new()
+        {
+            T entity = new T();
+            EntityCommand ecmd = new EntityCommand(entity, MyDB.Instance);
+            Console.WriteLine(ecmd.CreateTableCommand);
+            //如果表表　不存在，则执行下面以行
+            try
+            {
+                MyDB.Instance.ExecuteNonQuery(ecmd.CreateTableCommand);
+                Console.WriteLine("Create Table {0} OK!",entity.GetTableName());
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         static void TestDynamicEntity()
@@ -327,7 +368,7 @@ namespace ConsoleTest
         {
             MyDB.Instance.ExecuteNonQuery("delete from LT_Users");
             List<LT_Users> userList = new List<LT_Users>();
-            for (int i = 0; i < 20000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 userList.Add(new LT_Users() 
                 {
@@ -339,13 +380,13 @@ namespace ConsoleTest
                 );
             }
 
-            //System.Diagnostics.Stopwatch st = new System.Diagnostics.Stopwatch();
-            //st.Start();
-            //Console.WriteLine("PDF.NET 插入数据开始...");
-            //int count=  EntityQuery<LT_Users>.Instance.QuickInsert(userList);
-            //st.Stop();
-            //Console.WriteLine("成功插入数据{0}条，耗时{1}ms",count,st.ElapsedMilliseconds);
-            //Console.Read();
+            System.Diagnostics.Stopwatch st = new System.Diagnostics.Stopwatch();
+            st.Start();
+            Console.WriteLine("PDF.NET 插入数据开始{0}条...", userList.Count());
+            int count = EntityQuery<LT_Users>.Instance.QuickInsert(userList);
+            st.Stop();
+            Console.WriteLine("成功插入数据{0}条，耗时{1}ms", count, st.ElapsedMilliseconds);
+           
         }
 
         static void UpdateTest()

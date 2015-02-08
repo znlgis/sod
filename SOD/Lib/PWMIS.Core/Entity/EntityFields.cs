@@ -212,21 +212,30 @@ namespace PWMIS.DataMap.Entity
                 this.tableName = (string)entityType.GetMethod("GetTableName").Invoke(entity, null);
 
                 var methodInfo = entityType.GetMethod("GetSetPropertyFieldName");
+                var testMethodInfo = entityType.GetMethod("TestWriteProperty", BindingFlags.Instance | BindingFlags.NonPublic);
+                testMethodInfo.Invoke(entity, null);//设置虚拟属性写入标记
 
                 PropertyInfo[] propertys = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
-                int count = propertys.Length;
-                this.fields = new string[count];
-                this.propertyNames = new string[count];
-                this.typeNames = new Type[count];
+                //下面的方式弃用 dth 2015.2.8
+                //int count = propertys.Length;
+                //this.fields = new string[count];
+                //this.propertyNames = new string[count];
+                //this.typeNames = new Type[count];
 
-                count = 0;
+                List<string> fieldList = new List<string>();
+                List<string> propertyNameList = new List<string>();
+                List<Type> typeNameList = new List<Type>();
+
+                //count = 0;
                 string last_field = string.Empty;
 
                 for (int i = 0; i < propertys.Length; i++)
                 {
-                          //获得调用的字段名称
-                    propertyNames[count] = propertys[i].Name;//获得调用的实体类属性名称
-                    typeNames[count] = propertys[i].PropertyType;
+                    //获得调用的字段名称
+                    //propertyNames[count] = propertys[i].Name;//获得调用的实体类属性名称
+                    //typeNames[count] = propertys[i].PropertyType;
+                    Type currPropType = propertys[i].PropertyType;
+
                     if (!propertys[i].CanWrite) //只读属性，跳过
                     {
                         
@@ -236,14 +245,18 @@ namespace PWMIS.DataMap.Entity
                     {
                         //这里需要设置属性，以便获取字段长度
                         object Value = null;// 感谢网友 stdbool 发现byte[] 判断的问题
-                        if (typeNames[count] != typeof(string) && typeNames[count] != typeof(byte[]))
-                            Value = Activator.CreateInstance(typeNames[count]);
+                        if (currPropType != typeof(string) && currPropType != typeof(byte[]))
+                            Value = Activator.CreateInstance(currPropType);
                         propertys[i].SetValue(entity, Value, null); //这里可能有普通属性在被赋值 
                         string field= (string)methodInfo.Invoke(entity,null);
                         if (last_field != field)
                         {
-                            //跟之前的对比，确定当前是不是普通属性
-                            fields[count] = field;
+                            //跟之前的对比，确定当前是属性字段对应的属性
+                            //fields[count] = field;
+                            fieldList.Add(field);
+                            propertyNameList.Add(propertys[i].Name);
+                            typeNameList.Add(currPropType);
+
                             last_field = field;
                         }
                     }
@@ -251,8 +264,12 @@ namespace PWMIS.DataMap.Entity
                     {
                         //return false;
                     }
-                    count++;
+                    //count++;
                 }
+                this.fields = fieldList.ToArray();
+                this.propertyNames = propertyNameList.ToArray();
+                this.typeNames = typeNameList.ToArray();
+
                 return true;
             }
             return false;

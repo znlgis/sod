@@ -103,11 +103,15 @@ namespace PWMIS.DataMap.Entity
 
         /// <summary>
         /// 设置实体类的对应的字段名称数组
-        /// 新版本必须实现这个细节,为了兼容性,这里不作为抽象方法
+        /// 新版本子类可以实现这个细节,否则框架将反射获得该信息(该特性有利于简化手写的代码)。
+        /// <remarks>为了兼容性,这里不作为抽象方法</remarks>
         /// </summary>
         protected internal virtual void SetFieldNames()
         {
             //this.names = names;
+            //如果子类未重写该方法，调用框架的数据库元数据获取方法
+            EntityFields ef=EntityFieldsCache.Item(this.GetType());
+            this.names = ef.Fields;
         }
 
         //[NonSerialized()] 
@@ -318,6 +322,15 @@ namespace PWMIS.DataMap.Entity
             return setingFieldName;
         }
 
+        private bool _IsTestWriteProperty;
+        /// <summary>
+        /// 测试写入属性（仅程序集内部使用）
+        /// </summary>
+        internal void TestWriteProperty()
+        {
+            _IsTestWriteProperty = true;
+        }
+
         /// <summary>
         /// 新增加实体虚拟字段属性，用来传递内容
         /// </summary>
@@ -431,6 +444,10 @@ namespace PWMIS.DataMap.Entity
         protected internal void setProperty(string propertyFieldName, object Value)
         {
             setingFieldName = propertyFieldName;
+            //
+            if (_IsTestWriteProperty)
+                return;
+            //
             for (int i = 0; i < PropertyNames.Length; i++)
             {
                 if (string.Compare(PropertyNames[i], propertyFieldName, true) == 0)

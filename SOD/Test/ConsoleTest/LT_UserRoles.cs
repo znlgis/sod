@@ -23,10 +23,10 @@ namespace ConsoleTest
         }
 
 
-        protected override void SetFieldNames()
-        {
-            PropertyNames = new string[] { "ID", "RoleName", "RoleNickName", "Description", "AddTime" };
-        }
+        //protected override void SetFieldNames()
+        //{
+        //    PropertyNames = new string[] { "ID", "RoleName", "RoleNickName", "Description", "AddTime" };
+        //}
 
 
 
