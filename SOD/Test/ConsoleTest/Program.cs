@@ -42,9 +42,11 @@ namespace ConsoleTest
             //    t.Start();
               
             //}
+            Console.Write("1，测试 OpenSession 长连接数据库访问...");
             TestDataSetAndOQL(null);
-
+            Console.WriteLine("OK");
             //
+            Console.WriteLine("2，测试OQL 转SQL...");
             RoadTeam.Model.CS.TbCsEvent CsEvent = new RoadTeam.Model.CS.TbCsEvent();
             CsEvent.EventID = 1;
             OQL oql = OQL.From(CsEvent)
@@ -62,9 +64,9 @@ namespace ConsoleTest
                 .END;
             Console.WriteLine(oql2.ToString());
             Console.WriteLine("-----------------------");
-                
+            Console.WriteLine("OK"); 
             //
-            Console.Write("测试实体类动态增加虚拟属性...");
+            Console.Write("3，测试实体类动态增加虚拟属性...");
             UserModels um1 = new UserModels();
             um1.AddPropertyName("TestName");
             um1["TestName"] = 123;
@@ -74,14 +76,14 @@ namespace ConsoleTest
             string teststr = (string)um1["TestName"];
             Console.WriteLine("OK");
             //
-            Console.Write("测试缓存...");
+            Console.Write("4，测试缓存...");
             var cache = PWMIS.Core.MemoryCache<EntityBase>.Default;
             cache.Add("UserModels", um1);
             var cacheData = cache.Get("UserModels");
             cache.Remove("UserModels");
             Console.WriteLine("OK");
             //
-            Console.Write("测试自动创建实体类数据库表...");
+            Console.Write("5，测试自动创建实体类数据库表...");
             AutoCreateEntityTable<LT_Users>();
             AutoCreateEntityTable<LT_UserRoles>();
             Console.WriteLine("OK");
@@ -90,14 +92,14 @@ namespace ConsoleTest
             Console.ReadLine();
             //return;
 
-            Console.Write("测试实体类的外键查询...");
+            Console.Write("6，测试实体类的外键查询...");
             TestEntityFK();
             Console.WriteLine("OK");
-            Console.Write("测试实体类批量插入...");
+            Console.Write("7，测试实体类批量插入...");
             OqlInTest();
             Console.WriteLine("OK");
 
-            Console.WriteLine("测试SOD POCO实体类性能...");
+            Console.WriteLine("8，测试SOD POCO实体类性能...");
             Console.WriteLine("SELECT top 100000 UID,Sex,Height,Birthday,Name FROM Table_User");
             for (int i = 0; i < 10; i++)
             {
@@ -106,30 +108,33 @@ namespace ConsoleTest
             }
             Console.WriteLine("--------OK---------------");
 
-            Console.Write("测试OQL IN 子查询...");
+            Console.Write("9，测试OQL IN 子查询...");
             TestInChild();
             Console.WriteLine("OK");
             //TestFun(1, 2, 3);
 
-            Console.WriteLine("测试泛型 OQL --GOQL");
+            Console.WriteLine("10，测试泛型 OQL --GOQL");
             TestGOQL();
             Console.WriteLine("OK");
 
+            Console.WriteLine("11，测试OQL 批量更新（带条件更新）...");
             UpdateTest();
-            Console.WriteLine("测试批量数据插入性能....");
+            Console.WriteLine("OK");
+
+            Console.WriteLine("12，测试批量数据插入性能....");
             //InsertTest();
 
 
 
-            Console.WriteLine("OQL 自连接...");
+            Console.WriteLine("13，OQL 自连接...");
             OqlJoinTest();
             //
-            Console.Write("根据接口类型，自动创建实体类测试...");
+            Console.Write("14，根据接口类型，自动创建实体类测试...");
             TestDynamicEntity();
             Console.WriteLine("OK");
 
             //
-            Console.WriteLine("Sql 格式化查询测试( SOD 微型ORM功能)...");
+            Console.WriteLine("15，Sql 格式化查询测试( SOD 微型ORM功能)...");
             AdoHelper dbLocal = new SqlServer();
             dbLocal.ConnectionString = MyDB.Instance.ConnectionString;
             //DataSet ds = dbLocal.ExecuteDataSet("SELECT * FROM Table_User WHERE UID={0} AND Height>={1:5.2}", 1, 1.80M);
@@ -145,7 +150,7 @@ namespace ConsoleTest
             Console.WriteLine("OK");
 
             //
-            Console.Write("测试属性拷贝...");
+            Console.Write("16，测试属性拷贝...");
             V_UserModels vum = new V_UserModels();
             vum.BIGTEAM_ID = 123;//可空属性，如果目标对象不是的话，无法拷贝
             vum.REGION_ID = 456;
@@ -155,7 +160,7 @@ namespace ConsoleTest
             Console.WriteLine("OK");
            
             //
-            Console.Write("测试【自定义查询】的实体类...");
+            Console.Write("17，测试【自定义查询】的实体类...");
             UserPropertyView up = new UserPropertyView();
             OQL q11 = new OQL(up);
             OQLOrder order = new OQLOrder(q11);
@@ -174,13 +179,21 @@ namespace ConsoleTest
             //});
             
             /////////////////////////////////////////////////////
-            Console.WriteLine("测试实体类【自动保存】数据...");
+            Console.WriteLine("18，测试实体类【自动保存】数据...");
 
-            //TestAutoSave();
+            TestAutoSave();
 
             /////////////////测试事务////////////////////////////////////
-            Console.WriteLine("测试测试事务...");
+            Console.WriteLine("19，测试测试事务...");
+            TestTransaction();
+            Console.WriteLine("事务测试完成！");
+            Console.WriteLine("-------PDF.NET SOD 测试全部完成-------");
 
+            Console.ReadLine();
+        }
+
+        private static void TestTransaction()
+        {
             AdoHelper db = MyDB.GetDBHelper();
             EntityQuery<AuctionOperationLog> query = new EntityQuery<AuctionOperationLog>(db);
 
@@ -207,7 +220,7 @@ namespace ConsoleTest
 
                 q.Select().Count(optLog.OperaterID, "");//使用空字符串参数，这样统计的值将放到 OperaterID 属性中
                 //必须指定db参数，否则不再一个事务中，无法进行统计查询
-                optLog= EntityQuery<AuctionOperationLog>.QueryObject(q,db);
+                optLog = EntityQuery<AuctionOperationLog>.QueryObject(q, db);
                 int allCount = optLog.OperaterID;
 
                 //optLog 已经使用过，在生成OQL的查询前，必须使用新的实体对象，
@@ -219,9 +232,9 @@ namespace ConsoleTest
                 q.Limit(10, 2);
                 q.PageEnable = true;
                 q.PageWithAllRecordCount = allCount;
-                
+
                 //查询列表并更新到数据库
-                List<AuctionOperationLog> list = EntityQuery<AuctionOperationLog>.QueryList(q,db);
+                List<AuctionOperationLog> list = EntityQuery<AuctionOperationLog>.QueryList(q, db);
                 foreach (AuctionOperationLog logItem in list)
                 {
                     logItem.AtDateTime = DateTime.Now;
@@ -232,15 +245,11 @@ namespace ConsoleTest
 
                 Console.WriteLine("事务操作成功。");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Console.WriteLine("Error:"+ex.Message );
+                Console.WriteLine("Error:" + ex.Message);
                 db.Rollback();
             }
-            Console.WriteLine("事物测试完成！");
-            Console.WriteLine("-------PDF.NET SOD 测试全部完成-------");
-
-            Console.ReadLine();
         }
 
         private static void TestAutoSave()
@@ -252,8 +261,9 @@ namespace ConsoleTest
             log.LogSource = "test";
             EntityQuery<AuctionOperationLog>.Instance.FillEntity(log);
             EntityQuery eq = new EntityQuery(log);
-
-            int ac = eq.Save(log.Module);
+            //第一次，插入数据
+            int ac = eq.Save(log.Module);//仅插入Module 字段，其它字段不插入，要求其它字段可为空。
+            Console.WriteLine("测试插入部分字段，成功");
 
             EntityQuery<AuctionOperationLog> logQuery = new EntityQuery<AuctionOperationLog>(log, true);
             log.OperaterID = 999;
@@ -490,10 +500,10 @@ namespace ConsoleTest
             IList<UserPoco> list4=db.GetList<UserPoco>(reader => {
                 return new UserPoco() { 
                     UID=reader.IsDBNull(0)?0: reader.GetInt32(0),
-                    Sex = reader.IsDBNull(0) ? false : reader.GetBoolean(1),
-                    Height = reader.IsDBNull(0) ? 0 : reader.GetFloat(2),
-                    Birthday = reader.IsDBNull(0) ? default(DateTime) : reader.GetDateTime(3),
-                    Name = reader.IsDBNull(0) ? null : reader.GetString(4)
+                    Sex = reader.IsDBNull(1) ? false : reader.GetBoolean(1),
+                    Height = reader.IsDBNull(2) ? 0 : reader.GetFloat(2),
+                    Birthday = reader.IsDBNull(3) ? default(DateTime) : reader.GetDateTime(3),
+                    Name = reader.IsDBNull(4) ? null : reader.GetString(4)
                 };
             }, sql, null);
             sw.Stop();

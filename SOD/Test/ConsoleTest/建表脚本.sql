@@ -9,11 +9,13 @@ GO
 
 SET ANSI_PADDING ON
 GO
+IF  EXISTS (SELECT * FROM SYSOBJECTS WHERE NAME='AuctionOperationLog')  DROP TABLE [AuctionOperationLog]
+GO
 
 CREATE TABLE [dbo].[AuctionOperationLog](
 	[OptID] [int] IDENTITY(1,1) NOT NULL,
-	[LogSource] [varchar](5) NOT NULL,
-	[OperaterID] [int] NOT NULL,
+	[LogSource] [varchar](5)  NULL,
+	[OperaterID] [int]  NULL,
 	[Module] [varchar](10) NOT NULL,
 	[Operation] [varchar](50) NULL,
 	[AtDateTime] [datetime] NULL,
