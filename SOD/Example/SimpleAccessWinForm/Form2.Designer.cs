@@ -163,8 +163,8 @@
             this.dtbUserName.DataFormatString = null;
             this.dtbUserName.ErrorMessage = "要求内容为中文字符";
             this.dtbUserName.IsNull = false;
-            this.dtbUserName.LinkObject = "User";
-            this.dtbUserName.LinkProperty = "UserName";
+            this.dtbUserName.LinkObject = "会员用户表";
+            this.dtbUserName.LinkProperty = "用户名";
             this.dtbUserName.Location = new System.Drawing.Point(168, 76);
             this.dtbUserName.MaxLength = 50;
             this.dtbUserName.MessageType = PWMIS.Windows.Validate.EnumMessageType.提示框;
