@@ -2454,7 +2454,7 @@
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.MapFrom(System.Object)">
             <summary>
-            从POCO实体类获取跟当前实体类的【属性字段】名称相同的属性的值，拷贝到当前实体类中，完成数据的映射。
+            从POCO实体类获取跟当前实体类的属性名称相同的属性的值，拷贝到当前实体类中，完成数据的映射。
             要求拷贝的同名属性是读写属性且类型相同。
             </summary>
             <param name="pocoClass">POCO实体类，提供源数据</param>
@@ -4414,6 +4414,24 @@
             </summary>
             <param name="buffer">二进制字节缓存</param>
             <returns>实体类数组</returns>
+        </member>
+        <member name="T:PWMIS.DataMap.Entity.PropertyNameValues">
+            <summary>
+            属性名值对对象
+            </summary>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.PropertyNameValues.CreateEntity``1">
+            <summary>
+            根据当前类，构造一个新的实体类，注意当前类的属性和值必须跟要构造的实体类匹配，否则将引发异常
+            </summary>
+            <typeparam name="T">实体类类型</typeparam>
+            <returns>实体类</returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.PropertyNameValues.FillEntity(PWMIS.DataMap.Entity.EntityBase)">
+            <summary>
+            填充实体类
+            </summary>
+            <param name="entity"></param>
         </member>
         <member name="T:PWMIS.DataMap.Entity.QueryParameter">
             <summary>
