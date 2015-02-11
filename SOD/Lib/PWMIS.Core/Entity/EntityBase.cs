@@ -432,7 +432,7 @@ namespace PWMIS.DataMap.Entity
         /// 获取属性值
         /// </summary>
         /// <typeparam name="T">值的类型</typeparam>
-        /// <param name="propertyName">属性名称</param>
+        /// <param name="propertyFieldName">属性名称</param>
         /// <returns>属性值</returns>
         protected T getProperty<T>(string propertyFieldName)
         {
@@ -443,7 +443,7 @@ namespace PWMIS.DataMap.Entity
         /// <summary>
         /// 设置属性值
         /// </summary>
-        /// <param name="propertyName">属性字段名称</param>
+        /// <param name="propertyFieldName">属性字段名称</param>
         /// <param name="Value">属性值</param>
         protected internal void setProperty(string propertyFieldName, object Value)
         {
@@ -500,7 +500,7 @@ namespace PWMIS.DataMap.Entity
         /// <summary>
         /// 设置属性，如果值是字符类型且设置了最大长度大于0，那么不允许设置大于此长度的字符串
         /// </summary>
-        /// <param name="name">字段名称</param>
+        /// <param name="propertyFieldName">字段名称</param>
         /// <param name="Value">值</param>
         /// <param name="maxLength">最大长度</param>
         protected internal void setProperty(string propertyFieldName, string Value, int maxLength)
@@ -685,7 +685,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 从POCO实体类获取跟当前实体类的【属性字段】名称相同的属性的值，拷贝到当前实体类中，完成数据的映射。
+        /// 从POCO实体类获取跟当前实体类的属性名称相同的属性的值，拷贝到当前实体类中，完成数据的映射。
         /// 要求拷贝的同名属性是读写属性且类型相同。
         /// </summary>
         /// <param name="pocoClass">POCO实体类，提供源数据</param>

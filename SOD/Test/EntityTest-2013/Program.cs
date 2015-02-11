@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Xml;
+using System.Xml.Serialization;
 
 
 namespace EntityTest
@@ -18,9 +20,12 @@ namespace EntityTest
             Assembly coreAss = Assembly.GetAssembly(typeof(AdoHelper));//获得引用程序集
             Console.WriteLine("框架核心程序集 PWMIS.Core Version:{0}", coreAss.GetName().Version.ToString());
             Console.WriteLine();
-            Console.WriteLine("  应用程序配置文件默认的数据库配置信息：\r\n  当前使用的数据库类型是：{0}\r\n  连接字符串为:{1}\r\n  请确保数据库服务器和数据库是否有效且已经初始化过建表脚本（项目下的2个sql脚本文件），\r\n继续请回车，退出请输入字母 Q ."
+            Console.WriteLine("  应用程序配置文件默认的数据库配置信息：\r\n  当前使用的数据库类型是：{0}\r\n  连接字符串为:{1}\r\n  请确保数据库服务器和数据库是否有效，\r\n继续请回车，退出请输入字母 Q ."
                 , MyDB.Instance.CurrentDBMSType.ToString(), MyDB.Instance.ConnectionString);
             Console.WriteLine("=====Power by Bluedoctor,2015.2.10 http://www.pwmis.com/sqlmap ====");
+            string read = Console.ReadLine();
+            if (read.ToUpper() == "Q")
+                return;
 
             Console.WriteLine();
             Console.WriteLine("-------PDF.NET SOD 实体类 测试---------");
@@ -70,6 +75,18 @@ namespace EntityTest
             bool flag3 = (user3["Age"] == null);//true 
             Console.WriteLine("user[\"Age\"] == null :{0}", flag);
             Console.WriteLine("user.Age:{0}", user3.Age);
+
+            Console.WriteLine("实体类序列化测试");
+            var entityNameValues= user3.GetNameValues();
+            PropertyNameValuesSerializer ser = new PropertyNameValuesSerializer(entityNameValues);
+            string strEntity = ser.Serializer();
+            Console.WriteLine(strEntity);
+            Console.WriteLine("成功");
+            //
+            Console.WriteLine("反序列化测试");
+            PropertyNameValuesSerializer des = new PropertyNameValuesSerializer(null);
+            UserEntity desUser = des.Deserialize<UserEntity>(strEntity);
+            Console.WriteLine("成功");
 
             Console.WriteLine();
             Console.WriteLine("----测试完毕，回车结束-----");
