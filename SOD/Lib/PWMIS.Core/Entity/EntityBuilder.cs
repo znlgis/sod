@@ -1,4 +1,20 @@
-﻿using System;
+﻿/*
+ * ========================================================================
+ * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
+ * Welcom use the PDF.NET (PWMIS Data Process Framework).
+ * See more information,Please goto http://www.pwmis.com/sqlmap 
+ * ========================================================================
+ * 该类的作用 实体类构造程序，提供一个接口，自动创建实体类
+ * 
+ * 作者：bluedoctor     时间：2008-10-12
+ * 版本：V5.1.2
+ *  
+ *  修改者：         时间：2015-2-11  
+ *  新增 RegisterType 方法，实现接口和具体实体类类型的注册
+ * 
+ * ========================================================================
+*/
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
@@ -28,6 +44,20 @@ namespace PWMIS.DataMap.Entity
         private static object sync_lock = new object();
 
         /// <summary>
+        /// 注册实体类的具体实现类
+        /// </summary>
+        /// <param name="interfaceType">接口类型</param>
+        /// <param name="instanceType">实例类型</param>
+        public static void RegisterType(Type interfaceType, Type instanceType)
+        {
+            if (!instanceType.IsSubclassOf(typeof(EntityBase)))
+                throw new ArithmeticException(instanceType.Name+ " 必须是 EntityBase 的实现类！");
+            if (instanceType.GetInterface(interfaceType.Name ) != interfaceType )
+                throw new ArithmeticException(instanceType.Name + " 必须是 "+ interfaceType.Name +" 的实现类！");
+            dictEntityType.Add(interfaceType, instanceType);
+        }
+
+        /// <summary>
         /// 根据接口类型，创建实体类的实例
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -44,6 +74,7 @@ namespace PWMIS.DataMap.Entity
             }
             else
             {
+                //如果在类型字典里面没有找到接口的类型实现，则自动创建一个实体类
                 if (!dictEntityType.TryGetValue(sourceType, out targetType))
                 {
                     lock (sync_lock)
