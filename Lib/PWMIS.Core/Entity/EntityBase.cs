@@ -41,6 +41,10 @@
  *  
  *  * 修改者：         时间：2014-11-9  
  *  新增 构造函数调用元数据初始化方法的功能，方便在使用代码生成器的时候不覆盖手写实体类代码
+ *  
+ *  * 修改者：         时间：2015-2-11  
+ *  修复 MapFrom 方法中，实体类的属性字段可能跟属性名称不一样 造成数据无法复制的问题
+ * 
  * ========================================================================
 */
 using System;
@@ -695,9 +699,13 @@ namespace PWMIS.DataMap.Entity
           INamedMemberAccessor[] accessors = new INamedMemberAccessor[fcount];
           DelegatedReflectionMemberAccessor drm = new DelegatedReflectionMemberAccessor();
           Type type = pocoClass.GetType();
+          var ef= EntityFieldsCache.Item(this.GetType());
+
           for (int i = 0; i < fcount; i++)
           {
-              accessors[i] = drm.TryFindAccessor(type,PropertyNames[i]);
+              //实体类的属性字段可能跟属性名称不一样 edit at 2015.2.11
+              string perpertyName= ef.GetPropertyName(PropertyNames[i]);
+              accessors[i] = drm.TryFindAccessor(type, perpertyName);
           }
           for (int i = 0; i < fcount; i++)
           {

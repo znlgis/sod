@@ -56,6 +56,38 @@
             <param name="errorMessage">出错信息</param>
             <returns>事务是否执行成功。</returns>
         </member>
+        <member name="M:PWMIS.Core.Extensions.DbContext.Add``1(``0)">
+            <summary>
+            增加一个数据到数据库中
+            </summary>
+            <typeparam name="T">实体类或者接口</typeparam>
+            <param name="data">要增加的数据</param>
+            <returns>操作受影响的行数</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.DbContext.Update``1(``0)">
+            <summary>
+            修改一个数据到数据库中
+            </summary>
+            <typeparam name="T">实体类或者接口</typeparam>
+            <param name="data">要修改的数据</param>
+            <returns>操作受影响的行数</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.DbContext.Remove``1(``0)">
+            <summary>
+            从数据库中删除一个数据到，数据必须有主键
+            </summary>
+            <typeparam name="T">实体类或者接口</typeparam>
+            <param name="data">要删除的数据</param>
+            <returns>操作受影响的行数</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.DbContext.AddList``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            添加一个列表数据到数据库中
+            </summary>
+            <typeparam name="T">实体类或者接口</typeparam>
+            <param name="list">数据列表</param>
+            <returns>操作受影响的行数</returns>
+        </member>
         <member name="P:PWMIS.Core.Extensions.DbContext.CurrentDataBase">
             <summary>
             关联的当期数据库访问对象
@@ -323,6 +355,22 @@
             <param name="enumType"></param>
             <param name="FilterContainValue">要筛选的枚举值</param>
             <returns>返回所有可能的枚举值组合</returns>
+        </member>
+        <member name="T:PWMIS.Core.Extensions.SqlServerDbContext">
+            <summary>
+            SqlServer 数据上下文基类，可以自动创建实体类对应的表
+            </summary>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.SqlServerDbContext.#ctor(System.String)">
+            <summary>
+            用连接字符串名字初始化本类
+            </summary>
+            <param name="connName"></param>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.SqlServerDbContext.CheckTableExists``1">
+            <summary>
+            检查实体类对应的数据表是否在数据库中存在
+            </summary>
         </member>
     </members>
 </doc>

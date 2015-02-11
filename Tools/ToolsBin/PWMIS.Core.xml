@@ -1457,6 +1457,11 @@
             获取当前数据库类型的枚举
             </summary>
         </member>
+        <member name="P:PWMIS.DataProvider.Data.OleDb.ConnectionDataSource">
+            <summary>
+            获取当前连接字符串中的数据源字符串，如果是|DataDirectory|，将返回数据源文件对应的绝对路径。
+            </summary>
+        </member>
         <member name="M:PWMIS.DataProvider.Data.Access.GetParameter(System.String,System.Object)">
             <summary>
             获取查询参数对象，如果参数值是日期类型，请调用此方法，否则调用其它重载方法后，给日期类型的参数值去除毫秒部分。
@@ -1915,6 +1920,13 @@
             </summary>
             <param name="targetType">被实现或者继承的类型</param>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBuilder.RegisterType(System.Type,System.Type)">
+            <summary>
+            注册实体类的具体实现类
+            </summary>
+            <param name="interfaceType">接口类型</param>
+            <param name="instanceType">实例类型</param>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBuilder.CreateEntity``1">
             <summary>
             根据接口类型，创建实体类的实例
@@ -2290,7 +2302,8 @@
         <member name="M:PWMIS.DataMap.Entity.EntityBase.SetFieldNames">
             <summary>
             设置实体类的对应的字段名称数组
-            新版本必须实现这个细节,为了兼容性,这里不作为抽象方法
+            新版本子类可以实现这个细节,否则框架将反射获得该信息(该特性有利于简化手写的代码)。
+            <remarks>为了兼容性,这里不作为抽象方法</remarks>
             </summary>
         </member>
         <member name="F:PWMIS.DataMap.Entity.EntityBase.foreignKeys">
@@ -2346,6 +2359,11 @@
             获取设置过的属性字段名称，用于映射到表字段的属性进行赋值操作之后
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.TestWriteProperty">
+            <summary>
+            测试写入属性（仅程序集内部使用）
+            </summary>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.AddPropertyName(System.String)">
             <summary>

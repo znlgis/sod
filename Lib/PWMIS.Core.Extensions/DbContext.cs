@@ -52,25 +52,6 @@ namespace PWMIS.Core.Extensions
         /// <returns>检查是否通过</returns>
         protected virtual bool CheckDB()
         {
-            //if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.Access)
-            //{
-            //    if (DBFilePath != string.Empty)
-            //    {
-            //        if (!File.Exists(DBFilePath))
-            //        {
-            //            //创建数据库文件
-            //            PWMIS.AccessExtensions.AccessUility.CreateDataBase(DBFilePath);
-            //        }
-            //        return CheckAllTableExists();
-            //    }
-            //}
-            //else
-            //{
-            //    //其它类型的数据库，仅检查表是否存在
-            //    return CheckAllTableExists();
-            //}
-            //return false;
-
             //其它类型的数据库，仅检查表是否存在
             return CheckAllTableExists();
         }
@@ -84,21 +65,8 @@ namespace PWMIS.Core.Extensions
         /// 检查实体类对应的数据表是否在数据库中存在，需要在子类中实现
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        protected virtual void CheckTableExists<T>() where T : EntityBase, new()
-        {
-            ////创建表
-            //if (db.CurrentDBMSType == PWMIS.Common.DBMSType.Access)
-            //{
-            //    var entity = new T();
-            //    Access access = (Access)db;
-            //    var dsScheme = access.GetSchema("Tables", new string[] { null, null, null, "TABLE" });
-            //    var rows = dsScheme.Select("table_name='" + entity.GetTableName() + "'");
-            //    if (rows.Length == 0)
-            //    {
-            //        PWMIS.AccessExtensions.AccessUility.CreateTable(access, entity);
-            //    }
-            //}
-        }
+        protected abstract void CheckTableExists<T>() where T : EntityBase, new();
+        
         /// <summary>
         /// 创建一个新的EntityQuery泛型类实例对象
         /// </summary>
@@ -134,5 +102,83 @@ namespace PWMIS.Core.Extensions
                 return false;
             }
         }
+
+        #region 增，删，改公共方法
+        private int ExecuteQuery<T>(T data, Func<EntityQuery, EntityBase, int> fun) where T : class
+        {
+            EntityBase entity = data as EntityBase;
+            if (entity == null) //T 是接口类型，data 是一个实现了该接口的DTO
+            {
+                T temp = EntityBuilder.CreateEntity<T>();
+                entity = temp as EntityBase;
+
+                entity.MapFrom(data);
+                entity.ResetChanges(true);
+            }
+
+            EntityQuery eq = new EntityQuery(CurrentDataBase);
+            int accept = fun(eq, entity);
+            return accept;
+        }
+
+        /// <summary>
+        /// 增加一个数据到数据库中
+        /// </summary>
+        /// <typeparam name="T">实体类或者接口</typeparam>
+        /// <param name="data">要增加的数据</param>
+        /// <returns>操作受影响的行数</returns>
+        public int Add<T>(T data) where T : class
+        {
+            return ExecuteQuery<T>(data, (q, e) => q.Insert(e));
+        }
+
+        /// <summary>
+        /// 修改一个数据到数据库中
+        /// </summary>
+        /// <typeparam name="T">实体类或者接口</typeparam>
+        /// <param name="data">要修改的数据</param>
+        /// <returns>操作受影响的行数</returns>
+        public int Update<T>(T data) where T : class
+        {
+            return ExecuteQuery<T>(data, (q, e) => q.Update(e));
+        }
+
+        /// <summary>
+        /// 从数据库中删除一个数据到，数据必须有主键
+        /// </summary>
+        /// <typeparam name="T">实体类或者接口</typeparam>
+        /// <param name="data">要删除的数据</param>
+        /// <returns>操作受影响的行数</returns>
+        public int Remove<T>(T data) where T : class
+        {
+            return ExecuteQuery<T>(data, (q, e) => q.Delete(e));
+        }
+
+        /// <summary>
+        /// 添加一个列表数据到数据库中
+        /// </summary>
+        /// <typeparam name="T">实体类或者接口</typeparam>
+        /// <param name="list">数据列表</param>
+        /// <returns>操作受影响的行数</returns>
+        public int AddList<T>(IEnumerable<T> list) where T : class
+        {
+            List<EntityBase> objList = new List<EntityBase>();
+            foreach (T data in list)
+            {
+                //根据接口创建实际的实体类对象
+                T obj = EntityBuilder.CreateEntity<T>();
+                EntityBase entity = obj as EntityBase;
+                //为实体类属性赋值
+                entity.MapFrom(data);
+                entity.ResetChanges(true);
+
+                objList.Add(entity);
+            }
+
+            EntityQuery eq = new EntityQuery(CurrentDataBase);
+            return eq.Insert(objList);
+        }
+
+        #endregion
     }
 }
