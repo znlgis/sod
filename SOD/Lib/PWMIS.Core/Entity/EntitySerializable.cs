@@ -5,6 +5,10 @@ using PWMIS.Core;
 
 namespace PWMIS.DataMap.Entity
 {
+    /// <summary>
+    /// 实体类可以序列化的辅助类,该类已经过时
+    /// </summary>
+    [Obsolete("请使用PropertyNameValuesSerializer 类替代")]
     public class EntitySerializable
     {
         protected internal string[] PropertyNames { 
