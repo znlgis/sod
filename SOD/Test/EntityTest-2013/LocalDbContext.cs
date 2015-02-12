@@ -13,9 +13,9 @@ namespace EntityTest
     public class LocalDbContext : SqlServerDbContext
     {
         public LocalDbContext()
-            : base("local")
+            : base("local") 
         {
-
+            //local 是连接字符串名字
         }
 
         #region 父类抽象方法的实现
