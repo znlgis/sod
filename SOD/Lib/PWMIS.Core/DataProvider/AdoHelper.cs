@@ -7,7 +7,7 @@
  * 该类的作用
  * 
  * 作者：邓太华     时间：2008-10-12
- * 版本：V3.0
+ * 版本：V5.2
  * 
  * 修改者：         时间：2013-1-13                
  * 修改说明：支持读写分离，详细见基类说明
@@ -15,6 +15,9 @@
  *  * 修改者：         时间：2013-5-19                
  * 修改说明：支持SQL 格式控制串，支持直接获得结果对象列表。
  * 注意不能将Format开头的几个方法命名成其它被重载的方法，感谢GIV-顺德　发现此问题。
+ * 
+ * 修改者：         时间：2015-2-15                
+ * 修改说明：新增  List<T> QueryList<T>(string sqlFormat, params object[] parameters) 方法，以增强对“微型ORM”的支持。
  * ========================================================================
 */
 using System;
@@ -279,6 +282,29 @@ namespace PWMIS.DataProvider.Data
                 }
             }
             return list;
+        }
+
+        /// <summary>
+        /// 根据SQL格式化串和可选的参数，直接查询结果并映射到POCO 对象
+        /// <example>
+        /// <code>
+        /// <![CDATA[
+        /// //假设UserPoco 对象跟 Table_User 表是映射的相同结构
+        /// AdoHelper dbLocal = new SqlServer();
+        /// dbLocal.ConnectionString = "Data Source=.;Initial Catalog=LocalDB;Integrated Security=True";
+        /// var list=dbLoal.QueryList<UserPoco>("SELECT UID,Name FROM Table_User WHERE Sex={0} And Height>={1:5.2}",1, 1.60M);
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// </summary>
+        /// <typeparam name="T">POCO 对象类型</typeparam>
+        /// <param name="sqlFormat">SQL格式化串</param>
+        /// <param name="parameters">可选的参数</param>
+        /// <returns>POCO 对象列表</returns>
+        public  List<T> QueryList<T>(string sqlFormat, params object[] parameters) where T : class, new()
+        {
+            IDataReader reader = FormatExecuteDataReader(sqlFormat, parameters);
+            return QueryList<T>(reader);
         }
     }
 }
