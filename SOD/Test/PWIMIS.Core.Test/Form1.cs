@@ -25,10 +25,11 @@ namespace PWIMIS.Core.Test
         }
 
         private void btnTest_Click(object sender, EventArgs e)
-        {            
-            OQL q=OQL.From<TblTestModel>().Select().END;
+        {
+            GOQL<TblTestModel> q = OQL.From<TblTestModel>()
+                .Select(s => new object[] { s.ID, s.Title, s.ReadCount, s.CreateTime }).END;
 
-            dataGV1.DataSource = EntityQuery<TblTestModel>.QueryList(q).ToList<TblTestModel>();
+            dataGV1.DataSource = q.ToList();
             dataGV1.Refresh();
             
         }
