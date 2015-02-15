@@ -65,6 +65,10 @@
 
  * 修改者：         时间：2015.1.6                
  * 修改说明：修改 TableNameField 的Name 属性问题，这可能在SqlMap类型的实体类上遇到问题。
+ * 
+  * 修改者：         时间：2015.1.15                
+ *  修改说明：OQL.From<T>() 方法修改修改成返回GOQL的方式，避免之前可能的误用。
+ * 
  */
 #endregion
 
@@ -970,7 +974,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 直接返回查询所有数据的泛型OQL表达式
+        /// 根据接口类型，返回查询数据的泛型OQL表达式
         /// <example>
         /// <code>
         /// <![CDATA[
@@ -993,7 +997,8 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 直接返回查询所有数据的OQL表达式
+        /// 根据实体类类型，返回查询数据的泛型OQL表达式
+        /// <remarks>2015.2.15 修改成返回GOQL的方式，避免之前可能的误用</remarks>
         /// <example>
         /// <code>
         /// <![CDATA[
@@ -1004,10 +1009,11 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <returns>OQL表达式</returns>
-        public static OQL From<T>() where T :EntityBase,new ()
+        public static GOQL<T> From<T>() where T :EntityBase,new ()
         {
             T entity = new T();
-            return new OQL(entity);
+            OQL q = new OQL(entity);
+            return new GOQL<T>(q, entity);
         }
 
         //public static GOQL<Entity> FromObject<T, Entity>() 
