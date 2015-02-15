@@ -480,9 +480,10 @@ namespace ConsoleTest
             //List<UserPoco> list1 = query.QueryList<UserPoco>(db.ExecuteDataReader("SELECT top 1 * FROM Table_User"));
 
             sw.Reset();
+
             Console.Write("query by AdoHelper Poco Query,begin...");
             sw.Start();
-            List<UserPoco> list = AdoHelper.QueryList<UserPoco>(db.ExecuteDataReader(sql));
+            List<UserPoco> list = db.QueryList<UserPoco>(sql);
             sw.Stop();
             Console.WriteLine("end,used time(ms){0}", sw.ElapsedMilliseconds);
 
