@@ -13,62 +13,65 @@
  * 修改说明：
  * ========================================================================
 */
+
 using System;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlServerCe;
+using PWMIS.Common;
 
 namespace PWMIS.DataProvider.Data
 {
     /// <summary>
-    /// SqlServerCe 数据处理
+    ///     SqlServerCe 数据处理
     /// </summary>
     public sealed class SqlServerCe : AdoHelper
     {
         /// <summary>
-        /// 默认构造函数
+        ///     获取当前数据库类型的枚举
         /// </summary>
-        public SqlServerCe()
+        public override DBMSType CurrentDBMSType
         {
-            //
-            // TODO: 在此处添加构造函数逻辑
-            //
+            get { return DBMSType.SqlServerCe; }
+        }
+
+        public override DbConnectionStringBuilder ConnectionStringBuilder
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override string ConnectionUserID
+        {
+            get { throw new NotImplementedException(); }
         }
 
         /// <summary>
-        /// 获取当前数据库类型的枚举
-        /// </summary>
-        public override PWMIS.Common.DBMSType CurrentDBMSType
-        {
-            get { return PWMIS.Common.DBMSType.SqlServerCe ; }
-        }
-
-        /// <summary>
-        /// 创建并且打开数据库连接
+        ///     创建并且打开数据库连接
         /// </summary>
         /// <returns>数据库连接</returns>
         protected override IDbConnection GetConnection()
         {
-            IDbConnection conn = base.GetConnection();
+            var conn = base.GetConnection();
             if (conn == null)
             {
-                conn = new SqlCeConnection(base.ConnectionString);
+                conn = new SqlCeConnection(ConnectionString);
                 //conn.Open ();
             }
             return conn;
         }
 
         /// <summary>
-        /// 获取数据适配器实例
+        ///     获取数据适配器实例
         /// </summary>
         /// <returns>数据适配器</returns>
         protected override IDbDataAdapter GetDataAdapter(IDbCommand command)
         {
-            IDbDataAdapter ada = new SqlCeDataAdapter((SqlCeCommand)command);
+            IDbDataAdapter ada = new SqlCeDataAdapter((SqlCeCommand) command);
             return ada;
         }
 
         /// <summary>
-        /// 获取一个新参数对象
+        ///     获取一个新参数对象
         /// </summary>
         /// <returns>特定于数据源的参数对象</returns>
         public override IDataParameter GetParameter()
@@ -77,15 +80,15 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///  获取一个新参数对象
+        ///     获取一个新参数对象
         /// </summary>
         /// <param name="paraName">参数名</param>
         /// <param name="dbType">参数数据类型</param>
         /// <param name="size">参数大小</param>
         /// <returns>特定于数据源的参数对象</returns>
-        public override IDataParameter GetParameter(string paraName, System.Data.DbType dbType, int size)
+        public override IDataParameter GetParameter(string paraName, DbType dbType, int size)
         {
-            SqlCeParameter para = new SqlCeParameter();
+            var para = new SqlCeParameter();
             para.ParameterName = paraName;
             para.DbType = dbType;
             para.Size = size;
@@ -94,11 +97,11 @@ namespace PWMIS.DataProvider.Data
 
         public override string GetNativeDbTypeName(IDataParameter para)
         {
-            return ((SqlCeParameter)para).SqlDbType.ToString();
+            return ((SqlCeParameter) para).SqlDbType.ToString();
         }
 
         /// <summary>
-        /// 返回此 SqlConnection 的数据源的架构信息。
+        ///     返回此 SqlConnection 的数据源的架构信息。
         /// </summary>
         /// <param name="collectionName">集合名称</param>
         /// <param name="restrictionValues">请求的架构的一组限制值</param>
@@ -117,7 +120,7 @@ namespace PWMIS.DataProvider.Data
             //    //    return conn.GetSchema(collectionName, restrictionValues);
             //}
 
-            string sql = "select * from INFORMATION_SCHEMA.";
+            var sql = "select * from INFORMATION_SCHEMA.";
             collectionName = collectionName.ToUpper();
             switch (collectionName)
             {
@@ -134,17 +137,17 @@ namespace PWMIS.DataProvider.Data
                     throw new NotSupportedException("SQLCE 不支持该架构集合");
             }
 
-            DataSet ds = this.ExecuteDataSet(sql);
+            var ds = ExecuteDataSet(sql);
             if (ds.Tables.Count > 0)
             {
-                DataTable dt = ds.Tables[0];
+                var dt = ds.Tables[0];
                 if (restrictionValues != null && restrictionValues.Length > 0)
                 {
-                    DataTable dtObj = dt.Clone();
+                    var dtObj = dt.Clone();
                     foreach (DataRow dr in dt.Rows)
                     {
-                        bool flag = true;
-                        for (int i = 0; i < restrictionValues.Length; i++)
+                        var flag = true;
+                        for (var i = 0; i < restrictionValues.Length; i++)
                         {
                             if (!string.IsNullOrEmpty(restrictionValues[i]))
                             {
@@ -162,24 +165,9 @@ namespace PWMIS.DataProvider.Data
                     }
                     return dtObj;
                 }
-                else
-                {
-                    return dt;
-                }
-
+                return dt;
             }
             throw new Exception("SQLCE 查询表架构错误，架构表为空：" + sql);
-
-        }
-
-        public override System.Data.Common.DbConnectionStringBuilder ConnectionStringBuilder
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public override string ConnectionUserID
-        {
-            get { throw new NotImplementedException(); }
         }
     }
 }

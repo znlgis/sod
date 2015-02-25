@@ -17,9 +17,6 @@ SELECT FROM
  * 
  * 根据SQL查询级别，制定IOQL接口。
  */
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PWMIS.DataMap.Entity
 {
@@ -41,15 +38,11 @@ namespace PWMIS.DataMap.Entity
     {
         //OQL End { get; }
         OQL3 GroupBy(object field);
-        //OQL4 Having(object field);
-        //OQL4 OrderBy(object field);
     }
 
     public interface IOQL3 : IOQL4
     {
-        OQL4 Having(object field,object Value,string sqlFunctionFormat);
-        //OQL End { get; }
-        //OQL4 OrderBy(object field);
+        OQL4 Having(object field, object Value, string sqlFunctionFormat);
     }
 
     public interface IOQL4

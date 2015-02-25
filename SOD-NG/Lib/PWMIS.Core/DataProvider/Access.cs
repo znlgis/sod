@@ -16,29 +16,31 @@
  * 修改说明：解决Access 生成建表脚本的问题 
  * ========================================================================
 */
+
 using System;
 using System.Data;
 using System.Data.OleDb;
+using PWMIS.Common;
 
 namespace PWMIS.DataProvider.Data
 {
     /// <summary>
-    /// Access 数据库访问类
+    ///     Access 数据库访问类
     /// </summary>
     public sealed class Access : OleDb
     {
+        private string _insertKey;
 
         /// <summary>
-        /// 获取当前数据库类型的枚举
+        ///     获取当前数据库类型的枚举
         /// </summary>
-        public override PWMIS.Common.DBMSType CurrentDBMSType
+        public override DBMSType CurrentDBMSType
         {
-            get { return PWMIS.Common.DBMSType.Access; }
+            get { return DBMSType.Access; }
         }
 
-        private string _insertKey;
         /// <summary>
-        /// 在插入具有自增列的数据后，获取刚才自增列的数据的
+        ///     在插入具有自增列的数据后，获取刚才自增列的数据的
         /// </summary>
         public override string InsertKey
         {
@@ -46,29 +48,25 @@ namespace PWMIS.DataProvider.Data
             {
                 if (string.IsNullOrEmpty(_insertKey))
                     return "SELECT @@IDENTITY";
-                else
-                    return _insertKey;
+                return _insertKey;
             }
-            set
-            {
-                _insertKey = value;
-            }
+            set { _insertKey = value; }
         }
 
         /// <summary>
-        /// 获取查询参数对象，如果参数值是日期类型，请调用此方法，否则调用其它重载方法后，给日期类型的参数值去除毫秒部分。
+        ///     获取查询参数对象，如果参数值是日期类型，请调用此方法，否则调用其它重载方法后，给日期类型的参数值去除毫秒部分。
         /// </summary>
         /// <param name="paraName"></param>
         /// <param name="Value"></param>
         /// <returns></returns>
         public override IDataParameter GetParameter(string paraName, object Value)
         {
-            IDataParameter para = base.GetParameter(paraName, Value);
+            var para = base.GetParameter(paraName, Value);
             if (Value is DateTime)
             {
-                ((OleDbParameter)para).OleDbType = OleDbType.DBTimeStamp;//时间带毫秒将失败
-                DateTime dt = (DateTime)Value;
-                DateTime objDt = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
+                ((OleDbParameter) para).OleDbType = OleDbType.DBTimeStamp; //时间带毫秒将失败
+                var dt = (DateTime) Value;
+                var objDt = new DateTime(dt.Year, dt.Month, dt.Day, dt.Hour, dt.Minute, dt.Second);
                 para.Value = objDt;
             }
             return para;
@@ -76,28 +74,28 @@ namespace PWMIS.DataProvider.Data
 
         public override IDataParameter GetParameter(string paraName, DbType dbType)
         {
-            IDataParameter para = this.GetParameter();
+            var para = GetParameter();
             para.ParameterName = paraName;
             para.DbType = dbType;
             if (dbType == DbType.DateTime)
-                ((OleDbParameter)para).OleDbType = OleDbType.DBDate;
+                ((OleDbParameter) para).OleDbType = OleDbType.DBDate;
             return para;
         }
 
-        public override IDataParameter GetParameter(string paraName, System.Data.DbType dbType, int size)
+        public override IDataParameter GetParameter(string paraName, DbType dbType, int size)
         {
-            OleDbParameter para = new OleDbParameter();
+            var para = new OleDbParameter();
             para.ParameterName = paraName;
             para.DbType = dbType;
             para.Size = size;
             if (dbType == DbType.DateTime)
-                ((OleDbParameter)para).OleDbType = OleDbType.DBDate;
+                para.OleDbType = OleDbType.DBDate;
             return para;
         }
 
         public override string GetNativeDbTypeName(IDataParameter para)
         {
-            OleDbType type = ((OleDbParameter)para).OleDbType;
+            var type = ((OleDbParameter) para).OleDbType;
             if (type == OleDbType.VarWChar)
                 type = OleDbType.VarChar;
             else if (type == OleDbType.DBDate)
@@ -107,5 +105,4 @@ namespace PWMIS.DataProvider.Data
             return type.ToString();
         }
     }
-
 }

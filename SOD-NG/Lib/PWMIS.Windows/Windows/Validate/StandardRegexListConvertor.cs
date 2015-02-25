@@ -13,22 +13,16 @@
  * 修改说明：
  * ========================================================================
 */
-using System;
+
 using System.ComponentModel;
-using System.Collections;
 
 namespace PWMIS.Windows.Validate
 {
     /// <summary>
-    /// StandardRegexListConvertor 的摘要说明。
+    ///     StandardRegexListConvertor 的摘要说明。
     /// </summary>
     public class StandardRegexListConvertor : TypeConverter
     {
-        public StandardRegexListConvertor()
-        {
-
-        }
-
         public override bool GetStandardValuesSupported(ITypeDescriptorContext context)
         {
             return true;
@@ -39,9 +33,9 @@ namespace PWMIS.Windows.Validate
             return true;
         }
 
-        public override System.ComponentModel.TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
+        public override StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
         {
-            Hashtable ht = RegexStatic.GetGenerateRegex();
+            var ht = RegexStatic.GetGenerateRegex();
             ht.Add("无", "");
             return new StandardValuesCollection(ht.Keys);
         }

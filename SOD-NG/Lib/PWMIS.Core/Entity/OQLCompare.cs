@@ -22,81 +22,149 @@
  * 
  * ========================================================================
 */
+
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace PWMIS.DataMap.Entity
 {
-
     public delegate OQLCompare OQLCompareFunc(OQLCompare cmp);
+
     public delegate OQLCompare OQLCompareFunc<T>(OQLCompare cmp, T p);
-    public delegate OQLCompare OQLCompareFunc<T1,T2>(OQLCompare cmp,T1 p1,T2 p2);
-    public delegate OQLCompare OQLCompareFunc<T1, T2,T3>(OQLCompare cmp, T1 p1, T2 p2,T3 p3);
+
+    public delegate OQLCompare OQLCompareFunc<T1, T2>(OQLCompare cmp, T1 p1, T2 p2);
+
+    public delegate OQLCompare OQLCompareFunc<T1, T2, T3>(OQLCompare cmp, T1 p1, T2 p2, T3 p3);
 
     /// <summary>
-    /// 实体对象条件比较类，用于复杂条件比较表达式
+    ///     实体对象条件比较类，用于复杂条件比较表达式
     /// </summary>
     public class OQLCompare //: IDisposable
     {
-        #region 构造函数
+        protected string ComparedFieldName;
+        protected string ComparedParameterName;
+        protected CompareType ComparedType;
+        protected string SqlFunctionFormat;
+        //新的变量
+
         /// <summary>
-        /// 默认构造函数
+        ///     关联的OQL对象
+        /// </summary>
+        public OQL LinkedOQL { get; protected internal set; }
+
+        //
+
+        protected OQLCompare LeftNode { get; set; }
+        protected OQLCompare RightNode { get; set; }
+        protected CompareLogic Logic { get; set; }
+
+        protected bool IsLeaf
+        {
+            get { return Equals(LeftNode, null) && Equals(RightNode, null); }
+        }
+
+        /// <summary>
+        ///     获取比较类型的字符串形式
+        /// </summary>
+        /// <returns></returns>
+        protected string GetComparedTypeString()
+        {
+            return GetDbCompareTypeStr(ComparedType);
+        }
+
+        /// <summary>
+        ///     检查子节点的逻辑类型
+        /// </summary>
+        /// <param name="childCmp"></param>
+        /// <param name="currLogic"></param>
+        /// <returns></returns>
+        private bool CheckChildLogicEquals(OQLCompare childCmp, CompareLogic currLogic)
+        {
+            //currCmp 不能是叶子结点
+            //如果子节点的逻辑类型不同于当前逻辑类型，直接返回 非
+            if (childCmp.Logic != currLogic)
+                return false;
+
+            //如果子节点的逻辑类型 同于当前逻辑类型，则需要检查子节点的左右子节点与当前逻辑类型的对比
+            if (childCmp.LeftNode.IsLeaf && childCmp.RightNode.IsLeaf)
+            {
+                return childCmp.Logic == currLogic;
+            }
+            if (!childCmp.LeftNode.IsLeaf && !childCmp.RightNode.IsLeaf)
+            {
+                var left_flag = false;
+                var right_flag = false;
+                left_flag = CheckChildLogicEquals(childCmp.LeftNode, currLogic);
+                right_flag = CheckChildLogicEquals(childCmp.RightNode, currLogic);
+                return left_flag && right_flag;
+            }
+            if (!childCmp.LeftNode.IsLeaf && childCmp.RightNode.IsLeaf)
+            {
+                return CheckChildLogicEquals(childCmp.LeftNode, currLogic);
+            }
+            if (childCmp.LeftNode.IsLeaf && !childCmp.RightNode.IsLeaf)
+            {
+                return CheckChildLogicEquals(childCmp.RightNode, currLogic);
+            }
+            return false;
+        }
+
+        #region 构造函数
+
+        /// <summary>
+        ///     默认构造函数
         /// </summary>
         public OQLCompare()
         {
-           
         }
 
         public OQLCompare(OQL oql)
         {
             if (oql == null)
                 throw new ArgumentException("OQLCompare 关联的OQL对象为空！");
-            this.LinkedOQL = oql;
+            LinkedOQL = oql;
         }
 
         /// <summary>
-        /// 使用一个实体对象初始化本类。该方法已经过时，请使用其它构造函数
+        ///     使用一个实体对象初始化本类。该方法已经过时，请使用其它构造函数
         /// </summary>
         /// <param name="e"></param>
         [Obsolete("该方法已经过时，请使用 OQLCompare(OQL oql) 构造函数")]
         public OQLCompare(EntityBase e)
         {
-           
         }
 
         /// <summary>
-        /// 使用多个实体类进行连接查询的条件。该方法已经过时，请使用其它构造函数
+        ///     使用多个实体类进行连接查询的条件。该方法已经过时，请使用其它构造函数
         /// </summary>
         /// <param name="e"></param>
         /// <param name="joinedEntitys"></param>
         [Obsolete("该方法已经过时，请使用 OQLCompare(OQL oql) 构造函数")]
         public OQLCompare(EntityBase e, params EntityBase[] joinedEntitys)
         {
-            
         }
 
         /// <summary>
-        /// 采用两个实体比较对象按照某种比较逻辑进行处理，构造一个新的实体比较对象
+        ///     采用两个实体比较对象按照某种比较逻辑进行处理，构造一个新的实体比较对象
         /// </summary>
-        /// <seealso cref="http://www.cnblogs.com/bluedoctor/archive/2010/11/28/1870095.html"/>
+        /// <seealso cref="http://www.cnblogs.com/bluedoctor/archive/2010/11/28/1870095.html" />
         /// <param name="compare1">比较逻辑符号左边的实体比较对象</param>
         /// <param name="logic">比较逻辑</param>
         /// <param name="compare2">比较逻辑符号左边的实体比较对象</param>
         public OQLCompare(OQLCompare compare1, CompareLogic logic, OQLCompare compare2)
         {
-            if (object.Equals( compare1 , null))
+            if (Equals(compare1, null))
                 throw new ArgumentNullException("参数compare1 不能为空！");
-            if (object.Equals(compare2, null) && logic!= CompareLogic.NOT)
+            if (Equals(compare2, null) && logic != CompareLogic.NOT)
                 throw new ArgumentNullException("参数compare2 为空的时候，只能是NOT操作！");
-            this.LinkedOQL = compare1.LinkedOQL;
-            this.LeftNode = compare1;
-            this.RightNode = compare2;
-            this.Logic = logic;
+            LinkedOQL = compare1.LinkedOQL;
+            LeftNode = compare1;
+            RightNode = compare2;
+            Logic = logic;
         }
 
         /// <summary>
-        /// 对条件表达式取反
+        ///     对条件表达式取反
         /// </summary>
         /// <param name="cmp"></param>
         /// <returns></returns>
@@ -108,83 +176,96 @@ namespace PWMIS.DataMap.Entity
         #endregion
 
         #region 其它方法
+
         /// <summary>
-        /// 比较类别
+        ///     比较类别
         /// </summary>
         public enum CompareType
         {
             /// <summary>
-            /// 大于
+            ///     大于
             /// </summary>
             Greater,
+
             /// <summary>
-            /// 不大于（小于或等于）
+            ///     不大于（小于或等于）
             /// </summary>
             LessThanOrEqual,
+
             /// <summary>
-            /// 小于
+            ///     小于
             /// </summary>
             LessThan,
+
             /// <summary>
-            /// 不小于（大于或等于）
+            ///     不小于（大于或等于）
             /// </summary>
             GreaterThanOrEqual,
+
             /// <summary>
-            /// 相等
+            ///     相等
             /// </summary>
             Equal,
+
             /// <summary>
-            /// 不等于
+            ///     不等于
             /// </summary>
             NotEqual,
+
             /// <summary>
-            /// 类似于
+            ///     类似于
             /// </summary>
             Like,
+
             /// <summary>
-            /// IS NULL / IS NOT NULL
+            ///     IS NULL / IS NOT NULL
             /// </summary>
             IS,
+
             /// <summary>
-            /// IN 查询
+            ///     IN 查询
             /// </summary>
             IN,
+
             /// <summary>
-            /// Not In 查询
+            ///     Not In 查询
             /// </summary>
             NotIn,
+
             /// <summary>
-            /// IS NOT NULL
+            ///     IS NOT NULL
             /// </summary>
             IsNot,
+
             /// <summary>
-            /// BETWEEN 在某两个值之间
+            ///     BETWEEN 在某两个值之间
             /// </summary>
             Between
-
         }
 
         /// <summary>
-        /// 条件表达式逻辑符号
+        ///     条件表达式逻辑符号
         /// </summary>
         public enum CompareLogic
         {
             /// <summary>
-            /// 逻辑 与
+            ///     逻辑 与
             /// </summary>
             AND,
+
             /// <summary>
-            /// 逻辑 或
+            ///     逻辑 或
             /// </summary>
             OR,
+
             /// <summary>
-            /// 逻辑 非
+            ///     逻辑 非
             /// </summary>
             NOT
         }
 
         /// <summary>
-        /// （条件表达式）比较的参数信息表
+        ///     （条件表达式）比较的参数信息表
         /// </summary>
         [Obsolete("方法已经过时，不再返回有意义的值")]
         public Dictionary<string, object> ComparedParameters
@@ -193,7 +274,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 获取一个新的参数名称。方法已经过时
+        ///     获取一个新的参数名称。方法已经过时
         /// </summary>
         /// <returns></returns>
         [Obsolete("方法已经过时,不再返回有意义的值")]
@@ -203,42 +284,42 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 获取比较表达式的字符串形式
+        ///     获取比较表达式的字符串形式
         /// </summary>
         public string CompareString
         {
             get
             {
-                string result = string.Empty;
-                if (this.IsLeaf)
+                var result = string.Empty;
+                if (IsLeaf)
                 {
                     //假设左边是字段名，右边是值或者其它字段名
                     result = string.Format("{0} {1} {2}"
-                        , getCompareFieldString(this.SqlFunctionFormat, this.ComparedFieldName)
-                        , this.GetComparedTypeString()
-                        , this.ComparedParameterName);
+                        , getCompareFieldString(SqlFunctionFormat, ComparedFieldName)
+                        , GetComparedTypeString()
+                        , ComparedParameterName);
                 }
-                else if (this.Logic == CompareLogic.NOT)
+                else if (Logic == CompareLogic.NOT)
                 {
-                    result = string.Format(" NOT ({0}) ", this.LeftNode.CompareString);
+                    result = string.Format(" NOT ({0}) ", LeftNode.CompareString);
                 }
                 else
                 {
-                    string format = string.Empty;
-                    if (this.LeftNode.IsLeaf && this.RightNode.IsLeaf)
+                    var format = string.Empty;
+                    if (LeftNode.IsLeaf && RightNode.IsLeaf)
                     {
                         format = " {0} {1} {2} ";
                     }
-                    else if (this.LeftNode.IsLeaf && !this.RightNode.IsLeaf)
+                    else if (LeftNode.IsLeaf && !RightNode.IsLeaf)
                     {
-                        if (this.RightNode.Logic == this.Logic)
+                        if (RightNode.Logic == Logic)
                             format = " {0} {1} {2}\r\n ";
                         else
                             format = " {0} \r\n\t{1}\r\n\t  (\r\n\t  {2}\r\n\t  )\r\n ";
                     }
-                    else if (!this.LeftNode.IsLeaf && this.RightNode.IsLeaf)
+                    else if (!LeftNode.IsLeaf && RightNode.IsLeaf)
                     {
-                        if (this.LeftNode.Logic == this.Logic)
+                        if (LeftNode.Logic == Logic)
                             format = " {0} {1} {2} ";
                         else
                             format = "\r\n\t  (\r\n\t  {0}\r\n\t  ) \r\n\t{1} \r\n\t{2} ";
@@ -246,8 +327,8 @@ namespace PWMIS.DataMap.Entity
                     else
                     {
                         //左右子节点，都不是叶子结点
-                        bool left_flag = CheckChildLogicEquals(this.LeftNode, this.Logic);
-                        bool right_flag = CheckChildLogicEquals(this.RightNode, this.Logic);
+                        var left_flag = CheckChildLogicEquals(LeftNode, Logic);
+                        var right_flag = CheckChildLogicEquals(RightNode, Logic);
 
                         if (left_flag && right_flag)
                             format = " {0} {1} {2} ";
@@ -257,13 +338,14 @@ namespace PWMIS.DataMap.Entity
                             format = " {0} {1} ({2})\r\n ";
                         else
                             format = "\r\n\t({0})\r\n {1} \r\n\t({2})\r\n ";
-
                     }
 
-                    string logicString = this.Logic == CompareLogic.AND ? "AND" : (
-                        this.Logic == CompareLogic.OR ? "OR" : "NOT"
-                        );
-                    result = string.Format(format, this.LeftNode.CompareString, logicString, this.RightNode.CompareString);
+                    var logicString = Logic == CompareLogic.AND
+                        ? "AND"
+                        : (
+                            Logic == CompareLogic.OR ? "OR" : "NOT"
+                            );
+                    result = string.Format(format, LeftNode.CompareString, logicString, RightNode.CompareString);
                 }
                 //
                 return result;
@@ -272,7 +354,7 @@ namespace PWMIS.DataMap.Entity
 
         private string getCompareFieldString(string sqlFunctionFormat, string currFieldName)
         {
-            string compareFieldString = string.Empty;
+            var compareFieldString = string.Empty;
             if (!string.IsNullOrEmpty(sqlFunctionFormat))
             {
                 if (sqlFunctionFormat.Contains("--"))
@@ -289,7 +371,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 判断两个OQLCompare 是否是同一个对象
+        ///     判断两个OQLCompare 是否是同一个对象
         /// </summary>
         /// <param name="obj"></param>
         /// <returns></returns>
@@ -297,29 +379,55 @@ namespace PWMIS.DataMap.Entity
         {
             return base.Equals(obj);
         }
-        
+
         #endregion
 
         #region 原有私有方法
 
         private string GetDbCompareTypeStr(CompareType type)
         {
-            string typeStr = "";
+            var typeStr = "";
             switch (type)
             {
-                case CompareType.Equal: typeStr = "="; break;
-                case CompareType.Greater: typeStr = ">"; break;
-                case CompareType.Like: typeStr = " LIKE "; break;
-                case CompareType.LessThanOrEqual: typeStr = "<="; break;
-                case CompareType.GreaterThanOrEqual: typeStr = ">="; break;
-                case CompareType.NotEqual: typeStr = "<>"; break;
-                case CompareType.LessThan: typeStr = "<"; break;
-                case CompareType.IN: typeStr = " IN "; break;
-                case CompareType.IS: typeStr = " IS "; break;
-                case CompareType.NotIn: typeStr = " NOT IN "; break;
-                case CompareType.IsNot: typeStr = " IS NOT "; break;
-                case CompareType.Between: typeStr = " BETWEEN "; break;
-                default: typeStr = "="; break;
+                case CompareType.Equal:
+                    typeStr = "=";
+                    break;
+                case CompareType.Greater:
+                    typeStr = ">";
+                    break;
+                case CompareType.Like:
+                    typeStr = " LIKE ";
+                    break;
+                case CompareType.LessThanOrEqual:
+                    typeStr = "<=";
+                    break;
+                case CompareType.GreaterThanOrEqual:
+                    typeStr = ">=";
+                    break;
+                case CompareType.NotEqual:
+                    typeStr = "<>";
+                    break;
+                case CompareType.LessThan:
+                    typeStr = "<";
+                    break;
+                case CompareType.IN:
+                    typeStr = " IN ";
+                    break;
+                case CompareType.IS:
+                    typeStr = " IS ";
+                    break;
+                case CompareType.NotIn:
+                    typeStr = " NOT IN ";
+                    break;
+                case CompareType.IsNot:
+                    typeStr = " IS NOT ";
+                    break;
+                case CompareType.Between:
+                    typeStr = " BETWEEN ";
+                    break;
+                default:
+                    typeStr = "=";
+                    break;
             }
             return typeStr;
         }
@@ -331,20 +439,21 @@ namespace PWMIS.DataMap.Entity
                 throw new ArgumentException("OQLCompare 关联的OQL对象为空！参数无效，参数名：compare");
             var tnf = compare.LinkedOQL.TakeOneStackFields();
             compare.ComparedFieldName = tnf.SqlFieldName;
-            compare.ComparedParameterName = compare.LinkedOQL.CreateParameter(tnf,Value);
+            compare.ComparedParameterName = compare.LinkedOQL.CreateParameter(tnf, Value);
             compare.ComparedType = cmpType;
 
             compare.LinkedOQL.fieldStack.Clear();
             return compare;
         }
+
         #endregion
 
         #region 比较的方法
 
         /// <summary>
-        /// 对一组OQLCompare 对象，执行CompareLogic 类型的比较，通常用于构造复杂的带括号的条件查询
+        ///     对一组OQLCompare 对象，执行CompareLogic 类型的比较，通常用于构造复杂的带括号的条件查询
         /// </summary>
-        /// <seealso cref="http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html"/>
+        /// <seealso cref="http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html" />
         /// <param name="compares">OQL比较对象列表</param>
         /// <param name="logic">各组比较条件的组合方式，And，Or，Not</param>
         /// <returns>新的条件比较对象</returns>
@@ -354,7 +463,7 @@ namespace PWMIS.DataMap.Entity
                 throw new Exception("OQL 条件比较对象集合不能为空或者空引用！");
             if (compares.Count == 1)
                 return compares[0];
-            OQLCompare cmp = new OQLCompare(this.LinkedOQL);
+            var cmp = new OQLCompare(LinkedOQL);
             //string typeString = logic == CompareLogic.AND ? " And " : logic == CompareLogic.OR ? " Or " : " Not ";
             //foreach (OQLCompare item in compares)
             //{
@@ -371,20 +480,20 @@ namespace PWMIS.DataMap.Entity
             //return cmp;
             //
             //将列表转换成树
-            foreach (OQLCompare item in compares)
+            foreach (var item in compares)
             {
-                if (object.Equals(cmp.LeftNode,null))
+                if (Equals(cmp.LeftNode, null))
                 {
                     cmp.LeftNode = item;
                     cmp.Logic = logic;
                 }
-                else if (object.Equals(cmp.RightNode, null))
+                else if (Equals(cmp.RightNode, null))
                 {
                     cmp.RightNode = item;
                 }
                 else
                 {
-                    var newCmp = new OQLCompare(this.LinkedOQL);
+                    var newCmp = new OQLCompare(LinkedOQL);
                     newCmp.LeftNode = cmp;
                     newCmp.Logic = logic;
                     newCmp.RightNode = item;
@@ -397,7 +506,7 @@ namespace PWMIS.DataMap.Entity
 
 
         /// <summary>
-        /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
+        ///     将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
         /// </summary>
         /// <param name="field">实体对象属性</param>
         /// <param name="type">比较类型枚举</param>
@@ -405,12 +514,12 @@ namespace PWMIS.DataMap.Entity
         /// <returns>比较表达式</returns>
         public OQLCompare Comparer<T>(T field, CompareType type, T Value)
         {
-            return Comparer<T>(field, type, Value, null);
+            return Comparer(field, type, Value, null);
         }
 
         private OQLCompare ComparerInner<T>(T field, CompareType type, object oValue, string sqlFunctionFormat)
         {
-            OQLCompare compare = new OQLCompare(this.LinkedOQL);
+            var compare = new OQLCompare(LinkedOQL);
             TableNameField leftField;
             TableNameField rightField;
 
@@ -427,7 +536,7 @@ namespace PWMIS.DataMap.Entity
             {
                 if (oValue != null)
                 {
-                    string strValue = oValue.ToString().ToUpper().Trim();
+                    var strValue = oValue.ToString().ToUpper().Trim();
                     if (strValue == "NULL" || strValue == "NOT NULL")
                         compare.ComparedParameterName = strValue;
                     else
@@ -444,21 +553,21 @@ namespace PWMIS.DataMap.Entity
             }
             else
             {
-                if (leftField!=null && rightField!=null)
+                if (leftField != null && rightField != null)
                 {
                     //可能直接用相同的字段来比较，感谢网友Sharp_C 发现此问题
                     if (leftField.SqlFieldName == rightField.SqlFieldName)
-                        compare.ComparedParameterName = compare.LinkedOQL.CreateParameter(leftField,oValue);
+                        compare.ComparedParameterName = compare.LinkedOQL.CreateParameter(leftField, oValue);
                     else
                         compare.ComparedParameterName = rightField.SqlFieldName;
                 }
-                else if (leftField!=null && rightField==null)
+                else if (leftField != null && rightField == null)
                 {
-                    compare.ComparedParameterName = compare.LinkedOQL.CreateParameter(leftField,oValue);
+                    compare.ComparedParameterName = compare.LinkedOQL.CreateParameter(leftField, oValue);
                 }
-                else if (leftField==null && rightField!=null)
+                else if (leftField == null && rightField != null)
                 {
-                    compare.ComparedFieldName = compare.LinkedOQL.CreateParameter(rightField,field);
+                    compare.ComparedFieldName = compare.LinkedOQL.CreateParameter(rightField, field);
                     compare.ComparedParameterName = rightField.SqlFieldName;
                 }
                 else
@@ -471,7 +580,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
+        ///     将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
         /// </summary>
         /// <param name="field">实体对象属性</param>
         /// <param name="type">比较类型枚举</param>
@@ -480,24 +589,25 @@ namespace PWMIS.DataMap.Entity
         /// <returns>比较表达式</returns>
         public OQLCompare Comparer<T>(T field, CompareType type, T Value, string sqlFunctionFormat)
         {
-            return ComparerInner<T>(field, type, Value, sqlFunctionFormat);
+            return ComparerInner(field, type, Value, sqlFunctionFormat);
         }
 
         public OQLCompare ComparerSqlFunction<T>(T field, CompareType type, object Value, string sqlFunctionFormat)
         {
-            return ComparerInner<T>(field, type, Value, sqlFunctionFormat);
+            return ComparerInner(field, type, Value, sqlFunctionFormat);
         }
 
         public OQLCompare ComparerSqlFunction<T>(T field, string typeString, object Value, string sqlFunctionFormat)
         {
-            return ComparerInner<T>(field, CompareString2Type(typeString), Value, sqlFunctionFormat);
+            return ComparerInner(field, CompareString2Type(typeString), Value, sqlFunctionFormat);
         }
 
         #region 聚合函数
-        public OQLCompare Count(CompareType type ,object Value)
+
+        public OQLCompare Count(CompareType type, object Value)
         {
-            OQLCompare compare = new OQLCompare(this.LinkedOQL);
-           
+            var compare = new OQLCompare(LinkedOQL);
+
             if (type == CompareType.IS || type == CompareType.IN || type == CompareType.NotIn)
                 throw new ArgumentOutOfRangeException("IS,IN,NOT IN 操作符请使用Count 方法不受支持！");
 
@@ -510,65 +620,66 @@ namespace PWMIS.DataMap.Entity
 
         public OQLCompare Count<T>(T field, CompareType type, object oValue)
         {
-            return ComparerInner<T>(field, type, oValue, "COUNT({0})");
+            return ComparerInner(field, type, oValue, "COUNT({0})");
         }
 
         public OQLCompare AVG<T>(T field, CompareType type, object oValue)
         {
-            return ComparerInner<T>(field, type, oValue, "AVG({0})");
+            return ComparerInner(field, type, oValue, "AVG({0})");
         }
 
         public OQLCompare MAX<T>(T field, CompareType type, T Value)
         {
-            return Comparer<T>(field, type, Value, "MAX({0})");
+            return Comparer(field, type, Value, "MAX({0})");
         }
 
         public OQLCompare MIN<T>(T field, CompareType type, T Value)
         {
-            return Comparer<T>(field, type, Value, "MIN({0})");
+            return Comparer(field, type, Value, "MIN({0})");
         }
 
         public OQLCompare SUM<T>(T field, CompareType type, T Value)
         {
-            return Comparer<T>(field, type, Value, "SUM({0})");
+            return Comparer(field, type, Value, "SUM({0})");
         }
 
         public OQLCompare Count<T>(T field, string typeString, object oValue)
         {
-            return ComparerInner<T>(field, CompareString2Type(typeString), oValue, "COUNT({0})");
+            return ComparerInner(field, CompareString2Type(typeString), oValue, "COUNT({0})");
         }
 
         public OQLCompare AVG<T>(T field, string typeString, object oValue)
         {
-            return ComparerInner<T>(field, CompareString2Type(typeString), oValue, "AVG({0})");
+            return ComparerInner(field, CompareString2Type(typeString), oValue, "AVG({0})");
         }
 
         public OQLCompare MAX<T>(T field, string typeString, T Value)
         {
-            return Comparer<T>(field, CompareString2Type(typeString), Value, "MAX({0})");
+            return Comparer(field, CompareString2Type(typeString), Value, "MAX({0})");
         }
 
         public OQLCompare MIN<T>(T field, string typeString, T Value)
         {
-            return Comparer<T>(field, CompareString2Type(typeString), Value, "MIN({0})");
+            return Comparer(field, CompareString2Type(typeString), Value, "MIN({0})");
         }
 
         public OQLCompare SUM<T>(T field, string typeString, T Value)
         {
-            return Comparer<T>(field, CompareString2Type(typeString), Value, "SUM({0})");
+            return Comparer(field, CompareString2Type(typeString), Value, "SUM({0})");
         }
+
         #endregion
 
         #region 对ＩＮ的特殊处理
 
         public OQLCompare Comparer<T>(T field, CompareType type, T[] Value)
         {
-            return Comparer<T>(field, type, Value, null);
+            return Comparer(field, type, Value, null);
         }
 
         public OQLCompare Comparer<T>(T field, string typeString, T[] Value)
         {
-            return Comparer<T>(field, CompareString2Type(typeString), Value, null);
+            return Comparer(field, CompareString2Type(typeString), Value, null);
         }
 
         public OQLCompare Comparer<T>(T field, CompareType type, T[] Value, string sqlFunctionFormat)
@@ -576,27 +687,27 @@ namespace PWMIS.DataMap.Entity
             if (Value == null && (type == CompareType.IN || type == CompareType.NotIn))
                 throw new ArgumentNullException("IN 条件的参数不能为空！");
 
-            OQLCompare compare = new OQLCompare(this.LinkedOQL);
-            var tnf=compare.LinkedOQL.TakeOneStackFields();
+            var compare = new OQLCompare(LinkedOQL);
+            var tnf = compare.LinkedOQL.TakeOneStackFields();
             compare.ComparedFieldName = tnf.SqlFieldName;
             compare.ComparedType = type;
             compare.SqlFunctionFormat = sqlFunctionFormat;
             if (type == CompareType.IN || type == CompareType.NotIn)
             {
-                string[] paraNames = new string[Value.Length];
-                Type t=typeof(T);
+                var paraNames = new string[Value.Length];
+                var t = typeof (T);
                 //网友Super Show 发现GUID和枚举问题 2014.3.11
-                if (t == typeof(string) || t == typeof(DateTime) || t == typeof(Guid) || t.IsEnum) 
+                if (t == typeof (string) || t == typeof (DateTime) || t == typeof (Guid) || t.IsEnum)
                 {
-                    for (int i = 0; i < Value.Length; i++)
+                    for (var i = 0; i < Value.Length; i++)
                     {
-                        paraNames[i] = compare.LinkedOQL.CreateParameter(tnf,Value[i]);
+                        paraNames[i] = compare.LinkedOQL.CreateParameter(tnf, Value[i]);
                     }
                     compare.ComparedParameterName = "(" + string.Join(",", paraNames) + ")";
                 }
                 else if (t.IsValueType)
                 {
-                    for (int i = 0; i < Value.Length; i++)
+                    for (var i = 0; i < Value.Length; i++)
                     {
                         paraNames[i] = Value[i].ToString();
                     }
@@ -606,7 +717,6 @@ namespace PWMIS.DataMap.Entity
                 {
                     throw new ArgumentException("IN,Not In 操作只支持字符串数组或者值类型数组参数");
                 }
-               
             }
             else if (type == CompareType.IS || type == CompareType.IsNot)
             {
@@ -618,7 +728,7 @@ namespace PWMIS.DataMap.Entity
             }
             return compare;
         }
-       
+
         #endregion
 
         public OQLCompare Comparer(object field, string typeString, OQL Value)
@@ -628,51 +738,48 @@ namespace PWMIS.DataMap.Entity
 
         public OQLCompare Comparer(object field, CompareType type, OQL Value)
         {
-            OQLCompare compare = new OQLCompare(this.LinkedOQL);
-            var tnf=compare.LinkedOQL.TakeOneStackFields();
+            var compare = new OQLCompare(LinkedOQL);
+            var tnf = compare.LinkedOQL.TakeOneStackFields();
             compare.ComparedFieldName = tnf.SqlFieldName;
             compare.ComparedType = type;
             if (type == CompareType.IS || type == CompareType.IsNot)
             {
                 throw new ArgumentOutOfRangeException("IS 操作符的不支持子查询！");
             }
-            else
+            var childSql = Value.ToString();
+            if (Value.Parameters.Count > 0)
             {
-                string childSql = Value.ToString();
-                if (Value.Parameters.Count > 0)
+                //先备份SQL语句中的参数名 ，感谢网友 null(yoli799480165) 发现此bug
+                foreach (var key in Value.Parameters.Keys)
                 {
-                    //先备份SQL语句中的参数名 ，感谢网友 null(yoli799480165) 发现此bug
-                    foreach (string key in Value.Parameters.Keys)
-                    {
-                        childSql = childSql.Replace(key, key+"_C");
-                    }
-                    foreach (string key in Value.Parameters.Keys)
-                    {
-                        var vtnf = Value.Parameters[key];
-                        string paraName = this.LinkedOQL.CreateParameter(vtnf);
-                        childSql = childSql.Replace(key + "_C", paraName);
-                    }
+                    childSql = childSql.Replace(key, key + "_C");
                 }
-                compare.ComparedParameterName = "\r\n(" + childSql + ")\r\n";
+                foreach (var key in Value.Parameters.Keys)
+                {
+                    var vtnf = Value.Parameters[key];
+                    var paraName = LinkedOQL.CreateParameter(vtnf);
+                    childSql = childSql.Replace(key + "_C", paraName);
+                }
             }
+            compare.ComparedParameterName = "\r\n(" + childSql + ")\r\n";
             compare.SqlFunctionFormat = "";
             return compare;
         }
 
         public OQLCompare Comparer(object field, CompareType type, OQLChildFunc Value)
         {
-            OQL childOql = Value(this.LinkedOQL);
-            return Comparer(field, type,childOql);
+            var childOql = Value(LinkedOQL);
+            return Comparer(field, type, childOql);
         }
 
         public OQLCompare Comparer(object field, string typeString, OQLChildFunc Value)
         {
-            OQL childOql = Value(this.LinkedOQL);
+            var childOql = Value(LinkedOQL);
             return Comparer(field, CompareString2Type(typeString), childOql);
         }
 
         /// <summary>
-        /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
+        ///     将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
         /// </summary>
         /// <param name="field">实体对象属性</param>
         /// <param name="compareTypeString">数据库比较类型字符串</param>
@@ -680,7 +787,7 @@ namespace PWMIS.DataMap.Entity
         /// <returns>比较表达式</returns>
         public OQLCompare Comparer<T>(T field, string compareTypeString, T Value)
         {
-            return Comparer<T>(field, compareTypeString, Value, null);
+            return Comparer(field, compareTypeString, Value, null);
         }
 
         private CompareType CompareString2Type(string cmpTypeString)
@@ -734,7 +841,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
+        ///     将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
         /// </summary>
         /// <param name="field">实体对象属性</param>
         /// <param name="cmpTypeString">数据库比较类型字符串</param>
@@ -743,50 +850,49 @@ namespace PWMIS.DataMap.Entity
         /// <returns>比较表达式</returns>
         public OQLCompare Comparer<T>(T field, string cmpTypeString, T Value, string sqlFunctionFormat)
         {
-            return this.Comparer<T>(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
+            return Comparer(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
         }
 
         public OQLCompare Comparer(object field, string cmpTypeString, string[] Value, string sqlFunctionFormat)
         {
-            return this.Comparer(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
+            return Comparer(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
         }
 
         public OQLCompare Comparer(object field, string cmpTypeString, DateTime[] Value, string sqlFunctionFormat)
         {
-            return this.Comparer(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
+            return Comparer(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
         }
 
         public OQLCompare Comparer(object field, string cmpTypeString, ValueType[] Value, string sqlFunctionFormat)
         {
-            return this.Comparer(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
+            return Comparer(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
         }
 
         /// <summary>
-        /// 将当前实体属性的值作为比较的值，得到一个新的实体比较对象
+        ///     将当前实体属性的值作为比较的值，得到一个新的实体比较对象
         /// </summary>
         /// <param name="field">实体对象的属性字段</param>
         /// <returns>比较表达式</returns>
         public OQLCompare EqualValue(object field)
         {
-            OQLCompare compare = new OQLCompare(this.LinkedOQL);
-            var tnf=compare.LinkedOQL.TakeOneStackFields();
+            var compare = new OQLCompare(LinkedOQL);
+            var tnf = compare.LinkedOQL.TakeOneStackFields();
             compare.ComparedFieldName = tnf.SqlFieldName;
-            compare.ComparedParameterName = compare.LinkedOQL.CreateParameter(tnf,field);
+            compare.ComparedParameterName = compare.LinkedOQL.CreateParameter(tnf, field);
             compare.ComparedType = CompareType.Equal;
 
             compare.LinkedOQL.fieldStack.Clear();
             return compare;
-
         }
 
         /// <summary>
-        /// 判断指定字段条件为空 Is NULL
+        ///     判断指定字段条件为空 Is NULL
         /// </summary>
         /// <param name="field"></param>
         /// <returns></returns>
         public OQLCompare IsNull(object field)
         {
-            OQLCompare compare = new OQLCompare(this.LinkedOQL);
+            var compare = new OQLCompare(LinkedOQL);
             compare.ComparedFieldName = compare.LinkedOQL.TakeOneStackFields().Field;
             compare.ComparedParameterName = "NULL";
             compare.ComparedType = CompareType.IS;
@@ -796,19 +902,19 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 判断指定字段条件为空 Is Not NULL
+        ///     判断指定字段条件为空 Is Not NULL
         /// </summary>
         /// <param name="field"></param>
         /// <returns></returns>
         public OQLCompare IsNotNull(object field)
         {
-            OQLCompare compare = this.IsNull(field);
+            var compare = IsNull(field);
             compare.ComparedType = CompareType.IsNot;
             return compare;
         }
 
         /// <summary>
-        /// 指定条件的包含范围
+        ///     指定条件的包含范围
         /// </summary>
         /// <typeparam name="T">属性字段的类型</typeparam>
         /// <param name="field">属性字段</param>
@@ -817,12 +923,12 @@ namespace PWMIS.DataMap.Entity
         /// <returns>比较对象</returns>
         public OQLCompare Between<T>(T field, T beginValue, T endValue)
         {
-            OQLCompare compare = new OQLCompare(this.LinkedOQL);
-            var tnf=compare.LinkedOQL.TakeOneStackFields();
+            var compare = new OQLCompare(LinkedOQL);
+            var tnf = compare.LinkedOQL.TakeOneStackFields();
             compare.ComparedFieldName = tnf.SqlFieldName;
-            compare.ComparedParameterName =string.Format(" {0} AND {1} "
-                , compare.LinkedOQL.CreateParameter(tnf,beginValue)
-                , compare.LinkedOQL.CreateParameter(tnf,endValue));
+            compare.ComparedParameterName = string.Format(" {0} AND {1} "
+                , compare.LinkedOQL.CreateParameter(tnf, beginValue)
+                , compare.LinkedOQL.CreateParameter(tnf, endValue));
             compare.ComparedType = CompareType.Between;
 
             compare.LinkedOQL.fieldStack.Clear();
@@ -830,21 +936,22 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 根据实体对象的属性，获取新的条件比较对象，用于比较操作符重载
+        ///     根据实体对象的属性，获取新的条件比较对象，用于比较操作符重载
         /// </summary>
         /// <param name="field"></param>
         /// <returns></returns>
         public OQLCompare Property(object field)
         {
-            OQLCompare compare = new OQLCompare(this.LinkedOQL);
+            var compare = new OQLCompare(LinkedOQL);
             return compare;
         }
 
         #endregion
 
         #region 操作符重载
+
         /// <summary>
-        /// 将两个实体比较对象进行逻辑 与 比较，得到一个新的实体比较表达式
+        ///     将两个实体比较对象进行逻辑 与 比较，得到一个新的实体比较表达式
         /// </summary>
         /// <param name="compare1">左表达式</param>
         /// <param name="compare2">右表达式</param>
@@ -855,7 +962,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 将两个实体比较对象进行逻辑 与 比较，得到一个新的实体比较表达式
+        ///     将两个实体比较对象进行逻辑 与 比较，得到一个新的实体比较表达式
         /// </summary>
         /// <param name="compare1">左表达式</param>
         /// <param name="compare2">右表达式</param>
@@ -866,7 +973,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 设置等于某个实体属性的比较条件
+        ///     设置等于某个实体属性的比较条件
         /// </summary>
         /// <param name="compare">当前实体比较对象</param>
         /// <param name="Value">要比较的值</param>
@@ -877,7 +984,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 设置不等于某个实体属性的比较条件
+        ///     设置不等于某个实体属性的比较条件
         /// </summary>
         /// <param name="compare">当前实体比较对象</param>
         /// <param name="Value">要比较的值</param>
@@ -888,7 +995,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 设置不小于某个实体属性的比较条件
+        ///     设置不小于某个实体属性的比较条件
         /// </summary>
         /// <param name="compare">当前实体比较对象</param>
         /// <param name="Value">要比较的值</param>
@@ -899,120 +1006,38 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 设置不大于某个实体属性的比较条件
+        ///     设置不大于某个实体属性的比较条件
         /// </summary>
         /// <param name="compare">当前实体比较对象</param>
         /// <param name="Value">要比较的值</param>
         /// <returns>构造的实体比较对象</returns>
         public static OQLCompare operator <=(OQLCompare compare, object Value)
         {
-            return BuildOperator(compare, Value,CompareType.LessThanOrEqual);
+            return BuildOperator(compare, Value, CompareType.LessThanOrEqual);
         }
 
         /// <summary>
-        /// 设置大于某个实体属性的比较条件
+        ///     设置大于某个实体属性的比较条件
         /// </summary>
         /// <param name="compare">当前实体比较对象</param>
         /// <param name="Value">要比较的值</param>
         /// <returns>构造的实体比较对象</returns>
         public static OQLCompare operator >(OQLCompare compare, object Value)
         {
-            return BuildOperator(compare, Value,CompareType.Greater);
+            return BuildOperator(compare, Value, CompareType.Greater);
         }
 
         /// <summary>
-        /// 设置小于某个实体属性的比较条件
+        ///     设置小于某个实体属性的比较条件
         /// </summary>
         /// <param name="compare">当前实体比较对象</param>
         /// <param name="Value">要比较的值</param>
         /// <returns>构造的实体比较对象</returns>
         public static OQLCompare operator <(OQLCompare compare, object Value)
         {
-            return BuildOperator(compare, Value,CompareType.LessThan);
+            return BuildOperator(compare, Value, CompareType.LessThan);
         }
 
         #endregion
-
-
-        //新的变量
-
-        /// <summary>
-        /// 关联的OQL对象
-        /// </summary>
-        public OQL LinkedOQL { get;protected internal set; }
-
-        //
-
-        protected OQLCompare LeftNode { get; set; }
-
-        protected OQLCompare RightNode { get; set; }
-
-        protected CompareLogic Logic { get; set; }
-
-        protected bool IsLeaf
-        {
-            get
-            {
-                return object.Equals(LeftNode, null) && object.Equals(RightNode, null);
-            }
-        }
-
-        protected string ComparedFieldName;
-        protected string ComparedParameterName;
-        protected CompareType ComparedType;
-        protected string SqlFunctionFormat;
-        /// <summary>
-        /// 获取比较类型的字符串形式
-        /// </summary>
-        /// <returns></returns>
-        protected string GetComparedTypeString()
-        {
-            return this.GetDbCompareTypeStr(ComparedType);
-        }
-
-        /// <summary>
-        /// 检查子节点的逻辑类型
-        /// </summary>
-        /// <param name="childCmp"></param>
-        /// <param name="currLogic"></param>
-        /// <returns></returns>
-        private bool CheckChildLogicEquals(OQLCompare childCmp, CompareLogic currLogic)
-        {
-            //currCmp 不能是叶子结点
-            //如果子节点的逻辑类型不同于当前逻辑类型，直接返回 非
-            if (childCmp.Logic != currLogic)
-                return false;
-
-            //如果子节点的逻辑类型 同于当前逻辑类型，则需要检查子节点的左右子节点与当前逻辑类型的对比
-            if (childCmp.LeftNode.IsLeaf && childCmp.RightNode.IsLeaf)
-            {
-                return childCmp.Logic == currLogic;
-            }
-            else
-            {
-                if (!childCmp.LeftNode.IsLeaf && !childCmp.RightNode.IsLeaf)
-                {
-                    bool left_flag = false;
-                    bool right_flag = false;
-                    left_flag = CheckChildLogicEquals(childCmp.LeftNode, currLogic);
-                    right_flag = CheckChildLogicEquals(childCmp.RightNode, currLogic);
-                    return left_flag && right_flag;
-                }
-                else if (!childCmp.LeftNode.IsLeaf && childCmp.RightNode.IsLeaf)
-                {
-                    return CheckChildLogicEquals(childCmp.LeftNode, currLogic);
-                }
-                else if (childCmp.LeftNode.IsLeaf && !childCmp.RightNode.IsLeaf)
-                {
-                    return CheckChildLogicEquals(childCmp.RightNode, currLogic);
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
     }
-
-   
 }

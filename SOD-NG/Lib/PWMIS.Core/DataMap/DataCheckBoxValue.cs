@@ -1,13 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using PWMIS.Common;
 
 namespace PWMIS.DataMap
 {
     public class DataCheckBoxValue
     {
-        private IDataCheckBox dataCheckBox;
+        private readonly IDataCheckBox dataCheckBox;
+
+        public DataCheckBoxValue(IDataCheckBox dataCheckBox)
+        {
+            this.dataCheckBox = dataCheckBox;
+        }
 
         public bool Checked
         {
@@ -15,73 +18,68 @@ namespace PWMIS.DataMap
             set { dataCheckBox.Checked = value; }
         }
 
-        public DataCheckBoxValue(IDataCheckBox dataCheckBox)
-        {
-            this.dataCheckBox = dataCheckBox;
-        }
-
         public void SetValue(object obj)
         {
-            this.Checked = false;
+            Checked = false;
             if (obj == null || obj == DBNull.Value)
             {
                 return;
             }
-            string SelItemValues = "";
+            var SelItemValues = "";
             SelItemValues = obj.ToString().Trim();
-           
 
-            string[] SelItemobj = SelItemValues.Split(',');
-            string strValue=dataCheckBox.Value.Trim();
 
-            string strTemp = strValue.ToLower();
-            string strBoolInt = "";
+            var SelItemobj = SelItemValues.Split(',');
+            var strValue = dataCheckBox.Value.Trim();
+
+            var strTemp = strValue.ToLower();
+            var strBoolInt = "";
             if (strTemp == "true") strBoolInt = "1";
             else if (strTemp == "false") strBoolInt = "0";
 
-            foreach (string s in SelItemobj)
+            foreach (var s in SelItemobj)
             {
-                string s1 = s.Trim();
+                var s1 = s.Trim();
                 if (string.IsNullOrEmpty(s1))
                     continue;
-                if (strValue == s1 || strBoolInt==s1)
+                if (strValue == s1 || strBoolInt == s1)
                 {
-                    this.Checked = true;
-                    break;//add 2008.7.26
+                    Checked = true;
+                    break; //add 2008.7.26
                 }
             }
         }
 
         public object GetValue()
         {
-            if (!this.Checked)
+            if (!Checked)
                 return DBNull.Value;
 
-            string strValue =dataCheckBox.Value==null?"": dataCheckBox.Value.Trim();
+            var strValue = dataCheckBox.Value == null ? "" : dataCheckBox.Value.Trim();
             switch (dataCheckBox.SysTypeCode)
             {
                 case TypeCode.String:
-                    {
-                        return strValue;
-                    }
+                {
+                    return strValue;
+                }
                 case TypeCode.Int32:
+                {
+                    if (strValue != "")
                     {
-                        if (strValue != "")
-                        {
-                            return Convert.ToInt32(strValue);
-                        }
-                        //return 0;
-                        return DBNull.Value;
+                        return Convert.ToInt32(strValue);
                     }
+                    //return 0;
+                    return DBNull.Value;
+                }
                 case TypeCode.Decimal:
+                {
+                    if (strValue != "")
                     {
-                        if (strValue != "")
-                        {
-                            return Convert.ToDecimal(strValue);
-                        }
-                        //return 0;
-                        return DBNull.Value;
+                        return Convert.ToDecimal(strValue);
                     }
+                    //return 0;
+                    return DBNull.Value;
+                }
                 case TypeCode.DateTime:
                     if (strValue != "")
                     {
@@ -94,41 +92,38 @@ namespace PWMIS.DataMap
                             return DBNull.Value; //"1900-1-1";
                         }
                     }
-                    return DBNull.Value;//"1900-1-1";
+                    return DBNull.Value; //"1900-1-1";
 
                 case TypeCode.Double:
+                {
+                    if (strValue != "")
                     {
-                        if (strValue != "")
-                        {
-                            return Convert.ToDouble(strValue);
-                        }
-                        //return 0;
-                        return DBNull.Value;
+                        return Convert.ToDouble(strValue);
                     }
+                    //return 0;
+                    return DBNull.Value;
+                }
                 case TypeCode.Boolean:
+                {
+                    if (strValue != "")
                     {
-                        if (strValue != "")
+                        try
                         {
-                            try
-                            {
-                                return Convert.ToBoolean(strValue);
-                            }
-                            catch
-                            {
-                                return DBNull.Value; //"1900-1-1";
-                            }
+                            return Convert.ToBoolean(strValue);
                         }
-                        return DBNull.Value;//"1900-1-1";
+                        catch
+                        {
+                            return DBNull.Value; //"1900-1-1";
+                        }
                     }
+                    return DBNull.Value; //"1900-1-1";
+                }
                 default:
                     if (strValue == "")
                     {
                         return DBNull.Value;
                     }
-                    else
-                    {
-                        return strValue;
-                    }
+                    return strValue;
             }
         }
     }

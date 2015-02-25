@@ -13,41 +13,37 @@
  * 修改说明：
  * ========================================================================
 */
+
 using System;
 using System.Collections.Generic;
-using System.Text;
-using PWMIS.Common;
 using System.Data;
-using PWMIS.DataProvider.Data;
+using PWMIS.Common;
 using PWMIS.DataProvider.Adapter;
-
+using PWMIS.DataProvider.Data;
 
 namespace PWMIS.DataForms.Adapter
 {
     /// <summary>
-    /// 用户使用数据控件的自定义方法委托
+    ///     用户使用数据控件的自定义方法委托
     /// </summary>
     /// <param name="dataControl"></param>
     public delegate void UseDataControl(IDataControl dataControl);
 
     /// <summary>
-    /// 我的数据窗体，是Web/WinForm 数据窗体抽象类
+    ///     我的数据窗体，是Web/WinForm 数据窗体抽象类
     /// </summary>
     public abstract class MyDataForm
     {
-        /// <summary>
-        /// 是否检查更新结果所影响的行数，如果检查，那么受影响的行不大于0将抛出错误。
-        /// </summary>
-        public bool CheckAffectRowCount
-        {
-            get;
-            set;
-        }
+        private CommonDB _dao;
 
-        private CommonDB _dao = null;
         /// <summary>
-        /// 获取或者设置数据访问对象，默认使用静态 CommonDB 类的实例对象，
-        /// 如果使用事务并且有并发访问，请设置 CommonDB 的动态实例，例如：MyDB.GetDBHelper();
+        ///     是否检查更新结果所影响的行数，如果检查，那么受影响的行不大于0将抛出错误。
+        /// </summary>
+        public bool CheckAffectRowCount { get; set; }
+
+        /// <summary>
+        ///     获取或者设置数据访问对象，默认使用静态 CommonDB 类的实例对象，
+        ///     如果使用事务并且有并发访问，请设置 CommonDB 的动态实例，例如：MyDB.GetDBHelper();
         /// </summary>
         public CommonDB DAO
         {
@@ -57,72 +53,54 @@ namespace PWMIS.DataForms.Adapter
                     _dao = MyDB.Instance;
                 return _dao;
             }
-            set
-            {
-                _dao = value;
-            }
+            set { _dao = value; }
         }
 
         public IBCommand IBCommand
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
+            get { throw new NotImplementedException(); }
+            set { }
         }
 
         public MyDB MyDB
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
+            get { throw new NotImplementedException(); }
+            set { }
         }
 
         public IDataControl IDataControl
         {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
+            get { throw new NotImplementedException(); }
+            set { }
         }
 
         /// <summary>
-        /// 获取选择和删除查询的SQL语句
+        ///     获取选择和删除查询的SQL语句
         /// </summary>
         /// <param name="IBControls">已经收集的控件集合</param>
         /// <returns> ArrayList 中的成员为 IBCommand 对象，包含具体的CRUD SQL</returns>
         public static List<IBCommand> GetSelectAndDeleteCommand(List<IDataControl> IBControls)
         {
-            List<IBCommand> IBCommands = new List<IBCommand>();
+            var IBCommands = new List<IBCommand>();
             //获取表单中的CRUD 语句。
             while (IBControls.Count > 0)
             {
-                string strTableName = "";
-                string strSelect = "";
-                string strDelete = "";
-                string strFields = "";
+                var strTableName = "";
+                var strSelect = "";
+                var strDelete = "";
+                var strFields = "";
                 //string strValues="";
 
-                string strCondition = "";
-                int nullCount = 0;
+                var strCondition = "";
+                var nullCount = 0;
 
 
-                for (int i = 0; i < IBControls.Count; i++)// object objCtr in IBControls)
+                for (var i = 0; i < IBControls.Count; i++) // object objCtr in IBControls)
                 {
                     object objCtr = IBControls[i];
                     if (objCtr != null)
                     {
-                        IDataControl ibCtr = objCtr as IDataControl;
+                        var ibCtr = objCtr as IDataControl;
                         //只有非只读的控件才可以更新数据到数据库
                         if (ibCtr != null)
                         {
@@ -131,22 +109,24 @@ namespace PWMIS.DataForms.Adapter
                                 strTableName = ibCtr.LinkObject;
                                 strSelect = "SELECT ";
                                 strDelete = "DELETE FROM [" + strTableName + "]";
-
                             }
                             //找到当前处理的表，只读的字段也可以处理
                             if (strTableName == ibCtr.LinkObject && ibCtr.LinkObject != "")
                             {
-                                string cValue = ibCtr.GetValue().ToString().Replace("'", "''");
+                                var cValue = ibCtr.GetValue().ToString().Replace("'", "''");
                                 if (ibCtr.PrimaryKey)
                                 {
                                     if (cValue != "")
                                     {
                                         //防止SQL注入式攻击
-                                        cValue = (ibCtr.SysTypeCode == System.TypeCode.String || ibCtr.SysTypeCode == System.TypeCode.DateTime ? "'" + cValue + "'" : Convert.ToDouble(cValue).ToString());
+                                        cValue = (ibCtr.SysTypeCode == TypeCode.String ||
+                                                  ibCtr.SysTypeCode == TypeCode.DateTime
+                                            ? "'" + cValue + "'"
+                                            : Convert.ToDouble(cValue).ToString());
                                     }
                                     strCondition += " And [" + ibCtr.LinkProperty + "] = " + cValue;
                                 }
-                                string temp = "[" + ibCtr.LinkProperty + "],";
+                                var temp = "[" + ibCtr.LinkProperty + "],";
                                 if (ibCtr.LinkProperty != "" && strFields.IndexOf(temp) == -1)
                                     strFields += temp;
 
@@ -154,13 +134,11 @@ namespace PWMIS.DataForms.Adapter
                             }
                             if (ibCtr.LinkObject == "" || ibCtr.LinkProperty == "")
                                 IBControls[i] = null;
-
                         }
                     }
                     else
                         nullCount++;
-
-                }//end for
+                } //end for
 
                 if (strFields == "")
                     break;
@@ -168,7 +146,7 @@ namespace PWMIS.DataForms.Adapter
                 strSelect += strFields.TrimEnd(',') + " FROM [" + strTableName + "] WHERE 1=1 " + strCondition;
                 strDelete += " WHERE 1=1 " + strCondition;
 
-                IBCommand ibcmd = new IBCommand(strTableName);
+                var ibcmd = new IBCommand(strTableName);
                 ibcmd.SelectCommand = strSelect;
                 ibcmd.DeleteCommand = strDelete;
 
@@ -176,20 +154,20 @@ namespace PWMIS.DataForms.Adapter
 
                 if (nullCount >= IBControls.Count - 1)
                     break;
-            }//end while
+            } //end while
 
             return IBCommands;
         }
 
         protected void AutoUpdateIBFormDataInner(List<IBCommand> ibCommandList)
         {
-            int result = 0;
+            var result = 0;
             foreach (object item in ibCommandList)
             {
-                IBCommand command = (IBCommand)item;
-                bool insertFlag = false;
+                var command = (IBCommand) item;
+                var insertFlag = false;
                 if (command.InsertedID > 0)
-                    result = DAO.ExecuteNonQuery(command.UpdateCommand, CommandType.Text, command.Parameters);//修改未合并
+                    result = DAO.ExecuteNonQuery(command.UpdateCommand, CommandType.Text, command.Parameters); //修改未合并
                 else if (command.InsertedID == -2)
                 {
                     result = DAO.ExecuteNonQuery(command.UpdateCommand, CommandType.Text, command.Parameters);
@@ -199,7 +177,6 @@ namespace PWMIS.DataForms.Adapter
                 else
                 {
                     insertFlag = true;
-
                 }
                 if (insertFlag)
                 {
@@ -209,13 +186,12 @@ namespace PWMIS.DataForms.Adapter
                 }
                 if (result <= 0 && CheckAffectRowCount)
                     throw new Exception("在更新表" + command.TableName + "中未取得受影响的行数，数据错误信息：" + DAO.ErrorMessage);
-
             }
         }
 
         protected bool AutoUpdateIBFormDataInner(List<IBCommand> ibCommandList, IDataControl guidControl)
         {
-            object guidObj = guidControl.GetValue();
+            var guidObj = guidControl.GetValue();
             if (guidObj == null || guidObj.ToString() == "")
                 throw new Exception("GUID 主键或字符型主键列更新数据不能为空！");
             if (guidControl.ReadOnly)
@@ -223,15 +199,16 @@ namespace PWMIS.DataForms.Adapter
             if (!guidControl.PrimaryKey)
                 throw new Exception("GUID 主键或字符型主键列更新数据时必须设置PrimaryKey属性！");
 
-            string guidText = guidObj.ToString();
+            var guidText = guidObj.ToString();
 
-            int result = 0;
-            foreach (IBCommand command in ibCommandList)
+            var result = 0;
+            foreach (var command in ibCommandList)
             {
                 if (command.TableName == guidControl.LinkObject)
                 {
-                    string sql = "SELECT [" + guidControl.LinkProperty + "] FROM [" + guidControl.LinkObject + "] WHERE [" + guidControl.LinkProperty + "] = '" + guidText + "'";
-                    object guidInDb = DAO.ExecuteScalar(sql);
+                    var sql = "SELECT [" + guidControl.LinkProperty + "] FROM [" + guidControl.LinkObject + "] WHERE [" +
+                              guidControl.LinkProperty + "] = '" + guidText + "'";
+                    var guidInDb = DAO.ExecuteScalar(sql);
                     if (guidInDb != null && guidInDb.ToString() == guidText)
                     {
                         //在数据库中有该记录
@@ -243,32 +220,31 @@ namespace PWMIS.DataForms.Adapter
                     }
                     return result > 0;
                 }
-
             }
             return false;
         }
 
         protected void AutoSelectIBFormInner(List<IDataControl> IBControls)
         {
-            List<IDataControl> IBControls2 = new List<IDataControl>();
-            foreach (IDataControl obj in IBControls)
+            var IBControls2 = new List<IDataControl>();
+            foreach (var obj in IBControls)
             {
                 IBControls2.Add(obj);
             }
             //IBControls2 将会被请空
-            List<IBCommand> ibCommandList = GetSelectAndDeleteCommand(IBControls2);
+            var ibCommandList = GetSelectAndDeleteCommand(IBControls2);
 
-            foreach (IBCommand command in ibCommandList)
+            foreach (var command in ibCommandList)
             {
-                IDataReader reader = DAO.ExecuteDataReaderWithSingleRow(command.SelectCommand);
+                var reader = DAO.ExecuteDataReaderWithSingleRow(command.SelectCommand);
                 if (reader != null && reader.Read())
                 {
                     foreach (object obj in IBControls)
                     {
-                        IDataControl ibCtr = obj as IDataControl;
+                        var ibCtr = obj as IDataControl;
                         if (ibCtr.LinkObject == command.TableName)
                         {
-                            for (int i = 0; i < reader.FieldCount; i++)
+                            for (var i = 0; i < reader.FieldCount; i++)
                             {
                                 if (reader.GetName(i) == ibCtr.LinkProperty)
                                 {
@@ -288,13 +264,13 @@ namespace PWMIS.DataForms.Adapter
         {
             foreach (DataTable dt in dsSource.Tables)
             {
-                string tableName = dt.TableName;
+                var tableName = dt.TableName;
                 foreach (object obj in IBControls)
                 {
-                    IDataControl ibCtr = obj as IDataControl;
+                    var ibCtr = obj as IDataControl;
                     if (string.Compare(ibCtr.LinkObject, tableName, true) == 0)
                     {
-                        for (int i = 0; i < dt.Columns.Count; i++)
+                        for (var i = 0; i < dt.Columns.Count; i++)
                         {
                             if (string.Compare(dt.Columns[i].ColumnName, ibCtr.LinkProperty, true) == 0)
                             {
@@ -305,15 +281,14 @@ namespace PWMIS.DataForms.Adapter
                     }
                 }
             }
-
         }
 
-        protected void AutoSelectIBFormInner(List<IDataControl> IBControls,IEntity entity)
+        protected void AutoSelectIBFormInner(List<IDataControl> IBControls, IEntity entity)
         {
             foreach (object obj in IBControls)
             {
-                IDataControl ibCtr = obj as IDataControl;
-                foreach (string key in entity.PropertyNames)
+                var ibCtr = obj as IDataControl;
+                foreach (var key in entity.PropertyNames)
                 {
                     if (string.Compare(key, ibCtr.LinkProperty, true) == 0)
                     {
@@ -321,21 +296,20 @@ namespace PWMIS.DataForms.Adapter
                         break;
                     }
                 }
-
             }
         }
 
         protected int AutoDeleteIBFormInner(List<IDataControl> IBControls)
         {
-            List<IDataControl> IBControls2 = new List<IDataControl>();
-            foreach (IDataControl obj in IBControls)
+            var IBControls2 = new List<IDataControl>();
+            foreach (var obj in IBControls)
             {
                 IBControls2.Add(obj);
             }
             //IBControls2 将会被请空
-            List<IBCommand> ibCommandList = GetSelectAndDeleteCommand(IBControls2);
-            int count = 0;
-            foreach (IBCommand command in ibCommandList)
+            var ibCommandList = GetSelectAndDeleteCommand(IBControls2);
+            var count = 0;
+            foreach (var command in ibCommandList)
             {
                 count += DAO.ExecuteNonQuery(command.DeleteCommand);
             }
@@ -344,28 +318,28 @@ namespace PWMIS.DataForms.Adapter
 
         protected static List<IBCommand> GetIBFormDataInner(List<IDataControl> IBControls, CommonDB DB)
         {
-            List<IBCommand> IBCommands = new List<IBCommand>();
+            var IBCommands = new List<IBCommand>();
             //获取表单中的CRUD 语句。
             while (IBControls.Count > 0)
             {
-                string strTableName = "";
-                string strInsert = "";
-                string strFields = "";
-                string strValues = "";
-                string strUpdate = "";
-                string strCondition = "";
-                int nullCount = 0;
-                int ID = -1;
+                var strTableName = "";
+                var strInsert = "";
+                var strFields = "";
+                var strValues = "";
+                var strUpdate = "";
+                var strCondition = "";
+                var nullCount = 0;
+                var ID = -1;
 
-                int paraIndex = 0;
-                List<IDataParameter> paraList = new List<IDataParameter>();
+                var paraIndex = 0;
+                var paraList = new List<IDataParameter>();
 
-                for (int i = 0; i < IBControls.Count; i++)// object objCtr in IBControls)
+                for (var i = 0; i < IBControls.Count; i++) // object objCtr in IBControls)
                 {
                     object objCtr = IBControls[i];
                     if (objCtr != null)
                     {
-                        IDataControl ibCtr = objCtr as IDataControl;
+                        var ibCtr = objCtr as IDataControl;
                         //只有非只读的控件才可以更新数据到数据库
                         if (ibCtr != null)
                         {
@@ -379,6 +353,7 @@ namespace PWMIS.DataForms.Adapter
                             if (strTableName == ibCtr.LinkObject && ibCtr.LinkProperty != "")
                             {
                                 #region 原来获取值得方法
+
                                 //string cValue=ibCtr.GetValue ().ToString ().Replace ("'","''");
 
                                 ////dth,2008.4.11 处理字符串类型为空的情况
@@ -419,23 +394,24 @@ namespace PWMIS.DataForms.Adapter
 
                                 //    }
                                 //}
+
                                 #endregion
 
-                                string cValue = string.Empty;
-                                object ctlValue = ibCtr.GetValue();
+                                var cValue = string.Empty;
+                                var ctlValue = ibCtr.GetValue();
 
                                 //非只读的数据才更新
                                 if (ctlValue != DBNull.Value)
                                 {
                                     cValue = DB.GetParameterChar + "P" + paraIndex++;
-                                    IDataParameter para = DB.GetParameter(cValue, ctlValue);
-                                    if (ibCtr.SysTypeCode == System.TypeCode.String || ibCtr.SysTypeCode == System.TypeCode.Empty)
+                                    var para = DB.GetParameter(cValue, ctlValue);
+                                    if (ibCtr.SysTypeCode == TypeCode.String || ibCtr.SysTypeCode == TypeCode.Empty)
                                     {
                                         if (ibCtr is IDataTextBox)
                                         {
-                                            int maxStringLength = ((IDataTextBox)ibCtr).MaxLength;
-                                            if(maxStringLength>0)
-                                                ((IDbDataParameter)para).Size = maxStringLength;
+                                            var maxStringLength = ((IDataTextBox) ibCtr).MaxLength;
+                                            if (maxStringLength > 0)
+                                                ((IDbDataParameter) para).Size = maxStringLength;
                                         }
                                     }
                                     paraList.Add(para);
@@ -451,23 +427,19 @@ namespace PWMIS.DataForms.Adapter
                                     if (ibCtr.PrimaryKey) //只要是主键就作为更新的条件
                                     {
                                         strCondition += " And [" + ibCtr.LinkProperty + "] = " + cValue;
-                                        if (ibCtr.SysTypeCode == System.TypeCode.Int32)
+                                        if (ibCtr.SysTypeCode == TypeCode.Int32)
                                             ID = int.Parse(ctlValue.ToString());
                                         else
-                                            ID = -2;//主键可能是非数字型
-
+                                            ID = -2; //主键可能是非数字型
                                     }
                                 }
-
-
                             }
                             IBControls[i] = null;
                         }
                     }
                     else
                         nullCount++;
-
-                }//end for
+                } //end for
 
                 if (nullCount >= IBControls.Count - 1)
                     break;
@@ -475,7 +447,7 @@ namespace PWMIS.DataForms.Adapter
                 strInsert += strFields.TrimEnd(',') + ") VALUES (" + strValues.TrimEnd(',') + ")";
                 strUpdate = strUpdate.TrimEnd(',') + " WHERE 1=1 " + strCondition;
 
-                IBCommand ibcmd = new IBCommand(strTableName);
+                var ibcmd = new IBCommand(strTableName);
                 ibcmd.InsertCommand = strInsert;
                 ibcmd.UpdateCommand = strUpdate;
                 //if( ID>0) 
@@ -483,7 +455,7 @@ namespace PWMIS.DataForms.Adapter
                 ibcmd.Parameters = paraList.ToArray();
 
                 IBCommands.Add(ibcmd);
-            }//end while
+            } //end while
 
             return IBCommands;
         }

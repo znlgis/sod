@@ -13,32 +13,22 @@
  * 修改说明：
  * ========================================================================
 */
-using System;
-
 
 namespace PWMIS.Common
 {
     /// <summary>
-    /// 数据查询控件接口
+    ///     数据查询控件接口
     /// </summary>
     public interface IQueryControl
     {
         /// <summary>
-        /// 查询的比较符号,例如 =,>=,
+        ///     查询的比较符号,例如 =,>=,
         /// </summary>
-        string CompareSymbol
-        {
-            get;
-            set;
-        }
+        string CompareSymbol { get; set; }
 
         /// <summary>
-        /// 发送到数据库查询前的字段值格式字符串
+        ///     发送到数据库查询前的字段值格式字符串
         /// </summary>
-        string QueryFormatString
-        {
-            get;
-            set;
-        }
+        string QueryFormatString { get; set; }
     }
 }

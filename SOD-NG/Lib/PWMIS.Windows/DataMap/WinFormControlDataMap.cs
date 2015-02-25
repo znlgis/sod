@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using PWMIS.DataMap;
-using System.Windows.Forms;
 using System.Collections;
+using System.Collections.Generic;
+using System.Windows.Forms;
 using PWMIS.Common;
 
 namespace PWMIS.DataMap
@@ -13,39 +11,30 @@ namespace PWMIS.DataMap
     //}
 
     /// <summary>
-    /// Web 窗体控件数据映射类，提供从实体对象填充数据到窗体数据控件和收集数据到实体对象的功能。
+    ///     Web 窗体控件数据映射类，提供从实体对象填充数据到窗体数据控件和收集数据到实体对象的功能。
     /// </summary>
     public class WinFormControlDataMap : ControlDataMap
     {
         /// <summary>
-        /// 默认构造函数
-        /// </summary>
-        public WinFormControlDataMap()
-        {
-
-        }
-
-        /// <summary>
-        /// 在控件集合中查找IDataControl,并放到一个IDataControl集合实例中
+        ///     在控件集合中查找IDataControl,并放到一个IDataControl集合实例中
         /// </summary>
         /// <param name="controls">容器的控件集合</param>
         /// <param name="dcList">IDataControl集合实例</param>
         /// <returns>IDataControl集合实例</returns>
-        public List<IDataControl> FindControl(System.Windows.Forms.Control.ControlCollection controls, List<IDataControl> dcList)
+        public List<IDataControl> FindControl(Control.ControlCollection controls, List<IDataControl> dcList)
         {
             foreach (Control ctr in controls)
             {
                 if (ctr is IDataControl)
                     dcList.Add(ctr as IDataControl);
-                else
-                    if (ctr.HasChildren)
-                        dcList = FindControl(ctr.Controls, dcList);
+                else if (ctr.HasChildren)
+                    dcList = FindControl(ctr.Controls, dcList);
             }
             return dcList;
         }
 
         /// <summary>
-        /// 在控件中查找所有的IDataControl（深度查找）,并放到一个IDataControl集合实例中
+        ///     在控件中查找所有的IDataControl（深度查找）,并放到一个IDataControl集合实例中
         /// </summary>
         /// <param name="control">容器控件</param>
         /// <param name="dcList">IDataControl集合实例</param>
@@ -56,7 +45,7 @@ namespace PWMIS.DataMap
         }
 
         /// <summary>
-        /// 从实体类中填充数据
+        ///     从实体类中填充数据
         /// </summary>
         /// <param name="objEntityClass">实体类</param>
         /// <param name="controls">控件集合</param>
@@ -70,7 +59,7 @@ namespace PWMIS.DataMap
         }
 
         /// <summary>
-        /// 从控件集合收集数据到实体类中
+        ///     从控件集合收集数据到实体类中
         /// </summary>
         /// <param name="objEntityClass">实体类</param>
         /// <param name="controls">控件集合</param>
@@ -84,16 +73,16 @@ namespace PWMIS.DataMap
         }
 
         /// <summary>
-        /// 让容器中所有的BrainControl值设置为空(深度搜索) 
+        ///     让容器中所有的BrainControl值设置为空(深度搜索)
         /// </summary>
         /// <param name="conlObject">容器对象</param>
-        public static void ClearData(System.Windows.Forms.Control.ControlCollection controls)
+        public static void ClearData(Control.ControlCollection controls)
         {
             foreach (Control control in controls)
             {
                 if (control is IDataControl)
                 {
-                    ((IDataControl)control).SetValue("");
+                    ((IDataControl) control).SetValue("");
                 }
                 else
                 {
@@ -101,7 +90,5 @@ namespace PWMIS.DataMap
                 }
             }
         }
-
-
     }
 }

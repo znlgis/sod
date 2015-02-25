@@ -63,14 +63,7 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbContext.cs" />
@@ -83,10 +76,6 @@
     <None Include="PDFKey.pfx" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PWMIS.Access.Extensions\PWMIS.Access.Extensions.csproj">
-      <Project>{0ACE1995-6254-47F1-8758-C79B9CDCF424}</Project>
-      <Name>PWMIS.Access.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PWMIS.Core\PWMIS.Core.csproj">
       <Project>{8F0F4237-4D13-40DD-AE8A-C3DE748B26E0}</Project>
       <Name>PWMIS.Core</Name>

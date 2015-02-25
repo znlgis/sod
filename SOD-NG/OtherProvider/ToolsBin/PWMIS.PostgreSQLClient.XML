@@ -6,35 +6,30 @@
     <members>
         <member name="T:PWMIS.DataProvider.Data.PostgreSQL">
             <summary>
-            PostgreSQL数据访问类
-            </summary>
-        </member>
-        <member name="M:PWMIS.DataProvider.Data.PostgreSQL.#ctor">
-            <summary>
-            默认构造函数
+                PostgreSQL数据访问类
             </summary>
         </member>
         <member name="M:PWMIS.DataProvider.Data.PostgreSQL.GetConnection">
             <summary>
-            创建并且打开数据库连接
+                创建并且打开数据库连接
             </summary>
             <returns>数据库连接</returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.PostgreSQL.GetDataAdapter(System.Data.IDbCommand)">
             <summary>
-            获取数据适配器实例
+                获取数据适配器实例
             </summary>
             <returns>数据适配器</returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.PostgreSQL.GetParameter">
             <summary>
-            获取一个新参数对象
+                获取一个新参数对象
             </summary>
             <returns>特定于数据源的参数对象</returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.PostgreSQL.GetParameter(System.String,System.Data.DbType,System.Int32)">
             <summary>
-             获取一个新参数对象
+                获取一个新参数对象
             </summary>
             <param name="paraName">参数名</param>
             <param name="dbType">参数数据类型</param>
@@ -43,7 +38,7 @@
         </member>
         <member name="M:PWMIS.DataProvider.Data.PostgreSQL.GetSchema(System.String,System.String[])">
             <summary>
-            返回此 NpgsqlConnection 的数据源的架构信息。
+                返回此 NpgsqlConnection 的数据源的架构信息。
             </summary>
             <param name="collectionName">集合名称</param>
             <param name="restrictionValues">请求的架构的一组限制值</param>
@@ -51,37 +46,37 @@
         </member>
         <member name="M:PWMIS.DataProvider.Data.PostgreSQL.PrepareSQL(System.String@)">
             <summary>
-            预处理SQL语句，语句中不能包含"`"(反引号，tab键上面的那个符号)号，如果需要，请使用参数化查询。
+                预处理SQL语句，语句中不能包含"`"(反引号，tab键上面的那个符号)号，如果需要，请使用参数化查询。
             </summary>
             <param name="SQL"></param>
             <returns></returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.PostgreSQL.createFunctionArgsInfo">
             <summary>
-            定义获取PostgreSQL的函数参数的函数
-            <seealso cref="!:http://www.alberton.info/postgresql_meta_info.html"/>
+                定义获取PostgreSQL的函数参数的函数
+                <seealso cref="!:http://www.alberton.info/postgresql_meta_info.html"/>
             </summary>
         </member>
         <member name="M:PWMIS.DataProvider.Data.PostgreSQL.getFunctionArgsInfo(System.String)">
             <summary>
-            获取函数的参数信息
+                获取函数的参数信息
             </summary>
             <param name="functionName">函数名</param>
             <returns></returns>
         </member>
         <member name="P:PWMIS.DataProvider.Data.PostgreSQL.CurrentDBMSType">
             <summary>
-            获取当前数据库类型的枚举
+                获取当前数据库类型的枚举
             </summary>
         </member>
         <member name="P:PWMIS.DataProvider.Data.PostgreSQL.GetParameterChar">
             <summary>
-            获取数据库参数前缀资费
+                获取数据库参数前缀资费
             </summary>
         </member>
         <member name="P:PWMIS.DataProvider.Data.PostgreSQL.InsertKey">
             <summary>
-            获取或者设置自增列对应的序列名称
+                获取或者设置自增列对应的序列名称
             </summary>
         </member>
         <member name="T:PWMIS.PostgreSQLClient.Properties.Resources">

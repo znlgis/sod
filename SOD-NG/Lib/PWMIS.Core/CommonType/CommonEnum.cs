@@ -13,14 +13,11 @@
  * 修改说明：
  * ========================================================================
 */
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PWMIS.Common
 {
     /// <summary>
-    /// 数据库管理系统枚举
+    ///     数据库管理系统枚举
     /// </summary>
     public enum DBMSType
     {
@@ -33,14 +30,14 @@ namespace PWMIS.Common
         MySql,
         SQLite,
         PostgreSQL,
-        UNKNOWN=999
+        UNKNOWN = 999
     }
 
     /// <summary>
-    /// 数据源类型
+    ///     数据源类型
     /// </summary>
     public enum DataSourceType
-    { 
+    {
         OleDb,
         SqlServer,
         SqlServerCe,
@@ -55,5 +52,5 @@ namespace PWMIS.Common
 
     public delegate void MyAction<T1, T2>(T1 arg1, T2 arg2);
 
-    public delegate void MyAction<T1, T2,T3>(T1 arg1, T2 arg2,T3 arg3);
+    public delegate void MyAction<T1, T2, T3>(T1 arg1, T2 arg2, T3 arg3);
 }

@@ -14,25 +14,26 @@
  * 
  * ========================================================================
 */
+
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
-using PWMIS.DataMap.Entity;
 using PWMIS.Common;
 
 namespace PWMIS.DataMap.Entity
 {
     /// <summary>
-    /// PDF.NET实体类构造器，程序内部使用
+    ///     PDF.NET实体类构造器，程序内部使用
     /// </summary>
     public class EntityBuilder
     {
-        private Type targetType;
+        private static readonly Dictionary<Type, Type> dictEntityType = new Dictionary<Type, Type>();
+        private static readonly object sync_lock = new object();
+        private readonly Type targetType;
 
         /// <summary>
-        /// 构造函数
+        ///     构造函数
         /// </summary>
         /// <param name="targetType">被实现或者继承的类型</param>
         public EntityBuilder(Type targetType)
@@ -40,73 +41,67 @@ namespace PWMIS.DataMap.Entity
             this.targetType = targetType;
         }
 
-        private static Dictionary<Type, Type> dictEntityType = new Dictionary<Type, Type>();
-        private static object sync_lock = new object();
-
         /// <summary>
-        /// 注册实体类的具体实现类
+        ///     注册实体类的具体实现类
         /// </summary>
         /// <param name="interfaceType">接口类型</param>
         /// <param name="instanceType">实例类型</param>
         public static void RegisterType(Type interfaceType, Type instanceType)
         {
-            if (!instanceType.IsSubclassOf(typeof(EntityBase)))
-                throw new ArithmeticException(instanceType.Name+ " 必须是 EntityBase 的实现类！");
-            if (instanceType.GetInterface(interfaceType.Name ) != interfaceType )
-                throw new ArithmeticException(instanceType.Name + " 必须是 "+ interfaceType.Name +" 的实现类！");
+            if (!instanceType.IsSubclassOf(typeof (EntityBase)))
+                throw new ArithmeticException(instanceType.Name + " 必须是 EntityBase 的实现类！");
+            if (instanceType.GetInterface(interfaceType.Name) != interfaceType)
+                throw new ArithmeticException(instanceType.Name + " 必须是 " + interfaceType.Name + " 的实现类！");
             dictEntityType.Add(interfaceType, instanceType);
         }
 
         /// <summary>
-        /// 根据接口类型，创建实体类的实例
+        ///     根据接口类型，创建实体类的实例
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static T CreateEntity<T>() where T:class
+        public static T CreateEntity<T>() where T : class
         {
             Type targetType = null;
-            Type sourceType = typeof(T);
-           
-            if (sourceType.IsSubclassOf(typeof(EntityBase)) || sourceType.IsSubclassOf(typeof(IReadData)) 
+            var sourceType = typeof (T);
+
+            if (sourceType.IsSubclassOf(typeof (EntityBase)) || sourceType.IsSubclassOf(typeof (IReadData))
                 || !sourceType.IsInterface)
             {
-               return Activator.CreateInstance<T>();
+                return Activator.CreateInstance<T>();
             }
-            else
+            //如果在类型字典里面没有找到接口的类型实现，则自动创建一个实体类
+            if (!dictEntityType.TryGetValue(sourceType, out targetType))
             {
-                //如果在类型字典里面没有找到接口的类型实现，则自动创建一个实体类
-                if (!dictEntityType.TryGetValue(sourceType, out targetType))
+                lock (sync_lock)
                 {
-                    lock (sync_lock)
+                    if (!dictEntityType.TryGetValue(sourceType, out targetType))
                     {
-                        if (!dictEntityType.TryGetValue(sourceType, out targetType))
-                        {
-                            EntityBuilder builder = new EntityBuilder(sourceType);
-                            targetType = builder.Build();
-                            dictEntityType[sourceType] = targetType;
-                        }
+                        var builder = new EntityBuilder(sourceType);
+                        targetType = builder.Build();
+                        dictEntityType[sourceType] = targetType;
                     }
                 }
             }
-            
-            T entity = (T)Activator.CreateInstance(targetType);
+
+            var entity = (T) Activator.CreateInstance(targetType);
             return entity;
         }
 
         /// <summary>
-        /// 构造实体类
+        ///     构造实体类
         /// </summary>
         /// <returns></returns>
         public Type Build()
         {
-            AppDomain currentAppDomain = AppDomain.CurrentDomain;
-            AssemblyName assyName = new AssemblyName();
+            var currentAppDomain = AppDomain.CurrentDomain;
+            var assyName = new AssemblyName();
 
             //为要创建的Assembly定义一个名称（这里忽略版本号，Culture等信息）
             assyName.Name = "PDFNetAssyFor_" + targetType.Name;
 
             //AssemblyBuilderAccess有Run，Save，RunAndSave三个取值
-            AssemblyBuilder assyBuilder = currentAppDomain.DefineDynamicAssembly(assyName, AssemblyBuilderAccess.Run);
+            var assyBuilder = currentAppDomain.DefineDynamicAssembly(assyName, AssemblyBuilderAccess.Run);
 
             /*
             //定义调试信息
@@ -119,13 +114,14 @@ DebuggableAttribute.DebuggingModes.DisableOptimizations | DebuggableAttribute.De
             assyBuilder.SetCustomAttribute(debugAttributeBuilder);
             */
 
-            ModuleBuilder modBuilder = assyBuilder.DefineDynamicModule("PDFNetModFor_" + targetType.Name);//, assyName.Name + ".dll"
+            var modBuilder = assyBuilder.DefineDynamicModule("PDFNetModFor_" + targetType.Name);
+                //, assyName.Name + ".dll"
             //ISymbolDocumentWriter DOC = modBuilder.DefineDocument(@"e:\ilSource.txt", Guid.Empty, Guid.Empty, Guid.Empty);//要定义源代码位置，这个文档不需要全部源代码，只需要你想调试的il源代码翻译就可以了
 
-            String newTypeName = "PDFNetDynamicEntity_" + targetType.Name;
+            var newTypeName = "PDFNetDynamicEntity_" + targetType.Name;
 
             //新类型的属性：要创建的是Class，而非Interface，Abstract Class等，而且是Public的
-            TypeAttributes newTypeAttribute = TypeAttributes.Class | TypeAttributes.Public;
+            var newTypeAttribute = TypeAttributes.Class | TypeAttributes.Public;
 
             //声明要创建的新类型的父类型
             Type newTypeParent;
@@ -136,8 +132,8 @@ DebuggableAttribute.DebuggingModes.DisableOptimizations | DebuggableAttribute.De
             //对于基类型是否为接口，作不同处理
             if (targetType.IsInterface)
             {
-                newTypeParent = typeof(EntityBase);
-                newTypeInterfaces = new Type[] { targetType };
+                newTypeParent = typeof (EntityBase);
+                newTypeInterfaces = new[] {targetType};
             }
             else
             {
@@ -146,95 +142,101 @@ DebuggableAttribute.DebuggingModes.DisableOptimizations | DebuggableAttribute.De
             }
 
             //得到类型生成器            
-            TypeBuilder typeBuilder = modBuilder.DefineType(newTypeName, newTypeAttribute, newTypeParent, newTypeInterfaces);
+            var typeBuilder = modBuilder.DefineType(newTypeName, newTypeAttribute, newTypeParent, newTypeInterfaces);
             typeBuilder.AddInterfaceImplementation(targetType);
 
             //定义构造函数
             BuildConstructor(typeBuilder, newTypeParent, targetType.Name);
 
             //以下将为新类型声明方法：新类型应该override基类型的所以virtual方法
-            PropertyInfo[] pis = targetType.GetProperties();
-            List<string> propertyNames = new List<string>();
+            var pis = targetType.GetProperties();
+            var propertyNames = new List<string>();
 
-            foreach (PropertyInfo pi in pis)
+            foreach (var pi in pis)
             {
                 propertyNames.Add(pi.Name);
                 //属性构造器
-                PropertyBuilder propBuilder = typeBuilder.DefineProperty(pi.Name,
-                    System.Reflection.PropertyAttributes.HasDefault,
+                var propBuilder = typeBuilder.DefineProperty(pi.Name,
+                    PropertyAttributes.HasDefault,
                     pi.PropertyType,
                     null);
 
-                MethodAttributes getSetAttr = MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig | MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.Final;
+                var getSetAttr = MethodAttributes.Public | MethodAttributes.SpecialName | MethodAttributes.HideBySig |
+                                 MethodAttributes.Virtual | MethodAttributes.NewSlot | MethodAttributes.Final;
                 //构造Get访问器
-                MethodBuilder getPropMethodBuilder = typeBuilder.DefineMethod("get_" + pi.Name,
-                    getSetAttr, 
-                    pi.PropertyType, 
+                var getPropMethodBuilder = typeBuilder.DefineMethod("get_" + pi.Name,
+                    getSetAttr,
+                    pi.PropertyType,
                     Type.EmptyTypes);
                 GeterIL(pi.Name, newTypeParent, pi.PropertyType, getPropMethodBuilder);
                 //构造Set访问器
-                MethodBuilder setPropMethodBuilder = typeBuilder.DefineMethod("set_" + pi.Name, 
+                var setPropMethodBuilder = typeBuilder.DefineMethod("set_" + pi.Name,
                     getSetAttr,
                     null,
-                    new Type[] { pi.PropertyType });
+                    new[] {pi.PropertyType});
                 SeterIL(pi.Name, newTypeParent, pi.PropertyType, setPropMethodBuilder);
                 //添加到属性构造器
                 propBuilder.SetGetMethod(getPropMethodBuilder);
                 propBuilder.SetSetMethod(setPropMethodBuilder);
             }
 
-            MethodBuilder SetFieldNamesBuilder = typeBuilder.DefineMethod("SetFieldNames", MethodAttributes.Family  | MethodAttributes.Virtual | MethodAttributes.HideBySig);
+            var SetFieldNamesBuilder = typeBuilder.DefineMethod("SetFieldNames",
+                MethodAttributes.Family | MethodAttributes.Virtual | MethodAttributes.HideBySig);
             SetFieldNamesIL(newTypeParent, SetFieldNamesBuilder, propertyNames.ToArray());
-            
+
             //真正创建，并返回
-            Type resuleType=typeBuilder.CreateType();
+            var resuleType = typeBuilder.CreateType();
             //assyBuilder.Save(assyName.Name+".dll");
             return resuleType;
         }
+
         /// <summary>
-        /// 构造构造函数
+        ///     构造构造函数
         /// </summary>
         /// <param name="typeBuilder"></param>
         /// <param name="newTypeParent"></param>
         /// <param name="newTypeName"></param>
-        void BuildConstructor(TypeBuilder typeBuilder, Type newTypeParent, string newTypeName)
+        private void BuildConstructor(TypeBuilder typeBuilder, Type newTypeParent, string newTypeName)
         {
             //去除接口名称的约定 I 字母打头，作为表名称
-            string tableName = newTypeName.Length > 1 ? newTypeName.Substring(1) : newTypeName;
+            var tableName = newTypeName.Length > 1 ? newTypeName.Substring(1) : newTypeName;
 
-            ConstructorBuilder constructorBuilder = typeBuilder.DefineConstructor(
-                MethodAttributes.Public | MethodAttributes.HideBySig | 
+            var constructorBuilder = typeBuilder.DefineConstructor(
+                MethodAttributes.Public | MethodAttributes.HideBySig |
                 MethodAttributes.SpecialName | MethodAttributes.RTSpecialName,
                 CallingConventions.HasThis,
                 null);
-            ILGenerator ctorIL = constructorBuilder.GetILGenerator();
+            var ctorIL = constructorBuilder.GetILGenerator();
             ctorIL.Emit(OpCodes.Ldarg_0);
             ctorIL.Emit(OpCodes.Call, newTypeParent.GetConstructors(
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)[0]);
 
             ctorIL.Emit(OpCodes.Ldarg_0);
             ctorIL.Emit(OpCodes.Ldstr, tableName);
-            ctorIL.Emit(OpCodes.Call, newTypeParent.GetMethod("set_TableName", BindingFlags.NonPublic | BindingFlags.Instance));
+            ctorIL.Emit(OpCodes.Call,
+                newTypeParent.GetMethod("set_TableName", BindingFlags.NonPublic | BindingFlags.Instance));
             ctorIL.Emit(OpCodes.Ret);
         }
+
         /// <summary>
-        /// 重载 SetFieldNames 方法
+        ///     重载 SetFieldNames 方法
         /// </summary>
         /// <param name="baseType"></param>
         /// <param name="methodBuilder"></param>
         /// <param name="names"></param>
-        void SetFieldNamesIL(Type baseType, MethodBuilder methodBuilder, string[] names)
+        private void SetFieldNamesIL(Type baseType, MethodBuilder methodBuilder, string[] names)
         {
-            string str = string.Join(",", names);
-            MethodInfo splitMI=typeof(string).GetMethod("Split", new Type[] { typeof(char[]) });
-            MethodInfo set_PropertyNamesMI = baseType.GetMethod("set_PropertyNames", BindingFlags.Instance | BindingFlags.NonPublic);
+            var str = string.Join(",", names);
+            var splitMI = typeof (string).GetMethod("Split", new[] {typeof (char[])});
+            var set_PropertyNamesMI = baseType.GetMethod("set_PropertyNames",
+                BindingFlags.Instance | BindingFlags.NonPublic);
 
             var ilGenerator = methodBuilder.GetILGenerator();
-            var charArray = ilGenerator.DeclareLocal(typeof(char[]));
+            var charArray = ilGenerator.DeclareLocal(typeof (char[]));
             ilGenerator.Emit(OpCodes.Ldarg_0);
             ilGenerator.Emit(OpCodes.Ldstr, str);
             ilGenerator.Emit(OpCodes.Ldc_I4_1);
-            ilGenerator.Emit(OpCodes.Newarr,typeof(char));
+            ilGenerator.Emit(OpCodes.Newarr, typeof (char));
             ilGenerator.Emit(OpCodes.Stloc_0);
             ilGenerator.Emit(OpCodes.Ldloc_0);
             ilGenerator.Emit(OpCodes.Ldc_I4_0);
@@ -245,19 +247,20 @@ DebuggableAttribute.DebuggingModes.DisableOptimizations | DebuggableAttribute.De
             ilGenerator.Emit(OpCodes.Callvirt, set_PropertyNamesMI);
             ilGenerator.Emit(OpCodes.Ret);
         }
+
         /// <summary>
-        /// 构造Get访问器
+        ///     构造Get访问器
         /// </summary>
         /// <param name="propertyName"></param>
         /// <param name="baseType"></param>
         /// <param name="propertyType"></param>
         /// <param name="methodBuilder"></param>
-        void GeterIL(string propertyName, Type baseType, Type propertyType, MethodBuilder methodBuilder)
+        private void GeterIL(string propertyName, Type baseType, Type propertyType, MethodBuilder methodBuilder)
         {
             MethodInfo getProperty = null;
 
-            MethodInfo[] ms = typeof(EntityBase).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic);
-            foreach (MethodInfo info in ms)
+            var ms = typeof (EntityBase).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic);
+            foreach (var info in ms)
             {
                 if (info.Name == "getProperty" && info.IsGenericMethod)
                 {
@@ -273,20 +276,22 @@ DebuggableAttribute.DebuggingModes.DisableOptimizations | DebuggableAttribute.De
             ilGenerator.Emit(OpCodes.Call, getProperty);
             ilGenerator.Emit(OpCodes.Ret);
         }
+
         /// <summary>
-        /// 构造Set访问器
+        ///     构造Set访问器
         /// </summary>
         /// <param name="propertyName"></param>
         /// <param name="baseType"></param>
         /// <param name="propertyType"></param>
         /// <param name="methodBuilder"></param>
-        void SeterIL(string propertyName, Type baseType, Type propertyType, MethodBuilder methodBuilder)
+        private void SeterIL(string propertyName, Type baseType, Type propertyType, MethodBuilder methodBuilder)
         {
-            MethodInfo setProperty =null;//= baseType.GetMethod("setProperty", BindingFlags.Instance | BindingFlags.NonPublic);
-            MethodInfo[] ms = typeof(EntityBase).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic);
-            foreach (MethodInfo info in ms)
+            MethodInfo setProperty = null;
+                //= baseType.GetMethod("setProperty", BindingFlags.Instance | BindingFlags.NonPublic);
+            var ms = typeof (EntityBase).GetMethods(BindingFlags.Instance | BindingFlags.NonPublic);
+            foreach (var info in ms)
             {
-                if (info.Name == "setProperty" )
+                if (info.Name == "setProperty")
                 {
                     if (info.GetParameters().Length == 2)
                     {

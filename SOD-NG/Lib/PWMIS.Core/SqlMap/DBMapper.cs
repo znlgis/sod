@@ -13,55 +13,53 @@
  * 修改说明：
  * ========================================================================
 */
-using System;
-using System.Collections.Generic;
-using System.Text;
-using PWMIS.DataProvider.Data;
+
 using PWMIS.DataProvider.Adapter;
+using PWMIS.DataProvider.Data;
 
 namespace PWMIS.DataMap.SqlMap
 {
     /// <summary>
-    /// SQLMAP数据处理层基类
+    ///     SQLMAP数据处理层基类
     /// </summary>
     /// <remarks></remarks>
     public abstract class DBMapper
     {
         #region "公共的数据库接口"
-        AdoHelper  _DB;
-        SqlMapper _Mapper;
-        string _SqlMapFile;
+
+        private AdoHelper _DB;
+        private string _SqlMapFile;
 
         /// <summary>
-        /// 初始化构造函数
+        ///     初始化构造函数
         /// </summary>
         /// <remarks></remarks>
         public DBMapper()
         {
             _DB = MyDB.GetDBHelper();
-            _Mapper = new SqlMapper();
+            Mapper = new SqlMapper();
             //_Mapper.CommandClassName = "EngineManager"
-            _Mapper.DataBase = _DB;
+            Mapper.DataBase = _DB;
         }
 
         /// <summary>
-        /// 获取或设置当前使用的数据库操作对象
+        ///     获取或设置当前使用的数据库操作对象
         /// </summary>
         /// <value></value>
         /// <returns></returns>
         /// <remarks></remarks>
-        public AdoHelper   CurrentDataBase
+        public AdoHelper CurrentDataBase
         {
             get { return _DB; }
             set
             {
                 _DB = value;
-                _Mapper.DataBase = _DB;
+                Mapper.DataBase = _DB;
             }
         }
 
         /// <summary>
-        /// 获取或设置SQL Map 配置文件地址(可以是一个外部配置文件或者嵌入程序集的配置文件)
+        ///     获取或设置SQL Map 配置文件地址(可以是一个外部配置文件或者嵌入程序集的配置文件)
         /// </summary>
         /// <value></value>
         /// <returns></returns>
@@ -78,23 +76,18 @@ namespace PWMIS.DataMap.SqlMap
             set
             {
                 _SqlMapFile = value;
-                _Mapper.SqlMapFile = _SqlMapFile;
+                Mapper.SqlMapFile = _SqlMapFile;
             }
         }
 
         /// <summary>
-        /// 获取SQLMAP对象
+        ///     获取SQLMAP对象
         /// </summary>
         /// <value></value>
         /// <returns></returns>
         /// <remarks></remarks>
-        public SqlMapper Mapper
-        {
-            get { return _Mapper; }
-        }
+        public SqlMapper Mapper { get; private set; }
 
         #endregion
-
     }
-
 }

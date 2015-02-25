@@ -98,27 +98,21 @@ where id>
   order by id
 
 		 */
+
 using System;
 
 namespace PWMIS.Common
 {
     /// <summary>
-    /// SQL SERVER 分页处理，自动识别标准SQL语句并生成适合分页的SQL语句
+    ///     SQL SERVER 分页处理，自动识别标准SQL语句并生成适合分页的SQL语句
     /// </summary>
     public class SQLPage
     {
         //public static string DBType=System.Configuration.ConfigurationSettings .AppSettings ["EngineType"];
         public static DBMSType DbmsType = DBMSType.SqlServer;
 
-        public SQLPage()
-        {
-            //
-            // TODO: 在此处添加构造函数逻辑
-            //
-        }
-
         /// <summary>
-        /// 生成SQL分页语句，记录总数为0表示生成统计语句
+        ///     生成SQL分页语句，记录总数为0表示生成统计语句
         /// </summary>
         /// <param name="dbmsType">数据库类型</param>
         /// <param name="strSQLInfo">原始SQL语句</param>
@@ -127,10 +121,11 @@ namespace PWMIS.Common
         /// <param name="PageNumber">页码</param>
         /// <param name="AllCount">记录总数，如果是0则生成统计记录数量的查询</param>
         /// <returns>生成SQL分页语句</returns>
-        public static string MakeSQLStringByPage(DBMSType dbmsType, string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
+        public static string MakeSQLStringByPage(DBMSType dbmsType, string strSQLInfo, string strWhere, int PageSize,
+            int PageNumber, int AllCount)
         {
             //根据不同的数据库引擎调用不同生成器
-            string SQL = string.Empty;
+            var SQL = string.Empty;
             switch (dbmsType)
             {
                 case DBMSType.Access:
@@ -157,7 +152,7 @@ namespace PWMIS.Common
         }
 
         /// <summary>
-        /// 生成SQL分页语句，记录总数为0表示生成统计语句
+        ///     生成SQL分页语句，记录总数为0表示生成统计语句
         /// </summary>
         /// <param name="strSQLInfo">原始SQL语句</param>
         /// <param name="strWhere">在分页前要替换的字符串，用于分页前的筛选</param>
@@ -165,13 +160,14 @@ namespace PWMIS.Common
         /// <param name="PageNumber">页码</param>
         /// <param name="AllCount">记录总数，如果是0则生成统计记录数量的查询</param>
         /// <returns>生成SQL分页语句</returns>
-        public static string MakeSQLStringByPage(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
+        public static string MakeSQLStringByPage(string strSQLInfo, string strWhere, int PageSize, int PageNumber,
+            int AllCount)
         {
-            return MakeSQLStringByPage(SQLPage.DbmsType, strSQLInfo, strWhere, PageSize, PageNumber, AllCount);
+            return MakeSQLStringByPage(DbmsType, strSQLInfo, strWhere, PageSize, PageNumber, AllCount);
         }
 
         /// <summary>
-        /// MS SQLSERVER 分页SQL语句生成器，同样适用于ACCESS数据库
+        ///     MS SQLSERVER 分页SQL语句生成器，同样适用于ACCESS数据库
         /// </summary>
         /// <param name="strSQLInfo">原始SQL语句</param>
         /// <param name="strWhere">在分页前要替换的字符串，用于分页前的筛选</param>
@@ -179,19 +175,21 @@ namespace PWMIS.Common
         /// <param name="PageNumber">页码</param>
         /// <param name="AllCount">记录总数</param>
         /// <returns>生成SQL分页语句</returns>
-        private static string MakePageSQLStringByMSSQL(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
+        private static string MakePageSQLStringByMSSQL(string strSQLInfo, string strWhere, int PageSize, int PageNumber,
+            int AllCount)
         {
             #region 分页位置分析
-            string strSQLType = string.Empty;
+
+            var strSQLType = string.Empty;
             if (AllCount > 0)
             {
                 if (PageNumber == 1) //首页
                 {
                     strSQLType = "First";
                 }
-                else if (PageSize * PageNumber > AllCount) //最后的页 @@LeftSize
+                else if (PageSize*PageNumber > AllCount) //最后的页 @@LeftSize
                 {
-                    PageSize = AllCount - PageSize * (PageNumber - 1);
+                    PageSize = AllCount - PageSize*(PageNumber - 1);
                     strSQLType = "Last";
                 }
                 else //中间页
@@ -211,10 +209,11 @@ namespace PWMIS.Common
             #endregion
 
             #region SQL 复杂度分析
+
             //SQL 复杂度分析 开始
-            bool SqlFlag = true;//简单SQL标记
-            string TestSQL = strSQLInfo.ToUpper();
-            int n = TestSQL.IndexOf("SELECT ", 0);
+            var SqlFlag = true; //简单SQL标记
+            var TestSQL = strSQLInfo.ToUpper();
+            var n = TestSQL.IndexOf("SELECT ", 0);
             n = TestSQL.IndexOf("SELECT ", n + 7);
             if (n == -1)
             {
@@ -227,13 +226,13 @@ namespace PWMIS.Common
                     n = TestSQL.IndexOf("FROM ", 9);
                     if (n == -1) return "";
                     //计算 WHERE 谓词的位置
-                    int m = TestSQL.IndexOf("WHERE ", n + 5);
+                    var m = TestSQL.IndexOf("WHERE ", n + 5);
                     // 如果没有WHERE 谓词
                     if (m == -1) m = TestSQL.IndexOf("ORDER BY ", n + 5);
                     //如果没有ORDER BY 谓词，那么无法排序，退出；
                     if (m == -1)
                         throw new Exception("查询语句分析：当前没有为分页查询指定排序字段！请适当修改SQL语句。\n" + strSQLInfo);
-                    string strTableName = TestSQL.Substring(n, m - n);
+                    var strTableName = TestSQL.Substring(n, m - n);
                     //表名中有 , 号表示是多表查询
                     if (strTableName.IndexOf(",") != -1)
                         SqlFlag = false;
@@ -245,38 +244,36 @@ namespace PWMIS.Common
                 SqlFlag = false;
             }
             //SQL 复杂度分析 结束
+
             #endregion
 
             #region 排序语法分析
+
             //排序语法分析 开始
-            int iOrderAt = strSQLInfo.ToLower().LastIndexOf("order by ");
+            var iOrderAt = strSQLInfo.ToLower().LastIndexOf("order by ");
             //如果没有ORDER BY 谓词，那么无法排序分页，退出；
             if (iOrderAt == -1)
             {
                 if (PageNumber == 1)
                 {
-                    string sqlTemp = "Select Top @@PageSize * FROM ( " + strSQLInfo +
-                           " ) P_T0 @@Where ";
+                    var sqlTemp = "Select Top @@PageSize * FROM ( " + strSQLInfo +
+                                  " ) P_T0 @@Where ";
                     return sqlTemp.Replace("@@PageSize", PageSize.ToString()).Replace("@@Where", strWhere);
                 }
-                else
-                {
-                    throw new Exception("查询语句分析：当前没有为分页查询指定排序字段！请适当修改SQL语句。\n" + strSQLInfo);
-                }
+                throw new Exception("查询语句分析：当前没有为分页查询指定排序字段！请适当修改SQL语句。\n" + strSQLInfo);
             }
 
-            string strOrder = strSQLInfo.Substring(iOrderAt + 9);
+            var strOrder = strSQLInfo.Substring(iOrderAt + 9);
             strSQLInfo = strSQLInfo.Substring(0, iOrderAt);
-            string[] strArrOrder = strOrder.Split(new char[] { ',' });
-            for (int i = 0; i < strArrOrder.Length; i++)
+            var strArrOrder = strOrder.Split(',');
+            for (var i = 0; i < strArrOrder.Length; i++)
             {
-                string[] strArrTemp = (strArrOrder[i].Trim() + " ").Split(new char[] { ' ' });
+                var strArrTemp = (strArrOrder[i].Trim() + " ").Split(' ');
                 //压缩多余空格
-                for (int j = 1; j < strArrTemp.Length; j++)
+                for (var j = 1; j < strArrTemp.Length; j++)
                 {
                     if (strArrTemp[j].Trim() == "")
                     {
-                        continue;
                     }
                     else
                     {
@@ -303,16 +300,17 @@ namespace PWMIS.Common
                 if (strArrTemp[0].IndexOf(".") != -1)
                     strArrTemp[0] = strArrTemp[0].Substring(strArrTemp[0].IndexOf(".") + 1);
                 strArrOrder[i] = string.Join(" ", strArrTemp);
-
             }
             //生成反向排序语句
-            string strNewOrder = string.Join(",", strArrOrder).Trim();
+            var strNewOrder = string.Join(",", strArrOrder).Trim();
             strOrder = strNewOrder.Replace("ASC", "ASC0").Replace("DESC", "ASC").Replace("ASC0", "DESC");
             //排序语法分析结束
+
             #endregion
 
             #region 构造分页查询
-            string SQL = string.Empty;
+
+            var SQL = string.Empty;
             if (!SqlFlag)
             {
                 //复杂查询处理
@@ -320,7 +318,7 @@ namespace PWMIS.Common
                 {
                     case "FIRST":
                         SQL = "Select Top @@PageSize * FROM ( " + strSQLInfo +
-                            " ) P_T0 @@Where ORDER BY " + strOrder;
+                              " ) P_T0 @@Where ORDER BY " + strOrder;
                         break;
                     case "MID":
                         SQL = @"SELECT Top @@PageSize * FROM
@@ -330,66 +328,66 @@ namespace PWMIS.Common
                         SQL += " " + strSQLInfo + " ) P_T0 @@Where ORDER BY " + strOrder + " ";
                         SQL += @") P_T1
             ORDER BY " + strNewOrder + ") P_T2  " +
-                            "ORDER BY " + strOrder;
+                               "ORDER BY " + strOrder;
                         break;
                     case "LAST":
                         SQL = @"SELECT * FROM (     
                           Select Top @@LeftSize * FROM (" + " " + strSQLInfo + " ";
                         SQL += " ) P_T0 @@Where ORDER BY " + strNewOrder + " " +
-                            " ) P_T1 ORDER BY " + strOrder;
+                               " ) P_T1 ORDER BY " + strOrder;
                         break;
                     case "COUNT":
                         SQL = "Select COUNT(*) FROM ( " + strSQLInfo + " ) P_Count @@Where";
                         break;
                     default:
-                        SQL = strSQLInfo + strOrder;//还原
+                        SQL = strSQLInfo + strOrder; //还原
                         break;
                 }
-
             }
             else
             {
                 //简单查询处理
-                string strUpperSQLInfo = strSQLInfo.ToUpper();
-                bool isDistinct = strUpperSQLInfo.IndexOf("DISTINCT") >= 7;
+                var strUpperSQLInfo = strSQLInfo.ToUpper();
+                var isDistinct = strUpperSQLInfo.IndexOf("DISTINCT") >= 7;
                 if (isDistinct)
                     strUpperSQLInfo = strUpperSQLInfo.Replace("DISTINCT", "");
                 switch (strSQLType.ToUpper())
                 {
                     case "FIRST":
-                        if(isDistinct)
+                        if (isDistinct)
                             SQL = strUpperSQLInfo.Replace("DISTINCT", "DISTINCT TOP @@PageSize");
                         else
                             SQL = strUpperSQLInfo.Replace("SELECT ", "SELECT TOP @@PageSize ");
                         SQL += "  @@Where ORDER BY " + strOrder;
                         break;
                     case "MID":
-                        string strRep = @"SELECT Top @@PageSize * FROM
+                        var strRep = @"SELECT Top @@PageSize * FROM
                          (SELECT Top @@PageSize * FROM
                            (
                              SELECT Top @@Page_Size_Number  ";
                         if (isDistinct)
-                            strRep = strRep.Replace("SELECT Top @@Page_Size_Number ", "SELECT DISTINCT Top @@Page_Size_Number");
+                            strRep = strRep.Replace("SELECT Top @@Page_Size_Number ",
+                                "SELECT DISTINCT Top @@Page_Size_Number");
 
                         SQL = strUpperSQLInfo.Replace("SELECT ", strRep);
                         SQL += "  @@Where ORDER BY " + strOrder;
                         SQL += "  ) P_T0 ORDER BY " + strNewOrder + " " +
-                            " ) P_T1 ORDER BY " + strOrder;
+                               " ) P_T1 ORDER BY " + strOrder;
                         break;
                     case "LAST":
-                        string strRep2 = @"SELECT * FROM (     
+                        var strRep2 = @"SELECT * FROM (     
                           Select Top @@LeftSize ";
                         if (isDistinct)
                             strRep2 = strRep2.Replace("Select Top @@LeftSize", "Select DISTINCT Top @@LeftSize");
                         SQL = strUpperSQLInfo.Replace("SELECT ", strRep2);
                         SQL += " @@Where ORDER BY " + strNewOrder + " " +
-                            " ) P_T1 ORDER BY " + strOrder;
+                               " ) P_T1 ORDER BY " + strOrder;
                         break;
                     case "COUNT":
-                        SQL = "Select COUNT(*) FROM ( " + strSQLInfo + " @@Where) P_Count ";//edit 2008.3.29
+                        SQL = "Select COUNT(*) FROM ( " + strSQLInfo + " @@Where) P_Count "; //edit 2008.3.29
                         break;
                     default:
-                        SQL = strSQLInfo + strOrder;//还原
+                        SQL = strSQLInfo + strOrder; //还原
                         break;
                 }
             }
@@ -397,8 +395,8 @@ namespace PWMIS.Common
             //执行分页参数替换
             if (PageSize < 0) PageSize = 0;
             SQL = SQL.Replace("@@PageSize", PageSize.ToString())
-                .Replace("@@Page_Size_Number", Convert.ToString(PageSize * PageNumber))
-                .Replace("@@LeftSize", PageSize.ToString());//
+                .Replace("@@Page_Size_Number", Convert.ToString(PageSize*PageNumber))
+                .Replace("@@LeftSize", PageSize.ToString()); //
             //.Replace ("@@Where",strWhere);
             //针对用户的额外条件处理：
             if (strWhere == null) strWhere = "";
@@ -417,13 +415,12 @@ namespace PWMIS.Common
                 SQL = SQL.Replace("@@Where", strWhere);
             }
             return SQL;
-            #endregion
 
+            #endregion
         }
 
-
         /// <summary>
-        /// Oracle 分页SQL语句生成器
+        ///     Oracle 分页SQL语句生成器
         /// </summary>
         /// <param name="strSQLInfo">原始SQL语句</param>
         /// <param name="strWhere">在分页前要替换的字符串，用于分页前的筛选</param>
@@ -431,13 +428,14 @@ namespace PWMIS.Common
         /// <param name="PageNumber">页码</param>
         /// <param name="AllCount">记录总数</param>
         /// <returns>生成SQL分页语句</returns>
-        private static string MakePageSQLStringByOracle(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
+        private static string MakePageSQLStringByOracle(string strSQLInfo, string strWhere, int PageSize, int PageNumber,
+            int AllCount)
         {
             if (strWhere != null && strWhere != "")
             {
                 //使用strWhereUpper 来判断，避免大写问题，Oracle 对的大写的字段有不同的意义。
                 //感谢网友 大大宝 发现此问题 2014.5.6
-                string  strWhereUpper = strWhere.Trim().ToUpper();
+                var strWhereUpper = strWhere.Trim().ToUpper();
                 if (strWhereUpper.StartsWith("WHERE "))
                     throw new Exception("附加查询条件不能带 where 谓词");
                 if (strWhereUpper.IndexOf(" ORDER BY ") > 0)
@@ -447,27 +445,28 @@ namespace PWMIS.Common
             if (AllCount == 0)
             {
                 //生成统计语句　
-                return "select count(*) from (" + strSQLInfo + ") P_Count  " 
-                    + (string.IsNullOrEmpty( strWhere)?"":"WHERE "+strWhere);
+                return "select count(*) from (" + strSQLInfo + ") P_Count  "
+                       + (string.IsNullOrEmpty(strWhere) ? "" : "WHERE " + strWhere);
             }
             //分页摸板语句
 
-            string SqlTemplate = @"SELECT * FROM
+            var SqlTemplate = @"SELECT * FROM
  (SELECT rownum r_n,temptable.* FROM  
    ( @@SourceSQL ) temptable Where rownum <= @@RecEnd
  ) temptable2 WHERE r_n >= @@RecStart ";
 
-            int iRecStart = (PageNumber - 1) * PageSize + 1;
-            int iRecEnd = PageNumber * PageSize;
+            var iRecStart = (PageNumber - 1)*PageSize + 1;
+            var iRecEnd = PageNumber*PageSize;
 
             //执行参数替换
-            string SQL = SqlTemplate.Replace("@@SourceSQL", strSQLInfo)
+            var SQL = SqlTemplate.Replace("@@SourceSQL", strSQLInfo)
                 .Replace("@@RecStart", iRecStart.ToString())
                 .Replace("@@RecEnd", iRecEnd.ToString());
             return SQL;
         }
 
-        private static string MakePageSQLStringByMySQL_PgSQL(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount, string offsetString)
+        private static string MakePageSQLStringByMySQL_PgSQL(string strSQLInfo, string strWhere, int PageSize,
+            int PageNumber, int AllCount, string offsetString)
         {
             strSQLInfo = strSQLInfo.Trim();
             //去除末尾的分号
@@ -485,35 +484,35 @@ namespace PWMIS.Common
             if (AllCount == 0)
             {
                 //生成统计语句，感谢网友[大大宝]发现strWhere可能的问题
-                return "select count(*) from (" + strSQLInfo + ") P_Count  " 
-                    + (string.IsNullOrEmpty(strWhere) ? "" : "WHERE " + strWhere);
+                return "select count(*) from (" + strSQLInfo + ") P_Count  "
+                       + (string.IsNullOrEmpty(strWhere) ? "" : "WHERE " + strWhere);
             }
 
             if (PageNumber == 1)
                 return strSQLInfo + " LIMIT " + PageSize;
             //offset 从索引0开始，感谢网友杜军（逍遥游） 发现此Bug
             //http://www.cnblogs.com/duwolfnet/articles/3293280.html
-            int offset = PageSize * (PageNumber - 1);
-           
-            if (offsetString == ",")//MySQL,感谢网友[左眼]发现此Bug
+            var offset = PageSize*(PageNumber - 1);
+
+            if (offsetString == ",") //MySQL,感谢网友[左眼]发现此Bug
                 return strSQLInfo + " LIMIT " + offset + offsetString + PageSize;
-            else //PostgreSQL
-                return strSQLInfo + " LIMIT " + PageSize + offsetString + offset;
+            return strSQLInfo + " LIMIT " + PageSize + offsetString + offset;
         }
 
-
-        public static string MakePageSQLStringByMySQL(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
+        public static string MakePageSQLStringByMySQL(string strSQLInfo, string strWhere, int PageSize, int PageNumber,
+            int AllCount)
         {
-            return MakePageSQLStringByMySQL_PgSQL(strSQLInfo, strWhere, PageSize, PageNumber, AllCount,",");
+            return MakePageSQLStringByMySQL_PgSQL(strSQLInfo, strWhere, PageSize, PageNumber, AllCount, ",");
         }
 
-        public static string MakePageSQLStringByPostgreSQL(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
+        public static string MakePageSQLStringByPostgreSQL(string strSQLInfo, string strWhere, int PageSize,
+            int PageNumber, int AllCount)
         {
             return MakePageSQLStringByMySQL_PgSQL(strSQLInfo, strWhere, PageSize, PageNumber, AllCount, " offset ");
         }
 
         /// <summary>
-        /// 根据主键的高效快速分页之倒序分页
+        ///     根据主键的高效快速分页之倒序分页
         /// </summary>
         /// <param name="pageNum">页码，从1开始</param>
         /// <param name="pageSize">页大小，大于1</param>
@@ -522,13 +521,14 @@ namespace PWMIS.Common
         /// <param name="PKName">主键名称</param>
         /// <param name="conditon">查询条件</param>
         /// <returns>返回指定页码的快速分页SQL语句</returns>
-        public static string GetDescPageSQLbyPrimaryKey(int pageNum, int pageSize, string filedList, string tableName, string PKName, string conditon)
+        public static string GetDescPageSQLbyPrimaryKey(int pageNum, int pageSize, string filedList, string tableName,
+            string PKName, string conditon)
         {
             if (conditon == null || conditon == "")
                 conditon = "1=1";
             if (pageNum == 1)
             {
-                string sqlTemplage = "Select top @pageSize @filedList from @table1 where  @conditon order by @PKName desc ";
+                var sqlTemplage = "Select top @pageSize @filedList from @table1 where  @conditon order by @PKName desc ";
                 return sqlTemplage
                     .Replace("@pageSize", pageSize.ToString())
                     .Replace("@filedList", filedList)
@@ -539,7 +539,7 @@ namespace PWMIS.Common
             else
             {
                 //@topNum= ((页码-1)*页大小)
-                string sqlTemplage = @"
+                var sqlTemplage = @"
 select top @pageSize @filedList
 from @table1
 where @conditon And @PKName<
@@ -548,20 +548,19 @@ where @conditon And @PKName<
        )    
   order by @PKName desc
 ";
-                int topNum = (pageNum - 1) * pageSize;
+                var topNum = (pageNum - 1)*pageSize;
 
                 return sqlTemplage.Replace("@topNum", topNum.ToString())
-                   .Replace("@pageSize", pageSize.ToString())
-                   .Replace("@filedList", filedList)
-                   .Replace("@table1", tableName)
-                   .Replace("@conditon", conditon)
-                   .Replace("@PKName", PKName);
-
+                    .Replace("@pageSize", pageSize.ToString())
+                    .Replace("@filedList", filedList)
+                    .Replace("@table1", tableName)
+                    .Replace("@conditon", conditon)
+                    .Replace("@PKName", PKName);
             }
         }
 
         /// <summary>
-        /// 根据主键的高效快速分页之 升序分页
+        ///     根据主键的高效快速分页之 升序分页
         /// </summary>
         /// <param name="pageNum">页码，从1开始</param>
         /// <param name="pageSize">页大小，大于1</param>
@@ -570,13 +569,14 @@ where @conditon And @PKName<
         /// <param name="PKName">主键名称</param>
         /// <param name="conditon">查询条件</param>
         /// <returns>返回指定页码的快速分页SQL语句</returns>
-        public static string GetAscPageSQLbyPrimaryKey(int pageNum, int pageSize, string filedList, string tableName, string PKName, string conditon)
+        public static string GetAscPageSQLbyPrimaryKey(int pageNum, int pageSize, string filedList, string tableName,
+            string PKName, string conditon)
         {
             if (conditon == null || conditon == "")
                 conditon = "1=1";
             if (pageNum == 1)
             {
-                string sqlTemplage = "Select top @pageSize @filedList from @table1 where  @conditon order by @PKName desc ";
+                var sqlTemplage = "Select top @pageSize @filedList from @table1 where  @conditon order by @PKName desc ";
                 return sqlTemplage
                     .Replace("@pageSize", pageSize.ToString())
                     .Replace("@filedList", filedList)
@@ -587,7 +587,7 @@ where @conditon And @PKName<
             else
             {
                 //@topNum= ((页码-1)*页大小)
-                string sqlTemplage = @"
+                var sqlTemplage = @"
 select top @pageSize @filedList
 from @table1
 where @conditon And @PKName>
@@ -596,23 +596,15 @@ where @conditon And @PKName>
        )    
   order by @PKName asc
 ";
-                int topNum = (pageNum - 1) * pageSize;
+                var topNum = (pageNum - 1)*pageSize;
 
                 return sqlTemplage.Replace("@topNum", topNum.ToString())
-                   .Replace("@pageSize", pageSize.ToString())
-                   .Replace("@filedList", filedList)
-                   .Replace("@table1", tableName)
-                   .Replace("@conditon", conditon)
-                   .Replace("@PKName", PKName);
-
+                    .Replace("@pageSize", pageSize.ToString())
+                    .Replace("@filedList", filedList)
+                    .Replace("@table1", tableName)
+                    .Replace("@conditon", conditon)
+                    .Replace("@PKName", PKName);
             }
         }
     }
-
-
-
-
-
-
-
 }

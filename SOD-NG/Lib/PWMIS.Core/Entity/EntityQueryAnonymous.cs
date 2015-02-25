@@ -49,42 +49,44 @@
 //#define CMD_NORMAR //普通模式
 
 using System;
-using System.Xml;
+using System.Collections;
 using System.Collections.Generic;
-using System.Text;
 using System.Data;
+using System.IO;
+using System.Xml;
+using PWMIS.Common;
+using PWMIS.Core;
+using PWMIS.DataMap.SqlMap;
 using PWMIS.DataProvider.Adapter;
 using PWMIS.DataProvider.Data;
-using PWMIS.Core;
-using System.Collections;
-using PWMIS.Common;
 
 namespace PWMIS.DataMap.Entity
 {
     /// <summary>
-    /// 匿名实体类查询，在只知道实体类类型但没有直接的实体类实例的情况下很有用
+    ///     匿名实体类查询，在只知道实体类类型但没有直接的实体类实例的情况下很有用
     /// </summary>
     public class EntityQueryAnonymous
     {
-        private AdoHelper _DefaultDataBase = null;
+        private AdoHelper _DefaultDataBase;
+
         /// <summary>
-        /// 操作需要的数据库实例，如果不设定将采用默认实例
+        ///     操作需要的数据库实例，如果不设定将采用默认实例
         /// </summary>
-        public  AdoHelper DefaultDataBase {
-            get {
+        public AdoHelper DefaultDataBase
+        {
+            get
+            {
                 if (_DefaultDataBase == null)
-                    _DefaultDataBase = MyDB.Instance ;
+                    _DefaultDataBase = MyDB.Instance;
                 return _DefaultDataBase;
             }
-            set {
-                _DefaultDataBase = value;
-            }
+            set { _DefaultDataBase = value; }
         }
 
         /// <summary>
-        /// 获取当期类设定的数据连接对象，与DefaultDataBase 属性不同的是，如果未设置过 DefaultDataBase，
-        /// 则使用MyDB.GetDBHelper() 获得一个新的默认配置的数据访问对象实例；
-        /// 如果设置过，则使用 DefaultDataBase 设置的数据访问对象。
+        ///     获取当期类设定的数据连接对象，与DefaultDataBase 属性不同的是，如果未设置过 DefaultDataBase，
+        ///     则使用MyDB.GetDBHelper() 获得一个新的默认配置的数据访问对象实例；
+        ///     如果设置过，则使用 DefaultDataBase 设置的数据访问对象。
         /// </summary>
         public AdoHelper DefaultNewDataBase
         {
@@ -92,272 +94,9 @@ namespace PWMIS.DataMap.Entity
             {
                 if (_DefaultDataBase == null)
                     return MyDB.GetDBHelper();
-                else
-                    return _DefaultDataBase;
+                return _DefaultDataBase;
             }
         }
-
-        #region 导入数据
-        /// <summary>
-        /// 将实体集合中的所有数据导入数据库，如果数据已经存在则修改（先删除再插入）否则直接插入。如果实体中的数据只包含部分字段的数据，请勿使用该方法。
-        /// </summary>
-        /// <param name="entityList">同一实体类集合</param>
-        /// <param name="bulkCopyModel">是否使用批量插入的方式更新，只支持SQLSERVER。
-        /// 取值含义：0，不使用批量复制，1，批量复制前删除数据库中对应的重复记录，2，不检查重复，直接批量插入
-        /// </param>
-        /// <returns>操作受影响的行数</returns>
-        public int ImportData(List<EntityBase> entityList, int bulkCopyModel)
-        {
-            int count = 0;
-            if (entityList == null || entityList.Count == 0)
-                return 0;
-
-            AdoHelper db = DefaultNewDataBase;
-#if(CMD_FAST)
-
-            //如果是SQLSERVER，考虑批量复制的方式
-            if (bulkCopyModel>0 && db is SqlServer)
-            {
-                if (bulkCopyModel == 1)
-                {
-                    //将目标数据库中对应的数据删除
-                    db.BeginTransaction();
-                    try
-                    {
-                        count = DeleteDataInner(entityList, db);
-                        db.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        db.Rollback();
-                        throw ex;
-                    }
-                }
-                
-                //执行大批量复制
-                DataTable source = EntitysToDataTable<EntityBase>(entityList);
-                SqlServer.BulkCopy(source, db.ConnectionString, source.TableName, 500);
-                return entityList.Count;
-            }
-            else
-            {
-                db.BeginTransaction();
-                try
-                {
-                    count = ImportDataInner(entityList, db);
-                    db.Commit();
-                }
-                catch (Exception ex)
-                {
-                    db.Rollback();
-                    throw ex;
-                }
-            }
-#else
-                db.BeginTransaction();
-                try
-                {
-                    count = ImportDataInner(entityList, db);
-                    db.Commit();
-                }
-                catch (Exception ex)
-                {
-                    db.Rollback();
-                    throw ex;
-                }
-
-#endif
-            return count;
-        }
-
-        /// <summary>
-        /// 获取目标数据库表中的实际字段名称列表，目标库的字段可能跟实体类定义的字段数量不一样
-        /// </summary>
-        /// <param name="tableName"></param>
-        /// <param name="PropertyNames"></param>
-        /// <param name="DB"></param>
-        /// <returns></returns>
-        private List<string> GetTargetFields(string tableName, string[] PropertyNames,CommonDB DB)
-        {
-            //有可能目标库的字段数量跟实体类定义的不一致，需要先到目标库查询有哪些实际的字段
-            DataSet dsTemp = DB.ExecuteDataSetSchema("select * from " + tableName, CommandType.Text, null);
-            List<string> targetFields = new List<string>();
-            if (dsTemp != null && dsTemp.Tables.Count > 0)
-            {
-                foreach (DataColumn col in dsTemp.Tables[0].Columns)
-                {
-                    foreach (string field in PropertyNames)
-                    {
-                        if (string.Compare(col.ColumnName, field, true) == 0)
-                        {
-                            targetFields.Add(field);
-                            break;
-                        }
-                    }
-
-                }
-            }
-            else
-            {
-                throw new Exception("EntityQuery Error:获取目标表架构失败，表名称：" + tableName);
-            }
-            if (targetFields.Count == 0)
-                throw new Exception("EntityQuery Error:获取目标表没有和当前实体类匹配的字段，表名称：" + tableName);
-            return targetFields;
-        }
-
-        /// <summary>
-        /// 将实体集合中的所有数据导入数据库，如果数据已经存在则修改（先删除再插入）否则直接插入。如果实体中的数据只包含部分字段的数据，请勿使用该方法。
-        /// </summary>
-        /// <param name="entityList">同一实体类集合</param>
-        /// <param name="DB">数据访问对象实例</param>
-        /// <returns>操作受影响的行数</returns>
-        private  int ImportDataInner(List<EntityBase> entityList, CommonDB DB)
-        {
-            //必须保证集合中的元素都是同一个类型
-            if (entityList == null || entityList.Count == 0)
-                return 0;
-
-            EntityBase entity = entityList[0];
-            if (entity.PrimaryKeys.Count == 0)
-                throw new Exception("EntityQuery Error:当前实体类未指定主键字段");
-            int fieldCount = entity.PropertyNames.Length;
-            if (fieldCount == 0)
-                throw new Exception("EntityQuery Error:实体类属性字段数量为0");
-
-            string tableName = entity.TableName;
-            for (int i =1; i < entityList.Count; i++)
-            {
-                if (entityList[i].TableName != tableName)
-                    throw new Exception("当前实体类集合的元素类型不一致，对应的表是：" + (entityList[i].TableName));
-            }
-            //先将主键对应的记录删除，再插入
-            #region 构造查询语句
-            //构造Delete 语句：
-            //IDataParameter[] paras_delete = new IDataParameter[entity.PrimaryKeys.Count ];
-            //string sql_delte = "DELETE FROM " + entity.TableName + " WHERE ";
-            //string values = "";
-            //string condition = "";
-            //int index = 0;
-
-            //foreach (string key in entity.PrimaryKeys)
-            //{
-            //    string paraName = "@P" + index.ToString();
-            //    condition += " AND " + key + "=" + paraName;
-            //    paras_delete[index] = DB.GetParameter();
-            //    paras_delete[index].ParameterName = paraName;
-            //    index++;
-            //}
-            //sql_delte = sql_delte + values.TrimStart(',') + " " + condition.Substring(" AND ".Length);
-
-            ////构造Insert语句
-            //string sql_insert = "INSERT INTO " + entity.TableName;
-            //string fields = "";
-          
-            //IDataParameter[] paras_insert = new IDataParameter[fieldCount];
-            //index = 0;
-
-            //List<string> targetFields = GetTargetFields(tableName, entity.PropertyNames, DB);
-
-            //foreach (string field in targetFields)
-            //{
-            //    //if (entity.IdentityName != field)//由于是导入数据，不必理会自增列
-            //    //{
-            //        fields += "," + field;
-            //        string paraName = "@P" + index.ToString();
-            //        values += "," + paraName;
-            //        paras_insert[index] = DB.GetParameter();
-            //        paras_insert[index].ParameterName = paraName;
-            //        index++;
-            //    //}
-            //}
-            //sql_insert = sql_insert + "(" + fields.TrimStart(',') + ") VALUES (" + values.TrimStart(',') + ")";
-
-            EntityCommand ec = new EntityCommand(entity, DB);
-            ec.IdentityEnable = true;//导入数据，不考虑自增列问题
-            ec.TargetFields = GetTargetFields(tableName, entity.PropertyNames, DB).ToArray ();
-
-            string sql_delte = ec.DeleteCommand;
-            IDataParameter[] paras_delete = ec.DeleteParameters;
-
-            string sql_insert = ec.InsertCommand;
-            IDataParameter[] paras_insert = ec.InsertParameters;
-
-            #endregion
-
-            int count = 0;
-
-            foreach (EntityBase item in entityList)
-            { 
-                //执行删除
-                foreach (IDataParameter para in paras_delete)
-                {
-                    para.Value = item.PropertyList(para.SourceColumn );
-                }
-                count += DB.ExecuteNonQuery(sql_delte, CommandType.Text, paras_delete);
-                //执行插入
-                foreach (IDataParameter para in paras_insert)
-                {
-                    //if (entity.IdentityName != field)//由于是导入数据，不必理会自增列
-                    //{
-                    para.Value = item.PropertyList(para.SourceColumn);
-                    //}
-                }
-                count += DB.ExecuteNonQuery(sql_insert, CommandType.Text, paras_insert);
-            }
-            
-            return count ;
-        }
-
-        private int DeleteDataInner(List<EntityBase> entityList, CommonDB DB)
-        {
-            //必须保证集合中的元素都是同一个类型
-            if (entityList == null || entityList.Count == 0)
-                return 0;
-
-            EntityBase entity = entityList[0];
-            if (entity.PrimaryKeys.Count == 0)
-                throw new Exception("EntityQuery Error:当前实体类未指定主键字段");
-            int fieldCount = entity.PropertyNames.Length;
-            if (fieldCount == 0)
-                throw new Exception("EntityQuery Error:实体类属性字段数量为0");
-
-             string tableName = entity.TableName;
-            for (int i =1; i < entityList.Count; i++)
-            {
-                if (entityList[i].TableName != tableName)
-                    throw new Exception("当前实体类集合的元素类型不一致，对应的表是：" + (entityList[i].TableName));
-            }
-            //先将主键对应的记录删除，再插入
-            #region 构造查询语句
-            
-
-            EntityCommand ec = new EntityCommand(entity, DB);
-            ec.IdentityEnable = true;//导入数据，不考虑自增列问题
-            ec.TargetFields = GetTargetFields(tableName, entity.PropertyNames, DB).ToArray();
-
-            string sql_delte = ec.DeleteCommand;
-            IDataParameter[] paras_delete = ec.DeleteParameters;
-
-            #endregion
-
-            int count = 0;
-
-            foreach (EntityBase item in entityList)
-            {
-                //执行删除
-                foreach (IDataParameter para in paras_delete)
-                {
-                    para.Value = item.PropertyList(para.SourceColumn);
-                }
-                count += DB.ExecuteNonQuery(sql_delte, CommandType.Text, paras_delete);
-                
-            }
-
-            return count;
-        }
-
-        #endregion
 
         private int InsertOrUpdateInner(List<EntityBase> entityList, CommonDB DB)
         {
@@ -365,10 +104,10 @@ namespace PWMIS.DataMap.Entity
             if (entityList == null || entityList.Count == 0)
                 return 0;
 
-            EntityBase entity = entityList[0];
+            var entity = entityList[0];
             if (entity.PrimaryKeys.Count == 0)
                 throw new Exception("EntityQuery Error:当前实体类未指定主键字段");
-            int fieldCount = entity.PropertyNames.Length;
+            var fieldCount = entity.PropertyNames.Length;
             if (fieldCount == 0)
                 throw new Exception("EntityQuery Error:实体类属性字段数量为0");
 
@@ -401,16 +140,16 @@ namespace PWMIS.DataMap.Entity
             //    index++;
             //}
 
-           
+
             //sql = sql + values.TrimStart(',') + " WHERE " + condition.Substring(" AND ".Length);
 
-            EntityCommand ec = new EntityCommand(entity, DB);
-            ec.TargetFields = GetTargetFields(entity.TableName , entity.PropertyNames, DB).ToArray();
-            
-            int all_count = 0;
-            int updateCount = 0;
-            int insertCount = 0;
-            List<IDataParameter> paraList = new List<IDataParameter>();
+            var ec = new EntityCommand(entity, DB);
+            ec.TargetFields = GetTargetFields(entity.TableName, entity.PropertyNames, DB).ToArray();
+
+            var all_count = 0;
+            var updateCount = 0;
+            var insertCount = 0;
+            var paraList = new List<IDataParameter>();
 
 #if ( !CMD_FAST)
             foreach (EntityBase item in entityList)
@@ -433,84 +172,84 @@ namespace PWMIS.DataMap.Entity
             }
 
 #else
-            IDbConnection conn = DB.GetDbConnection();
+            var conn = DB.GetDbConnection();
 
-            IDbCommand insertCmd = conn.CreateCommand();
+            var insertCmd = conn.CreateCommand();
             insertCmd.CommandText = ec.InsertCommand;
             insertCmd.CommandType = CommandType.Text;
             if (ec.InsertParameters != null)
             {
-                foreach (IDataParameter para in ec.InsertParameters)
+                foreach (var para in ec.InsertParameters)
                     insertCmd.Parameters.Add(para);
             }
 
-            IDbCommand updateCmd = conn.CreateCommand();
+            var updateCmd = conn.CreateCommand();
             updateCmd.CommandText = ec.UpdateCommand;
             updateCmd.CommandType = CommandType.Text;
             if (ec.UpdateParameters != null)
             {
-                foreach (IDataParameter para in ec.UpdateParameters)
+                foreach (var para in ec.UpdateParameters)
                     updateCmd.Parameters.Add(para);
             }
 
-            foreach (EntityBase item in entityList)
+            foreach (var item in entityList)
             {
-                foreach (string field in ec.TargetFields)
+                foreach (var field in ec.TargetFields)
                 {
-                    string paraName =DB.GetParameterChar + field.Replace(" ", "");
-                    ((IDataParameter)insertCmd.Parameters[paraName]).Value = item.PropertyList(field);
-                    ((IDataParameter)updateCmd.Parameters[paraName]).Value = item.PropertyList(field);
+                    var paraName = DB.GetParameterChar + field.Replace(" ", "");
+                    ((IDataParameter) insertCmd.Parameters[paraName]).Value = item.PropertyList(field);
+                    ((IDataParameter) updateCmd.Parameters[paraName]).Value = item.PropertyList(field);
                 }
                 //先做一部分修改，如果不成功就插入
                 //直接使用Command对象的 ExecuteNonQuery ，加快处理速度
-                int count = updateCmd.ExecuteNonQuery ();
+                var count = updateCmd.ExecuteNonQuery();
                 if (count <= 0)
-                    insertCount += insertCmd.ExecuteNonQuery ();
+                    insertCount += insertCmd.ExecuteNonQuery();
                 else
                     updateCount += count;
             }
-           
-           
+
 
 #endif
-            all_count = insertCount + updateCount * (entityList.Count +1);
+            all_count = insertCount + updateCount*(entityList.Count + 1);
             /* 更新或者修改计算方式
              * x + y * (C+1)=Z;{c=List Count;}
              * x + y = C;
              *   => y-y * (C+1)=C-Z => y(1-C-1)=C-Z => y * -C =C-Z => y= (C-Z) / -C 
              * 在本例中，y=update,x=insert
-             */ 
+             */
             return all_count;
         }
 
         /// <summary>
-        /// 解析更新或者修改的条数
+        ///     解析更新或者修改的条数
         /// </summary>
         /// <param name="allCount">InsertOrUpdate 方法取得的总条数</param>
         /// <param name="listCount">记录的总条数</param>
         /// <param name="insertCount">插入的条数</param>
         /// <param name="updateCount">修改的条数</param>
         /// <returns></returns>
-        public bool ParseInsertOrUpdateCount(int allCount,int listCount,out int insertCount,out int updateCount)
+        public bool ParseInsertOrUpdateCount(int allCount, int listCount, out int insertCount, out int updateCount)
         {
             insertCount = 0;
             updateCount = 0;
-            if (allCount < listCount || listCount<=0)
+            if (allCount < listCount || listCount <= 0)
                 return false;
 
-            updateCount = (listCount - allCount) /  - listCount;
+            updateCount = (listCount - allCount)/-listCount;
             insertCount = listCount - updateCount;
             return true;
         }
+
         /// <summary>
-        /// 将实体类集合中实体类的数据插入或者修改到数据库中，适用于更新数据，如果需要大批量导入数据，请考虑使用 ImportData 方法。
+        ///     将实体类集合中实体类的数据插入或者修改到数据库中，适用于更新数据，如果需要大批量导入数据，请考虑使用 ImportData 方法。
         /// </summary>
         /// <param name="entityList">实体类集合</param>
         /// <returns>操作受影响的行数</returns>
         public int InsertOrUpdate(List<EntityBase> entityList)
         {
-            int count = 0;
-            AdoHelper db = DefaultNewDataBase;
+            var count = 0;
+            var db = DefaultNewDataBase;
             db.BeginTransaction();
             try
             {
@@ -525,10 +264,353 @@ namespace PWMIS.DataMap.Entity
             return count;
         }
 
+        /// <summary>
+        ///     将实体类转换成数据表
+        /// </summary>
+        /// <typeparam name="Entity">实体类类型</typeparam>
+        /// <param name="entitys">实际的实体类</param>
+        /// <returns>数据表</returns>
+        public static DataTable EntitysToDataTable<Entity>(List<Entity> entitys) where Entity : EntityBase
+        {
+            if (entitys == null)
+                throw new ArgumentException("参数错误，不能为空!");
+            if (entitys.Count == 0)
+                return null;
+
+            //Entity e = entitys.Count > 0 ? entitys[0] : new Entity();
+            var entity = entitys[0];
+            var tableName = entity.TableName == null ? "Table1" : entity.TableName;
+            var dt = new DataTable(tableName);
+            foreach (var str in entity.PropertyNames)
+            {
+                var col = new DataColumn(str);
+                var V = entity.PropertyList(str);
+                col.DataType = V == null || V == DBNull.Value ? typeof (string) : V.GetType();
+                dt.Columns.Add(col);
+            }
+
+            foreach (var item in entitys)
+            {
+                dt.Rows.Add(item.PropertyValues);
+            }
+            return dt;
+        }
+
+        /// <summary>
+        ///     将字典形式的参数数据，转换成数据库格式的参数素组
+        /// </summary>
+        /// <param name="dictPara"></param>
+        /// <returns></returns>
+        protected internal static IDataParameter[] GetParameters(Dictionary<string, TableNameField> dictPara,
+            AdoHelper db)
+        {
+            if (dictPara == null)
+                return null;
+            var paras = new IDataParameter[dictPara.Count];
+            var index = 0;
+
+            foreach (var key in dictPara.Keys)
+            {
+                object Value = dictPara[key];
+                if (Value is IDataParameter)
+                {
+                    paras[index] = (IDataParameter) Value;
+                }
+                else
+                {
+                    var paraName = key.StartsWith("@") ? key.Substring(1) : key;
+                    //参数名无需加上　ParameterChar
+                    //if (!key.StartsWith(db.GetParameterChar))
+                    //    paraName = db.GetParameterChar + key.Substring(1);
+
+                    var tnf = dictPara[key];
+                    paras[index] = db.GetParameter(paraName, tnf.FieldValue);
+                    //为字符串类型的参数指定长度 edit at 2012.4.23
+                    //增加判断tnf.Name!=null,这可能是因为使用了自定义查询的SqlMap的OQL,感谢网友 吉林-stdbool 发现此问题
+                    if (tnf.Name != null && paras[index].Value != null &&
+                        paras[index].Value.GetType() == typeof (string))
+                    {
+                        //增加字符串长度的检查,如果值得长度大于定义的长度,抛出异常提示 2014.10.21
+                        var size = EntityBase.GetStringFieldSize(tnf.Name, tnf.Field);
+                        var length = paras[index].Value.ToString().Length;
+                        if (length > size)
+                            throw new NotSupportedException("当前实体类映射的字段" + paraName + " 长度没有定义或者长度小于了当前实际值的长度："
+                                                            + length + "，请在实体类定义里面使用 setProperty 的重载方法指定合适的字段长度。");
+                        ((IDbDataParameter) paras[index]).Size = size;
+                    }
+                }
+
+
+                index++;
+            }
+            return paras;
+        }
+
+        #region 导入数据
+
+        /// <summary>
+        ///     将实体集合中的所有数据导入数据库，如果数据已经存在则修改（先删除再插入）否则直接插入。如果实体中的数据只包含部分字段的数据，请勿使用该方法。
+        /// </summary>
+        /// <param name="entityList">同一实体类集合</param>
+        /// <param name="bulkCopyModel">
+        ///     是否使用批量插入的方式更新，只支持SQLSERVER。
+        ///     取值含义：0，不使用批量复制，1，批量复制前删除数据库中对应的重复记录，2，不检查重复，直接批量插入
+        /// </param>
+        /// <returns>操作受影响的行数</returns>
+        public int ImportData(List<EntityBase> entityList, int bulkCopyModel)
+        {
+            var count = 0;
+            if (entityList == null || entityList.Count == 0)
+                return 0;
+
+            var db = DefaultNewDataBase;
+#if(CMD_FAST)
+
+            //如果是SQLSERVER，考虑批量复制的方式
+            if (bulkCopyModel > 0 && db is SqlServer)
+            {
+                if (bulkCopyModel == 1)
+                {
+                    //将目标数据库中对应的数据删除
+                    db.BeginTransaction();
+                    try
+                    {
+                        count = DeleteDataInner(entityList, db);
+                        db.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Rollback();
+                        throw ex;
+                    }
+                }
+
+                //执行大批量复制
+                var source = EntitysToDataTable(entityList);
+                SqlServer.BulkCopy(source, db.ConnectionString, source.TableName, 500);
+                return entityList.Count;
+            }
+            db.BeginTransaction();
+            try
+            {
+                count = ImportDataInner(entityList, db);
+                db.Commit();
+            }
+            catch (Exception ex)
+            {
+                db.Rollback();
+                throw ex;
+            }
+#else
+                db.BeginTransaction();
+                try
+                {
+                    count = ImportDataInner(entityList, db);
+                    db.Commit();
+                }
+                catch (Exception ex)
+                {
+                    db.Rollback();
+                    throw ex;
+                }
+
+#endif
+            return count;
+        }
+
+        /// <summary>
+        ///     获取目标数据库表中的实际字段名称列表，目标库的字段可能跟实体类定义的字段数量不一样
+        /// </summary>
+        /// <param name="tableName"></param>
+        /// <param name="PropertyNames"></param>
+        /// <param name="DB"></param>
+        /// <returns></returns>
+        private List<string> GetTargetFields(string tableName, string[] PropertyNames, CommonDB DB)
+        {
+            //有可能目标库的字段数量跟实体类定义的不一致，需要先到目标库查询有哪些实际的字段
+            var dsTemp = DB.ExecuteDataSetSchema("select * from " + tableName, CommandType.Text, null);
+            var targetFields = new List<string>();
+            if (dsTemp != null && dsTemp.Tables.Count > 0)
+            {
+                foreach (DataColumn col in dsTemp.Tables[0].Columns)
+                {
+                    foreach (var field in PropertyNames)
+                    {
+                        if (string.Compare(col.ColumnName, field, true) == 0)
+                        {
+                            targetFields.Add(field);
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("EntityQuery Error:获取目标表架构失败，表名称：" + tableName);
+            }
+            if (targetFields.Count == 0)
+                throw new Exception("EntityQuery Error:获取目标表没有和当前实体类匹配的字段，表名称：" + tableName);
+            return targetFields;
+        }
+
+        /// <summary>
+        ///     将实体集合中的所有数据导入数据库，如果数据已经存在则修改（先删除再插入）否则直接插入。如果实体中的数据只包含部分字段的数据，请勿使用该方法。
+        /// </summary>
+        /// <param name="entityList">同一实体类集合</param>
+        /// <param name="DB">数据访问对象实例</param>
+        /// <returns>操作受影响的行数</returns>
+        private int ImportDataInner(List<EntityBase> entityList, CommonDB DB)
+        {
+            //必须保证集合中的元素都是同一个类型
+            if (entityList == null || entityList.Count == 0)
+                return 0;
+
+            var entity = entityList[0];
+            if (entity.PrimaryKeys.Count == 0)
+                throw new Exception("EntityQuery Error:当前实体类未指定主键字段");
+            var fieldCount = entity.PropertyNames.Length;
+            if (fieldCount == 0)
+                throw new Exception("EntityQuery Error:实体类属性字段数量为0");
+
+            var tableName = entity.TableName;
+            for (var i = 1; i < entityList.Count; i++)
+            {
+                if (entityList[i].TableName != tableName)
+                    throw new Exception("当前实体类集合的元素类型不一致，对应的表是：" + (entityList[i].TableName));
+            }
+            //先将主键对应的记录删除，再插入
+
+            #region 构造查询语句
+
+            //构造Delete 语句：
+            //IDataParameter[] paras_delete = new IDataParameter[entity.PrimaryKeys.Count ];
+            //string sql_delte = "DELETE FROM " + entity.TableName + " WHERE ";
+            //string values = "";
+            //string condition = "";
+            //int index = 0;
+
+            //foreach (string key in entity.PrimaryKeys)
+            //{
+            //    string paraName = "@P" + index.ToString();
+            //    condition += " AND " + key + "=" + paraName;
+            //    paras_delete[index] = DB.GetParameter();
+            //    paras_delete[index].ParameterName = paraName;
+            //    index++;
+            //}
+            //sql_delte = sql_delte + values.TrimStart(',') + " " + condition.Substring(" AND ".Length);
+
+            ////构造Insert语句
+            //string sql_insert = "INSERT INTO " + entity.TableName;
+            //string fields = "";
+
+            //IDataParameter[] paras_insert = new IDataParameter[fieldCount];
+            //index = 0;
+
+            //List<string> targetFields = GetTargetFields(tableName, entity.PropertyNames, DB);
+
+            //foreach (string field in targetFields)
+            //{
+            //    //if (entity.IdentityName != field)//由于是导入数据，不必理会自增列
+            //    //{
+            //        fields += "," + field;
+            //        string paraName = "@P" + index.ToString();
+            //        values += "," + paraName;
+            //        paras_insert[index] = DB.GetParameter();
+            //        paras_insert[index].ParameterName = paraName;
+            //        index++;
+            //    //}
+            //}
+            //sql_insert = sql_insert + "(" + fields.TrimStart(',') + ") VALUES (" + values.TrimStart(',') + ")";
+
+            var ec = new EntityCommand(entity, DB);
+            ec.IdentityEnable = true; //导入数据，不考虑自增列问题
+            ec.TargetFields = GetTargetFields(tableName, entity.PropertyNames, DB).ToArray();
+
+            var sql_delte = ec.DeleteCommand;
+            var paras_delete = ec.DeleteParameters;
+
+            var sql_insert = ec.InsertCommand;
+            var paras_insert = ec.InsertParameters;
+
+            #endregion
+
+            var count = 0;
+
+            foreach (var item in entityList)
+            {
+                //执行删除
+                foreach (var para in paras_delete)
+                {
+                    para.Value = item.PropertyList(para.SourceColumn);
+                }
+                count += DB.ExecuteNonQuery(sql_delte, CommandType.Text, paras_delete);
+                //执行插入
+                foreach (var para in paras_insert)
+                {
+                    //if (entity.IdentityName != field)//由于是导入数据，不必理会自增列
+                    //{
+                    para.Value = item.PropertyList(para.SourceColumn);
+                    //}
+                }
+                count += DB.ExecuteNonQuery(sql_insert, CommandType.Text, paras_insert);
+            }
+
+            return count;
+        }
+
+        private int DeleteDataInner(List<EntityBase> entityList, CommonDB DB)
+        {
+            //必须保证集合中的元素都是同一个类型
+            if (entityList == null || entityList.Count == 0)
+                return 0;
+
+            var entity = entityList[0];
+            if (entity.PrimaryKeys.Count == 0)
+                throw new Exception("EntityQuery Error:当前实体类未指定主键字段");
+            var fieldCount = entity.PropertyNames.Length;
+            if (fieldCount == 0)
+                throw new Exception("EntityQuery Error:实体类属性字段数量为0");
+
+            var tableName = entity.TableName;
+            for (var i = 1; i < entityList.Count; i++)
+            {
+                if (entityList[i].TableName != tableName)
+                    throw new Exception("当前实体类集合的元素类型不一致，对应的表是：" + (entityList[i].TableName));
+            }
+            //先将主键对应的记录删除，再插入
+
+            #region 构造查询语句
+
+            var ec = new EntityCommand(entity, DB);
+            ec.IdentityEnable = true; //导入数据，不考虑自增列问题
+            ec.TargetFields = GetTargetFields(tableName, entity.PropertyNames, DB).ToArray();
+
+            var sql_delte = ec.DeleteCommand;
+            var paras_delete = ec.DeleteParameters;
+
+            #endregion
+
+            var count = 0;
+
+            foreach (var item in entityList)
+            {
+                //执行删除
+                foreach (var para in paras_delete)
+                {
+                    para.Value = item.PropertyList(para.SourceColumn);
+                }
+                count += DB.ExecuteNonQuery(sql_delte, CommandType.Text, paras_delete);
+            }
+
+            return count;
+        }
+
+        #endregion
+
         #region 查询数据
 
         /// <summary>
-        /// 根据实体查询表达式对象，查询实体对象集合
+        ///     根据实体查询表达式对象，查询实体对象集合
         /// </summary>
         /// <param name="oql">实体对象查询表达式</param>
         /// <param name="factEntityType">具体实体类的类型</param>
@@ -539,30 +621,29 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 根据数据阅读器对象，查询实体对象集合(注意查询完毕将自动释放该阅读器对象)
+        ///     根据数据阅读器对象，查询实体对象集合(注意查询完毕将自动释放该阅读器对象)
         /// </summary>
         /// <param name="reader">数据阅读器对象</param>
         /// <param name="factEntityType">具体实体类的类型</param>
         /// <returns>实体类集合</returns>
-        public static IList QueryList(System.Data.IDataReader reader, Type factEntityType)
+        public static IList QueryList(IDataReader reader, Type factEntityType)
         {
             //下面一行代码被注释，以便于实体类多级派生，感谢网友　有事M我 发现此问题
             //if (factEntityType.BaseType != typeof(EntityBase))
-            if (!factEntityType.IsSubclassOf(typeof(EntityBase)))
+            if (!factEntityType.IsSubclassOf(typeof (EntityBase)))
                 throw new Exception("当前类型不是 EntityBase 的派生类型：" + factEntityType.FullName);
 
-            IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(factEntityType));
+            var list = (IList) Activator.CreateInstance(typeof (List<>).MakeGenericType(factEntityType));
 
             using (reader)
             {
-
                 if (reader.Read())
                 {
-                    int fcount = reader.FieldCount;
-                    string[] names = new string[fcount];
+                    var fcount = reader.FieldCount;
+                    var names = new string[fcount];
                     object[] values = null;
 
-                    for (int i = 0; i < fcount; i++)
+                    for (var i = 0; i < fcount; i++)
                         names[i] = reader.GetName(i);
 
                     do
@@ -570,20 +651,19 @@ namespace PWMIS.DataMap.Entity
                         values = new object[fcount];
                         reader.GetValues(values);
 
-                        EntityBase t = (EntityBase)Activator.CreateInstance(factEntityType);
+                        var t = (EntityBase) Activator.CreateInstance(factEntityType);
                         t.PropertyNames = names;
                         t.PropertyValues = values;
 
                         list.Add(t);
                     } while (reader.Read());
-
                 }
             }
             return list;
         }
 
         /// <summary>
-        /// 根据实体查询表达式对象，和当前数据库操作对象，查询实体对象集合
+        ///     根据实体查询表达式对象，和当前数据库操作对象，查询实体对象集合
         /// </summary>
         /// <param name="oql">实体查询表达式对象</param>
         /// <param name="db">数据库操作对象</param>
@@ -591,12 +671,12 @@ namespace PWMIS.DataMap.Entity
         /// <returns>实体对象集合</returns>
         public static IList QueryList(OQL oql, AdoHelper db, Type factEntityType)
         {
-            IDataReader reader = ExecuteDataReader(oql, db, factEntityType);
+            var reader = ExecuteDataReader(oql, db, factEntityType);
             return QueryList(reader, factEntityType);
         }
 
         /// <summary>
-        /// 根据OQL查询数据获得DataReader
+        ///     根据OQL查询数据获得DataReader
         /// </summary>
         /// <param name="oql">OQL表达式</param>
         /// <param name="db">当前数据库访问对象</param>
@@ -606,8 +686,9 @@ namespace PWMIS.DataMap.Entity
         {
             return ExecuteDataReader(oql, db, factEntityType, false);
         }
+
         /// <summary>
-        /// 寻找SQL语句中参数名对应的字段名称
+        ///     寻找SQL语句中参数名对应的字段名称
         /// </summary>
         /// <param name="sql"></param>
         /// <param name="paraName"></param>
@@ -617,26 +698,26 @@ namespace PWMIS.DataMap.Entity
         {
             if (!paraName.StartsWith(paraChar))
                 paraName = paraChar + paraName;
-            string whereTempStr = sql.Substring(sql.IndexOf("Where",StringComparison.OrdinalIgnoreCase) + 5).Trim();
-            string fildTempStr = whereTempStr.Substring(0, whereTempStr.IndexOf(paraName));
-            int a = fildTempStr.LastIndexOf('[');
-            int b = fildTempStr.LastIndexOf(']');
-            string fieldStr = fildTempStr.Substring(a + 1, b - a - 1);
+            var whereTempStr = sql.Substring(sql.IndexOf("Where", StringComparison.OrdinalIgnoreCase) + 5).Trim();
+            var fildTempStr = whereTempStr.Substring(0, whereTempStr.IndexOf(paraName));
+            var a = fildTempStr.LastIndexOf('[');
+            var b = fildTempStr.LastIndexOf(']');
+            var fieldStr = fildTempStr.Substring(a + 1, b - a - 1);
             return fieldStr;
         }
 
-        internal static SqlInfo GetSqlInfoFromOQL(OQL oql, AdoHelper db, Type factEntityType,bool single)
+        internal static SqlInfo GetSqlInfoFromOQL(OQL oql, AdoHelper db, Type factEntityType, bool single)
         {
-            string sql = "";
+            var sql = "";
             Dictionary<string, TableNameField> Parameters = null;
             //处理用户查询映射的实体类
-            if (oql.EntityMap == PWMIS.Common.EntityMapType.SqlMap)
+            if (oql.EntityMap == EntityMapType.SqlMap)
             {
                 if (CommonUtil.CacheEntityMapSql == null)
                     CommonUtil.CacheEntityMapSql = new Dictionary<string, string>();
                 if (!CommonUtil.CacheEntityMapSql.ContainsKey(oql.sql_table))
                 {
-                    string tempView = GetMapSql(factEntityType);
+                    var tempView = GetMapSql(factEntityType);
                     CommonUtil.CacheEntityMapSql.Add(oql.sql_table, tempView);
                 }
                 sql = oql.GetMapSQL(CommonUtil.CacheEntityMapSql[oql.sql_table]);
@@ -646,26 +727,25 @@ namespace PWMIS.DataMap.Entity
                 Parameters = new Dictionary<string, TableNameField>();
                 if (oql.InitParameters != null)
                 {
-                    foreach (string name in oql.InitParameters.Keys)
+                    foreach (var name in oql.InitParameters.Keys)
                     {
-                        TableNameField tnf = new TableNameField();
-                        tnf.FieldValue=oql.InitParameters[name];
+                        var tnf = new TableNameField();
+                        tnf.FieldValue = oql.InitParameters[name];
                         Parameters.Add(name, tnf);
                     }
                 }
-                
+
                 if (oql.Parameters != null && oql.Parameters.Count > 0)
                 {
-                    foreach (string name in oql.Parameters.Keys)
+                    foreach (var name in oql.Parameters.Keys)
                     {
                         Parameters.Add(name, oql.Parameters[name]);
                     }
                 }
-
             }
-            else if (oql.EntityMap == PWMIS.Common.EntityMapType.StoredProcedure)
+            else if (oql.EntityMap == EntityMapType.StoredProcedure)
             {
-                string script = "";
+                var script = "";
                 if (CommonUtil.CacheEntityMapSql == null)
                     CommonUtil.CacheEntityMapSql = new Dictionary<string, string>();
                 //获取SQL-MAP脚本
@@ -677,24 +757,24 @@ namespace PWMIS.DataMap.Entity
                     CommonUtil.CacheEntityMapSql.Add(oql.sql_table, script);
                 }
                 //对SQL-MAP格式的参数进行解析
-                SqlMap.SqlMapper mapper = new PWMIS.DataMap.SqlMap.SqlMapper();
+                var mapper = new SqlMapper();
                 mapper.DataBase = db;
                 //解析存储过程名称
                 sql = mapper.FindWords(mapper.GetScriptInfo(script), 0, 255); //由于是存储过程，需要特殊处理，调用 FindWords方法
                 //解析参数
-                IDataParameter[] paras = mapper.GetParameters(script);
+                var paras = mapper.GetParameters(script);
                 if (oql.InitParameters != null && oql.InitParameters.Count > 0)
                 {
                     Parameters = new Dictionary<string, TableNameField>();
                     try
                     {
-                        foreach (IDataParameter para in paras)
+                        foreach (var para in paras)
                         {
-                            string key = para.ParameterName.TrimStart(db.GetParameterChar.ToCharArray());
+                            var key = para.ParameterName.TrimStart(db.GetParameterChar.ToCharArray());
                             para.Value = oql.InitParameters[key];
-                            Parameters.Add(key, new TableNameField() {  FieldValue=para});
+                            Parameters.Add(key, new TableNameField {FieldValue = para});
                         }
-                    } 
+                    }
                     catch (KeyNotFoundException exKey)
                     {
                         throw new KeyNotFoundException("'存储过程实体类'的初始化参数中没有找到指定的参数名，请检查参数定义和设置。", exKey);
@@ -703,7 +783,6 @@ namespace PWMIS.DataMap.Entity
                     {
                         throw ex;
                     }
-
                 }
                 else
                 {
@@ -711,7 +790,7 @@ namespace PWMIS.DataMap.Entity
                         throw new Exception("当前'存储过程实体类'需要提供初始化参数，请设置OQL对象的InitParameters属性");
                 }
 
-                SqlInfo si = new SqlInfo(sql, Parameters);
+                var si = new SqlInfo(sql, Parameters);
                 si.CommandType = CommandType.StoredProcedure;
                 //return db.ExecuteDataReader(sql, CommandType.StoredProcedure, paras);
                 return si;
@@ -723,52 +802,54 @@ namespace PWMIS.DataMap.Entity
             }
 
 
-           if (oql.PageEnable && (!single || oql.PageWithAllRecordCount<=0))
+            if (oql.PageEnable && (!single || oql.PageWithAllRecordCount <= 0))
             {
                 switch (db.CurrentDBMSType)
                 {
-                    case PWMIS.Common.DBMSType.Access:
-                    case PWMIS.Common.DBMSType.SqlServer:
-                    case PWMIS.Common.DBMSType.SqlServerCe:
+                    case DBMSType.Access:
+                    case DBMSType.SqlServer:
+                    case DBMSType.SqlServerCe:
                         //如果含有Order By 子句，则不能使用主键分页
                         if (oql.haveJoinOpt || sql.IndexOf("order by", StringComparison.OrdinalIgnoreCase) > 0)
                         {
-                            sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.SqlServer, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
+                            sql = SQLPage.MakeSQLStringByPage(DBMSType.SqlServer, sql, "", oql.PageSize, oql.PageNumber,
+                                oql.PageWithAllRecordCount);
                         }
                         else
                         {
                             //如果是字符串类型的主键，下面的分页可能不准确
                             if (oql.PageOrderDesc)
-                                sql = PWMIS.Common.SQLPage.GetDescPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields, oql.sql_table, oql.PageField, oql.sql_condition);
+                                sql = SQLPage.GetDescPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields,
+                                    oql.sql_table, oql.PageField, oql.sql_condition);
                             else
-                                sql = PWMIS.Common.SQLPage.GetAscPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields, oql.sql_table, oql.PageField, oql.sql_condition);
+                                sql = SQLPage.GetAscPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields,
+                                    oql.sql_table, oql.PageField, oql.sql_condition);
                         }
                         break;
 
                     default:
-                        sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(db.CurrentDBMSType, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
+                        sql = SQLPage.MakeSQLStringByPage(db.CurrentDBMSType, sql, "", oql.PageSize, oql.PageNumber,
+                            oql.PageWithAllRecordCount);
                         break;
-
                 }
-
             }
-            SqlInfo result = new SqlInfo(sql, Parameters);
+            var result = new SqlInfo(sql, Parameters);
             result.CommandType = CommandType.Text;
             result.TableName = oql.sql_table;
             return result;
         }
 
         /// <summary>
-        ///  根据OQL查询数据获得DataReader。如果指定single=真，将执行优化的查询以获取单条记录
+        ///     根据OQL查询数据获得DataReader。如果指定single=真，将执行优化的查询以获取单条记录
         /// </summary>
         /// <param name="oql">OQL表达式</param>
         /// <param name="db">当前数据库访问对象</param>
         /// <param name="factEntityType">实体类类型</param>
         /// <param name="single">是否只查询一条记录</param>
         /// <returns>DataReader</returns>
-        public static IDataReader ExecuteDataReader(OQL oql, AdoHelper db, Type factEntityType,bool single)
+        public static IDataReader ExecuteDataReader(OQL oql, AdoHelper db, Type factEntityType, bool single)
         {
-            SqlInfo si = GetSqlInfoFromOQL(oql, db, factEntityType, single);
+            var si = GetSqlInfoFromOQL(oql, db, factEntityType, single);
             oql.Dispose();
             return ExecuteDataReader(si, db, single);
         }
@@ -787,18 +868,18 @@ namespace PWMIS.DataMap.Entity
         //}
 
         /// <summary>
-        /// 使用SQL查询命令信息 执行数据阅读器查询。注意，查询单行数据不支持存储过程。
+        ///     使用SQL查询命令信息 执行数据阅读器查询。注意，查询单行数据不支持存储过程。
         /// </summary>
         /// <param name="si">SQL查询命令信息</param>
         /// <param name="db">数据访问对象</param>
         /// <param name="single">是否仅查询单行数据</param>
         /// <returns>数据阅读器</returns>
-        public static IDataReader ExecuteDataReader(SqlInfo si, AdoHelper db,  bool single)
+        public static IDataReader ExecuteDataReader(SqlInfo si, AdoHelper db, bool single)
         {
             IDataReader reader = null;
             if (si.Parameters != null && si.Parameters.Count > 0)
             {
-                IDataParameter[] paras = GetParameters(si.Parameters,db);
+                var paras = GetParameters(si.Parameters, db);
 
                 if (single)
                     reader = db.ExecuteDataReaderWithSingleRow(si.SQL, paras);
@@ -810,22 +891,22 @@ namespace PWMIS.DataMap.Entity
                 if (single)
                     reader = db.ExecuteDataReaderWithSingleRow(si.SQL);
                 else
-                    reader = db.ExecuteDataReader(si.SQL, si.CommandType,null);
+                    reader = db.ExecuteDataReader(si.SQL, si.CommandType, null);
             }
             return reader;
         }
 
         /// <summary>
-        /// 根据EntityMapSql的全名称 "名称空间名字.SQL名字" 获取映射的SQL语句
+        ///     根据EntityMapSql的全名称 "名称空间名字.SQL名字" 获取映射的SQL语句
         /// </summary>
         /// <param name="entityType">根据当前实体类所在程序集，获取其中的嵌入式EntityMapSql 文件</param>
         /// <returns>映射的SQL语句</returns>
         public static string GetMapSql(Type entityType)
         {
-            string typeFullName = entityType.FullName;
-            string[] arrTemp = new string[2];
-           
-            int at = typeFullName.LastIndexOf('.');
+            var typeFullName = entityType.FullName;
+            var arrTemp = new string[2];
+
+            var at = typeFullName.LastIndexOf('.');
             if (at > 0)
             {
                 arrTemp[0] = typeFullName.Substring(0, at);
@@ -838,26 +919,25 @@ namespace PWMIS.DataMap.Entity
             //    throw new Exception("EntityMapSql的全名称格式错误，正确的格式应该： 名称空间名字.SQL名字");
 
 
-            string resourceName = "EntitySqlMap.config";
+            var resourceName = "EntitySqlMap.config";
             string xmlConfig = null;
             //如果存在配置文件，则从文件读取
-            if (System.IO.File.Exists(resourceName))
-                xmlConfig = System.IO.File.ReadAllText(resourceName);
+            if (File.Exists(resourceName))
+                xmlConfig = File.ReadAllText(resourceName);
             else
                 xmlConfig = CommonUtil.GetAssemblyResource(entityType, resourceName);
 
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             doc.LoadXml(xmlConfig);
-            XmlNode SqlText = default(XmlNode);
-            XmlElement root = doc.DocumentElement;
-            string objPath = "/configuration/Namespace[@name='" + arrTemp[0] + "']/Map[@name='" + arrTemp[1] + "']/Sql";
+            var SqlText = default(XmlNode);
+            var root = doc.DocumentElement;
+            var objPath = "/configuration/Namespace[@name='" + arrTemp[0] + "']/Map[@name='" + arrTemp[1] + "']/Sql";
             SqlText = root.SelectSingleNode(objPath);
             if ((SqlText != null) && SqlText.HasChildNodes)
             {
                 return SqlText.InnerText;
             }
             return "";
-            
         }
 
         ///// <summary>
@@ -867,11 +947,11 @@ namespace PWMIS.DataMap.Entity
         ///// <returns>映射的SQL语句</returns>
         //public static string GetMapSql(string fullName)
         //{
-            
+
         //}
 
         /// <summary>
-        /// 执行返回单值的查询，通常用于OQL的Count,Max等查询
+        ///     执行返回单值的查询，通常用于OQL的Count,Max等查询
         /// </summary>
         /// <param name="oql">查询表达式</param>
         /// <param name="db">数据访问对象</param>
@@ -880,144 +960,57 @@ namespace PWMIS.DataMap.Entity
         {
             if (oql.Parameters != null && oql.Parameters.Count > 0)
             {
-                IDataParameter[] paras = GetParameters(oql.Parameters,db);
+                var paras = GetParameters(oql.Parameters, db);
                 return db.ExecuteScalar(oql.ToString(), CommandType.Text, paras);
             }
-            else
-            {
-                return db.ExecuteScalar(oql.ToString());
-            }
-           
+            return db.ExecuteScalar(oql.ToString());
         }
 
         /// <summary>
-        /// 执行OQL查询，统计该查询对应的记录数量（一般用于分页前使用，某些方法会自动调用该方法，请注意方法说明）
+        ///     执行OQL查询，统计该查询对应的记录数量（一般用于分页前使用，某些方法会自动调用该方法，请注意方法说明）
         /// </summary>
         /// <param name="oql"></param>
         /// <param name="db"></param>
         /// <returns></returns>
         public static object ExecuteOQLCount(OQL oql, AdoHelper db)
         {
-            string sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(db.CurrentDBMSType, oql.ToString(), "", oql.PageSize, oql.PageNumber, 0);
+            var sql = SQLPage.MakeSQLStringByPage(db.CurrentDBMSType, oql.ToString(), "", oql.PageSize, oql.PageNumber,
+                0);
             if (oql.Parameters != null && oql.Parameters.Count > 0)
             {
-                IDataParameter[] paras = GetParameters(oql.Parameters, db);
+                var paras = GetParameters(oql.Parameters, db);
                 return db.ExecuteScalar(sql, CommandType.Text, paras);
             }
-            else
-            {
-                return db.ExecuteScalar(sql);
-            }
+            return db.ExecuteScalar(sql);
         }
 
         /// <summary>
-        /// 执行返回列表数据的查询
+        ///     执行返回列表数据的查询
         /// </summary>
         /// <typeparam name="T">实体类型，支持普通的POCO实体类，仅需实现IReadData 接口</typeparam>
         /// <param name="reader">数据阅读器</param>
         /// <returns>实体列表</returns>
         public static List<T> ExecuteDataList<T>(IDataReader reader) where T : IReadData, new()
         {
-            List<T> list = new List<T>();
+            var list = new List<T>();
             if (reader.Read())
             {
-                int fcount = reader.FieldCount;
-                string[] names = new string[fcount];
+                var fcount = reader.FieldCount;
+                var names = new string[fcount];
 
-                for (int i = 0; i < fcount; i++)
+                for (var i = 0; i < fcount; i++)
                     names[i] = reader.GetName(i);
 
                 do
                 {
-                    T t = new T();
-                    ((IReadData)t).ReadData(reader, fcount, names);
+                    var t = new T();
+                    ((IReadData) t).ReadData(reader, fcount, names);
                     list.Add(t);
                 } while (reader.Read());
-
             }
             return list;
         }
+
         #endregion
-
-        /// <summary>
-        /// 将实体类转换成数据表
-        /// </summary>
-        /// <typeparam name="Entity">实体类类型</typeparam>
-        /// <param name="entitys">实际的实体类</param>
-        /// <returns>数据表</returns>
-        public static DataTable EntitysToDataTable<Entity>(List<Entity> entitys) where Entity : EntityBase
-        {
-            if (entitys == null)
-                throw new ArgumentException("参数错误，不能为空!");
-            if (entitys.Count == 0)
-                return null;
-
-            //Entity e = entitys.Count > 0 ? entitys[0] : new Entity();
-            Entity entity = entitys[0];
-            string tableName = entity.TableName == null ? "Table1" : entity.TableName;
-            DataTable dt = new DataTable(tableName);
-            foreach (string str in entity.PropertyNames)
-            {
-                DataColumn col = new DataColumn(str);
-                object V = entity.PropertyList(str);
-                col.DataType = V == null || V == DBNull.Value ? typeof(string) : V.GetType();
-                dt.Columns.Add(col);
-            }
-
-            foreach (Entity item in entitys)
-            {
-                dt.Rows.Add(item.PropertyValues);
-            }
-            return dt;
-        }
-
-        /// <summary>
-        /// 将字典形式的参数数据，转换成数据库格式的参数素组
-        /// </summary>
-        /// <param name="dictPara"></param>
-        /// <returns></returns>
-        protected internal static IDataParameter[] GetParameters(Dictionary<string, TableNameField> dictPara,AdoHelper db)
-        {
-            if (dictPara == null)
-                return null;
-            IDataParameter[] paras = new IDataParameter[dictPara.Count];
-            int index = 0;
-
-            foreach (string key in dictPara.Keys)
-            {
-                object Value = dictPara[key];
-                if (Value is IDataParameter)
-                {
-                    paras[index] = (IDataParameter)Value;
-                }
-                else
-                {
-                    string paraName = key.StartsWith("@")?key.Substring(1):key;
-                    //参数名无需加上　ParameterChar
-                    //if (!key.StartsWith(db.GetParameterChar))
-                    //    paraName = db.GetParameterChar + key.Substring(1);
-
-                    var tnf = dictPara[key];
-                    paras[index] = db.GetParameter(paraName, tnf.FieldValue);
-                    //为字符串类型的参数指定长度 edit at 2012.4.23
-                    //增加判断tnf.Name!=null,这可能是因为使用了自定义查询的SqlMap的OQL,感谢网友 吉林-stdbool 发现此问题
-                    if (tnf.Name!=null && paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
-                    {
-                        //增加字符串长度的检查,如果值得长度大于定义的长度,抛出异常提示 2014.10.21
-                        int size=EntityBase.GetStringFieldSize(tnf.Name, tnf.Field);
-                        int length = paras[index].Value.ToString().Length;
-                        if (length > size)
-                            throw new NotSupportedException("当前实体类映射的字段"+paraName+" 长度没有定义或者长度小于了当前实际值的长度："
-                                + length + "，请在实体类定义里面使用 setProperty 的重载方法指定合适的字段长度。");
-                        ((IDbDataParameter)paras[index]).Size = size;
-                    }
-                }
-
-
-                index++;
-            }
-            return paras;
-        }
-
     }
 }

@@ -6,35 +6,30 @@
     <members>
         <member name="T:PWMIS.DataProvider.Data.SQLite">
             <summary>
-            SQLite 数据访问类 dth,2012.11.1
-            </summary>
-        </member>
-        <member name="M:PWMIS.DataProvider.Data.SQLite.#ctor">
-            <summary>
-            默认构造函数
+                SQLite 数据访问类 dth,2012.11.1
             </summary>
         </member>
         <member name="M:PWMIS.DataProvider.Data.SQLite.GetConnection">
             <summary>
-            创建并且打开数据库连接
+                创建并且打开数据库连接
             </summary>
             <returns>数据库连接</returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.SQLite.GetDataAdapter(System.Data.IDbCommand)">
             <summary>
-            获取数据适配器实例
+                获取数据适配器实例
             </summary>
             <returns>数据适配器</returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.SQLite.GetParameter">
             <summary>
-            获取一个新参数对象
+                获取一个新参数对象
             </summary>
             <returns>特定于数据源的参数对象</returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.SQLite.GetParameter(System.String,System.Data.DbType,System.Int32)">
             <summary>
-             获取一个新参数对象
+                获取一个新参数对象
             </summary>
             <param name="paraName">参数名</param>
             <param name="dbType">参数数据类型</param>
@@ -43,7 +38,7 @@
         </member>
         <member name="M:PWMIS.DataProvider.Data.SQLite.ExecuteNonQuery(System.String,System.Data.CommandType,System.String)">
             <summary>
-            更新数据（为SQLite重写的支持多线程并发写入功能）
+                更新数据（为SQLite重写的支持多线程并发写入功能）
             </summary>
             <param name="connectionString"></param>
             <param name="commandType"></param>
@@ -52,7 +47,7 @@
         </member>
         <member name="M:PWMIS.DataProvider.Data.SQLite.ExecuteNonQuery(System.String,System.Data.CommandType,System.String,System.Data.IDataParameter[])">
             <summary>
-            更新数据（为SQLite重写的支持多线程并发写入功能）
+                更新数据（为SQLite重写的支持多线程并发写入功能）
             </summary>
             <param name="connectionString"></param>
             <param name="commandType"></param>

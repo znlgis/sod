@@ -19,73 +19,64 @@
  * 
  * ========================================================================
 */
+
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Reflection;
-using PWMIS.DataProvider.Data;
-using System.Data;
-using System.Data.SqlClient;
 using PWMIS.Common;
+using PWMIS.DataProvider.Data;
 
 namespace PWMIS.DataMap.Entity
 {
     /// <summary>
-    /// 存储实体类的全局字段信息，以一种更为方便的方式访问实体类属性和对应的表字段
+    ///     存储实体类的全局字段信息，以一种更为方便的方式访问实体类属性和对应的表字段
     /// </summary>
     public class EntityFields
     {
-        private string currPropName = null;
-        private string[] fields = null;
-        private string[] propertyNames = null;
-        private Type[] typeNames = null;
-        private string tableName = null;
+        private string currPropName;
 
-        /// <summary>
-        /// 获取实体类对应的表字段名称数组
-        /// </summary>
-        public string[] Fields
+        public EntityFields()
         {
-            get { return fields; }
+            PropertyType = null;
+            TableName = null;
+            PropertyNames = null;
+            Fields = null;
         }
 
         /// <summary>
-        /// 获取实体属性名称数组
+        ///     获取实体类对应的表字段名称数组
         /// </summary>
-        public string[] PropertyNames
-        {
-            get { return propertyNames; }
-        }
+        public string[] Fields { get; private set; }
 
         /// <summary>
-        /// 获取实体类对应的表名称
+        ///     获取实体属性名称数组
         /// </summary>
-        public string TableName
-        {
-            get { return tableName; }
-        }
-        /// <summary>
-        /// 获取实体属性的类型
-        /// </summary>
-        public Type[] PropertyType
-        {
-            get { return typeNames; }
-        }
+        public string[] PropertyNames { get; private set; }
 
         /// <summary>
-        /// 根据字段名获取对应的属性名
+        ///     获取实体类对应的表名称
+        /// </summary>
+        public string TableName { get; private set; }
+
+        /// <summary>
+        ///     获取实体属性的类型
+        /// </summary>
+        public Type[] PropertyType { get; private set; }
+
+        /// <summary>
+        ///     根据字段名获取对应的属性名
         /// </summary>
         /// <param name="fieldName"></param>
         /// <returns></returns>
         public string GetPropertyName(string fieldName)
         {
-            if (fields != null && propertyNames != null)
+            if (Fields != null && PropertyNames != null)
             {
-                for (int i = 0; i < fields.Length; i++)
+                for (var i = 0; i < Fields.Length; i++)
                 {
-                    if (fields[i] == fieldName)
+                    if (Fields[i] == fieldName)
                     {
-                        return propertyNames[i];
+                        return PropertyNames[i];
                     }
                 }
             }
@@ -93,17 +84,17 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 根据字段名称获取对应的实体属性类型
+        ///     根据字段名称获取对应的实体属性类型
         /// </summary>
         /// <param name="fieldName"></param>
         /// <returns></returns>
         public Type GetPropertyType(string fieldName)
         {
-            if (fields != null && PropertyType != null)
+            if (Fields != null && PropertyType != null)
             {
-                for (int i = 0; i < fields.Length; i++)
+                for (var i = 0; i < Fields.Length; i++)
                 {
-                    if (fields[i] == fieldName)
+                    if (Fields[i] == fieldName)
                     {
                         return PropertyType[i];
                     }
@@ -111,65 +102,68 @@ namespace PWMIS.DataMap.Entity
             }
             return null;
         }
+
         /// <summary>
-        /// 获取属性名对应的字段名
+        ///     获取属性名对应的字段名
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
         public string GetPropertyField(string propertyName)
         {
-            if (propertyNames != null && fields != null)
+            if (PropertyNames != null && Fields != null)
             {
-                for (int i = 0; i < propertyNames.Length; i++)
+                for (var i = 0; i < PropertyNames.Length; i++)
                 {
-                    if (propertyNames[i] == propertyName)
+                    if (PropertyNames[i] == propertyName)
                     {
-                        return fields[i];
+                        return Fields[i];
                     }
                 }
             }
             return null;
         }
+
         /// <summary>
-        /// 初始化实体信息（已经过时）
+        ///     初始化实体信息（已经过时）
         /// </summary>
         /// <param name="entityType"></param>
         /// <returns></returns>
         public bool Init(Type entityType)
         {
             //未来版本，考虑不以EntityBase 明确类型来操作，避免在VS设计器无法类型转换到父类的问题
-            EntityBase entity = Activator.CreateInstance(entityType) as EntityBase;
+            var entity = Activator.CreateInstance(entityType) as EntityBase;
             if (entity != null)
             {
-                entity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(entity_PropertyGetting);
-                int count = entity.PropertyNames.Length;
-                this.fields = new string[count];
-                this.propertyNames = new string[count];
-                this.typeNames = new Type[count];
-                this.tableName = entity.TableName;
+                entity.PropertyGetting += entity_PropertyGetting;
+                var count = entity.PropertyNames.Length;
+                Fields = new string[count];
+                PropertyNames = new string[count];
+                PropertyType = new Type[count];
+                TableName = entity.TableName;
 
-                PropertyInfo[] propertys = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                var propertys =
+                    entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
                 count = 0;
 
-                for (int i = 0; i < propertys.Length; i++)
+                for (var i = 0; i < propertys.Length; i++)
                 {
-                    this.currPropName = null;
+                    currPropName = null;
                     try
                     {
-                        propertys[i].GetValue(entity, null);//获取属性，引发事件
+                        propertys[i].GetValue(entity, null); //获取属性，引发事件
                     }
                     catch
                     {
-                        this.currPropName = null;
+                        currPropName = null;
                     }
 
-                    if (this.currPropName != null)
+                    if (currPropName != null)
                     {
                         //如果在分布类中引用了原来的属性，currPropName 可能会有重复
-                        bool flag = false;
-                        foreach (string str in fields)
+                        var flag = false;
+                        foreach (var str in Fields)
                         {
-                            if (str == this.currPropName)
+                            if (str == currPropName)
                             {
                                 flag = true;
                                 break;
@@ -177,24 +171,22 @@ namespace PWMIS.DataMap.Entity
                         }
                         if (!flag)
                         {
-                            fields[count] = this.currPropName;       //获得调用的字段名称
-                            propertyNames[count] = propertys[i].Name;//获得调用的实体类属性名称
-                            typeNames[count] = propertys[i].PropertyType;
+                            Fields[count] = currPropName; //获得调用的字段名称
+                            PropertyNames[count] = propertys[i].Name; //获得调用的实体类属性名称
+                            PropertyType[count] = propertys[i].PropertyType;
                             try
                             {
                                 //这里需要设置属性，以便获取字段长度
-                                object Value = null;// 感谢网友 stdbool 发现byte[] 判断的问题
-                                if (typeNames[count] != typeof(string) && typeNames[count] != typeof(byte[]))
-                                    Value = Activator.CreateInstance(typeNames[count]);
+                                object Value = null; // 感谢网友 stdbool 发现byte[] 判断的问题
+                                if (PropertyType[count] != typeof (string) && PropertyType[count] != typeof (byte[]))
+                                    Value = Activator.CreateInstance(PropertyType[count]);
                                 propertys[i].SetValue(entity, Value, null);
                             }
                             catch
                             {
-
                             }
                             count++;
                         }
-
                     }
                 }
                 return true;
@@ -205,50 +197,51 @@ namespace PWMIS.DataMap.Entity
         public bool InitEntity(Type entityType)
         {
             //未来版本，考虑不以EntityBase 明确类型来操作，避免在VS设计器无法类型转换到父类的问题
-            object entity = Activator.CreateInstance(entityType) ;
+            var entity = Activator.CreateInstance(entityType);
 
             if (entityType.BaseType.FullName == "PWMIS.DataMap.Entity.EntityBase")
             {
-                this.tableName = (string)entityType.GetMethod("GetTableName").Invoke(entity, null);
+                TableName = (string) entityType.GetMethod("GetTableName").Invoke(entity, null);
 
                 var methodInfo = entityType.GetMethod("GetSetPropertyFieldName");
-                var testMethodInfo = entityType.GetMethod("TestWriteProperty", BindingFlags.Instance | BindingFlags.NonPublic);
-                testMethodInfo.Invoke(entity, null);//设置虚拟属性写入标记
+                var testMethodInfo = entityType.GetMethod("TestWriteProperty",
+                    BindingFlags.Instance | BindingFlags.NonPublic);
+                testMethodInfo.Invoke(entity, null); //设置虚拟属性写入标记
 
-                PropertyInfo[] propertys = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                var propertys =
+                    entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
                 //下面的方式弃用 dth 2015.2.8
                 //int count = propertys.Length;
                 //this.fields = new string[count];
                 //this.propertyNames = new string[count];
                 //this.typeNames = new Type[count];
 
-                List<string> fieldList = new List<string>();
-                List<string> propertyNameList = new List<string>();
-                List<Type> typeNameList = new List<Type>();
+                var fieldList = new List<string>();
+                var propertyNameList = new List<string>();
+                var typeNameList = new List<Type>();
 
                 //count = 0;
-                string last_field = string.Empty;
+                var last_field = string.Empty;
 
-                for (int i = 0; i < propertys.Length; i++)
+                for (var i = 0; i < propertys.Length; i++)
                 {
                     //获得调用的字段名称
                     //propertyNames[count] = propertys[i].Name;//获得调用的实体类属性名称
                     //typeNames[count] = propertys[i].PropertyType;
-                    Type currPropType = propertys[i].PropertyType;
+                    var currPropType = propertys[i].PropertyType;
 
                     if (!propertys[i].CanWrite) //只读属性，跳过
                     {
-                        
                         continue;
                     }
                     try
                     {
                         //这里需要设置属性，以便获取字段长度
-                        object Value = null;// 感谢网友 stdbool 发现byte[] 判断的问题
-                        if (currPropType != typeof(string) && currPropType != typeof(byte[]))
+                        object Value = null; // 感谢网友 stdbool 发现byte[] 判断的问题
+                        if (currPropType != typeof (string) && currPropType != typeof (byte[]))
                             Value = Activator.CreateInstance(currPropType);
                         propertys[i].SetValue(entity, Value, null); //这里可能有普通属性在被赋值 
-                        string field= (string)methodInfo.Invoke(entity,null);
+                        var field = (string) methodInfo.Invoke(entity, null);
                         if (last_field != field)
                         {
                             //跟之前的对比，确定当前是属性字段对应的属性
@@ -266,22 +259,22 @@ namespace PWMIS.DataMap.Entity
                     }
                     //count++;
                 }
-                this.fields = fieldList.ToArray();
-                this.propertyNames = propertyNameList.ToArray();
-                this.typeNames = typeNameList.ToArray();
+                Fields = fieldList.ToArray();
+                PropertyNames = propertyNameList.ToArray();
+                PropertyType = typeNameList.ToArray();
 
                 return true;
             }
             return false;
         }
 
-        void entity_PropertyGetting(object sender, PropertyGettingEventArgs e)
+        private void entity_PropertyGetting(object sender, PropertyGettingEventArgs e)
         {
-            this.currPropName = e.PropertyName;
+            currPropName = e.PropertyName;
         }
 
         /// <summary>
-        /// 为实体类的一个属性创建对应的数据库表的列的脚本
+        ///     为实体类的一个属性创建对应的数据库表的列的脚本
         /// </summary>
         /// <param name="db"></param>
         /// <param name="entity"></param>
@@ -289,18 +282,18 @@ namespace PWMIS.DataMap.Entity
         /// <returns></returns>
         public string CreateTableColumnScript(AdoHelper db, EntityBase entity, string field)
         {
-            Type t = this.GetPropertyType(field);
+            var t = GetPropertyType(field);
             object defaultValue = null;
-            if (t == typeof(string))
+            if (t == typeof (string))
                 defaultValue = "";
             else
                 defaultValue = Activator.CreateInstance(t);
 
-            IDataParameter para = db.GetParameter(field, defaultValue);
+            var para = db.GetParameter(field, defaultValue);
             //需要再获取参数长度
 
-            string temp = "[" + field + "] " + db.GetNativeDbTypeName(para);
-            if (t == typeof(string))
+            var temp = "[" + field + "] " + db.GetNativeDbTypeName(para);
+            if (t == typeof (string))
             {
                 temp = temp + "(" + entity.GetStringFieldSize(field) + ")";
             }
@@ -311,17 +304,17 @@ namespace PWMIS.DataMap.Entity
             }
             if (field == entity.IdentityName)
             {
-                if (db.CurrentDBMSType == PWMIS.Common.DBMSType.SqlServer || db.CurrentDBMSType == PWMIS.Common.DBMSType.SqlServerCe)
+                if (db.CurrentDBMSType == DBMSType.SqlServer || db.CurrentDBMSType == DBMSType.SqlServerCe)
                 {
                     temp = temp + " IDENTITY(1,1)";
                 }
-                else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.Access && entity.PrimaryKeys.Contains(field))
+                else if (db.CurrentDBMSType == DBMSType.Access && entity.PrimaryKeys.Contains(field))
                 {
                     temp = "[" + field + "] " + " autoincrement PRIMARY KEY ";
                 }
                 else
                 {
-                    if (db.CurrentDBMSType == PWMIS.Common.DBMSType.SQLite)
+                    if (db.CurrentDBMSType == DBMSType.SQLite)
                         temp = temp + " autoincrement";
                 }
             }
@@ -330,13 +323,14 @@ namespace PWMIS.DataMap.Entity
     }
 
     /// <summary>
-    /// 实体字段缓存
+    ///     实体字段缓存
     /// </summary>
     public class EntityFieldsCache
     {
-        private static Dictionary<string, EntityFields> dict = new Dictionary<string, EntityFields>();
+        private static readonly Dictionary<string, EntityFields> dict = new Dictionary<string, EntityFields>();
+
         /// <summary>
-        /// 获取缓存项，如果没有，将自动创建一个
+        ///     获取缓存项，如果没有，将自动创建一个
         /// </summary>
         /// <param name="entityType">实体类类型</param>
         /// <returns></returns>
@@ -345,7 +339,7 @@ namespace PWMIS.DataMap.Entity
             if (dict.ContainsKey(entityType.FullName))
                 return dict[entityType.FullName];
 
-            EntityFields ef = new EntityFields();
+            var ef = new EntityFields();
             if (ef.InitEntity(entityType)) //2015.2.5 修改
                 dict.Add(entityType.FullName, ef);
             return ef;

@@ -31,102 +31,98 @@
  * 
  * ========================================================================
 */
+
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data;
-using PWMIS.DataMap.Entity;
-using PWMIS.DataProvider.Data;
-using PWMIS.Core;
 using PWMIS.Common;
+using PWMIS.Core;
+using PWMIS.DataProvider.Adapter;
+using PWMIS.DataProvider.Data;
 
 namespace PWMIS.DataMap.Entity
 {
-
     public delegate TResult ECResultFunc<TResult>(EntityContainer ec);
 
     /// <summary>
-    /// 实体数据容器
+    ///     实体数据容器
     /// </summary>
     public class EntityContainer
     {
-        private OQL oql;
-        private AdoHelper db;
-        private string[] fieldNames;
-        private Type[] fieldTypes;
-        private List<object[]> Values;
-        private object[] currValue;
-
         /// <summary>
-        /// 以 TResult为输入参数，并返回此类型的函数的委托定义
+        ///     以 TResult为输入参数，并返回此类型的函数的委托定义
         /// </summary>
         /// <typeparam name="TResult">输入类型</typeparam>
         /// <param name="arg">参数</param>
         /// <returns></returns>
         public delegate TResult Func<TResult>(TResult arg);
+
         /// <summary>
-        /// 返回一个结果类型的泛型委托函数
+        ///     返回一个结果类型的泛型委托函数
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <returns></returns>
         public delegate TResult MyFunc<TResult>();
 
-        
+        private object[] currValue;
+        private AdoHelper db;
+        private Type[] fieldTypes;
+        private List<object[]> Values;
 
         /// <summary>
-        /// 默认构造函数
+        ///     默认构造函数
         /// </summary>
         public EntityContainer()
         {
-
         }
 
         /// <summary>
-        /// 使用OQL表达式和数据访问对象实例初始化。如果OQL未设置记录数量（等于0），那么查询会先进行一次记录数量查询。
+        ///     使用OQL表达式和数据访问对象实例初始化。如果OQL未设置记录数量（等于0），那么查询会先进行一次记录数量查询。
         /// </summary>
         /// <param name="oql">OQL表达式</param>
         /// <param name="db">数据访问对象实例</param>
         public EntityContainer(OQL oql, AdoHelper db)
         {
-            this.OQL = oql;
-            this.DataBase = db;
+            OQL = oql;
+            DataBase = db;
         }
 
         /// <summary>
-        /// 使用查询表达式初始化。如果OQL未设置记录数量（等于0），那么查询会先进行一次记录数量查询。
+        ///     使用查询表达式初始化。如果OQL未设置记录数量（等于0），那么查询会先进行一次记录数量查询。
         /// </summary>
         /// <param name="oql"></param>
         public EntityContainer(OQL oql)
         {
-            this.OQL = oql;
+            OQL = oql;
         }
 
         /// <summary>
-        /// 查询表达式
+        ///     查询表达式
         /// </summary>
-        public OQL OQL
-        {
-            get { return this.oql; }
-            set { this.oql = value; }
-        }
+        public OQL OQL { get; set; }
 
         /// <summary>
-        /// 数据访问对象
+        ///     数据访问对象
         /// </summary>
         public AdoHelper DataBase
         {
             get
             {
                 if (db == null)
-                    db = PWMIS.DataProvider.Adapter.MyDB.Instance;
+                    db = MyDB.Instance;
                 return db;
             }
             set { db = value; }
         }
 
+        /// <summary>
+        ///     获取容器数据中的字段名数组
+        /// </summary>
+        public string[] FieldNames { get; private set; }
+
         private IDataReader ExecuteDataReader(OQL oql, AdoHelper db)
         {
-            string sql = "";
+            var sql = "";
             sql = oql.ToString();
 
             //处理实体类分页 2010.6.20
@@ -135,60 +131,60 @@ namespace PWMIS.DataMap.Entity
                 //处理分页统前的记录数量统计问题 感谢网友 @成都-小兵 发现此问题
                 if (oql.PageWithAllRecordCount == 0)
                 {
-                    object oValue = EntityQueryAnonymous.ExecuteOQLCount(oql, db);
+                    var oValue = EntityQueryAnonymous.ExecuteOQLCount(oql, db);
                     oql.PageWithAllRecordCount = CommonUtil.ChangeType<int>(oValue);
                 }
 
                 switch (db.CurrentDBMSType)
                 {
-                    case PWMIS.Common.DBMSType.Access:
-                    case PWMIS.Common.DBMSType.SqlServer:
-                    case PWMIS.Common.DBMSType.SqlServerCe:
+                    case DBMSType.Access:
+                    case DBMSType.SqlServer:
+                    case DBMSType.SqlServerCe:
                         if (oql.haveJoinOpt)
                         {
                             if (oql.PageNumber <= 1) //仅限定记录条数
                             {
                                 sql = "Select Top " + oql.PageSize + " " + sql.Trim().Substring("SELECT ".Length);
-
                             }
                             else //必须采用复杂分页方案
                             {
                                 //edit at 2012.10.2 oql.PageWithAllRecordCount
-                                sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.SqlServer, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
-
+                                sql = SQLPage.MakeSQLStringByPage(DBMSType.SqlServer, sql, "", oql.PageSize,
+                                    oql.PageNumber, oql.PageWithAllRecordCount);
                             }
                         }
                         else
                         {
                             //单表查询的情况
                             if (oql.PageOrderDesc)
-                                sql = PWMIS.Common.SQLPage.GetDescPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields, oql.sql_table, oql.PageField, oql.sql_condition);
+                                sql = SQLPage.GetDescPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields,
+                                    oql.sql_table, oql.PageField, oql.sql_condition);
                             else
-                                sql = PWMIS.Common.SQLPage.GetAscPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields, oql.sql_table, oql.PageField, oql.sql_condition);
+                                sql = SQLPage.GetAscPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields,
+                                    oql.sql_table, oql.PageField, oql.sql_condition);
                         }
 
                         break;
-                    case PWMIS.Common.DBMSType.Oracle:
-                        sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.Oracle, sql, "", oql.PageSize, oql.PageNumber, 999);
+                    case DBMSType.Oracle:
+                        sql = SQLPage.MakeSQLStringByPage(DBMSType.Oracle, sql, "", oql.PageSize, oql.PageNumber, 999);
                         break;
-                    case PWMIS.Common.DBMSType.MySql:
-                        sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.MySql, sql, "", oql.PageSize, oql.PageNumber, 999);
+                    case DBMSType.MySql:
+                        sql = SQLPage.MakeSQLStringByPage(DBMSType.MySql, sql, "", oql.PageSize, oql.PageNumber, 999);
                         break;
-                    case PWMIS.Common.DBMSType.PostgreSQL:
-                        sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.PostgreSQL, sql, "", oql.PageSize, oql.PageNumber, 999);
+                    case DBMSType.PostgreSQL:
+                        sql = SQLPage.MakeSQLStringByPage(DBMSType.PostgreSQL, sql, "", oql.PageSize, oql.PageNumber,
+                            999);
                         break;
                     default:
                         throw new Exception("实体类分页错误：不支持此种类型的数据库分页。");
-
                 }
-
             }
 
             IDataReader reader = null;
             if (oql.Parameters != null && oql.Parameters.Count > 0)
             {
-                int fieldCount = oql.Parameters.Count;
-                IDataParameter[] paras = EntityQueryAnonymous.GetParameters(oql.Parameters, db);
+                var fieldCount = oql.Parameters.Count;
+                var paras = EntityQueryAnonymous.GetParameters(oql.Parameters, db);
                 //int index = 0;
 
                 //foreach (string name in oql.Parameters.Keys)
@@ -206,36 +202,35 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 执行OQL查询，并将查询结果缓存。如果未设置记录数量，那么查询会先进行一次记录数量查询。
+        ///     执行OQL查询，并将查询结果缓存。如果未设置记录数量，那么查询会先进行一次记录数量查询。
         /// </summary>
         /// <returns>结果的行数</returns>
         public int Execute()
         {
-            IDataReader reader = ExecuteDataReader(this.OQL, this.DataBase);
+            var reader = ExecuteDataReader(OQL, DataBase);
             return Execute(reader);
         }
 
         /// <summary>
-        /// 执行DataReader查询，并将查询结果缓存
+        ///     执行DataReader查询，并将查询结果缓存
         /// </summary>
         /// <param name="reader">数据阅读器</param>
         /// <returns>结果行数</returns>
         public int Execute(IDataReader reader)
         {
-            List<object[]> list = new List<object[]>();
+            var list = new List<object[]>();
             using (reader)
             {
-                int fcount = reader.FieldCount;
-                fieldNames = new string[fcount];
-                fieldTypes=new Type[fcount];
+                var fcount = reader.FieldCount;
+                FieldNames = new string[fcount];
+                fieldTypes = new Type[fcount];
                 if (reader.Read())
                 {
-
                     object[] values = null;
 
-                    for (int i = 0; i < fcount; i++)
+                    for (var i = 0; i < fcount; i++)
                     {
-                        fieldNames[i] = reader.GetName(i);
+                        FieldNames[i] = reader.GetName(i);
                         fieldTypes[i] = reader.GetFieldType(i);
                     }
 
@@ -245,29 +240,21 @@ namespace PWMIS.DataMap.Entity
                         reader.GetValues(values);
                         list.Add(values);
                     } while (reader.Read());
-
                 }
             }
-            this.Values = list;
+            Values = list;
             return list.Count;
         }
 
         /// <summary>
-        /// 获取容器数据中的字段名数组
-        /// </summary>
-        public string[] FieldNames
-        {
-            get { return this.fieldNames; }
-        }
-        /// <summary>
-        /// 获取容器数据中的每一行的值
+        ///     获取容器数据中的每一行的值
         /// </summary>
         /// <returns></returns>
         public IEnumerable<object[]> GetItemValues()
         {
-            if (this.Values != null && this.fieldNames != null)
+            if (Values != null && FieldNames != null)
             {
-                foreach (object[] itemValues in this.Values)
+                foreach (var itemValues in Values)
                 {
                     yield return itemValues;
                 }
@@ -275,56 +262,53 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 将数据从容器中映射到实体中
+        ///     将数据从容器中映射到实体中
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public IEnumerable<T> Map<T>() where T : EntityBase
         {
-            if (this.Values == null)
+            if (Values == null)
             {
-                int rowsCount = this.Execute();
+                var rowsCount = Execute();
                 if (rowsCount <= 0)
                     yield break;
-
             }
-            if (this.Values != null && this.fieldNames != null)
+            if (Values != null && FieldNames != null)
             {
-                if (this.Values.Count == 0)
+                if (Values.Count == 0)
                     yield break;
 
-                Dictionary<string, int> dictNameIndex = new Dictionary<string, int>();
-                T entity = Activator.CreateInstance<T>();
-                string tabeName = entity.TableName;
+                var dictNameIndex = new Dictionary<string, int>();
+                var entity = Activator.CreateInstance<T>();
+                var tabeName = entity.TableName;
                 //查找字段匹配情况
                 //entity.PropertyNames 存储的仅仅是查询出来的列名称，由于有连表查询，
                 //如果要映射到指定的实体，还得检查当前列对应的表名称
-                if (this.OQL.sql_fields.Contains("[" + tabeName + "]"))
+                if (OQL.sql_fields.Contains("[" + tabeName + "]"))
                 {
                     //是连表查询
-                    for (int i = 0; i < this.fieldNames.Length; i++)
+                    for (var i = 0; i < FieldNames.Length; i++)
                     {
-                        for (int j = 0; j < entity.PropertyNames.Length; j++)
+                        for (var j = 0; j < entity.PropertyNames.Length; j++)
                         {
-                            string cmpString = "[" + tabeName + "].[" + entity.PropertyNames[j] + "]";
-                            if (this.OQL.sql_fields.Contains(cmpString))
+                            var cmpString = "[" + tabeName + "].[" + entity.PropertyNames[j] + "]";
+                            if (OQL.sql_fields.Contains(cmpString))
                             {
-                                dictNameIndex[this.fieldNames[i]] = i;
+                                dictNameIndex[FieldNames[i]] = i;
                             }
                         }
-
-
                     }
                 }
                 else
                 {
-                    for (int i = 0; i < this.fieldNames.Length; i++)
+                    for (var i = 0; i < FieldNames.Length; i++)
                     {
-                        for (int j = 0; j < entity.PropertyNames.Length; j++)
+                        for (var j = 0; j < entity.PropertyNames.Length; j++)
                         {
-                            if (this.fieldNames[i] == entity.PropertyNames[j])
+                            if (FieldNames[i] == entity.PropertyNames[j])
                             {
-                                dictNameIndex[this.fieldNames[i]] = i;
+                                dictNameIndex[FieldNames[i]] = i;
                             }
                         }
                     }
@@ -334,13 +318,13 @@ namespace PWMIS.DataMap.Entity
                 if (dictNameIndex.Count == 0)
                     yield break;
 
-                int length = entity.PropertyValues.Length;
-                foreach (object[] itemValues in this.Values)
+                var length = entity.PropertyValues.Length;
+                foreach (var itemValues in Values)
                 {
-                    for (int m = 0; m < length; m++)
+                    for (var m = 0; m < length; m++)
                     {
                         //将容器的值赋值给实体的值元素
-                        string key = entity.PropertyNames[m];
+                        var key = entity.PropertyNames[m];
                         if (dictNameIndex.ContainsKey(key))
                             entity.PropertyValues[m] = itemValues[dictNameIndex[key]];
                     }
@@ -357,9 +341,9 @@ namespace PWMIS.DataMap.Entity
 
         private object propertyList(string propertyName, object[] itemValues)
         {
-            for (int i = 0; i < fieldNames.Length; i++)
+            for (var i = 0; i < FieldNames.Length; i++)
             {
-                if (string.Compare(fieldNames[i], propertyName, true) == 0)
+                if (string.Compare(FieldNames[i], propertyName, true) == 0)
                 {
                     return itemValues[i];
                 }
@@ -368,49 +352,47 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 根据字段名，从当前行获取值
+        ///     根据字段名，从当前行获取值
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="fieldName"></param>
         /// <returns></returns>
         public T GetItemValue<T>(string fieldName)
         {
-            if (this.currValue != null)
-                return CommonUtil.ChangeType<T>(propertyList(fieldName, this.currValue));
-            else
-                return default(T);
+            if (currValue != null)
+                return CommonUtil.ChangeType<T>(propertyList(fieldName, currValue));
+            return default(T);
         }
 
         /// <summary>
-        /// 根据字段索引，从当前行获取值
+        ///     根据字段索引，从当前行获取值
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="fieldIndex"></param>
         /// <returns></returns>
         public T GetItemValue<T>(int fieldIndex)
         {
-            if (this.currValue != null)
-                return CommonUtil.ChangeType<T>(this.currValue[fieldIndex]);
-            else
-                return default(T);
+            if (currValue != null)
+                return CommonUtil.ChangeType<T>(currValue[fieldIndex]);
+            return default(T);
         }
 
         /// <summary>
-        /// 采用自定义的映射方式，将数据容器中的数据映射到指定的类中 
+        ///     采用自定义的映射方式，将数据容器中的数据映射到指定的类中
         /// </summary>
         /// <typeparam name="TResult">结果类型</typeparam>
         /// <param name="fun">处理数据的方法</param>
         /// <returns></returns>
         public IEnumerable<TResult> Map<TResult>(Func<TResult> fun) where TResult : class, new()
         {
-            if (this.Values == null)
-                this.Execute();
-            if (this.Values != null && this.fieldNames != null)
+            if (Values == null)
+                Execute();
+            if (Values != null && FieldNames != null)
             {
-                foreach (object[] itemValues in this.Values)
+                foreach (var itemValues in Values)
                 {
-                    TResult t = new TResult();
-                    this.currValue = itemValues;
+                    var t = new TResult();
+                    currValue = itemValues;
                     fun(t);
                     yield return t;
                 }
@@ -422,9 +404,9 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 将结果映射到相应类型的列表（可以使匿名类型）
-        /// <example>
-        /// <code>
+        ///     将结果映射到相应类型的列表（可以使匿名类型）
+        ///     <example>
+        ///         <code>
         /// <![CDATA[
         /// OQL q=OQL.From(entity1)
         ///          .Join(entity2).On(entity1.PK,entity2.FK)
@@ -445,37 +427,33 @@ namespace PWMIS.DataMap.Entity
         /// }
         /// ]]>
         /// </code>
-        /// </example>
+        ///     </example>
         /// </summary>
         /// <typeparam name="TResult">要映射的结果类型</typeparam>
         /// <param name="fun">自定义的返回结果类型的函数</param>
         /// <returns>结果列表</returns>
         public IList<TResult> MapToList<TResult>(MyFunc<TResult> fun) where TResult : class
         {
-            if (this.Values == null)
-                this.Execute();
-            List<TResult> resultList = new List<TResult>();
-            if (this.Values != null && this.fieldNames != null)
+            if (Values == null)
+                Execute();
+            var resultList = new List<TResult>();
+            if (Values != null && FieldNames != null)
             {
-                foreach (object[] itemValues in this.Values)
+                foreach (var itemValues in Values)
                 {
-                    
-                    this.currValue = itemValues;
-                   TResult t = fun();
-                   resultList.Add(t);
+                    currValue = itemValues;
+                    var t = fun();
+                    resultList.Add(t);
                 }
                 return resultList;
             }
-            else
-            {
-                throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
-            }
+            throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
         }
 
         /// <summary>
-        /// 将实体类容器转换为对象列表
-        /// <example>
-        /// <code>
+        ///     将实体类容器转换为对象列表
+        ///     <example>
+        ///         <code>
         /// <![CDATA[
         /// OQL q=OQL.From(entity1)
         ///          .Join(entity2).On(entity1.PK,entity2.FK)
@@ -496,65 +474,58 @@ namespace PWMIS.DataMap.Entity
         /// }
         /// ]]>
         /// </code>
-        /// </example>
+        ///     </example>
         /// </summary>
         /// <typeparam name="TResult">结果的列表元素类型</typeparam>
         /// <param name="fun">容器结果委托函数</param>
         /// <returns>对象列表</returns>
         public IList<TResult> ToObjectList<TResult>(ECResultFunc<TResult> fun) where TResult : class
         {
-            if (this.Values == null)
-                this.Execute();
-            List<TResult> resultList = new List<TResult>();
-            if (this.Values != null && this.fieldNames != null)
+            if (Values == null)
+                Execute();
+            var resultList = new List<TResult>();
+            if (Values != null && FieldNames != null)
             {
-                foreach (object[] itemValues in this.Values)
+                foreach (var itemValues in Values)
                 {
-
-                    this.currValue = itemValues;
-                    TResult t = fun(this);
+                    currValue = itemValues;
+                    var t = fun(this);
                     resultList.Add(t);
                 }
                 return resultList;
             }
-            else
-            {
-                throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
-            }
+            throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
         }
 
         /// <summary>
-        /// 将容器的结果数据映射到DataTable
+        ///     将容器的结果数据映射到DataTable
         /// </summary>
         /// <param name="tableName">表名称</param>
         /// <returns>DataTable</returns>
         public DataTable MapToDataTable(string tableName)
         {
-            if (this.Values == null)
-                this.Execute();
-            if (this.Values != null && this.fieldNames != null)
+            if (Values == null)
+                Execute();
+            if (Values != null && FieldNames != null)
             {
-                DataTable dt = new DataTable(tableName);
-                for (int i = 0; i < this.fieldNames.Length; i++)
+                var dt = new DataTable(tableName);
+                for (var i = 0; i < FieldNames.Length; i++)
                 {
-                    DataColumn col = new DataColumn(this.fieldNames[i]);
+                    var col = new DataColumn(FieldNames[i]);
                     //下面的方式当数据为空的时候,会报错,感谢网友 @成都-小兵 发现此问题
                     //object V = this.Values[0][i];
                     //col.DataType = V == null || V == DBNull.Value ? typeof(string) : V.GetType();
-                    col.DataType = this.fieldTypes[i];
+                    col.DataType = fieldTypes[i];
                     dt.Columns.Add(col);
                 }
 
-                foreach (object[] itemValues in this.Values)
+                foreach (var itemValues in Values)
                 {
                     dt.Rows.Add(itemValues);
                 }
                 return dt;
             }
-            else
-            {
-                throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
-            }
+            throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
         }
     }
 }

@@ -1,73 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
+using System.Drawing.Design;
 using System.Windows.Forms;
 using PWMIS.Common;
-using System.Drawing.Design;
 
 namespace PWMIS.Windows.Controls
 {
-    [System.Drawing.ToolboxBitmap(typeof(ControlIcon), "DataDropDownList.bmp")]
+    [ToolboxBitmap(typeof (ControlIcon), "DataDropDownList.bmp")]
     public partial class DataDropDownList : ComboBox, IDataControl, IQueryControl
     {
-
         #region IDataControl 成员
+
         //[Category("Data"), Description("设定对应的数据源，格式：FullClassName,AssemblyName 。如果需要绑定实体类，可以设置该属性。")]
         //public string DataProvider { get; set; }
 
-        private string _LinkProperty;
-
         /// <summary>
-        /// 设定与数据库字段对应的数据名
+        ///     设定与数据库字段对应的数据名
         /// </summary>
         [Category("Data"), Description("设定与数据库字段对应的数据名")]
-        [Editor(typeof(PropertyUITypeEditor), typeof(UITypeEditor))]
-        public string LinkProperty
-        {
-            get
-            {
-                return _LinkProperty;
-            }
-            set
-            {
-                _LinkProperty = value;
-            }
-        }
-
-        private string _LinkObject;
+        [Editor(typeof (PropertyUITypeEditor), typeof (UITypeEditor))]
+        public string LinkProperty { get; set; }
 
         [Category("Data"), Description("设定与数据库字段对应的数据表名")]
-        public string LinkObject
-        {
-            get
-            {
-                return _LinkObject;
-            }
-            set
-            {
-                _LinkObject = value;
-            }
-        }
+        public string LinkObject { get; set; }
 
-
-        private TypeCode _SysTypeCode;
 
         [Category("Data"), Description("设定对应的数据字段类型")]
-        public TypeCode SysTypeCode
-        {
-            get
-            {
-                return _SysTypeCode;
-            }
-            set
-            {
-                _SysTypeCode = value;
-            }
-        }
-
+        public TypeCode SysTypeCode { get; set; }
 
 
         private bool _isNull = true;
@@ -79,27 +39,16 @@ namespace PWMIS.Windows.Controls
             set { _isNull = value; }
         }
 
-        bool _PrimaryKey;
-
         /// <summary>
-        /// 设定对应的数据字段是否是主键
+        ///     设定对应的数据字段是否是主键
         /// </summary>
         [Category("Data"), Description("设定对应的数据字段是否是主键")]
-        public bool PrimaryKey
-        {
-            get
-            {
-                return _PrimaryKey;
-            }
-            set
-            {
-                _PrimaryKey = value;
-            }
-        }
+        public bool PrimaryKey { get; set; }
 
         private bool _readOnly;
+
         /// <summary>
-        /// 是否只读
+        ///     是否只读
         /// </summary>
         public bool ReadOnly
         {
@@ -107,7 +56,7 @@ namespace PWMIS.Windows.Controls
             set
             {
                 _readOnly = value;
-                this.Enabled = !_readOnly;
+                Enabled = !_readOnly;
             }
         }
 
@@ -125,7 +74,7 @@ namespace PWMIS.Windows.Controls
                 //感谢网友 上海-bingoyin 发现此问题。
                 //if (this.Items.Contains(value))
                 //{
-                this.SelectedValue = value;
+                SelectedValue = value;
                 //}
                 //如果 value 是下拉框控件不存在的值，那么赋值之后，SelectedValue 将是 null
             }
@@ -133,18 +82,17 @@ namespace PWMIS.Windows.Controls
 
         public object GetValue()
         {
-            return this.SelectedValue;
+            return SelectedValue;
         }
 
         public virtual bool Validate()
         {
             if (!IsNull)
             {
-                if (this.SelectedValue!=null)
+                if (SelectedValue != null)
                 {
                     return false;
                 }
-
             }
             return true;
         }
@@ -153,17 +101,9 @@ namespace PWMIS.Windows.Controls
 
         #region IQueryControl 成员
 
-        public string CompareSymbol
-        {
-            get;
-            set;
-        }
+        public string CompareSymbol { get; set; }
 
-        public string QueryFormatString
-        {
-            get;
-            set;
-        }
+        public string QueryFormatString { get; set; }
 
         #endregion
     }

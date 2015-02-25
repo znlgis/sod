@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace PWMIS.Windows
+﻿namespace PWMIS.Windows
 {
-   public  class ControlIcon
+    public class ControlIcon
     {
     }
 }
