@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º                
- * ĞŞ¸ÄËµÃ÷£º
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š                
+ * ä¿®æ”¹è¯´æ˜ï¼š
  * ========================================================================
 */
 
@@ -22,14 +22,14 @@ using System.Web.UI.WebControls;
 namespace PWMIS.Web.Controls
 {
     /// <summary>
-    ///     DataGrid ÔöÇ¿£¬Ö§³Ö¶¯Ì¬¿Í»§¶ËÑ¡Ôñ£¬Êó±ê¶¯Ì¬¸úËæ¡£
-    ///     µËÌ«»ª 2008.5.6 Ver 1.1
+    ///     DataGrid å¢å¼ºï¼Œæ”¯æŒåŠ¨æ€å®¢æˆ·ç«¯é€‰æ‹©ï¼Œé¼ æ ‡åŠ¨æ€è·Ÿéšã€‚
+    ///     é‚“å¤ªå 2008.5.6 Ver 1.1
     /// </summary>
     [DefaultProperty("Text"),
      ToolboxData("<{0}:ProDataGrid runat=server ></{0}:ProDataGrid>")]
     public class ProDataGrid : DataGrid
     {
-        private string m_CheckAllText = "Ñ¡Ôñ";
+        private string m_CheckAllText = "é€‰æ‹©";
         private string m_CheckItemText = string.Empty;
         private string m_ClientSelectedValue = string.Empty;
         private bool m_ClientSelectMode;
@@ -44,7 +44,7 @@ namespace PWMIS.Web.Controls
         private string SelectValueList = string.Empty;
 
         /// <summary>
-        ///     Ä¬ÈÏ¹¹Ôìº¯Êı
+        ///     é»˜è®¤æ„é€ å‡½æ•°
         /// </summary>
         public ProDataGrid()
         {
@@ -58,20 +58,20 @@ namespace PWMIS.Web.Controls
         ////			if ( e.Item.ItemType == ListItemType.Pager ) 
         ////			{ 
         ////				Literal msg = new Literal(); 
-        ////				msg.Text = "°ÑÕâÈı¾ä´úÂëÌæ»»³É³ÊÏÖÊµ¼Ê·­Ò³¿Ø¼şÍâ¹ÛµÄ´úÂë¡£"; 
+        ////				msg.Text = "æŠŠè¿™ä¸‰å¥ä»£ç æ›¿æ¢æˆå‘ˆç°å®é™…ç¿»é¡µæ§ä»¶å¤–è§‚çš„ä»£ç ã€‚"; 
         ////				( ( TableCell ) e.Item.Controls[0] ).Controls.Add( msg ); 
         ////			} 
         //			
         //		} 
 
         /// <summary>
-        ///     Ñ¡Ôñ¿òËùÔÚÁĞ
+        ///     é€‰æ‹©æ¡†æ‰€åœ¨åˆ—
         /// </summary>
         [Browsable(false)]
         public TemplateColumn CheckColumn { get; set; }
 
         /// <summary>
-        ///     ¿Í»§¶ËÑ¡ÔñµÄÖµ
+        ///     å®¢æˆ·ç«¯é€‰æ‹©çš„å€¼
         /// </summary>
         [Browsable(false)]
         public string ClientSelectedValue
@@ -81,17 +81,17 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     ¿Í»§¶Ë¶àÑ¡µÄÊ±ºò£¬ÊÇ·ñ¼ÇÂ¼ÉÏ´ÎÑ¡ÔñµÄÖµ£¬Í¨³£ÓÃÓÚ¶àÒ³Ñ¡Ôñ¡£
+        ///     å®¢æˆ·ç«¯å¤šé€‰çš„æ—¶å€™ï¼Œæ˜¯å¦è®°å½•ä¸Šæ¬¡é€‰æ‹©çš„å€¼ï¼Œé€šå¸¸ç”¨äºå¤šé¡µé€‰æ‹©ã€‚
         /// </summary>
-        [Description("¿Í»§¶Ë¶àÑ¡µÄÊ±ºò£¬ÊÇ·ñ¼ÇÂ¼ÉÏ´ÎÑ¡ÔñµÄÖµ£¬Í¨³£ÓÃÓÚ¶àÒ³Ñ¡Ôñ¡£"), Bindable(true),
+        [Description("å®¢æˆ·ç«¯å¤šé€‰çš„æ—¶å€™ï¼Œæ˜¯å¦è®°å½•ä¸Šæ¬¡é€‰æ‹©çš„å€¼ï¼Œé€šå¸¸ç”¨äºå¤šé¡µé€‰æ‹©ã€‚"), Bindable(true),
          Category("Behavior"),
          DefaultValue(false)]
         public bool MorePageSeleced { get; set; }
 
         /// <summary>
-        ///     ¿Í»§¶ËÑ¡ÔñµÄ·½Ê½,False=µ¥Ñ¡,True=¶àÑ¡
+        ///     å®¢æˆ·ç«¯é€‰æ‹©çš„æ–¹å¼,False=å•é€‰,True=å¤šé€‰
         /// </summary>
-        [Description("¿Í»§¶ËÑ¡ÔñµÄ·½Ê½,False=µ¥Ñ¡,True=¶àÑ¡"), Bindable(true),
+        [Description("å®¢æˆ·ç«¯é€‰æ‹©çš„æ–¹å¼,False=å•é€‰,True=å¤šé€‰"), Bindable(true),
          Category("Behavior"),
          DefaultValue(false)
         ]
@@ -105,27 +105,27 @@ namespace PWMIS.Web.Controls
             }
             set
             {
-                //VS2008 ÊôĞÔ±äÁ¿ÔÚ¹¹Ôìº¯ÊıÖ®Ç°ÏÈÉèÖÃ£¬ÓëVS2003 ²»Í¬£¬ËùÒÔÔÚ³ÌĞòÖĞÒıÓÃÈ«¾Ö±äÁ¿»á³öÎÊÌâ
+                //VS2008 å±æ€§å˜é‡åœ¨æ„é€ å‡½æ•°ä¹‹å‰å…ˆè®¾ç½®ï¼Œä¸VS2003 ä¸åŒï¼Œæ‰€ä»¥åœ¨ç¨‹åºä¸­å¼•ç”¨å…¨å±€å˜é‡ä¼šå‡ºé—®é¢˜
                 m_ClientSelectMode = value;
                 ViewState["ClientSelectMode"] = value;
 
                 if (m_ClientSelectMode)
                 {
-                    Text = "¶àÑ¡×´Ì¬";
+                    Text = "å¤šé€‰çŠ¶æ€";
                 }
                 else
                 {
-                    MorePageSeleced = false; //·ÖÒ³Ñ¡Ôñ½öÔÚ¶àÑ¡Ä£Ê½ÓĞĞ§
-                    Text = "µ¥Ñ¡×´Ì¬";
+                    MorePageSeleced = false; //åˆ†é¡µé€‰æ‹©ä»…åœ¨å¤šé€‰æ¨¡å¼æœ‰æ•ˆ
+                    Text = "å•é€‰çŠ¶æ€";
                 }
                 //SetCheckColumnInfo();
             }
         }
 
         /// <summary>
-        ///     ¿Í»§¶ËÑ¡ÔñµÄ½Å±¾ÎÄ¼şµØÖ·
+        ///     å®¢æˆ·ç«¯é€‰æ‹©çš„è„šæœ¬æ–‡ä»¶åœ°å€
         /// </summary>
-        [Description("¿Í»§¶ËÑ¡ÔñµÄ½Å±¾ÎÄ¼şµØÖ·"), Bindable(true),
+        [Description("å®¢æˆ·ç«¯é€‰æ‹©çš„è„šæœ¬æ–‡ä»¶åœ°å€"), Bindable(true),
          Category("Behavior"),
          DefaultValue("")]
         public string ScriptPath
@@ -135,9 +135,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     ÓÃÓÚÑ¡ÔñÒ»ĞĞÊ±µÄÓÃ»§CSSÀàÃû
+        ///     ç”¨äºé€‰æ‹©ä¸€è¡Œæ—¶çš„ç”¨æˆ·CSSç±»å
         /// </summary>
-        [Description("ÓÃÓÚÑ¡ÔñÒ»ĞĞÊ±µÄÓÃ»§CSSÀàÃû"), Bindable(true),
+        [Description("ç”¨äºé€‰æ‹©ä¸€è¡Œæ—¶çš„ç”¨æˆ·CSSç±»å"), Bindable(true),
          Category("Appearance"),
          DefaultValue("")]
         public string CssClassRowSelected
@@ -147,9 +147,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     ÓÃÓÚÊó±êĞü¸¡ÔÚÒ»ĞĞÊ±µÄÓÃ»§CSSÀàÃû
+        ///     ç”¨äºé¼ æ ‡æ‚¬æµ®åœ¨ä¸€è¡Œæ—¶çš„ç”¨æˆ·CSSç±»å
         /// </summary>
-        [Description("ÓÃÓÚÊó±êĞü¸¡ÔÚÒ»ĞĞÊ±µÄÓÃ»§CSSÀàÃû"), Bindable(true),
+        [Description("ç”¨äºé¼ æ ‡æ‚¬æµ®åœ¨ä¸€è¡Œæ—¶çš„ç”¨æˆ·CSSç±»å"), Bindable(true),
          Category("Appearance"),
          DefaultValue("")]
         public string CssClassRowMouseMove
@@ -159,9 +159,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     Ã¿Ò»ĞĞÑ¡ÔñµÄÖµ£¬¶ÔÓ¦ÓÚÄ³Ò»¸öÁĞ
+        ///     æ¯ä¸€è¡Œé€‰æ‹©çš„å€¼ï¼Œå¯¹åº”äºæŸä¸€ä¸ªåˆ—
         /// </summary>
-        [Description("Ã¿Ò»ĞĞÑ¡ÔñµÄÖµ£¬¶ÔÓ¦ÓÚÄ³Ò»¸öÁĞ¡£Èç¹ûÖµ²»Îª¿Õ£¬ÓÅÏÈÓÚSelectedFromCellIndex ÊôĞÔ"), Bindable(true),
+        [Description("æ¯ä¸€è¡Œé€‰æ‹©çš„å€¼ï¼Œå¯¹åº”äºæŸä¸€ä¸ªåˆ—ã€‚å¦‚æœå€¼ä¸ä¸ºç©ºï¼Œä¼˜å…ˆäºSelectedFromCellIndex å±æ€§"), Bindable(true),
          Category("Data"),
          DefaultValue("")]
         public string SelectedFieldValue
@@ -172,9 +172,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     Ñ¡ÔñÖµËùÔÚµÄµ¥Ôª¸ñµÄË÷Òı£¬Ğ¡ÓÚ1¸ÃÊôĞÔÎŞĞ§
+        ///     é€‰æ‹©å€¼æ‰€åœ¨çš„å•å…ƒæ ¼çš„ç´¢å¼•ï¼Œå°äº1è¯¥å±æ€§æ— æ•ˆ
         /// </summary>
-        [Description("Ñ¡ÔñÖµËùÔÚµÄµ¥Ôª¸ñµÄË÷Òı£¬Ğ¡ÓÚ1¸ÃÊôĞÔÎŞĞ§"), Bindable(true),
+        [Description("é€‰æ‹©å€¼æ‰€åœ¨çš„å•å…ƒæ ¼çš„ç´¢å¼•ï¼Œå°äº1è¯¥å±æ€§æ— æ•ˆ"), Bindable(true),
          Category("Data"),
          DefaultValue("1")]
         public int SelectedFromCellIndex
@@ -189,17 +189,17 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     ¸ÃÊôĞÔÓÃÓÚ±íÊ¾¿Ø¼şÏÔÊ¾µÄÎÄ×ÖÄÚÈİ
+        ///     è¯¥å±æ€§ç”¨äºè¡¨ç¤ºæ§ä»¶æ˜¾ç¤ºçš„æ–‡å­—å†…å®¹
         /// </summary>
-        [Description("¸ÃÊôĞÔÓÃÓÚ±íÊ¾¿Ø¼şÏÔÊ¾µÄÎÄ×ÖÄÚÈİ"), Bindable(true),
+        [Description("è¯¥å±æ€§ç”¨äºè¡¨ç¤ºæ§ä»¶æ˜¾ç¤ºçš„æ–‡å­—å†…å®¹"), Bindable(true),
          Category("Appearance"),
          DefaultValue("")]
         public string Text { get; set; }
 
         /// <summary>
-        ///     ÊÇ·ñÏÔÊ¾Ñ¡ÔñÁĞ
+        ///     æ˜¯å¦æ˜¾ç¤ºé€‰æ‹©åˆ—
         /// </summary>
-        [Description("ÊÇ·ñÏÔÊ¾Ñ¡ÔñÁĞ"), Bindable(true),
+        [Description("æ˜¯å¦æ˜¾ç¤ºé€‰æ‹©åˆ—"), Bindable(true),
          Category("Appearance"),
          DefaultValue(true)]
         public bool ShowCheckColumn
@@ -216,9 +216,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     ÊÇ·ñÏÔÊ¾Ñ¡ÔñÁĞÖĞµÄÑ¡Ôñ¿Ø¼ş
+        ///     æ˜¯å¦æ˜¾ç¤ºé€‰æ‹©åˆ—ä¸­çš„é€‰æ‹©æ§ä»¶
         /// </summary>
-        [Description("ÊÇ·ñÏÔÊ¾Ñ¡ÔñÁĞÖĞµÄÑ¡Ôñ¿Ø¼ş"), Bindable(true),
+        [Description("æ˜¯å¦æ˜¾ç¤ºé€‰æ‹©åˆ—ä¸­çš„é€‰æ‹©æ§ä»¶"), Bindable(true),
          Category("Appearance"),
          DefaultValue(true)]
         public bool ShowcheckControl
@@ -229,9 +229,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     Ñ¡ÔñÁĞ±êÌâĞĞÎÄ×Ö
+        ///     é€‰æ‹©åˆ—æ ‡é¢˜è¡Œæ–‡å­—
         /// </summary>
-        [Description("Ñ¡ÔñÁĞ±êÌâĞĞÎÄ×Ö"), Bindable(true),
+        [Description("é€‰æ‹©åˆ—æ ‡é¢˜è¡Œæ–‡å­—"), Bindable(true),
          Category("Appearance"),
          DefaultValue("")]
         public string CheckHeaderText
@@ -250,9 +250,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     Ñ¡ÔñÁĞµÄÎÄ±¾
+        ///     é€‰æ‹©åˆ—çš„æ–‡æœ¬
         /// </summary>
-        [Description("Ñ¡ÔñÁĞµÄÎÄ±¾"), Bindable(true),
+        [Description("é€‰æ‹©åˆ—çš„æ–‡æœ¬"), Bindable(true),
          Category("Appearance"),
          DefaultValue("")]
         public string CheckItemText
@@ -263,9 +263,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     ÊÇ·ñÓ¦ÓÃÄ¬ÈÏµÄÑùÊ½ºÍ½Å±¾ÉèÖÃ
+        ///     æ˜¯å¦åº”ç”¨é»˜è®¤çš„æ ·å¼å’Œè„šæœ¬è®¾ç½®
         /// </summary>
-        [Description("ÊÇ·ñÓ¦ÓÃÄ¬ÈÏµÄÑùÊ½ºÍ½Å±¾ÉèÖÃ"), Bindable(true),
+        [Description("æ˜¯å¦åº”ç”¨é»˜è®¤çš„æ ·å¼å’Œè„šæœ¬è®¾ç½®"), Bindable(true),
          Category("Appearance"),
          DefaultValue(true),
          DesignOnly(true)]
@@ -276,7 +276,7 @@ namespace PWMIS.Web.Controls
             set
             {
                 m_DefaultSet = value;
-                if (!m_DefaultSet) //Çå³ıÄ¬ÈÏÉèÖÃ
+                if (!m_DefaultSet) //æ¸…é™¤é»˜è®¤è®¾ç½®
                 {
                     CssClass = "";
                     AlternatingItemStyle.CssClass = "";
@@ -291,7 +291,7 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     Ôö¼ÓÊ×¸öÄ£°æÁĞ£¬¿ÉÒÔÓĞÑ¡Ôñ¹¦ÄÜ¡£
+        ///     å¢åŠ é¦–ä¸ªæ¨¡ç‰ˆåˆ—ï¼Œå¯ä»¥æœ‰é€‰æ‹©åŠŸèƒ½ã€‚
         /// </summary>
         private void SetCheckColumnInfo()
         {
@@ -305,7 +305,7 @@ namespace PWMIS.Web.Controls
 
                 var tmHead = new ColumnTemplate2();
                 tmHead.IsMoreSelect = ClientSelectMode; // m_ClientSelectMode;
-                tmHead.CheckAllText = CheckHeaderText; //"È«Ñ¡";
+                tmHead.CheckAllText = CheckHeaderText; //"å…¨é€‰";
                 CheckColumn.HeaderTemplate = tmHead;
                 CheckColumn.HeaderText = CheckHeaderText;
                 CheckColumn.Visible = ShowCheckColumn;
@@ -328,7 +328,7 @@ namespace PWMIS.Web.Controls
                 //tm.ItemTemplate=ItemTemplate;
 
                 var tmHead = (ColumnTemplate2) CheckColumn.HeaderTemplate;
-                tmHead.CheckAllText = CheckHeaderText; // "È«Ñ¡2";
+                tmHead.CheckAllText = CheckHeaderText; // "å…¨é€‰2";
                 tmHead.IsMoreSelect = ClientSelectMode;
                 CheckColumn.HeaderText = CheckHeaderText;
                 CheckColumn.Visible = ShowCheckColumn;
@@ -336,13 +336,13 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     /Ä¬ÈÏÑùÊ½µÈÉèÖÃ
+        ///     /é»˜è®¤æ ·å¼ç­‰è®¾ç½®
         /// </summary>
         private void SetDefaultInfo()
         {
             if (m_DefaultSet)
             {
-                //Ä¬ÈÏÑùÊ½Ãû
+                //é»˜è®¤æ ·å¼å
                 if (CssClass == "")
                     CssClass = "dg_table";
                 if (AlternatingItemStyle.CssClass == "")
@@ -383,9 +383,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     ½«´Ë¿Ø¼ş³ÊÏÖ¸øÖ¸¶¨µÄÊä³ö²ÎÊı¡£
+        ///     å°†æ­¤æ§ä»¶å‘ˆç°ç»™æŒ‡å®šçš„è¾“å‡ºå‚æ•°ã€‚
         /// </summary>
-        /// <param name="output"> ÒªĞ´³öµ½µÄ HTML ±àĞ´Æ÷ </param>
+        /// <param name="output"> è¦å†™å‡ºåˆ°çš„ HTML ç¼–å†™å™¨ </param>
         protected override void Render(HtmlTextWriter output)
         {
             //output.Write(Text);
@@ -400,19 +400,19 @@ namespace PWMIS.Web.Controls
             {
                 script += "SetCheckValues();\n";
             }
-            //if(m_MorePageSeleced)//ÔÊĞí¶àÒ³Ñ¡Ôñ
+            //if(m_MorePageSeleced)//å…è®¸å¤šé¡µé€‰æ‹©
             script += "InitLastSelected('" + m_ClientSelectedValue + "');\n";
             script += "//-->\n</script>\n";
             output.Write(script);
         }
 
         /// <summary>
-        ///     ÖØĞ´³õÊ¼»¯ÊÂ¼ş
+        ///     é‡å†™åˆå§‹åŒ–äº‹ä»¶
         /// </summary>
-        /// <param name="e">ÊÂ¼ş¶ÔÏó</param>
+        /// <param name="e">äº‹ä»¶å¯¹è±¡</param>
         protected override void OnInit(EventArgs e)
         {
-            //´Ë´¦ÉèÖÃÔËĞĞÊ±µÄĞ§¹û ÊÇ ¹Ø¼ü 
+            //æ­¤å¤„è®¾ç½®è¿è¡Œæ—¶çš„æ•ˆæœ æ˜¯ å…³é”® 
             SetCheckColumnInfo();
             SetDefaultInfo();
             base.OnInit(e);
@@ -420,7 +420,7 @@ namespace PWMIS.Web.Controls
                 ClientSelectedValue = Page.Request.Form["CID"];
             //			if(m_DefaultSet)
             //			{
-            //                //×Ô¶¨ÒåÊôĞÔ±ØĞëÔÚ¿Ø¼şÔËĞĞ³õÊ¼»¯Ê±ºòÉèÖÃÄ¬ÈÏÖµ
+            //                //è‡ªå®šä¹‰å±æ€§å¿…é¡»åœ¨æ§ä»¶è¿è¡Œåˆå§‹åŒ–æ—¶å€™è®¾ç½®é»˜è®¤å€¼
             //				if(this.CssClassRowMouseMove =="")
             //					this.CssClassRowMouseMove ="Umove";
             //				if(this.CssClassRowSelected =="")
@@ -429,30 +429,30 @@ namespace PWMIS.Web.Controls
             //					this.ScriptPath ="singleTableRow.js";
             //			}
             //			if(this.CheckAllText=="")
-            //				this.CheckAllText ="È«Ñ¡";
+            //				this.CheckAllText ="å…¨é€‰";
 
             if (ClientSelectMode)
             {
-                Text = "¶àÑ¡×´Ì¬"; //this.Columns[0].GetType().ToString ();
-                //this.Columns.RemoveAt (1);//ÔËĞĞÊ±É¾³ı¿Õ°×Ä£°åÁĞ
+                Text = "å¤šé€‰çŠ¶æ€"; //this.Columns[0].GetType().ToString ();
+                //this.Columns.RemoveAt (1);//è¿è¡Œæ—¶åˆ é™¤ç©ºç™½æ¨¡æ¿åˆ—
             }
             else
             {
-                MorePageSeleced = false; //·ÖÒ³Ñ¡Ôñ½öÔÚ¶àÑ¡Ä£Ê½ÓĞĞ§
-                Text = "µ¥Ñ¡×´Ì¬";
+                MorePageSeleced = false; //åˆ†é¡µé€‰æ‹©ä»…åœ¨å¤šé€‰æ¨¡å¼æœ‰æ•ˆ
+                Text = "å•é€‰çŠ¶æ€";
             }
 
 
-            //this.Columns.RemoveAt (1);//ÔËĞĞÊ±É¾³ı¿Õ°×Ä£°åÁĞ
+            //this.Columns.RemoveAt (1);//è¿è¡Œæ—¶åˆ é™¤ç©ºç™½æ¨¡æ¿åˆ—
         }
 
         /// <summary>
-        ///     Ô¤³ÊÏÖ´¦Àí£¬Ö÷Òª´¦Àí¶àÒ³Ñ¡Ôñ¼ÇÂ¼ÎÊÌâ
+        ///     é¢„å‘ˆç°å¤„ç†ï¼Œä¸»è¦å¤„ç†å¤šé¡µé€‰æ‹©è®°å½•é—®é¢˜
         /// </summary>
         /// <param name="e"></param>
         protected override void OnPreRender(EventArgs e)
         {
-            //´Ë´¦ÉèÖÃÉè¼ÆÊ±µÄĞ§¹û 
+            //æ­¤å¤„è®¾ç½®è®¾è®¡æ—¶çš„æ•ˆæœ 
             //SetCheckColumnInfo();
             base.OnPreRender(e);
             RegisterMyClientScript();
@@ -462,24 +462,24 @@ namespace PWMIS.Web.Controls
             if (ClientSelectMode)
             {
                 var OldSelectValueList = Page.Request.Form["SelectValueList"];
-                if (SelectValueList != string.Empty) //Èç¹û¾­¹ıÁËÊı¾İ°ó¶¨
+                if (SelectValueList != string.Empty) //å¦‚æœç»è¿‡äº†æ•°æ®ç»‘å®š
                     SelectValueList = SelectValueList.Remove(SelectValueList.Length - 1, 1);
                 else
                     SelectValueList = OldSelectValueList;
 
-                Page.ClientScript.RegisterHiddenField("SelectValueList", SelectValueList); //¼ÇÂ¼¸´Ñ¡¿òµ±Ç°µÄÖµ
+                Page.ClientScript.RegisterHiddenField("SelectValueList", SelectValueList); //è®°å½•å¤é€‰æ¡†å½“å‰çš„å€¼
 
-                var CurrentSelectedValue = Page.Request.Form["CID"]; //µ±Ç°Ñ¡ÔñµÄÖµ
-                var SHValue = Page.Request.Form["SHValue"]; //¿Í»§¶Ë·¢ÉúÑ¡ÔñÊÂ¼şµÄ±ê¼Ç
-                //¶àÒ³Ñ¡Ôñ´¦Àí
+                var CurrentSelectedValue = Page.Request.Form["CID"]; //å½“å‰é€‰æ‹©çš„å€¼
+                var SHValue = Page.Request.Form["SHValue"]; //å®¢æˆ·ç«¯å‘ç”Ÿé€‰æ‹©äº‹ä»¶çš„æ ‡è®°
+                //å¤šé¡µé€‰æ‹©å¤„ç†
                 if (MorePageSeleced)
                 {
                     var LastSelectedValues = Page.Request.Form["LastSelectedValues"];
-                    if (CurrentSelectedValue != null && SHValue == "-1") //¿Í»§¶Ë·¢ÉúÁËÑ¡ÔñÊÂ¼ş
+                    if (CurrentSelectedValue != null && SHValue == "-1") //å®¢æˆ·ç«¯å‘ç”Ÿäº†é€‰æ‹©äº‹ä»¶
                     {
                         if (LastSelectedValues != "")
                         {
-                            //Èç¹û LastSelectedValues ÖĞµÄÏî ÔÚOldSelectValueList ÖĞ´æÔÚ£¬ÔòÉ¾³ıÏà¹ØÏî¡£
+                            //å¦‚æœ LastSelectedValues ä¸­çš„é¡¹ åœ¨OldSelectValueList ä¸­å­˜åœ¨ï¼Œåˆ™åˆ é™¤ç›¸å…³é¡¹ã€‚
                             LastSelectedValues = DeleRepStringList(LastSelectedValues, OldSelectValueList);
                             if (LastSelectedValues != "")
                             {
@@ -496,7 +496,7 @@ namespace PWMIS.Web.Controls
                     {
                         if (LastSelectedValues != "" && SHValue == "-1")
                         {
-                            //Èç¹û LastSelectedValues ÖĞµÄÏî ÔÚOldSelectValueList ÖĞ´æÔÚ£¬ÔòÉ¾³ıÏà¹ØÏî¡£
+                            //å¦‚æœ LastSelectedValues ä¸­çš„é¡¹ åœ¨OldSelectValueList ä¸­å­˜åœ¨ï¼Œåˆ™åˆ é™¤ç›¸å…³é¡¹ã€‚
                             LastSelectedValues = DeleRepStringList(LastSelectedValues, OldSelectValueList);
                             if (LastSelectedValues != "")
                             {
@@ -519,11 +519,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     È¥³ı×Ö·û´®ÖĞµÄÖØ¸´Ïî
+        ///     å»é™¤å­—ç¬¦ä¸²ä¸­çš„é‡å¤é¡¹
         /// </summary>
-        /// <param name="ObjStr">Ä¿±ê×Ö·û´®ÁĞ±í£¬ĞÎÈç ¡°1,2,3¡±</param>
-        /// <param name="SourceStr">Ô´×Ö·û´®ÁĞ±í£¬ĞÎÈç ¡°1,2,3¡±</param>
-        /// <returns>·µ»ØÄ¿±ê´®</returns>
+        /// <param name="ObjStr">ç›®æ ‡å­—ç¬¦ä¸²åˆ—è¡¨ï¼Œå½¢å¦‚ â€œ1,2,3â€</param>
+        /// <param name="SourceStr">æºå­—ç¬¦ä¸²åˆ—è¡¨ï¼Œå½¢å¦‚ â€œ1,2,3â€</param>
+        /// <returns>è¿”å›ç›®æ ‡ä¸²</returns>
         private string DeleRepStringList(string ObjStr, string SourceStr)
         {
             var limit = ",";
@@ -541,9 +541,9 @@ namespace PWMIS.Web.Controls
         }
 
         //		/// <summary>
-        //		/// ÖØĞ´¼ÓÔØÊÂ¼ş
+        //		/// é‡å†™åŠ è½½äº‹ä»¶
         //		/// </summary>
-        //		/// <param name="e">ÊÂ¼ş¶ÔÏó</param>
+        //		/// <param name="e">äº‹ä»¶å¯¹è±¡</param>
         //		protected override void OnLoad(EventArgs e)
         //		{
         //			base.OnLoad (e);
@@ -552,13 +552,13 @@ namespace PWMIS.Web.Controls
         //		}
 
         /// <summary>
-        ///     ×¢²áÑ¡Ôñ½Å±¾
+        ///     æ³¨å†Œé€‰æ‹©è„šæœ¬
         /// </summary>
         private void RegisterMyClientScript()
         {
-            Page.ClientScript.RegisterHiddenField("SHValue", ""); //×¢²áµ¥Ñ¡Öµ¿Ø¼ş
+            Page.ClientScript.RegisterHiddenField("SHValue", ""); //æ³¨å†Œå•é€‰å€¼æ§ä»¶
             //string SingleScriptPath="singleTableRow.js";
-            //×¢²áÑ¡ÔñÑùÊ½½Å±¾
+            //æ³¨å†Œé€‰æ‹©æ ·å¼è„šæœ¬
             var script = "<script language=\"javascript\" src=\"" + m_ScriptPath +
                          "\" type=\"text/Jscript\"></script>\n " +
                          "<script language=\"javascript\">\n " +
@@ -571,16 +571,16 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     ÖØĞ´Êı¾İÏî°ó¶¨ÊÂ¼ş
+        ///     é‡å†™æ•°æ®é¡¹ç»‘å®šäº‹ä»¶
         /// </summary>
-        /// <param name="e">Íø¸öÏîÄ¿ÊÂ¼ş</param>
+        /// <param name="e">ç½‘ä¸ªé¡¹ç›®äº‹ä»¶</param>
         protected override void OnItemDataBound(DataGridItemEventArgs e)
         {
             base.OnItemDataBound(e);
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem ||
                 e.Item.ItemType == ListItemType.SelectedItem)
             {
-                //SelectedFieldValue ÔÚÊµÀı¿Ø¼ş°ó¶¨£¬ÀıÈç DataBinder.Eval(e.Item.DataItem, "ProductID").ToString();  
+                //SelectedFieldValue åœ¨å®ä¾‹æ§ä»¶ç»‘å®šï¼Œä¾‹å¦‚ DataBinder.Eval(e.Item.DataItem, "ProductID").ToString();  
                 var Value = (m_SelectedFieldValue == ""
                     ? (SelectedFromCellIndex >= 1 ? e.Item.Cells[SelectedFromCellIndex].Text : "")
                     : m_SelectedFieldValue);
@@ -599,8 +599,8 @@ namespace PWMIS.Web.Controls
                 //							cb.Text = GetSelectTableHTML("checkbox",text,m_SelectedFieldValue);// "<input type='checkbox' name='CID' >" +(e.Item.ItemIndex+1).ToString ();
                 //						else
                 //							cb.Text = GetSelectTableHTML("radio",text,m_SelectedFieldValue);//"<input type='radio' name='CID' >" +(e.Item.ItemIndex+1).ToString ();
-                //						//°ó¶¨ĞòºÅ
-                //						SelectValueList+=m_SelectedFieldValue+",";//¸´Ñ¡¿òÑ¡ÔñÖµÁĞ±í£¬ÔÚÃ»ÓĞÊı¾İ°ó¶¨µÄÊ±ºò±¸ÓÃ
+                //						//ç»‘å®šåºå·
+                //						SelectValueList+=m_SelectedFieldValue+",";//å¤é€‰æ¡†é€‰æ‹©å€¼åˆ—è¡¨ï¼Œåœ¨æ²¡æœ‰æ•°æ®ç»‘å®šçš„æ—¶å€™å¤‡ç”¨
                 //					
                 //					}
                 //				}
@@ -612,8 +612,8 @@ namespace PWMIS.Web.Controls
                 else
                     e.Item.Cells[0].Text = GetSelectTableHTML("radio", text, Value);
                         //"<input type='radio' name='CID' >" +(e.Item.ItemIndex+1).ToString ();
-                //°ó¶¨ĞòºÅ
-                SelectValueList += Value + ","; //¸´Ñ¡¿òÑ¡ÔñÖµÁĞ±í£¬ÔÚÃ»ÓĞÊı¾İ°ó¶¨µÄÊ±ºò±¸ÓÃ
+                //ç»‘å®šåºå·
+                SelectValueList += Value + ","; //å¤é€‰æ¡†é€‰æ‹©å€¼åˆ—è¡¨ï¼Œåœ¨æ²¡æœ‰æ•°æ®ç»‘å®šçš„æ—¶å€™å¤‡ç”¨
             }
             if (e.Item.ItemType == ListItemType.Header)
             {
@@ -635,9 +635,9 @@ namespace PWMIS.Web.Controls
         }
 
         //		/// <summary>
-        //		/// ÖØĞ´Íø¸ñÏî´´½¨ÊÂ¼ş
+        //		/// é‡å†™ç½‘æ ¼é¡¹åˆ›å»ºäº‹ä»¶
         //		/// </summary>
-        //		/// <param name="e">Íø¸ñÏîÊÂ¼ş</param>
+        //		/// <param name="e">ç½‘æ ¼é¡¹äº‹ä»¶</param>
         //		protected override void OnItemCreated(DataGridItemEventArgs e)
         //		{
         //			base.OnItemCreated (e);
@@ -673,10 +673,10 @@ namespace PWMIS.Web.Controls
     }
 
 
-    /// ColumnTemplate ´ÓITemplate¼Ì³Ğ¡£
-    /// "InstantiateIn"¶¨Òå×Ó¿Ø¼şµÄÊôÓÚË­
+    /// ColumnTemplate ä»ITemplateç»§æ‰¿ã€‚
+    /// "InstantiateIn"å®šä¹‰å­æ§ä»¶çš„å±äºè°
     /// <summary>
-    ///     ¶àÑ¡Ä£°æÁĞ
+    ///     å¤šé€‰æ¨¡ç‰ˆåˆ—
     /// </summary>
     internal class ColumnTemplate : ITemplate
     {
@@ -685,7 +685,7 @@ namespace PWMIS.Web.Controls
         private string _type = "checkbox";
 
         /// <summary>
-        ///     ÊÇ·ñÊÇ¶àÑ¡
+        ///     æ˜¯å¦æ˜¯å¤šé€‰
         /// </summary>
         public bool IsMoreSelect
         {
@@ -701,9 +701,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     ¶¨Òå×Ó¿Ø¼şµÄÊôÓÚË­
+        ///     å®šä¹‰å­æ§ä»¶çš„å±äºè°
         /// </summary>
-        /// <param name="container">ÈİÆ÷</param>
+        /// <param name="container">å®¹å™¨</param>
         public void InstantiateIn(Control container)
         {
             //			LiteralControl l1=new LiteralControl ("select");
@@ -713,7 +713,7 @@ namespace PWMIS.Web.Controls
     }
 
     /// <summary>
-    ///     È«Ñ¡Ä£°æÁĞ
+    ///     å…¨é€‰æ¨¡ç‰ˆåˆ—
     /// </summary>
     internal class ColumnTemplate2 : ITemplate
     {
@@ -721,7 +721,7 @@ namespace PWMIS.Web.Controls
         private string _text = "";
 
         /// <summary>
-        ///     ÊÇ·ñÊÇ¶àÑ¡
+        ///     æ˜¯å¦æ˜¯å¤šé€‰
         /// </summary>
         public bool IsMoreSelect
         {
@@ -730,7 +730,7 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     ¡°Ñ¡ÔñËùÓĞ¡±µÄÎÄ×Ö
+        ///     â€œé€‰æ‹©æ‰€æœ‰â€çš„æ–‡å­—
         /// </summary>
         public string CheckAllText
         {
@@ -739,9 +739,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        ///     ¶¨Òå×Ó¿Ø¼şµÄÊôÓÚË­
+        ///     å®šä¹‰å­æ§ä»¶çš„å±äºè°
         /// </summary>
-        /// <param name="container">ÈİÆ÷¶ÔÏó</param>
+        /// <param name="container">å®¹å™¨å¯¹è±¡</param>
         public void InstantiateIn(Control container)
         {
             var ls = _text;

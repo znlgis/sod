@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º                
- * ĞŞ¸ÄËµÃ÷£º
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š                
+ * ä¿®æ”¹è¯´æ˜ï¼š
  * ========================================================================
 */
 
@@ -19,27 +19,27 @@ using System;
 namespace PWMIS.Common
 {
     /// <summary>
-    ///     Êı¾İÓ³Éä¿Ø¼ş½Ó¿Ú
+    ///     æ•°æ®æ˜ å°„æ§ä»¶æ¥å£
     /// </summary>
     public interface IDataControl
     {
         /// <summary>
-        ///     ÓëÊı¾İ¿âÊı¾İÏîÏà¹ØÁªµÄÊı¾İ
+        ///     ä¸æ•°æ®åº“æ•°æ®é¡¹ç›¸å…³è”çš„æ•°æ®
         /// </summary>
         string LinkProperty { get; set; }
 
         /// <summary>
-        ///     ÓëÊı¾İ¹ØÁªµÄ±íÃû
+        ///     ä¸æ•°æ®å…³è”çš„è¡¨å
         /// </summary>
         string LinkObject { get; set; }
 
         /// <summary>
-        ///     ÊÇ·ñÍ¨¹ı·şÎñÆ÷ÑéÖ¤Ä¬ÈÏÎªtrue
+        ///     æ˜¯å¦é€šè¿‡æœåŠ¡å™¨éªŒè¯é»˜è®¤ä¸ºtrue
         /// </summary>
         bool IsValid { get; }
 
 //		/// <summary>
-//		/// Êı¾İÀàĞÍ
+//		/// æ•°æ®ç±»å‹
 //		/// </summary>
 //		DbType DataType
 //		{
@@ -48,34 +48,34 @@ namespace PWMIS.Common
 //		}
 
         /// <summary>
-        ///     Êı¾İÀàĞÍ
+        ///     æ•°æ®ç±»å‹
         /// </summary>
         TypeCode SysTypeCode { get; set; }
 
         /// <summary>
-        ///     Ö»¶Á±ê¼Ç
+        ///     åªè¯»æ ‡è®°
         /// </summary>
         bool ReadOnly { get; set; }
 
         /// <summary>
-        ///     ÊÇ·ñ¿Í»§¶ËÑéÖ¤
+        ///     æ˜¯å¦å®¢æˆ·ç«¯éªŒè¯
         /// </summary>
         /// <summary>
-        ///     ÊÇ·ñÔÊĞí¿ÕÖµ
+        ///     æ˜¯å¦å…è®¸ç©ºå€¼
         /// </summary>
         bool IsNull { get;
 //			set;
         }
 
         /// <summary>
-        ///     ÊÇ·ñÊÇÖ÷¼ü
+        ///     æ˜¯å¦æ˜¯ä¸»é”®
         /// </summary>
         bool PrimaryKey { get; set; }
 
 //		object 
 
 //		/// <summary>
-//		/// ¿Í»§¶ËÑéÖ¤½Å±¾
+//		/// å®¢æˆ·ç«¯éªŒè¯è„šæœ¬
 //		/// </summary>
 //		string ClientValidationFunctionString
 //		{
@@ -84,19 +84,19 @@ namespace PWMIS.Common
 //		}
 
         /// <summary>
-        ///     ÉèÖÃÖµ
+        ///     è®¾ç½®å€¼
         /// </summary>
         /// <param name="obj"></param>
         void SetValue(object value);
 
         /// <summary>
-        ///     »ñÈ¡Öµ
+        ///     è·å–å€¼
         /// </summary>
         /// <returns></returns>
         object GetValue();
 
         /// <summary>
-        ///     ·şÎñ¶ËÑéÖ¤
+        ///     æœåŠ¡ç«¯éªŒè¯
         /// </summary>
         /// <returns></returns>
         bool Validate();

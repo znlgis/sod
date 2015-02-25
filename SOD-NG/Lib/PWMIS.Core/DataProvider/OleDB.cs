@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º                
- * ĞŞ¸ÄËµÃ÷£º
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š                
+ * ä¿®æ”¹è¯´æ˜ï¼š
  * ========================================================================
 */
 
@@ -24,12 +24,12 @@ using PWMIS.Common;
 namespace PWMIS.DataProvider.Data
 {
     /// <summary>
-    ///     OleDbServer Êı¾İ´¦Àí
+    ///     OleDbServer æ•°æ®å¤„ç†
     /// </summary>
     public class OleDb : AdoHelper
     {
         /// <summary>
-        ///     »ñÈ¡µ±Ç°Êı¾İ¿âÀàĞÍµÄÃ¶¾Ù
+        ///     è·å–å½“å‰æ•°æ®åº“ç±»å‹çš„æšä¸¾
         /// </summary>
         public override DBMSType CurrentDBMSType
         {
@@ -52,7 +52,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///     »ñÈ¡µ±Ç°Á¬½Ó×Ö·û´®ÖĞµÄÊı¾İÔ´×Ö·û´®£¬Èç¹ûÊÇ|DataDirectory|£¬½«·µ»ØÊı¾İÔ´ÎÄ¼ş¶ÔÓ¦µÄ¾ø¶ÔÂ·¾¶¡£
+        ///     è·å–å½“å‰è¿æ¥å­—ç¬¦ä¸²ä¸­çš„æ•°æ®æºå­—ç¬¦ä¸²ï¼Œå¦‚æœæ˜¯|DataDirectory|ï¼Œå°†è¿”å›æ•°æ®æºæ–‡ä»¶å¯¹åº”çš„ç»å¯¹è·¯å¾„ã€‚
         /// </summary>
         public string ConnectionDataSource
         {
@@ -65,7 +65,7 @@ namespace PWMIS.DataProvider.Data
                     {
                         var obj = AppDomain.CurrentDomain.GetData("DataDirectory");
                         if (obj == null)
-                            throw new InvalidOperationException("µ±Ç°Ó¦ÓÃ³ÌĞòÓòÎ´ÉèÖÃ DataDirectory");
+                            throw new InvalidOperationException("å½“å‰åº”ç”¨ç¨‹åºåŸŸæœªè®¾ç½® DataDirectory");
                         var dataPath = obj.ToString();
                         var fileName = path.Substring("|DataDirectory|".Length);
                         var dbFilePath = Path.Combine(dataPath, fileName);
@@ -78,9 +78,9 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///     ´´½¨²¢ÇÒ´ò¿ªÊı¾İ¿âÁ¬½Ó
+        ///     åˆ›å»ºå¹¶ä¸”æ‰“å¼€æ•°æ®åº“è¿æ¥
         /// </summary>
-        /// <returns>Êı¾İ¿âÁ¬½Ó</returns>
+        /// <returns>æ•°æ®åº“è¿æ¥</returns>
         protected override IDbConnection GetConnection()
         {
             var conn = base.GetConnection();
@@ -93,9 +93,9 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///     »ñÈ¡Êı¾İÊÊÅäÆ÷ÊµÀı
+        ///     è·å–æ•°æ®é€‚é…å™¨å®ä¾‹
         /// </summary>
-        /// <returns>Êı¾İÊÊÅäÆ÷</returns>
+        /// <returns>æ•°æ®é€‚é…å™¨</returns>
         protected override IDbDataAdapter GetDataAdapter(IDbCommand command)
         {
             IDbDataAdapter ada = new OleDbDataAdapter((OleDbCommand) command);
@@ -103,9 +103,9 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///     »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+        ///     è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
         /// </summary>
-        /// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+        /// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
         public override IDataParameter GetParameter()
         {
             return new OleDbParameter();
@@ -117,12 +117,12 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///     »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+        ///     è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
         /// </summary>
-        /// <param name="paraName">²ÎÊıÃû</param>
-        /// <param name="dbType">²ÎÊıÊı¾İÀàĞÍ</param>
-        /// <param name="size">²ÎÊı´óĞ¡</param>
-        /// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+        /// <param name="paraName">å‚æ•°å</param>
+        /// <param name="dbType">å‚æ•°æ•°æ®ç±»å‹</param>
+        /// <param name="size">å‚æ•°å¤§å°</param>
+        /// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
         public override IDataParameter GetParameter(string paraName, DbType dbType, int size)
         {
             var para = new OleDbParameter();
@@ -133,11 +133,11 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///     ·µ»Ø´Ë OleDbConnection µÄÊı¾İÔ´µÄ¼Ü¹¹ĞÅÏ¢¡£
+        ///     è¿”å›æ­¤ OleDbConnection çš„æ•°æ®æºçš„æ¶æ„ä¿¡æ¯ã€‚
         /// </summary>
-        /// <param name="collectionName">¼¯ºÏÃû³Æ</param>
-        /// <param name="restrictionValues">ÇëÇóµÄ¼Ü¹¹µÄÒ»×éÏŞÖÆÖµ</param>
-        /// <returns>Êı¾İ¿â¼Ü¹¹ĞÅÏ¢±í</returns>
+        /// <param name="collectionName">é›†åˆåç§°</param>
+        /// <param name="restrictionValues">è¯·æ±‚çš„æ¶æ„çš„ä¸€ç»„é™åˆ¶å€¼</param>
+        /// <returns>æ•°æ®åº“æ¶æ„ä¿¡æ¯è¡¨</returns>
         public override DataTable GetSchema(string collectionName, string[] restrictionValues)
         {
             using (var conn = (OleDbConnection) GetConnection())

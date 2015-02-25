@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º                
- * ĞŞ¸ÄËµÃ÷£º
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š                
+ * ä¿®æ”¹è¯´æ˜ï¼š
  * ========================================================================
 */
 
@@ -25,7 +25,7 @@ using PWMIS.Common;
 namespace PWMIS.Web.Controls
 {
     /// <summary>
-    ///     Calendar µÄÕªÒªËµÃ÷¡£2008.7.26
+    ///     Calendar çš„æ‘˜è¦è¯´æ˜ã€‚2008.7.26
     /// </summary>
     [ToolboxBitmap(typeof (ControlIcon), "DataCalendar.bmp")]
     [ToolboxData("<{0}:DataCalendar runat=server></{0}:DataCalendar>")]
@@ -34,13 +34,13 @@ namespace PWMIS.Web.Controls
         private TextBox objDateBox;
 //		private RegularExpressionValidator REV;
 
-        #region ÖØĞ´·½·¨
+        #region é‡å†™æ–¹æ³•
 
         /// <summary>
-        ///     ½«´Ë¿Ø¼ş³ÊÏÖ¸øÖ¸¶¨µÄÊä³ö²ÎÊı¡£
+        ///     å°†æ­¤æ§ä»¶å‘ˆç°ç»™æŒ‡å®šçš„è¾“å‡ºå‚æ•°ã€‚
         /// </summary>
-        /// <param name="output"> ÒªĞ´³öµ½µÄ HTML ±àĞ´Æ÷ </param>
-        /// onclick="selectDate('txtEndDate')" alt="µ¥»÷Ñ¡ÔñÈÕÆÚ" src="in4_05.gif" align="absBottom"
+        /// <param name="output"> è¦å†™å‡ºåˆ°çš„ HTML ç¼–å†™å™¨ </param>
+        /// onclick="selectDate('txtEndDate')" alt="å•å‡»é€‰æ‹©æ—¥æœŸ" src="in4_05.gif" align="absBottom"
         protected override void Render(HtmlTextWriter writer)
         {
             EnsureChildControls();
@@ -48,14 +48,14 @@ namespace PWMIS.Web.Controls
 
             writer.AddAttribute(HtmlTextWriterAttribute.Align, "absBottom");
             writer.AddAttribute(HtmlTextWriterAttribute.Src, ScriptPath + "in4_05.gif");
-            writer.AddAttribute("alt", "µ¥»÷Ñ¡ÔñÈÕÆÚ");
+            writer.AddAttribute("alt", "å•å‡»é€‰æ‹©æ—¥æœŸ");
             writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "selectDate('" + objDateBox.ClientID + "')");
             writer.RenderBeginTag(HtmlTextWriterTag.Img);
             writer.RenderEndTag();
         }
 
         /// <summary>
-        ///     ¿Ø¼şµÄ×Ó¿Ø¼ş¼¯ºÏ
+        ///     æ§ä»¶çš„å­æ§ä»¶é›†åˆ
         /// </summary>
         public override ControlCollection Controls
         {
@@ -73,17 +73,17 @@ namespace PWMIS.Web.Controls
             objDateBox = new TextBox();
 
             objDateBox.ID = ID + "_DateBox";
-            //Ä¬ÈÏÎÄ±¾¿òÖ»¶Á£¬ÔÚ¶¯Ì¬¼ÓÔØ×Ó¿Ø¼şµÄÊ±ºò£¬ÎŞ·¨»ñµÃÑ¡ÔñµÄÖµ£¬ËùÒÔÄ¬ÈÏ¸ÄÎª·ÇÖ»¶Á
+            //é»˜è®¤æ–‡æœ¬æ¡†åªè¯»ï¼Œåœ¨åŠ¨æ€åŠ è½½å­æ§ä»¶çš„æ—¶å€™ï¼Œæ— æ³•è·å¾—é€‰æ‹©çš„å€¼ï¼Œæ‰€ä»¥é»˜è®¤æ”¹ä¸ºéåªè¯»
             //
             //objDateBox.ReadOnly=true;
             //objDateBox.Text = " ";
 
             objDateBox.EnableViewState = true;
-            //ÎÄ±¾ÊäÈëÇøÔö¼ÓÈÕÆÚ¸ñÊ½ÑéÖ¤ µËÌ«»ª 2008.2.20
+            //æ–‡æœ¬è¾“å…¥åŒºå¢åŠ æ—¥æœŸæ ¼å¼éªŒè¯ é‚“å¤ªå 2008.2.20
             objDateBox.Attributes.Add("onblur", "if(this.value!='')TestDate(this);");
             Controls.Add(objDateBox);
 //			RegularExpressionValidator REV = new RegularExpressionValidator();
-//			REV.ErrorMessage = "´íÁË£¡";
+//			REV.ErrorMessage = "é”™äº†ï¼";
 //			REV.ControlToValidate = objDateBox.ID;
 //			REV.ValidationExpression = @"^[_a-z0-9]+@([_a-z0-9]+\.)+[a-z0-9]{2,3}$";
 //			Controls.Add(REV);
@@ -102,7 +102,7 @@ namespace PWMIS.Web.Controls
  * by myj,dth
  ********************************************
 -->";
-            //ÎŞĞè×¢²á¶à¸ö½Å±¾
+            //æ— éœ€æ³¨å†Œå¤šä¸ªè„šæœ¬
             //Page.RegisterClientScriptBlock(base.ID + "_Info",info);
             Page.ClientScript.RegisterClientScriptBlock(GetType(), versionInfo + "_Info", info);
 
@@ -110,7 +110,7 @@ namespace PWMIS.Web.Controls
 <script language=""JavaScript"">
 function TestDate(obj)
 {
-	//¿Ø¼şÖ»¶Á²»½øĞĞÑéÖ¤
+	//æ§ä»¶åªè¯»ä¸è¿›è¡ŒéªŒè¯
 	if(obj.readOnly) return true;
 	var ex=/(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})-(((0[13578]|1[02])-(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)-(0[1-9]|[12][0-9]|30))|(02-(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))-02-29)/;
 	var r=ex.test(obj.value);
@@ -125,7 +125,7 @@ function TestDate(obj)
 		
 	}
 	if(!r) {
-		alert(""ÈÕÆÚ»òÕßÈÕÆÚ¸ñÊ½ÎŞĞ§£¨ÕıÈ·¸ñÊ½£ºYYYY-MM-DD£©"");
+		alert(""æ—¥æœŸæˆ–è€…æ—¥æœŸæ ¼å¼æ— æ•ˆï¼ˆæ­£ç¡®æ ¼å¼ï¼šYYYY-MM-DDï¼‰"");
 		obj.focus();
 		obj.select();
 	}
@@ -140,7 +140,7 @@ var height=265;
 var width=310;
 var top= (screen.height/2 - height/2) ;
 var left= (screen.width/2 - width/2);
-//µËÌ«»ª 2008.4.26 ¸ÄÎªÄ£Ê½´°ÌåÓ¦¶ÔÏÖÔÚµÄ±êÇ©ä¯ÀÀ·½Ê½
+//é‚“å¤ªå 2008.4.26 æ”¹ä¸ºæ¨¡å¼çª—ä½“åº”å¯¹ç°åœ¨çš„æ ‡ç­¾æµè§ˆæ–¹å¼
 var objwin=window.showModalDialog('" + ScriptPath +
                           @"calendar.htm',window,'dialogHeight='+height+'px;dialogWidth='+width+'px;status=no;toolbar=no;menubar=no;location=no;');
 //alert(objwin);
@@ -150,7 +150,7 @@ document.getElementById(objname).value=objwin;
 </script>
 ";
 
-            //ÎŞĞè×¢²á¶à¸ö½Å±¾
+            //æ— éœ€æ³¨å†Œå¤šä¸ªè„šæœ¬
             //Page.RegisterClientScriptBlock(base.ID + "_Info",selDate);
             Page.ClientScript.RegisterClientScriptBlock(GetType(), versionInfo + "_script", selDate);
         }
@@ -162,7 +162,7 @@ document.getElementById(objname).value=objwin;
         }
 
 //
-//		[Category("Data"),Description("Éè¶¨¶ÔÓ¦µÄÊı¾İ×Ö¶ÎÀàĞÍ")]
+//		[Category("Data"),Description("è®¾å®šå¯¹åº”çš„æ•°æ®å­—æ®µç±»å‹")]
 //		public System.TypeCode SysTypeCode
 //		{
 //			get
@@ -173,12 +173,12 @@ document.getElementById(objname).value=objwin;
 
         #endregion
 
-        #region IBrainControl ³ÉÔ±
+        #region IBrainControl æˆå‘˜
 
-        [Category("Data"), Description("Éè¶¨¶ÔÓ¦µÄÊı¾İÔ´£¬¸ñÊ½£ºFullClassName,AssemblyName ¡£Èç¹ûĞèÒª°ó¶¨ÊµÌåÀà£¬¿ÉÒÔÉèÖÃ¸ÃÊôĞÔ¡£")]
+        [Category("Data"), Description("è®¾å®šå¯¹åº”çš„æ•°æ®æºï¼Œæ ¼å¼ï¼šFullClassName,AssemblyName ã€‚å¦‚æœéœ€è¦ç»‘å®šå®ä½“ç±»ï¼Œå¯ä»¥è®¾ç½®è¯¥å±æ€§ã€‚")]
         public string DataProvider { get; set; }
 
-        [Description("ÊÇ·ñÖ»ÔÊĞíÊı¾İÎª¿Õ"),
+        [Description("æ˜¯å¦åªå…è®¸æ•°æ®ä¸ºç©º"),
          Category("Behavior"),
          DefaultValue(true)
         ]
@@ -186,18 +186,18 @@ document.getElementById(objname).value=objwin;
         {
             get
             {
-                // TODO:  Ìí¼Ó Calendar.isNull getter ÊµÏÖ
+                // TODO:  æ·»åŠ  Calendar.isNull getter å®ç°
                 return true;
             }
             set
             {
-                // TODO:  Ìí¼Ó Calendar.isNull setter ÊµÏÖ
+                // TODO:  æ·»åŠ  Calendar.isNull setter å®ç°
             }
         }
 
-        #region Êı¾İÊôĞÔ
+        #region æ•°æ®å±æ€§
 
-        [Category("Data"), Description("Éè¶¨¶ÔÓ¦µÄÊı¾İ¿â×Ö¶ÎÊÇ·ñÊÇÖ÷¼ü£¬ÓÃÓÚ×Ô¶¯Êı¾İ²éÑ¯ºÍ¸üĞÂµÄÒÀ¾İ")]
+        [Category("Data"), Description("è®¾å®šå¯¹åº”çš„æ•°æ®åº“å­—æ®µæ˜¯å¦æ˜¯ä¸»é”®ï¼Œç”¨äºè‡ªåŠ¨æ•°æ®æŸ¥è¯¢å’Œæ›´æ–°çš„ä¾æ®")]
         public bool PrimaryKey
         {
             get
@@ -210,14 +210,14 @@ document.getElementById(objname).value=objwin;
         }
 
         /// <summary>
-        ///     Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İÃû
+        ///     è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®å
         /// </summary>
-        [Category("Data"), Description("Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İÃû")]
+        [Category("Data"), Description("è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®å")]
         public string LinkProperty
         {
             get
             {
-                // TODO:  Ìí¼Ó BrainTextBox.LinkProperty getter ÊµÏÖ
+                // TODO:  æ·»åŠ  BrainTextBox.LinkProperty getter å®ç°
                 if (ViewState["LinkProperty"] != null)
                     return (string) ViewState["LinkProperty"];
                 return "";
@@ -225,14 +225,14 @@ document.getElementById(objname).value=objwin;
             set
             {
                 ViewState["LinkProperty"] = value;
-                // TODO:  Ìí¼Ó BrainTextBox.LinkProperty setter ÊµÏÖ
+                // TODO:  æ·»åŠ  BrainTextBox.LinkProperty setter å®ç°
             }
         }
 
         /// <summary>
-        ///     Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İ±íÃû
+        ///     è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®è¡¨å
         /// </summary>
-        [Category("Data"), Description("Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İ±íÃû")]
+        [Category("Data"), Description("è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®è¡¨å")]
         public string LinkObject
         {
             get
@@ -246,7 +246,7 @@ document.getElementById(objname).value=objwin;
 
         #endregion
 
-        [Description("ÊÇ·ñÖ»ÔÊĞíÔÚ¿Í»§¶ËÑ¡ÔñÈÕÆÚÖµ"), Bindable(true),
+        [Description("æ˜¯å¦åªå…è®¸åœ¨å®¢æˆ·ç«¯é€‰æ‹©æ—¥æœŸå€¼"), Bindable(true),
          Category("Behavior"),
          DefaultValue(true)
         ]
@@ -254,7 +254,7 @@ document.getElementById(objname).value=objwin;
         {
             get
             {
-                // TODO:  Ìí¼Ó Calendar.ReadOnly getter ÊµÏÖ
+                // TODO:  æ·»åŠ  Calendar.ReadOnly getter å®ç°
                 EnsureChildControls();
                 return objDateBox.ReadOnly;
             }
@@ -266,17 +266,17 @@ document.getElementById(objname).value=objwin;
         }
 
         /// <summary>
-        ///     ·şÎñ¶ËÑéÖ¤·½·¨
+        ///     æœåŠ¡ç«¯éªŒè¯æ–¹æ³•
         /// </summary>
         /// <returns></returns>
         public bool Validate()
         {
-            // TODO:  Ìí¼Ó Calendar.Validate ÊµÏÖ
+            // TODO:  æ·»åŠ  Calendar.Validate å®ç°
             return true;
         }
 
         /// <summary>
-        ///     »ñÈ¡Öµ
+        ///     è·å–å€¼
         /// </summary>
         /// <returns></returns>
         public object GetValue()
@@ -299,7 +299,7 @@ document.getElementById(objname).value=objwin;
         {
             if (obj != DBNull.Value)
             {
-                //µËÌ«»ª 2006.7.26 ĞŞ¸Ä	ÈÕÆÚ¸ñÊ½×ª»»
+                //é‚“å¤ªå 2006.7.26 ä¿®æ”¹	æ—¥æœŸæ ¼å¼è½¬æ¢
                 try
                 {
                     if (DataFormatString != "")
@@ -322,12 +322,12 @@ document.getElementById(objname).value=objwin;
         {
             get
             {
-                // TODO:  Ìí¼Ó Calendar.ClientValidationFunctionString getter ÊµÏÖ
+                // TODO:  æ·»åŠ  Calendar.ClientValidationFunctionString getter å®ç°
                 return null;
             }
             set
             {
-                // TODO:  Ìí¼Ó Calendar.ClientValidationFunctionString setter ÊµÏÖ
+                // TODO:  æ·»åŠ  Calendar.ClientValidationFunctionString setter å®ç°
             }
         }
 
@@ -335,12 +335,12 @@ document.getElementById(objname).value=objwin;
         {
             get
             {
-                // TODO:  Ìí¼Ó Calendar.isClientValidation getter ÊµÏÖ
+                // TODO:  æ·»åŠ  Calendar.isClientValidation getter å®ç°
                 return false;
             }
             set
             {
-                // TODO:  Ìí¼Ó Calendar.isClientValidation setter ÊµÏÖ
+                // TODO:  æ·»åŠ  Calendar.isClientValidation setter å®ç°
             }
         }
 
@@ -348,7 +348,7 @@ document.getElementById(objname).value=objwin;
         {
             get
             {
-                // TODO:  Ìí¼Ó Calendar.IsValid getter ÊµÏÖ
+                // TODO:  æ·»åŠ  Calendar.IsValid getter å®ç°
                 return true;
             }
         }
@@ -357,23 +357,23 @@ document.getElementById(objname).value=objwin;
         {
             get
             {
-                // TODO:  Ìí¼Ó Calendar.Weltop.ServerControls.IBrainControl.SysTypeCode getter ÊµÏÖ
+                // TODO:  æ·»åŠ  Calendar.Weltop.ServerControls.IBrainControl.SysTypeCode getter å®ç°
                 return TypeCode.DateTime;
             }
             set
             {
-                // TODO:  Ìí¼Ó Calendar.Weltop.ServerControls.IBrainControl.SysTypeCode setter ÊµÏÖ
+                // TODO:  æ·»åŠ  Calendar.Weltop.ServerControls.IBrainControl.SysTypeCode setter å®ç°
             }
         }
 
         #endregion
 
-        #region ¹«¹²ÊôĞÔ
+        #region å…¬å…±å±æ€§
 
         /// <summary>
-        ///     Êı¾İ³ÊÏÖ¸ñÊ½
+        ///     æ•°æ®å‘ˆç°æ ¼å¼
         /// </summary>
-        [Category("Íâ¹Û"), Description("ÈÕÆÚÎÄ±¾Êı¾İ³ÊÏÖ¸ñÊ½"), DefaultValue("{0:yyyy-MM-dd}")]
+        [Category("å¤–è§‚"), Description("æ—¥æœŸæ–‡æœ¬æ•°æ®å‘ˆç°æ ¼å¼"), DefaultValue("{0:yyyy-MM-dd}")]
         public string DataFormatString
         {
             get
@@ -431,7 +431,7 @@ document.getElementById(objname).value=objwin;
 
         #endregion
 
-        #region IQueryControl ³ÉÔ±
+        #region IQueryControl æˆå‘˜
 
         public string CompareSymbol
         {

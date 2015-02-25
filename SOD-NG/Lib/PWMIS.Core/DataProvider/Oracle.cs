@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2012-11-6                
- * ĞŞ¸ÄËµÃ÷£º²¹³äOracle²ÎÊıÃûÇ°×º
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2012-11-6                
+ * ä¿®æ”¹è¯´æ˜ï¼šè¡¥å……Oracleå‚æ•°åå‰ç¼€
  * ========================================================================
 */
 
@@ -22,12 +22,12 @@ using PWMIS.Common;
 namespace PWMIS.DataProvider.Data
 {
     /// <summary>
-    ///     OracleServer Êı¾İ´¦Àí
+    ///     OracleServer æ•°æ®å¤„ç†
     /// </summary>
     public sealed class Oracle : AdoHelper
     {
         /// <summary>
-        ///     »ñÈ¡µ±Ç°Êı¾İ¿âÀàĞÍµÄÃ¶¾Ù
+        ///     è·å–å½“å‰æ•°æ®åº“ç±»å‹çš„æšä¸¾
         /// </summary>
         public override DBMSType CurrentDBMSType
         {
@@ -45,8 +45,8 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///     »ñÈ¡OracleÊı¾İ¿â²ÎÊıÇ°×º×Ê·Ñ
-        ///     <remarks>ÓÉÍøÓÑÂ·ÈË¼×.aspx ²¹³ä</remarks>
+        ///     è·å–Oracleæ•°æ®åº“å‚æ•°å‰ç¼€èµ„è´¹
+        ///     <remarks>ç”±ç½‘å‹è·¯äººç”².aspx è¡¥å……</remarks>
         /// </summary>
         public override string GetParameterChar
         {
@@ -54,9 +54,9 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///     ´´½¨²¢ÇÒ´ò¿ªÊı¾İ¿âÁ¬½Ó
+        ///     åˆ›å»ºå¹¶ä¸”æ‰“å¼€æ•°æ®åº“è¿æ¥
         /// </summary>
-        /// <returns>Êı¾İ¿âÁ¬½Ó</returns>
+        /// <returns>æ•°æ®åº“è¿æ¥</returns>
         protected override IDbConnection GetConnection()
         {
             var conn = base.GetConnection();
@@ -69,9 +69,9 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///     »ñÈ¡Êı¾İÊÊÅäÆ÷ÊµÀı
+        ///     è·å–æ•°æ®é€‚é…å™¨å®ä¾‹
         /// </summary>
-        /// <returns>Êı¾İÊÊÅäÆ÷</returns>
+        /// <returns>æ•°æ®é€‚é…å™¨</returns>
         protected override IDbDataAdapter GetDataAdapter(IDbCommand command)
         {
             IDbDataAdapter ada = new OracleDataAdapter((OracleCommand) command);
@@ -79,21 +79,21 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///     »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+        ///     è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
         /// </summary>
-        /// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+        /// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
         public override IDataParameter GetParameter()
         {
             return new OracleParameter();
         }
 
         /// <summary>
-        ///     »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+        ///     è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
         /// </summary>
-        /// <param name="paraName">²ÎÊıÃû</param>
-        /// <param name="dbType">²ÎÊıÊı¾İÀàĞÍ</param>
-        /// <param name="size">²ÎÊı´óĞ¡</param>
-        /// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+        /// <param name="paraName">å‚æ•°å</param>
+        /// <param name="dbType">å‚æ•°æ•°æ®ç±»å‹</param>
+        /// <param name="size">å‚æ•°å¤§å°</param>
+        /// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
         public override IDataParameter GetParameter(string paraName, DbType dbType, int size)
         {
             var para = new OracleParameter();
@@ -109,11 +109,11 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///     ·µ»Ø´Ë OracleConnection µÄÊı¾İÔ´µÄ¼Ü¹¹ĞÅÏ¢¡£
+        ///     è¿”å›æ­¤ OracleConnection çš„æ•°æ®æºçš„æ¶æ„ä¿¡æ¯ã€‚
         /// </summary>
-        /// <param name="collectionName">¼¯ºÏÃû³Æ</param>
-        /// <param name="restrictionValues">ÇëÇóµÄ¼Ü¹¹µÄÒ»×éÏŞÖÆÖµ</param>
-        /// <returns>Êı¾İ¿â¼Ü¹¹ĞÅÏ¢±í</returns>
+        /// <param name="collectionName">é›†åˆåç§°</param>
+        /// <param name="restrictionValues">è¯·æ±‚çš„æ¶æ„çš„ä¸€ç»„é™åˆ¶å€¼</param>
+        /// <returns>æ•°æ®åº“æ¶æ„ä¿¡æ¯è¡¨</returns>
         public override DataTable GetSchema(string collectionName, string[] restrictionValues)
         {
             using (var conn = (OracleConnection) GetConnection())
@@ -128,7 +128,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        ///     Ô¤´¦ÀíSQLÓï¾ä£¬Óï¾äÖĞ²»ÄÜ°üº¬"["£¬"]"×óÓÒÖĞÀ¨ºÅ£¬Èç¹ûĞèÒª£¬ÇëÊ¹ÓÃ²ÎÊı»¯²éÑ¯¡£
+        ///     é¢„å¤„ç†SQLè¯­å¥ï¼Œè¯­å¥ä¸­ä¸èƒ½åŒ…å«"["ï¼Œ"]"å·¦å³ä¸­æ‹¬å·ï¼Œå¦‚æœéœ€è¦ï¼Œè¯·ä½¿ç”¨å‚æ•°åŒ–æŸ¥è¯¢ã€‚
         /// </summary>
         /// <param name="SQL"></param>
         /// <returns></returns>

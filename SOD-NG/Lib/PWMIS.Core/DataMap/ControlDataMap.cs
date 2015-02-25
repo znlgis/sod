@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º                
- * ĞŞ¸ÄËµÃ÷£º
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š                
+ * ä¿®æ”¹è¯´æ˜ï¼š
  * ========================================================================
 */
 
@@ -28,15 +28,15 @@ using PWMIS.DataMap.Entity;
 namespace PWMIS.DataMap
 {
     /// <summary>
-    ///     BrainControl µÄÕªÒªËµÃ÷¡£
+    ///     BrainControl çš„æ‘˜è¦è¯´æ˜ã€‚
     /// </summary>
     public class ControlDataMap
     {
         /// <summary>
-        ///     ÊÕ¼¯¿Ø¼şµÄ²éÑ¯×Ö·û´®£¬ÀıÈçÒÑ¾­Îª¿Ø¼şÖ¸¶¨ÁË²éÑ¯Ìõ¼ş±È½Ï·ûºÅ¡£
+        ///     æ”¶é›†æ§ä»¶çš„æŸ¥è¯¢å­—ç¬¦ä¸²ï¼Œä¾‹å¦‚å·²ç»ä¸ºæ§ä»¶æŒ‡å®šäº†æŸ¥è¯¢æ¡ä»¶æ¯”è¾ƒç¬¦å·ã€‚
         /// </summary>
-        /// <param name="conlObject">ÈİÆ÷¶ÔÏó</param>
-        /// <returns>²éÑ¯×Ö·û´®</returns>
+        /// <param name="conlObject">å®¹å™¨å¯¹è±¡</param>
+        /// <returns>æŸ¥è¯¢å­—ç¬¦ä¸²</returns>
         public static string CollectQueryString(ICollection Controls)
         {
             var conditin = string.Empty;
@@ -47,13 +47,13 @@ namespace PWMIS.DataMap
                     //((IDataControl)control).SetValue("");
                     var ibC = (IDataControl) control;
                     var Value = ibC.GetValue();
-                    //Èç¹û¿Ø¼şÖµÎª¿Õ,ÄÇÃ´Ìø¹ı.
+                    //å¦‚æœæ§ä»¶å€¼ä¸ºç©º,é‚£ä¹ˆè·³è¿‡.
                     if (Value == null || Value.ToString() == "")
                         continue;
 
                     var compareSymbol = ((IQueryControl) ibC).CompareSymbol;
                     var queryFormatString = ((IQueryControl) ibC).QueryFormatString;
-                    //Ä¬ÈÏµÄ±È½Ï·ûºÅÎª µÈÓÚ "="
+                    //é»˜è®¤çš„æ¯”è¾ƒç¬¦å·ä¸º ç­‰äº "="
                     if (compareSymbol == "") compareSymbol = "=";
                     conditin += " And " + ibC.LinkObject + "." + ibC.LinkProperty + " " + compareSymbol + " ";
 
@@ -90,7 +90,7 @@ namespace PWMIS.DataMap
                     //    else
                     //        conditin += Value.ToString();
                     //}
-                    //    //ÎÄ±¾¿òµÄÌØÊâ´¦Àí
+                    //    //æ–‡æœ¬æ¡†çš„ç‰¹æ®Šå¤„ç†
                     //    if (ibC is CBrainTextBox)
                     //    {
 
@@ -112,7 +112,7 @@ namespace PWMIS.DataMap
                     //    }
                     //    else if (ibC is WelTop.ControlLibrary.Controls.Calendar)
                     //    {
-                    //        //´¦ÀíÈÕÀú¿Ø¼ş
+                    //        //å¤„ç†æ—¥å†æ§ä»¶
                     //        WelTop.ControlLibrary.Controls.Calendar tb = control as WelTop.ControlLibrary.Controls.Calendar;
                     //        if (tb.QueryFormatString != "")
                     //        {
@@ -143,16 +143,16 @@ namespace PWMIS.DataMap
             return conditin;
         }
 
-        #region Êı¾İÌî³ä
+        #region æ•°æ®å¡«å……
 
         /// <summary>
-        ///     ½«DataTable Ìî³äµ½Êı¾İ¿Ø¼şÖĞ
+        ///     å°†DataTable å¡«å……åˆ°æ•°æ®æ§ä»¶ä¸­
         /// </summary>
-        /// <param name="dtTmp">Êı¾İ±í</param>
-        /// <param name="controls">Êı¾İ¿Ø¼ş</param>
+        /// <param name="dtTmp">æ•°æ®è¡¨</param>
+        /// <param name="controls">æ•°æ®æ§ä»¶</param>
         public void FillData(DataTable dtTmp, ICollection controls)
         {
-            //´¦ÀíDataTable
+            //å¤„ç†DataTable
             foreach (var control in controls)
             {
                 if (control is IDataControl)
@@ -168,13 +168,13 @@ namespace PWMIS.DataMap
         }
 
         /// <summary>
-        ///     ½«Êı¾İ¼¯ Ìî³äµ½Êı¾İ¿Ø¼şÖĞ
+        ///     å°†æ•°æ®é›† å¡«å……åˆ°æ•°æ®æ§ä»¶ä¸­
         /// </summary>
-        /// <param name="objData">Êı¾İ¼¯</param>
-        /// <param name="controls">Êı¾İ¿Ø¼ş</param>
+        /// <param name="objData">æ•°æ®é›†</param>
+        /// <param name="controls">æ•°æ®æ§ä»¶</param>
         public void FillData(DataSet objData, ICollection controls)
         {
-            //2¡¢Èç¹û´«ÈëµÄÊÇDataSet
+            //2ã€å¦‚æœä¼ å…¥çš„æ˜¯DataSet
 
             foreach (DataTable dtTmp in objData.Tables)
             {
@@ -183,16 +183,16 @@ namespace PWMIS.DataMap
         }
 
         /// <summary>
-        ///     ½«¶ÔÏóÊı¾İÌî³äµ½Êı¾İ¿Ø¼şÉÏ£¬ÒªÇófalg=true,·ñÔòÇëÊ¹ÓÃÁíÍâµÄ2¸öÖØÔØ
+        ///     å°†å¯¹è±¡æ•°æ®å¡«å……åˆ°æ•°æ®æ§ä»¶ä¸Šï¼Œè¦æ±‚falg=true,å¦åˆ™è¯·ä½¿ç”¨å¦å¤–çš„2ä¸ªé‡è½½
         /// </summary>
-        /// <param name="objData">Êı¾İ¶ÔÏó£¬¿ÉÒÔÊÇÊµÌåÀà</param>
-        /// <param name="controls">Êı¾İ¿Ø¼ş</param>
-        /// <param name="flag">±ê¼Ç</param>
+        /// <param name="objData">æ•°æ®å¯¹è±¡ï¼Œå¯ä»¥æ˜¯å®ä½“ç±»</param>
+        /// <param name="controls">æ•°æ®æ§ä»¶</param>
+        /// <param name="flag">æ ‡è®°</param>
         public void FillData(object objData, ICollection controls, bool flag)
         {
             if (!flag)
                 return;
-            //´¦ÀíÊµÌå¶ÔÏó
+            //å¤„ç†å®ä½“å¯¹è±¡
             var type = objData.GetType();
             var entity = objData as EntityBase;
 
@@ -215,7 +215,7 @@ namespace PWMIS.DataMap
                                 continue;
                             }
                         }
-                        //²»ÊÇPDF.NETÊµÌåÀàµÄÊµÌåÊôĞÔ£¬²ÉÓÃ·´Éä»ñµÃÖµ
+                        //ä¸æ˜¯PDF.NETå®ä½“ç±»çš„å®ä½“å±æ€§ï¼Œé‡‡ç”¨åå°„è·å¾—å€¼
                         var DataObj = type.InvokeMember(brainControl.LinkProperty, BindingFlags.GetProperty, null,
                             objData, null);
                         if (DataObj == null && (brainControl.SysTypeCode == TypeCode.DateTime))
@@ -230,10 +230,10 @@ namespace PWMIS.DataMap
         }
 
         /// <summary>
-        ///     Ìî³äÊı¾İ£¬¸ù¾İÊı¾İÔ´µÄÀàĞÍ×Ô¶¯¾ö¶¨Ê¹ÓÃºÎÖÖ·½Ê½
+        ///     å¡«å……æ•°æ®ï¼Œæ ¹æ®æ•°æ®æºçš„ç±»å‹è‡ªåŠ¨å†³å®šä½¿ç”¨ä½•ç§æ–¹å¼
         /// </summary>
-        /// <param name="objData">ÒªÌî³äÌá¹©µÄÊı¾İ</param>
-        /// <param name="controls">±»Ìî³äµÄÊı¾İ¿Ø¼ş</param>
+        /// <param name="objData">è¦å¡«å……æä¾›çš„æ•°æ®</param>
+        /// <param name="controls">è¢«å¡«å……çš„æ•°æ®æ§ä»¶</param>
         public void FillData(object objData, ICollection controls)
         {
             if (objData is DataTable)
@@ -246,7 +246,7 @@ namespace PWMIS.DataMap
 
         #endregion
 
-        #region Êı¾İÊÕ¼¯
+        #region æ•°æ®æ”¶é›†
 
         public void CollectData(DataTable objData, ICollection controls)
         {
@@ -264,7 +264,7 @@ namespace PWMIS.DataMap
             }
             else
             {
-                //Ä¿Ç°Ö»´¦Àí±íÖĞÖ»ÓĞÒ»Ìõ¼ÇÂ¼µÄÇé¿ö
+                //ç›®å‰åªå¤„ç†è¡¨ä¸­åªæœ‰ä¸€æ¡è®°å½•çš„æƒ…å†µ
                 var dr = dtTmp.Rows[0];
                 dr = GetDateTable(dtTmp.TableName, dr, controls);
             }
@@ -272,7 +272,7 @@ namespace PWMIS.DataMap
 
         public void CollectData(DataSet objData, ICollection controls)
         {
-            //2¡¢Èç¹û´«ÈëµÄÊÇDataSet
+            //2ã€å¦‚æœä¼ å…¥çš„æ˜¯DataSet
 
             foreach (DataTable dtTmp in objData.Tables)
             {
@@ -282,10 +282,10 @@ namespace PWMIS.DataMap
 
         public void CollectData(object objData, ICollection controls, bool isEntityClass)
         {
-            //²»ÔÙĞèÒªÅĞ¶Ï
+            //ä¸å†éœ€è¦åˆ¤æ–­
             //if (!isEntityClass)
             //    return;
-            //´¦ÀíÊµÌå¶ÔÏó
+            //å¤„ç†å®ä½“å¯¹è±¡
             if (objData is EntityBase)
             {
                 var entity = objData as EntityBase;
@@ -294,17 +294,17 @@ namespace PWMIS.DataMap
                 {
                     if (control is IDataControl)
                     {
-                        //Çé¿öµ¥¶À´¦Àí
+                        //æƒ…å†µå•ç‹¬å¤„ç†
                         var brainControl = control as IDataControl;
                         if (brainControl.IsValid)
                         {
                             if (string.IsNullOrEmpty(brainControl.LinkProperty))
                                 continue;
                             if (brainControl.LinkObject == typeName || brainControl.LinkObject == entity.TableName)
-                                //ÊµÌåÀàµÄÀàĞÍÃû³ÆÓ³Éä·½Ê½»òÕß±í·½Ê½
+                                //å®ä½“ç±»çš„ç±»å‹åç§°æ˜ å°„æ–¹å¼æˆ–è€…è¡¨æ–¹å¼
                             {
                                 var oValue = brainControl.GetValue();
-                                //²»ÌîĞ´·ÇÎÄ±¾ÄÚÈİ£¬²»¸üĞÂ£¿
+                                //ä¸å¡«å†™éæ–‡æœ¬å†…å®¹ï¼Œä¸æ›´æ–°ï¼Ÿ
                                 //if (oValue == DBNull.Value)
                                 //{
                                 //    entity[brainControl.LinkProperty] = oValue;
@@ -315,20 +315,20 @@ namespace PWMIS.DataMap
                                     (oValue == null || oValue.ToString() == ""))
                                     continue;
 
-                                //EditFlag µËÌ«»ª 2006.9.17 ´¦Àí System.DBNull.Value Çé¿ö
+                                //EditFlag é‚“å¤ªå 2006.9.17 å¤„ç† System.DBNull.Value æƒ…å†µ
                                 if (oValue != DBNull.Value)
                                 {
-                                    //Ö§³ÖÊµÌåÀàµÄÊôĞÔ·ÃÎÊ£¬Êı¾İ¿Ø¼şÉÏĞ´ÊôĞÔÃû edit @ 2014.3.12
+                                    //æ”¯æŒå®ä½“ç±»çš„å±æ€§è®¿é—®ï¼Œæ•°æ®æ§ä»¶ä¸Šå†™å±æ€§å edit @ 2014.3.12
                                     try
                                     {
-                                        if (brainControl.LinkObject == typeName) //ÊôĞÔÓ³Éä·¿ËÄº£
+                                        if (brainControl.LinkObject == typeName) //å±æ€§æ˜ å°„æˆ¿å››æµ·
                                             entity[brainControl.LinkProperty] = oValue;
-                                        else // ±íÓ³Éä·½Ê½
+                                        else // è¡¨æ˜ å°„æ–¹å¼
                                             entity.setProperty(brainControl.LinkProperty, oValue);
                                     }
                                     catch (ArgumentException ex)
                                     {
-                                        //´¦Àí·ÇPDF.NETµÄÊµÌåÀàÊôĞÔ£¬·´ÉäĞ´ÈëÖµ
+                                        //å¤„ç†éPDF.NETçš„å®ä½“ç±»å±æ€§ï¼Œåå°„å†™å…¥å€¼
                                         var linkProp = brainControl.LinkProperty;
                                         var flag = false;
                                         foreach (
@@ -345,7 +345,7 @@ namespace PWMIS.DataMap
                                             }
                                         }
                                         if (!flag)
-                                            throw new ArgumentOutOfRangeException("ÒÑ¾­½øĞĞÒì³£´¦Àí£¬µ«ÊÇÊôĞÔÎ´ÕÒµ½»òÕß²»¿ÉĞ´£¬Ô­Ê¼´íÎóĞÅÏ¢£º" +
+                                            throw new ArgumentOutOfRangeException("å·²ç»è¿›è¡Œå¼‚å¸¸å¤„ç†ï¼Œä½†æ˜¯å±æ€§æœªæ‰¾åˆ°æˆ–è€…ä¸å¯å†™ï¼ŒåŸå§‹é”™è¯¯ä¿¡æ¯ï¼š" +
                                                                                   ex.Message);
                                     }
                                 }
@@ -353,7 +353,7 @@ namespace PWMIS.DataMap
                         }
                         else
                         {
-                            throw new Exception("°ó¶¨µ½ÊôĞÔ×Ö¶Î[" + brainControl.LinkProperty + "]Ç°Î´Í¨¹ı·şÎñÆ÷ÑéÖ¤£¡");
+                            throw new Exception("ç»‘å®šåˆ°å±æ€§å­—æ®µ[" + brainControl.LinkProperty + "]å‰æœªé€šè¿‡æœåŠ¡å™¨éªŒè¯ï¼");
                         }
                     }
                 }
@@ -368,7 +368,7 @@ namespace PWMIS.DataMap
                 {
                     if (control is IDataControl)
                     {
-                        //Çé¿öµ¥¶À´¦Àí
+                        //æƒ…å†µå•ç‹¬å¤„ç†
                         var brainControl = control as IDataControl;
                         if (brainControl.IsValid)
                         {
@@ -381,7 +381,7 @@ namespace PWMIS.DataMap
                                     (oValue == null || oValue.ToString() == ""))
                                     continue;
 
-                                //EditFlag µËÌ«»ª 2006.9.17 ´¦Àí System.DBNull.Value Çé¿ö
+                                //EditFlag é‚“å¤ªå 2006.9.17 å¤„ç† System.DBNull.Value æƒ…å†µ
                                 if (oValue == DBNull.Value)
                                 {
                                     type.InvokeMember(brainControl.LinkProperty, BindingFlags.SetProperty,
@@ -389,7 +389,7 @@ namespace PWMIS.DataMap
                                     continue;
                                 }
                                 if (brainControl.SysTypeCode == TypeCode.Empty)
-                                    throw new Exception("ÊÕ¼¯Êı¾İ¿Ø¼şµÄÊı¾İÊ§°Ü£¬SysTypeCode ÊôĞÔ²»ÄÜÎªEmpty £¡");
+                                    throw new Exception("æ”¶é›†æ•°æ®æ§ä»¶çš„æ•°æ®å¤±è´¥ï¼ŒSysTypeCode å±æ€§ä¸èƒ½ä¸ºEmpty ï¼");
                                 type.InvokeMember(brainControl.LinkProperty, BindingFlags.SetProperty,
                                     Type.DefaultBinder, objData,
                                     new[] {Convert.ChangeType(oValue, brainControl.SysTypeCode)});
@@ -397,7 +397,7 @@ namespace PWMIS.DataMap
                         }
                         else
                         {
-                            throw new Exception("°ó¶¨µ½ÊôĞÔ×Ö¶Î[" + brainControl.LinkProperty + "]Ç°Î´Í¨¹ı·şÎñÆ÷ÑéÖ¤£¡");
+                            throw new Exception("ç»‘å®šåˆ°å±æ€§å­—æ®µ[" + brainControl.LinkProperty + "]å‰æœªé€šè¿‡æœåŠ¡å™¨éªŒè¯ï¼");
                         }
                     }
                 }
@@ -405,11 +405,11 @@ namespace PWMIS.DataMap
         }
 
         /// <summary>
-        ///     ´ÓÖÇÄÜÊı¾İ¿Ø¼şÖĞÊÕ¼¯Êı¾İµ½Ò»¸öĞÂµÄ¶ÔÏóÖĞ£¨ÈçÊµÌå¶ÔÏó£©
+        ///     ä»æ™ºèƒ½æ•°æ®æ§ä»¶ä¸­æ”¶é›†æ•°æ®åˆ°ä¸€ä¸ªæ–°çš„å¯¹è±¡ä¸­ï¼ˆå¦‚å®ä½“å¯¹è±¡ï¼‰
         /// </summary>
-        /// <typeparam name="T">·µ»ØµÄ¶ÔÏóÀàĞÍ</typeparam>
-        /// <param name="controls">¿Ø¼şÁĞ±í</param>
-        /// <returns>Ò»¸öĞÂµÄ¶ÔÏó</returns>
+        /// <typeparam name="T">è¿”å›çš„å¯¹è±¡ç±»å‹</typeparam>
+        /// <param name="controls">æ§ä»¶åˆ—è¡¨</param>
+        /// <returns>ä¸€ä¸ªæ–°çš„å¯¹è±¡</returns>
         public T CollectDataToObject<T>(List<IDataControl> controls) where T : class, new()
         {
             var type = typeof (T);
@@ -427,7 +427,7 @@ namespace PWMIS.DataMap
                         if (brainControl.SysTypeCode != TypeCode.String && (oValue == null || oValue.ToString() == ""))
                             continue;
 
-                        //EditFlag µËÌ«»ª 2006.9.17 ´¦Àí System.DBNull.Value Çé¿ö
+                        //EditFlag é‚“å¤ªå 2006.9.17 å¤„ç† System.DBNull.Value æƒ…å†µ
                         if (oValue == DBNull.Value)
                         {
                             type.InvokeMember(brainControl.LinkProperty, BindingFlags.SetProperty, Type.DefaultBinder,
@@ -441,7 +441,7 @@ namespace PWMIS.DataMap
                 }
                 else
                 {
-                    throw new Exception("°ó¶¨µ½ÊôĞÔ×Ö¶Î[" + brainControl.LinkProperty + "]Ç°Î´Í¨¹ı·şÎñÆ÷ÑéÖ¤£¡");
+                    throw new Exception("ç»‘å®šåˆ°å±æ€§å­—æ®µ[" + brainControl.LinkProperty + "]å‰æœªé€šè¿‡æœåŠ¡å™¨éªŒè¯ï¼");
                 }
             }
             return objData;
@@ -462,7 +462,7 @@ namespace PWMIS.DataMap
                         }
                         else
                         {
-                            throw new Exception("Êı¾İÀàĞÍ´íÎó£º" + brainControl.LinkProperty);
+                            throw new Exception("æ•°æ®ç±»å‹é”™è¯¯ï¼š" + brainControl.LinkProperty);
                         }
                     }
                 }
