@@ -1,12 +1,12 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * Ê¹ÓÃÏÂÃæµÄ·½·¨´´½¨Êı¾İ·ÃÎÊÊµÀı,¿ÉÒÔÔÚApp.configÖĞ×÷ÈçÏÂÅäÖÃ£º
+ * ä½¿ç”¨ä¸‹é¢çš„æ–¹æ³•åˆ›å»ºæ•°æ®è®¿é—®å®ä¾‹,å¯ä»¥åœ¨App.configä¸­ä½œå¦‚ä¸‹é…ç½®ï¼š
  <add key="SqlServerConnectionString" value="Data Source=localhost;Initial catalog=DAABAF;user id=daab;password=daab" />
        <add key="SqlServerHelperAssembly" value="CommonDataProvider.Data"></add>
        <add key="SqlServerHelperType" value="CommonDataProvider.Data.SqlServer"></add>
@@ -24,52 +24,52 @@
        <add key="SQLiteHelperAssembly" value="CommonDataProvider.Data"></add>
        <add key="SQLiteHelperType" value="CommonDataProvider.Data.SQLite"></add>
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV4.5.12.1101
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV4.5.12.1101
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2010-3-24                
- * ĞŞ¸ÄËµÃ÷£ºÔÚ²ÎÊıÉèÖÃµÄÊ±ºò£¬Èç¹ûÓĞnullÖµµÄ²ÎÊı£¬½«ÔÚÊı¾İ¿âÉèÖÃNULLÖµ¡£
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2010-3-24                
+ * ä¿®æ”¹è¯´æ˜ï¼šåœ¨å‚æ•°è®¾ç½®çš„æ—¶å€™ï¼Œå¦‚æœæœ‰nullå€¼çš„å‚æ•°ï¼Œå°†åœ¨æ•°æ®åº“è®¾ç½®NULLå€¼ã€‚
  * 
- *  * ĞŞ¸ÄÕß£º         Ê±¼ä£º2012-4-11                
- * ĞŞ¸ÄËµÃ÷£º´¦ÀíSqlServer×ÔÔö²åÈëµÄÎÊÌâ,Ïê¼ûSqlServer.cs¡£
+ *  * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2012-4-11                
+ * ä¿®æ”¹è¯´æ˜ï¼šå¤„ç†SqlServerè‡ªå¢æ’å…¥çš„é—®é¢˜,è¯¦è§SqlServer.csã€‚
  * 
- * * ĞŞ¸ÄÕß£º         Ê±¼ä£º2012-5-11                
- * ĞŞ¸ÄËµÃ÷£ºÔö¼ÓÃüÁîÖ´ĞĞµÄ³¬Ê±Ê±¼äÉè¶¨¡£
+ * * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2012-5-11                
+ * ä¿®æ”¹è¯´æ˜ï¼šå¢åŠ å‘½ä»¤æ‰§è¡Œçš„è¶…æ—¶æ—¶é—´è®¾å®šã€‚
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2012-10-12                
- * ĞŞ¸ÄËµÃ÷£ºÔö¼ÓÁ¬½Ó»á»°¹¦ÄÜ£¬ÒÔ±ãÔÚÒ»¸öÁ¬½ÓÖĞÖ´ĞĞ¶à´Î²éÑ¯£¨²»Í¬ÓÚÊÂÎñ£©¡£
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2012-10-12                
+ * ä¿®æ”¹è¯´æ˜ï¼šå¢åŠ è¿æ¥ä¼šè¯åŠŸèƒ½ï¼Œä»¥ä¾¿åœ¨ä¸€ä¸ªè¿æ¥ä¸­æ‰§è¡Œå¤šæ¬¡æŸ¥è¯¢ï¼ˆä¸åŒäºäº‹åŠ¡ï¼‰ã€‚
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2012-10-30                
- * ĞŞ¸ÄËµÃ÷£ºÊ¹ÓÃMySQLµÈPDF.NETÍâ²¿Êı¾İ·ÃÎÊÌá¹©³ÌĞòµÄÊ±ºò£¬¸Ä½øÊµÀı¶ÔÏóµÄ´´½¨Ğ§ÂÊ¡£
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2012-10-30                
+ * ä¿®æ”¹è¯´æ˜ï¼šä½¿ç”¨MySQLç­‰PDF.NETå¤–éƒ¨æ•°æ®è®¿é—®æä¾›ç¨‹åºçš„æ—¶å€™ï¼Œæ”¹è¿›å®ä¾‹å¯¹è±¡çš„åˆ›å»ºæ•ˆç‡ã€‚
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2012-11-01                
- * ĞŞ¸ÄËµÃ÷£ºÎªÖ§³ÖÀ©Õ¹SQLiteÇı¶¯£¬¸Ä½øÁË±¾ÀàµÄÄ³Ğ©³ÉÔ±µÄ·ÃÎÊ¼¶±ğ¡£
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2012-11-01                
+ * ä¿®æ”¹è¯´æ˜ï¼šä¸ºæ”¯æŒæ‰©å±•SQLiteé©±åŠ¨ï¼Œæ”¹è¿›äº†æœ¬ç±»çš„æŸäº›æˆå‘˜çš„è®¿é—®çº§åˆ«ã€‚
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2012-11-06
- * ÎªÌá¸ßĞ§ÂÊ£¬²»ÔÙ¼ÌĞøÄÚ²¿½øĞĞ²ÎÊı¿ËÂ¡´¦Àí£¬Çë¶àÌõSQLÓï¾ä²»ÒªÊ¹ÓÃÍ¬ÃûµÄ²ÎÊı¶ÔÏó
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2012-11-06
+ * ä¸ºæé«˜æ•ˆç‡ï¼Œä¸å†ç»§ç»­å†…éƒ¨è¿›è¡Œå‚æ•°å…‹éš†å¤„ç†ï¼Œè¯·å¤šæ¡SQLè¯­å¥ä¸è¦ä½¿ç”¨åŒåçš„å‚æ•°å¯¹è±¡
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2013-1-13
- * Ôö¼Ó»ñÈ¡±¾µØÊı¾İ¿âÀàĞÍµÄ²ÎÊıÃû³ÆµÄ³éÏó·½·¨£¬Ôö¼Ó¡°¶ÁĞ´·ÖÀë¡±¹¦ÄÜ£¬Ö»ĞèÒªÉèÖÃ
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2013-1-13
+ * å¢åŠ è·å–æœ¬åœ°æ•°æ®åº“ç±»å‹çš„å‚æ•°åç§°çš„æŠ½è±¡æ–¹æ³•ï¼Œå¢åŠ â€œè¯»å†™åˆ†ç¦»â€åŠŸèƒ½ï¼Œåªéœ€è¦è®¾ç½®
  *   DataWriteConnectionString
- * ÊôĞÔ¼´¿É£¬×¢ÒâÉèÖÃ¸ÃÊôĞÔ²»¸Ä±äµ±Ç°Ê¹ÓÃµÄÊı¾İ¿âÀàĞÍ¡£
+ * å±æ€§å³å¯ï¼Œæ³¨æ„è®¾ç½®è¯¥å±æ€§ä¸æ”¹å˜å½“å‰ä½¿ç”¨çš„æ•°æ®åº“ç±»å‹ã€‚
  * 
- *  ĞŞ¸ÄÕß£º         Ê±¼ä£º2013-2-24
- * ĞŞ¸Ä»ñÈ¡²ÎÊıµÄ·½·¨Îª¿ÉÖØĞ´£¬ÒÔ½â¾öAccess ·ÃÎÊÀàµÄÖØĞ´ĞèÇó
+ *  ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2013-2-24
+ * ä¿®æ”¹è·å–å‚æ•°çš„æ–¹æ³•ä¸ºå¯é‡å†™ï¼Œä»¥è§£å†³Access è®¿é—®ç±»çš„é‡å†™éœ€æ±‚
  * 
- *  ĞŞ¸ÄÕß£º         Ê±¼ä£º2013-3-8
- * Ö´ĞĞ²éÑ¯ºó£¬Çå³ı²ÎÊı¼¯ºÏ£¬±ÜÃâ²ÎÊıÖØ¸´Õ¼ÓÃµÄÎÊÌâ¡£
+ *  ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2013-3-8
+ * æ‰§è¡ŒæŸ¥è¯¢åï¼Œæ¸…é™¤å‚æ•°é›†åˆï¼Œé¿å…å‚æ•°é‡å¤å ç”¨çš„é—®é¢˜ã€‚
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2013-3-25
- * ÎªÖ§³Ö±¾ÀàµÄ¶ÁĞ´·ÖÀë¹¦ÄÜ£¬ĞŞ¸´ÁËÔÚÊÂÎñÖĞÖ´ĞĞExecuteNoneQueryÒıÆğÁËÒ»¸öBug£¬¸ĞĞ»ÍøÓÑ¡°³¤µÄÃ»ÀñÃ²¡±·¢ÏÖ´ËBug¡£
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2013-3-25
+ * ä¸ºæ”¯æŒæœ¬ç±»çš„è¯»å†™åˆ†ç¦»åŠŸèƒ½ï¼Œä¿®å¤äº†åœ¨äº‹åŠ¡ä¸­æ‰§è¡ŒExecuteNoneQueryå¼•èµ·äº†ä¸€ä¸ªBugï¼Œæ„Ÿè°¢ç½‘å‹â€œé•¿çš„æ²¡ç¤¼è²Œâ€å‘ç°æ­¤Bugã€‚
  * 
- *  ĞŞ¸ÄÕß£º         Ê±¼ä£º2013-4-16
- * ĞŞ¸´SQLÈÕÖ¾ÖĞ£¬Ã»ÓĞ¼ÇÂ¼²ÎÊı»¯²éÑ¯µÄ²ÎÊıÖµÎÊÌâ£¬¸ĞĞ»ÍøÓÑ¡°GIV-Ë³µÂ¡±·¢ÏÖ´ËBug¡£
+ *  ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2013-4-16
+ * ä¿®å¤SQLæ—¥å¿—ä¸­ï¼Œæ²¡æœ‰è®°å½•å‚æ•°åŒ–æŸ¥è¯¢çš„å‚æ•°å€¼é—®é¢˜ï¼Œæ„Ÿè°¢ç½‘å‹â€œGIV-é¡ºå¾·â€å‘ç°æ­¤Bugã€‚
  * 
- * *  ĞŞ¸ÄÕß£º         Ê±¼ä£º2013-£¸-£¸
- * ÔÚÊÂÎñ»Ø¹ö·½·¨ÖĞµİ¼õÊÂÎñ¼ÆÊıÆ÷£¬²¢ÇÒĞŞ¸ÄÊı¾İÔÄ¶ÁÆ÷·½·¨ÅĞ¶ÏÊÂÎñÊıÁ¿µÄ·½Ê½
+ * *  ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2013-ï¼˜-ï¼˜
+ * åœ¨äº‹åŠ¡å›æ»šæ–¹æ³•ä¸­é€’å‡äº‹åŠ¡è®¡æ•°å™¨ï¼Œå¹¶ä¸”ä¿®æ”¹æ•°æ®é˜…è¯»å™¨æ–¹æ³•åˆ¤æ–­äº‹åŠ¡æ•°é‡çš„æ–¹å¼
  * 
- * * ĞŞ¸ÄÕß£º         Ê±¼ä£º2015-1-29
- * ĞŞÕıOpenSession ´ò¿ªÁ¬½Ó»á»°Ö®ºó£¬DataReader¹Ø±ÕÁ¬½ÓµÄÎÊÌâ
+ * * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2015-1-29
+ * ä¿®æ­£OpenSession æ‰“å¼€è¿æ¥ä¼šè¯ä¹‹åï¼ŒDataReaderå…³é—­è¿æ¥çš„é—®é¢˜
  * ========================================================================
 */
 
@@ -86,7 +86,7 @@ using System.Collections.Generic;
 namespace PWMIS.DataProvider.Data
 {
     /// <summary>
-    /// ¹«¹²Êı¾İ·ÃÎÊ»ù´¡Àà
+    /// å…¬å…±æ•°æ®è®¿é—®åŸºç¡€ç±»
     /// </summary>
     public abstract class CommonDB : IDisposable
     {
@@ -101,15 +101,15 @@ namespace PWMIS.DataProvider.Data
 
         private string appRootPath = "";
 
-        private int transCount;//ÊÂÎñ¼ÆÊıÆ÷
-        private IDbConnection sessionConnection = null;//»á»°Ê¹ÓÃµÄÁ¬½Ó
+        private int transCount;//äº‹åŠ¡è®¡æ•°å™¨
+        private IDbConnection sessionConnection = null;//ä¼šè¯ä½¿ç”¨çš„è¿æ¥
         private bool disposed;
 
-        //		//ÈÕÖ¾Ïà¹Ø
+        //		//æ—¥å¿—ç›¸å…³
         //		private string DataLogFile ;
         //		private bool SaveCommandLog;
         /// <summary>
-        /// Ä¬ÈÏ¹¹Ôìº¯Êı
+        /// é»˜è®¤æ„é€ å‡½æ•°
         /// </summary>
         public CommonDB()
         {
@@ -122,7 +122,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ¸ù¾İÊı¾İ¿âÊµÀı»ñÈ¡Êı¾İ¿âÀàĞÍÃ¶¾Ù
+        /// æ ¹æ®æ•°æ®åº“å®ä¾‹è·å–æ•°æ®åº“ç±»å‹æšä¸¾
         /// </summary>
         /// <param name="db"></param>
         /// <returns></returns>
@@ -146,16 +146,16 @@ namespace PWMIS.DataProvider.Data
 
         private static Dictionary<string, Type> cacheHelper = null;
         /// <summary>
-        /// ´´½¨¹«¹²Êı¾İ·ÃÎÊÀàµÄÊµÀı
+        /// åˆ›å»ºå…¬å…±æ•°æ®è®¿é—®ç±»çš„å®ä¾‹
         /// </summary>
-        /// <param name="providerAssembly">Ìá¹©Õâ³ÌĞò¼¯Ãû³Æ</param>
-        /// <param name="providerType">Ìá¹©ÕßÀàĞÍ</param>
+        /// <param name="providerAssembly">æä¾›è¿™ç¨‹åºé›†åç§°</param>
+        /// <param name="providerType">æä¾›è€…ç±»å‹</param>
         /// <returns></returns>
         public static AdoHelper CreateInstance(string providerAssembly, string providerType)
         {
-            //Ê¹ÓÃActivator.CreateInstance Ğ§ÂÊÔ¶¸ßÓÚassembly.CreateInstance
-            //ËùÒÔÊ×ÏÈ¼ì²é»º´æÀïÃæÊÇ·ñÊı¾İ·ÃÎÊÊµÀı¶ÔÏóµÄÀàĞÍ
-            //ÏêÏ¸ÄÚÈİÇë²Î¿´ http://www.cnblogs.com/leven/archive/2009/12/08/instanse_create_comparison.html
+            //ä½¿ç”¨Activator.CreateInstance æ•ˆç‡è¿œé«˜äºassembly.CreateInstance
+            //æ‰€ä»¥é¦–å…ˆæ£€æŸ¥ç¼“å­˜é‡Œé¢æ˜¯å¦æ•°æ®è®¿é—®å®ä¾‹å¯¹è±¡çš„ç±»å‹
+            //è¯¦ç»†å†…å®¹è¯·å‚çœ‹ http://www.cnblogs.com/leven/archive/2009/12/08/instanse_create_comparison.html
             //
             if (cacheHelper == null)
                 cacheHelper = new Dictionary<string, Type>();
@@ -171,26 +171,26 @@ namespace PWMIS.DataProvider.Data
             if (provider is AdoHelper)
             {
                 AdoHelper result = provider as AdoHelper;
-                cacheHelper[key] = result.GetType();//¼ÓÈë»º´æ
+                cacheHelper[key] = result.GetType();//åŠ å…¥ç¼“å­˜
                 return result;
             }
             else
             {
-                throw new InvalidOperationException("µ±Ç°Ö¸¶¨µÄµÄÌá¹©³ÌĞò²»ÊÇ AdoHelper ³éÏóÀàµÄ¾ßÌåÊµÏÖÀà£¬ÇëÈ·±£Ó¦ÓÃ³ÌĞò½øĞĞÁËÕıÈ·µÄÅäÖÃ£¨ÈçconnectionStrings ÅäÖÃ½ÚµÄ providerName ÊôĞÔ£©¡£");
+                throw new InvalidOperationException("å½“å‰æŒ‡å®šçš„çš„æä¾›ç¨‹åºä¸æ˜¯ AdoHelper æŠ½è±¡ç±»çš„å…·ä½“å®ç°ç±»ï¼Œè¯·ç¡®ä¿åº”ç”¨ç¨‹åºè¿›è¡Œäº†æ­£ç¡®çš„é…ç½®ï¼ˆå¦‚connectionStrings é…ç½®èŠ‚çš„ providerName å±æ€§ï¼‰ã€‚");
             }
         }
 
         /// <summary>
-        /// Ö´ĞĞSQL²éÑ¯µÄ³¬Ê±Ê±¼ä£¬µ¥Î»Ãë¡£²»ÉèÖÃÔòÈ¡Ä¬ÈÏÊ±¼ä£¬Ïê¼ûMSDN¡£
+        /// æ‰§è¡ŒSQLæŸ¥è¯¢çš„è¶…æ—¶æ—¶é—´ï¼Œå•ä½ç§’ã€‚ä¸è®¾ç½®åˆ™å–é»˜è®¤æ—¶é—´ï¼Œè¯¦è§MSDNã€‚
         /// </summary>
         public int CommandTimeOut { get; set; }
 
         /// <summary>
-        /// µ±Ç°Êı¾İ¿âµÄÀàĞÍÃ¶¾Ù
+        /// å½“å‰æ•°æ®åº“çš„ç±»å‹æšä¸¾
         /// </summary>
         public abstract DBMSType CurrentDBMSType { get; }
         /// <summary>
-        /// »ñÈ¡×î½üÒ»´ÎÖ´ĞĞ²éÑ¯µÄËùºÄ·ÑµÄÊ±¼ä£¬µ¥Î»£ººÁÃë
+        /// è·å–æœ€è¿‘ä¸€æ¬¡æ‰§è¡ŒæŸ¥è¯¢çš„æ‰€è€—è´¹çš„æ—¶é—´ï¼Œå•ä½ï¼šæ¯«ç§’
         /// </summary>
         public long ElapsedMilliseconds
         {
@@ -200,8 +200,8 @@ namespace PWMIS.DataProvider.Data
 
         private string _insertKey;
         /// <summary>
-        /// ÔÚ²åÈë¾ßÓĞ×ÔÔöÁĞµÄÊı¾İºó£¬»ñÈ¡¸Õ²Å×ÔÔöÁĞµÄÊı¾İµÄ·½Ê½£¬Ä¬ÈÏÊ¹ÓÃ @@IDENTITY£¬ÔÚÆäËü¾ßÌåÊı¾İ¿âÊµÏÖÀà¿ÉÄÜĞèÒªÖØĞ´¸ÃÊôĞÔ»òÕßÔËĞĞÊ±¶¯Ì¬Ö¸¶¨¡£
-        /// ÔÚSqlServer£¬Ä¬ÈÏÊ¹ÓÃSCOPE_IDENTITY()£¬¿É¸ù¾İÇé¿öÉèÖÃ¡£
+        /// åœ¨æ’å…¥å…·æœ‰è‡ªå¢åˆ—çš„æ•°æ®åï¼Œè·å–åˆšæ‰è‡ªå¢åˆ—çš„æ•°æ®çš„æ–¹å¼ï¼Œé»˜è®¤ä½¿ç”¨ @@IDENTITYï¼Œåœ¨å…¶å®ƒå…·ä½“æ•°æ®åº“å®ç°ç±»å¯èƒ½éœ€è¦é‡å†™è¯¥å±æ€§æˆ–è€…è¿è¡Œæ—¶åŠ¨æ€æŒ‡å®šã€‚
+        /// åœ¨SqlServerï¼Œé»˜è®¤ä½¿ç”¨SCOPE_IDENTITY()ï¼Œå¯æ ¹æ®æƒ…å†µè®¾ç½®ã€‚
         /// </summary>
         public virtual string InsertKey
         {
@@ -219,7 +219,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// Êı¾İÁ¬½á×Ö·û´®
+        /// æ•°æ®è¿ç»“å­—ç¬¦ä¸²
         /// </summary>
         public string ConnectionString
         {
@@ -230,7 +230,7 @@ namespace PWMIS.DataProvider.Data
             set
             {
                 _connString = value;
-                //´¦Àí Ïà¶ÔÂ·¾¶£¬¼Ù¶¨ ~ Â·¾¶¸ñÊ½¾ÍÊÇWeb³ÌĞòµÄÏà¶ÔÂ·¾¶
+                //å¤„ç† ç›¸å¯¹è·¯å¾„ï¼Œå‡å®š ~ è·¯å¾„æ ¼å¼å°±æ˜¯Webç¨‹åºçš„ç›¸å¯¹è·¯å¾„
                 //if(!string.IsNullOrEmpty (value) && _connString.IndexOf ('~')>0)
                 //{
                 //    if (appRootPath == "")
@@ -239,7 +239,7 @@ namespace PWMIS.DataProvider.Data
                 //        Uri u = new Uri(EscapedCodeBase);
                 //        string path = Path.GetDirectoryName(u.LocalPath);
                 //        if (path.Length > 4)
-                //            appRootPath = path.Substring(0, path.Length - 3);// È¥³ı \bin£¬»ñÈ¡¸ùÄ¿Â¼
+                //            appRootPath = path.Substring(0, path.Length - 3);// å»é™¤ \binï¼Œè·å–æ ¹ç›®å½•
                 //    }
                 //    _connString = _connString.Replace("~", appRootPath);
                 //}
@@ -248,7 +248,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// Ğ´ÈëÊı¾İµÄÁ¬½Ó×Ö·û´®£¬ExecuteNoneQuery ·½·¨½«×Ô¶¯Ê¹ÓÃ¸ÃÁ¬½Ó
+        /// å†™å…¥æ•°æ®çš„è¿æ¥å­—ç¬¦ä¸²ï¼ŒExecuteNoneQuery æ–¹æ³•å°†è‡ªåŠ¨ä½¿ç”¨è¯¥è¿æ¥
         /// </summary>
         public string DataWriteConnectionString
         {
@@ -265,16 +265,16 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡Á¬½Ó×Ö·û´®¹¹ÔìÀà
+        /// è·å–è¿æ¥å­—ç¬¦ä¸²æ„é€ ç±»
         /// </summary>
         public abstract DbConnectionStringBuilder ConnectionStringBuilder { get; }
         /// <summary>
-        /// Á¬½ÓÊı¾İ¿âÓÃ»§µÄID
+        /// è¿æ¥æ•°æ®åº“ç”¨æˆ·çš„ID
         /// </summary>
         public abstract string ConnectionUserID { get; }
 
         /// <summary>
-        /// Êı¾İ²Ù×÷µÄ´íÎóĞÅÏ¢£¬ÇëÔÚÃ¿´Î²éÑ¯ºó¼ì²é¸ÃĞÅÏ¢¡£
+        /// æ•°æ®æ“ä½œçš„é”™è¯¯ä¿¡æ¯ï¼Œè¯·åœ¨æ¯æ¬¡æŸ¥è¯¢åæ£€æŸ¥è¯¥ä¿¡æ¯ã€‚
         /// </summary>
         public string ErrorMessage
         {
@@ -289,7 +289,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ÔÚÊÂÎñÖ´ĞĞÆÚ¼ä£¬¸üĞÂ¹ı³ÌÈç¹û³öÏÖ´íÎó£¬ÊÇ·ñ×Ô¶¯»Ø¹öÊÂÎñ¡£Ä¬ÈÏÎªÊÇ¡£
+        /// åœ¨äº‹åŠ¡æ‰§è¡ŒæœŸé—´ï¼Œæ›´æ–°è¿‡ç¨‹å¦‚æœå‡ºç°é”™è¯¯ï¼Œæ˜¯å¦è‡ªåŠ¨å›æ»šäº‹åŠ¡ã€‚é»˜è®¤ä¸ºæ˜¯ã€‚
         /// </summary>
         public bool OnErrorRollback
         {
@@ -298,9 +298,9 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ²éÑ¯³öÏÖ´íÎóÊÇ·ñÊÇ½«´íÎóÅ×³ö¡£Ä¬ÈÏÎªÊÇ¡£
-        /// Èç¹ûÉèÖÃÎª·ñ£¬½«¼ò»¯µ÷ÓÃ³ÌĞòµÄÒì³£´¦Àí£¬µ«ÊÇÇë¼ì²éÃ¿´Î¸üĞÂºóÊÜÓ°ÏìµÄ½á¹ûÊıºÍ´íÎóĞÅÏ¢À´¾ö¶¨ÄãµÄ³ÌĞòÂß¼­¡£
-        /// Èç¹ûÔÚÊÂÎñÖ´ĞĞÆÚ¼ä£¬ÆÚÍû³öÏÖ´íÎóºóÁ¢¿Ì½áÊø´¦Àí£¬ÇëÉèÖÃ±¾ÊôĞÔÎª ÊÇ¡£
+        /// æŸ¥è¯¢å‡ºç°é”™è¯¯æ˜¯å¦æ˜¯å°†é”™è¯¯æŠ›å‡ºã€‚é»˜è®¤ä¸ºæ˜¯ã€‚
+        /// å¦‚æœè®¾ç½®ä¸ºå¦ï¼Œå°†ç®€åŒ–è°ƒç”¨ç¨‹åºçš„å¼‚å¸¸å¤„ç†ï¼Œä½†æ˜¯è¯·æ£€æŸ¥æ¯æ¬¡æ›´æ–°åå—å½±å“çš„ç»“æœæ•°å’Œé”™è¯¯ä¿¡æ¯æ¥å†³å®šä½ çš„ç¨‹åºé€»è¾‘ã€‚
+        /// å¦‚æœåœ¨äº‹åŠ¡æ‰§è¡ŒæœŸé—´ï¼ŒæœŸæœ›å‡ºç°é”™è¯¯åç«‹åˆ»ç»“æŸå¤„ç†ï¼Œè¯·è®¾ç½®æœ¬å±æ€§ä¸º æ˜¯ã€‚
         /// </summary>
         public bool OnErrorThrow
         {
@@ -309,19 +309,19 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡ÊÂÎñµÄÊı¾İÁ¬½á¶ÔÏó
+        /// è·å–äº‹åŠ¡çš„æ•°æ®è¿ç»“å¯¹è±¡
         /// </summary>
-        /// <returns>Êı¾İÁ¬½á¶ÔÏó</returns>
+        /// <returns>æ•°æ®è¿ç»“å¯¹è±¡</returns>
         protected virtual IDbConnection GetConnection() //
         {
-            //ÓÅÏÈÊ¹ÓÃÊÂÎñµÄÁ¬½Ó
+            //ä¼˜å…ˆä½¿ç”¨äº‹åŠ¡çš„è¿æ¥
             if (Transaction != null)
             {
                 IDbTransaction trans = Transaction;
                 if (trans.Connection != null)
                     return trans.Connection;
             }
-            //Èç¹û¿ªÆôÁ¬½Ó»á»°£¬ÔòÊ¹ÓÃ¸ÃÁ¬½Ó
+            //å¦‚æœå¼€å¯è¿æ¥ä¼šè¯ï¼Œåˆ™ä½¿ç”¨è¯¥è¿æ¥
             if (sessionConnection != null)
             {
                 return sessionConnection;
@@ -330,7 +330,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡Êı¾İ¿âÁ¬½Ó¶ÔÏóÊµÀı
+        /// è·å–æ•°æ®åº“è¿æ¥å¯¹è±¡å®ä¾‹
         /// </summary>
         /// <returns></returns>
         public IDbConnection GetDbConnection()
@@ -339,10 +339,10 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡Êı¾İÁ¬½á¶ÔÏóÊµÀı
+        /// è·å–æ•°æ®è¿ç»“å¯¹è±¡å®ä¾‹
         /// </summary>
-        /// <param name="connectionString">Á¬½Ó×Ö·û´®</param>
-        /// <returns>Êı¾İÁ¬½á¶ÔÏó</returns>
+        /// <param name="connectionString">è¿æ¥å­—ç¬¦ä¸²</param>
+        /// <returns>æ•°æ®è¿ç»“å¯¹è±¡</returns>
         public IDbConnection GetConnection(string connectionString)
         {
             this.ConnectionString = connectionString;
@@ -350,13 +350,13 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡Êı¾İÊÊÅäÆ÷ÊµÀı
+        /// è·å–æ•°æ®é€‚é…å™¨å®ä¾‹
         /// </summary>
-        /// <returns>Êı¾İÊÊÅäÆ÷</returns>
+        /// <returns>æ•°æ®é€‚é…å™¨</returns>
         protected abstract IDbDataAdapter GetDataAdapter(IDbCommand command);
 
         /// <summary>
-        /// »ñÈ¡»òÕßÉèÖÃÊÂÎñ¶ÔÏó
+        /// è·å–æˆ–è€…è®¾ç½®äº‹åŠ¡å¯¹è±¡
         /// </summary>
         public IDbTransaction Transaction
         {
@@ -365,7 +365,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡²ÎÊıÃûµÄ±êÊ¶×Ö·û£¬Ä¬ÈÏÎªSQLSERVER¸ñÊ½£¬Èç¹ûÆäËüÊı¾İ¿âÔò¿ÉÄÜĞèÒªÖØĞ´¸ÃÊôĞÔ
+        /// è·å–å‚æ•°åçš„æ ‡è¯†å­—ç¬¦ï¼Œé»˜è®¤ä¸ºSQLSERVERæ ¼å¼ï¼Œå¦‚æœå…¶å®ƒæ•°æ®åº“åˆ™å¯èƒ½éœ€è¦é‡å†™è¯¥å±æ€§
         /// </summary>
         public virtual string GetParameterChar
         {
@@ -373,26 +373,26 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+        /// è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
         /// </summary>
-        /// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+        /// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
         public abstract IDataParameter GetParameter();
 
         /// <summary>
-        /// »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+        /// è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
         /// </summary>
-        /// <param name="paraName">²ÎÊıÃû×Ö</param>
-        /// <param name="dbType">Êı¾İ¿âÊı¾İÀàĞÍ</param>
-        /// <param name="size">×Ö¶Î´óĞ¡</param>
-        /// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+        /// <param name="paraName">å‚æ•°åå­—</param>
+        /// <param name="dbType">æ•°æ®åº“æ•°æ®ç±»å‹</param>
+        /// <param name="size">å­—æ®µå¤§å°</param>
+        /// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
         public abstract IDataParameter GetParameter(string paraName, System.Data.DbType dbType, int size);
 
         /// <summary>
-        /// »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+        /// è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
         /// </summary>
-        /// <param name="paraName">²ÎÊıÃû×Ö</param>
-        /// <param name="dbType">>Êı¾İ¿âÊı¾İÀàĞÍ</param>
-        /// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+        /// <param name="paraName">å‚æ•°åå­—</param>
+        /// <param name="dbType">>æ•°æ®åº“æ•°æ®ç±»å‹</param>
+        /// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
         public virtual IDataParameter GetParameter(string paraName, DbType dbType)
         {
             IDataParameter para = this.GetParameter();
@@ -402,11 +402,11 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ¸ù¾İ²ÎÊıÃûºÍÖµ·µ»Ø²ÎÊıÒ»¸öĞÂµÄ²ÎÊı¶ÔÏó
+        /// æ ¹æ®å‚æ•°åå’Œå€¼è¿”å›å‚æ•°ä¸€ä¸ªæ–°çš„å‚æ•°å¯¹è±¡
         /// </summary>
-        /// <param name="paraName">²ÎÊıÃû</param>
-        /// <param name="Value">²ÎÊıÖµ</param>
-        /// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+        /// <param name="paraName">å‚æ•°å</param>
+        /// <param name="Value">å‚æ•°å€¼</param>
+        /// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
         public virtual IDataParameter GetParameter(string paraName, object Value)
         {
             IDataParameter para = this.GetParameter();
@@ -416,13 +416,13 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+        /// è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
         /// </summary>
-        /// <param name="paraName">²ÎÊıÃû</param>
-        /// <param name="dbType">²ÎÊıÖµ</param>
-        /// <param name="size">²ÎÊı´óĞ¡</param>
-        /// <param name="paraDirection">²ÎÊıÊä³öÀàĞÍ</param>
-        /// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+        /// <param name="paraName">å‚æ•°å</param>
+        /// <param name="dbType">å‚æ•°å€¼</param>
+        /// <param name="size">å‚æ•°å¤§å°</param>
+        /// <param name="paraDirection">å‚æ•°è¾“å‡ºç±»å‹</param>
+        /// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
         public IDataParameter GetParameter(string paraName, System.Data.DbType dbType, int size, System.Data.ParameterDirection paraDirection)
         {
             IDataParameter para = this.GetParameter(paraName, dbType, size);
@@ -431,14 +431,14 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+        /// è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
         /// </summary>
-        /// <param name="paraName">²ÎÊıÃû</param>
-        /// <param name="dbType">²ÎÊıÀàĞÍ</param>
-        /// <param name="size">²ÎÊıÖµµÄ³¤¶È</param>
-        /// <param name="paraDirection">²ÎÊıµÄÊäÈëÊä³öÀàĞÍ</param>
-        /// <param name="precision">²ÎÊıÖµ²ÎÊıµÄ¾«¶È</param>
-        /// <param name="scale">²ÎÊıµÄĞ¡ÊıÎ»Î»Êı</param>
+        /// <param name="paraName">å‚æ•°å</param>
+        /// <param name="dbType">å‚æ•°ç±»å‹</param>
+        /// <param name="size">å‚æ•°å€¼çš„é•¿åº¦</param>
+        /// <param name="paraDirection">å‚æ•°çš„è¾“å…¥è¾“å‡ºç±»å‹</param>
+        /// <param name="precision">å‚æ•°å€¼å‚æ•°çš„ç²¾åº¦</param>
+        /// <param name="scale">å‚æ•°çš„å°æ•°ä½ä½æ•°</param>
         /// <returns></returns>
         public IDataParameter GetParameter(string paraName, System.Data.DbType dbType, int size, System.Data.ParameterDirection paraDirection, byte precision, byte scale)
         {
@@ -453,23 +453,23 @@ namespace PWMIS.DataProvider.Data
         
 
         /// <summary>
-        /// »ñÈ¡µ±Ç°Êı¾İ¿âÀàĞÍµÄ²ÎÊıÊı¾İÀàĞÍÃû³Æ
+        /// è·å–å½“å‰æ•°æ®åº“ç±»å‹çš„å‚æ•°æ•°æ®ç±»å‹åç§°
         /// </summary>
         /// <param name="para"></param>
         /// <returns></returns>
         public abstract string GetNativeDbTypeName(IDataParameter para);
         /// <summary>
-        /// ·µ»Ø´Ë SqlConnection µÄÊı¾İÔ´µÄ¼Ü¹¹ĞÅÏ¢¡£
+        /// è¿”å›æ­¤ SqlConnection çš„æ•°æ®æºçš„æ¶æ„ä¿¡æ¯ã€‚
         /// </summary>
-        /// <param name="collectionName">¼¯ºÏÃû³Æ£¬¿ÉÒÔÎª¿Õ</param>
-        /// <param name="restrictionValues">ÇëÇóµÄ¼Ü¹¹µÄÒ»×éÏŞÖÆÖµ£¬¿ÉÒÔÎª¿Õ</param>
-        /// <returns>Êı¾İ¿â¼Ü¹¹ĞÅÏ¢±í</returns>
+        /// <param name="collectionName">é›†åˆåç§°ï¼Œå¯ä»¥ä¸ºç©º</param>
+        /// <param name="restrictionValues">è¯·æ±‚çš„æ¶æ„çš„ä¸€ç»„é™åˆ¶å€¼ï¼Œå¯ä»¥ä¸ºç©º</param>
+        /// <returns>æ•°æ®åº“æ¶æ„ä¿¡æ¯è¡¨</returns>
         public abstract DataTable GetSchema(string collectionName, string[] restrictionValues);
 
         /// <summary>
-        /// »ñÈ¡´æ´¢¹ı³Ì¡¢º¯ÊıµÄ¶¨ÒåÄÚÈİ£¬Èç¹û×ÓÀàÖ§³Ö£¬ĞèÒªÔÚ×ÓÀàÖĞÖØĞ´
+        /// è·å–å­˜å‚¨è¿‡ç¨‹ã€å‡½æ•°çš„å®šä¹‰å†…å®¹ï¼Œå¦‚æœå­ç±»æ”¯æŒï¼Œéœ€è¦åœ¨å­ç±»ä¸­é‡å†™
         /// </summary>
-        /// <param name="spName">´æ´¢¹ı³ÌÃû³Æ</param>
+        /// <param name="spName">å­˜å‚¨è¿‡ç¨‹åç§°</param>
         /// <returns></returns>
         public virtual string GetSPDetail(string spName)
         {
@@ -477,9 +477,9 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡ÊÓÍ¼¶¨Òå£¬Èç¹û×ÓÀàÖ§³Ö£¬ĞèÒªÔÚ×ÓÀàÖĞÖØĞ´
+        /// è·å–è§†å›¾å®šä¹‰ï¼Œå¦‚æœå­ç±»æ”¯æŒï¼Œéœ€è¦åœ¨å­ç±»ä¸­é‡å†™
         /// </summary>
-        /// <param name="viewName">ÊÓÍ¼Ãû³Æ</param>
+        /// <param name="viewName">è§†å›¾åç§°</param>
         /// <returns></returns>
         public virtual string GetViweDetail(string viewName)
         {
@@ -487,7 +487,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ´ò¿ªÁ¬½Ó²¢¿ªÆôÊÂÎñ
+        /// æ‰“å¼€è¿æ¥å¹¶å¼€å¯äº‹åŠ¡
         /// </summary>
         public void BeginTransaction()
         {
@@ -495,23 +495,23 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ¿ªÆôÊÂÎñ²¢Ö¸¶¨ÊÂÎñ¸ôÀë¼¶±ğ
+        /// å¼€å¯äº‹åŠ¡å¹¶æŒ‡å®šäº‹åŠ¡éš”ç¦»çº§åˆ«
         /// </summary>
         /// <param name="ilevel"></param>
         public void BeginTransaction(IsolationLevel ilevel)
         {
             transCount++;
             this.ErrorMessage = "";
-            _connection = GetConnection();//ÔÚ×ÓÀàÖĞ½«»á»ñÈ¡Á¬½Ó¶ÔÏóÊµÀı
+            _connection = GetConnection();//åœ¨å­ç±»ä¸­å°†ä¼šè·å–è¿æ¥å¯¹è±¡å®ä¾‹
             if (_connection.State != ConnectionState.Open)
                 _connection.Open();
             if (transCount == 1)
                 _transation = _connection.BeginTransaction(ilevel);
-            CommandLog.Instance.WriteLog("´ò¿ªÁ¬½Ó²¢¿ªÆôÊÂÎñ", "AdoHelper");
+            CommandLog.Instance.WriteLog("æ‰“å¼€è¿æ¥å¹¶å¼€å¯äº‹åŠ¡", "AdoHelper");
         }
 
         /// <summary>
-        /// Ìá½»ÊÂÎñ²¢¹Ø±ÕÁ¬½Ó
+        /// æäº¤äº‹åŠ¡å¹¶å…³é—­è¿æ¥
         /// </summary>
         public void Commit()
         {
@@ -524,11 +524,11 @@ namespace PWMIS.DataProvider.Data
                 CloseGlobalConnection();
                 transCount = 0;            
             }
-            CommandLog.Instance.WriteLog("Ìá½»ÊÂÎñ²¢¹Ø±ÕÁ¬½Ó", "AdoHelper");
+            CommandLog.Instance.WriteLog("æäº¤äº‹åŠ¡å¹¶å…³é—­è¿æ¥", "AdoHelper");
         }
 
         /// <summary>
-        /// »Ø¹öÊÂÎñ²¢¹Ø±ÕÁ¬½Ó
+        /// å›æ»šäº‹åŠ¡å¹¶å…³é—­è¿æ¥
         /// </summary>
         public void Rollback()
         {
@@ -536,26 +536,26 @@ namespace PWMIS.DataProvider.Data
             if (_transation != null && _transation.Connection != null)
                 _transation.Rollback();
             CloseGlobalConnection();
-            CommandLog.Instance.WriteLog("»Ø¹öÊÂÎñ²¢¹Ø±ÕÁ¬½Ó", "AdoHelper");
+            CommandLog.Instance.WriteLog("å›æ»šäº‹åŠ¡å¹¶å…³é—­è¿æ¥", "AdoHelper");
         }
 
         /// <summary>
-        /// ´ò¿ªÒ»¸öÊı¾İ¿âÁ¬½Ó»á»°£¬Äã¿ÉÒÔÔÚÆäÖĞÖ´ĞĞÒ»ÏµÁĞAdoHelper²éÑ¯
+        /// æ‰“å¼€ä¸€ä¸ªæ•°æ®åº“è¿æ¥ä¼šè¯ï¼Œä½ å¯ä»¥åœ¨å…¶ä¸­æ‰§è¡Œä¸€ç³»åˆ—AdoHelperæŸ¥è¯¢
         /// </summary>
-        /// <returns>Á¬½Ó»á»°¶ÔÏó</returns>
+        /// <returns>è¿æ¥ä¼šè¯å¯¹è±¡</returns>
         public ConnectionSession OpenSession()
         {
             this.ErrorMessage = "";
-            sessionConnection = GetConnection();//ÔÚ×ÓÀàÖĞ½«»á»ñÈ¡Á¬½Ó¶ÔÏóÊµÀı
+            sessionConnection = GetConnection();//åœ¨å­ç±»ä¸­å°†ä¼šè·å–è¿æ¥å¯¹è±¡å®ä¾‹
             if (sessionConnection.State != ConnectionState.Open)
                 sessionConnection.Open();
 
-            CommandLog.Instance.WriteLog("´ò¿ª»á»°Á¬½Ó", "ConnectionSession");
+            CommandLog.Instance.WriteLog("æ‰“å¼€ä¼šè¯è¿æ¥", "ConnectionSession");
             return new ConnectionSession(sessionConnection);
         }
 
         /// <summary>
-        /// ¹Ø±ÕÁ¬½Ó»á»°
+        /// å…³é—­è¿æ¥ä¼šè¯
         /// </summary>
         public void CloseSession()
         {
@@ -571,8 +571,8 @@ namespace PWMIS.DataProvider.Data
 
         private bool _sqlServerCompatible = true;
         /// <summary>
-        /// SQL SERVER ¼æÈİĞÔÉèÖÃ£¬Ä¬ÈÏÎª¼æÈİ¡£¸ÃÌØĞÔ¿ÉÒÔ½«SQLSERVERµÄÓï¾äÒÆÖ²µ½ÆäËüÆäËüÀàĞÍµÄÊı¾İ¿â£¬ÀıÈç×Ö¶Î·Ö¸ô·ûºÅ£¬ÈÕÆÚº¯ÊıµÈ¡£
-        /// Èç¹ûÊÇÆ´½Ó×Ö·û´®·½Ê½µÄ²éÑ¯£¬½¨ÒéÉèÖÃÎªFalse£¬±ÜÃâÔÚÆ´½Ó£Ó£Ñ£ÌµÄÊ±ºò¹ıÂËµô'@'µÈÌØÊâ×Ö·û
+        /// SQL SERVER å…¼å®¹æ€§è®¾ç½®ï¼Œé»˜è®¤ä¸ºå…¼å®¹ã€‚è¯¥ç‰¹æ€§å¯ä»¥å°†SQLSERVERçš„è¯­å¥ç§»æ¤åˆ°å…¶å®ƒå…¶å®ƒç±»å‹çš„æ•°æ®åº“ï¼Œä¾‹å¦‚å­—æ®µåˆ†éš”ç¬¦å·ï¼Œæ—¥æœŸå‡½æ•°ç­‰ã€‚
+        /// å¦‚æœæ˜¯æ‹¼æ¥å­—ç¬¦ä¸²æ–¹å¼çš„æŸ¥è¯¢ï¼Œå»ºè®®è®¾ç½®ä¸ºFalseï¼Œé¿å…åœ¨æ‹¼æ¥ï¼³ï¼±ï¼¬çš„æ—¶å€™è¿‡æ»¤æ‰'@'ç­‰ç‰¹æ®Šå­—ç¬¦
         /// </summary>
         public bool SqlServerCompatible
         {
@@ -580,7 +580,7 @@ namespace PWMIS.DataProvider.Data
             set { _sqlServerCompatible = value; }
         }
         /// <summary>
-        /// ¶ÔÓ¦SQLÓï¾ä½øĞĞÆäËüµÄ´¦Àí£¬ÀıÈç½«SQLSERVERµÄ×Ö¶ÎÃûÍâµÄÖĞÀ¨ºÅÌæ»»³ÉÊı¾İ¿âÌØ¶¨µÄ×Ö·û¡£¸Ã·½·¨»áÔÚÖ´ĞĞ²éÑ¯Ç°µ÷ÓÃ£¬Ä¬ÈÏÇé¿öÏÂ²»½øĞĞÈÎºÎ´¦Àí¡£
+        /// å¯¹åº”SQLè¯­å¥è¿›è¡Œå…¶å®ƒçš„å¤„ç†ï¼Œä¾‹å¦‚å°†SQLSERVERçš„å­—æ®µåå¤–çš„ä¸­æ‹¬å·æ›¿æ¢æˆæ•°æ®åº“ç‰¹å®šçš„å­—ç¬¦ã€‚è¯¥æ–¹æ³•ä¼šåœ¨æ‰§è¡ŒæŸ¥è¯¢å‰è°ƒç”¨ï¼Œé»˜è®¤æƒ…å†µä¸‹ä¸è¿›è¡Œä»»ä½•å¤„ç†ã€‚
         /// </summary>
         /// <param name="SQL"></param>
         /// <returns></returns>
@@ -590,7 +590,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡¾­¹ı±¾µØÊı¾İ¿âÀàĞÍ´¦Àí¹ıµÄSQLÓï¾ä
+        /// è·å–ç»è¿‡æœ¬åœ°æ•°æ®åº“ç±»å‹å¤„ç†è¿‡çš„SQLè¯­å¥
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
@@ -600,13 +600,13 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ÍêÉÆÃüÁî¶ÔÏó,´¦ÀíÃüÁî¶ÔÏó¹ØÁªµÄÊÂÎñºÍÁ¬½Ó£¬Èç¹ûÎ´´ò¿ªÁ¬½ÓÕâÀï½«´ò¿ªËü
-        /// ×¢Òâ£ºÎªÌá¸ßĞ§ÂÊ£¬²»ÔÙ¼ÌĞøÄÚ²¿½øĞĞ²ÎÊı¿ËÂ¡´¦Àí£¬Çë¶àÌõSQLÓï¾ä²»ÒªÊ¹ÓÃÍ¬ÃûµÄ²ÎÊı¶ÔÏó
+        /// å®Œå–„å‘½ä»¤å¯¹è±¡,å¤„ç†å‘½ä»¤å¯¹è±¡å…³è”çš„äº‹åŠ¡å’Œè¿æ¥ï¼Œå¦‚æœæœªæ‰“å¼€è¿æ¥è¿™é‡Œå°†æ‰“å¼€å®ƒ
+        /// æ³¨æ„ï¼šä¸ºæé«˜æ•ˆç‡ï¼Œä¸å†ç»§ç»­å†…éƒ¨è¿›è¡Œå‚æ•°å…‹éš†å¤„ç†ï¼Œè¯·å¤šæ¡SQLè¯­å¥ä¸è¦ä½¿ç”¨åŒåçš„å‚æ•°å¯¹è±¡
         /// </summary>
-        /// <param name="cmd">ÃüÁî¶ÔÏó</param>
+        /// <param name="cmd">å‘½ä»¤å¯¹è±¡</param>
         /// <param name="SQL">SQL</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²ÎÊıÊı×é</param>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">å‚æ•°æ•°ç»„</param>
         protected void CompleteCommand(IDbCommand cmd, ref string SQL, ref CommandType commandType, ref IDataParameter[] parameters)
         {
             cmd.CommandText = SqlServerCompatible ? PrepareSQL(ref  SQL) : SQL;
@@ -629,14 +629,14 @@ namespace PWMIS.DataProvider.Data
                         }
                         else
                         {
-                            //Îª´æ´¢¹ı³Ì´ø»Ø·µ»ØÖµ
+                            //ä¸ºå­˜å‚¨è¿‡ç¨‹å¸¦å›è¿”å›å€¼
                             cmd.Parameters.Add(parameters[i]);
                         }
                     }
 
             if (cmd.Connection.State != ConnectionState.Open)
                 cmd.Connection.Open();
-            //Ôö¼ÓÈÕÖ¾´¦Àí
+            //å¢åŠ æ—¥å¿—å¤„ç†
             //dth,2008.4.8
             //
             //			if(SaveCommandLog )
@@ -645,15 +645,15 @@ namespace PWMIS.DataProvider.Data
         }
 
         //		/// <summary>
-        //		/// ¼ÇÂ¼ÃüÁîĞÅÏ¢
+        //		/// è®°å½•å‘½ä»¤ä¿¡æ¯
         //		/// </summary>
         //		/// <param name="command"></param>
         //		private void RecordCommandLog(IDbCommand command)
         //		{
-        //			WriteLog("'"+DateTime.Now.ToString ()+ " @AdoHelper Ö´ĞĞÃüÁî£º\rSQL=\""+command.CommandText+"\"\r'ÃüÁîÀàĞÍ£º"+command.CommandType.ToString ());
+        //			WriteLog("'"+DateTime.Now.ToString ()+ " @AdoHelper æ‰§è¡Œå‘½ä»¤ï¼š\rSQL=\""+command.CommandText+"\"\r'å‘½ä»¤ç±»å‹ï¼š"+command.CommandType.ToString ());
         //			if(command.Parameters.Count >0)
         //			{
-        //				WriteLog("'¹²ÓĞ¡¡"+command.Parameters.Count+"¡¡¸öÃüÁî²ÎÊı£º");
+        //				WriteLog("'å…±æœ‰ã€€"+command.Parameters.Count+"ã€€ä¸ªå‘½ä»¤å‚æ•°ï¼š");
         //				for(int i=0;i<command.Parameters.Count ;i++)
         //				{
         //					IDataParameter p=(IDataParameter)command.Parameters[i];
@@ -665,7 +665,7 @@ namespace PWMIS.DataProvider.Data
         //		}
         //
         //		/// <summary>
-        //		/// Ğ´ÈëÈÕÖ¾
+        //		/// å†™å…¥æ—¥å¿—
         //		/// </summary>
         //		/// <param name="log"></param>
         //		private void WriteLog(string log)
@@ -676,18 +676,18 @@ namespace PWMIS.DataProvider.Data
         //		}
 
         /// <summary>
-        /// Ö´ĞĞ²»·µ»ØÖµµÄ²éÑ¯£¬Èç¹û´Ë²éÑ¯³öÏÖÁË´íÎó²¢ÇÒÉèÖÃ OnErrorThrow ÊôĞÔÎª ÊÇ£¬½«Å×³ö´íÎó£»·ñÔò½«·µ»Ø -1£¬´ËÊ±Çë¼ì²éErrorMessageÊôĞÔ£»
-        /// Èç¹û´Ë²éÑ¯ÔÚÊÂÎñÖĞ²¢ÇÒ³öÏÖÁË´íÎó£¬½«¸ù¾İ OnErrorRollback ÊôĞÔÉèÖÃÊÇ·ñ×Ô¶¯»Ø¹öÊÂÎñ¡£
+        /// æ‰§è¡Œä¸è¿”å›å€¼çš„æŸ¥è¯¢ï¼Œå¦‚æœæ­¤æŸ¥è¯¢å‡ºç°äº†é”™è¯¯å¹¶ä¸”è®¾ç½® OnErrorThrow å±æ€§ä¸º æ˜¯ï¼Œå°†æŠ›å‡ºé”™è¯¯ï¼›å¦åˆ™å°†è¿”å› -1ï¼Œæ­¤æ—¶è¯·æ£€æŸ¥ErrorMessageå±æ€§ï¼›
+        /// å¦‚æœæ­¤æŸ¥è¯¢åœ¨äº‹åŠ¡ä¸­å¹¶ä¸”å‡ºç°äº†é”™è¯¯ï¼Œå°†æ ¹æ® OnErrorRollback å±æ€§è®¾ç½®æ˜¯å¦è‡ªåŠ¨å›æ»šäº‹åŠ¡ã€‚
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²ÎÊıÊı×é</param>
-        /// <returns>ÊÜÓ°ÏìµÄĞĞÊı</returns>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">å‚æ•°æ•°ç»„</param>
+        /// <returns>å—å½±å“çš„è¡Œæ•°</returns>
         public virtual int ExecuteNonQuery(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
             ErrorMessage = "";
             IDbConnection conn = GetConnection();
-            if (conn.State != ConnectionState.Open) //Á¬½ÓÒÑ¾­´ò¿ª£¬²»ÄÜÇĞ»»Á¬½Ó×Ö·û´®£¬¸ĞĞ»ÍøÓÑ ¡°³¤µÄÃ»ÀñÃ²¡±·¢ÏÖ´ËBug 
+            if (conn.State != ConnectionState.Open) //è¿æ¥å·²ç»æ‰“å¼€ï¼Œä¸èƒ½åˆ‡æ¢è¿æ¥å­—ç¬¦ä¸²ï¼Œæ„Ÿè°¢ç½‘å‹ â€œé•¿çš„æ²¡ç¤¼è²Œâ€å‘ç°æ­¤Bug 
                 conn.ConnectionString = this.DataWriteConnectionString;
             IDbCommand cmd = conn.CreateCommand();
             CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
@@ -698,14 +698,14 @@ namespace PWMIS.DataProvider.Data
             try
             {
                 result = cmd.ExecuteNonQuery();
-                //Èç¹û¿ªÆôÊÂÎñ£¬ÔòÓÉÉÏ²ãµ÷ÓÃÕß¾ö¶¨ºÎÊ±Ìá½»ÊÂÎñ
+                //å¦‚æœå¼€å¯äº‹åŠ¡ï¼Œåˆ™ç”±ä¸Šå±‚è°ƒç”¨è€…å†³å®šä½•æ—¶æäº¤äº‹åŠ¡
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
                 bool inTransaction = cmd.Transaction == null ? false : true;
 
-                //Èç¹û¿ªÆôÊÂÎñ£¬ÄÇÃ´´Ë´¦Ó¦¸Ã»ØÍËÊÂÎñ
+                //å¦‚æœå¼€å¯äº‹åŠ¡ï¼Œé‚£ä¹ˆæ­¤å¤„åº”è¯¥å›é€€äº‹åŠ¡
                 if (cmd.Transaction != null && OnErrorRollback)
                     cmd.Transaction.Rollback();
 
@@ -724,28 +724,28 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// Ö´ĞĞ²»·µ»ØÖµµÄ²éÑ¯£¬Èç¹û´Ë²éÑ¯³öÏÖÁË´íÎó£¬½«·µ»Ø -1£¬´ËÊ±Çë¼ì²éErrorMessageÊôĞÔ£»
-        /// Èç¹û´Ë²éÑ¯ÔÚÊÂÎñÖĞ²¢ÇÒ³öÏÖÁË´íÎó£¬½«¸ù¾İ OnErrorRollback ÊôĞÔÉèÖÃÊÇ·ñ×Ô¶¯»Ø¹öÊÂÎñ¡£
+        /// æ‰§è¡Œä¸è¿”å›å€¼çš„æŸ¥è¯¢ï¼Œå¦‚æœæ­¤æŸ¥è¯¢å‡ºç°äº†é”™è¯¯ï¼Œå°†è¿”å› -1ï¼Œæ­¤æ—¶è¯·æ£€æŸ¥ErrorMessageå±æ€§ï¼›
+        /// å¦‚æœæ­¤æŸ¥è¯¢åœ¨äº‹åŠ¡ä¸­å¹¶ä¸”å‡ºç°äº†é”™è¯¯ï¼Œå°†æ ¹æ® OnErrorRollback å±æ€§è®¾ç½®æ˜¯å¦è‡ªåŠ¨å›æ»šäº‹åŠ¡ã€‚
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <returns>ÊÜÓ°ÏìµÄĞĞÊı</returns>
+        /// <returns>å—å½±å“çš„è¡Œæ•°</returns>
         public int ExecuteNonQuery(string SQL)
         {
             return ExecuteNonQuery(SQL, CommandType.Text, null);
         }
 
         /// <summary>
-        /// Ö´ĞĞ²åÈëÊı¾İµÄ²éÑ¯£¬½öÏŞÓÚAccess£¬SqlServer
+        /// æ‰§è¡Œæ’å…¥æ•°æ®çš„æŸ¥è¯¢ï¼Œä»…é™äºAccessï¼ŒSqlServer
         /// </summary>
-        /// <param name="SQL">²åÈëÊı¾İµÄSQL</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²ÎÊıÊı×é</param>
-        /// <param name="ID">Òª´«³öµÄ±¾´Î²Ù×÷µÄĞÂ²åÈëÊı¾İĞĞµÄÖ÷¼üIDÖµ</param>
-        /// <returns>±¾´Î²éÑ¯ÊÜÓ°ÏìµÄĞĞÊı</returns>
+        /// <param name="SQL">æ’å…¥æ•°æ®çš„SQL</param>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">å‚æ•°æ•°ç»„</param>
+        /// <param name="ID">è¦ä¼ å‡ºçš„æœ¬æ¬¡æ“ä½œçš„æ–°æ’å…¥æ•°æ®è¡Œçš„ä¸»é”®IDå€¼</param>
+        /// <returns>æœ¬æ¬¡æŸ¥è¯¢å—å½±å“çš„è¡Œæ•°</returns>
         public virtual int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID)
         {
             IDbConnection conn = GetConnection();
-            if (conn.State != ConnectionState.Open) //Á¬½ÓÒÑ¾­´ò¿ª£¬²»ÄÜÇĞ»»Á¬½Ó×Ö·û´®£¬¸ĞĞ»ÍøÓÑ ¡°³¤µÄÃ»ÀñÃ²¡±·¢ÏÖ´ËBug 
+            if (conn.State != ConnectionState.Open) //è¿æ¥å·²ç»æ‰“å¼€ï¼Œä¸èƒ½åˆ‡æ¢è¿æ¥å­—ç¬¦ä¸²ï¼Œæ„Ÿè°¢ç½‘å‹ â€œé•¿çš„æ²¡ç¤¼è²Œâ€å‘ç°æ­¤Bug 
                 conn.ConnectionString = this.DataWriteConnectionString;
             IDbCommand cmd = conn.CreateCommand();
             CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
@@ -766,7 +766,7 @@ namespace PWMIS.DataProvider.Data
                 result = cmd.ExecuteNonQuery();
                 cmd.CommandText = this.InsertKey;// "SELECT @@IDENTITY ";
                 ID = cmd.ExecuteScalar();
-                //Èç¹ûÔÚÄÚ²¿¿ªÆôÁËÊÂÎñÔòÌá½»ÊÂÎñ£¬·ñÔòÍâ²¿µ÷ÓÃÕß¾ö¶¨ºÎÊ±Ìá½»ÊÂÎñ
+                //å¦‚æœåœ¨å†…éƒ¨å¼€å¯äº†äº‹åŠ¡åˆ™æäº¤äº‹åŠ¡ï¼Œå¦åˆ™å¤–éƒ¨è°ƒç”¨è€…å†³å®šä½•æ—¶æäº¤äº‹åŠ¡
                 if (inner)
                 {
                     cmd.Transaction.Commit();
@@ -798,23 +798,23 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// Ö´ĞĞ²åÈëÊı¾İµÄ²éÑ¯
+        /// æ‰§è¡Œæ’å…¥æ•°æ®çš„æŸ¥è¯¢
         /// </summary>
-        /// <param name="SQL">²åÈëÊı¾İµÄSQL</param>
-        /// <param name="ID">Òª´«³öµÄ±¾´Î²Ù×÷µÄĞÂ²åÈëÊı¾İĞĞµÄÖ÷¼üIDÖµ</param>
-        /// <returns>±¾´Î²éÑ¯ÊÜÓ°ÏìµÄĞĞÊı</returns>
+        /// <param name="SQL">æ’å…¥æ•°æ®çš„SQL</param>
+        /// <param name="ID">è¦ä¼ å‡ºçš„æœ¬æ¬¡æ“ä½œçš„æ–°æ’å…¥æ•°æ®è¡Œçš„ä¸»é”®IDå€¼</param>
+        /// <returns>æœ¬æ¬¡æŸ¥è¯¢å—å½±å“çš„è¡Œæ•°</returns>
         public int ExecuteInsertQuery(string SQL, ref object ID)
         {
             return ExecuteInsertQuery(SQL, CommandType.Text, null, ref ID);
         }
 
         /// <summary>
-        /// Ö´ĞĞ·µ»Øµ¥Ò»ÖµµÃ²éÑ¯
+        /// æ‰§è¡Œè¿”å›å•ä¸€å€¼å¾—æŸ¥è¯¢
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²ÎÊıÊı×é</param>
-        /// <returns>²éÑ¯½á¹û</returns>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">å‚æ•°æ•°ç»„</param>
+        /// <returns>æŸ¥è¯¢ç»“æœ</returns>
         public virtual object ExecuteScalar(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
             IDbConnection conn = GetConnection();
@@ -827,12 +827,12 @@ namespace PWMIS.DataProvider.Data
             try
             {
                 result = cmd.ExecuteScalar();
-                //Èç¹û¿ªÆôÊÂÎñ£¬ÔòÓÉÉÏ²ãµ÷ÓÃÕß¾ö¶¨ºÎÊ±Ìá½»ÊÂÎñ
+                //å¦‚æœå¼€å¯äº‹åŠ¡ï¼Œåˆ™ç”±ä¸Šå±‚è°ƒç”¨è€…å†³å®šä½•æ—¶æäº¤äº‹åŠ¡
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
-                //Èç¹û¿ªÆôÊÂÎñ£¬ÄÇÃ´´Ë´¦Ó¦¸Ã»ØÍËÊÂÎñ
+                //å¦‚æœå¼€å¯äº‹åŠ¡ï¼Œé‚£ä¹ˆæ­¤å¤„åº”è¯¥å›é€€äº‹åŠ¡
                 //if(cmd.Transaction!=null)
                 //    cmd.Transaction.Rollback ();
 
@@ -852,22 +852,22 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// Ö´ĞĞ·µ»Øµ¥Ò»ÖµµÃ²éÑ¯
+        /// æ‰§è¡Œè¿”å›å•ä¸€å€¼å¾—æŸ¥è¯¢
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <returns>²éÑ¯½á¹û</returns>
+        /// <returns>æŸ¥è¯¢ç»“æœ</returns>
         public object ExecuteScalar(string SQL)
         {
             return ExecuteScalar(SQL, CommandType.Text, null);
         }
 
         /// <summary>
-        /// Ö´ĞĞ·µ»ØÊı¾İ¼¯µÄ²éÑ¯
+        /// æ‰§è¡Œè¿”å›æ•°æ®é›†çš„æŸ¥è¯¢
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²ÎÊıÊı×é</param>
-        /// <returns>Êı¾İ¼¯</returns>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">å‚æ•°æ•°ç»„</param>
+        /// <returns>æ•°æ®é›†</returns>
         public virtual DataSet ExecuteDataSet(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
             //IDbConnection conn=GetConnection();
@@ -907,12 +907,12 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// Ö´ĞĞ·µ»ØÊı¾İ¼Ü¹¹µÄ²éÑ¯£¬×¢Òâ£¬²»·µ»ØÈÎºÎĞĞ
+        /// æ‰§è¡Œè¿”å›æ•°æ®æ¶æ„çš„æŸ¥è¯¢ï¼Œæ³¨æ„ï¼Œä¸è¿”å›ä»»ä½•è¡Œ
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²ÎÊıÊı×é</param>
-        /// <returns>Êı¾İ¼Ü¹¹</returns>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">å‚æ•°æ•°ç»„</param>
+        /// <returns>æ•°æ®æ¶æ„</returns>
         public virtual DataSet ExecuteDataSetSchema(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
             IDbConnection conn = GetConnection();
@@ -945,12 +945,12 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// Ö´ĞĞ²éÑ¯,²¢·µ»Ø¾ßÓĞÊı¾İ¼Ü¹¹µÄÊı¾İ¼¯(Õû¸ö¹ı³Ì½öÊ¹ÓÃÒ»´ÎÁ¬½Ó)
+        /// æ‰§è¡ŒæŸ¥è¯¢,å¹¶è¿”å›å…·æœ‰æ•°æ®æ¶æ„çš„æ•°æ®é›†(æ•´ä¸ªè¿‡ç¨‹ä»…ä½¿ç”¨ä¸€æ¬¡è¿æ¥)
         /// </summary>
-        /// <param name="SQL">²éÑ¯Óï¾ä</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²éÑ¯²ÎÊı</param>
-        /// <returns>¾ßÓĞÊı¾İ¼Ü¹¹µÄÊı¾İ¼¯</returns>
+        /// <param name="SQL">æŸ¥è¯¢è¯­å¥</param>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">æŸ¥è¯¢å‚æ•°</param>
+        /// <returns>å…·æœ‰æ•°æ®æ¶æ„çš„æ•°æ®é›†</returns>
         public virtual DataSet ExecuteDataSetWithSchema(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
             IDbConnection conn = GetConnection();
@@ -988,13 +988,13 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// Ö´ĞĞ²éÑ¯,²¢ÒÔÖ¸¶¨µÄ(¾ßÓĞÊı¾İ¼Ü¹¹µÄ)Êı¾İ¼¯À´Ìî³äÊı¾İ
+        /// æ‰§è¡ŒæŸ¥è¯¢,å¹¶ä»¥æŒ‡å®šçš„(å…·æœ‰æ•°æ®æ¶æ„çš„)æ•°æ®é›†æ¥å¡«å……æ•°æ®
         /// </summary>
-        /// <param name="SQL">²éÑ¯Óï¾ä</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²éÑ¯²ÎÊı</param>
-        /// <param name="schemaDataSet">Ö¸¶¨µÄ(¾ßÓĞÊı¾İ¼Ü¹¹µÄ)Êı¾İ¼¯</param>
-        /// <returns>¾ßÓĞÊı¾İµÄÊı¾İ¼¯</returns>
+        /// <param name="SQL">æŸ¥è¯¢è¯­å¥</param>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">æŸ¥è¯¢å‚æ•°</param>
+        /// <param name="schemaDataSet">æŒ‡å®šçš„(å…·æœ‰æ•°æ®æ¶æ„çš„)æ•°æ®é›†</param>
+        /// <returns>å…·æœ‰æ•°æ®çš„æ•°æ®é›†</returns>
         public virtual DataSet ExecuteDataSetWithSchema(string SQL, CommandType commandType, IDataParameter[] parameters, DataSet schemaDataSet)
         {
             IDbConnection conn = GetConnection();
@@ -1006,7 +1006,7 @@ namespace PWMIS.DataProvider.Data
 
             try
             {
-                //Ê¹ÓÃMyDB.Intance Á¬½Ó²»ÄÜ¼°Ê±¹Ø±Õ£¿´ı²âÊÔ
+                //ä½¿ç”¨MyDB.Intance è¿æ¥ä¸èƒ½åŠæ—¶å…³é—­ï¼Ÿå¾…æµ‹è¯•
                 ada.Fill(schemaDataSet);//FillSchema(ds,SchemaType.Mapped )
             }
             catch (Exception ex)
@@ -1028,10 +1028,10 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// Ö´ĞĞ·µ»ØÊı¾İ¼¯µÄ²éÑ¯
+        /// æ‰§è¡Œè¿”å›æ•°æ®é›†çš„æŸ¥è¯¢
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <returns>Êı¾İ¼¯</returns>
+        /// <returns>æ•°æ®é›†</returns>
         public DataSet ExecuteDataSet(string SQL)
         {
             return ExecuteDataSet(SQL, CommandType.Text, null);
@@ -1039,26 +1039,26 @@ namespace PWMIS.DataProvider.Data
 
 
         /// <summary>
-        /// ·µ»Øµ¥Ò»ĞĞµÄÊı¾İÔÄ¶ÁÆ÷
+        /// è¿”å›å•ä¸€è¡Œçš„æ•°æ®é˜…è¯»å™¨
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <returns>Êı¾İÔÄ¶ÁÆ÷</returns>
+        /// <returns>æ•°æ®é˜…è¯»å™¨</returns>
         public IDataReader ExecuteDataReaderWithSingleRow(string SQL)
         {
             IDataParameter[] paras = { };
-            //ÔÚÓĞÊÂÎñµÄÊ±ºò²»ÄÜ¹Ø±ÕÁ¬½Ó
+            //åœ¨æœ‰äº‹åŠ¡çš„æ—¶å€™ä¸èƒ½å…³é—­è¿æ¥
             return ExecuteDataReaderWithSingleRow(SQL, paras);
         }
 
         /// <summary>
-        /// ·µ»Øµ¥Ò»ĞĞµÄÊı¾İÔÄ¶ÁÆ÷
+        /// è¿”å›å•ä¸€è¡Œçš„æ•°æ®é˜…è¯»å™¨
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <param name="paras">²ÎÊı</param>
-        /// <returns>Êı¾İÔÄ¶ÁÆ÷</returns>
+        /// <param name="paras">å‚æ•°</param>
+        /// <returns>æ•°æ®é˜…è¯»å™¨</returns>
         public IDataReader ExecuteDataReaderWithSingleRow(string SQL, IDataParameter[] paras)
         {
-            //ÔÚÓĞÊÂÎñ»òÕßÓĞÁ¬½Ó»á»°µÄÊ±ºò²»ÄÜ¹Ø±ÕÁ¬½Ó
+            //åœ¨æœ‰äº‹åŠ¡æˆ–è€…æœ‰è¿æ¥ä¼šè¯çš„æ—¶å€™ä¸èƒ½å…³é—­è¿æ¥
             if (this.transCount > 0 || this.sessionConnection != null)
                 return ExecuteDataReader(ref SQL, CommandType.Text, CommandBehavior.SingleRow, ref paras);
             else
@@ -1066,15 +1066,15 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ¸ù¾İ²éÑ¯·µ»ØÊı¾İÔÄ¶ÁÆ÷¶ÔÏó£¬ÔÚ·ÇÊÂÎñ¹ı³ÌÖĞ£¬ÔÄ¶ÁÍêÒÔºó»á×Ô¶¯¹Ø±ÕÊı¾İ¿âÁ¬½Ó
+        /// æ ¹æ®æŸ¥è¯¢è¿”å›æ•°æ®é˜…è¯»å™¨å¯¹è±¡ï¼Œåœ¨éäº‹åŠ¡è¿‡ç¨‹ä¸­ï¼Œé˜…è¯»å®Œä»¥åä¼šè‡ªåŠ¨å…³é—­æ•°æ®åº“è¿æ¥
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <returns>Êı¾İÔÄ¶ÁÆ÷</returns>
+        /// <returns>æ•°æ®é˜…è¯»å™¨</returns>
         public IDataReader ExecuteDataReader(string SQL)
         {
             IDataParameter[] paras = { };
-            //ÔÚÓĞÊÂÎñ»òÕßÓĞ»á»°µÄÊ±ºò²»ÄÜ¹Ø±ÕÁ¬½Ó edit at 2012.7.23
-            //this.Transaction == null ²»°²È«
+            //åœ¨æœ‰äº‹åŠ¡æˆ–è€…æœ‰ä¼šè¯çš„æ—¶å€™ä¸èƒ½å…³é—­è¿æ¥ edit at 2012.7.23
+            //this.Transaction == null ä¸å®‰å…¨
             CommandBehavior behavior = this.transCount > 0 || this.sessionConnection != null
                 ? CommandBehavior.SingleResult
                 : CommandBehavior.SingleResult | CommandBehavior.CloseConnection;
@@ -1082,11 +1082,11 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ¸ù¾İ²éÑ¯·µ»ØÊı¾İÔÄ¶ÁÆ÷¶ÔÏó
+        /// æ ¹æ®æŸ¥è¯¢è¿”å›æ•°æ®é˜…è¯»å™¨å¯¹è±¡
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <param name="cmdBehavior">¶Ô²éÑ¯ºÍ·µ»Ø½á¹ûÓĞÓ°ÏìµÄËµÃ÷</param>
-        /// <returns>Êı¾İÔÄ¶ÁÆ÷</returns>
+        /// <param name="cmdBehavior">å¯¹æŸ¥è¯¢å’Œè¿”å›ç»“æœæœ‰å½±å“çš„è¯´æ˜</param>
+        /// <returns>æ•°æ®é˜…è¯»å™¨</returns>
         public IDataReader ExecuteDataReader(string SQL, CommandBehavior cmdBehavior)
         {
             IDataParameter[] paras = { };
@@ -1094,16 +1094,16 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ¸ù¾İ²éÑ¯·µ»ØÊı¾İÔÄ¶ÁÆ÷¶ÔÏó£¬µ«²»¿ÉËæ»ú¶ÁÈ¡ĞĞÄÚÊı¾İ
+        /// æ ¹æ®æŸ¥è¯¢è¿”å›æ•°æ®é˜…è¯»å™¨å¯¹è±¡ï¼Œä½†ä¸å¯éšæœºè¯»å–è¡Œå†…æ•°æ®
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²ÎÊıÊı×é</param>
-        /// <returns>Êı¾İÔÄ¶ÁÆ÷</returns>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">å‚æ•°æ•°ç»„</param>
+        /// <returns>æ•°æ®é˜…è¯»å™¨</returns>
         public IDataReader ExecuteDataReader(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
-            //ÔÚÓĞÊÂÎñ»òÕßÓĞ»á»°µÄÊ±ºò²»ÄÜ¹Ø±ÕÁ¬½Ó edit at 2012.7.23
-            //this.Transaction == null ²»°²È«
+            //åœ¨æœ‰äº‹åŠ¡æˆ–è€…æœ‰ä¼šè¯çš„æ—¶å€™ä¸èƒ½å…³é—­è¿æ¥ edit at 2012.7.23
+            //this.Transaction == null ä¸å®‰å…¨
             CommandBehavior behavior = this.transCount > 0 || this.sessionConnection != null
                 ? CommandBehavior.SingleResult
                 : CommandBehavior.SingleResult | CommandBehavior.CloseConnection;
@@ -1111,28 +1111,28 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ¸ù¾İ²éÑ¯·µ»ØÊı¾İÔÄ¶ÁÆ÷¶ÔÏó,¿ÉÒÔË³Ğò¶ÁÈ¡ĞĞÄÚµÄ´óÊı¾İÁĞ
+        /// æ ¹æ®æŸ¥è¯¢è¿”å›æ•°æ®é˜…è¯»å™¨å¯¹è±¡,å¯ä»¥é¡ºåºè¯»å–è¡Œå†…çš„å¤§æ•°æ®åˆ—
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²ÎÊıÊı×é</param>
-        /// <returns>Êı¾İÔÄ¶ÁÆ÷</returns>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">å‚æ•°æ•°ç»„</param>
+        /// <returns>æ•°æ®é˜…è¯»å™¨</returns>
         public IDataReader ExecuteDataReaderSequentialAccess(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
-            CommandBehavior behavior = this.transCount == 0 //this.Transaction == null ²»°²È«
+            CommandBehavior behavior = this.transCount == 0 //this.Transaction == null ä¸å®‰å…¨
                 ? CommandBehavior.SingleResult | CommandBehavior.CloseConnection | CommandBehavior.SequentialAccess
-                : CommandBehavior.SingleResult | CommandBehavior.SequentialAccess;//ĞÂÔöSequentialAccess 2013.9.24
+                : CommandBehavior.SingleResult | CommandBehavior.SequentialAccess;//æ–°å¢SequentialAccess 2013.9.24
             return ExecuteDataReader(ref SQL, commandType, behavior, ref parameters);
         }
 
         /// <summary>
-        /// ¸ù¾İ²éÑ¯·µ»ØÊı¾İÔÄ¶ÁÆ÷¶ÔÏó
+        /// æ ¹æ®æŸ¥è¯¢è¿”å›æ•°æ®é˜…è¯»å™¨å¯¹è±¡
         /// </summary>
         /// <param name="SQL">SQL</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="cmdBehavior">¶Ô²éÑ¯ºÍ·µ»Ø½á¹ûÓĞÓ°ÏìµÄËµÃ÷</param>
-        /// <param name="parameters">²ÎÊıÊı×é</param>
-        /// <returns>Êı¾İÔÄ¶ÁÆ÷</returns>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="cmdBehavior">å¯¹æŸ¥è¯¢å’Œè¿”å›ç»“æœæœ‰å½±å“çš„è¯´æ˜</param>
+        /// <param name="parameters">å‚æ•°æ•°ç»„</param>
+        /// <returns>æ•°æ®é˜…è¯»å™¨</returns>
         protected virtual IDataReader ExecuteDataReader(ref string SQL, CommandType commandType, CommandBehavior cmdBehavior, ref IDataParameter[] parameters)
         {
             IDbConnection conn = GetConnection();
@@ -1144,7 +1144,7 @@ namespace PWMIS.DataProvider.Data
             IDataReader reader = null;
             try
             {
-                //Èç¹ûÃüÁî¶ÔÏóµÄÊÂÎñ¶ÔÏóÎª¿Õ£¬ÄÇÃ´Ç¿ÖÆÔÚ¶ÁÈ¡ÍêÊı¾İºó¹Ø±ÕÔÄ¶ÁÆ÷µÄÊı¾İ¿âÁ¬½Ó 2008.3.20
+                //å¦‚æœå‘½ä»¤å¯¹è±¡çš„äº‹åŠ¡å¯¹è±¡ä¸ºç©ºï¼Œé‚£ä¹ˆå¼ºåˆ¶åœ¨è¯»å–å®Œæ•°æ®åå…³é—­é˜…è¯»å™¨çš„æ•°æ®åº“è¿æ¥ 2008.3.20
                 if (cmd.Transaction == null && cmdBehavior == CommandBehavior.Default)
                     cmdBehavior = CommandBehavior.CloseConnection;
                 reader = cmd.ExecuteReader(cmdBehavior);
@@ -1152,7 +1152,7 @@ namespace PWMIS.DataProvider.Data
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
-                //Ö»ÓĞ³öÏÖÁË´íÎó¶øÇÒÃ»ÓĞ¿ªÆôÊÂÎñ£¬¿ÉÒÔ¹Ø±ÕÁ¬½á
+                //åªæœ‰å‡ºç°äº†é”™è¯¯è€Œä¸”æ²¡æœ‰å¼€å¯äº‹åŠ¡ï¼Œå¯ä»¥å…³é—­è¿ç»“
                 //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
                 //    conn.Close();
                 CloseConnection(conn, cmd);
@@ -1172,10 +1172,10 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ¹Ø±ÕÁ¬½Ó
+        /// å…³é—­è¿æ¥
         /// </summary>
-        /// <param name="conn">Á¬½Ó¶ÔÏó</param>
-        /// <param name="cmd">ÃüÁî¶ÔÏó</param>
+        /// <param name="conn">è¿æ¥å¯¹è±¡</param>
+        /// <param name="cmd">å‘½ä»¤å¯¹è±¡</param>
         protected void CloseConnection(IDbConnection conn, IDbCommand cmd)
         {
             if (cmd.Transaction == null && conn != sessionConnection && conn.State == ConnectionState.Open)

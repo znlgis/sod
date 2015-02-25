@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2013-3-1                
- * ĞŞ¸ÄËµÃ÷£ºÍêÉÆÁË¿Ø¼ş
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2013-3-1                
+ * ä¿®æ”¹è¯´æ˜ï¼šå®Œå–„äº†æ§ä»¶
  * ========================================================================
 */
 using System;
@@ -38,12 +38,12 @@ namespace PWMIS.Web.Controls
             //
         }
 
-        #region Íâ¹ÛÊôĞÔ
+        #region å¤–è§‚å±æ€§
 
         /// <summary>
-        /// Êı¾İ³ÊÏÖ¸ñÊ½
+        /// æ•°æ®å‘ˆç°æ ¼å¼
         /// </summary>
-        [Category("Íâ¹Û"), Description("Êı¾İ³ÊÏÖ¸ñÊ½")]
+        [Category("å¤–è§‚"), Description("æ•°æ®å‘ˆç°æ ¼å¼")]
         public string DataFormatString
         {
             get
@@ -60,13 +60,13 @@ namespace PWMIS.Web.Controls
 
         #endregion
 
-        #region IBrainControl ³ÉÔ±
+        #region IBrainControl æˆå‘˜
 
-        #region Êı¾İÊôĞÔ
-        [Category("Data"), Description("Éè¶¨¶ÔÓ¦µÄÊı¾İÔ´£¬¸ñÊ½£ºFullClassName,AssemblyName ¡£Èç¹ûĞèÒª°ó¶¨ÊµÌåÀà£¬¿ÉÒÔÉèÖÃ¸ÃÊôĞÔ¡£")]
+        #region æ•°æ®å±æ€§
+        [Category("Data"), Description("è®¾å®šå¯¹åº”çš„æ•°æ®æºï¼Œæ ¼å¼ï¼šFullClassName,AssemblyName ã€‚å¦‚æœéœ€è¦ç»‘å®šå®ä½“ç±»ï¼Œå¯ä»¥è®¾ç½®è¯¥å±æ€§ã€‚")]
         public string DataProvider { get; set; }
 
-        [Category("Data"), Description("Éè¶¨¶ÔÓ¦µÄÊı¾İ¿â×Ö¶ÎÊÇ·ñÊÇÖ÷¼ü£¬ÓÃÓÚ×Ô¶¯Êı¾İ²éÑ¯ºÍ¸üĞÂµÄÒÀ¾İ")]
+        [Category("Data"), Description("è®¾å®šå¯¹åº”çš„æ•°æ®åº“å­—æ®µæ˜¯å¦æ˜¯ä¸»é”®ï¼Œç”¨äºè‡ªåŠ¨æ•°æ®æŸ¥è¯¢å’Œæ›´æ–°çš„ä¾æ®")]
         public bool PrimaryKey
         {
             get
@@ -81,7 +81,7 @@ namespace PWMIS.Web.Controls
             }
         }
 
-        [Category("Data"), Description("Éè¶¨¶ÔÓ¦µÄÊı¾İ×Ö¶ÎÀàĞÍ")]
+        [Category("Data"), Description("è®¾å®šå¯¹åº”çš„æ•°æ®å­—æ®µç±»å‹")]
         public System.TypeCode SysTypeCode
         {
             get
@@ -96,7 +96,7 @@ namespace PWMIS.Web.Controls
             }
         }
 
-        [Category("Data"), Description("Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İÃû")]
+        [Category("Data"), Description("è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®å")]
         public string LinkProperty
         {
             get
@@ -111,7 +111,7 @@ namespace PWMIS.Web.Controls
             }
         }
 
-        [Category("Data"), Description("Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İ±íÃû")]
+        [Category("Data"), Description("è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®è¡¨å")]
         public string LinkObject
         {
             get
@@ -128,7 +128,7 @@ namespace PWMIS.Web.Controls
 
         #endregion
 
-        #region ½Ó¿Ú·½·¨
+        #region æ¥å£æ–¹æ³•
 
         public void SetValue(object value)
         {
@@ -151,7 +151,7 @@ namespace PWMIS.Web.Controls
 
         #endregion
 
-        #region Ä¬ÈÏÊôĞÔ
+        #region é»˜è®¤å±æ€§
 
         public bool isClientValidation
         {

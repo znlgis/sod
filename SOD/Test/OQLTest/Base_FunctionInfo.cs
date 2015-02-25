@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +8,7 @@ using PWMIS.DataMap.Entity;
 namespace UPMS.Core.Model
 {
     /// <summary>
-    /// 实体映射：业务功能表
+    /// 瀹炰綋鏄犲皠锛氫笟鍔″姛鑳借〃
     /// </summary>
     public class Base_FunctionInfo : EntityBase
     {
@@ -24,7 +24,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 功能编号
+        /// 鍔熻兘缂栧彿
         /// </summary>
         public string FunctionId
         {
@@ -33,7 +33,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 业务功能名称（该名称为左侧导航二级目录名称）
+        /// 涓氬姟鍔熻兘鍚嶇О锛堣鍚嶇О涓哄乏渚у鑸簩绾х洰褰曞悕绉帮級
         /// </summary>
         public string FunctionName
         {
@@ -42,7 +42,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 备注（主要用于区别同名的功能）
+        /// 澶囨敞锛堜富瑕佺敤浜庡尯鍒悓鍚嶇殑鍔熻兘锛?
         /// </summary>
         public string Remarks
         {
@@ -51,7 +51,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 业务模块编号（外键）
+        /// 涓氬姟妯″潡缂栧彿锛堝閿級
         /// </summary>
         public string ModuleId
         {
@@ -60,7 +60,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 导航地址（如果为空则为无导航）
+        /// 瀵艰埅鍦板潃锛堝鏋滀负绌哄垯涓烘棤瀵艰埅锛?
         /// </summary>
         public string NavigateAddress
         {
@@ -69,7 +69,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 排序（模块内排序）
+        /// 鎺掑簭锛堟ā鍧楀唴鎺掑簭锛?
         /// </summary>
         public int OrderIndex
         {
@@ -78,7 +78,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 删除标记
+        /// 鍒犻櫎鏍囪
         /// </summary>
         public int DeleteFlag
         {
@@ -87,7 +87,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 扩展标记（常用）
+        /// 鎵╁睍鏍囪锛堝父鐢級
         /// </summary>
         public int ExtendFlag
         {
@@ -96,7 +96,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 扩展标记（备用）
+        /// 鎵╁睍鏍囪锛堝鐢級
         /// </summary>
         public int ExtendFlagBak
         {

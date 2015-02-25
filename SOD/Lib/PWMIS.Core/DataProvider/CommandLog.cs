@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2010-4-13                
- * ĞŞ¸ÄËµÃ÷£º       Ôö¼ÓÊÊÊ±²é¿´Ö´ĞĞµÄSQLÊôĞÔ CommandText
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2010-4-13                
+ * ä¿®æ”¹è¯´æ˜ï¼š       å¢åŠ é€‚æ—¶æŸ¥çœ‹æ‰§è¡Œçš„SQLå±æ€§ CommandText
  * ========================================================================
 */
 using System;
@@ -21,14 +21,14 @@ using PWMIS.Core;
 namespace PWMIS.DataProvider.Data
 {
 	/// <summary>
-	/// ÃüÁî¶ÔÏóÈÕÖ¾2008.7.18 Ôö¼ÓÏß³Ì´¦Àí,2011.5.9 Ôö¼ÓÖ´ĞĞÊ±¼ä¼ÇÂ¼
+	/// å‘½ä»¤å¯¹è±¡æ—¥å¿—2008.7.18 å¢åŠ çº¿ç¨‹å¤„ç†,2011.5.9 å¢åŠ æ‰§è¡Œæ—¶é—´è®°å½•
 	/// </summary>
 	public class CommandLog
 	{
-		//ÈÕÖ¾Ïà¹Ø
+		//æ—¥å¿—ç›¸å…³
         private static  string _dataLogFile;
         /// <summary>
-        /// »ñÈ¡»òÕßÉèÖÃÈÕÖ¾ÎÄ¼şµÄÂ·¾¶£¬¿ÉÒÔ´øWebÏà¶ÔÂ·¾¶
+        /// è·å–æˆ–è€…è®¾ç½®æ—¥å¿—æ–‡ä»¶çš„è·¯å¾„ï¼Œå¯ä»¥å¸¦Webç›¸å¯¹è·¯å¾„
         /// </summary>
         public static string DataLogFile
         {
@@ -51,12 +51,12 @@ namespace PWMIS.DataProvider.Data
 
         private static bool _saveCommandLog;
         /// <summary>
-        /// ÊÇ·ñ¼ÇÂ¼ÈÕÖ¾ÎÄ¼ş
+        /// æ˜¯å¦è®°å½•æ—¥å¿—æ–‡ä»¶
         /// </summary>
         public  static  bool SaveCommandLog
         {
             get {
-                string temp = DataLogFile;//±ØĞëÏÈµ÷ÓÃÏÂ£¬ÒÔ¼ÆËã_saveCommandLog
+                string temp = DataLogFile;//å¿…é¡»å…ˆè°ƒç”¨ä¸‹ï¼Œä»¥è®¡ç®—_saveCommandLog
                 return _saveCommandLog;
             }
             set { _saveCommandLog = value; }
@@ -64,7 +64,7 @@ namespace PWMIS.DataProvider.Data
 
         private static long _logExecutedTime = -1;
         /// <summary>
-        /// ĞèÒª¼ÇÂ¼µÄÊ±¼ä£¬Ö»ÓĞ¸ÃÖµµÈÓÚ0»á¼ÇÂ¼ËùÓĞ²éÑ¯£¬·ñÔòÖ»¼ÇÂ¼´óÓÚ¸ÃÊ±¼äµÄ²éÑ¯¡£µ¥Î»ºÁÃë¡£
+        /// éœ€è¦è®°å½•çš„æ—¶é—´ï¼Œåªæœ‰è¯¥å€¼ç­‰äº0ä¼šè®°å½•æ‰€æœ‰æŸ¥è¯¢ï¼Œå¦åˆ™åªè®°å½•å¤§äºè¯¥æ—¶é—´çš„æŸ¥è¯¢ã€‚å•ä½æ¯«ç§’ã€‚
         /// </summary>
         public static long LogExecutedTime
         {
@@ -88,7 +88,7 @@ namespace PWMIS.DataProvider.Data
         
 
 		/// <summary>
-		/// »ñÈ¡µ¥Àı¶ÔÏó
+		/// è·å–å•ä¾‹å¯¹è±¡
 		/// </summary>
 		public static CommandLog Instance
 		{
@@ -109,7 +109,7 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// Ä¬ÈÏ¹¹Ôìº¯Êı
+		/// é»˜è®¤æ„é€ å‡½æ•°
 		/// </summary>
 		public CommandLog()
 		{
@@ -117,7 +117,7 @@ namespace PWMIS.DataProvider.Data
 		}
 
         /// <summary>
-        /// ÊÇ·ñ¿ªÆôÖ´ĞĞÊ±¼ä¼ÇÂ¼
+        /// æ˜¯å¦å¼€å¯æ‰§è¡Œæ—¶é—´è®°å½•
         /// </summary>
         /// <param name="startStopwatch"></param>
         public CommandLog(bool startStopwatch)
@@ -130,7 +130,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ÖØĞÂ¿ªÊ¼¼ÇÂ¼Ö´ĞĞÊ±¼ä
+        /// é‡æ–°å¼€å§‹è®°å½•æ‰§è¡Œæ—¶é—´
         /// </summary>
         public void ReSet()
         {
@@ -139,7 +139,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡µ±Ç°Ö´ĞĞµÄÊµ¼ÊSQLÓï¾ä
+        /// è·å–å½“å‰æ‰§è¡Œçš„å®é™…SQLè¯­å¥
         /// </summary>
         public string CommandText
         {
@@ -148,11 +148,11 @@ namespace PWMIS.DataProvider.Data
         }
        
 		/// <summary>
-        /// Ğ´ÃüÁîÈÕÖ¾ºÍÖ´ĞĞÊ±¼ä£¨Èç¹û¿ªÆôµÄ»°£©
+        /// å†™å‘½ä»¤æ—¥å¿—å’Œæ‰§è¡Œæ—¶é—´ï¼ˆå¦‚æœå¼€å¯çš„è¯ï¼‰
 		/// </summary>
-        /// <param name="command">ÃüÁî¶ÔÏó</param>
-		/// <param name="who">µ÷ÓÃÃüÁîµÄÔ´Ãû³Æ</param>
-        /// <param name="elapsedMilliseconds">Ö´ĞĞÊ±¼ä</param>
+        /// <param name="command">å‘½ä»¤å¯¹è±¡</param>
+		/// <param name="who">è°ƒç”¨å‘½ä»¤çš„æºåç§°</param>
+        /// <param name="elapsedMilliseconds">æ‰§è¡Œæ—¶é—´</param>
 		public void WriteLog(IDbCommand command,string who,out long elapsedMilliseconds)
 		{
             CommandText = command.CommandText;
@@ -176,21 +176,21 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		///Ğ´ÈëÈÕÖ¾ÏûÏ¢
+		///å†™å…¥æ—¥å¿—æ¶ˆæ¯
 		/// </summary>
-		/// <param name="msg">ÏûÏ¢</param>
-		/// <param name="who">·¢ËÍÕß</param>
+		/// <param name="msg">æ¶ˆæ¯</param>
+		/// <param name="who">å‘é€è€…</param>
 		public void WriteLog(string msg,string who)
 		{
 			if(SaveCommandLog)
-				WriteLog ("//"+DateTime.Now.ToString ()+ " @"+who+" £º"+msg+"\r\n");
+				WriteLog ("//"+DateTime.Now.ToString ()+ " @"+who+" ï¼š"+msg+"\r\n");
 		}
 
         /// <summary>
-        /// Ğ´´íÎóÈÕÖ¾£¬½«Ê¹ÓÃ DataLogFile ÅäÖÃ¼üµÄÎÄ¼şÃûĞ´ÎÄ¼ş£¬²»ÊÜSaveCommandLog Ó°Ïì£¬³ı·Ç DataLogFile Î´ÉèÖÃ»òÎª¿Õ¡£
+        /// å†™é”™è¯¯æ—¥å¿—ï¼Œå°†ä½¿ç”¨ DataLogFile é…ç½®é”®çš„æ–‡ä»¶åå†™æ–‡ä»¶ï¼Œä¸å—SaveCommandLog å½±å“ï¼Œé™¤é DataLogFile æœªè®¾ç½®æˆ–ä¸ºç©ºã€‚
         /// </summary>
-        /// <param name="command">ÃüÁî¶ÔÏó</param>
-        /// <param name="errmsg">µ÷ÓÃÃüÁîµÄÔ´Ãû³Æ</param>
+        /// <param name="command">å‘½ä»¤å¯¹è±¡</param>
+        /// <param name="errmsg">è°ƒç”¨å‘½ä»¤çš„æºåç§°</param>
         public void WriteErrLog(IDbCommand command, string errmsg)
         {
             if (!string.IsNullOrEmpty(DataLogFile))
@@ -201,9 +201,9 @@ namespace PWMIS.DataProvider.Data
         }
 
 		/// <summary>
-		/// »ñÈ¡ÈÕÖ¾ÎÄ±¾
+		/// è·å–æ—¥å¿—æ–‡æœ¬
 		/// </summary>
-		/// <returns>ÈÕÖ¾ÎÄ±¾</returns>
+		/// <returns>æ—¥å¿—æ–‡æœ¬</returns>
 		public string GetLog()
 		{
 			StreamReader sr= File.OpenText(DataLogFile );
@@ -213,19 +213,19 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// ¼ÇÂ¼ÃüÁîĞÅÏ¢
+		/// è®°å½•å‘½ä»¤ä¿¡æ¯
 		/// </summary>
-		/// <param name="command">ÃüÁî¶ÔÏó</param>
-        /// <param name="who">Ö´ĞĞÈË</param>
+		/// <param name="command">å‘½ä»¤å¯¹è±¡</param>
+        /// <param name="who">æ‰§è¡Œäºº</param>
 		private void RecordCommandLog(IDbCommand command,string who)
 		{
-			string temp="//"+DateTime.Now.ToString ()+ " @"+who+" Ö´ĞĞÃüÁî£º\r\nSQL=\""+command.CommandText+"\"\r\n//ÃüÁîÀàĞÍ£º"+command.CommandType.ToString ();
+			string temp="//"+DateTime.Now.ToString ()+ " @"+who+" æ‰§è¡Œå‘½ä»¤ï¼š\r\nSQL=\""+command.CommandText+"\"\r\n//å‘½ä»¤ç±»å‹ï¼š"+command.CommandType.ToString ();
 			if(command.Transaction !=null)
-				temp=temp.Replace ("Ö´ĞĞÃüÁî","Ö´ĞĞÊÂÎñ");
+				temp=temp.Replace ("æ‰§è¡Œå‘½ä»¤","æ‰§è¡Œäº‹åŠ¡");
 			WriteLog(temp);
 			if(command.Parameters.Count >0)
 			{
-				WriteLog("//"+command.Parameters.Count+"¸öÃüÁî²ÎÊı£º");
+				WriteLog("//"+command.Parameters.Count+"ä¸ªå‘½ä»¤å‚æ•°ï¼š");
 				for(int i=0;i<command.Parameters.Count ;i++)
 				{
 					IDataParameter p=(IDataParameter)command.Parameters[i];
@@ -237,12 +237,12 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// Ğ´ÈëÈÕÖ¾
+		/// å†™å…¥æ—¥å¿—
 		/// </summary>
 		/// <param name="log"></param>
 		private void WriteLog(string log)
 		{
-            //edit at 2012.10.17 ¸Ä³ÉÎŞËøÒì²½Ğ´ÈçÈÕÖ¾ÎÄ¼ş
+            //edit at 2012.10.17 æ”¹æˆæ— é”å¼‚æ­¥å†™å¦‚æ—¥å¿—æ–‡ä»¶
             using (FileStream fs = new FileStream(DataLogFile, FileMode.Append, FileAccess.Write, FileShare.Write, 1024, FileOptions.Asynchronous))
             {
                 byte[] buffer = System.Text.Encoding.UTF8.GetBytes(log + "\r\n");
@@ -251,12 +251,12 @@ namespace PWMIS.DataProvider.Data
                     {
                         FileStream fStream = (FileStream)asyncResult.AsyncState;
                         fStream.EndWrite(asyncResult);
-                        //fs.Close();//ÕâÀï¼ÓÁË»á±¨´í
+                        //fs.Close();//è¿™é‡ŒåŠ äº†ä¼šæŠ¥é”™
                     },
                     fs);
-                //fs.EndWrite(writeResult);//ÕâÖÖ·½·¨Òì²½Æğ²»µ½Ğ§¹û
+                //fs.EndWrite(writeResult);//è¿™ç§æ–¹æ³•å¼‚æ­¥èµ·ä¸åˆ°æ•ˆæœ
                 fs.Flush();
-                //fs.Close();//¿ÉÒÔ²»ÓÃ¼Ó
+                //fs.Close();//å¯ä»¥ä¸ç”¨åŠ 
             }
 
             //lock (lockObj)

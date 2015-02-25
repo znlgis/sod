@@ -1,43 +1,43 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV5.1
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV5.1
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2013-3-5                
- * ĞŞ¸ÄËµÃ÷£ºOracle·ÖÒ³µÄÒ»¸öÎÊÌâ£¬ÉÙÒ»Ìõ¼ÇÂ¼£¨ÍøÓÑ´ó´ó±¦·¢ÏÖ£©
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2013-3-5                
+ * ä¿®æ”¹è¯´æ˜ï¼šOracleåˆ†é¡µçš„ä¸€ä¸ªé—®é¢˜ï¼Œå°‘ä¸€æ¡è®°å½•ï¼ˆç½‘å‹å¤§å¤§å®å‘ç°ï¼‰
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2014-5-6                
- * ĞŞ¸ÄËµÃ÷£ºOracle·ÖÒ³µÄÊ±ºò£¬Ê¹ÓÃstrWhereUpper À´ÅĞ¶Ï£¬±ÜÃâ´óĞ´ÎÊÌâ£¬
- * Oracle ¶ÔµÄ´óĞ´µÄ×Ö¶ÎÓĞ²»Í¬µÄÒâÒå£¨ÍøÓÑ´ó´ó±¦·¢ÏÖ£©
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2014-5-6                
+ * ä¿®æ”¹è¯´æ˜ï¼šOracleåˆ†é¡µçš„æ—¶å€™ï¼Œä½¿ç”¨strWhereUpper æ¥åˆ¤æ–­ï¼Œé¿å…å¤§å†™é—®é¢˜ï¼Œ
+ * Oracle å¯¹çš„å¤§å†™çš„å­—æ®µæœ‰ä¸åŒçš„æ„ä¹‰ï¼ˆç½‘å‹å¤§å¤§å®å‘ç°ï¼‰
  * 
  * ========================================================================
 */
 //**************************************************************************
-//	ÎÄ ¼ş Ãû£º  BFService
-//	ÓÃ	  Í¾£º  SQL SERVER ·ÖÒ³´¦Àí³ÌĞò
-//	´´ ½¨ ÈË£º  µËÌ«»ª
-//  ´´½¨ÈÕÆÚ£º  2006.7.26
-//	°æ ±¾ ºÅ£º	V4.6.2.0411
-//	ĞŞ¸Ä¼ÇÂ¼£º  µËÌ«»ª 2008.3.30 ĞŞ¸ÄÁË¶îÍâ²éÑ¯(¶Ô@@WhereÌõ¼şµÄÖ§³Ö)¿ÉÄÜÒıÆğµÄBug
-//              µËÌ«»ª 2013.3.26 ĞŞ¸ÄÊ¹ÓÃSqlServer¡¢Access µÈSQLÓï¾äÖĞÊ¹ÓÃ
-//                               Distinct ·ÖÒ³µÄÎÊÌâ
-//              ÍøÓÑ[×óÑÛ] 2013.4.11 ĞŞ¸´MySQL·ÖÒ³´óÓÚ1Ò³Ö®ºóµÄÎÊÌâ
+//	æ–‡ ä»¶ åï¼š  BFService
+//	ç”¨	  é€”ï¼š  SQL SERVER åˆ†é¡µå¤„ç†ç¨‹åº
+//	åˆ› å»º äººï¼š  é‚“å¤ªå
+//  åˆ›å»ºæ—¥æœŸï¼š  2006.7.26
+//	ç‰ˆ æœ¬ å·ï¼š	V4.6.2.0411
+//	ä¿®æ”¹è®°å½•ï¼š  é‚“å¤ªå 2008.3.30 ä¿®æ”¹äº†é¢å¤–æŸ¥è¯¢(å¯¹@@Whereæ¡ä»¶çš„æ”¯æŒ)å¯èƒ½å¼•èµ·çš„Bug
+//              é‚“å¤ªå 2013.3.26 ä¿®æ”¹ä½¿ç”¨SqlServerã€Access ç­‰SQLè¯­å¥ä¸­ä½¿ç”¨
+//                               Distinct åˆ†é¡µçš„é—®é¢˜
+//              ç½‘å‹[å·¦çœ¼] 2013.4.11 ä¿®å¤MySQLåˆ†é¡µå¤§äº1é¡µä¹‹åçš„é—®é¢˜
 //**************************************************************************
-/*¼òµ¥²éÑ¯·ÖÒ³·½°¸ Ëã·¨ËµÃ÷
- * SQL SERVER £º
-		 * Èç¹ûÓĞÕâÑù¼òµ¥µÄ²éÑ¯Óï¾ä£º
+/*ç®€å•æŸ¥è¯¢åˆ†é¡µæ–¹æ¡ˆ ç®—æ³•è¯´æ˜
+ * SQL SERVER ï¼š
+		 * å¦‚æœæœ‰è¿™æ ·ç®€å•çš„æŸ¥è¯¢è¯­å¥ï¼š
 		 * SELECT SelectFields FROM TABLE @@Where ORDER BY OrderFields DESC
-		 * ÄÇÃ´·ÖÒ³·½°¸¿ÉÒÔ²ÉÓÃÏÂÃæµÄ·½Ê½£º
+		 * é‚£ä¹ˆåˆ†é¡µæ–¹æ¡ˆå¯ä»¥é‡‡ç”¨ä¸‹é¢çš„æ–¹å¼ï¼š
 		 * 
-		 * µÚÒ»Ò³£º
+		 * ç¬¬ä¸€é¡µï¼š
 		 * SELECT TOP @@PageSize SelectFields FROM TABLE @@Where ORDER BY OrderFields DESC;
-		 * ÖĞ¼äÒ³£º
+		 * ä¸­é—´é¡µï¼š
 		 * SELECT Top @@PageSize * FROM
 			             (SELECT Top @@PageSize * FROM
 				           (
@@ -45,55 +45,55 @@
 							 SelectFields FROM TABLE @@Where ORDER BY OrderFields DESC
 						   ) P_T0 ORDER BY OrderFields ASC
 						 ) P_T1 ORDER BY OrderFields DESC
-		 * ×îºóÒ³£º
+		 * æœ€åé¡µï¼š
 		 * SELECT * FROM (	 
 	                      Select Top @@LeftSize 
 						  SelectFields FROM TABLE @@Where ORDER BY OrderFields ASC
 						 ) ORDER BY OrderFields DESC
 						 
 						  
-		 * º¯Êı MakePageSQLStringByDBNAME ÔÚ´Ë»ù´¡ÉÏÊµÏÖÁË¸üÎª¸´ÔÓµÄ·ÖÒ³´¦Àí£¬ÕâÀïµÄ¸´ÔÓÊ±Ëµ²éÑ¯
-		 * °üº¬´óÁ¿µÄ×Ó²éÑ¯»òÕßÁ¬½Ó²éÑ¯£¬Òò´ËÆÀ¼Û²éÑ¯¸´ÔÓÓë·ñ²ÉÓÃÏÂÃæµÄ±ê×¼£º
+		 * å‡½æ•° MakePageSQLStringByDBNAME åœ¨æ­¤åŸºç¡€ä¸Šå®ç°äº†æ›´ä¸ºå¤æ‚çš„åˆ†é¡µå¤„ç†ï¼Œè¿™é‡Œçš„å¤æ‚æ—¶è¯´æŸ¥è¯¢
+		 * åŒ…å«å¤§é‡çš„å­æŸ¥è¯¢æˆ–è€…è¿æ¥æŸ¥è¯¢ï¼Œå› æ­¤è¯„ä»·æŸ¥è¯¢å¤æ‚ä¸å¦é‡‡ç”¨ä¸‹é¢çš„æ ‡å‡†ï¼š
 		 * 
-		 * Ö»°üº¬Ò»¸ö SELECT Î½´Ê£»
-		 * Ã»ÓĞ INNER JOIN£¬RIGHT JOIN£¬LEFT JOIN µÈ±íÁ¬½ÓÎ½´Ê£»
-		 * Î½´Ê FROM ºóÖ»ÄÜÓĞÒ»¸ö±íÃû£»
+		 * åªåŒ…å«ä¸€ä¸ª SELECT è°“è¯ï¼›
+		 * æ²¡æœ‰ INNER JOINï¼ŒRIGHT JOINï¼ŒLEFT JOIN ç­‰è¡¨è¿æ¥è°“è¯ï¼›
+		 * è°“è¯ FROM ååªèƒ½æœ‰ä¸€ä¸ªè¡¨åï¼›
 		 * 
-		 * ·ñÔò£¬ÊÓÎª¸Ã²éÑ¯ÎªÒ»¸ö¸´ÔÓ²éÑ¯£¬²ÉÓÃ¸´ÔÓ²éÑ¯·ÖÒ³·½°¸£»
-Oracle £º
-»ù±¾µÄ·ÖÒ³Ô­ÀíÀûÓÃOracleÄÚÖ¸µÄ rownum Î±ÁĞ£¬ËüÊÇÒ»¸öµİÔöĞòÁĞ£¬µ«ÊÇËüÔÚOrder by Ö®Ç°Éú³É£¬Í¨³£
-²ÉÓÃÏÂÃæµÄ·ÖÒ³Óï¾ä£º
+		 * å¦åˆ™ï¼Œè§†ä¸ºè¯¥æŸ¥è¯¢ä¸ºä¸€ä¸ªå¤æ‚æŸ¥è¯¢ï¼Œé‡‡ç”¨å¤æ‚æŸ¥è¯¢åˆ†é¡µæ–¹æ¡ˆï¼›
+Oracle ï¼š
+åŸºæœ¬çš„åˆ†é¡µåŸç†åˆ©ç”¨Oracleå†…æŒ‡çš„ rownum ä¼ªåˆ—ï¼Œå®ƒæ˜¯ä¸€ä¸ªé€’å¢åºåˆ—ï¼Œä½†æ˜¯å®ƒåœ¨Order by ä¹‹å‰ç”Ÿæˆï¼Œé€šå¸¸
+é‡‡ç”¨ä¸‹é¢çš„åˆ†é¡µè¯­å¥ï¼š
 select * from
  (select rownum r_n,temptable.* from  
    ( @@SourceSQL ) temptable
  ) temptable2 where r_n between @@RecStart  and @@RecEnd
-ÆäÖĞ£º
-@@SourceSQL :µ±Ç°ÈÎÒâ¸´ÔÓµÄSQLÓï¾ä
-@@RecStart:¼ÇÂ¼¿ªÊ¼µÄµã£¬µÈÓÚ ((tCurPage -1) * tPageSize +1) 
-@@RecEnd  :¼ÇÂ¼½áÊøµÄµã£¬µÈÓÚ (tCurPage * tPageSize) 
+å…¶ä¸­ï¼š
+@@SourceSQL :å½“å‰ä»»æ„å¤æ‚çš„SQLè¯­å¥
+@@RecStart:è®°å½•å¼€å§‹çš„ç‚¹ï¼Œç­‰äº ((tCurPage -1) * tPageSize +1) 
+@@RecEnd  :è®°å½•ç»“æŸçš„ç‚¹ï¼Œç­‰äº (tCurPage * tPageSize) 
 		 
 
-** Ô¼Êø£º
-Ê¹ÓÃ¸Ã·ÖÒ³·½·¨ÒªÇó SQLÓï¾ä±¾Éí±ØĞëÂú×ãÏÂÁĞÌõ¼ş£º
-1£¬×îÍâ²ãµÄ²éÑ¯²»ÄÜº¬ÓĞ TOP Î½´Ê(×îºÃ²»ÒªÊ¹ÓÃTOP£¬¿ÉÒÔ±ÜÃâOracle ²»¼æÈİµÄÎÊÌâ)£»
-2£¬×îÍâ²ã²éÑ¯±ØĞëº¬ÓĞ ORDER BY Óï¾ä£¨Oracle³ıÍâ£©£»
-3£¬²»ÄÜº¬ÓĞÏÂÁĞÌæ»»²ÎÊı(Çø·Ö´óĞ¡Ğ´)£º@@PageSize,@@Page_Size_Number,@@LeftSize,@@Where
-4£¬SQL±ØĞë·ûºÏ SQL-92 ÒÔÉÏ±ê×¼£¬ÇÒ ×îÍâ²ãORDER BY Óï¾äÖ®ºó²»ÄÜÓĞÆäËûÓï¾ä£¬
-5£¬Èç¹ûÊ¹ÓÃSQLSERVER ÒÔÍâµÄÊı¾İ¿âÏµÍ³£¬ÇëÔÚWeb.configÅäÖÃ½ÚÀïÃæ×¢Ã÷ EngineType µÄÖµ£»
-Group by µÈ·ÅÔÚOrder by Ö®Ç°£»
+** çº¦æŸï¼š
+ä½¿ç”¨è¯¥åˆ†é¡µæ–¹æ³•è¦æ±‚ SQLè¯­å¥æœ¬èº«å¿…é¡»æ»¡è¶³ä¸‹åˆ—æ¡ä»¶ï¼š
+1ï¼Œæœ€å¤–å±‚çš„æŸ¥è¯¢ä¸èƒ½å«æœ‰ TOP è°“è¯(æœ€å¥½ä¸è¦ä½¿ç”¨TOPï¼Œå¯ä»¥é¿å…Oracle ä¸å…¼å®¹çš„é—®é¢˜)ï¼›
+2ï¼Œæœ€å¤–å±‚æŸ¥è¯¢å¿…é¡»å«æœ‰ ORDER BY è¯­å¥ï¼ˆOracleé™¤å¤–ï¼‰ï¼›
+3ï¼Œä¸èƒ½å«æœ‰ä¸‹åˆ—æ›¿æ¢å‚æ•°(åŒºåˆ†å¤§å°å†™)ï¼š@@PageSize,@@Page_Size_Number,@@LeftSize,@@Where
+4ï¼ŒSQLå¿…é¡»ç¬¦åˆ SQL-92 ä»¥ä¸Šæ ‡å‡†ï¼Œä¸” æœ€å¤–å±‚ORDER BY è¯­å¥ä¹‹åä¸èƒ½æœ‰å…¶ä»–è¯­å¥ï¼Œ
+5ï¼Œå¦‚æœä½¿ç”¨SQLSERVER ä»¥å¤–çš„æ•°æ®åº“ç³»ç»Ÿï¼Œè¯·åœ¨Web.configé…ç½®èŠ‚é‡Œé¢æ³¨æ˜ EngineType çš„å€¼ï¼›
+Group by ç­‰æ”¾åœ¨Order by ä¹‹å‰ï¼›
 **
  *
- * =====================Ö÷¼ü¸ßĞ§·ÖÒ³·½Ê½=========================================
- * º£Á¿Êı¾İ¿âµÄ²éÑ¯ÓÅ»¯¼°·ÖÒ³Ëã·¨·½°¸ http://edu.codepub.com/2009/0522/4437_3.php
+ * =====================ä¸»é”®é«˜æ•ˆåˆ†é¡µæ–¹å¼=========================================
+ * æµ·é‡æ•°æ®åº“çš„æŸ¥è¯¢ä¼˜åŒ–åŠåˆ†é¡µç®—æ³•æ–¹æ¡ˆ http://edu.codepub.com/2009/0522/4437_3.php
  * 
- * ÎÒÃÇÖªµÀ£¬¼¸ºõÈÎºÎ×Ö¶Î£¬ÎÒÃÇ¶¼¿ÉÒÔÍ¨¹ımax(×Ö¶Î)»òmin(×Ö¶Î)À´ÌáÈ¡Ä³¸ö×Ö¶ÎÖĞµÄ×î´ó»ò×îĞ¡Öµ£¬ËùÒÔÈç¹ûÕâ¸ö×Ö¶Î²»ÖØ¸´£¬ÄÇÃ´¾Í¿ÉÒÔÀûÓÃÕâĞ©²»ÖØ¸´µÄ×Ö¶ÎµÄmax»òmin×÷Îª·ÖË®Áë£¬Ê¹Æä³ÉÎª·ÖÒ³Ëã·¨ÖĞ·Ö¿ªÃ¿Ò³µÄ²ÎÕÕÎï¡£ÔÚÕâÀï£¬ÎÒÃÇ¿ÉÒÔÓÃ²Ù×÷·û¡°>¡±»ò¡°<¡±ºÅÀ´Íê³ÉÕâ¸öÊ¹Ãü£¬Ê¹²éÑ¯Óï¾ä·ûºÏSARGĞÎÊ½¡£Èç£º
+ * æˆ‘ä»¬çŸ¥é“ï¼Œå‡ ä¹ä»»ä½•å­—æ®µï¼Œæˆ‘ä»¬éƒ½å¯ä»¥é€šè¿‡max(å­—æ®µ)æˆ–min(å­—æ®µ)æ¥æå–æŸä¸ªå­—æ®µä¸­çš„æœ€å¤§æˆ–æœ€å°å€¼ï¼Œæ‰€ä»¥å¦‚æœè¿™ä¸ªå­—æ®µä¸é‡å¤ï¼Œé‚£ä¹ˆå°±å¯ä»¥åˆ©ç”¨è¿™äº›ä¸é‡å¤çš„å­—æ®µçš„maxæˆ–minä½œä¸ºåˆ†æ°´å²­ï¼Œä½¿å…¶æˆä¸ºåˆ†é¡µç®—æ³•ä¸­åˆ†å¼€æ¯é¡µçš„å‚ç…§ç‰©ã€‚åœ¨è¿™é‡Œï¼Œæˆ‘ä»¬å¯ä»¥ç”¨æ“ä½œç¬¦â€œ>â€æˆ–â€œ<â€å·æ¥å®Œæˆè¿™ä¸ªä½¿å‘½ï¼Œä½¿æŸ¥è¯¢è¯­å¥ç¬¦åˆSARGå½¢å¼ã€‚å¦‚ï¼š
 Select top 10 * from table1 where id>200
-¡¡¡¡ÓÚÊÇ¾ÍÓĞÁËÈçÏÂ·ÖÒ³·½°¸£º
-select top Ò³´óĞ¡ *
+ã€€ã€€äºæ˜¯å°±æœ‰äº†å¦‚ä¸‹åˆ†é¡µæ–¹æ¡ˆï¼š
+select top é¡µå¤§å° *
 from table1
 where id>
       (select max (id) from
-      (select top ((Ò³Âë-1)*Ò³´óĞ¡) id from table1 order by id) as T
+      (select top ((é¡µç -1)*é¡µå¤§å°) id from table1 order by id) as T
        )    
   order by id
 
@@ -103,7 +103,7 @@ using System;
 namespace PWMIS.Common
 {
     /// <summary>
-    /// SQL SERVER ·ÖÒ³´¦Àí£¬×Ô¶¯Ê¶±ğ±ê×¼SQLÓï¾ä²¢Éú³ÉÊÊºÏ·ÖÒ³µÄSQLÓï¾ä
+    /// SQL SERVER åˆ†é¡µå¤„ç†ï¼Œè‡ªåŠ¨è¯†åˆ«æ ‡å‡†SQLè¯­å¥å¹¶ç”Ÿæˆé€‚åˆåˆ†é¡µçš„SQLè¯­å¥
     /// </summary>
     public class SQLPage
     {
@@ -113,23 +113,23 @@ namespace PWMIS.Common
         public SQLPage()
         {
             //
-            // TODO: ÔÚ´Ë´¦Ìí¼Ó¹¹Ôìº¯ÊıÂß¼­
+            // TODO: åœ¨æ­¤å¤„æ·»åŠ æ„é€ å‡½æ•°é€»è¾‘
             //
         }
 
         /// <summary>
-        /// Éú³ÉSQL·ÖÒ³Óï¾ä£¬¼ÇÂ¼×ÜÊıÎª0±íÊ¾Éú³ÉÍ³¼ÆÓï¾ä
+        /// ç”ŸæˆSQLåˆ†é¡µè¯­å¥ï¼Œè®°å½•æ€»æ•°ä¸º0è¡¨ç¤ºç”Ÿæˆç»Ÿè®¡è¯­å¥
         /// </summary>
-        /// <param name="dbmsType">Êı¾İ¿âÀàĞÍ</param>
-        /// <param name="strSQLInfo">Ô­Ê¼SQLÓï¾ä</param>
-        /// <param name="strWhere">ÔÚ·ÖÒ³Ç°ÒªÌæ»»µÄ×Ö·û´®£¬ÓÃÓÚ·ÖÒ³Ç°µÄÉ¸Ñ¡</param>
-        /// <param name="PageSize">Ò³´óĞ¡</param>
-        /// <param name="PageNumber">Ò³Âë</param>
-        /// <param name="AllCount">¼ÇÂ¼×ÜÊı£¬Èç¹ûÊÇ0ÔòÉú³ÉÍ³¼Æ¼ÇÂ¼ÊıÁ¿µÄ²éÑ¯</param>
-        /// <returns>Éú³ÉSQL·ÖÒ³Óï¾ä</returns>
+        /// <param name="dbmsType">æ•°æ®åº“ç±»å‹</param>
+        /// <param name="strSQLInfo">åŸå§‹SQLè¯­å¥</param>
+        /// <param name="strWhere">åœ¨åˆ†é¡µå‰è¦æ›¿æ¢çš„å­—ç¬¦ä¸²ï¼Œç”¨äºåˆ†é¡µå‰çš„ç­›é€‰</param>
+        /// <param name="PageSize">é¡µå¤§å°</param>
+        /// <param name="PageNumber">é¡µç </param>
+        /// <param name="AllCount">è®°å½•æ€»æ•°ï¼Œå¦‚æœæ˜¯0åˆ™ç”Ÿæˆç»Ÿè®¡è®°å½•æ•°é‡çš„æŸ¥è¯¢</param>
+        /// <returns>ç”ŸæˆSQLåˆ†é¡µè¯­å¥</returns>
         public static string MakeSQLStringByPage(DBMSType dbmsType, string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
         {
-            //¸ù¾İ²»Í¬µÄÊı¾İ¿âÒıÇæµ÷ÓÃ²»Í¬Éú³ÉÆ÷
+            //æ ¹æ®ä¸åŒçš„æ•°æ®åº“å¼•æ“è°ƒç”¨ä¸åŒç”Ÿæˆå™¨
             string SQL = string.Empty;
             switch (dbmsType)
             {
@@ -151,55 +151,55 @@ namespace PWMIS.Common
                     //SQL = MakePageSQLStringByMSSQL(strSQLInfo, strWhere, PageSize, PageNumber, AllCount);
                     //SQL = strSQLInfo;
                     //break;
-                    throw new Exception("·ÖÒ³´íÎó£º²»Ö§³Ö´ËÖÖÀàĞÍµÄÊı¾İ¿â·ÖÒ³¡£");
+                    throw new Exception("åˆ†é¡µé”™è¯¯ï¼šä¸æ”¯æŒæ­¤ç§ç±»å‹çš„æ•°æ®åº“åˆ†é¡µã€‚");
             }
             return SQL;
         }
 
         /// <summary>
-        /// Éú³ÉSQL·ÖÒ³Óï¾ä£¬¼ÇÂ¼×ÜÊıÎª0±íÊ¾Éú³ÉÍ³¼ÆÓï¾ä
+        /// ç”ŸæˆSQLåˆ†é¡µè¯­å¥ï¼Œè®°å½•æ€»æ•°ä¸º0è¡¨ç¤ºç”Ÿæˆç»Ÿè®¡è¯­å¥
         /// </summary>
-        /// <param name="strSQLInfo">Ô­Ê¼SQLÓï¾ä</param>
-        /// <param name="strWhere">ÔÚ·ÖÒ³Ç°ÒªÌæ»»µÄ×Ö·û´®£¬ÓÃÓÚ·ÖÒ³Ç°µÄÉ¸Ñ¡</param>
-        /// <param name="PageSize">Ò³´óĞ¡</param>
-        /// <param name="PageNumber">Ò³Âë</param>
-        /// <param name="AllCount">¼ÇÂ¼×ÜÊı£¬Èç¹ûÊÇ0ÔòÉú³ÉÍ³¼Æ¼ÇÂ¼ÊıÁ¿µÄ²éÑ¯</param>
-        /// <returns>Éú³ÉSQL·ÖÒ³Óï¾ä</returns>
+        /// <param name="strSQLInfo">åŸå§‹SQLè¯­å¥</param>
+        /// <param name="strWhere">åœ¨åˆ†é¡µå‰è¦æ›¿æ¢çš„å­—ç¬¦ä¸²ï¼Œç”¨äºåˆ†é¡µå‰çš„ç­›é€‰</param>
+        /// <param name="PageSize">é¡µå¤§å°</param>
+        /// <param name="PageNumber">é¡µç </param>
+        /// <param name="AllCount">è®°å½•æ€»æ•°ï¼Œå¦‚æœæ˜¯0åˆ™ç”Ÿæˆç»Ÿè®¡è®°å½•æ•°é‡çš„æŸ¥è¯¢</param>
+        /// <returns>ç”ŸæˆSQLåˆ†é¡µè¯­å¥</returns>
         public static string MakeSQLStringByPage(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
         {
             return MakeSQLStringByPage(SQLPage.DbmsType, strSQLInfo, strWhere, PageSize, PageNumber, AllCount);
         }
 
         /// <summary>
-        /// MS SQLSERVER ·ÖÒ³SQLÓï¾äÉú³ÉÆ÷£¬Í¬ÑùÊÊÓÃÓÚACCESSÊı¾İ¿â
+        /// MS SQLSERVER åˆ†é¡µSQLè¯­å¥ç”Ÿæˆå™¨ï¼ŒåŒæ ·é€‚ç”¨äºACCESSæ•°æ®åº“
         /// </summary>
-        /// <param name="strSQLInfo">Ô­Ê¼SQLÓï¾ä</param>
-        /// <param name="strWhere">ÔÚ·ÖÒ³Ç°ÒªÌæ»»µÄ×Ö·û´®£¬ÓÃÓÚ·ÖÒ³Ç°µÄÉ¸Ñ¡</param>
-        /// <param name="PageSize">Ò³´óĞ¡</param>
-        /// <param name="PageNumber">Ò³Âë</param>
-        /// <param name="AllCount">¼ÇÂ¼×ÜÊı</param>
-        /// <returns>Éú³ÉSQL·ÖÒ³Óï¾ä</returns>
+        /// <param name="strSQLInfo">åŸå§‹SQLè¯­å¥</param>
+        /// <param name="strWhere">åœ¨åˆ†é¡µå‰è¦æ›¿æ¢çš„å­—ç¬¦ä¸²ï¼Œç”¨äºåˆ†é¡µå‰çš„ç­›é€‰</param>
+        /// <param name="PageSize">é¡µå¤§å°</param>
+        /// <param name="PageNumber">é¡µç </param>
+        /// <param name="AllCount">è®°å½•æ€»æ•°</param>
+        /// <returns>ç”ŸæˆSQLåˆ†é¡µè¯­å¥</returns>
         private static string MakePageSQLStringByMSSQL(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
         {
-            #region ·ÖÒ³Î»ÖÃ·ÖÎö
+            #region åˆ†é¡µä½ç½®åˆ†æ
             string strSQLType = string.Empty;
             if (AllCount > 0)
             {
-                if (PageNumber == 1) //Ê×Ò³
+                if (PageNumber == 1) //é¦–é¡µ
                 {
                     strSQLType = "First";
                 }
-                else if (PageSize * PageNumber > AllCount) //×îºóµÄÒ³ @@LeftSize
+                else if (PageSize * PageNumber > AllCount) //æœ€åçš„é¡µ @@LeftSize
                 {
                     PageSize = AllCount - PageSize * (PageNumber - 1);
                     strSQLType = "Last";
                 }
-                else //ÖĞ¼äÒ³
+                else //ä¸­é—´é¡µ
                 {
                     strSQLType = "Mid";
                 }
             }
-            else if (AllCount < 0) //ÌØÊâ´¦Àí dth,2006.10.19
+            else if (AllCount < 0) //ç‰¹æ®Šå¤„ç† dth,2006.10.19
             {
                 strSQLType = "First";
             }
@@ -210,47 +210,47 @@ namespace PWMIS.Common
 
             #endregion
 
-            #region SQL ¸´ÔÓ¶È·ÖÎö
-            //SQL ¸´ÔÓ¶È·ÖÎö ¿ªÊ¼
-            bool SqlFlag = true;//¼òµ¥SQL±ê¼Ç
+            #region SQL å¤æ‚åº¦åˆ†æ
+            //SQL å¤æ‚åº¦åˆ†æ å¼€å§‹
+            bool SqlFlag = true;//ç®€å•SQLæ ‡è®°
             string TestSQL = strSQLInfo.ToUpper();
             int n = TestSQL.IndexOf("SELECT ", 0);
             n = TestSQL.IndexOf("SELECT ", n + 7);
             if (n == -1)
             {
-                //¿ÉÄÜÊÇ¼òµ¥µÄ²éÑ¯£¬ÔÙ´Î´¦Àí
+                //å¯èƒ½æ˜¯ç®€å•çš„æŸ¥è¯¢ï¼Œå†æ¬¡å¤„ç†
                 n = TestSQL.IndexOf(" JOIN ", n + 7);
                 if (n != -1) SqlFlag = false;
                 else
                 {
-                    //ÅĞ¶ÏFrom Î½´ÊÇé¿ö
+                    //åˆ¤æ–­From è°“è¯æƒ…å†µ
                     n = TestSQL.IndexOf("FROM ", 9);
                     if (n == -1) return "";
-                    //¼ÆËã WHERE Î½´ÊµÄÎ»ÖÃ
+                    //è®¡ç®— WHERE è°“è¯çš„ä½ç½®
                     int m = TestSQL.IndexOf("WHERE ", n + 5);
-                    // Èç¹ûÃ»ÓĞWHERE Î½´Ê
+                    // å¦‚æœæ²¡æœ‰WHERE è°“è¯
                     if (m == -1) m = TestSQL.IndexOf("ORDER BY ", n + 5);
-                    //Èç¹ûÃ»ÓĞORDER BY Î½´Ê£¬ÄÇÃ´ÎŞ·¨ÅÅĞò£¬ÍË³ö£»
+                    //å¦‚æœæ²¡æœ‰ORDER BY è°“è¯ï¼Œé‚£ä¹ˆæ— æ³•æ’åºï¼Œé€€å‡ºï¼›
                     if (m == -1)
-                        throw new Exception("²éÑ¯Óï¾ä·ÖÎö£ºµ±Ç°Ã»ÓĞÎª·ÖÒ³²éÑ¯Ö¸¶¨ÅÅĞò×Ö¶Î£¡ÇëÊÊµ±ĞŞ¸ÄSQLÓï¾ä¡£\n" + strSQLInfo);
+                        throw new Exception("æŸ¥è¯¢è¯­å¥åˆ†æï¼šå½“å‰æ²¡æœ‰ä¸ºåˆ†é¡µæŸ¥è¯¢æŒ‡å®šæ’åºå­—æ®µï¼è¯·é€‚å½“ä¿®æ”¹SQLè¯­å¥ã€‚\n" + strSQLInfo);
                     string strTableName = TestSQL.Substring(n, m - n);
-                    //±íÃûÖĞÓĞ , ºÅ±íÊ¾ÊÇ¶à±í²éÑ¯
+                    //è¡¨åä¸­æœ‰ , å·è¡¨ç¤ºæ˜¯å¤šè¡¨æŸ¥è¯¢
                     if (strTableName.IndexOf(",") != -1)
                         SqlFlag = false;
                 }
             }
             else
             {
-                //ÓĞ×Ó²éÑ¯£»
+                //æœ‰å­æŸ¥è¯¢ï¼›
                 SqlFlag = false;
             }
-            //SQL ¸´ÔÓ¶È·ÖÎö ½áÊø
+            //SQL å¤æ‚åº¦åˆ†æ ç»“æŸ
             #endregion
 
-            #region ÅÅĞòÓï·¨·ÖÎö
-            //ÅÅĞòÓï·¨·ÖÎö ¿ªÊ¼
+            #region æ’åºè¯­æ³•åˆ†æ
+            //æ’åºè¯­æ³•åˆ†æ å¼€å§‹
             int iOrderAt = strSQLInfo.ToLower().LastIndexOf("order by ");
-            //Èç¹ûÃ»ÓĞORDER BY Î½´Ê£¬ÄÇÃ´ÎŞ·¨ÅÅĞò·ÖÒ³£¬ÍË³ö£»
+            //å¦‚æœæ²¡æœ‰ORDER BY è°“è¯ï¼Œé‚£ä¹ˆæ— æ³•æ’åºåˆ†é¡µï¼Œé€€å‡ºï¼›
             if (iOrderAt == -1)
             {
                 if (PageNumber == 1)
@@ -261,7 +261,7 @@ namespace PWMIS.Common
                 }
                 else
                 {
-                    throw new Exception("²éÑ¯Óï¾ä·ÖÎö£ºµ±Ç°Ã»ÓĞÎª·ÖÒ³²éÑ¯Ö¸¶¨ÅÅĞò×Ö¶Î£¡ÇëÊÊµ±ĞŞ¸ÄSQLÓï¾ä¡£\n" + strSQLInfo);
+                    throw new Exception("æŸ¥è¯¢è¯­å¥åˆ†æï¼šå½“å‰æ²¡æœ‰ä¸ºåˆ†é¡µæŸ¥è¯¢æŒ‡å®šæ’åºå­—æ®µï¼è¯·é€‚å½“ä¿®æ”¹SQLè¯­å¥ã€‚\n" + strSQLInfo);
                 }
             }
 
@@ -271,7 +271,7 @@ namespace PWMIS.Common
             for (int i = 0; i < strArrOrder.Length; i++)
             {
                 string[] strArrTemp = (strArrOrder[i].Trim() + " ").Split(new char[] { ' ' });
-                //Ñ¹Ëõ¶àÓà¿Õ¸ñ
+                //å‹ç¼©å¤šä½™ç©ºæ ¼
                 for (int j = 1; j < strArrTemp.Length; j++)
                 {
                     if (strArrTemp[j].Trim() == "")
@@ -285,7 +285,7 @@ namespace PWMIS.Common
                         break;
                     }
                 }
-                //ÅĞ¶Ï×Ö¶ÎµÄÅÅĞòÀàĞÍ
+                //åˆ¤æ–­å­—æ®µçš„æ’åºç±»å‹
                 switch (strArrTemp[1].Trim().ToUpper())
                 {
                     case "DESC":
@@ -295,27 +295,27 @@ namespace PWMIS.Common
                         strArrTemp[1] = "DESC";
                         break;
                     default:
-                        //Î´Ö¸¶¨ÅÅĞòÀàĞÍ£¬Ä¬ÈÏÎª½µĞò
+                        //æœªæŒ‡å®šæ’åºç±»å‹ï¼Œé»˜è®¤ä¸ºé™åº
                         strArrTemp[1] = "DESC";
                         break;
                 }
-                //Ïû³ıÅÅĞò×Ö¶Î¶ÔÏóÏŞ¶¨·û
+                //æ¶ˆé™¤æ’åºå­—æ®µå¯¹è±¡é™å®šç¬¦
                 if (strArrTemp[0].IndexOf(".") != -1)
                     strArrTemp[0] = strArrTemp[0].Substring(strArrTemp[0].IndexOf(".") + 1);
                 strArrOrder[i] = string.Join(" ", strArrTemp);
 
             }
-            //Éú³É·´ÏòÅÅĞòÓï¾ä
+            //ç”Ÿæˆåå‘æ’åºè¯­å¥
             string strNewOrder = string.Join(",", strArrOrder).Trim();
             strOrder = strNewOrder.Replace("ASC", "ASC0").Replace("DESC", "ASC").Replace("ASC0", "DESC");
-            //ÅÅĞòÓï·¨·ÖÎö½áÊø
+            //æ’åºè¯­æ³•åˆ†æç»“æŸ
             #endregion
 
-            #region ¹¹Ôì·ÖÒ³²éÑ¯
+            #region æ„é€ åˆ†é¡µæŸ¥è¯¢
             string SQL = string.Empty;
             if (!SqlFlag)
             {
-                //¸´ÔÓ²éÑ¯´¦Àí
+                //å¤æ‚æŸ¥è¯¢å¤„ç†
                 switch (strSQLType.ToUpper())
                 {
                     case "FIRST":
@@ -342,14 +342,14 @@ namespace PWMIS.Common
                         SQL = "Select COUNT(*) FROM ( " + strSQLInfo + " ) P_Count @@Where";
                         break;
                     default:
-                        SQL = strSQLInfo + strOrder;//»¹Ô­
+                        SQL = strSQLInfo + strOrder;//è¿˜åŸ
                         break;
                 }
 
             }
             else
             {
-                //¼òµ¥²éÑ¯´¦Àí
+                //ç®€å•æŸ¥è¯¢å¤„ç†
                 string strUpperSQLInfo = strSQLInfo.ToUpper();
                 bool isDistinct = strUpperSQLInfo.IndexOf("DISTINCT") >= 7;
                 if (isDistinct)
@@ -389,22 +389,22 @@ namespace PWMIS.Common
                         SQL = "Select COUNT(*) FROM ( " + strSQLInfo + " @@Where) P_Count ";//edit 2008.3.29
                         break;
                     default:
-                        SQL = strSQLInfo + strOrder;//»¹Ô­
+                        SQL = strSQLInfo + strOrder;//è¿˜åŸ
                         break;
                 }
             }
 
-            //Ö´ĞĞ·ÖÒ³²ÎÊıÌæ»»
+            //æ‰§è¡Œåˆ†é¡µå‚æ•°æ›¿æ¢
             if (PageSize < 0) PageSize = 0;
             SQL = SQL.Replace("@@PageSize", PageSize.ToString())
                 .Replace("@@Page_Size_Number", Convert.ToString(PageSize * PageNumber))
                 .Replace("@@LeftSize", PageSize.ToString());//
             //.Replace ("@@Where",strWhere);
-            //Õë¶ÔÓÃ»§µÄ¶îÍâÌõ¼ş´¦Àí£º
+            //é’ˆå¯¹ç”¨æˆ·çš„é¢å¤–æ¡ä»¶å¤„ç†ï¼š
             if (strWhere == null) strWhere = "";
             if (strWhere != "" && strWhere.ToUpper().Trim().StartsWith("WHERE "))
             {
-                throw new Exception("·ÖÒ³¶îÍâ²éÑ¯Ìõ¼ş²»ÄÜ´øWhereÎ½´Ê£¡");
+                throw new Exception("åˆ†é¡µé¢å¤–æŸ¥è¯¢æ¡ä»¶ä¸èƒ½å¸¦Whereè°“è¯ï¼");
             }
             if (!SqlFlag)
             {
@@ -423,34 +423,34 @@ namespace PWMIS.Common
 
 
         /// <summary>
-        /// Oracle ·ÖÒ³SQLÓï¾äÉú³ÉÆ÷
+        /// Oracle åˆ†é¡µSQLè¯­å¥ç”Ÿæˆå™¨
         /// </summary>
-        /// <param name="strSQLInfo">Ô­Ê¼SQLÓï¾ä</param>
-        /// <param name="strWhere">ÔÚ·ÖÒ³Ç°ÒªÌæ»»µÄ×Ö·û´®£¬ÓÃÓÚ·ÖÒ³Ç°µÄÉ¸Ñ¡</param>
-        /// <param name="PageSize">Ò³´óĞ¡</param>
-        /// <param name="PageNumber">Ò³Âë</param>
-        /// <param name="AllCount">¼ÇÂ¼×ÜÊı</param>
-        /// <returns>Éú³ÉSQL·ÖÒ³Óï¾ä</returns>
+        /// <param name="strSQLInfo">åŸå§‹SQLè¯­å¥</param>
+        /// <param name="strWhere">åœ¨åˆ†é¡µå‰è¦æ›¿æ¢çš„å­—ç¬¦ä¸²ï¼Œç”¨äºåˆ†é¡µå‰çš„ç­›é€‰</param>
+        /// <param name="PageSize">é¡µå¤§å°</param>
+        /// <param name="PageNumber">é¡µç </param>
+        /// <param name="AllCount">è®°å½•æ€»æ•°</param>
+        /// <returns>ç”ŸæˆSQLåˆ†é¡µè¯­å¥</returns>
         private static string MakePageSQLStringByOracle(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
         {
             if (strWhere != null && strWhere != "")
             {
-                //Ê¹ÓÃstrWhereUpper À´ÅĞ¶Ï£¬±ÜÃâ´óĞ´ÎÊÌâ£¬Oracle ¶ÔµÄ´óĞ´µÄ×Ö¶ÎÓĞ²»Í¬µÄÒâÒå¡£
-                //¸ĞĞ»ÍøÓÑ ´ó´ó±¦ ·¢ÏÖ´ËÎÊÌâ 2014.5.6
+                //ä½¿ç”¨strWhereUpper æ¥åˆ¤æ–­ï¼Œé¿å…å¤§å†™é—®é¢˜ï¼ŒOracle å¯¹çš„å¤§å†™çš„å­—æ®µæœ‰ä¸åŒçš„æ„ä¹‰ã€‚
+                //æ„Ÿè°¢ç½‘å‹ å¤§å¤§å® å‘ç°æ­¤é—®é¢˜ 2014.5.6
                 string  strWhereUpper = strWhere.Trim().ToUpper();
                 if (strWhereUpper.StartsWith("WHERE "))
-                    throw new Exception("¸½¼Ó²éÑ¯Ìõ¼ş²»ÄÜ´ø where Î½´Ê");
+                    throw new Exception("é™„åŠ æŸ¥è¯¢æ¡ä»¶ä¸èƒ½å¸¦ where è°“è¯");
                 if (strWhereUpper.IndexOf(" ORDER BY ") > 0)
-                    throw new Exception("¸½¼Ó²éÑ¯Ìõ¼ş²»ÄÜ´ø ORDER BY Î½´Ê");
+                    throw new Exception("é™„åŠ æŸ¥è¯¢æ¡ä»¶ä¸èƒ½å¸¦ ORDER BY è°“è¯");
                 strSQLInfo = "SELECT * FROM (" + strSQLInfo + ") temptable0 WHERE " + strWhere;
             }
             if (AllCount == 0)
             {
-                //Éú³ÉÍ³¼ÆÓï¾ä¡¡
+                //ç”Ÿæˆç»Ÿè®¡è¯­å¥ã€€
                 return "select count(*) from (" + strSQLInfo + ") P_Count  " 
                     + (string.IsNullOrEmpty( strWhere)?"":"WHERE "+strWhere);
             }
-            //·ÖÒ³Ãş°åÓï¾ä
+            //åˆ†é¡µæ‘¸æ¿è¯­å¥
 
             string SqlTemplate = @"SELECT * FROM
  (SELECT rownum r_n,temptable.* FROM  
@@ -460,7 +460,7 @@ namespace PWMIS.Common
             int iRecStart = (PageNumber - 1) * PageSize + 1;
             int iRecEnd = PageNumber * PageSize;
 
-            //Ö´ĞĞ²ÎÊıÌæ»»
+            //æ‰§è¡Œå‚æ•°æ›¿æ¢
             string SQL = SqlTemplate.Replace("@@SourceSQL", strSQLInfo)
                 .Replace("@@RecStart", iRecStart.ToString())
                 .Replace("@@RecEnd", iRecEnd.ToString());
@@ -470,32 +470,32 @@ namespace PWMIS.Common
         private static string MakePageSQLStringByMySQL_PgSQL(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount, string offsetString)
         {
             strSQLInfo = strSQLInfo.Trim();
-            //È¥³ıÄ©Î²µÄ·ÖºÅ
+            //å»é™¤æœ«å°¾çš„åˆ†å·
             if (strSQLInfo.EndsWith(";"))
                 strSQLInfo = strSQLInfo.TrimEnd(';');
             if (strWhere != null && strWhere != "")
             {
                 strWhere = strWhere.Trim().ToUpper();
                 if (strWhere.StartsWith("WHERE "))
-                    throw new Exception("¸½¼Ó²éÑ¯Ìõ¼ş²»ÄÜ´ø where Î½´Ê");
+                    throw new Exception("é™„åŠ æŸ¥è¯¢æ¡ä»¶ä¸èƒ½å¸¦ where è°“è¯");
                 if (strWhere.IndexOf(" ORDER BY ") > 0)
-                    throw new Exception("¸½¼Ó²éÑ¯Ìõ¼ş²»ÄÜ´ø ORDER BY Î½´Ê");
+                    throw new Exception("é™„åŠ æŸ¥è¯¢æ¡ä»¶ä¸èƒ½å¸¦ ORDER BY è°“è¯");
                 strSQLInfo = "SELECT * FROM (" + strSQLInfo + ") temptable0 WHERE " + strWhere;
             }
             if (AllCount == 0)
             {
-                //Éú³ÉÍ³¼ÆÓï¾ä£¬¸ĞĞ»ÍøÓÑ[´ó´ó±¦]·¢ÏÖstrWhere¿ÉÄÜµÄÎÊÌâ
+                //ç”Ÿæˆç»Ÿè®¡è¯­å¥ï¼Œæ„Ÿè°¢ç½‘å‹[å¤§å¤§å®]å‘ç°strWhereå¯èƒ½çš„é—®é¢˜
                 return "select count(*) from (" + strSQLInfo + ") P_Count  " 
                     + (string.IsNullOrEmpty(strWhere) ? "" : "WHERE " + strWhere);
             }
 
             if (PageNumber == 1)
                 return strSQLInfo + " LIMIT " + PageSize;
-            //offset ´ÓË÷Òı0¿ªÊ¼£¬¸ĞĞ»ÍøÓÑ¶Å¾ü£¨åĞÒ£ÓÎ£© ·¢ÏÖ´ËBug
+            //offset ä»ç´¢å¼•0å¼€å§‹ï¼Œæ„Ÿè°¢ç½‘å‹æœå†›ï¼ˆé€é¥æ¸¸ï¼‰ å‘ç°æ­¤Bug
             //http://www.cnblogs.com/duwolfnet/articles/3293280.html
             int offset = PageSize * (PageNumber - 1);
            
-            if (offsetString == ",")//MySQL,¸ĞĞ»ÍøÓÑ[×óÑÛ]·¢ÏÖ´ËBug
+            if (offsetString == ",")//MySQL,æ„Ÿè°¢ç½‘å‹[å·¦çœ¼]å‘ç°æ­¤Bug
                 return strSQLInfo + " LIMIT " + offset + offsetString + PageSize;
             else //PostgreSQL
                 return strSQLInfo + " LIMIT " + PageSize + offsetString + offset;
@@ -513,15 +513,15 @@ namespace PWMIS.Common
         }
 
         /// <summary>
-        /// ¸ù¾İÖ÷¼üµÄ¸ßĞ§¿ìËÙ·ÖÒ³Ö®µ¹Ğò·ÖÒ³
+        /// æ ¹æ®ä¸»é”®çš„é«˜æ•ˆå¿«é€Ÿåˆ†é¡µä¹‹å€’åºåˆ†é¡µ
         /// </summary>
-        /// <param name="pageNum">Ò³Âë£¬´Ó1¿ªÊ¼</param>
-        /// <param name="pageSize">Ò³´óĞ¡£¬´óÓÚ1</param>
-        /// <param name="filedList">×Ö¶ÎÁĞ±í</param>
-        /// <param name="tableName">±íÃû³Æ</param>
-        /// <param name="PKName">Ö÷¼üÃû³Æ</param>
-        /// <param name="conditon">²éÑ¯Ìõ¼ş</param>
-        /// <returns>·µ»ØÖ¸¶¨Ò³ÂëµÄ¿ìËÙ·ÖÒ³SQLÓï¾ä</returns>
+        /// <param name="pageNum">é¡µç ï¼Œä»1å¼€å§‹</param>
+        /// <param name="pageSize">é¡µå¤§å°ï¼Œå¤§äº1</param>
+        /// <param name="filedList">å­—æ®µåˆ—è¡¨</param>
+        /// <param name="tableName">è¡¨åç§°</param>
+        /// <param name="PKName">ä¸»é”®åç§°</param>
+        /// <param name="conditon">æŸ¥è¯¢æ¡ä»¶</param>
+        /// <returns>è¿”å›æŒ‡å®šé¡µç çš„å¿«é€Ÿåˆ†é¡µSQLè¯­å¥</returns>
         public static string GetDescPageSQLbyPrimaryKey(int pageNum, int pageSize, string filedList, string tableName, string PKName, string conditon)
         {
             if (conditon == null || conditon == "")
@@ -538,7 +538,7 @@ namespace PWMIS.Common
             }
             else
             {
-                //@topNum= ((Ò³Âë-1)*Ò³´óĞ¡)
+                //@topNum= ((é¡µç -1)*é¡µå¤§å°)
                 string sqlTemplage = @"
 select top @pageSize @filedList
 from @table1
@@ -561,15 +561,15 @@ where @conditon And @PKName<
         }
 
         /// <summary>
-        /// ¸ù¾İÖ÷¼üµÄ¸ßĞ§¿ìËÙ·ÖÒ³Ö® ÉıĞò·ÖÒ³
+        /// æ ¹æ®ä¸»é”®çš„é«˜æ•ˆå¿«é€Ÿåˆ†é¡µä¹‹ å‡åºåˆ†é¡µ
         /// </summary>
-        /// <param name="pageNum">Ò³Âë£¬´Ó1¿ªÊ¼</param>
-        /// <param name="pageSize">Ò³´óĞ¡£¬´óÓÚ1</param>
-        /// <param name="filedList">×Ö¶ÎÁĞ±í</param>
-        /// <param name="tableName">±íÃû³Æ</param>
-        /// <param name="PKName">Ö÷¼üÃû³Æ</param>
-        /// <param name="conditon">²éÑ¯Ìõ¼ş</param>
-        /// <returns>·µ»ØÖ¸¶¨Ò³ÂëµÄ¿ìËÙ·ÖÒ³SQLÓï¾ä</returns>
+        /// <param name="pageNum">é¡µç ï¼Œä»1å¼€å§‹</param>
+        /// <param name="pageSize">é¡µå¤§å°ï¼Œå¤§äº1</param>
+        /// <param name="filedList">å­—æ®µåˆ—è¡¨</param>
+        /// <param name="tableName">è¡¨åç§°</param>
+        /// <param name="PKName">ä¸»é”®åç§°</param>
+        /// <param name="conditon">æŸ¥è¯¢æ¡ä»¶</param>
+        /// <returns>è¿”å›æŒ‡å®šé¡µç çš„å¿«é€Ÿåˆ†é¡µSQLè¯­å¥</returns>
         public static string GetAscPageSQLbyPrimaryKey(int pageNum, int pageSize, string filedList, string tableName, string PKName, string conditon)
         {
             if (conditon == null || conditon == "")
@@ -586,7 +586,7 @@ where @conditon And @PKName<
             }
             else
             {
-                //@topNum= ((Ò³Âë-1)*Ò³´óĞ¡)
+                //@topNum= ((é¡µç -1)*é¡µå¤§å°)
                 string sqlTemplage = @"
 select top @pageSize @filedList
 from @table1

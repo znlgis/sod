@@ -1,4 +1,4 @@
-//ver 4.5 dbmstype auto get;
+ï»¿//ver 4.5 dbmstype auto get;
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
@@ -13,22 +13,22 @@ using PWMIS.Common;
 namespace PWMIS.Web.Controls
 {
     /// <summary>
-    /// µ¥»÷ÊÂ¼şÎ¯ÍĞ¶¨Òå
+    /// å•å‡»äº‹ä»¶å§”æ‰˜å®šä¹‰
     /// </summary>
     public delegate void ClickEventHandler(object sender, EventArgs e);
 
     /// <summary>
-    /// Êı¾İ°ï¶¨Î¯ÍĞ¶¨Òå
+    /// æ•°æ®å¸®å®šå§”æ‰˜å®šä¹‰
     /// </summary>
     public delegate void DataBoundHandler(object sender, EventArgs e);
 
     /// <summary>
-    /// Web ·ÖÒ³¹¤¾ßÌõ
-    /// µËÌ«»ª 2007.1.10 Ver 1.0£¬2008.5.8 Ver 1.0.1.2£¬2008.7.24 Ver 1.0.1.3
-    /// Ver 1.0.1 Ôö¼ÓÊı¾İ·ÃÎÊ¹¦ÄÜ
-    /// Ver 1.0.1.1 ×Ô¶¯´ÓÅäÖÃÎÄ¼şÉèÖÃÈ«¾ÖÄ¬ÈÏÅäÖÃ²ÎÊı£¬ÀıÈç·ÖÒ³´óĞ¡
-    /// Ver 1.0.1.2 ³ıÁË¿ÉÒÔ×Ô¶¯ÅäÖÃ·ÖÒ³´óĞ¡Íâ£¬»¹¿ÉÒÔÉèÖÃÌØ¶¨µÄ·ÖÒ³´óĞ¡¡£
-    /// Ver 1.0.1.3 Ö§³ÖGridView
+    /// Web åˆ†é¡µå·¥å…·æ¡
+    /// é‚“å¤ªå 2007.1.10 Ver 1.0ï¼Œ2008.5.8 Ver 1.0.1.2ï¼Œ2008.7.24 Ver 1.0.1.3
+    /// Ver 1.0.1 å¢åŠ æ•°æ®è®¿é—®åŠŸèƒ½
+    /// Ver 1.0.1.1 è‡ªåŠ¨ä»é…ç½®æ–‡ä»¶è®¾ç½®å…¨å±€é»˜è®¤é…ç½®å‚æ•°ï¼Œä¾‹å¦‚åˆ†é¡µå¤§å°
+    /// Ver 1.0.1.2 é™¤äº†å¯ä»¥è‡ªåŠ¨é…ç½®åˆ†é¡µå¤§å°å¤–ï¼Œè¿˜å¯ä»¥è®¾ç½®ç‰¹å®šçš„åˆ†é¡µå¤§å°ã€‚
+    /// Ver 1.0.1.3 æ”¯æŒGridView
     /// </summary>
     [System.Drawing.ToolboxBitmap(typeof(ControlIcon), "DataPageToolBar.bmp")]
     [DefaultProperty("AllCount"),
@@ -36,7 +36,7 @@ namespace PWMIS.Web.Controls
         ToolboxData("<{0}:ProPageToolBar runat=server></{0}:ProPageToolBar>")]
     public class ProPageToolBar : System.Web.UI.WebControls.WebControl, INamingContainer
     {
-        #region ÄÚ²¿¿Ø¼ş¶¨Òå
+        #region å†…éƒ¨æ§ä»¶å®šä¹‰
         protected Label lblAllCount = new Label();
         protected Label lblCPA = new Label();
         protected LinkButton lnkFirstPage = new LinkButton();
@@ -48,11 +48,11 @@ namespace PWMIS.Web.Controls
         protected LinkButton lnkGo = new LinkButton();
         #endregion
         /// <summary>
-        /// Î´³õÊ¼»¯µÄÊıÖµ
+        /// æœªåˆå§‹åŒ–çš„æ•°å€¼
         /// </summary>
         const int UNKNOW_NUM = -999;
 
-        #region ¾Ö²¿±äÁ¿ÉêÃ÷
+        #region å±€éƒ¨å˜é‡ç”³æ˜
         private int PageIndex = UNKNOW_NUM;//
         private int _AllCount;
         private int _PageSize;
@@ -88,7 +88,7 @@ namespace PWMIS.Web.Controls
                     CheckAutoIDB();
                 }
                 if (_DAO == null)
-                    throw new Exception("Î´ÊµÀı»¯Êı¾İ·ÃÎÊ×é¼ş,ÇëÈ·ÈÏÒÑ¾­½øĞĞÁËÕıÈ·µÄÅäÖÃ£¡");
+                    throw new Exception("æœªå®ä¾‹åŒ–æ•°æ®è®¿é—®ç»„ä»¶,è¯·ç¡®è®¤å·²ç»è¿›è¡Œäº†æ­£ç¡®çš„é…ç½®ï¼");
 
                 //edit dbmstype:
                 this.DBMSType = _DAO.CurrentDBMSType;
@@ -101,10 +101,10 @@ namespace PWMIS.Web.Controls
 
         }
 
-        #region ÆäËüÊôĞÔ¶¨Òå
+        #region å…¶å®ƒå±æ€§å®šä¹‰
         [Bindable(true),
         Category("Appearance"),
-        Description("·ÖÒ³ËµÃ÷"),
+        Description("åˆ†é¡µè¯´æ˜"),
         DefaultValue("")]
         public string Text
         {
@@ -129,11 +129,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ·ÖÒ³¹¤¾ßÌõµÄÑùÊ½,0-Ä¬ÈÏ£¬1-²»ÏÔÊ¾¼ÇÂ¼ÌõÊı£»2-²»ÏÔÊ¾Ò³Ìø×ª£»3-¼È²»ÏÔÊ¾¼ÇÂ¼ÌõÊı£¬Ò²²»ÏÔÊ¾Ò³Ìø×ª
+        /// åˆ†é¡µå·¥å…·æ¡çš„æ ·å¼,0-é»˜è®¤ï¼Œ1-ä¸æ˜¾ç¤ºè®°å½•æ¡æ•°ï¼›2-ä¸æ˜¾ç¤ºé¡µè·³è½¬ï¼›3-æ—¢ä¸æ˜¾ç¤ºè®°å½•æ¡æ•°ï¼Œä¹Ÿä¸æ˜¾ç¤ºé¡µè·³è½¬
         /// </summary>
         [Bindable(true),
-        Category("·ÖÒ³ÊôĞÔ"),
-        Description("·ÖÒ³¹¤¾ßÌõµÄ·ÖÒ³ÑùÊ½£¬0-Ä¬ÈÏ£¬1-²»ÏÔÊ¾¼ÇÂ¼ÌõÊı£»2-²»ÏÔÊ¾Ò³Ìø×ª£»3-¼È²»ÏÔÊ¾¼ÇÂ¼ÌõÊı£¬Ò²²»ÏÔÊ¾Ò³Ìø×ª")
+        Category("åˆ†é¡µå±æ€§"),
+        Description("åˆ†é¡µå·¥å…·æ¡çš„åˆ†é¡µæ ·å¼ï¼Œ0-é»˜è®¤ï¼Œ1-ä¸æ˜¾ç¤ºè®°å½•æ¡æ•°ï¼›2-ä¸æ˜¾ç¤ºé¡µè·³è½¬ï¼›3-æ—¢ä¸æ˜¾ç¤ºè®°å½•æ¡æ•°ï¼Œä¹Ÿä¸æ˜¾ç¤ºé¡µè·³è½¬")
         ]
         public int PageToolBarStyle
         {
@@ -153,20 +153,20 @@ namespace PWMIS.Web.Controls
 
         #endregion
 
-        #region ÄÚ²¿¿Ø¼şÑùÊ½Ãû¶¨Òå
+        #region å†…éƒ¨æ§ä»¶æ ·å¼åå®šä¹‰
         public string css_linkStyle = "";
         public string css_btnStyle = "";
         public string css_txtStyle = "";
         #endregion
 
-        #region ·ÖÒ³ÊôĞÔ¶¨Òå
+        #region åˆ†é¡µå±æ€§å®šä¹‰
 
         /// <summary>
-        /// µ±Ç°ËùÔÚÒ³Âë£¬Ä¬ÈÏÖµ1
+        /// å½“å‰æ‰€åœ¨é¡µç ï¼Œé»˜è®¤å€¼1
         /// </summary>
         [Bindable(true),
-        Category("·ÖÒ³ÊôĞÔ"),
-        Description("µ±Ç°ËùÔÚÒ³")
+        Category("åˆ†é¡µå±æ€§"),
+        Description("å½“å‰æ‰€åœ¨é¡µ")
         ]
         public int CurrentPage
         {
@@ -187,11 +187,11 @@ namespace PWMIS.Web.Controls
             }
         }
         /// <summary>
-        /// ¼ÇÂ¼×ÜÊı£¬Ä¬ÈÏÖµ0
+        /// è®°å½•æ€»æ•°ï¼Œé»˜è®¤å€¼0
         /// </summary>
         [Bindable(true),
-        Category("·ÖÒ³ÊôĞÔ"),
-        Description("¼ÇÂ¼×ÜÊı"),
+        Category("åˆ†é¡µå±æ€§"),
+        Description("è®°å½•æ€»æ•°"),
         DefaultValue(0)]
         public int AllCount
         {
@@ -211,11 +211,11 @@ namespace PWMIS.Web.Controls
             }
         }
         /// <summary>
-        /// Ò³Ãæ´óĞ¡£¬Ä¬ÈÏÖµ10£¬ÊäÈë0±íÊ¾´ÓÏµÍ³×Ô¶¯»ñÈ¡ÅäÖÃÖµ
+        /// é¡µé¢å¤§å°ï¼Œé»˜è®¤å€¼10ï¼Œè¾“å…¥0è¡¨ç¤ºä»ç³»ç»Ÿè‡ªåŠ¨è·å–é…ç½®å€¼
         /// </summary>
         [Bindable(true),
-        Category("·ÖÒ³ÊôĞÔ"),
-        Description("Ã¿Ò³Ãæ·ÖÒ³¼ÇÂ¼´óĞ¡£¬Ä¬ÈÏÖµ10,ÊäÈë0±íÊ¾´ÓÏµÍ³×Ô¶¯»ñÈ¡ÅäÖÃÖµ"),
+        Category("åˆ†é¡µå±æ€§"),
+        Description("æ¯é¡µé¢åˆ†é¡µè®°å½•å¤§å°ï¼Œé»˜è®¤å€¼10,è¾“å…¥0è¡¨ç¤ºä»ç³»ç»Ÿè‡ªåŠ¨è·å–é…ç½®å€¼"),
         DefaultValue(10)]
         public int PageSize
         {
@@ -227,7 +227,7 @@ namespace PWMIS.Web.Controls
                     return _PageSize <= 0 ? 10 : _PageSize;
                 }
 
-                //ÉèÖÃÄ¬ÈÏ·ÖÒ³´óĞ¡
+                //è®¾ç½®é»˜è®¤åˆ†é¡µå¤§å°
                 if (this.AutoConfig && _PageSize == 0)
                 {
                     string defaultPageSize = ConfigurationSettings.AppSettings["PageSize"];
@@ -269,11 +269,11 @@ namespace PWMIS.Web.Controls
             }
         }
         /// <summary>
-        /// Ò³Ãæ×ÜÊı£¬Ö»¶Á
+        /// é¡µé¢æ€»æ•°ï¼Œåªè¯»
         /// </summary>
         [Bindable(true),
-        Category("·ÖÒ³ÊôĞÔ"),
-        Description("Ò³Ãæ×ÜÊı£¬Ö»¶Á"),
+        Category("åˆ†é¡µå±æ€§"),
+        Description("é¡µé¢æ€»æ•°ï¼Œåªè¯»"),
         DefaultValue(1)]
         public int PageCount
         {
@@ -288,8 +288,8 @@ namespace PWMIS.Web.Controls
         }
 
         [
-        Category("·ÖÒ³ÊôĞÔ"),
-        Description("ÊÇ·ñÔÊĞíÓÃ»§ÔÚä¯ÀÀÒ³ÃæµÄÊ±ºò¸Ä±ä·ÖÒ³´óĞ¡"),
+        Category("åˆ†é¡µå±æ€§"),
+        Description("æ˜¯å¦å…è®¸ç”¨æˆ·åœ¨æµè§ˆé¡µé¢çš„æ—¶å€™æ”¹å˜åˆ†é¡µå¤§å°"),
         DefaultValue(true)]
         public bool UserChangePageSize
         {
@@ -307,40 +307,40 @@ namespace PWMIS.Web.Controls
         }
         #endregion
 
-        #region ·ÖÒ³ÊÂ¼ş
+        #region åˆ†é¡µäº‹ä»¶
 
 
         /// <summary>
-        /// Ò³Ãæ¸Ä±äÊÂ¼ş
+        /// é¡µé¢æ”¹å˜äº‹ä»¶
         /// </summary>
-        [Category("·ÖÒ³ÊÂ¼ş"),
-        Description("Ò³Ãæ¸Ä±äÊÂ¼ş")]
+        [Category("åˆ†é¡µäº‹ä»¶"),
+        Description("é¡µé¢æ”¹å˜äº‹ä»¶")]
         public event ClickEventHandler PageChangeIndex;
 
         /// <summary>
-        /// Ä¿±ê¿Ø¼şÍê³ÉÊı¾İ°ó¶¨Ö®Ç°µÄÊÂ¼ş
+        /// ç›®æ ‡æ§ä»¶å®Œæˆæ•°æ®ç»‘å®šä¹‹å‰çš„äº‹ä»¶
         /// </summary>
         [Category("Data"),
-        Description("Ä¿±ê¿Ø¼şÍê³ÉÊı¾İ°ó¶¨Ö®Ç°µÄÊÂ¼ş")]
+        Description("ç›®æ ‡æ§ä»¶å®Œæˆæ•°æ®ç»‘å®šä¹‹å‰çš„äº‹ä»¶")]
         public event DataBoundHandler DataControlDataBinding;
         /// <summary>
-        /// Ä¿±ê¿Ø¼şÍê³ÉÊı¾İ°ó¶¨Íê³ÉÊÂ¼ş
+        /// ç›®æ ‡æ§ä»¶å®Œæˆæ•°æ®ç»‘å®šå®Œæˆäº‹ä»¶
         /// </summary>
         [Category("Data"),
-        Description("Ä¿±ê¿Ø¼şÍê³ÉÊı¾İ°ó¶¨Íê³ÉÊÂ¼ş")]
+        Description("ç›®æ ‡æ§ä»¶å®Œæˆæ•°æ®ç»‘å®šå®Œæˆäº‹ä»¶")]
         public event DataBoundHandler DataControlDataBound;
 
         /// <summary>
-        /// ¸Ä±äÒ³ÂëË÷Òı
+        /// æ”¹å˜é¡µç ç´¢å¼•
         /// </summary>
-        /// <param name="e">Ä¿±ê</param>
+        /// <param name="e">ç›®æ ‡</param>
         protected void changeIndex(EventArgs e)
         {
             if (PageChangeIndex != null)
             {
                 PageChangeIndex(this, e);
             }
-            //if(this.Site !=null && ! this.Site.DesignMode  )//ÔÚÔËĞĞÊ±
+            //if(this.Site !=null && ! this.Site.DesignMode  )//åœ¨è¿è¡Œæ—¶
             //{
             if (this.AutoBindData)
             {
@@ -354,10 +354,10 @@ namespace PWMIS.Web.Controls
 
         #endregion
 
-        #region ¹«¿ªµÄ·½·¨
+        #region å…¬å¼€çš„æ–¹æ³•
 
         /// <summary>
-        /// »ñÈ¡Ò»¸öÊµÀı²éÑ¯²ÎÊı
+        /// è·å–ä¸€ä¸ªå®ä¾‹æŸ¥è¯¢å‚æ•°
         /// </summary>
         /// <returns></returns>
         public System.Data.IDataParameter GetParameter()
@@ -366,7 +366,7 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// »ñÈ¡Ò»¸öÊµÀı²éÑ¯²ÎÊı
+        /// è·å–ä¸€ä¸ªå®ä¾‹æŸ¥è¯¢å‚æ•°
         /// </summary>
         /// <param name="paraName"></param>
         /// <param name="Value"></param>
@@ -377,13 +377,13 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ¸ù¾İÌá¹©µÄ·ÖÒ³²éÑ¯ºÍ¿Ø¼şÌá¹©µÄÊı¾İ·ÃÎÊĞÅÏ¢£¬´ÓÊı¾İÔ´»ñÈ¡Êı¾İ¡£
+        /// æ ¹æ®æä¾›çš„åˆ†é¡µæŸ¥è¯¢å’Œæ§ä»¶æä¾›çš„æ•°æ®è®¿é—®ä¿¡æ¯ï¼Œä»æ•°æ®æºè·å–æ•°æ®ã€‚
         /// </summary>
         /// <returns></returns>
         public object GetDataSource()
         {
             if (this.AllCount == 0)
-                this.AllCount = -1;//ÌØÊâ´¦Àí£¬»ñÈ¡¼ÇÂ¼ÊıÁ¿Îª0Ê±µÄ¼Ü¹¹
+                this.AllCount = -1;//ç‰¹æ®Šå¤„ç†ï¼Œè·å–è®°å½•æ•°é‡ä¸º0æ—¶çš„æ¶æ„
             DAO.ConnectionString = this.ConnectionString;
             object result = DAO.ExecuteDataSet(this.SQLbyPaging, System.Data.CommandType.Text, this.Parameters);
             if (this.AllCount == -1)
@@ -395,12 +395,12 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// »ñÈ¡½á¹û¼¯¼ÇÂ¼ÊıÁ¿
+        /// è·å–ç»“æœé›†è®°å½•æ•°é‡
         /// </summary>
         /// <returns></returns>
         public int GetResultDataCount()
         {
-            //´´½¨Ò»¸öĞÂÍ³¼Æ²ÎÊı£¬±ÜÃâ²ÎÊıÔÚ¼¯ºÏÖĞÒÑ¾­´æÔÚµÄÎÊÌâ¡£
+            //åˆ›å»ºä¸€ä¸ªæ–°ç»Ÿè®¡å‚æ•°ï¼Œé¿å…å‚æ•°åœ¨é›†åˆä¸­å·²ç»å­˜åœ¨çš„é—®é¢˜ã€‚
             System.Data.IDataParameter[] countParas = null;
             if (this.Parameters != null && this.Parameters.Length > 0)
             {
@@ -414,13 +414,13 @@ namespace PWMIS.Web.Controls
             DAO.ConnectionString = this.ConnectionString;
             object count = DAO.ExecuteScalar(this.SQLbyCount, System.Data.CommandType.Text, countParas);
             if (count != null)
-                return Convert.ToInt32(count);//(int)count ÔÚOracle ½«»áÊ§°Ü¡£
+                return Convert.ToInt32(count);//(int)count åœ¨Oracle å°†ä¼šå¤±è´¥ã€‚
             else
                 throw new Exception(DAO.ErrorMessage);
         }
 
         /// <summary>
-        /// ½«Êı¾İÔ´µÄ·ÖÒ³Êı¾İ°ó¶¨µ½°ó¶¨Ä¿±ê¿Ø¼şÉÏ£¬Ö§³ÖGridView
+        /// å°†æ•°æ®æºçš„åˆ†é¡µæ•°æ®ç»‘å®šåˆ°ç»‘å®šç›®æ ‡æ§ä»¶ä¸Šï¼Œæ”¯æŒGridView
         /// </summary>
         public void BindResultData()
         {
@@ -431,7 +431,7 @@ namespace PWMIS.Web.Controls
                 {
                     DataControlDataBinding(this, new EventArgs());
                 }
-                //ÏÂÃæµÄ·½Ê½Èç¹û±¾¿Ø¼şÔÚÓÃ»§¿Ø¼şÖĞ£¬½«²éÕÒ²»µ½¡£
+                //ä¸‹é¢çš„æ–¹å¼å¦‚æœæœ¬æ§ä»¶åœ¨ç”¨æˆ·æ§ä»¶ä¸­ï¼Œå°†æŸ¥æ‰¾ä¸åˆ°ã€‚
                 //Control ctr= this.Page.FindControl (BindToControlID); 
                 Control ctr = FindMyControl(this, BindToControlID);
 
@@ -457,7 +457,7 @@ namespace PWMIS.Web.Controls
                 }
                 else
                 {
-                    throw new Exception("¿Ø¼ş" + BindToControlID + "²»Ö§³ÖÊı¾İ°ó¶¨£¬ÇëÈ·±£°ó¶¨Ä¿±ê¿Ø¼şÊÇDataGrid,DataList,RepeaterÀàĞÍ£¡");
+                    throw new Exception("æ§ä»¶" + BindToControlID + "ä¸æ”¯æŒæ•°æ®ç»‘å®šï¼Œè¯·ç¡®ä¿ç»‘å®šç›®æ ‡æ§ä»¶æ˜¯DataGrid,DataList,Repeaterç±»å‹ï¼");
                 }
                 if (DataControlDataBound != null)
                 {
@@ -465,10 +465,10 @@ namespace PWMIS.Web.Controls
                 }
             }
         }
-        //      ÔÚÓÃ»§¿Ø¼şÖĞ£¬ÈÔÈ»ÕÒ²»µ½¸ÃÄ¿±ê¿Ø¼ş
+        //      åœ¨ç”¨æˆ·æ§ä»¶ä¸­ï¼Œä»ç„¶æ‰¾ä¸åˆ°è¯¥ç›®æ ‡æ§ä»¶
         private Control FindMyControl(Control sourceControl, string objControlID)
         {
-            //¿í¶ÈÓÅÏÈ²ßÂÔ
+            //å®½åº¦ä¼˜å…ˆç­–ç•¥
             foreach (Control ctr in sourceControl.Parent.Controls)
             {
                 if (ctr.ID == objControlID)
@@ -484,7 +484,7 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ÖØĞÂ°ó¶¨Êı¾İºÍ¼ÆËã±¾´Î²éÑ¯µÄ¼ÇÂ¼ÊıÁ¿£¬²¢Éè¶¨µ±Ç°Ò³ÂëÔÚµÚÒ»Ò³
+        /// é‡æ–°ç»‘å®šæ•°æ®å’Œè®¡ç®—æœ¬æ¬¡æŸ¥è¯¢çš„è®°å½•æ•°é‡ï¼Œå¹¶è®¾å®šå½“å‰é¡µç åœ¨ç¬¬ä¸€é¡µ
         /// </summary>
         public void ReBindResultData()
         {
@@ -495,13 +495,13 @@ namespace PWMIS.Web.Controls
 
         #endregion
 
-        #region Êı¾İ·ÖÒ³ÊôĞÔ
+        #region æ•°æ®åˆ†é¡µå±æ€§
         /// <summary>
-        /// ĞèÒª°ó¶¨·ÖÒ³µÄ¿Ø¼ş£¬ÈçDataGrid,DataList,Repeater ¡£
+        /// éœ€è¦ç»‘å®šåˆ†é¡µçš„æ§ä»¶ï¼Œå¦‚DataGrid,DataList,Repeater ã€‚
         /// </summary>
         [DefaultValue(null),
         Category("Data"),
-        Description("ĞèÒª°ó¶¨·ÖÒ³µÄ¿Ø¼ş£¬ÈçDataGrid,DataList,Repeater ¡£"),
+        Description("éœ€è¦ç»‘å®šåˆ†é¡µçš„æ§ä»¶ï¼Œå¦‚DataGrid,DataList,Repeater ã€‚"),
         TypeConverter(typeof(ControlListIDConverter))]
         public string BindToControl
         {
@@ -516,11 +516,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ÓÃÓÚ·ÖÒ³²éÑ¯µÄÔ­Ê¼ SQL Óï¾ä
+        /// ç”¨äºåˆ†é¡µæŸ¥è¯¢çš„åŸå§‹ SQL è¯­å¥
         /// </summary>
         [DefaultValue(null),
         Category("Data"),
-        Description("ÓÃÓÚ·ÖÒ³²éÑ¯µÄÔ­Ê¼ SQL Óï¾ä")]
+        Description("ç”¨äºåˆ†é¡µæŸ¥è¯¢çš„åŸå§‹ SQL è¯­å¥")]
         public string SQL
         {
             get
@@ -537,11 +537,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ·ÖÒ³²éÑ¯²ÎÊı,ÔÚÔËĞĞÊ±Çëµ÷ÓÃ GetParameter·½·¨ Ìí¼Ó³ÉÔ±¡£
+        /// åˆ†é¡µæŸ¥è¯¢å‚æ•°,åœ¨è¿è¡Œæ—¶è¯·è°ƒç”¨ GetParameteræ–¹æ³• æ·»åŠ æˆå‘˜ã€‚
         /// </summary>
         [DefaultValue(null),
         Category("Data"),
-        Description("·ÖÒ³²éÑ¯²ÎÊı,ÔÚÔËĞĞÊ±Çëµ÷ÓÃ GetParameter·½·¨ Ìí¼Ó³ÉÔ±¡£")]
+        Description("åˆ†é¡µæŸ¥è¯¢å‚æ•°,åœ¨è¿è¡Œæ—¶è¯·è°ƒç”¨ GetParameteræ–¹æ³• æ·»åŠ æˆå‘˜ã€‚")]
         public System.Data.IDataParameter[] Parameters
         {
             get
@@ -557,7 +557,7 @@ namespace PWMIS.Web.Controls
                         System.Data.IDataParameter[] p1 = new System.Data.IDataParameter[p0.Length];
                         for (int i = 0; i < p0.Length; i++)
                         {
-                            p1[i] = this.GetParameter(p0[i].ParameterName, p0[i].Value);//´´½¨ĞÂ²ÎÊı
+                            p1[i] = this.GetParameter(p0[i].ParameterName, p0[i].Value);//åˆ›å»ºæ–°å‚æ•°
                         }
 
                         return p1;
@@ -574,11 +574,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Éú³ÉµÄÓÃÓÚ·ÖÒ³²éÑ¯µÄ SQL Óï¾ä
+        /// ç”Ÿæˆçš„ç”¨äºåˆ†é¡µæŸ¥è¯¢çš„ SQL è¯­å¥
         /// </summary>
         [DefaultValue(null),
         Category("Data"),
-        Description("Éú³ÉµÄÓÃÓÚ·ÖÒ³²éÑ¯µÄ SQL Óï¾ä")]
+        Description("ç”Ÿæˆçš„ç”¨äºåˆ†é¡µæŸ¥è¯¢çš„ SQL è¯­å¥")]
         public string SQLbyPaging
         {
             get
@@ -590,11 +590,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Éú³ÉµÄÓÃÓÚÍ³¼Æ·ÖÒ³²éÑ¯×Ü¼ÇÂ¼ÊıµÄ SQL Óï¾ä
+        /// ç”Ÿæˆçš„ç”¨äºç»Ÿè®¡åˆ†é¡µæŸ¥è¯¢æ€»è®°å½•æ•°çš„ SQL è¯­å¥
         /// </summary>
         [DefaultValue(null),
         Category("Data"),
-        Description("Éú³ÉµÄÓÃÓÚÍ³¼Æ·ÖÒ³²éÑ¯×Ü¼ÇÂ¼ÊıµÄ SQL Óï¾ä")]
+        Description("ç”Ÿæˆçš„ç”¨äºç»Ÿè®¡åˆ†é¡µæŸ¥è¯¢æ€»è®°å½•æ•°çš„ SQL è¯­å¥")]
         public string SQLbyCount
         {
             get
@@ -606,11 +606,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Ö¸¶¨ÓÃÓÚ·ÖÒ³²éÑ¯ËùÖ§³ÖµÄÊı¾İ¿â¹ÜÀíÏµÍ³ÀàĞÍÃû³Æ
+        /// æŒ‡å®šç”¨äºåˆ†é¡µæŸ¥è¯¢æ‰€æ”¯æŒçš„æ•°æ®åº“ç®¡ç†ç³»ç»Ÿç±»å‹åç§°
         /// </summary>
         [DefaultValue(DBMSType.SqlServer),
         Category("Data"),
-        Description("Ö¸¶¨ÓÃÓÚ·ÖÒ³²éÑ¯ËùÖ§³ÖµÄÊı¾İ¿â¹ÜÀíÏµÍ³ÀàĞÍÃû³Æ")]
+        Description("æŒ‡å®šç”¨äºåˆ†é¡µæŸ¥è¯¢æ‰€æ”¯æŒçš„æ•°æ®åº“ç®¡ç†ç³»ç»Ÿç±»å‹åç§°")]
         [TypeConverter(typeof(EnumConverter))]
         public DBMSType DBMSType
         {
@@ -626,11 +626,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ÊÇ·ñ×Ô¶¯»¯Êı¾İ¿âÊµÀı¶ÔÏó£¬Èç¹ûÊÇ£¬½«²ÉÓÃDataProvider Êı¾İ·ÃÎÊ¿é£¬ÄÜ¹»·½±ãµÄ»ñÈ¡²ÎÊı£¬Éú³É½á¹ûÊı¾İ¼¯¡£Èç¹ûÎ´ÄÜÕıÈ·ÅäÖÃ£¬½«²»ÄÜÉèÖÃÎªTrue ¡£
+        /// æ˜¯å¦è‡ªåŠ¨åŒ–æ•°æ®åº“å®ä¾‹å¯¹è±¡ï¼Œå¦‚æœæ˜¯ï¼Œå°†é‡‡ç”¨DataProvider æ•°æ®è®¿é—®å—ï¼Œèƒ½å¤Ÿæ–¹ä¾¿çš„è·å–å‚æ•°ï¼Œç”Ÿæˆç»“æœæ•°æ®é›†ã€‚å¦‚æœæœªèƒ½æ­£ç¡®é…ç½®ï¼Œå°†ä¸èƒ½è®¾ç½®ä¸ºTrue ã€‚
         /// </summary>
         [DefaultValue(false),
         Category("Data"),
-        Description("ÊÇ·ñ×Ô¶¯»¯Êı¾İ¿âÊµÀı¶ÔÏó£¬Èç¹ûÊÇ£¬½«²ÉÓÃDataProvider Êı¾İ·ÃÎÊ¿é£¬ÄÜ¹»·½±ãµÄ»ñÈ¡²ÎÊı£¬Éú³É½á¹ûÊı¾İ¼¯¡£Èç¹ûÎ´ÄÜÕıÈ·ÅäÖÃ£¬½«²»ÄÜÉèÖÃÎªTrue ¡£")]
+        Description("æ˜¯å¦è‡ªåŠ¨åŒ–æ•°æ®åº“å®ä¾‹å¯¹è±¡ï¼Œå¦‚æœæ˜¯ï¼Œå°†é‡‡ç”¨DataProvider æ•°æ®è®¿é—®å—ï¼Œèƒ½å¤Ÿæ–¹ä¾¿çš„è·å–å‚æ•°ï¼Œç”Ÿæˆç»“æœæ•°æ®é›†ã€‚å¦‚æœæœªèƒ½æ­£ç¡®é…ç½®ï¼Œå°†ä¸èƒ½è®¾ç½®ä¸ºTrue ã€‚")]
         public bool AutoIDB
         {
             get
@@ -648,9 +648,9 @@ namespace PWMIS.Web.Controls
         {
             if (System.Web.HttpContext.Current == null)//   this.Site !=null && this.Site.DesignMode
             {
-                return;	//ÔÚÉè¼ÆÊ±ÍË³öÏÂÃæÂß¼­ÅĞ¶Ï
+                return;	//åœ¨è®¾è®¡æ—¶é€€å‡ºä¸‹é¢é€»è¾‘åˆ¤æ–­
             }
-            if (_AutoIDB)//Èç¹û×Ô¶¯ÊµÀı»¯Êı¾İ¿â·ÃÎÊ¶ÔÏó
+            if (_AutoIDB)//å¦‚æœè‡ªåŠ¨å®ä¾‹åŒ–æ•°æ®åº“è®¿é—®å¯¹è±¡
             {
                 try
                 {
@@ -668,11 +668,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ÊÇ·ñ×Ô¶¯´ÓÓ¦ÓÃ³ÌĞòÅäÖÃÎÄ¼ş»ñÈ¡Êı¾İ·ÃÎÊÅäÖÃĞÅÏ¢£¬Ö»ÓĞÒÑ¾­ÕıÈ·µØÅäÖÃÁËĞÅÏ¢²Å¿ÉÒÔ·µ»ØTrue ¡£
+        /// æ˜¯å¦è‡ªåŠ¨ä»åº”ç”¨ç¨‹åºé…ç½®æ–‡ä»¶è·å–æ•°æ®è®¿é—®é…ç½®ä¿¡æ¯ï¼Œåªæœ‰å·²ç»æ­£ç¡®åœ°é…ç½®äº†ä¿¡æ¯æ‰å¯ä»¥è¿”å›True ã€‚
         /// </summary>
         [DefaultValue(false),
         Category("Data"),
-        Description("ÊÇ·ñ×Ô¶¯´ÓÓ¦ÓÃ³ÌĞòÅäÖÃÎÄ¼ş»ñÈ¡Êı¾İ·ÃÎÊºÍÆäËüÅäÖÃĞÅÏ¢£¬Ö»ÓĞÒÑ¾­ÕıÈ·µØÅäÖÃÁËĞÅÏ¢²Å¿ÉÒÔ·µ»ØTrue ¡£")]
+        Description("æ˜¯å¦è‡ªåŠ¨ä»åº”ç”¨ç¨‹åºé…ç½®æ–‡ä»¶è·å–æ•°æ®è®¿é—®å’Œå…¶å®ƒé…ç½®ä¿¡æ¯ï¼Œåªæœ‰å·²ç»æ­£ç¡®åœ°é…ç½®äº†ä¿¡æ¯æ‰å¯ä»¥è¿”å›True ã€‚")]
         public bool AutoConfig
         {
             get
@@ -690,14 +690,14 @@ namespace PWMIS.Web.Controls
         {
             if (System.Web.HttpContext.Current == null)//   this.Site !=null && this.Site.DesignMode
             {
-                return;	//ÔÚÉè¼ÆÊ±ÍË³öÏÂÃæÂß¼­ÅĞ¶Ï
+                return;	//åœ¨è®¾è®¡æ—¶é€€å‡ºä¸‹é¢é€»è¾‘åˆ¤æ–­
             }
             if (_AutoConfig)
             {
                 _ErrorMessage = "";
                 string strConn = "";
-                //´¦ÀíÊı¾İ¿â¹ÜÀíÏµÍ³ÀàĞÍ
-                string strDBMSType = ConfigurationSettings.AppSettings["EngineType"];//Í³Ò»´Ó DBMSType »ñÈ¡
+                //å¤„ç†æ•°æ®åº“ç®¡ç†ç³»ç»Ÿç±»å‹
+                string strDBMSType = ConfigurationSettings.AppSettings["EngineType"];//ç»Ÿä¸€ä» DBMSType è·å–
 
                 if (strDBMSType != null && strDBMSType != "")
                 {
@@ -706,7 +706,7 @@ namespace PWMIS.Web.Controls
                     else
                         _AutoConfig = false;
 
-                    //´¦ÀíÁ¬½Ó×Ö·û´®
+                    //å¤„ç†è¿æ¥å­—ç¬¦ä¸²
                     string ConnStrKey = string.Empty;
                     switch (this.DBMSType)
                     {
@@ -730,7 +730,7 @@ namespace PWMIS.Web.Controls
                 }
                 else
                 {
-                    //Î´Ö¸¶¨£¬´Ó×îºóÒ»¸öconnectionStrings ÅäÖÃ½Ú¶ÁÈ¡
+                    //æœªæŒ‡å®šï¼Œä»æœ€åä¸€ä¸ªconnectionStrings é…ç½®èŠ‚è¯»å–
                     if (ConfigurationManager.ConnectionStrings.Count > 0)
                     {
                         DAO = MyDB.GetDBHelper();
@@ -741,26 +741,26 @@ namespace PWMIS.Web.Controls
                 if (strConn == null || strConn == "")
                     _AutoConfig = false;
                 else
-                    this.ConnectionString = strConn.Replace("~", Context.Request.PhysicalApplicationPath);//Ìæ»»Ïà¶ÔÂ·¾¶
+                    this.ConnectionString = strConn.Replace("~", Context.Request.PhysicalApplicationPath);//æ›¿æ¢ç›¸å¯¹è·¯å¾„
 
-                if (!_AutoConfig)//ÔÚÉè¼ÆÊ±²»Éú³É´íÎóĞÅÏ¢£¬ÒòÎªVS2003Éè¼ÆÊ±ÎŞ·¨¶ÁÈ¡ÅäÖÃĞÅÏ¢
+                if (!_AutoConfig)//åœ¨è®¾è®¡æ—¶ä¸ç”Ÿæˆé”™è¯¯ä¿¡æ¯ï¼Œå› ä¸ºVS2003è®¾è®¡æ—¶æ— æ³•è¯»å–é…ç½®ä¿¡æ¯
                 {
-                    _ErrorMessage = "Î´ÄÜÕıÈ·ÅäÖÃÊı¾İ·ÃÎÊĞÅÏ¢£¬Çë¼ì²éÊÇ·ñÒÑ¾­ÔÚÓ¦ÓÃ³ÌĞòÅäÖÃÎÄ¼şÖĞ½øĞĞÁËÕıÈ·µÄÅäÖÃ";
+                    _ErrorMessage = "æœªèƒ½æ­£ç¡®é…ç½®æ•°æ®è®¿é—®ä¿¡æ¯ï¼Œè¯·æ£€æŸ¥æ˜¯å¦å·²ç»åœ¨åº”ç”¨ç¨‹åºé…ç½®æ–‡ä»¶ä¸­è¿›è¡Œäº†æ­£ç¡®çš„é…ç½®";
                     _AutoConfig = false;
                 }
                 else
-                    AutoIDB = _AutoConfig;//Èç¹ûÕıÈ·ÅäÖÃ£¬ÄÇÃ´×Ô¶¯»¯Êı¾İ¿â·ÃÎÊ¶ÔÏóÊµÀı
+                    AutoIDB = _AutoConfig;//å¦‚æœæ­£ç¡®é…ç½®ï¼Œé‚£ä¹ˆè‡ªåŠ¨åŒ–æ•°æ®åº“è®¿é—®å¯¹è±¡å®ä¾‹
 
 
             }
         }
 
         /// <summary>
-        /// ÊÇ·ñÔÚÔËĞĞÊ±×Ô¶¯°ó¶¨·ÖÒ³Êı¾İ£¬ÒÀÀµÓÚ AutoIDB ÊôĞÔµÈÓÚTrue
+        /// æ˜¯å¦åœ¨è¿è¡Œæ—¶è‡ªåŠ¨ç»‘å®šåˆ†é¡µæ•°æ®ï¼Œä¾èµ–äº AutoIDB å±æ€§ç­‰äºTrue
         /// </summary>
         [DefaultValue(false),
         Category("Data"),
-        Description("ÊÇ·ñÔÚÔËĞĞÊ±×Ô¶¯°ó¶¨·ÖÒ³Êı¾İ£¬ÒÀÀµÓÚ AutoIDB ÊôĞÔµÈÓÚTrue")]
+        Description("æ˜¯å¦åœ¨è¿è¡Œæ—¶è‡ªåŠ¨ç»‘å®šåˆ†é¡µæ•°æ®ï¼Œä¾èµ–äº AutoIDB å±æ€§ç­‰äºTrue")]
         public bool AutoBindData
         {
             get
@@ -774,11 +774,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ´íÎóĞÅÏ¢
+        /// é”™è¯¯ä¿¡æ¯
         /// </summary>
         [DefaultValue(""),
         Category("Data"),
-        Description("´íÎóĞÅÏ¢")]
+        Description("é”™è¯¯ä¿¡æ¯")]
         public string ErrorMessage
         {
             get { return _ErrorMessage; }
@@ -786,11 +786,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Êı¾İ¿âÁ¬½Ó×Ö·û´®
+        /// æ•°æ®åº“è¿æ¥å­—ç¬¦ä¸²
         /// </summary>
         [DefaultValue(""),
         Category("Data"),
-        Description("Êı¾İ¿âÁ¬½Ó×Ö·û´®")]
+        Description("æ•°æ®åº“è¿æ¥å­—ç¬¦ä¸²")]
         public string ConnectionString
         {
             get
@@ -804,11 +804,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Ö¸¶¨·ÖÒ³²éÑ¯µÄ¸½¼ÓÌõ¼ş£¬×¢Òâ¼òµ¥²éÑ¯Óë¸´ÔÓ²éÑ¯µÄÌõ¼şÏŞ¶¨·½Ê½¡£
+        /// æŒ‡å®šåˆ†é¡µæŸ¥è¯¢çš„é™„åŠ æ¡ä»¶ï¼Œæ³¨æ„ç®€å•æŸ¥è¯¢ä¸å¤æ‚æŸ¥è¯¢çš„æ¡ä»¶é™å®šæ–¹å¼ã€‚
         /// </summary>
         [DefaultValue(""),
         Category("Data"),
-        Description("Ö¸¶¨·ÖÒ³²éÑ¯µÄ¸½¼ÓÌõ¼ş£¬×¢Òâ¼òµ¥²éÑ¯Óë¸´ÔÓ²éÑ¯µÄÌõ¼şÏŞ¶¨·½Ê½¡£")]
+        Description("æŒ‡å®šåˆ†é¡µæŸ¥è¯¢çš„é™„åŠ æ¡ä»¶ï¼Œæ³¨æ„ç®€å•æŸ¥è¯¢ä¸å¤æ‚æŸ¥è¯¢çš„æ¡ä»¶é™å®šæ–¹å¼ã€‚")]
         public string Where
         {
             get
@@ -825,11 +825,11 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Èç¹û¼ÇÂ¼ÊıÁ¿Îª0£¬¸ù¾İÉèÖÃÊÇ·ñÏÔÊ¾Êı¾İ¼Ü¹¹£¬Èç¹ûĞèÒªÏÔÊ¾¼Ü¹¹£¬ÄÇÃ´½«Ö´ĞĞÊı¾İ°ó¶¨·½·¨¡£
+        /// å¦‚æœè®°å½•æ•°é‡ä¸º0ï¼Œæ ¹æ®è®¾ç½®æ˜¯å¦æ˜¾ç¤ºæ•°æ®æ¶æ„ï¼Œå¦‚æœéœ€è¦æ˜¾ç¤ºæ¶æ„ï¼Œé‚£ä¹ˆå°†æ‰§è¡Œæ•°æ®ç»‘å®šæ–¹æ³•ã€‚
         /// </summary>
         [DefaultValue(true),
         Category("Data"),
-        Description("Èç¹û¼ÇÂ¼ÊıÁ¿Îª0£¬¸ù¾İÉèÖÃÊÇ·ñÏÔÊ¾Êı¾İ¼Ü¹¹£¬Èç¹ûĞèÒªÏÔÊ¾¼Ü¹¹£¬ÄÇÃ´½«Ö´ĞĞÊı¾İ°ó¶¨·½·¨¡£")]
+        Description("å¦‚æœè®°å½•æ•°é‡ä¸º0ï¼Œæ ¹æ®è®¾ç½®æ˜¯å¦æ˜¾ç¤ºæ•°æ®æ¶æ„ï¼Œå¦‚æœéœ€è¦æ˜¾ç¤ºæ¶æ„ï¼Œé‚£ä¹ˆå°†æ‰§è¡Œæ•°æ®ç»‘å®šæ–¹æ³•ã€‚")]
         public bool ShowEmptyData
         {
             get
@@ -847,11 +847,11 @@ namespace PWMIS.Web.Controls
 
         #endregion
 
-        #region »ùÀàÖØÔØµÄ·½·¨
+        #region åŸºç±»é‡è½½çš„æ–¹æ³•
         /// <summary> 
-        /// ½«´Ë¿Ø¼ş³ÊÏÖ¸øÖ¸¶¨µÄÊä³ö²ÎÊı¡£
+        /// å°†æ­¤æ§ä»¶å‘ˆç°ç»™æŒ‡å®šçš„è¾“å‡ºå‚æ•°ã€‚
         /// </summary>
-        /// <param name="output"> ÒªĞ´³öµ½µÄ HTML ±àĞ´Æ÷ </param>
+        /// <param name="output"> è¦å†™å‡ºåˆ°çš„ HTML ç¼–å†™å™¨ </param>
         protected override void Render(HtmlTextWriter output)
         {
             if (ChangePageProperty)
@@ -863,7 +863,7 @@ namespace PWMIS.Web.Controls
             this.ForeColor = this.ForeColor;
             this.EnsureChildControls();
 
-            //´¦Àí±íÍ·ÑùÊ½
+            //å¤„ç†è¡¨å¤´æ ·å¼
             output.Write("<table width='" + this.Width.ToString() + "' height='" + this.Height
                 + "' bgcolor='" + ConvertColorFormat(this.BackColor)
                 + "' bordercolor='" + ConvertColorFormat(this.BorderColor)
@@ -873,12 +873,12 @@ namespace PWMIS.Web.Controls
                 + " ;font-size:" + this.FontSize + "; font-family:" + this.Font.Name + "' class='"
                 + this.CssClass + "'><tr><td valign='baseline'>"
                 + this.Text + "</td><td valign='baseline'>");
-            //Ìí¼Ó¿Ø¼ş
-            //1-²»ÏÔÊ¾¼ÇÂ¼ÌõÊı£»2-²»ÏÔÊ¾Ò³Ìø×ª£»3-¼È²»ÏÔÊ¾¼ÇÂ¼ÌõÊı£¬Ò²²»ÏÔÊ¾Ò³Ìø×ª
+            //æ·»åŠ æ§ä»¶
+            //1-ä¸æ˜¾ç¤ºè®°å½•æ¡æ•°ï¼›2-ä¸æ˜¾ç¤ºé¡µè·³è½¬ï¼›3-æ—¢ä¸æ˜¾ç¤ºè®°å½•æ¡æ•°ï¼Œä¹Ÿä¸æ˜¾ç¤ºé¡µè·³è½¬
 
             int type = this.PageToolBarStyle;
 
-            //1»ò3£¬²»ÏÔÊ¾¼ÇÂ¼ÌõÊı
+            //1æˆ–3ï¼Œä¸æ˜¾ç¤ºè®°å½•æ¡æ•°
             if (type != 1 && type != 3)
             {
                 int currSize = PageSize;
@@ -887,7 +887,7 @@ namespace PWMIS.Web.Controls
 
                 output.Write(currSize.ToString() + "/");//AllCount-PageSize*(PageNumber-1)
                 lblAllCount.RenderControl(output);
-                output.Write("Ìõ£¬");
+                output.Write("æ¡ï¼Œ");
             }
 
             //
@@ -895,10 +895,10 @@ namespace PWMIS.Web.Controls
             {
                 output.Write("\n");
                 dlPageSize.RenderControl(output);
-                output.Write("Ìõ/Ò³£¬");
+                output.Write("æ¡/é¡µï¼Œ");
             }
             lblCPA.RenderControl(output);
-            output.Write("Ò³</td><td>");
+            output.Write("é¡µ</td><td>");
             lnkFirstPage.RenderControl(output);
             output.Write("\n");
             lnkPrePage.RenderControl(output);
@@ -907,12 +907,12 @@ namespace PWMIS.Web.Controls
             output.Write("\n");
             lnkLastPage.RenderControl(output);
 
-            //2»òÕß3 ²»ÏÔÊ¾Ò³Ìø×ª
+            //2æˆ–è€…3 ä¸æ˜¾ç¤ºé¡µè·³è½¬
             if (type != 2 && type != 3)
             {
-                output.Write("\nµ½");
+                output.Write("\nåˆ°");
                 txtNavePage.RenderControl(output);
-                output.Write("Ò³\n");
+                output.Write("é¡µ\n");
                 lnkGo.RenderControl(output);
             }
             output.Write("</td></tr></table></td></tr></table>");
@@ -920,18 +920,18 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ÖØĞ´ OnLoad ÊÂ¼ş
+        /// é‡å†™ OnLoad äº‹ä»¶
         /// </summary>
         /// <param name="e"></param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            //			//ÔÚÕâÀï´¦ÀíÓĞ¹ØÊı¾İ°ó¶¨ÊôĞÔ
+            //			//åœ¨è¿™é‡Œå¤„ç†æœ‰å…³æ•°æ®ç»‘å®šå±æ€§
             //			CheckAutoConfig ();
             //			CheckAutoIDB();
 
 
-            if (this.Site != null && this.Site.DesignMode)//ÔÚÉè¼ÆÊ±
+            if (this.Site != null && this.Site.DesignMode)//åœ¨è®¾è®¡æ—¶
             {
                 return;
             }
@@ -940,7 +940,7 @@ namespace PWMIS.Web.Controls
                 if (!this.Page.IsPostBack)
                 {
                     this.AllCount = this.GetResultDataCount();
-                    //Èç¹û¼ÇÂ¼ÊıÁ¿Îª0£¬¸ù¾İÉèÖÃÊÇ·ñÏÔÊ¾Êı¾İ¼Ü¹¹£¬Èç¹ûĞèÒªÏÔÊ¾¼Ü¹¹£¬ÄÇÃ´½«Ö´ĞĞÊı¾İ°ó¶¨·½·¨¡£
+                    //å¦‚æœè®°å½•æ•°é‡ä¸º0ï¼Œæ ¹æ®è®¾ç½®æ˜¯å¦æ˜¾ç¤ºæ•°æ®æ¶æ„ï¼Œå¦‚æœéœ€è¦æ˜¾ç¤ºæ¶æ„ï¼Œé‚£ä¹ˆå°†æ‰§è¡Œæ•°æ®ç»‘å®šæ–¹æ³•ã€‚
                     if (!this.ShowEmptyData && this.AllCount == 0)
                         return;
 
@@ -953,7 +953,7 @@ namespace PWMIS.Web.Controls
 
 
         /// <summary>
-        /// ÖØĞ´ CSS ÑùÊ½Ãû
+        /// é‡å†™ CSS æ ·å¼å
         /// </summary>
         public override string CssClass
         {
@@ -972,7 +972,7 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ÖØĞ´Ç°¾°É«
+        /// é‡å†™å‰æ™¯è‰²
         /// </summary>
         public override System.Drawing.Color ForeColor
         {
@@ -1006,7 +1006,7 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ´´½¨×Ó¿Ø¼ş
+        /// åˆ›å»ºå­æ§ä»¶
         /// </summary>
         protected override void CreateChildControls()
         {
@@ -1022,10 +1022,10 @@ namespace PWMIS.Web.Controls
             Controls.Add(lnkGo);
 
             lblAllCount.Text = this.AllCount.ToString();
-            lnkFirstPage.Text = "Ê×Ò³";
-            lnkPrePage.Text = "ÉÏÒ»Ò³";
-            lnkNextPage.Text = "ÏÂÒ»Ò³";
-            lnkLastPage.Text = "Î²Ò³";
+            lnkFirstPage.Text = "é¦–é¡µ";
+            lnkPrePage.Text = "ä¸Šä¸€é¡µ";
+            lnkNextPage.Text = "ä¸‹ä¸€é¡µ";
+            lnkLastPage.Text = "å°¾é¡µ";
             txtNavePage.Width = 30;
             lnkGo.Text = "Go";
 
@@ -1053,10 +1053,10 @@ namespace PWMIS.Web.Controls
         }
         #endregion
 
-        #region ÄÚ²¿ÊÂ¼ş´¦Àí
+        #region å†…éƒ¨äº‹ä»¶å¤„ç†
 
         /// <summary>
-        /// RGBÑÕÉ«Öµµ½HtmlÑÕÉ«Öµ×ª»»
+        /// RGBé¢œè‰²å€¼åˆ°Htmlé¢œè‰²å€¼è½¬æ¢
         /// </summary>
         /// <param name="RGBColor"></param>
         /// <returns></returns>
@@ -1066,7 +1066,7 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ÉèÖÃ·ÖÒ³×´Ì¬ĞÅÏ¢
+        /// è®¾ç½®åˆ†é¡µçŠ¶æ€ä¿¡æ¯
         /// </summary>
         private void SetPageInfo()
         {
@@ -1122,7 +1122,7 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ÏÂÒ»Ò³
+        /// ä¸‹ä¸€é¡µ
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1136,7 +1136,7 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ÉÏÒ»Ò³
+        /// ä¸Šä¸€é¡µ
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1149,7 +1149,7 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Î²Ò³
+        /// å°¾é¡µ
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1161,7 +1161,7 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Ê×Ò³
+        /// é¦–é¡µ
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1174,7 +1174,7 @@ namespace PWMIS.Web.Controls
 
 
         /// <summary>
-        /// ³õÊ¼»¯Á´½ÓÎÄ×ÖÑùÊ½
+        /// åˆå§‹åŒ–é“¾æ¥æ–‡å­—æ ·å¼
         /// </summary>
         private void InitStyle()
         {
@@ -1193,7 +1193,7 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ×ªµ½Ä³Ò³
+        /// è½¬åˆ°æŸé¡µ
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1208,12 +1208,12 @@ namespace PWMIS.Web.Controls
             }
             catch
             {
-                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "pageErr", "<script language='javascript'>alert('ÇëÌîĞ´Êı×ÖÒ³Âë£¡');</script>");
+                this.Page.ClientScript.RegisterStartupScript(this.GetType(), "pageErr", "<script language='javascript'>alert('è¯·å¡«å†™æ•°å­—é¡µç ï¼');</script>");
             }
         }
 
         /// <summary>
-        /// ¸Ä±äÒ³´óĞ¡
+        /// æ”¹å˜é¡µå¤§å°
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1227,9 +1227,9 @@ namespace PWMIS.Web.Controls
         }
         #endregion
 
-        #region »ñÈ¡°ó¶¨¿Ø¼şÁĞ±í Àà
+        #region è·å–ç»‘å®šæ§ä»¶åˆ—è¡¨ ç±»
         /// <summary>
-        /// »ñÈ¡°ó¶¨¿Ø¼şÁĞ±í Àà
+        /// è·å–ç»‘å®šæ§ä»¶åˆ—è¡¨ ç±»
         /// </summary>
         public class ControlListIDConverter : StringConverter
         {
@@ -1248,7 +1248,7 @@ namespace PWMIS.Web.Controls
                 return true;
             }
             /// <summary>
-            /// »ñÈ¡ËùÓĞÔËĞĞÊ±µÄÄ¿±ê¿Ø¼şµÄID
+            /// è·å–æ‰€æœ‰è¿è¡Œæ—¶çš„ç›®æ ‡æ§ä»¶çš„ID
             /// </summary>
             public override System.ComponentModel.TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context)
             {
@@ -1259,7 +1259,7 @@ namespace PWMIS.Web.Controls
                 {
                     if (ic is ProPageToolBar)
                         continue;
-                    if (ic is DataGrid || ic is Repeater || ic is DataList || ic is GridView)//|| ic is System.Web.UI.WebControls.ListView ¿ÉÄÜĞèÒª3.5¿ò¼Ü
+                    if (ic is DataGrid || ic is Repeater || ic is DataList || ic is GridView)//|| ic is System.Web.UI.WebControls.ListView å¯èƒ½éœ€è¦3.5æ¡†æ¶
                     {
                         al.Add(((Control)ic).ID);
                     }

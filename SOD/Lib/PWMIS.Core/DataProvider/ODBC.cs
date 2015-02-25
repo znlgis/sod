@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º                
- * ĞŞ¸ÄËµÃ÷£º
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š                
+ * ä¿®æ”¹è¯´æ˜ï¼š
  * ========================================================================
 */
 using System;
@@ -20,21 +20,21 @@ using System.Data.Odbc ;
 namespace PWMIS.DataProvider.Data
 {
 	/// <summary>
-	/// ODBC Êı¾İ·ÃÎÊÀà
+	/// ODBC æ•°æ®è®¿é—®ç±»
 	/// </summary>
 	public sealed class Odbc:AdoHelper
 	{
 		/// <summary>
-		/// Ä¬ÈÏ¹¹Ôìº¯Êı
+		/// é»˜è®¤æ„é€ å‡½æ•°
 		/// </summary>
 		public Odbc()
 		{
 			//
-			// TODO: ÔÚ´Ë´¦Ìí¼Ó¹¹Ôìº¯ÊıÂß¼­
+			// TODO: åœ¨æ­¤å¤„æ·»åŠ æ„é€ å‡½æ•°é€»è¾‘
 			//
 		}
         /// <summary>
-        /// »ñÈ¡µ±Ç°Êı¾İ¿âÀàĞÍµÄÃ¶¾Ù
+        /// è·å–å½“å‰æ•°æ®åº“ç±»å‹çš„æšä¸¾
         /// </summary>
         public override PWMIS.Common.DBMSType CurrentDBMSType
         {
@@ -42,9 +42,9 @@ namespace PWMIS.DataProvider.Data
         }
 
 		/// <summary>
-		/// ´´½¨²¢ÇÒ´ò¿ªÊı¾İ¿âÁ¬½Ó
+		/// åˆ›å»ºå¹¶ä¸”æ‰“å¼€æ•°æ®åº“è¿æ¥
 		/// </summary>
-		/// <returns>Êı¾İ¿âÁ¬½Ó</returns>
+		/// <returns>æ•°æ®åº“è¿æ¥</returns>
 		protected override IDbConnection GetConnection()
 		{
 			IDbConnection conn=base.GetConnection ();
@@ -57,9 +57,9 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// »ñÈ¡Êı¾İÊÊÅäÆ÷ÊµÀı
+		/// è·å–æ•°æ®é€‚é…å™¨å®ä¾‹
 		/// </summary>
-		/// <returns>Êı¾İÊÊÅäÆ÷</returns>
+		/// <returns>æ•°æ®é€‚é…å™¨</returns>
 		protected override IDbDataAdapter  GetDataAdapter(IDbCommand command)
 		{
 			IDbDataAdapter ada=new OdbcDataAdapter ((OdbcCommand )command);
@@ -67,21 +67,21 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+		/// è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
 		/// </summary>
-		/// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+		/// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
 		public override IDataParameter GetParameter()
 		{
 			return new OdbcParameter ();
 		}
 
 		/// <summary>
-		///  »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+		///  è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
 		/// </summary>
-		/// <param name="paraName">²ÎÊıÃû</param>
-		/// <param name="dbType">²ÎÊıÊı¾İÀàĞÍ</param>
-		/// <param name="size">²ÎÊı´óĞ¡</param>
-		/// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+		/// <param name="paraName">å‚æ•°å</param>
+		/// <param name="dbType">å‚æ•°æ•°æ®ç±»å‹</param>
+		/// <param name="size">å‚æ•°å¤§å°</param>
+		/// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
 		public override IDataParameter GetParameter(string paraName,System.Data.DbType dbType,int size)
 		{
 			OdbcParameter para=new OdbcParameter();
@@ -97,11 +97,11 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ·µ»Ø´Ë OdbcConnection µÄÊı¾İÔ´µÄ¼Ü¹¹ĞÅÏ¢¡£
+        /// è¿”å›æ­¤ OdbcConnection çš„æ•°æ®æºçš„æ¶æ„ä¿¡æ¯ã€‚
         /// </summary>
-        /// <param name="collectionName">¼¯ºÏÃû³Æ</param>
-        /// <param name="restrictionValues">ÇëÇóµÄ¼Ü¹¹µÄÒ»×éÏŞÖÆÖµ</param>
-        /// <returns>Êı¾İ¿â¼Ü¹¹ĞÅÏ¢±í</returns>
+        /// <param name="collectionName">é›†åˆåç§°</param>
+        /// <param name="restrictionValues">è¯·æ±‚çš„æ¶æ„çš„ä¸€ç»„é™åˆ¶å€¼</param>
+        /// <returns>æ•°æ®åº“æ¶æ„ä¿¡æ¯è¡¨</returns>
         public override DataTable GetSchema(string collectionName, string[] restrictionValues)
         {
             using (OdbcConnection conn = (OdbcConnection)this.GetConnection())

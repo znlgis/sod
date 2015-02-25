@@ -1,31 +1,31 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2013-3-1                
- * ĞŞ¸ÄËµÃ÷£ºÍêÉÆÁË¿Ø¼ş
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2013-3-1                
+ * ä¿®æ”¹è¯´æ˜ï¼šå®Œå–„äº†æ§ä»¶
  * ========================================================================
 */
 
 //**************************************************************************
-//	ÎÄ ¼ş Ãû£º  
-//	ÓÃ	  Í¾£º  TextBoxÀ©Õ¹£¬ÊÕ¼¯Êı¾İ
-//	´´ ½¨ ÈË£º  ÂíÑå½Ü
-//  ´´½¨ÈÕÆÚ£º  2006.03.09
-//	°æ ±¾ ºÅ£º	V1.1
-//	ĞŞ¸Ä¼ÇÂ¼£º  µËÌ«»ª 2006.04.25 Ìí¼Ó¶ÔÓÚ×Ö·û´®³¬³¤µÄÑéÖ¤
-//              µËÌ«»ª 20060608 ĞŞ¸Ä£¬¶ÔÓÚÖ»¶Á×´Ì¬ÏÂ²ÉÓÃÑùÊ½¶¨Òå¶ø²»²ÉÓÃ±³¾°Çø·Ö£¬
-//              ¹æ¶¨ËùÓĞµÄÖ»¶ÁÑùÊ½ÃûÎª£º CssReadOnly
-//              È¡ÏûÑùÊ½¿ØÖÆ¹¦ÄÜ£¬ÓÉÓÃ»§ÑùÊ½±í¶¨Òå£»
-//              µËÌ«»ª 2008.2.15 Ôö¼Ó¡°Ö÷¼ü¡±ÊôĞÔ£¬ÓÃÓÚ×Ô¶¯Êı¾İ¸üĞÂµÄÒÀ¾İ
-//                     2009.12.29 Ôö¼ÓÑéÖ¤¹¦ÄÜ
+//	æ–‡ ä»¶ åï¼š  
+//	ç”¨	  é€”ï¼š  TextBoxæ‰©å±•ï¼Œæ”¶é›†æ•°æ®
+//	åˆ› å»º äººï¼š  é©¬å½¦æ°
+//  åˆ›å»ºæ—¥æœŸï¼š  2006.03.09
+//	ç‰ˆ æœ¬ å·ï¼š	V1.1
+//	ä¿®æ”¹è®°å½•ï¼š  é‚“å¤ªå 2006.04.25 æ·»åŠ å¯¹äºå­—ç¬¦ä¸²è¶…é•¿çš„éªŒè¯
+//              é‚“å¤ªå 20060608 ä¿®æ”¹ï¼Œå¯¹äºåªè¯»çŠ¶æ€ä¸‹é‡‡ç”¨æ ·å¼å®šä¹‰è€Œä¸é‡‡ç”¨èƒŒæ™¯åŒºåˆ†ï¼Œ
+//              è§„å®šæ‰€æœ‰çš„åªè¯»æ ·å¼åä¸ºï¼š CssReadOnly
+//              å–æ¶ˆæ ·å¼æ§åˆ¶åŠŸèƒ½ï¼Œç”±ç”¨æˆ·æ ·å¼è¡¨å®šä¹‰ï¼›
+//              é‚“å¤ªå 2008.2.15 å¢åŠ â€œä¸»é”®â€å±æ€§ï¼Œç”¨äºè‡ªåŠ¨æ•°æ®æ›´æ–°çš„ä¾æ®
+//                     2009.12.29 å¢åŠ éªŒè¯åŠŸèƒ½
 //**************************************************************************
 using System;
 using System.Data;
@@ -41,7 +41,7 @@ using PWMIS.DataMap;
 namespace PWMIS.Web.Controls
 {
     /// <summary>
-    /// Êı¾İÎÄ±¾¿ò¿Ø¼ş.
+    /// æ•°æ®æ–‡æœ¬æ¡†æ§ä»¶.
     /// </summary>
     [System.Drawing.ToolboxBitmap(typeof(ControlIcon), "DataTextBox.bmp")]
     public class DataTextBox : TextBox, IDataTextBox, IQueryControl
@@ -49,18 +49,18 @@ namespace PWMIS.Web.Controls
         //private string _BaseText=null ;
 
         /// <summary>
-        /// Ä¬ÈÏ¹¹Ôìº¯Êı
+        /// é»˜è®¤æ„é€ å‡½æ•°
         /// </summary>
         public DataTextBox()
         {
             EnsureChildControls();
         }
 
-        #region ¿Ø¼şÑéÖ¤
+        #region æ§ä»¶éªŒè¯
         /// <summary>
-        /// Ö´ĞĞ·şÎñÆ÷ÑéÖ¤Ê±µÄÊı¾İÀàĞÍ
+        /// æ‰§è¡ŒæœåŠ¡å™¨éªŒè¯æ—¶çš„æ•°æ®ç±»å‹
         /// </summary>
-        [Category("¿Ø¼şÑéÖ¤"), Description("Ö´ĞĞ·şÎñÆ÷ÑéÖ¤Ê±µÄÊı¾İÀàĞÍ")]
+        [Category("æ§ä»¶éªŒè¯"), Description("æ‰§è¡ŒæœåŠ¡å™¨éªŒè¯æ—¶çš„æ•°æ®ç±»å‹")]
         public ValidationDataType Type
         {
             get
@@ -72,7 +72,7 @@ namespace PWMIS.Web.Controls
             set
             {
                 ViewState["ValidationDataType"] = value;
-                //È¡ÏûÑùÊ½¿ØÖÆ¹¦ÄÜ£¬ÓÃÓÃ»§ÑùÊ½±í¶¨Òå
+                //å–æ¶ˆæ ·å¼æ§åˆ¶åŠŸèƒ½ï¼Œç”¨ç”¨æˆ·æ ·å¼è¡¨å®šä¹‰
                 //				switch(value)
                 //				{
                 //					case ValidationDataType.Currency:
@@ -88,9 +88,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ÊÇ·ñÍ¨¹ı·şÎñÆ÷ÑéÖ¤Ä¬ÈÏÎªtrue
+        /// æ˜¯å¦é€šè¿‡æœåŠ¡å™¨éªŒè¯é»˜è®¤ä¸ºtrue
         /// </summary>
-        [Category("¿Ø¼şÑéÖ¤"), Description("ÊÇ·ñÍ¨¹ı·şÎñÆ÷ÑéÖ¤Ä¬ÈÏÎªtrue")]
+        [Category("æ§ä»¶éªŒè¯"), Description("æ˜¯å¦é€šè¿‡æœåŠ¡å™¨éªŒè¯é»˜è®¤ä¸ºtrue")]
         public bool IsValid
         {
             get
@@ -108,9 +108,9 @@ namespace PWMIS.Web.Controls
         private EnumMessageType _messageType;
 
         /// <summary>
-        /// ÌáÊ¾ĞÅÏ¢µÄÀàĞÍ
+        /// æç¤ºä¿¡æ¯çš„ç±»å‹
         /// </summary>
-        [Category("¿Ø¼şÑéÖ¤"), Description("ÌáÊ¾ĞÅÏ¢µÄÀàĞÍ")]
+        [Category("æ§ä»¶éªŒè¯"), Description("æç¤ºä¿¡æ¯çš„ç±»å‹")]
         [TypeConverter(typeof(EnumConverter))]
         public EnumMessageType MessageType
         {
@@ -125,9 +125,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ĞèÒªÑéÖ¤µÄ³£ÓÃÊı¾İÀàĞÍ£¬Èç¹ûÉè¶¨Îª¡°ÎŞ¡±£¬½«Í£Ö¹¿Ø¼şÑéÖ¤¡£
+        /// éœ€è¦éªŒè¯çš„å¸¸ç”¨æ•°æ®ç±»å‹ï¼Œå¦‚æœè®¾å®šä¸ºâ€œæ— â€ï¼Œå°†åœæ­¢æ§ä»¶éªŒè¯ã€‚
         /// </summary>
-        [Category("¿Ø¼şÑéÖ¤"), Description("ĞèÒªÑéÖ¤µÄ³£ÓÃÊı¾İÀàĞÍ£¬Èç¹ûÉè¶¨Îª¡°ÎŞ¡±£¬½«Í£Ö¹¿Ø¼şÑéÖ¤¡£")]
+        [Category("æ§ä»¶éªŒè¯"), Description("éœ€è¦éªŒè¯çš„å¸¸ç”¨æ•°æ®ç±»å‹ï¼Œå¦‚æœè®¾å®šä¸ºâ€œæ— â€ï¼Œå°†åœæ­¢æ§ä»¶éªŒè¯ã€‚")]
         [TypeConverter(typeof(StandardRegexListConvertor))]
         public string OftenType
         {
@@ -135,12 +135,12 @@ namespace PWMIS.Web.Controls
             {
                 if (ViewState["OftenType"] != null)
                     return ViewState["OftenType"].ToString();
-                return "ÎŞ";
+                return "æ— ";
             }
             set
             {
                 ViewState["OftenType"] = value;
-                if (value == "ÎŞ")
+                if (value == "æ— ")
                 {
                     this.RegexString = "";
                     this.isClientValidation = false;
@@ -151,9 +151,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Éè¶¨¿Ø¼şÑéÖ¤µÄÕıÔò±í´ïÊ½
+        /// è®¾å®šæ§ä»¶éªŒè¯çš„æ­£åˆ™è¡¨è¾¾å¼
         /// </summary>
-        [Category("¿Ø¼şÑéÖ¤"), Description("Éè¶¨¿Ø¼şÑéÖ¤µÄÕıÔò±í´ïÊ½")]
+        [Category("æ§ä»¶éªŒè¯"), Description("è®¾å®šæ§ä»¶éªŒè¯çš„æ­£åˆ™è¡¨è¾¾å¼")]
         public string RegexString
         {
             get
@@ -169,9 +169,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// ÑéÖ¤µÄÃû³Æ
+        /// éªŒè¯çš„åç§°
         /// </summary>
-        [Category("¿Ø¼şÑéÖ¤"), Description("ÑéÖ¤µÄÃû³Æ")]
+        [Category("æ§ä»¶éªŒè¯"), Description("éªŒè¯çš„åç§°")]
         public string RegexName
         {
             get
@@ -188,9 +188,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Éè¶¨ÊÇ·ñµã»÷¿Ø¼şÌáÊ¾ĞÅÏ¢
+        /// è®¾å®šæ˜¯å¦ç‚¹å‡»æ§ä»¶æç¤ºä¿¡æ¯
         /// </summary>
-        [Category("¿Ø¼şÑéÖ¤"), Description("Éè¶¨ÊÇ·ñµã»÷¿Ø¼şÌáÊ¾ĞÅÏ¢"), DefaultValue(false)]
+        [Category("æ§ä»¶éªŒè¯"), Description("è®¾å®šæ˜¯å¦ç‚¹å‡»æ§ä»¶æç¤ºä¿¡æ¯"), DefaultValue(false)]
         public bool OnClickShowInfo
         {
 
@@ -207,9 +207,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Éè¶¨½Å±¾Â·¾¶
+        /// è®¾å®šè„šæœ¬è·¯å¾„
         /// </summary>
-        [Category("Data"), Description("Éè¶¨½Å±¾Â·¾¶")]
+        [Category("Data"), Description("è®¾å®šè„šæœ¬è·¯å¾„")]
         public string ScriptPath
         {
             get
@@ -242,11 +242,11 @@ namespace PWMIS.Web.Controls
 
         #endregion
 
-        #region Íâ¹ÛÊôĞÔ
+        #region å¤–è§‚å±æ€§
         /// <summary>
-        /// ÑéÖ¤Ê§°Ü³ÊÏÖµÄĞÅÏ¢
+        /// éªŒè¯å¤±è´¥å‘ˆç°çš„ä¿¡æ¯
         /// </summary>
-        [Category("¿Ø¼şÑéÖ¤"), Description("ÑéÖ¤Ê§°Ü³ÊÏÖµÄĞÅÏ¢")]
+        [Category("æ§ä»¶éªŒè¯"), Description("éªŒè¯å¤±è´¥å‘ˆç°çš„ä¿¡æ¯")]
         public string ErrorMessage
         {
             get
@@ -262,14 +262,14 @@ namespace PWMIS.Web.Controls
         }
         #endregion
 
-        #region Êı¾İÊôĞÔ
-        [Category("Data"), Description("Éè¶¨¶ÔÓ¦µÄÊı¾İÔ´£¬¸ñÊ½£ºFullClassName,AssemblyName ¡£Èç¹ûĞèÒª°ó¶¨ÊµÌåÀà£¬¿ÉÒÔÉèÖÃ¸ÃÊôĞÔ¡£")]
+        #region æ•°æ®å±æ€§
+        [Category("Data"), Description("è®¾å®šå¯¹åº”çš„æ•°æ®æºï¼Œæ ¼å¼ï¼šFullClassName,AssemblyName ã€‚å¦‚æœéœ€è¦ç»‘å®šå®ä½“ç±»ï¼Œå¯ä»¥è®¾ç½®è¯¥å±æ€§ã€‚")]
         public string DataProvider { get; set; }
 
         /// <summary>
-        /// Éè¶¨¶ÔÓ¦µÄÊı¾İ¿â×Ö¶ÎÊÇ·ñÊÇÖ÷¼ü£¬ÓÃÓÚ×Ô¶¯Êı¾İ²éÑ¯ºÍ¸üĞÂµÄÒÀ¾İ
+        /// è®¾å®šå¯¹åº”çš„æ•°æ®åº“å­—æ®µæ˜¯å¦æ˜¯ä¸»é”®ï¼Œç”¨äºè‡ªåŠ¨æ•°æ®æŸ¥è¯¢å’Œæ›´æ–°çš„ä¾æ®
         /// </summary>
-        [Category("Data"), Description("Éè¶¨¶ÔÓ¦µÄÊı¾İ¿â×Ö¶ÎÊÇ·ñÊÇÖ÷¼ü£¬ÓÃÓÚ×Ô¶¯Êı¾İ²éÑ¯ºÍ¸üĞÂµÄÒÀ¾İ"), DefaultValue(false)]
+        [Category("Data"), Description("è®¾å®šå¯¹åº”çš„æ•°æ®åº“å­—æ®µæ˜¯å¦æ˜¯ä¸»é”®ï¼Œç”¨äºè‡ªåŠ¨æ•°æ®æŸ¥è¯¢å’Œæ›´æ–°çš„ä¾æ®"), DefaultValue(false)]
         public bool PrimaryKey
         {
             get
@@ -285,9 +285,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Éè¶¨¶ÔÓ¦µÄÊı¾İ×Ö¶ÎÀàĞÍ
+        /// è®¾å®šå¯¹åº”çš„æ•°æ®å­—æ®µç±»å‹
         /// </summary>
-        [Category("Data"), Description("Éè¶¨¶ÔÓ¦µÄÊı¾İ×Ö¶ÎÀàĞÍ")]
+        [Category("Data"), Description("è®¾å®šå¯¹åº”çš„æ•°æ®å­—æ®µç±»å‹")]
         public System.TypeCode SysTypeCode
         {
             get
@@ -303,9 +303,9 @@ namespace PWMIS.Web.Controls
         }
 
         /// <summary>
-        /// Êı¾İ³ÊÏÖ¸ñÊ½
+        /// æ•°æ®å‘ˆç°æ ¼å¼
         /// </summary>
-        [Category("Íâ¹Û"), Description("Êı¾İ³ÊÏÖ¸ñÊ½")]
+        [Category("å¤–è§‚"), Description("æ•°æ®å‘ˆç°æ ¼å¼")]
         public string DataFormatString
         {
             get
@@ -321,7 +321,7 @@ namespace PWMIS.Web.Controls
         }
         #endregion
 
-        #region ½Å±¾Êä³ö
+        #region è„šæœ¬è¾“å‡º
 
         protected override void OnLoad(EventArgs e)
         {
@@ -335,23 +335,23 @@ namespace PWMIS.Web.Controls
             string messageType = "";
             switch (MessageType)
             {
-                case EnumMessageType.²ã:
+                case EnumMessageType.å±‚:
                     messageType = "tip";
                     break;
-                case EnumMessageType.ÌáÊ¾¿ò:
+                case EnumMessageType.æç¤ºæ¡†:
                     messageType = "alert";
                     break;
             }
-            //µã»÷¿Ø¼şÌáÊ¾ĞÅÏ¢
+            //ç‚¹å‡»æ§ä»¶æç¤ºä¿¡æ¯
             if (this.OnClickShowInfo)
             {
-                //µã»÷µÄÌáÊ¾·½Ê½Ê¼ÖÕÒÔ²ãÀ´ÏÔÊ¾
-                this.Attributes.Add("onclick", "DTControl_SetInputBG(this);ShowMessage('ÇëÌîĞ´" + this.RegexName + "',this,'tip');");
+                //ç‚¹å‡»çš„æç¤ºæ–¹å¼å§‹ç»ˆä»¥å±‚æ¥æ˜¾ç¤º
+                this.Attributes.Add("onclick", "DTControl_SetInputBG(this);ShowMessage('è¯·å¡«å†™" + this.RegexName + "',this,'tip');");
                 this.Attributes.Add("onblur", "DTControl_CleInputBG(this);DTControl_Hide_TIPDIV();");
             }
 
 
-            if (this.IsNull && this.OftenType == "ÎŞ")
+            if (this.IsNull && this.OftenType == "æ— ")
             {
                 base.OnPreRender(e);
                 return;
@@ -359,14 +359,14 @@ namespace PWMIS.Web.Controls
             else
             {
                 if (!this.IsNull)
-                {    //²»¿ÉÎª¿Õ
-                    this.Page.ClientScript.RegisterOnSubmitStatement(this.GetType(), this.UniqueID, "if(document.all." + this.ClientID + ".value==''){\r\n ShowMessage('¸ÃÏî²»ÄÜÎª¿Õ!',document.all." + this.ClientID + ",'" + messageType + "');\r\n document.all." + this.ClientID + ".focus();return false;\r\n}\r\n");
+                {    //ä¸å¯ä¸ºç©º
+                    this.Page.ClientScript.RegisterOnSubmitStatement(this.GetType(), this.UniqueID, "if(document.all." + this.ClientID + ".value==''){\r\n ShowMessage('è¯¥é¡¹ä¸èƒ½ä¸ºç©º!',document.all." + this.ClientID + ",'" + messageType + "');\r\n document.all." + this.ClientID + ".focus();return false;\r\n}\r\n");
                 }
 
 
                 //switch (this.OftenType)
                 //{
-                //    case "ÈÕÆÚ":
+                //    case "æ—¥æœŸ":
                 //        string path = Root + "System/JS/My97DatePicker/WdatePicker.js";
                 //        this.Page.ClientScript.RegisterStartupScript(this.GetType (),"JS_calendar", "\r\n<script language='javascript' type='text/javascript' src='"+path+"'></script>\r\n");
                 //        this.Attributes.Add("onfocus", "new WdatePicker(this)");
@@ -377,24 +377,24 @@ namespace PWMIS.Web.Controls
                 if (this.RegexString != "" && this.OnClickShowInfo && !isClientValidation)
                 {
                     string RegexString = this.RegexString.Replace(@"\", @"\\");
-                    this.Attributes.Add("onchange", "return isCustomRegular(this,'" + RegexString + "','" + this.RegexName + "Ã»ÓĞÌîĞ´ÕıÈ·','" + messageType + "');");
+                    this.Attributes.Add("onchange", "return isCustomRegular(this,'" + RegexString + "','" + this.RegexName + "æ²¡æœ‰å¡«å†™æ­£ç¡®','" + messageType + "');");
                 }
 
 
             }
             ////
-            if (!isClientValidation)//¿Ø¼şÑéÖ¤½Å±¾
+            if (!isClientValidation)//æ§ä»¶éªŒè¯è„šæœ¬
             {
                 string script = @"javascript:var key= (event.keyCode | event.which);if( !(( key>=48 && key<=57)|| key==46 || key==37 || key==39 || key==45 || key==43 || key==8 || key==46  ) ) {try{ event.returnValue = false;event.preventDefault();}catch(ex){} alert('" + this.ErrorMessage + "');}";
                 switch (Type)
                 {
                     case ValidationDataType.String:
                         //Convert.ToString(this.Text.Trim());
-                        //µËÌ«»ª 2006.04.25 Ìí¼Ó¶ÔÓÚ×Ö·û´®³¬³¤µÄÑéÖ¤
+                        //é‚“å¤ªå 2006.04.25 æ·»åŠ å¯¹äºå­—ç¬¦ä¸²è¶…é•¿çš„éªŒè¯
                         if (this.MaxLength > 0 && this.TextMode == TextBoxMode.MultiLine)
                         {
                             string maxlen = this.MaxLength.ToString();
-                            this.Attributes.Add("onblur", "javascript:if(this.value.length>" + maxlen + "){this.select();alert('ÊäÈëµÄÎÄ×Ö²»ÄÜ³¬¹ı " + maxlen + " ¸ö×Ö·û£¡');MaxLenError=true;}else{MaxLenError=false;}");
+                            this.Attributes.Add("onblur", "javascript:if(this.value.length>" + maxlen + "){this.select();alert('è¾“å…¥çš„æ–‡å­—ä¸èƒ½è¶…è¿‡ " + maxlen + " ä¸ªå­—ç¬¦ï¼');MaxLenError=true;}else{MaxLenError=false;}");
                         }
                         break;
                     case ValidationDataType.Integer:
@@ -415,7 +415,7 @@ namespace PWMIS.Web.Controls
                         break;
                 }
             }
-            else//Ö´ĞĞ×Ô¶¨ÒåÑéÖ¤£¬Êä³ö×Ô¶¨Òå½Å±¾
+            else//æ‰§è¡Œè‡ªå®šä¹‰éªŒè¯ï¼Œè¾“å‡ºè‡ªå®šä¹‰è„šæœ¬
             {
                 this.RegisterClientScript();
                 if (this.ClientValidationFunctionString != "")
@@ -429,7 +429,7 @@ namespace PWMIS.Web.Controls
 
 
         /// <summary>
-        /// Êä³ö½Å±¾
+        /// è¾“å‡ºè„šæœ¬
         /// </summary>
         protected virtual void RegisterClientScript()
         {
@@ -471,18 +471,18 @@ return true;
 
         #endregion
 
-        #region IBrainControl ³ÉÔ±
+        #region IBrainControl æˆå‘˜
 
-        #region Êı¾İÊôĞÔ
+        #region æ•°æ®å±æ€§
         /// <summary>
-        /// Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İÃû
+        /// è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®å
         /// </summary>
-        [Category("Data"), Description("Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İÃû")]
+        [Category("Data"), Description("è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®å")]
         public string LinkProperty
         {
             get
             {
-                // TODO:  Ìí¼Ó BrainTextBox.LinkProperty getter ÊµÏÖ
+                // TODO:  æ·»åŠ  BrainTextBox.LinkProperty getter å®ç°
                 if (ViewState["LinkProperty"] != null)
                     return (string)ViewState["LinkProperty"];
                 return "";
@@ -490,14 +490,14 @@ return true;
             set
             {
                 ViewState["LinkProperty"] = value;
-                // TODO:  Ìí¼Ó BrainTextBox.LinkProperty setter ÊµÏÖ
+                // TODO:  æ·»åŠ  BrainTextBox.LinkProperty setter å®ç°
             }
         }
 
         /// <summary>
-        /// Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İ±íÃû
+        /// è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®è¡¨å
         /// </summary>
-        [Category("Data"), Description("Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İ±íÃû")]
+        [Category("Data"), Description("è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®è¡¨å")]
         public string LinkObject
         {
             get
@@ -515,9 +515,9 @@ return true;
 
         #endregion
 
-        #region ÆäËûÊôĞÔ
+        #region å…¶ä»–å±æ€§
 
-        //ÊÇ·ñÖ»¶Á
+        //æ˜¯å¦åªè¯»
         public override bool ReadOnly
         {
             get
@@ -528,7 +528,7 @@ return true;
             {
                 base.ReadOnly = value;
                 if (value)
-                    //µËÌ«»ª 20060608 ĞŞ¸Ä£¬¶ÔÓÚÖ»¶Á×´Ì¬ÏÂ²ÉÓÃÑùÊ½¶¨Òå¶ø²»²ÉÓÃ±³¾°Çø·Ö£¬ÏÂÃæÒ»ĞĞ±»×¢ÊÍ
+                    //é‚“å¤ªå 20060608 ä¿®æ”¹ï¼Œå¯¹äºåªè¯»çŠ¶æ€ä¸‹é‡‡ç”¨æ ·å¼å®šä¹‰è€Œä¸é‡‡ç”¨èƒŒæ™¯åŒºåˆ†ï¼Œä¸‹é¢ä¸€è¡Œè¢«æ³¨é‡Š
                     //this.BackColor=System.Drawing.Color.FromName("#E0E0E0");
                     this.CssClass = "CssReadOnly";
                 else
@@ -537,7 +537,7 @@ return true;
         }
 
         //		/// <summary>
-        //		/// »ñÈ¡»òÕßÉèÖÃÎÄ±¾£¬Èç¹ûÉèÖÃÁË¸ñÊ½×Ö·û´®£¬ÄÇÃ´ÏÔÊ¾ÎÄ±¾Îª¸ñÊ½»¯ºóµÄÎÄ±¾£¬µ«ÊÇÄÚ²¿´¦ÀíµÄÊ±ºòÈÔÈ»Ê¹ÓÃ¸ñÊ½»¯Ç°µÄÎÄ±¾
+        //		/// è·å–æˆ–è€…è®¾ç½®æ–‡æœ¬ï¼Œå¦‚æœè®¾ç½®äº†æ ¼å¼å­—ç¬¦ä¸²ï¼Œé‚£ä¹ˆæ˜¾ç¤ºæ–‡æœ¬ä¸ºæ ¼å¼åŒ–åçš„æ–‡æœ¬ï¼Œä½†æ˜¯å†…éƒ¨å¤„ç†çš„æ—¶å€™ä»ç„¶ä½¿ç”¨æ ¼å¼åŒ–å‰çš„æ–‡æœ¬
         //		/// </summary>
         //		public override string Text
         //		{
@@ -567,19 +567,19 @@ return true;
 
         #endregion
 
-        #region ½Ó¿Ú·½·¨
+        #region æ¥å£æ–¹æ³•
 
-        //³ÊÏÖÊı¾İ
+        //å‘ˆç°æ•°æ®
         public void SetValue(object obj)
         {
             DataTextBoxValue dtbv = new DataTextBoxValue(this);
             dtbv.SetValue(obj);
         }
 
-        //Êı¾İÊÕ¼¯ 
-        //Îª¿ÕÊ±string ·µ»Ø ¡°¡±
-        //ÆäËûÀàĞÍ  Ò»ÂÉ·µ»Ødbnull.value
-        //µËÌ«»ª 2006.8.23 ĞŞ¸Ä£¬Èç¹ûÊı×ÖĞÍµÄÖµÎª¿Õ×Ö·û´®£¬ÄÇÃ´ËüµÄÖµĞŞ¸ÄÎª DBNull.Value ¶ø²»ÊÇÄ¬ÈÏµÄ "0"
+        //æ•°æ®æ”¶é›† 
+        //ä¸ºç©ºæ—¶string è¿”å› â€œâ€
+        //å…¶ä»–ç±»å‹  ä¸€å¾‹è¿”å›dbnull.value
+        //é‚“å¤ªå 2006.8.23 ä¿®æ”¹ï¼Œå¦‚æœæ•°å­—å‹çš„å€¼ä¸ºç©ºå­—ç¬¦ä¸²ï¼Œé‚£ä¹ˆå®ƒçš„å€¼ä¿®æ”¹ä¸º DBNull.Value è€Œä¸æ˜¯é»˜è®¤çš„ "0"
         public object GetValue()
         {
             DataTextBoxValue dtbv = new DataTextBoxValue(this);
@@ -588,12 +588,12 @@ return true;
 
         #endregion
 
-        #region ¿Ø¼şÑéÖ¤·½·¨
+        #region æ§ä»¶éªŒè¯æ–¹æ³•
         public bool Validate()
         {
-            // TODO:  Ìí¼Ó BrainTextBox.Validate ÊµÏÖ
+            // TODO:  æ·»åŠ  BrainTextBox.Validate å®ç°
 
-            //Èç¹û¿ªÆô¿Ø¼şÑéÖ¤
+            //å¦‚æœå¼€å¯æ§ä»¶éªŒè¯
             if (!this.isClientValidation)
             {
                 if (this.Text.Trim() != "")
@@ -622,47 +622,47 @@ return true;
 
                         }
                         return true;
-                        //						if(!this.isNull)//²»ÔÊĞíÎª¿Õ
+                        //						if(!this.isNull)//ä¸å…è®¸ä¸ºç©º
                         //						{
                         //							return false;
                         //						}
-                        //						else//ÔÊĞíÎª¿Õ
+                        //						else//å…è®¸ä¸ºç©º
                         //						{
                         //							return true;
                         //						}
                     }
                     catch
                     {
-                        return false;//Òì³£ Êı¾İÀàĞÍ ²»·ûºÏ
+                        return false;//å¼‚å¸¸ æ•°æ®ç±»å‹ ä¸ç¬¦åˆ
                     }
                 }
                 else
                 {
-                    //µËÌ«»ª 2006.05.8 ĞŞ¸Ä£¬Èç¹ûÊäÈëÖµÎª¿ÕÔÚ½øĞĞÅĞ¶Ï£¬ÉÏÃæ²¿·ÖÒÑ±»×¢ÊÍ
+                    //é‚“å¤ªå 2006.05.8 ä¿®æ”¹ï¼Œå¦‚æœè¾“å…¥å€¼ä¸ºç©ºåœ¨è¿›è¡Œåˆ¤æ–­ï¼Œä¸Šé¢éƒ¨åˆ†å·²è¢«æ³¨é‡Š
                     //return true;
-                    if (!this.IsNull)//²»ÔÊĞíÎª¿Õ
+                    if (!this.IsNull)//ä¸å…è®¸ä¸ºç©º
                     {
                         return false;
                     }
-                    else//ÔÊĞíÎª¿Õ
+                    else//å…è®¸ä¸ºç©º
                     {
                         return true;
                     }
                 }
             }
-            else//²»¿ªÆô¿Ø¼şÑéÖ¤
+            else//ä¸å¼€å¯æ§ä»¶éªŒè¯
             {
                 return true;
             }
         }
         #endregion
 
-        #region ×Ô¶¨ÒåÑéÖ¤·½·¨
+        #region è‡ªå®šä¹‰éªŒè¯æ–¹æ³•
 
         /// <summary>
-        /// Éè¶¨×Ô¶¨ÒåÑéÖ¤ÕıÔò±í´ïÊ½
+        /// è®¾å®šè‡ªå®šä¹‰éªŒè¯æ­£åˆ™è¡¨è¾¾å¼
         /// </summary>
-        [Category("×Ô¶¨ÒåÑéÖ¤"), Description("Éè¶¨×Ô¶¨ÒåÑéÖ¤ÕıÔò±í´ïÊ½"), DefaultValue("")]
+        [Category("è‡ªå®šä¹‰éªŒè¯"), Description("è®¾å®šè‡ªå®šä¹‰éªŒè¯æ­£åˆ™è¡¨è¾¾å¼"), DefaultValue("")]
         public string ClientValidationFunctionString
         {
             get
@@ -678,9 +678,9 @@ return true;
         }
 
         /// <summary>
-        /// Éè¶¨¿Ø¼şÊÇ·ñ²ÉÈ¡×Ô¶¨ÒåÑéÖ¤(Í£Ö¹¿Ø¼şÑéÖ¤)
+        /// è®¾å®šæ§ä»¶æ˜¯å¦é‡‡å–è‡ªå®šä¹‰éªŒè¯(åœæ­¢æ§ä»¶éªŒè¯)
         /// </summary>
-        [Category("×Ô¶¨ÒåÑéÖ¤"), Description("Éè¶¨¿Ø¼şÊÇ·ñ²ÉÈ¡×Ô¶¨ÒåÑéÖ¤(Í£Ö¹¿Ø¼şÑéÖ¤)"), DefaultValue(false)]
+        [Category("è‡ªå®šä¹‰éªŒè¯"), Description("è®¾å®šæ§ä»¶æ˜¯å¦é‡‡å–è‡ªå®šä¹‰éªŒè¯(åœæ­¢æ§ä»¶éªŒè¯)"), DefaultValue(false)]
         public bool isClientValidation
         {
 
@@ -699,11 +699,11 @@ return true;
 
         #endregion
 
-        #region ¿Ø¼şÑéÖ¤
+        #region æ§ä»¶éªŒè¯
         /// <summary>
-        /// ¿Ø¼şÑéÖ¤--Éè¶¨¿Ø¼şÖµÊÇ·ñ¿ÉÒÔÎª¿Õ
+        /// æ§ä»¶éªŒè¯--è®¾å®šæ§ä»¶å€¼æ˜¯å¦å¯ä»¥ä¸ºç©º
         /// </summary>
-        [Category("¿Ø¼şÑéÖ¤"), Description("Éè¶¨¿Ø¼şÖµÊÇ·ñ¿ÉÒÔÎª¿Õ"), DefaultValue(true)]
+        [Category("æ§ä»¶éªŒè¯"), Description("è®¾å®šæ§ä»¶å€¼æ˜¯å¦å¯ä»¥ä¸ºç©º"), DefaultValue(true)]
         public bool IsNull
         {
 
@@ -724,7 +724,7 @@ return true;
         #endregion
 
 
-        #region IQueryControl ³ÉÔ±
+        #region IQueryControl æˆå‘˜
 
         public string CompareSymbol
         {

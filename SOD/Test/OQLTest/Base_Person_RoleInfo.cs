@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +8,7 @@ using PWMIS.DataMap.Entity;
 namespace UPMS.Core.Model
 {
     /// <summary>
-    /// 实体映射：个人_角色关系表
+    /// 瀹炰綋鏄犲皠锛氫釜浜篲瑙掕壊鍏崇郴琛?
     /// </summary>
     public class Base_Person_RoleInfo : EntityBase
     {
@@ -24,7 +24,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 编号
+        /// 缂栧彿
         /// </summary>
         public string Id
         {
@@ -33,7 +33,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 个人编号
+        /// 涓汉缂栧彿
         /// </summary>
         public string PersonId
         {
@@ -42,7 +42,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 角色编号
+        /// 瑙掕壊缂栧彿
         /// </summary>
         public int RoleId
         {

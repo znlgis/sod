@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º                
- * ĞŞ¸ÄËµÃ÷£º
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š                
+ * ä¿®æ”¹è¯´æ˜ï¼š
  * ========================================================================
 */
 using System;
@@ -19,7 +19,7 @@ using System.Data;
 namespace PWMIS.DataForms.Adapter
 {
 	/// <summary>
-	/// ÖÇÄÜ´°ÌåÃüÁî¶ÔÏó£¬Ê¹ÓÃ¸Ã¶ÔÇ°±ØĞëÈ·±£¶ÔÓ¦µÄÊı¾İ±íÓĞÖ÷½¨ºÍ²åÈëÊ±ºòµÄ×ÔÔöÁĞ
+	/// æ™ºèƒ½çª—ä½“å‘½ä»¤å¯¹è±¡ï¼Œä½¿ç”¨è¯¥å¯¹å‰å¿…é¡»ç¡®ä¿å¯¹åº”çš„æ•°æ®è¡¨æœ‰ä¸»å»ºå’Œæ’å…¥æ—¶å€™çš„è‡ªå¢åˆ—
 	/// </summary>
 	public class IBCommand
 	{
@@ -32,7 +32,7 @@ namespace PWMIS.DataForms.Adapter
 		int _id=0;
 
 		/// <summary>
-		/// Ä¬ÈÏ¹¹Ôìº¯Êı
+		/// é»˜è®¤æ„é€ å‡½æ•°
 		/// </summary>
 		public IBCommand()
 		{
@@ -40,7 +40,7 @@ namespace PWMIS.DataForms.Adapter
 		}
 
 		/// <summary>
-		/// Ö¸¶¨Ò»¸öÊı¾İ±í³õÊ¼»¯¸ÃÀà
+		/// æŒ‡å®šä¸€ä¸ªæ•°æ®è¡¨åˆå§‹åŒ–è¯¥ç±»
 		/// </summary>
 		/// <param name="tableName"></param>
 		public IBCommand(string tableName)
@@ -49,7 +49,7 @@ namespace PWMIS.DataForms.Adapter
 		}
 
 		/// <summary>
-		/// ²åÈëÊı¾İÃüÁî
+		/// æ’å…¥æ•°æ®å‘½ä»¤
 		/// </summary>
 		public string InsertCommand
 		{
@@ -58,7 +58,7 @@ namespace PWMIS.DataForms.Adapter
 		}
 
 		/// <summary>
-		/// ¸üĞÂÊı¾İÃüÁî
+		/// æ›´æ–°æ•°æ®å‘½ä»¤
 		/// </summary>
 		public string UpdateCommand
 		{
@@ -67,7 +67,7 @@ namespace PWMIS.DataForms.Adapter
 		}
 
 		/// <summary>
-		/// Ñ¡ÔñÊı¾İÃüÁî
+		/// é€‰æ‹©æ•°æ®å‘½ä»¤
 		/// </summary>
 		public string SelectCommand
 		{
@@ -76,7 +76,7 @@ namespace PWMIS.DataForms.Adapter
 		}
 
 		/// <summary>
-		/// É¾³ıÊı¾İÃüÁî
+		/// åˆ é™¤æ•°æ®å‘½ä»¤
 		/// </summary>
 		public string DeleteCommand
 		{
@@ -85,7 +85,7 @@ namespace PWMIS.DataForms.Adapter
 		}
 
 		/// <summary>
-		/// ±íÃû³Æ
+		/// è¡¨åç§°
 		/// </summary>
 		public string TableName
 		{
@@ -94,7 +94,7 @@ namespace PWMIS.DataForms.Adapter
 		}
 
 		/// <summary>
-		/// ²åÈë±êÊ¶£¬ÓÃÓÚÊı¾İ¿âµÄ×ÔÔöÁĞ£¬µÈÓÚ0±íÊ¾»¹Î´²åÈë£¬´óÓã0±íÊ¾ÒÑ¾­²åÈë¹ıÊı¾İ×ÔÔö±êÊ¶Öµ£¬µÈÓÚ-2±íÊ¾·ÇÊı×ÖÀàĞÍµÄÖ÷¼ü¡£
+		/// æ’å…¥æ ‡è¯†ï¼Œç”¨äºæ•°æ®åº“çš„è‡ªå¢åˆ—ï¼Œç­‰äº0è¡¨ç¤ºè¿˜æœªæ’å…¥ï¼Œå¤§é±¼0è¡¨ç¤ºå·²ç»æ’å…¥è¿‡æ•°æ®è‡ªå¢æ ‡è¯†å€¼ï¼Œç­‰äº-2è¡¨ç¤ºéæ•°å­—ç±»å‹çš„ä¸»é”®ã€‚
 		/// </summary>
 		public int InsertedID
 		{
@@ -104,7 +104,7 @@ namespace PWMIS.DataForms.Adapter
 
        
         /// <summary>
-        /// GUID Ö÷¼üÃû³Æ
+        /// GUID ä¸»é”®åç§°
         /// </summary>
         public string GuidPrimaryKey
         {
@@ -113,7 +113,7 @@ namespace PWMIS.DataForms.Adapter
         }
 
         /// <summary>
-        /// ¶ÔÓ¦µÄ²éÑ¯²ÎÊıÊı×é
+        /// å¯¹åº”çš„æŸ¥è¯¢å‚æ•°æ•°ç»„
         /// </summary>
         public IDataParameter[] Parameters { get; set; }
 
