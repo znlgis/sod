@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{63B868D2-6CFF-4B03-8A57-F8963055418D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{5179F554-5939-450B-B4BB-B177977DEA9B}"
@@ -56,6 +58,96 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWIMIS.Core.AccessTest", "Test\PWIMIS.Core.Test\PWIMIS.Core.AccessTest.csproj", "{C9499804-3A9D-4694-A2A2-BB252CFF85A2}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 22
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Lib\\PWMIS.Core\\PWMIS.Core.csproj
+		SccProjectTopLevelParentUniqueName1 = PWMIS.sln
+		SccProjectName1 = Lib/PWMIS.Core
+		SccLocalPath1 = Lib\\PWMIS.Core
+		SccProjectUniqueName2 = Lib\\PWMIS.Access.Extensions\\PWMIS.Access.Extensions.csproj
+		SccProjectTopLevelParentUniqueName2 = PWMIS.sln
+		SccProjectName2 = Lib/PWMIS.Access.Extensions
+		SccLocalPath2 = Lib\\PWMIS.Access.Extensions
+		SccProjectUniqueName3 = Lib\\PWMIS.Core.Extensions\\PWMIS.Core.Extensions.csproj
+		SccProjectTopLevelParentUniqueName3 = PWMIS.sln
+		SccProjectName3 = Lib/PWMIS.Core.Extensions
+		SccLocalPath3 = Lib\\PWMIS.Core.Extensions
+		SccProjectUniqueName4 = Lib\\PWMIS.Web\\PWMIS.Web.csproj
+		SccProjectTopLevelParentUniqueName4 = PWMIS.sln
+		SccProjectName4 = Lib/PWMIS.Web
+		SccLocalPath4 = Lib\\PWMIS.Web
+		SccProjectUniqueName5 = Lib\\PWMIS.Windows\\PWMIS.Windows.csproj
+		SccProjectTopLevelParentUniqueName5 = PWMIS.sln
+		SccProjectName5 = Lib/PWMIS.Windows
+		SccLocalPath5 = Lib\\PWMIS.Windows
+		SccProjectUniqueName6 = Example\\SimpleAccessWinForm\\SimpleAccessWinForm.csproj
+		SccProjectTopLevelParentUniqueName6 = PWMIS.sln
+		SccProjectName6 = Example/SimpleAccessWinForm
+		SccLocalPath6 = Example\\SimpleAccessWinForm
+		SccProjectUniqueName7 = OtherProvider\\PWMIS.DataProvider.Data.MySQL\\PWMIS.DataProvider.Data.MySQL.csproj
+		SccProjectTopLevelParentUniqueName7 = PWMIS.sln
+		SccProjectName7 = OtherProvider/PWMIS.DataProvider.Data.MySQL
+		SccLocalPath7 = OtherProvider\\PWMIS.DataProvider.Data.MySQL
+		SccProjectUniqueName8 = OtherProvider\\PWMIS.DataProvider.Data.PostgreSQL\\PWMIS.DataProvider.Data.PostgreSQL.csproj
+		SccProjectTopLevelParentUniqueName8 = PWMIS.sln
+		SccProjectName8 = OtherProvider/PWMIS.DataProvider.Data.PostgreSQL
+		SccLocalPath8 = OtherProvider\\PWMIS.DataProvider.Data.PostgreSQL
+		SccProjectUniqueName9 = OtherProvider\\PWMIS.DataProvider.Data.SQLite\\PWMIS.DataProvider.Data.SQLite.csproj
+		SccProjectTopLevelParentUniqueName9 = PWMIS.sln
+		SccProjectName9 = OtherProvider/PWMIS.DataProvider.Data.SQLite
+		SccLocalPath9 = OtherProvider\\PWMIS.DataProvider.Data.SQLite
+		SccProjectUniqueName10 = Test\\ConsoleTest\\ConsoleTest.csproj
+		SccProjectTopLevelParentUniqueName10 = PWMIS.sln
+		SccProjectName10 = Test/ConsoleTest
+		SccLocalPath10 = Test\\ConsoleTest
+		SccProjectUniqueName11 = Test\\OQLTest\\OQLTest.csproj
+		SccProjectTopLevelParentUniqueName11 = PWMIS.sln
+		SccProjectName11 = Test/OQLTest
+		SccLocalPath11 = Test\\OQLTest
+		SccProjectUniqueName12 = Test\\WebApplication1\\WebTest.csproj
+		SccProjectTopLevelParentUniqueName12 = PWMIS.sln
+		SccProjectName12 = Test/WebApplication1
+		SccLocalPath12 = Test\\WebApplication1
+		SccProjectUniqueName13 = Test\\WinFormTest\\WinFormTest.csproj
+		SccProjectTopLevelParentUniqueName13 = PWMIS.sln
+		SccProjectName13 = Test/WinFormTest
+		SccLocalPath13 = Test\\WinFormTest
+		SccProjectUniqueName14 = Tools\\PDFDotNET\\PDFDotNET.vbproj
+		SccProjectTopLevelParentUniqueName14 = PWMIS.sln
+		SccProjectName14 = Tools/PDFDotNET
+		SccLocalPath14 = Tools\\PDFDotNET
+		SccProjectUniqueName15 = Example\\SuperMarketDemo\\SuperMarketBLL\\SuperMarketBLL.csproj
+		SccProjectTopLevelParentUniqueName15 = PWMIS.sln
+		SccProjectName15 = Example/SuperMarketDemo/SuperMarketBLL
+		SccLocalPath15 = Example\\SuperMarketDemo\\SuperMarketBLL
+		SccProjectUniqueName16 = Example\\SuperMarketDemo\\SuperMarketDAL\\SuperMarketDAL.csproj
+		SccProjectTopLevelParentUniqueName16 = PWMIS.sln
+		SccProjectName16 = Example/SuperMarketDemo/SuperMarketDAL
+		SccLocalPath16 = Example\\SuperMarketDemo\\SuperMarketDAL
+		SccProjectUniqueName17 = Example\\SuperMarketDemo\\SuperMarketModel\\SuperMarketModel.csproj
+		SccProjectTopLevelParentUniqueName17 = PWMIS.sln
+		SccProjectName17 = Example/SuperMarketDemo/SuperMarketModel
+		SccLocalPath17 = Example\\SuperMarketDemo\\SuperMarketModel
+		SccProjectUniqueName18 = Example\\SuperMarketDemo\\SuperMarketTestConsole\\SuperMarketTestConsole.csproj
+		SccProjectTopLevelParentUniqueName18 = PWMIS.sln
+		SccProjectName18 = Example/SuperMarketDemo/SuperMarketTestConsole
+		SccLocalPath18 = Example\\SuperMarketDemo\\SuperMarketTestConsole
+		SccProjectUniqueName19 = Example\\SuperMarketDemo\\SuperMarketWeb\\SuperMarketWeb.csproj
+		SccProjectTopLevelParentUniqueName19 = PWMIS.sln
+		SccProjectName19 = Example/SuperMarketDemo/SuperMarketWeb
+		SccLocalPath19 = Example\\SuperMarketDemo\\SuperMarketWeb
+		SccProjectUniqueName20 = Test\\EntityTest\\EntityTest.csproj
+		SccProjectTopLevelParentUniqueName20 = PWMIS.sln
+		SccProjectName20 = Test/EntityTest
+		SccLocalPath20 = Test\\EntityTest
+		SccProjectUniqueName21 = Test\\PWIMIS.Core.Test\\PWIMIS.Core.AccessTest.csproj
+		SccProjectTopLevelParentUniqueName21 = PWMIS.sln
+		SccProjectName21 = Test/PWIMIS.Core.Test
+		SccLocalPath21 = Test\\PWIMIS.Core.Test
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
@@ -155,22 +247,22 @@ Global
 		{8F1AE0DE-A9F1-43A7-ACE4-ACF667C2F813} = {63B868D2-6CFF-4B03-8A57-F8963055418D}
 		{F44AFFAC-9042-47E5-B5E5-921A7AAFF603} = {63B868D2-6CFF-4B03-8A57-F8963055418D}
 		{568329DC-3004-4283-945E-375FB6D908B1} = {63B868D2-6CFF-4B03-8A57-F8963055418D}
+		{9338057C-0762-4A72-8B12-9EB907D1538C} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
+		{765FFD9B-D356-4E02-BD56-FF52E4E6DD40} = {2A4234BB-564F-402C-9C23-466843666189}
+		{28DFD6DA-925D-41A7-ABBB-A2976CA1A1D8} = {2A4234BB-564F-402C-9C23-466843666189}
+		{EA876B64-CFF0-4985-B59C-1602B3486D3D} = {2A4234BB-564F-402C-9C23-466843666189}
 		{6F6D230D-A249-4956-8474-518B4E091E88} = {5179F554-5939-450B-B4BB-B177977DEA9B}
 		{8C197DD4-82E0-4AB3-9091-C61556F4CE64} = {5179F554-5939-450B-B4BB-B177977DEA9B}
 		{65B743B9-62D5-44C9-AD3A-730E029C799C} = {5179F554-5939-450B-B4BB-B177977DEA9B}
 		{FF722031-887E-4822-9181-80643CF06A11} = {5179F554-5939-450B-B4BB-B177977DEA9B}
-		{3252AAB9-C673-4FEF-BDD0-1EF0C24574E1} = {5179F554-5939-450B-B4BB-B177977DEA9B}
-		{C9499804-3A9D-4694-A2A2-BB252CFF85A2} = {5179F554-5939-450B-B4BB-B177977DEA9B}
 		{17C4E2B2-878B-4674-A78C-8D446B376C23} = {9854DD26-9CA3-45ED-9A51-C614C0F5EBD8}
-		{765FFD9B-D356-4E02-BD56-FF52E4E6DD40} = {2A4234BB-564F-402C-9C23-466843666189}
-		{28DFD6DA-925D-41A7-ABBB-A2976CA1A1D8} = {2A4234BB-564F-402C-9C23-466843666189}
-		{EA876B64-CFF0-4985-B59C-1602B3486D3D} = {2A4234BB-564F-402C-9C23-466843666189}
-		{9338057C-0762-4A72-8B12-9EB907D1538C} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
 		{8CFE6672-4BF7-478B-9059-538D0C93F609} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
 		{32A14B75-6845-48B0-9FB9-9F0DD4D58369} = {8CFE6672-4BF7-478B-9059-538D0C93F609}
 		{B685E0F6-0082-453F-9494-4EEA87E204EB} = {8CFE6672-4BF7-478B-9059-538D0C93F609}
 		{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4} = {8CFE6672-4BF7-478B-9059-538D0C93F609}
 		{783A0458-39C6-44A1-927F-3DC075749CC8} = {8CFE6672-4BF7-478B-9059-538D0C93F609}
 		{FE0F02EB-3D0B-43FD-B37E-7D191549C757} = {8CFE6672-4BF7-478B-9059-538D0C93F609}
+		{3252AAB9-C673-4FEF-BDD0-1EF0C24574E1} = {5179F554-5939-450B-B4BB-B177977DEA9B}
+		{C9499804-3A9D-4694-A2A2-BB252CFF85A2} = {5179F554-5939-450B-B4BB-B177977DEA9B}
 	EndGlobalSection
 EndGlobal
