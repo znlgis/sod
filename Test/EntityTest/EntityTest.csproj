@@ -11,10 +11,14 @@
     <AssemblyName>EntityTest</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -57,13 +61,16 @@
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Lib\PWMIS.Core.Extensions\PWMIS.Core.Extensions-2013.csproj">
-      <Project>{8f1ae0de-a9f1-43a7-ace4-acf667c2f813}</Project>
-      <Name>PWMIS.Core.Extensions-2013</Name>
+    <Content Include="说明.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\PWMIS.Core.Extensions\PWMIS.Core.Extensions.csproj">
+      <Project>{8F1AE0DE-A9F1-43A7-ACE4-ACF667C2F813}</Project>
+      <Name>PWMIS.Core.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Lib\PWMIS.Core\PWMIS.Core-2013.csproj">
-      <Project>{8f0f4237-4d13-40dd-ae8a-c3de748b26e0}</Project>
-      <Name>PWMIS.Core-2013</Name>
+    <ProjectReference Include="..\..\Lib\PWMIS.Core\PWMIS.Core.csproj">
+      <Project>{8F0F4237-4D13-40DD-AE8A-C3DE748B26E0}</Project>
+      <Name>PWMIS.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
