@@ -1,51 +1,51 @@
-PDF.NET ���ݿ������ 
+﻿PDF.NET 数据开发框架 
 
-Ver 4.0 ���£�
+Ver 4.0 更新：
 
-*ȫ���д��ʵ���ദ������Ч������10���� 
-*�Ľ�ʵ������������֧�ִ� SQLSERVER ���ֶ�˵������ʵ��������˵���� 
-*SqlMapDAL ֧���ⲿ�ӿڶ��壻 
-*����֧�ֶ��SqlMap�ļ��Ĵ�����ʽ�� 
-*SQL-MAP֧�ָ��Ӳ�ѯ�ķ�ҳ�� 
-*SQL-MAP�����˶Դ洢���̵�֧�֣� 
-*OQL֧�ֵ��б���ʽ�﷨��OQL.From(Entity).Select(....).Where(...).OrderBy(...).END���� 
-*ʵ����֧�ָ�Ч�ʷ�ҳ�� 
-*�Ż��������ڲ����ݷ��ʶ����Ч�ʣ����������ڷ��䣩�� 
-*�Ż�������������Ч�ʡ� 
+*全面改写了实体类处理程序，效率提升10倍； 
+*改进实体类生成器，支持从 SQLSERVER 表字段说明生成实体类属性说明； 
+*SqlMapDAL 支持外部接口定义； 
+*简化了支持多个SqlMap文件的处理方式； 
+*SQL-MAP支持复杂查询的分页； 
+*SQL-MAP改善了对存储过程的支持； 
+*OQL支持单行表达式语法（OQL.From(Entity).Select(....).Where(...).OrderBy(...).END）； 
+*实体类支持高效率分页； 
+*优化了生成内部数据访问对象的效率（不再依赖于反射）； 
+*优化了其它操作的效率。 
 
-Ver 3.5 ���£�
+Ver 3.5 更新：
 
-*OQL֧�ָ��Ӳ�ѯ����ʽ��֧���߼��ȽϷ��� ��&������|�����أ� 
-*�����˴��빤�ߣ���һ��������������в�����  
+*OQL支持复杂查询表达式，支持逻辑比较符号 “&”，“|”重载； 
+*整合了代码工具，在一个程序中完成所有操作。  
 
-Ver 3.2 ���£�
+Ver 3.2 更新：
 
-*OQL֧��Count��MAX��MIN��AVG���ܣ� 
-*EntityQuery<T>֧��OQL��Update��Delete�������Ӷ����Ը����������¶��ʵ����� 
-*�Ľ��˴��빤�ߣ����������㡣 
+*OQL支持Count，MAX，MIN，AVG功能； 
+*EntityQuery<T>支持OQL的Update，Delete方法，从而可以根据条件更新多个实体对象； 
+*改进了代码工具，操作更方便。 
 
-Ver 3.0 ���£�
+Ver 3.0 更新：
 
-*ȫ���д��SqlMapģ�飬����֧��SQL-ʵ���� ӳ��
-*ȫ������˿�ܵ������ռ䣬�ϲ��˻������򼯳�Ϊһ�� PWMIS.Core.dll
-*��������2.0������Bug
-*�Ľ��˴���������
+*全面改写了SqlMap模块，真正支持SQL-实体类 映射
+*全面调整了框架的命名空间，合并了基础程序集成为一个 PWMIS.Core.dll
+*修正了自2.0以来的Bug
+*改进了代码生成器
 
-Ver 2.0 ���£� 
+Ver 2.0 更新： 
 
-*ʹ��.NET 2.0������дԭ�����е�ģ��
-*��ǿ��Web�ؼ���֤����
-*ȫ���дԭ��ʵ���࣬�ṩʵ����������
-*ȫ���д��OQL����
-*֧��.NET 2.0���ݿ���������
+*使用.NET 2.0技术改写原来所有的模块
+*增强了Web控件验证功能
+*全面改写原有实体类，提供实体类生成器
+*全面改写了OQL功能
+*支持.NET 2.0数据库连接配置
 
-Ver 1.0 ���ܣ� 
+Ver 1.0 功能： 
 
-*�ṩSQL-MAP����
-*�ṩORM���ܣ����ṩOQL����
-*�ṩ�ؼ����ݰ󶨹���
-*�ṩ��Ч��ҳ�ؼ�
-*�ṩ�ؼ�������֤����
+*提供SQL-MAP功能
+*提供ORM功能，并提供OQL功能
+*提供控件数据绑定功能
+*提供高效分页控件
+*提供控件数据验证功能
 
-��ϸ��Ϣ��鿴�ٷ���ַ��http://www.pwmis.com/sqlmap
+详细信息请查看官方网址：http://www.pwmis.com/sqlmap
 
