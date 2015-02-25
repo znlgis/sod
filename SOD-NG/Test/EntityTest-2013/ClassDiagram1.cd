@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="EntityTest.UserEntity" Collapsed="true">
+    <Position X="1" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAEAAAAgAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>UserEntity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="1.3" />
+  </Class>
+  <Class Name="EntityTest.UserDto" Collapsed="true">
+    <Position X="4.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAEAAAAgAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>UserDto.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.1" />
+  </Class>
+  <Class Name="EntityTest.LocalDbContext">
+    <Position X="7.25" Y="1.75" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAQAAAAEAAAAAAAAAAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>LocalDbContext.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="EntityTest.IUser">
+    <Position X="3" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAAAAEAAAAgAAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>IUserEntity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

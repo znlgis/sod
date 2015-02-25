@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PWMIS.DataMap.Entity.GOQL&lt;T&gt;">
+    <Position X="8.25" Y="0.5" Width="2.25" />
+    <NestedTypes>
+      <Delegate Name="PWMIS.DataMap.Entity.GOQL&lt;T&gt;.SelectFieldFunc" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Entity\GOQL.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAEABAAAQBAAAAAAAAAAAgAQAAEAAA=</HashCode>
+      <FileName>Entity\GOQL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.GOQL1&lt;T&gt;">
+    <Position X="5.5" Y="3" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAAAAAAAAAAIAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\GOQL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.GOQL2&lt;T&gt;">
+    <Position X="5.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AIAAAIAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\GOQL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQL" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="8.25" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>Yg6QSEABGGmkqSkUa7QBEwoBICEGBEIgIrJAUyVBAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQL1" Collapsed="true">
+    <Position X="6.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAABAAAAAAEAAAAAQEBAEAQAAgAAAAIASAAAQ=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQL2" Collapsed="true">
+    <Position X="8.5" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAEAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQL3" Collapsed="true">
+    <Position X="4" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQL4" Collapsed="true">
+    <Position X="6.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAEAAAAAAAAAAAgAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQLOrderType" Collapsed="true">
+    <Position X="13.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAgAAAQAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.JoinEntity" Collapsed="true">
+    <Position X="11.5" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAEAAAAAAAAABAAAAAIgAAAAAAEAIA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQLCondition" Collapsed="true">
+    <Position X="15" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAIAACAAAAAAEABAAAAAAAgIQAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQLOrder" Collapsed="true">
+    <Position X="11.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAABAAEAAAAAAAAAAAAQAAAJAAAQAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.EntityQuery&lt;T&gt;" Collapsed="true">
+    <Position X="11.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQGgMQCAAgEAAEEAAIAAAA0gAEgCAIAQAAIQARAgAA=</HashCode>
+      <FileName>Entity\EntityQuery.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.EntityQuery" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="11.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCgMQgAAgEQAEEAAAAAAQkAAEgAAIAQAAIQARAAAA=</HashCode>
+      <FileName>Entity\EntityQuery.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Struct Name="PWMIS.DataMap.Entity.TableNameField" Collapsed="true">
+    <Position X="11.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAAAgAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Delegate Name="PWMIS.DataMap.Entity.OQLChildFunc" Collapsed="true">
+    <Position X="13.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.OQLCacheFunc" Collapsed="true">
+    <Position X="11.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.OQLOrderAction" Collapsed="true">
+    <Position X="11.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.OQLOrderAction&lt;T&gt;" Collapsed="true">
+    <Position X="15" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.ConditionHandle&lt;T&gt;" Collapsed="true">
+    <Position X="11.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\EntityQuery.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.SqlInfoAction" Collapsed="true">
+    <Position X="13.75" Y="6" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Entity\EntityQuery.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,67 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site1.master.cs" Inherits="SuperMarketWeb.Site1" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+        .style1
+        {
+            width: 150px;
+            background-color: #FBF0DA;
+        }
+        .style3
+        {
+            height: 483px; vertical-align:top
+        }
+    </style>
+</head>
+<body style="margin-top: 0; margin-bottom: 0" >
+    <form id="form1" runat="server">
+    <table width="100%"  border="0" cellpadding="0" cellspacing="0" >
+    <tr><td class="style1"><a href="http://www.pwmis.com/sqlmap"><asp:Image ID="Image2" runat="server"  ImageUrl="~/images/MarketLog.jpg"/></a>
+        </td><td><asp:Image ID="Image1" runat="server" ImageUrl="~/images/PdfNetSupperMarketLog.jpg" />
+        </td></tr>
+    <tr>
+      <td class="style1"><asp:Menu ID="Menu1" runat="server" DataSourceID="SiteMapDataSource1" 
+            Orientation="Horizontal" BackColor="#FFFBD6" DynamicHorizontalOffset="2" 
+              Font-Names="Verdana" Font-Size="1em" ForeColor="#990000" 
+              StaticSubMenuIndent="10px"  >
+          <DynamicHoverStyle BackColor="#990000" ForeColor="White" />
+          <DynamicMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
+          <DynamicMenuStyle BackColor="#FFFBD6" />
+          <DynamicSelectedStyle BackColor="#FFCC66" />
+          <StaticHoverStyle BackColor="#990000" ForeColor="White" />
+          <StaticMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
+          <StaticSelectedStyle BackColor="#FFCC66" />
+        </asp:Menu>
+        <asp:SiteMapDataSource ID="SiteMapDataSource1" runat="server" />
+        </td>
+      <td style="background-color: #FEFDFB"><asp:SiteMapPath ID="SiteMapPath1" runat="server" Font-Names="Verdana" 
+        Font-Size="0.8em" PathSeparator=" : ">
+        <PathSeparatorStyle Font-Bold="True" ForeColor="#507CD1" />
+        <CurrentNodeStyle ForeColor="#333333" />
+        <NodeStyle Font-Bold="True" ForeColor="#284E98" />
+        <RootNodeStyle Font-Bold="True" ForeColor="#507CD1" />
+      </asp:SiteMapPath>
+     </td>
+    </tr>
+    <tr><td class="style1">
+     
+    </td><td class="style3">
+    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </td></tr>
+    
+    <tr><td class="style1">&nbsp;</td><td style="text-align: center">PWMIS 超市收银系统<br />
+        本系统采用PDF.NET（PWMIS数据开发框架）技术构建<br />
+        Copyright 2011-2013</td></tr>
+    </table>
+    
+    </form>
+</body>
+</html>
