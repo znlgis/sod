@@ -1,0 +1,195 @@
+程序已经对 ADOX进行了签名，详细内容参考：
+http://blog.sina.com.cn/s/blog_5052ef9d0100iqir.html
+
+下面是控制台输出：
+----------------------------------------------------
+
+E:\old\PWMIS_SVN\PWMIS\RefDll>ildasm Interop.ADOX.dll /out=Interop.ADOX.il
+
+E:\old\PWMIS_SVN\PWMIS\RefDll>ilasm Interop.ADOX.il /dll /resource=Interop.ADOx.
+res /key=PDFKey.pfx /optimize
+
+Microsoft (R) .NET Framework IL Assembler.  Version 2.0.50727.7905
+Copyright (c) Microsoft Corporation.  All rights reserved.
+Assembling 'Interop.ADOX.il'  to DLL --> 'Interop.ADOX.dll'
+Source file is ANSI
+
+Interop.ADOX.il(23) : error -- Failed to extract public key: 0x80090007
+
+***** FAILURE *****
+
+E:\old\PWMIS_SVN\PWMIS\RefDll>sn -k Interop.ADOX.snk
+
+Microsoft(R) .NET Framework 强名称实用工具 版本 3.5.30729.1
+版权所有(C) Microsoft Corporation。保留所有权利。
+
+密钥对被写入 Interop.ADOX.snk
+
+E:\old\PWMIS_SVN\PWMIS\RefDll>ilasm Interop.ADOX.il /dll /resource=Interop.ADOX.
+res /key=Interop.ADOX.snk /optimize
+
+Microsoft (R) .NET Framework IL Assembler.  Version 2.0.50727.7905
+Copyright (c) Microsoft Corporation.  All rights reserved.
+Assembling 'Interop.ADOX.il'  to DLL --> 'Interop.ADOX.dll'
+Source file is ANSI
+
+Creating PE file
+
+Emitting classes:
+Class 1:        ADOX._Collection
+Class 2:        ADOX._DynaCollection
+Class 3:        ADOX._Catalog
+Class 4:        ADOX.Tables
+Class 5:        ADOX.Procedures
+Class 6:        ADOX.Views
+Class 7:        ADOX.Groups
+Class 8:        ADOX.Users
+Class 9:        ADOX.ObjectTypeEnum
+Class 10:       ADOX.Table
+Class 11:       ADOX.TableClass
+Class 12:       ADOX._Table
+Class 13:       ADOX.Columns
+Class 14:       ADOX.Indexes
+Class 15:       ADOX.Keys
+Class 16:       ADOX.Properties
+Class 17:       ADOX.Catalog
+Class 18:       ADOX.Column
+Class 19:       ADOX.DataTypeEnum
+Class 20:       ADOX.ColumnClass
+Class 21:       ADOX._Column
+Class 22:       ADOX.ColumnAttributesEnum
+Class 23:       ADOX.SortOrderEnum
+Class 24:       ADOX.Property
+Class 25:       ADOX.Index
+Class 26:       ADOX.IndexClass
+Class 27:       ADOX._Index
+Class 28:       ADOX.AllowNullsEnum
+Class 29:       ADOX.Key
+Class 30:       ADOX.KeyTypeEnum
+Class 31:       ADOX.KeyClass
+Class 32:       ADOX._Key
+Class 33:       ADOX.RuleEnum
+Class 34:       ADOX.Procedure
+Class 35:       ADOX.View
+Class 36:       ADOX.Group
+Class 37:       ADOX.GroupClass
+Class 38:       ADOX._Group
+Class 39:       ADOX.RightsEnum
+Class 40:       ADOX.ActionEnum
+Class 41:       ADOX.InheritTypeEnum
+Class 42:       ADOX._Group25
+Class 43:       ADOX.User
+Class 44:       ADOX.UserClass
+Class 45:       ADOX._User
+Class 46:       ADOX._User25
+Class 47:       ADOX.CatalogClass
+
+Emitting fields and methods:
+Global
+Class 1 Methods: 3;
+Class 2 Methods: 5;
+Class 3 Methods: 11;
+Class 4 Methods: 6;
+Class 5 Methods: 6;
+Class 6 Methods: 6;
+Class 7 Methods: 6;
+Class 8 Methods: 6;
+Class 9 Fields: 7;
+Class 10
+Class 11        Methods: 13;
+Class 12        Methods: 12;
+Class 13        Methods: 6;
+Class 14        Methods: 6;
+Class 15        Methods: 6;
+Class 16        Methods: 4;
+Class 17
+Class 18
+Class 19        Fields: 40;
+Class 20        Methods: 21;
+Class 21        Methods: 20;
+Class 22        Fields: 3;
+Class 23        Fields: 3;
+Class 24        Methods: 6;
+Class 25
+Class 26        Methods: 13;
+Class 27        Methods: 12;
+Class 28        Fields: 5;
+Class 29
+Class 30        Fields: 4;
+Class 31        Methods: 12;
+Class 32        Methods: 11;
+Class 33        Fields: 5;
+Class 34        Methods: 6;
+Class 35        Methods: 6;
+Class 36
+Class 37        Methods: 10;
+Class 38        Methods: 9;
+Class 39        Fields: 19;
+Class 40        Fields: 5;
+Class 41        Fields: 6;
+Class 42        Methods: 5;
+Class 43
+Class 44        Methods: 11;
+Class 45        Methods: 10;
+Class 46        Methods: 6;
+Class 47        Methods: 12;
+Resolving local member refs: 283 -> 283 defs, 0 refs, 0 unresolved
+
+Emitting events and properties:
+Global
+Class 1 Props: 1;
+Class 2 Props: 1;
+Class 3 Props: 6;
+Class 4 Props: 2;
+Class 5 Props: 2;
+Class 6 Props: 2;
+Class 7 Props: 2;
+Class 8 Props: 2;
+Class 9
+Class 10
+Class 11        Props: 9;
+Class 12        Props: 9;
+Class 13        Props: 2;
+Class 14        Props: 2;
+Class 15        Props: 2;
+Class 16        Props: 2;
+Class 17
+Class 18
+Class 19
+Class 20        Props: 10;
+Class 21        Props: 10;
+Class 22
+Class 23
+Class 24        Props: 4;
+Class 25
+Class 26        Props: 7;
+Class 27        Props: 7;
+Class 28
+Class 29
+Class 30
+Class 31        Props: 6;
+Class 32        Props: 6;
+Class 33
+Class 34        Props: 4;
+Class 35        Props: 4;
+Class 36
+Class 37        Props: 4;
+Class 38        Props: 4;
+Class 39
+Class 40
+Class 41
+Class 42        Props: 2;
+Class 43
+Class 44        Props: 4;
+Class 45        Props: 4;
+Class 46        Props: 2;
+Class 47        Props: 6;
+Method Implementations (total): 85
+Resolving local member refs: 0 -> 0 defs, 0 refs, 0 unresolved
+Writing PE file
+Signing file with strong name
+Operation completed successfully
+
+E:\old\PWMIS_SVN\PWMIS\RefDll>
+
+

@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PWMIS.PostgreSQLClient</name>
+    </assembly>
+    <members>
+        <member name="T:PWMIS.DataProvider.Data.PostgreSQL">
+            <summary>
+            PostgreSQL数据访问类
+            </summary>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.PostgreSQL.#ctor">
+            <summary>
+            默认构造函数
+            </summary>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.PostgreSQL.GetConnection">
+            <summary>
+            创建并且打开数据库连接
+            </summary>
+            <returns>数据库连接</returns>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.PostgreSQL.GetDataAdapter(System.Data.IDbCommand)">
+            <summary>
+            获取数据适配器实例
+            </summary>
+            <returns>数据适配器</returns>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.PostgreSQL.GetParameter">
+            <summary>
+            获取一个新参数对象
+            </summary>
+            <returns>特定于数据源的参数对象</returns>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.PostgreSQL.GetParameter(System.String,System.Data.DbType,System.Int32)">
+            <summary>
+             获取一个新参数对象
+            </summary>
+            <param name="paraName">参数名</param>
+            <param name="dbType">参数数据类型</param>
+            <param name="size">参数大小</param>
+            <returns>特定于数据源的参数对象</returns>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.PostgreSQL.GetSchema(System.String,System.String[])">
+            <summary>
+            返回此 NpgsqlConnection 的数据源的架构信息。
+            </summary>
+            <param name="collectionName">集合名称</param>
+            <param name="restrictionValues">请求的架构的一组限制值</param>
+            <returns>数据库架构信息表</returns>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.PostgreSQL.PrepareSQL(System.String@)">
+            <summary>
+            预处理SQL语句，语句中不能包含"`"(反引号，tab键上面的那个符号)号，如果需要，请使用参数化查询。
+            </summary>
+            <param name="SQL"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.PostgreSQL.createFunctionArgsInfo">
+            <summary>
+            定义获取PostgreSQL的函数参数的函数
+            <seealso cref="!:http://www.alberton.info/postgresql_meta_info.html"/>
+            </summary>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.PostgreSQL.getFunctionArgsInfo(System.String)">
+            <summary>
+            获取函数的参数信息
+            </summary>
+            <param name="functionName">函数名</param>
+            <returns></returns>
+        </member>
+        <member name="P:PWMIS.DataProvider.Data.PostgreSQL.CurrentDBMSType">
+            <summary>
+            获取当前数据库类型的枚举
+            </summary>
+        </member>
+        <member name="P:PWMIS.DataProvider.Data.PostgreSQL.GetParameterChar">
+            <summary>
+            获取数据库参数前缀资费
+            </summary>
+        </member>
+        <member name="P:PWMIS.DataProvider.Data.PostgreSQL.InsertKey">
+            <summary>
+            获取或者设置自增列对应的序列名称
+            </summary>
+        </member>
+        <member name="T:PWMIS.PostgreSQLClient.Properties.Resources">
+            <summary>
+              一个强类型的资源类，用于查找本地化的字符串等。
+            </summary>
+        </member>
+        <member name="P:PWMIS.PostgreSQLClient.Properties.Resources.ResourceManager">
+            <summary>
+              返回此类使用的缓存的 ResourceManager 实例。
+            </summary>
+        </member>
+        <member name="P:PWMIS.PostgreSQLClient.Properties.Resources.Culture">
+            <summary>
+              使用此强类型资源类，为所有资源查找
+              重写当前线程的 CurrentUICulture 属性。
+            </summary>
+        </member>
+        <member name="P:PWMIS.PostgreSQLClient.Properties.Resources.sql_function_args">
+             <summary>
+               查找类似 CREATE OR REPLACE FUNCTION public.function_args(
+              IN funcname character varying,
+              IN schema character varying,
+              OUT pos integer,
+              OUT direction character,
+              OUT argname character varying,
+              OUT datatype character varying)
+            RETURNS SETOF RECORD AS $$DECLARE
+              rettype character varying;
+              argtypes oidvector;
+              allargtypes oid[];
+              argmodes &quot;char&quot;[];
+              argnames text[];
+              mini integer;
+              maxi integer;
+            BEGIN
+              /* get object ID of function */
+              SELECT INTO rettype, argtypes, allargtypes, argmo [字符串的其余部分被截断]&quot;; 的本地化字符串。
+             </summary>
+        </member>
+    </members>
+</doc>

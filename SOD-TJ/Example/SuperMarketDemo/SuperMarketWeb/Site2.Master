@@ -1,0 +1,58 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site2.master.cs" Inherits="SuperMarketWeb.Site2" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title></title>
+    <asp:ContentPlaceHolder ID="head" runat="server">
+    </asp:ContentPlaceHolder>
+    <style type="text/css">
+        .style1
+        {
+            width: 150px;
+            background-color: #FBF0DA;
+        }
+        .style3
+        {
+            height: 483px; vertical-align:top
+        }
+    </style>
+</head>
+<body style="margin-top: 0; margin-bottom: 0" >
+    <form id="form1" runat="server">
+    <table width="100%"  border="0" cellpadding="0" cellspacing="0">
+    <tr><td class="style1"><a href="http://www.pwmis.com/sqlmap"><asp:Image ID="Image2" runat="server"  ImageUrl="~/images/MarketLog.jpg"/></a>
+        </td><td><asp:Image ID="Image1" runat="server" ImageUrl="~/images/PdfNetSupperMarketLog.jpg" />
+        </td></tr>
+    <tr>
+      <td class="style1">
+          @PWMIS <a href="Index.aspx">超市首页</a></td>
+      <td style="background-color: #FEFDFB">&nbsp;&gt;&gt;<asp:Label ID="lblNavgate" 
+              runat="server"></asp:Label>
+     </td>
+    </tr>
+    <tr><td class="style1">
+    <table>
+    <tr><td>推荐商品区</td></tr>
+    <tr><td>（待建）</td></tr>
+    <tr><td>人气商品区</td></tr>
+     <tr><td>（待建）</td></tr>
+     <tr><td>促销商品区</td></tr>
+      <tr><td>（待建）</td></tr>
+    </table>
+
+    </td><td class="style3">
+    <asp:ContentPlaceHolder ID="ContentPlaceHolder1" runat="server">
+        
+        </asp:ContentPlaceHolder>
+    </td></tr>
+    
+    <tr><td class="style1">&nbsp;</td><td style="text-align: center">PWMIS 超市收银系统<br />
+        本系统采用PDF.NET（PWMIS数据开发框架）技术构建<br />
+        Copyright 2011</td></tr>
+    </table>
+    
+    </form>
+</body>
+</html>
