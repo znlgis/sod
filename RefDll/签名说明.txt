@@ -1,7 +1,7 @@
-³ÌÐòÒÑ¾­¶Ô ADOX½øÐÐÁËÇ©Ãû£¬ÏêÏ¸ÄÚÈÝ²Î¿¼£º
+ï»¿ç¨‹åºå·²ç»å¯¹ ADOXè¿›è¡Œäº†ç­¾åï¼Œè¯¦ç»†å†…å®¹å‚è€ƒï¼š
 http://blog.sina.com.cn/s/blog_5052ef9d0100iqir.html
 
-ÏÂÃæÊÇ¿ØÖÆÌ¨Êä³ö£º
+ä¸‹é¢æ˜¯æŽ§åˆ¶å°è¾“å‡ºï¼š
 ----------------------------------------------------
 
 E:\old\PWMIS_SVN\PWMIS\RefDll>ildasm Interop.ADOX.dll /out=Interop.ADOX.il
@@ -20,10 +20,10 @@ Interop.ADOX.il(23) : error -- Failed to extract public key: 0x80090007
 
 E:\old\PWMIS_SVN\PWMIS\RefDll>sn -k Interop.ADOX.snk
 
-Microsoft(R) .NET Framework Ç¿Ãû³ÆÊµÓÃ¹¤¾ß °æ±¾ 3.5.30729.1
-°æÈ¨ËùÓÐ(C) Microsoft Corporation¡£±£ÁôËùÓÐÈ¨Àû¡£
+Microsoft(R) .NET Framework å¼ºåç§°å®žç”¨å·¥å…· ç‰ˆæœ¬ 3.5.30729.1
+ç‰ˆæƒæ‰€æœ‰(C) Microsoft Corporationã€‚ä¿ç•™æ‰€æœ‰æƒåˆ©ã€‚
 
-ÃÜÔ¿¶Ô±»Ð´Èë Interop.ADOX.snk
+å¯†é’¥å¯¹è¢«å†™å…¥ Interop.ADOX.snk
 
 E:\old\PWMIS_SVN\PWMIS\RefDll>ilasm Interop.ADOX.il /dll /resource=Interop.ADOX.
 res /key=Interop.ADOX.snk /optimize
