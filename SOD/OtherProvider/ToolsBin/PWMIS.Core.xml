@@ -1412,6 +1412,25 @@
             <param name="parameters">用于替换的参数</param>
             <returns>对象列表</returns>
         </member>
+        <member name="M:PWMIS.DataProvider.Data.AdoHelper.QueryList``1(System.String,System.Object[])">
+            <summary>
+            根据SQL格式化串和可选的参数，直接查询结果并映射到POCO 对象
+            <example>
+            <code>
+            <![CDATA[
+            //假设UserPoco 对象跟 Table_User 表是映射的相同结构
+            AdoHelper dbLocal = new SqlServer();
+            dbLocal.ConnectionString = "Data Source=.;Initial Catalog=LocalDB;Integrated Security=True";
+            var list=dbLoal.QueryList<UserPoco>("SELECT UID,Name FROM Table_User WHERE Sex={0} And Height>={1:5.2}",1, 1.60M);
+            ]]>
+            </code>
+            </example>
+            </summary>
+            <typeparam name="T">POCO 对象类型</typeparam>
+            <param name="sqlFormat">SQL格式化串</param>
+            <param name="parameters">可选的参数</param>
+            <returns>POCO 对象列表</returns>
+        </member>
         <member name="M:PWMIS.DataProvider.Data.OleDb.#ctor">
             <summary>
             默认构造函数
@@ -2391,21 +2410,21 @@
             获取属性值
             </summary>
             <typeparam name="T">值的类型</typeparam>
-            <param name="propertyName">属性名称</param>
+            <param name="propertyFieldName">属性名称</param>
             <returns>属性值</returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.setProperty(System.String,System.Object)">
             <summary>
             设置属性值
             </summary>
-            <param name="propertyName">属性字段名称</param>
+            <param name="propertyFieldName">属性字段名称</param>
             <param name="Value">属性值</param>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.setProperty(System.String,System.String,System.Int32)">
             <summary>
             设置属性，如果值是字符类型且设置了最大长度大于0，那么不允许设置大于此长度的字符串
             </summary>
-            <param name="name">字段名称</param>
+            <param name="propertyFieldName">字段名称</param>
             <param name="Value">值</param>
             <param name="maxLength">最大长度</param>
         </member>
@@ -3313,6 +3332,11 @@
             如果设置过，则使用 DefaultDataBase 设置的数据访问对象。
             </summary>
         </member>
+        <member name="T:PWMIS.DataMap.Entity.EntitySerializable">
+            <summary>
+            实体类可以序列化的辅助类,该类已经过时
+            </summary>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.EntitySerializable.PropertyList(System.String)">
             <summary>
             获取属性列的值
@@ -3668,7 +3692,7 @@
         </member>
         <member name="M:PWMIS.DataMap.Entity.OQL.FromObject``1">
             <summary>
-            直接返回查询所有数据的泛型OQL表达式
+            根据接口类型，返回查询数据的泛型OQL表达式
             <example>
             <code>
             <![CDATA[
@@ -3682,7 +3706,8 @@
         </member>
         <member name="M:PWMIS.DataMap.Entity.OQL.From``1">
             <summary>
-            直接返回查询所有数据的OQL表达式
+            根据实体类类型，返回查询数据的泛型OQL表达式
+            <remarks>2015.2.15 修改成返回GOQL的方式，避免之前可能的误用</remarks>
             <example>
             <code>
             <![CDATA[
@@ -4420,14 +4445,19 @@
             属性名值对对象
             </summary>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.PropertyNameValues.CreateEntity``1">
+        <member name="T:PWMIS.DataMap.Entity.PropertyNameValuesSerializer">
+            <summary>
+            属性名值对序列化工具类 
+            </summary>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.PropertyNameValuesSerializer.CreateEntity``1">
             <summary>
             根据当前类，构造一个新的实体类，注意当前类的属性和值必须跟要构造的实体类匹配，否则将引发异常
             </summary>
             <typeparam name="T">实体类类型</typeparam>
             <returns>实体类</returns>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.PropertyNameValues.FillEntity(PWMIS.DataMap.Entity.EntityBase)">
+        <member name="M:PWMIS.DataMap.Entity.PropertyNameValuesSerializer.FillEntity(PWMIS.DataMap.Entity.EntityBase)">
             <summary>
             填充实体类
             </summary>
