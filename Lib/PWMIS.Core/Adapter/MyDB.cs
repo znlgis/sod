@@ -1,17 +1,17 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
  * MyDB.cs
- * ¸ÃÀàµÄ×÷ÓÃ£ºÌá¹©±ãÀûµÄ·½Ê½·ÃÎÊÊı¾İ¿âÊµÀıºÍ²Ù×÷Êı¾İ¼¯
+ * è¯¥ç±»çš„ä½œç”¨ï¼šæä¾›ä¾¿åˆ©çš„æ–¹å¼è®¿é—®æ•°æ®åº“å®ä¾‹å’Œæ“ä½œæ•°æ®é›†
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2011.11.16                
- * ĞŞ¸ÄËµÃ÷£ºÔö¼Ó×Ô¶¯±£´æÊı¾İ¼¯µÄ¹¦ÄÜ
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2011.11.16                
+ * ä¿®æ”¹è¯´æ˜ï¼šå¢åŠ è‡ªåŠ¨ä¿å­˜æ•°æ®é›†çš„åŠŸèƒ½
  * ========================================================================
 */
 using System;
@@ -23,10 +23,10 @@ using PWMIS.Common;
 namespace PWMIS.DataProvider.Adapter
 {
     /// <summary>
-    /// Ó¦ÓÃ³ÌĞòÊı¾İ·ÃÎÊÊµÀı£¬Ìá¹©µ¥ÀıÄ£Ê½ºÍ¹¤³§Ä£Ê½´´½¨ÊµÀı¶ÔÏó£¬¸ù¾İÓ¦ÓÃ³ÌĞòÅäÖÃÎÄ¼ş×Ô¶¯´´½¨ÌØ¶¨µÄÊı¾İ·ÃÎÊ¶ÔÏó¡£
-    /// 2008.5.23 Ôö¼Ó¶¯Ì¬Êı¾İ¼¯¸üĞÂ¹¦ÄÜ,7.24Ôö¼ÓÏß³Ì°²È«µÄ¾²Ì¬ÊµÀı¡£
-    /// 2009.4.1  Ôö¼ÓSQLite Êı¾İ¿âÖ§³Ö¡£
-    /// 2010.1.6  Ôö¼Ó connectionStrings ÅäÖÃÖ§³Ö
+    /// åº”ç”¨ç¨‹åºæ•°æ®è®¿é—®å®ä¾‹ï¼Œæä¾›å•ä¾‹æ¨¡å¼å’Œå·¥å‚æ¨¡å¼åˆ›å»ºå®ä¾‹å¯¹è±¡ï¼Œæ ¹æ®åº”ç”¨ç¨‹åºé…ç½®æ–‡ä»¶è‡ªåŠ¨åˆ›å»ºç‰¹å®šçš„æ•°æ®è®¿é—®å¯¹è±¡ã€‚
+    /// 2008.5.23 å¢åŠ åŠ¨æ€æ•°æ®é›†æ›´æ–°åŠŸèƒ½,7.24å¢åŠ çº¿ç¨‹å®‰å…¨çš„é™æ€å®ä¾‹ã€‚
+    /// 2009.4.1  å¢åŠ SQLite æ•°æ®åº“æ”¯æŒã€‚
+    /// 2010.1.6  å¢åŠ  connectionStrings é…ç½®æ”¯æŒ
     /// </summary>
     public class MyDB
     {
@@ -34,10 +34,10 @@ namespace PWMIS.DataProvider.Adapter
         private string _msg = string.Empty;
         private static object lockObj = new object();
 
-        #region »ñÈ¡¾²Ì¬ÊµÀı
+        #region è·å–é™æ€å®ä¾‹
 
         /// <summary>
-        /// Êı¾İ·ÃÎÊ¾²Ì¬ÊµÀı¶ÔÏó£¬Èç¹ûÓĞÊÂÎñ²¢ÇÒÓĞ¿ÉÄÜ´æÔÚ²¢·¢·ÃÎÊ£¬ÇëÎğÊ¹ÓÃ¸ÃÊôĞÔ£¬¶øÊÇ´´½¨¸ÃÀàµÄ¶¯Ì¬ÊµÀı¶ÔÏó¡£
+        /// æ•°æ®è®¿é—®é™æ€å®ä¾‹å¯¹è±¡ï¼Œå¦‚æœæœ‰äº‹åŠ¡å¹¶ä¸”æœ‰å¯èƒ½å­˜åœ¨å¹¶å‘è®¿é—®ï¼Œè¯·å‹¿ä½¿ç”¨è¯¥å±æ€§ï¼Œè€Œæ˜¯åˆ›å»ºè¯¥ç±»çš„åŠ¨æ€å®ä¾‹å¯¹è±¡ã€‚
         /// </summary>
         public static AdoHelper Instance
         {
@@ -59,26 +59,26 @@ namespace PWMIS.DataProvider.Adapter
 
         #endregion
 
-        #region »ñÈ¡¶¯Ì¬ÊµÀı¶ÔÏó
+        #region è·å–åŠ¨æ€å®ä¾‹å¯¹è±¡
         /// <summary>
-        /// Í¨¹ıÅäÖÃÎÄ¼ş»ñµÃÊı¾İ·ÃÎÊ¶ÔÏóÊµÀı£¬
-        /// ÇëÔÚÓ¦ÓÃ³ÌĞòÅäÖÃÎÄ¼şÖĞ´´½¨ EngineType ¼ü£¬ÖµÎª[DB]£¬Í¬Ê±ĞèÒª´´½¨ [DB]HelperAssembly£¬[DB]HelperType £¬[DB]ConnectionString ¼ü£¬[DB]ÖµÎªSQLSERVER/OLEDB/ODBC/ORACLE Ö®Ò»
-        /// Èç¹ûÎ´Ö¸¶¨ EngineType ¼ü£¬ÔòÊ¹ÓÃ connectionStrings ÅäÖÃ½ÚµÄµÚÒ»¸öÁ¬½ÓÅäÖÃĞÅÏ¢£¬±ØĞëÖ¸Ã÷ providerName£¬¿ÉÒÔÊ¹ÓÃÏÂÃæµÄĞÎÊ½£º
+        /// é€šè¿‡é…ç½®æ–‡ä»¶è·å¾—æ•°æ®è®¿é—®å¯¹è±¡å®ä¾‹ï¼Œ
+        /// è¯·åœ¨åº”ç”¨ç¨‹åºé…ç½®æ–‡ä»¶ä¸­åˆ›å»º EngineType é”®ï¼Œå€¼ä¸º[DB]ï¼ŒåŒæ—¶éœ€è¦åˆ›å»º [DB]HelperAssemblyï¼Œ[DB]HelperType ï¼Œ[DB]ConnectionString é”®ï¼Œ[DB]å€¼ä¸ºSQLSERVER/OLEDB/ODBC/ORACLE ä¹‹ä¸€
+        /// å¦‚æœæœªæŒ‡å®š EngineType é”®ï¼Œåˆ™ä½¿ç”¨ connectionStrings é…ç½®èŠ‚çš„ç¬¬ä¸€ä¸ªè¿æ¥é…ç½®ä¿¡æ¯ï¼Œå¿…é¡»æŒ‡æ˜ providerNameï¼Œå¯ä»¥ä½¿ç”¨ä¸‹é¢çš„å½¢å¼ï¼š
         /// providerName="PWMIS.DataProvider.Data.SqlServer,PWMIS.Core"
-        /// Ò²¿ÉÒÔÖ±½ÓÊ¹ÓÃ ÏÂÃæµÄĞÎÊ½£º
-        /// providerName="SqlServer" £¬µ±È»£¬ÕâÖÖĞÎÊ½µÄÌá¹©³ÌĞò³ÌĞò¼¯Ä¬ÈÏ¾ÍÊÇ PWMIS.CommonDataProvider.Data ¡£
-        /// Èç¹ûÓĞ¶à¸ö£¬Ä¬ÈÏÈ¡×îºóÒ»¸ö providerName
+        /// ä¹Ÿå¯ä»¥ç›´æ¥ä½¿ç”¨ ä¸‹é¢çš„å½¢å¼ï¼š
+        /// providerName="SqlServer" ï¼Œå½“ç„¶ï¼Œè¿™ç§å½¢å¼çš„æä¾›ç¨‹åºç¨‹åºé›†é»˜è®¤å°±æ˜¯ PWMIS.CommonDataProvider.Data ã€‚
+        /// å¦‚æœæœ‰å¤šä¸ªï¼Œé»˜è®¤å–æœ€åä¸€ä¸ª providerName
         /// </summary>
-        /// <returns>Êı¾İ·ÃÎÊ¶ÔÏóÊµÀı</returns>
+        /// <returns>æ•°æ®è®¿é—®å¯¹è±¡å®ä¾‹</returns>
         public static AdoHelper GetDBHelper()
         {
             string engineType = ConfigurationSettings.AppSettings["EngineType"];
             AdoHelper helper = null;
             if (string.IsNullOrEmpty(engineType))
             {
-                //´Ó connectionStrings ¶ÁÈ¡
+                //ä» connectionStrings è¯»å–
                 if (ConfigurationManager.ConnectionStrings.Count == 0)
-                    throw new Exception("appSettings Î´Ö¸Ã÷ EngineType ÅäÖÃ¼ü£¬Ò²Î´ÔÚ connectionStrings ÅäÖÃ½ÚÅäÖÃÁ¬½ÓĞÅÏ¢");
+                    throw new Exception("appSettings æœªæŒ‡æ˜ EngineType é…ç½®é”®ï¼Œä¹Ÿæœªåœ¨ connectionStrings é…ç½®èŠ‚é…ç½®è¿æ¥ä¿¡æ¯");
 
                 helper = GetDBHelperByConnectionSetting(ConfigurationManager.ConnectionStrings[ConfigurationManager.ConnectionStrings.Count - 1]);
             }
@@ -91,15 +91,15 @@ namespace PWMIS.DataProvider.Adapter
         }
 
         /// <summary>
-        /// ´Ó connectionStrings ÅäÖÃ½Ú»ñÈ¡Ö¸¶¨ Êı¾İÁ¬½ÓÃû³ÆµÄÊı¾İ·ÃÎÊ¶ÔÏóÊµÀı
+        /// ä» connectionStrings é…ç½®èŠ‚è·å–æŒ‡å®š æ•°æ®è¿æ¥åç§°çš„æ•°æ®è®¿é—®å¯¹è±¡å®ä¾‹
         /// </summary>
-        /// <param name="name">Êı¾İÁ¬½ÓÃû³Æ</param>
+        /// <param name="name">æ•°æ®è¿æ¥åç§°</param>
         /// <returns></returns>
         public static AdoHelper GetDBHelperByConnectionName(string name)
         {
             ConnectionStringSettings connSetting = ConfigurationManager.ConnectionStrings[name];
             if (connSetting == null)
-                throw new Exception("Î´ÔÚ connectionStrings ÅäÖÃ½ÚÕÒµ½Ö¸¶¨µÄ Á¬½ÓÃû³Æ£º" + name);
+                throw new Exception("æœªåœ¨ connectionStrings é…ç½®èŠ‚æ‰¾åˆ°æŒ‡å®šçš„ è¿æ¥åç§°ï¼š" + name);
 
             return GetDBHelperByConnectionSetting(connSetting);
         }
@@ -110,10 +110,10 @@ namespace PWMIS.DataProvider.Adapter
         }
 
         /// <summary>
-        /// ¸ù¾İÌá¹©³ÌĞòÃû³Æ×Ö·û´®ºÍÁ¬½Ó×Ö·û´®£¬´´½¨Ìá¹©³ÌĞòÊµÀı
+        /// æ ¹æ®æä¾›ç¨‹åºåç§°å­—ç¬¦ä¸²å’Œè¿æ¥å­—ç¬¦ä¸²ï¼Œåˆ›å»ºæä¾›ç¨‹åºå®ä¾‹
         /// </summary>
-        /// <param name="providerName">¹©³ÌĞòÃû³Æ×Ö·û´®£¬¸ñÊ½Îª£ºÌá¹©³ÌĞòÈ«Ãû³Æ,³ÌĞò¼¯Ãû³Æ</param>
-        /// <param name="connectionString">Á¬½Ó×Ö·û´®</param>
+        /// <param name="providerName">ä¾›ç¨‹åºåç§°å­—ç¬¦ä¸²ï¼Œæ ¼å¼ä¸ºï¼šæä¾›ç¨‹åºå…¨åç§°,ç¨‹åºé›†åç§°</param>
+        /// <param name="connectionString">è¿æ¥å­—ç¬¦ä¸²</param>
         /// <returns></returns>
         public static AdoHelper GetDBHelperByProviderString(string providerName, string connectionString)
         {
@@ -134,12 +134,12 @@ namespace PWMIS.DataProvider.Adapter
             return GetDBHelper(helperAssembly, helperType, connectionString);
         }
         /// <summary>
-        /// Í¨¹ıÖ¸¶¨µÄÊı¾İ¿âÀàĞÍ£¨ÖµÎªSQLSERVER/OLEDB/ODBC/ORACLE Ö®Ò»£©ºÍÁ¬½Ó×Ö·û´®´´½¨Ò»¸öĞÂµÄÊı¾İ·ÃÎÊ¶ÔÏó£¬
-        /// ĞèÒªÅäÖÃ[DB]HelperAssembly£¬[DB]HelperType ¼ü£¬[DB]ÖµÎªSQLSERVER/OLEDB/ODBC/ORACLE Ö®Ò»
+        /// é€šè¿‡æŒ‡å®šçš„æ•°æ®åº“ç±»å‹ï¼ˆå€¼ä¸ºSQLSERVER/OLEDB/ODBC/ORACLE ä¹‹ä¸€ï¼‰å’Œè¿æ¥å­—ç¬¦ä¸²åˆ›å»ºä¸€ä¸ªæ–°çš„æ•°æ®è®¿é—®å¯¹è±¡ï¼Œ
+        /// éœ€è¦é…ç½®[DB]HelperAssemblyï¼Œ[DB]HelperType é”®ï¼Œ[DB]å€¼ä¸ºSQLSERVER/OLEDB/ODBC/ORACLE ä¹‹ä¸€
         /// </summary>
-        /// <param name="EngineType">Êı¾İ¿âÀàĞÍ£¨ÖµÎªSQLSERVER/OLEDB/ODBC/ORACLE Ö®Ò»£©</param>
-        /// <param name="ConnectionString">Á¬½Ó×Ö·û´®</param>
-        /// <returns>Êı¾İ·ÃÎÊ¶ÔÏó</returns>
+        /// <param name="EngineType">æ•°æ®åº“ç±»å‹ï¼ˆå€¼ä¸ºSQLSERVER/OLEDB/ODBC/ORACLE ä¹‹ä¸€ï¼‰</param>
+        /// <param name="ConnectionString">è¿æ¥å­—ç¬¦ä¸²</param>
+        /// <returns>æ•°æ®è®¿é—®å¯¹è±¡</returns>
         public static AdoHelper GetDBHelper(string EngineType, string ConnectionString)
         {
             AdoHelper helper = GetDBHelper(EngineType);
@@ -148,11 +148,11 @@ namespace PWMIS.DataProvider.Adapter
         }
 
         /// <summary>
-        /// ¸ù¾İÊı¾İ¿â¹ÜÀíÏµÍ³Ã¶¾ÙÀàĞÍºÍÁ¬½Ó×Ö·û´®´´½¨Ò»¸öĞÂµÄÊı¾İ·ÃÎÊ¶ÔÏóÊµÀı
+        /// æ ¹æ®æ•°æ®åº“ç®¡ç†ç³»ç»Ÿæšä¸¾ç±»å‹å’Œè¿æ¥å­—ç¬¦ä¸²åˆ›å»ºä¸€ä¸ªæ–°çš„æ•°æ®è®¿é—®å¯¹è±¡å®ä¾‹
         /// </summary>
-        /// <param name="DbmsType">Êı¾İ¿âÀàĞÍÃ½½é£¬ÓĞACCESS/MYSQL/ORACLE/SQLSERVER/SYSBASE/UNKNOWN </param>
-        /// <param name="ConnectionString">Á¬½Ó×Ö·û´®</param>
-        /// <returns>Êı¾İ·ÃÎÊ¶ÔÏó</returns>
+        /// <param name="DbmsType">æ•°æ®åº“ç±»å‹åª’ä»‹ï¼Œæœ‰ACCESS/MYSQL/ORACLE/SQLSERVER/SYSBASE/UNKNOWN </param>
+        /// <param name="ConnectionString">è¿æ¥å­—ç¬¦ä¸²</param>
+        /// <returns>æ•°æ®è®¿é—®å¯¹è±¡</returns>
         public static AdoHelper GetDBHelper(DBMSType DbmsType, string ConnectionString)
         {
             string EngineType = "";
@@ -181,12 +181,12 @@ namespace PWMIS.DataProvider.Adapter
         }
 
         /// <summary>
-        /// ¸ù¾İ³ÌĞò¼¯Ãû³ÆºÍÊı¾İ·ÃÎÊ¶ÔÏóÀàĞÍ´´½¨Ò»¸öĞÂµÄÊı¾İ·ÃÎÊ¶ÔÏóÊµÀı¡£
+        /// æ ¹æ®ç¨‹åºé›†åç§°å’Œæ•°æ®è®¿é—®å¯¹è±¡ç±»å‹åˆ›å»ºä¸€ä¸ªæ–°çš„æ•°æ®è®¿é—®å¯¹è±¡å®ä¾‹ã€‚
         /// </summary>
-        /// <param name="HelperAssembly">³ÌĞò¼¯Ãû³Æ</param>
-        /// <param name="HelperType">Êı¾İ·ÃÎÊ¶ÔÏóÀàĞÍ</param>
-        /// <param name="ConnectionString">Á¬½Ó×Ö·û´®</param>
-        /// <returns>Êı¾İ·ÃÎÊ¶ÔÏó</returns>
+        /// <param name="HelperAssembly">ç¨‹åºé›†åç§°</param>
+        /// <param name="HelperType">æ•°æ®è®¿é—®å¯¹è±¡ç±»å‹</param>
+        /// <param name="ConnectionString">è¿æ¥å­—ç¬¦ä¸²</param>
+        /// <returns>æ•°æ®è®¿é—®å¯¹è±¡</returns>
         public static AdoHelper GetDBHelper(string HelperAssembly, string HelperType, string ConnectionString)
         {
             AdoHelper helper = null;// CommonDB.CreateInstance(HelperAssembly, HelperType);
@@ -213,10 +213,10 @@ namespace PWMIS.DataProvider.Adapter
 
 
         /// <summary>
-        /// »ñµÃÊı¾İ·ÃÎÊ¶ÔÏóÊµÀı£¬EngineTypeÖµÎªSQLSERVER/OLEDB/ODBC/ORACLE Ö®Ò»£¬Ä¬ÈÏÊ¹ÓÃ PWMIS.CommonDataProvider.Data.SqlServer
+        /// è·å¾—æ•°æ®è®¿é—®å¯¹è±¡å®ä¾‹ï¼ŒEngineTypeå€¼ä¸ºSQLSERVER/OLEDB/ODBC/ORACLE ä¹‹ä¸€ï¼Œé»˜è®¤ä½¿ç”¨ PWMIS.CommonDataProvider.Data.SqlServer
         /// </summary>
-        /// <param name="EngineType">Êı¾İ¿âÒıÇæÀàĞÍ</param>
-        /// <returns>Êı¾İ·ÃÎÊ¶ÔÏóÊµÀı</returns>
+        /// <param name="EngineType">æ•°æ®åº“å¼•æ“ç±»å‹</param>
+        /// <returns>æ•°æ®è®¿é—®å¯¹è±¡å®ä¾‹</returns>
         private static AdoHelper GetDBHelper(string EngineType)
         {
             string assembly = null;
@@ -278,7 +278,7 @@ namespace PWMIS.DataProvider.Adapter
                         type = "PWMIS.DataProvider.Data.Oracle";
                     }
                     break;
-                //²»ÔÙÖ§³ÖÕâÀïµÄSQLiteÀàĞÍ£¬ÒòÎªËüÔÚ64Î»£¬32Î»£¬windows,linux ÏÂÃæÓĞ²»Í¬µÄÇı¶¯³ÌĞò£¬ÎŞ·¨ÔÚÕâÀïÈ·¶¨
+                //ä¸å†æ”¯æŒè¿™é‡Œçš„SQLiteç±»å‹ï¼Œå› ä¸ºå®ƒåœ¨64ä½ï¼Œ32ä½ï¼Œwindows,linux ä¸‹é¢æœ‰ä¸åŒçš„é©±åŠ¨ç¨‹åºï¼Œæ— æ³•åœ¨è¿™é‡Œç¡®å®š
                 //case "SQLITE":
                 //    assembly = ConfigurationSettings.AppSettings["SQLiteHelperAssembly"];
                 //    type = ConfigurationSettings.AppSettings["SQLiteHelperType"];
@@ -299,13 +299,13 @@ namespace PWMIS.DataProvider.Adapter
 
         #endregion
 
-        #region ¹«¹²¾²Ì¬·½·¨
+        #region å…¬å…±é™æ€æ–¹æ³•
 
         /// <summary>
-        /// »ñµÃÊı¾İ·ÃÎÊÁ¬½Ó×Ö·û´®£¬ÇëÔÚÓ¦ÓÃ³ÌĞòÅäÖÃÎÄ¼şÖĞ´´½¨ EngineType£¬[DB]HelperAssembly£¬[DB]HelperType ,[DB]ConnectionString¼ü£¬ÖµÎªSQLSERVER/OLEDB/ODBC/ORACLE Ö®Ò»
-        /// Èç¹ûÃ»ÓĞÕÒµ½ [DB]ConnectionString ¼ü£¬Ò²¿ÉÒÔÖ±½ÓÊ¹ÓÃ ConnectionString ¼ü
+        /// è·å¾—æ•°æ®è®¿é—®è¿æ¥å­—ç¬¦ä¸²ï¼Œè¯·åœ¨åº”ç”¨ç¨‹åºé…ç½®æ–‡ä»¶ä¸­åˆ›å»º EngineTypeï¼Œ[DB]HelperAssemblyï¼Œ[DB]HelperType ,[DB]ConnectionStringé”®ï¼Œå€¼ä¸ºSQLSERVER/OLEDB/ODBC/ORACLE ä¹‹ä¸€
+        /// å¦‚æœæ²¡æœ‰æ‰¾åˆ° [DB]ConnectionString é”®ï¼Œä¹Ÿå¯ä»¥ç›´æ¥ä½¿ç”¨ ConnectionString é”®
         /// </summary>
-        /// <returns>Êı¾İ·ÃÎÊÁ¬½Ó×Ö·û´®</returns>
+        /// <returns>æ•°æ®è®¿é—®è¿æ¥å­—ç¬¦ä¸²</returns>
         public static string GetConnectionString()
         {
 
@@ -336,10 +336,10 @@ namespace PWMIS.DataProvider.Adapter
         }
 
         /// <summary>
-        /// ¸üĞÂÊı¾İ¼¯(²ÉÓÃ²ÎÊıĞÎÊ½)£¬Êı¾İ±íÈç¹ûÖ¸¶¨ÁËÖ÷¼üÄÇÃ´Ö´ĞĞ¸üĞÂ²Ù×÷£¬·ñÔòÖ´ĞĞ²åÈë²Ù×÷¡£
+        /// æ›´æ–°æ•°æ®é›†(é‡‡ç”¨å‚æ•°å½¢å¼)ï¼Œæ•°æ®è¡¨å¦‚æœæŒ‡å®šäº†ä¸»é”®é‚£ä¹ˆæ‰§è¡Œæ›´æ–°æ“ä½œï¼Œå¦åˆ™æ‰§è¡Œæ’å…¥æ“ä½œã€‚
         /// </summary>
-        /// <param name="ds">Êı¾İ¼¯</param>
-        /// <returns>²éÑ¯½á¹ûÊÜÓ°ÏìµÄĞĞÊı</returns>
+        /// <param name="ds">æ•°æ®é›†</param>
+        /// <returns>æŸ¥è¯¢ç»“æœå—å½±å“çš„è¡Œæ•°</returns>
         public static int UpdateDataSet(DataSet ds)
         {
             int count = 0;
@@ -358,8 +358,8 @@ namespace PWMIS.DataProvider.Adapter
         }//end function
 
         /// <summary>
-        /// ×Ô¶¯½«Êı¾İ¼¯ÖĞµÄÊı¾İ¸üĞÂ»òÕß²åÈëµ½Êı¾İ¿â
-        /// <remarks>¸üĞÂÊ±¼ä£º2011.11.16</remarks>
+        /// è‡ªåŠ¨å°†æ•°æ®é›†ä¸­çš„æ•°æ®æ›´æ–°æˆ–è€…æ’å…¥åˆ°æ•°æ®åº“
+        /// <remarks>æ›´æ–°æ—¶é—´ï¼š2011.11.16</remarks>
         /// </summary>
         /// <param name="ds"></param>
         /// <param name="DB"></param>
@@ -376,12 +376,12 @@ namespace PWMIS.DataProvider.Adapter
             return count;
         }
         /// <summary>
-        /// ¸ù¾İÊı¾İ¼¯ÖĞÔÚÖ¸¶¨µÄ±íÖĞ£¬¸ù¾İ±íÖĞµÄÖ¸¶¨ÁĞµÄÖµÔÚÊı¾İÔ´ÖĞÉ¾³ıÊı¾İ
+        /// æ ¹æ®æ•°æ®é›†ä¸­åœ¨æŒ‡å®šçš„è¡¨ä¸­ï¼Œæ ¹æ®è¡¨ä¸­çš„æŒ‡å®šåˆ—çš„å€¼åœ¨æ•°æ®æºä¸­åˆ é™¤æ•°æ®
         /// </summary>
-        /// <param name="ds">Êı¾İ¼¯</param>
-        /// <param name="tableName">±íÃû³Æ</param>
-        /// <param name="columnName">ÁĞÃû</param>
-        /// <returns>²éÑ¯ËùÓ°ÏìµÄĞĞÊı</returns>
+        /// <param name="ds">æ•°æ®é›†</param>
+        /// <param name="tableName">è¡¨åç§°</param>
+        /// <param name="columnName">åˆ—å</param>
+        /// <returns>æŸ¥è¯¢æ‰€å½±å“çš„è¡Œæ•°</returns>
         public static int DeleteDataSet(DataSet ds, string tableName, string columnName)
         {
             DataTable dt = ds.Tables[tableName];
@@ -416,19 +416,19 @@ namespace PWMIS.DataProvider.Adapter
 
         #endregion
 
-        #region ¹«¹²¶¯Ì¬ÊµÀı·½·¨
+        #region å…¬å…±åŠ¨æ€å®ä¾‹æ–¹æ³•
         /// <summary>
-        /// »ñÈ¡µ±Ç°²Ù×÷ĞÅÏ¢
+        /// è·å–å½“å‰æ“ä½œä¿¡æ¯
         /// </summary>
         public string Message
         {
             get { return _msg; }
         }
         /// <summary>
-        /// ¸üĞÂÊı¾İ¼¯£¬´øÊı¾İ·ÃÎÊ¶ÔÏó
+        /// æ›´æ–°æ•°æ®é›†ï¼Œå¸¦æ•°æ®è®¿é—®å¯¹è±¡
         /// </summary>
-        /// <param name="ds">Êı¾İ¼¯</param>
-        /// <param name="DB">Êı¾İ·ÃÎÊ¶ÔÏó</param>
+        /// <param name="ds">æ•°æ®é›†</param>
+        /// <param name="DB">æ•°æ®è®¿é—®å¯¹è±¡</param>
         /// <returns></returns>
         public int UpdateDataSet(DataSet ds, CommonDB DB)
         {
@@ -438,24 +438,24 @@ namespace PWMIS.DataProvider.Adapter
                 if (dt.PrimaryKey.Length > 0)
                 {
                     count += UpdateDataTable(dt, GetSqlUpdate(dt), DB);
-                    _msg = "ÒÑ¾­¸üĞÂ¼ÇÂ¼" + count + "Ìõ";
+                    _msg = "å·²ç»æ›´æ–°è®°å½•" + count + "æ¡";
                 }
                 else
                 {
                     count += UpdateDataTable(dt, GetSqlInsert(dt), DB);
-                    _msg = "ÒÑ¾­²åÈë¼ÇÂ¼" + count + "Ìõ";
+                    _msg = "å·²ç»æ’å…¥è®°å½•" + count + "æ¡";
                 }// end if
             }//end for
             return count;
         }//end function
 
         /// <summary>
-        /// ¸ù¾İÊı¾İ¼¯ÖĞÔÚÖ¸¶¨µÄ±íÖĞ£¬¸ù¾İ±íÖĞµÄÖ¸¶¨ÁĞµÄÖµÔÚÊı¾İÔ´ÖĞÉ¾³ıÊı¾İ,´øÊı¾İ·ÃÎÊ¶ÔÏó
+        /// æ ¹æ®æ•°æ®é›†ä¸­åœ¨æŒ‡å®šçš„è¡¨ä¸­ï¼Œæ ¹æ®è¡¨ä¸­çš„æŒ‡å®šåˆ—çš„å€¼åœ¨æ•°æ®æºä¸­åˆ é™¤æ•°æ®,å¸¦æ•°æ®è®¿é—®å¯¹è±¡
         /// </summary>
-        /// <param name="ds">Êı¾İ¼¯</param>
-        /// <param name="tableName">±íÃû³Æ</param>
-        /// <param name="columnName">ÁĞÃû</param>
-        /// <param name="DB">Êı¾İ·ÃÎÊ¶ÔÏó</param>
+        /// <param name="ds">æ•°æ®é›†</param>
+        /// <param name="tableName">è¡¨åç§°</param>
+        /// <param name="columnName">åˆ—å</param>
+        /// <param name="DB">æ•°æ®è®¿é—®å¯¹è±¡</param>
         /// <returns></returns>
         public int DeleteDataSet(DataSet ds, string tableName, string columnName, CommonDB DB)
         {
@@ -475,25 +475,25 @@ namespace PWMIS.DataProvider.Adapter
         }
 
         /// <summary>
-        /// ¸ù¾İÖ÷¼üĞÅÏ¢´ÓÊı¾İÔ´²éÑ¯Êı¾İ±íµ½Êı¾İ¼¯ÖĞ
+        /// æ ¹æ®ä¸»é”®ä¿¡æ¯ä»æ•°æ®æºæŸ¥è¯¢æ•°æ®è¡¨åˆ°æ•°æ®é›†ä¸­
         /// </summary>
-        /// <param name="tableName">Êı¾İÔ´ÖĞµÄ±íÃû³Æ</param>
-        /// <param name="pkNames">Ö÷¼üÃû³ÆÊı×é</param>
-        /// <param name="pkValues">Ö÷¼üÖµÊı×é£¬±ØĞëºÍÖ÷¼üÃû¶ÔÓ¦</param>
-        /// <returns>Êı¾İ¼¯</returns>
+        /// <param name="tableName">æ•°æ®æºä¸­çš„è¡¨åç§°</param>
+        /// <param name="pkNames">ä¸»é”®åç§°æ•°ç»„</param>
+        /// <param name="pkValues">ä¸»é”®å€¼æ•°ç»„ï¼Œå¿…é¡»å’Œä¸»é”®åå¯¹åº”</param>
+        /// <returns>æ•°æ®é›†</returns>
         public DataSet SelectDataSet(string tableName, string[] pkNames, object[] pkValues)
         {
             return SelectDataSet("*", tableName, pkNames, pkValues);
         }
 
         /// <summary>
-        /// ¸ù¾İÖ÷¼üĞÅÏ¢´ÓÊı¾İÔ´²éÑ¯Êı¾İ±íµ½Êı¾İ¼¯ÖĞ
+        /// æ ¹æ®ä¸»é”®ä¿¡æ¯ä»æ•°æ®æºæŸ¥è¯¢æ•°æ®è¡¨åˆ°æ•°æ®é›†ä¸­
         /// </summary>
-        /// <param name="fields">×Ö¶ÎÁĞ±í</param>
-        /// <param name="tableName">Êı¾İÔ´ÖĞµÄ±íÃû³Æ</param>
-        /// <param name="pkNames">Ö÷¼üÃû³ÆÊı×é</param>
-        /// <param name="pkValues">Ö÷¼üÖµÊı×é£¬±ØĞëºÍÖ÷¼üÃû¶ÔÓ¦</param>
-        /// <param name="DB">Êı¾İ·ÃÎÊ¶ÔÏó</param>
+        /// <param name="fields">å­—æ®µåˆ—è¡¨</param>
+        /// <param name="tableName">æ•°æ®æºä¸­çš„è¡¨åç§°</param>
+        /// <param name="pkNames">ä¸»é”®åç§°æ•°ç»„</param>
+        /// <param name="pkValues">ä¸»é”®å€¼æ•°ç»„ï¼Œå¿…é¡»å’Œä¸»é”®åå¯¹åº”</param>
+        /// <param name="DB">æ•°æ®è®¿é—®å¯¹è±¡</param>
         /// <returns></returns>
         public DataSet SelectDataSet(string fields, string tableName, string[] pkNames, object[] pkValues, CommonDB DB)
         {
@@ -511,13 +511,13 @@ namespace PWMIS.DataProvider.Adapter
         }
 
         /// <summary>
-        /// ¸ù¾İÖ÷¼üĞÅÏ¢´ÓÊı¾İÔ´²éÑ¯Êı¾İ±íµ½Êı¾İ¼¯ÖĞ
+        /// æ ¹æ®ä¸»é”®ä¿¡æ¯ä»æ•°æ®æºæŸ¥è¯¢æ•°æ®è¡¨åˆ°æ•°æ®é›†ä¸­
         /// </summary>
-        /// <param name="fields">×Ö¶ÎÁĞ±í</param>
-        /// <param name="tableName">Êı¾İÔ´ÖĞµÄ±íÃû³Æ</param>
-        /// <param name="pkNames">Ö÷¼üÃû³ÆÊı×é</param>
-        /// <param name="pkValues">Ö÷¼üÖµÊı×é£¬±ØĞëºÍÖ÷¼üÃû¶ÔÓ¦</param>
-        /// <returns>Êı¾İ¼¯</returns>
+        /// <param name="fields">å­—æ®µåˆ—è¡¨</param>
+        /// <param name="tableName">æ•°æ®æºä¸­çš„è¡¨åç§°</param>
+        /// <param name="pkNames">ä¸»é”®åç§°æ•°ç»„</param>
+        /// <param name="pkValues">ä¸»é”®å€¼æ•°ç»„ï¼Œå¿…é¡»å’Œä¸»é”®åå¯¹åº”</param>
+        /// <returns>æ•°æ®é›†</returns>
         public DataSet SelectDataSet(string fields, string tableName, string[] pkNames, object[] pkValues)
         {
             CommonDB DB = MyDB.GetDBHelper();
@@ -535,14 +535,14 @@ namespace PWMIS.DataProvider.Adapter
         }
 
         /// <summary>
-        /// ¸üĞÂÊı¾İ¼¯ÖĞµÄ×Ö¶Îµ½Êı¾İÔ´ÖĞ
+        /// æ›´æ–°æ•°æ®é›†ä¸­çš„å­—æ®µåˆ°æ•°æ®æºä¸­
         /// </summary>
-        /// <param name="sDs">Ô´Êı¾İ¼¯</param>
-        /// <param name="tableName">Òª¸üĞÂµÄ±í</param>
-        /// <param name="fieldName">Òª¸üĞÂµÄ×Ö¶Î</param>
-        /// <param name="fieldValue">×Ö¶ÎµÄÖµ</param>
-        /// <param name="pkName">Ö÷¼üÃû³Æ</param>
-        /// <param name="DB">Êı¾İ·ÃÎÊ¶ÔÏó</param>
+        /// <param name="sDs">æºæ•°æ®é›†</param>
+        /// <param name="tableName">è¦æ›´æ–°çš„è¡¨</param>
+        /// <param name="fieldName">è¦æ›´æ–°çš„å­—æ®µ</param>
+        /// <param name="fieldValue">å­—æ®µçš„å€¼</param>
+        /// <param name="pkName">ä¸»é”®åç§°</param>
+        /// <param name="DB">æ•°æ®è®¿é—®å¯¹è±¡</param>
         /// <returns></returns>
         public int UpdateField(DataSet sDs, string tableName, string fieldName, object fieldValue, string pkName, CommonDB DB)
         {
@@ -557,7 +557,7 @@ namespace PWMIS.DataProvider.Adapter
                 if (colName == fieldName || colName == pkName)
                     continue;
                 dt.Columns.Remove(colName);
-                i = 0;//¼¯ºÏÔªËØÎ»ÖÃ¿ÉÄÜÒÑ¾­Ç¨ÒÆ£¬ËùÒÔĞèÒªÖØĞÂ´ÓÍ·¿ªÊ¼²éÕÒ
+                i = 0;//é›†åˆå…ƒç´ ä½ç½®å¯èƒ½å·²ç»è¿ç§»ï¼Œæ‰€ä»¥éœ€è¦é‡æ–°ä»å¤´å¼€å§‹æŸ¥æ‰¾
             }
             dt.PrimaryKey = new DataColumn[] { dt.Columns[pkName] };
             foreach (DataRow dr in dt.Rows)
@@ -571,11 +571,11 @@ namespace PWMIS.DataProvider.Adapter
 
         #endregion
 
-        #region ÄÚ²¿·½·¨
+        #region å†…éƒ¨æ–¹æ³•
         /// <summary>
-        /// »ñÈ¡ÌØ¶¨Êı¾İ¿â²ÎÊı×Ö·û
+        /// è·å–ç‰¹å®šæ•°æ®åº“å‚æ•°å­—ç¬¦
         /// </summary>
-        /// <param name="DB">Êı¾İ¿âÀàĞÍ</param>
+        /// <param name="DB">æ•°æ®åº“ç±»å‹</param>
         /// <returns></returns>
         private static string GetDBParaChar(CommonDB DB)
         {
@@ -583,7 +583,7 @@ namespace PWMIS.DataProvider.Adapter
         }
 
         /// <summary>
-        /// ¸üĞÂÊı¾İ±íµ½Êı¾İÔ´ÖĞ
+        /// æ›´æ–°æ•°æ®è¡¨åˆ°æ•°æ®æºä¸­
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="SQL"></param>
@@ -620,8 +620,8 @@ namespace PWMIS.DataProvider.Adapter
         }
 
         /// <summary>
-        /// ×Ô¶¯±£´æÊı¾İ±íÖĞµÄÊı¾İµ½Êı¾İ¿â
-        /// <remarks>¸üĞÂÊ±¼ä£º2011.11.16</remarks>
+        /// è‡ªåŠ¨ä¿å­˜æ•°æ®è¡¨ä¸­çš„æ•°æ®åˆ°æ•°æ®åº“
+        /// <remarks>æ›´æ–°æ—¶é—´ï¼š2011.11.16</remarks>
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="insertSQL"></param>
@@ -645,7 +645,7 @@ namespace PWMIS.DataProvider.Adapter
                     {
                         paras[i] = DB.GetParameter(ParaChar + dt.Columns[i].ColumnName, dr[i]);
                     }
-                    //ÏÈ¸üĞÂ£¬Èç¹ûÃ»ÓĞ¼ÇÂ¼ÊÜÓ°ÏìÔÙ´Î³¢ÊÔÖ´ĞĞ²åÈë
+                    //å…ˆæ›´æ–°ï¼Œå¦‚æœæ²¡æœ‰è®°å½•å—å½±å“å†æ¬¡å°è¯•æ‰§è¡Œæ’å…¥
                     int tempCount = DB.ExecuteNonQuery(updateSQL, CommandType.Text, paras);
                     if (tempCount <= 0)
                         tempCount = DB.ExecuteNonQuery(insertSQL, CommandType.Text, paras);
@@ -666,7 +666,7 @@ namespace PWMIS.DataProvider.Adapter
         }
 
         /// <summary>
-        /// ¸üĞÂÊı¾İ±í£¬´øÊı¾İ·ÃÎÊ¶ÔÏó
+        /// æ›´æ–°æ•°æ®è¡¨ï¼Œå¸¦æ•°æ®è®¿é—®å¯¹è±¡
         /// </summary>
         /// <param name="dt"></param>
         /// <param name="SQL"></param>
@@ -696,9 +696,9 @@ namespace PWMIS.DataProvider.Adapter
 
 
         /// <summary>
-        /// ÎªÊı¾İ±íÉú³É¸üĞÂSQLÓï¾ä£¬²ÎÊıÃû´ø@@Ç°×º[²»¸üĞÂÖ÷¼ü]
+        /// ä¸ºæ•°æ®è¡¨ç”Ÿæˆæ›´æ–°SQLè¯­å¥ï¼Œå‚æ•°åå¸¦@@å‰ç¼€[ä¸æ›´æ–°ä¸»é”®]
         /// </summary>
-        /// <param name="dt">Êı¾İ±í</param>
+        /// <param name="dt">æ•°æ®è¡¨</param>
         /// <returns></returns>
         private static string GetSqlUpdate(DataTable dt)
         {
@@ -715,7 +715,7 @@ namespace PWMIS.DataProvider.Adapter
                             isPk = true;
                             break;
                         }
-                    //²»¸üĞÂÖ÷¼ü
+                    //ä¸æ›´æ–°ä¸»é”®
                     if (!isPk)
                         sqlUpdate += dc.ColumnName + "=@@" + dc.ColumnName + ",";
                 }
@@ -730,14 +730,14 @@ namespace PWMIS.DataProvider.Adapter
             }
             else
             {
-                throw new Exception("±í" + dt.TableName + "Ã»ÓĞÖ¸¶¨Ö÷¼ü£¬ÎŞ·¨Éú³ÉUpdateÓï¾ä£¡");
+                throw new Exception("è¡¨" + dt.TableName + "æ²¡æœ‰æŒ‡å®šä¸»é”®ï¼Œæ— æ³•ç”ŸæˆUpdateè¯­å¥ï¼");
             }
         }
 
         /// <summary>
-        /// ÎªÊı¾İ±íÉú³É²åÈëSQLÓï¾ä£¬²ÎÊıÃû´ø@@Ç°×º
+        /// ä¸ºæ•°æ®è¡¨ç”Ÿæˆæ’å…¥SQLè¯­å¥ï¼Œå‚æ•°åå¸¦@@å‰ç¼€
         /// </summary>
-        /// <param name="dt">Êı¾İ±í</param>
+        /// <param name="dt">æ•°æ®è¡¨</param>
         /// <returns></returns>
         private static string GetSqlInsert(DataTable dt)
         {

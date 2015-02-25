@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV4.5
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV4.5
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2012-11-1                
- * ĞŞ¸ÄËµÃ÷£ºÊÕ¼¯Êı¾İµÄÊ±ºò£¬¸Ä½ø¶ÔSQLiteµÄÖ§³Ö
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2012-11-1                
+ * ä¿®æ”¹è¯´æ˜ï¼šæ”¶é›†æ•°æ®çš„æ—¶å€™ï¼Œæ”¹è¿›å¯¹SQLiteçš„æ”¯æŒ
  * ========================================================================
 */
 using System;
@@ -27,33 +27,33 @@ using PWMIS.Common.DataMap;
 namespace PWMIS.DataForms.Adapter
 {
     ///// <summary>
-    ///// ÓÃ»§Ê¹ÓÃÊı¾İ¿Ø¼şµÄ×Ô¶¨Òå·½·¨Î¯ÍĞ
+    ///// ç”¨æˆ·ä½¿ç”¨æ•°æ®æ§ä»¶çš„è‡ªå®šä¹‰æ–¹æ³•å§”æ‰˜
     ///// </summary>
     ///// <param name="dataControl"></param>
     //public delegate void UseDataControl(IDataControl dataControl);
 
     /// <summary>
-    /// ÖÇÄÜWeb´°ÌåÊı¾İ´¦ÀíÀà£¬°üÀ¨Êı¾İÊÕ¼¯ºÍÊı¾İ³Ö¾Ã»¯£¨±£´æµ½Êı¾İ¿â£©µÈ·½·¨£»Èç¹ûÊ¹ÓÃÊÂÎñÇëÎğÊ¹ÓÃ¸ÃÀàÖĞ¼äµÄ¾²Ì¬·½·¨¡£
+    /// æ™ºèƒ½Webçª—ä½“æ•°æ®å¤„ç†ç±»ï¼ŒåŒ…æ‹¬æ•°æ®æ”¶é›†å’Œæ•°æ®æŒä¹…åŒ–ï¼ˆä¿å­˜åˆ°æ•°æ®åº“ï¼‰ç­‰æ–¹æ³•ï¼›å¦‚æœä½¿ç”¨äº‹åŠ¡è¯·å‹¿ä½¿ç”¨è¯¥ç±»ä¸­é—´çš„é™æ€æ–¹æ³•ã€‚
     /// </summary>
     public class MyWebForm : MyDataForm
     {
-        //private bool _CheckRowUpdateCount = false;//ÊÇ·ñ¼ì²é¸üĞÂ½á¹ûËùÓ°ÏìµÄĞĞÊı£¬Èç¹û¼ì²é£¬ÄÇÃ´ÊÜÓ°ÏìµÄĞĞ²»´óÓÚ0½«Å×³ö´íÎó¡£
+        //private bool _CheckRowUpdateCount = false;//æ˜¯å¦æ£€æŸ¥æ›´æ–°ç»“æœæ‰€å½±å“çš„è¡Œæ•°ï¼Œå¦‚æœæ£€æŸ¥ï¼Œé‚£ä¹ˆå—å½±å“çš„è¡Œä¸å¤§äº0å°†æŠ›å‡ºé”™è¯¯ã€‚
         //private CommonDB _dao = null;
         private static MyWebForm _instance = null;
         /// <summary>
-        /// Ä¬ÈÏ¹¹Ôìº¯Êı
+        /// é»˜è®¤æ„é€ å‡½æ•°
         /// </summary>
         public MyWebForm()
         {
             //
-            // TODO: ÔÚ´Ë´¦Ìí¼Ó¹¹Ôìº¯ÊıÂß¼­
+            // TODO: åœ¨æ­¤å¤„æ·»åŠ æ„é€ å‡½æ•°é€»è¾‘
             //
         }
 
         
 
         /// <summary>
-        /// ÖÇÄÜWeb´°ÌåÊı¾İ´¦ÀíÀà µÄ¾²Ì¬ÊµÀı
+        /// æ™ºèƒ½Webçª—ä½“æ•°æ®å¤„ç†ç±» çš„é™æ€å®ä¾‹
         /// </summary>
         public static MyWebForm Instance
         {
@@ -66,7 +66,7 @@ namespace PWMIS.DataForms.Adapter
         }
 
         /// <summary>
-        /// Web ´°Ìå¿Ø¼şÊı¾İÓ³ÉäÀà
+        /// Web çª—ä½“æ§ä»¶æ•°æ®æ˜ å°„ç±»
         /// </summary>
         public static WebControlDataMap DataMap
         {
@@ -77,12 +77,12 @@ namespace PWMIS.DataForms.Adapter
 
        
         /// <summary>
-        /// Çå³ı´°ÌåÉÏµÄÖÇÄÜ¿Ø¼şµÄÖµ
+        /// æ¸…é™¤çª—ä½“ä¸Šçš„æ™ºèƒ½æ§ä»¶çš„å€¼
         /// </summary>
-        /// <param name="Controls">´°Ìå¿Ø¼ş¼¯ºÍ</param>
+        /// <param name="Controls">çª—ä½“æ§ä»¶é›†å’Œ</param>
         public static void ClearIBData(ControlCollection Controls)
         {
-            //Ê¹ÓÃÄäÃûÎ¯ÍĞ
+            //ä½¿ç”¨åŒ¿åå§”æ‰˜
             UseDataControl clearData = delegate(IDataControl dataControl)
             {
                 dataControl.SetValue("");
@@ -92,10 +92,10 @@ namespace PWMIS.DataForms.Adapter
         }
 
         /// <summary>
-        /// Ê¹ÓÃ×Ô¶¨ÒåµÄ·½·¨´¦Àí¿Ø¼ş¼¯ºÏÖĞÃ¿Ò»¸öÖÇÄÜ´°ÌåÊı¾İ¿Ø¼ş£¬Ê¹ÓÃ»§²»±Ø¶îÍâ±éÀú¿Ø¼ş¼¯ºÏ¡£
+        /// ä½¿ç”¨è‡ªå®šä¹‰çš„æ–¹æ³•å¤„ç†æ§ä»¶é›†åˆä¸­æ¯ä¸€ä¸ªæ™ºèƒ½çª—ä½“æ•°æ®æ§ä»¶ï¼Œä½¿ç”¨æˆ·ä¸å¿…é¢å¤–éå†æ§ä»¶é›†åˆã€‚
         /// </summary>
-        /// <param name="controls">´°ÌåÈİÆ÷¿Ø¼şµÄ¿Ø¼ş¼¯ºÏ</param>
-        /// <param name="useMethod">×Ô¶¨ÒåµÄ·½·¨</param>
+        /// <param name="controls">çª—ä½“å®¹å™¨æ§ä»¶çš„æ§ä»¶é›†åˆ</param>
+        /// <param name="useMethod">è‡ªå®šä¹‰çš„æ–¹æ³•</param>
         public static void DoDataControls(ControlCollection controls, UseDataControl useMethod)
         {
             foreach (IDataControl item in GetIBControls(controls))
@@ -103,10 +103,10 @@ namespace PWMIS.DataForms.Adapter
         }
 
         /// <summary>
-        /// ´Ó¿Ø¼ş¼¯ºÏµÄÃ¿¸öÔªËØ¼°Æä×ÓÔªËØÖĞÑ°ÕÒËùÓĞµÄÖÇÄÜÊı¾İ¿Ø¼ş²¢·µ»ØÖÇÄÜ¿Ø¼şÁĞ±í
+        /// ä»æ§ä»¶é›†åˆçš„æ¯ä¸ªå…ƒç´ åŠå…¶å­å…ƒç´ ä¸­å¯»æ‰¾æ‰€æœ‰çš„æ™ºèƒ½æ•°æ®æ§ä»¶å¹¶è¿”å›æ™ºèƒ½æ§ä»¶åˆ—è¡¨
         /// </summary>
-        /// <param name="controls">¿Ø¼ş¼¯ºÏ£¬ÈçÒ³ÃæÈİÆ÷¶ÔÏó</param>
-        /// <returns>ÖÇÄÜ¿Ø¼şÁĞ±í</returns>
+        /// <param name="controls">æ§ä»¶é›†åˆï¼Œå¦‚é¡µé¢å®¹å™¨å¯¹è±¡</param>
+        /// <returns>æ™ºèƒ½æ§ä»¶åˆ—è¡¨</returns>
         public static List<IDataControl> GetIBControls(ControlCollection controls)
         {
             List<IDataControl> IBControls = new List<IDataControl>();
@@ -114,13 +114,13 @@ namespace PWMIS.DataForms.Adapter
             return IBControls;
         }
 
-        #region Ò³ÃæÊı¾İÊÕ¼¯
+        #region é¡µé¢æ•°æ®æ”¶é›†
 
         /// <summary>
-        /// Ñ°ÕÒÖÇÄÜ¿Ø¼ş£¬½«Æä·Åµ½Êı×éÁĞ±íÖĞ
+        /// å¯»æ‰¾æ™ºèƒ½æ§ä»¶ï¼Œå°†å…¶æ”¾åˆ°æ•°ç»„åˆ—è¡¨ä¸­
         /// </summary>
-        /// <param name="arrIBs">´æ·Å¿Ø¼şµÄÊı×é</param>
-        /// <param name="controls">ÒªÑ°ÕÒµÄÔ­¿Ø¼ş¼¯ºÏ</param>
+        /// <param name="arrIBs">å­˜æ”¾æ§ä»¶çš„æ•°ç»„</param>
+        /// <param name="controls">è¦å¯»æ‰¾çš„åŸæ§ä»¶é›†åˆ</param>
         private static void findIBControls(List<IDataControl> arrIBs, ControlCollection controls)
         {
             foreach (Control ctr in controls)
@@ -128,7 +128,7 @@ namespace PWMIS.DataForms.Adapter
                 if (ctr is IDataControl)
                 {
                     arrIBs.Add(ctr as IDataControl);
-                    //Êı¾İ¿Ø¼şÊÇ×î»ù±¾µÄ¿Ø¼ş£¬Èç¹ûÊÇ¸´ºÏ¿Ø¼ş£¬½«²»ÔÙËÑË÷ÆäÄÚ²¿µÄ×ÓÊı¾İ¿Ø¼ş
+                    //æ•°æ®æ§ä»¶æ˜¯æœ€åŸºæœ¬çš„æ§ä»¶ï¼Œå¦‚æœæ˜¯å¤åˆæ§ä»¶ï¼Œå°†ä¸å†æœç´¢å…¶å†…éƒ¨çš„å­æ•°æ®æ§ä»¶
                 }
                 else if (ctr.HasControls())
                 {
@@ -140,10 +140,10 @@ namespace PWMIS.DataForms.Adapter
 
 
         /// <summary>
-        /// »ñÈ¡Ñ¡ÔñºÍÉ¾³ı²éÑ¯µÄSQLÓï¾ä
+        /// è·å–é€‰æ‹©å’Œåˆ é™¤æŸ¥è¯¢çš„SQLè¯­å¥
         /// </summary>
-        /// <param name="Controls">ÒªÊÕ¼¯µÄ¿Ø¼ş¼¯ºÏ</param>
-        /// <returns> ArrayList ÖĞµÄ³ÉÔ±Îª IBCommand ¶ÔÏó£¬°üº¬¾ßÌåµÄCRUD SQL</returns>
+        /// <param name="Controls">è¦æ”¶é›†çš„æ§ä»¶é›†åˆ</param>
+        /// <returns> ArrayList ä¸­çš„æˆå‘˜ä¸º IBCommand å¯¹è±¡ï¼ŒåŒ…å«å…·ä½“çš„CRUD SQL</returns>
         public static List<IBCommand> GetSelectAndDeleteCommand(ControlCollection Controls)
         {
             List<IDataControl> IBControls = new List<IDataControl>();
@@ -152,13 +152,13 @@ namespace PWMIS.DataForms.Adapter
         }
 
         /// <summary>
-        /// ÊÕ¼¯´°ÌåÖĞµÄÖÇÄÜ¿Ø¼ş£¬×éºÏ³ÉÄÜ¹»Ö±½ÓÓÃÓÚÊı¾İ¿â²åÈëºÍ¸üĞÂ ²éÑ¯µÄ SQLÓï¾ä
-        /// Ò»¸ö´°ÌåÖĞ¿ÉÒÔÍ¬Ê±´¦Àí¶à¸ö±íµÄÊı¾İ²Ù×÷
-        /// Èç¹û¿Ø¼şµÄÊı¾İÊôĞÔÉèÖÃÎªÖ»¶Á£¬ÄÇÃ´¸Ã¿Ø¼şµÄÖµ²»»á¸üĞÂµ½Êı¾İ¿â£»Èç¹û¸Ã¿Ø¼şµÄÊı¾İÊôĞÔÉèÖÃÎªÖ÷¼ü£¬ÄÇÃ´¸üĞÂÓï¾ä½«¸½´ø¸ÃÌõ¼ş
-        /// µËÌ«»ª 2008.1.15
+        /// æ”¶é›†çª—ä½“ä¸­çš„æ™ºèƒ½æ§ä»¶ï¼Œç»„åˆæˆèƒ½å¤Ÿç›´æ¥ç”¨äºæ•°æ®åº“æ’å…¥å’Œæ›´æ–° æŸ¥è¯¢çš„ SQLè¯­å¥
+        /// ä¸€ä¸ªçª—ä½“ä¸­å¯ä»¥åŒæ—¶å¤„ç†å¤šä¸ªè¡¨çš„æ•°æ®æ“ä½œ
+        /// å¦‚æœæ§ä»¶çš„æ•°æ®å±æ€§è®¾ç½®ä¸ºåªè¯»ï¼Œé‚£ä¹ˆè¯¥æ§ä»¶çš„å€¼ä¸ä¼šæ›´æ–°åˆ°æ•°æ®åº“ï¼›å¦‚æœè¯¥æ§ä»¶çš„æ•°æ®å±æ€§è®¾ç½®ä¸ºä¸»é”®ï¼Œé‚£ä¹ˆæ›´æ–°è¯­å¥å°†é™„å¸¦è¯¥æ¡ä»¶
+        /// é‚“å¤ªå 2008.1.15
         /// </summary>
         /// <returns>
-        /// ArrayList ÖĞµÄ³ÉÔ±Îª IBCommand ¶ÔÏó£¬°üº¬¾ßÌåµÄCRUD SQL
+        /// ArrayList ä¸­çš„æˆå‘˜ä¸º IBCommand å¯¹è±¡ï¼ŒåŒ…å«å…·ä½“çš„CRUD SQL
         ///</returns>
         public static List<IBCommand> GetIBFormData(ControlCollection Controls, CommonDB DB)
         {
@@ -170,13 +170,13 @@ namespace PWMIS.DataForms.Adapter
 
         #endregion
 
-        #region Êı¾İÌî³äÒÔ¼°³Ö¾Ã»¯Êı¾İ
+        #region æ•°æ®å¡«å……ä»¥åŠæŒä¹…åŒ–æ•°æ®
 
 
         /// <summary>
-        /// ×Ô¶¯¸üĞÂ´°ÌåÊı¾İ
+        /// è‡ªåŠ¨æ›´æ–°çª—ä½“æ•°æ®
         /// </summary>
-        /// <param name="Controls">¿Ø¼ş¼¯ºÏ</param>
+        /// <param name="Controls">æ§ä»¶é›†åˆ</param>
         /// <returns></returns>
         public List<IBCommand> AutoUpdateIBFormData(ControlCollection Controls)
         {
@@ -186,11 +186,11 @@ namespace PWMIS.DataForms.Adapter
         }
 
         /// <summary>
-        /// ×Ô¶¯¸üĞÂº¬ÓĞGUIDÖ÷¼ü»ò×Ö·ûĞÍÖ÷¼üµÄ´°ÌåÊı¾İ£¬×¢¸Ã¿Ø¼ş±ØĞëÉèÖÃPrimaryKeyÊôĞÔ
+        /// è‡ªåŠ¨æ›´æ–°å«æœ‰GUIDä¸»é”®æˆ–å­—ç¬¦å‹ä¸»é”®çš„çª—ä½“æ•°æ®ï¼Œæ³¨è¯¥æ§ä»¶å¿…é¡»è®¾ç½®PrimaryKeyå±æ€§
         /// </summary>
-        /// <param name="Controls">¿Ø¼ş¼¯ºÏ</param>
-        /// <param name="guidControl">Gudi»ò×Ö·ûĞÍÖ÷¼ü¿Ø¼ş</param>
-        /// <returns>¸üĞÂÊÇ·ñ³É¹¦</returns>
+        /// <param name="Controls">æ§ä»¶é›†åˆ</param>
+        /// <param name="guidControl">Gudiæˆ–å­—ç¬¦å‹ä¸»é”®æ§ä»¶</param>
+        /// <returns>æ›´æ–°æ˜¯å¦æˆåŠŸ</returns>
         public bool AutoUpdateIBFormData(ControlCollection Controls, IDataControl guidControl)
         {
             List<IBCommand> ibCommandList = GetIBFormData(Controls, this.DAO);
@@ -198,9 +198,9 @@ namespace PWMIS.DataForms.Adapter
         }
 
         /// <summary>
-        /// ×Ô¶¯Ìî³äÖÇÄÜ´°Ìå¿Ø¼şµÄÊı¾İ
+        /// è‡ªåŠ¨å¡«å……æ™ºèƒ½çª—ä½“æ§ä»¶çš„æ•°æ®
         /// </summary>
-        /// <param name="Controls">ÒªÌî³äµÄ´°Ìå¿Ø¼ş¼¯ºÍ</param>
+        /// <param name="Controls">è¦å¡«å……çš„çª—ä½“æ§ä»¶é›†å’Œ</param>
         public void AutoSelectIBForm(ControlCollection Controls)
         {
             List<IDataControl> IBControls = new List<IDataControl>();
@@ -210,10 +210,10 @@ namespace PWMIS.DataForms.Adapter
         }
 
         /// <summary>
-        /// ´ÓÊı¾İ¼¯DataSetÌî³äÊı¾İµ½Êı¾İ¿Ø¼şÉÏÃæ£¬DataSetÖĞµÄ±íÃû³Æ±ØĞëºÍÊı¾İ¿Ø¼şµÄLinkObjectÆ¥Åä£¨²»Çø·Ö´óĞ¡Ğ´£©
+        /// ä»æ•°æ®é›†DataSetå¡«å……æ•°æ®åˆ°æ•°æ®æ§ä»¶ä¸Šé¢ï¼ŒDataSetä¸­çš„è¡¨åç§°å¿…é¡»å’Œæ•°æ®æ§ä»¶çš„LinkObjectåŒ¹é…ï¼ˆä¸åŒºåˆ†å¤§å°å†™ï¼‰
         /// </summary>
-        /// <param name="Controls">ÒªÌî³äµÄ´°Ìå¿Ø¼ş¼¯ºÍ</param>
-        /// <param name="dsSource">Ìá¹©ÊôÓÚÔ´µÄÊı¾İ¼¯</param>
+        /// <param name="Controls">è¦å¡«å……çš„çª—ä½“æ§ä»¶é›†å’Œ</param>
+        /// <param name="dsSource">æä¾›å±äºæºçš„æ•°æ®é›†</param>
         public void AutoSelectIBForm(ControlCollection Controls, DataSet dsSource)
         {
             List<IDataControl> IBControls = new List<IDataControl>();
@@ -223,7 +223,7 @@ namespace PWMIS.DataForms.Adapter
         }
 
         /// <summary>
-        /// ´ÓÊµÌåÀàÌî³äÊı¾İµ½Ò³Ãæ¿Ø¼ş
+        /// ä»å®ä½“ç±»å¡«å……æ•°æ®åˆ°é¡µé¢æ§ä»¶
         /// </summary>
         /// <param name="Controls"></param>
         /// <param name="entity"></param>
@@ -238,10 +238,10 @@ namespace PWMIS.DataForms.Adapter
 
 
         /// <summary>
-        /// ×Ô¶¯É¾³ıÖÇÄÜ´°Ìå¿Ø¼şµÄ³Ö¾Ã»¯Êı¾İ
+        /// è‡ªåŠ¨åˆ é™¤æ™ºèƒ½çª—ä½“æ§ä»¶çš„æŒä¹…åŒ–æ•°æ®
         /// </summary>
-        /// <param name="Controls">Òª´¦ÀíµÄ´°Ìå¿Ø¼ş¼¯ºÍ</param>
-        /// <returns>²Ù×÷ÊÜÓ°ÏìµÄ¼ÇÂ¼ĞĞÊı</returns>
+        /// <param name="Controls">è¦å¤„ç†çš„çª—ä½“æ§ä»¶é›†å’Œ</param>
+        /// <returns>æ“ä½œå—å½±å“çš„è®°å½•è¡Œæ•°</returns>
         public int AutoDeleteIBForm(ControlCollection Controls)
         {
             List<IDataControl> IBControls = new List<IDataControl>();

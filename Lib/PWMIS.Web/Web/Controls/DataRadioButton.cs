@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º                
- * ĞŞ¸ÄËµÃ÷£º
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š                
+ * ä¿®æ”¹è¯´æ˜ï¼š
  * ========================================================================
 */
 using System;
@@ -26,7 +26,7 @@ using PWMIS.DataMap;
 namespace PWMIS.Web.Controls
 {
 	/// <summary>
-    /// Êı¾İ¸´Ñ¡¿ò¿Ø¼ş
+    /// æ•°æ®å¤é€‰æ¡†æ§ä»¶
 	/// </summary>
     [System.Drawing.ToolboxBitmap(typeof(ControlIcon), "DataRadioButton.bmp")]
     public class DataRadioButton : RadioButton, IDataCheckBox, IQueryControl
@@ -34,17 +34,17 @@ namespace PWMIS.Web.Controls
 		public DataRadioButton()
 		{
 			//
-			// TODO: ÔÚ´Ë´¦Ìí¼Ó¹¹Ôìº¯ÊıÂß¼­
+			// TODO: åœ¨æ­¤å¤„æ·»åŠ æ„é€ å‡½æ•°é€»è¾‘
 			//
 		}
 
-		#region IBrainControl ³ÉÔ±
+		#region IBrainControl æˆå‘˜
 
-		#region Êı¾İÊôĞÔ
-        [Category("Data"), Description("Éè¶¨¶ÔÓ¦µÄÊı¾İÔ´£¬¸ñÊ½£ºFullClassName,AssemblyName ¡£Èç¹ûĞèÒª°ó¶¨ÊµÌåÀà£¬¿ÉÒÔÉèÖÃ¸ÃÊôĞÔ¡£")]
+		#region æ•°æ®å±æ€§
+        [Category("Data"), Description("è®¾å®šå¯¹åº”çš„æ•°æ®æºï¼Œæ ¼å¼ï¼šFullClassName,AssemblyName ã€‚å¦‚æœéœ€è¦ç»‘å®šå®ä½“ç±»ï¼Œå¯ä»¥è®¾ç½®è¯¥å±æ€§ã€‚")]
         public string DataProvider { get; set; }
 
-		[Category("Data"),Description("Éè¶¨¶ÔÓ¦µÄÊı¾İ¿â×Ö¶ÎÊÇ·ñÊÇÖ÷¼ü£¬ÓÃÓÚ×Ô¶¯Êı¾İ²éÑ¯ºÍ¸üĞÂµÄÒÀ¾İ")]
+		[Category("Data"),Description("è®¾å®šå¯¹åº”çš„æ•°æ®åº“å­—æ®µæ˜¯å¦æ˜¯ä¸»é”®ï¼Œç”¨äºè‡ªåŠ¨æ•°æ®æŸ¥è¯¢å’Œæ›´æ–°çš„ä¾æ®")]
 		public bool PrimaryKey
 		{
 			get
@@ -59,7 +59,7 @@ namespace PWMIS.Web.Controls
 			}
 		}
 
-		[Category("Íâ¹Û"),Description("Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İÖµ")]
+		[Category("å¤–è§‚"),Description("è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®å€¼")]
 		public string Value
 		{
 			get
@@ -74,12 +74,12 @@ namespace PWMIS.Web.Controls
 			}
 		}
 
-		[Category("Data"),Description("Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İÃû")]
+		[Category("Data"),Description("è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®å")]
 		public string LinkProperty
 		{
 			get
 			{
-				// TODO:  Ìí¼Ó BrainDropDownList.LinkProperty getter ÊµÏÖ
+				// TODO:  æ·»åŠ  BrainDropDownList.LinkProperty getter å®ç°
 				if(ViewState["LinkProperty"]!=null)
 					return (string)ViewState["LinkProperty"];
 				return "";
@@ -87,11 +87,11 @@ namespace PWMIS.Web.Controls
 			set
 			{
 				ViewState["LinkProperty"]=value;
-				// TODO:  Ìí¼Ó BrainDropDownList.LinkProperty setter ÊµÏÖ
+				// TODO:  æ·»åŠ  BrainDropDownList.LinkProperty setter å®ç°
 			}
 		}
 
-		[Category("Data"),Description("Éè¶¨ÓëÊı¾İ±í¶ÔÓ¦µÄÊı¾İ±íÃû")]
+		[Category("Data"),Description("è®¾å®šä¸æ•°æ®è¡¨å¯¹åº”çš„æ•°æ®è¡¨å")]
 		public string LinkObject
 		{
 			get
@@ -99,18 +99,18 @@ namespace PWMIS.Web.Controls
 				if(ViewState["LinkObject"]!=null)
 					return (string)ViewState["LinkObject"];
 				return "";
-				// TODO:  Ìí¼Ó BrainDropDownList.LinkObject getter ÊµÏÖ
+				// TODO:  æ·»åŠ  BrainDropDownList.LinkObject getter å®ç°
 			}
 			set
 			{
 				ViewState["LinkObject"]=value;
-				// TODO:  Ìí¼Ó BrainDropDownList.LinkObject setter ÊµÏÖ
+				// TODO:  æ·»åŠ  BrainDropDownList.LinkObject setter å®ç°
 			}
 		}
 
 		#endregion
 
-		#region Ä¬ÈÏÊôĞÔ
+		#region é»˜è®¤å±æ€§
 
 		public bool IsValid
 		{
@@ -149,7 +149,7 @@ namespace PWMIS.Web.Controls
 
 		#endregion
 
-		#region ½è¿Ú·½·¨
+		#region å€Ÿå£æ–¹æ³•
 
 		public bool IsNull
 		{
@@ -185,7 +185,7 @@ namespace PWMIS.Web.Controls
 
 		#endregion
 
-        #region IQueryControl ³ÉÔ±
+        #region IQueryControl æˆå‘˜
 
         public string CompareSymbol
         {

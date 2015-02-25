@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV4.5
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV4.5
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2013-3-1                
- * ĞŞ¸ÄËµÃ÷£ºÍêÉÆÁË¿Ø¼ş
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2013-3-1                
+ * ä¿®æ”¹è¯´æ˜ï¼šå®Œå–„äº†æ§ä»¶
  * ========================================================================
 */
 using System;
@@ -26,7 +26,7 @@ using PWMIS.DataMap;
 namespace PWMIS.Web.Controls
 {
     /// <summary>
-    /// BrainCheckBox µÄÕªÒªËµÃ÷¡£2008.7.6
+    /// BrainCheckBox çš„æ‘˜è¦è¯´æ˜ã€‚2008.7.6
     /// </summary>
     [System.Drawing.ToolboxBitmap(typeof(ControlIcon), "DataCheckBox.bmp")]
     public class DataCheckBox : CheckBox, IDataCheckBox, IQueryControl
@@ -34,21 +34,21 @@ namespace PWMIS.Web.Controls
         public DataCheckBox()
         {
             //
-            // TODO: ÔÚ´Ë´¦Ìí¼Ó¹¹Ôìº¯ÊıÂß¼­
+            // TODO: åœ¨æ­¤å¤„æ·»åŠ æ„é€ å‡½æ•°é€»è¾‘
             //
         }
 
 
 
-        #region IBrainControl ³ÉÔ±
+        #region IBrainControl æˆå‘˜
 
-        #region Êı¾İÊôĞÔ
-        [Category("Data"), Description("Éè¶¨¶ÔÓ¦µÄÊı¾İÔ´£¬¸ñÊ½£ºFullClassName,AssemblyName ¡£Èç¹ûĞèÒª°ó¶¨ÊµÌåÀà£¬¿ÉÒÔÉèÖÃ¸ÃÊôĞÔ¡£")]
+        #region æ•°æ®å±æ€§
+        [Category("Data"), Description("è®¾å®šå¯¹åº”çš„æ•°æ®æºï¼Œæ ¼å¼ï¼šFullClassName,AssemblyName ã€‚å¦‚æœéœ€è¦ç»‘å®šå®ä½“ç±»ï¼Œå¯ä»¥è®¾ç½®è¯¥å±æ€§ã€‚")]
         public string DataProvider { get; set; }
         /// <summary>
-        /// Ö¸¶¨ÊÇ·ñÊÇÖ÷¼ü
+        /// æŒ‡å®šæ˜¯å¦æ˜¯ä¸»é”®
         /// </summary>
-        [Category("Data"), Description("Éè¶¨¶ÔÓ¦µÄÊı¾İ¿â×Ö¶ÎÊÇ·ñÊÇÖ÷¼ü£¬ÓÃÓÚ×Ô¶¯Êı¾İ²éÑ¯ºÍ¸üĞÂµÄÒÀ¾İ")]
+        [Category("Data"), Description("è®¾å®šå¯¹åº”çš„æ•°æ®åº“å­—æ®µæ˜¯å¦æ˜¯ä¸»é”®ï¼Œç”¨äºè‡ªåŠ¨æ•°æ®æŸ¥è¯¢å’Œæ›´æ–°çš„ä¾æ®")]
         public bool PrimaryKey
         {
             get
@@ -63,7 +63,7 @@ namespace PWMIS.Web.Controls
             }
         }
 
-        [Category("Data"), Description("Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İÖµ")]
+        [Category("Data"), Description("è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®å€¼")]
         public string Value
         {
             get
@@ -78,7 +78,7 @@ namespace PWMIS.Web.Controls
             }
         }
 
-        [Category("Data"), Description("Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İÃû")]
+        [Category("Data"), Description("è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®å")]
         public string LinkProperty
         {
             get
@@ -93,7 +93,7 @@ namespace PWMIS.Web.Controls
             }
         }
 
-        [Category("Data"), Description("Éè¶¨ÓëÊı¾İ±í¶ÔÓ¦µÄÊı¾İ±íÃû")]
+        [Category("Data"), Description("è®¾å®šä¸æ•°æ®è¡¨å¯¹åº”çš„æ•°æ®è¡¨å")]
         public string LinkObject
         {
             get
@@ -101,24 +101,24 @@ namespace PWMIS.Web.Controls
                 if (ViewState["LinkObject"] != null)
                     return (string)ViewState["LinkObject"];
                 return "";
-                // TODO:  Ìí¼Ó BrainDropDownList.LinkObject getter ÊµÏÖ
+                // TODO:  æ·»åŠ  BrainDropDownList.LinkObject getter å®ç°
             }
             set
             {
                 ViewState["LinkObject"] = value;
-                // TODO:  Ìí¼Ó BrainDropDownList.LinkObject setter ÊµÏÖ
+                // TODO:  æ·»åŠ  BrainDropDownList.LinkObject setter å®ç°
             }
         }
 
         #endregion
 
-        #region Ä¬ÈÏÊôĞÔ
+        #region é»˜è®¤å±æ€§
 
         public bool IsValid
         {
             get
             {
-                // TODO:  Ìí¼Ó BrainListBox.IsValid getter ÊµÏÖ
+                // TODO:  æ·»åŠ  BrainListBox.IsValid getter å®ç°
                 return true;
             }
         }
@@ -138,18 +138,18 @@ namespace PWMIS.Web.Controls
 
         public virtual bool Validate()
         {
-            // TODO:  Ìí¼Ó BrainListBox.Validate ÊµÏÖ
+            // TODO:  æ·»åŠ  BrainListBox.Validate å®ç°
             return true;
         }
         #endregion
 
-        #region ÆäËûÊôĞÔ
+        #region å…¶ä»–å±æ€§
 
         public bool ReadOnly
         {
             get
             {
-                if (!this.Checked)//Èç¹ûÎ´Ñ¡Ôñ£¬ÄÇÃ´Éè¶¨ÎªÖ»¶ÁÊı¾İÊôĞÔ¡£
+                if (!this.Checked)//å¦‚æœæœªé€‰æ‹©ï¼Œé‚£ä¹ˆè®¾å®šä¸ºåªè¯»æ•°æ®å±æ€§ã€‚
                     return true;
                 return !base.Enabled;
             }
@@ -159,27 +159,27 @@ namespace PWMIS.Web.Controls
             }
         }
 
-        [Category("Data"), Description("Éè¶¨ÓëÊı¾İÊÇ·ñ±ØÌí")]
+        [Category("Data"), Description("è®¾å®šä¸æ•°æ®æ˜¯å¦å¿…æ·»")]
         public bool IsNull
         {
 
             get
             {
-                // TODO:  Ìí¼Ó BrainTextBox.isClientValidation getter ÊµÏÖ
+                // TODO:  æ·»åŠ  BrainTextBox.isClientValidation getter å®ç°
                 if (ViewState["isNull"] != null)
                     return (bool)ViewState["isNull"];
                 return true;
             }
             set
             {
-                // TODO:  Ìí¼Ó BrainTextBox.isClientValidation setter ÊµÏÖ
+                // TODO:  æ·»åŠ  BrainTextBox.isClientValidation setter å®ç°
                 ViewState["isNull"] = value;
 
             }
         }
         #endregion
 
-        #region ½Ó¿Ú·½·¨
+        #region æ¥å£æ–¹æ³•
 
         public void SetValue(object value)
         {
@@ -194,7 +194,7 @@ namespace PWMIS.Web.Controls
         }
         #endregion
 
-        #region IQueryControl ³ÉÔ±
+        #region IQueryControl æˆå‘˜
 
         public string CompareSymbol
         {

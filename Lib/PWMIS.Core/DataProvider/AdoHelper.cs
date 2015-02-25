@@ -1,23 +1,23 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV5.2
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV5.2
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2013-1-13                
- * ĞŞ¸ÄËµÃ÷£ºÖ§³Ö¶ÁĞ´·ÖÀë£¬ÏêÏ¸¼û»ùÀàËµÃ÷
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2013-1-13                
+ * ä¿®æ”¹è¯´æ˜ï¼šæ”¯æŒè¯»å†™åˆ†ç¦»ï¼Œè¯¦ç»†è§åŸºç±»è¯´æ˜
  * 
- *  * ĞŞ¸ÄÕß£º         Ê±¼ä£º2013-5-19                
- * ĞŞ¸ÄËµÃ÷£ºÖ§³ÖSQL ¸ñÊ½¿ØÖÆ´®£¬Ö§³ÖÖ±½Ó»ñµÃ½á¹û¶ÔÏóÁĞ±í¡£
- * ×¢Òâ²»ÄÜ½«Format¿ªÍ·µÄ¼¸¸ö·½·¨ÃüÃû³ÉÆäËü±»ÖØÔØµÄ·½·¨£¬¸ĞĞ»GIV-Ë³µÂ¡¡·¢ÏÖ´ËÎÊÌâ¡£
+ *  * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2013-5-19                
+ * ä¿®æ”¹è¯´æ˜ï¼šæ”¯æŒSQL æ ¼å¼æ§åˆ¶ä¸²ï¼Œæ”¯æŒç›´æ¥è·å¾—ç»“æœå¯¹è±¡åˆ—è¡¨ã€‚
+ * æ³¨æ„ä¸èƒ½å°†Formatå¼€å¤´çš„å‡ ä¸ªæ–¹æ³•å‘½åæˆå…¶å®ƒè¢«é‡è½½çš„æ–¹æ³•ï¼Œæ„Ÿè°¢GIV-é¡ºå¾·ã€€å‘ç°æ­¤é—®é¢˜ã€‚
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2015-2-15                
- * ĞŞ¸ÄËµÃ÷£ºĞÂÔö  List<T> QueryList<T>(string sqlFormat, params object[] parameters) ·½·¨£¬ÒÔÔöÇ¿¶Ô¡°Î¢ĞÍORM¡±µÄÖ§³Ö¡£
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2015-2-15                
+ * ä¿®æ”¹è¯´æ˜ï¼šæ–°å¢  List<T> QueryList<T>(string sqlFormat, params object[] parameters) æ–¹æ³•ï¼Œä»¥å¢å¼ºå¯¹â€œå¾®å‹ORMâ€çš„æ”¯æŒã€‚
  * ========================================================================
 */
 using System;
@@ -28,27 +28,27 @@ using PWMIS.DataProvider.Adapter;
 namespace PWMIS.DataProvider.Data
 {
 	/// <summary>
-    /// ¹«¹²Êı¾İ·ÃÎÊ³éÏóÀà ¼æÈİ AdoHelper Àà ,ÊµÀıÊ¹ÓÃ·½·¨²Î¼û PWMIS.CommonDataProvider.Adapter.MyDB
+    /// å…¬å…±æ•°æ®è®¿é—®æŠ½è±¡ç±» å…¼å®¹ AdoHelper ç±» ,å®ä¾‹ä½¿ç”¨æ–¹æ³•å‚è§ PWMIS.CommonDataProvider.Adapter.MyDB
 	/// </summary>
 	public abstract class AdoHelper:CommonDB
 	{
         public delegate TResult Func<T,TResult>(T arg);
 
 		/// <summary>
-		/// Ä¬ÈÏ¹¹Ôìº¯Êı
+		/// é»˜è®¤æ„é€ å‡½æ•°
 		/// </summary>
 		public AdoHelper()
 		{
 			//
-			// TODO: ÔÚ´Ë´¦Ìí¼Ó¹¹Ôìº¯ÊıÂß¼­
+			// TODO: åœ¨æ­¤å¤„æ·»åŠ æ„é€ å‡½æ•°é€»è¾‘
 			//
 		}
 
         /// <summary>
-        /// ¸ù¾İÓ¦ÓÃ³ÌĞòÅäÖÃÎÄ¼şµÄconnectionStrings ÅäÖÃÖĞµÄname£¬´´½¨Êı¾İ·ÃÎÊ¶ÔÏó
+        /// æ ¹æ®åº”ç”¨ç¨‹åºé…ç½®æ–‡ä»¶çš„connectionStrings é…ç½®ä¸­çš„nameï¼Œåˆ›å»ºæ•°æ®è®¿é—®å¯¹è±¡
         /// </summary>
-        /// <param name="connectionName">Á¬½Ó×Ö·û´®ÅäÖÃÏîµÄÃû×Ö</param>
-        /// <returns>Êı¾İ·ÃÎÊ¶ÔÏó</returns>
+        /// <param name="connectionName">è¿æ¥å­—ç¬¦ä¸²é…ç½®é¡¹çš„åå­—</param>
+        /// <returns>æ•°æ®è®¿é—®å¯¹è±¡</returns>
         public static AdoHelper CreateHelper(string connectionName)
         {
             return MyDB.GetDBHelperByConnectionName(connectionName);
@@ -56,10 +56,10 @@ namespace PWMIS.DataProvider.Data
 
 
 		/// <summary>
-		/// ´´½¨¹«¹²Êı¾İ·ÃÎÊÀàµÄÊµÀı
+		/// åˆ›å»ºå…¬å…±æ•°æ®è®¿é—®ç±»çš„å®ä¾‹
 		/// </summary>
-		/// <param name="providerAssembly">Ìá¹©Õâ³ÌĞò¼¯Ãû³Æ</param>
-		/// <param name="providerType">Ìá¹©ÕßÀàĞÍ</param>
+		/// <param name="providerAssembly">æä¾›è¿™ç¨‹åºé›†åç§°</param>
+		/// <param name="providerType">æä¾›è€…ç±»å‹</param>
 		/// <returns></returns>
 		public static AdoHelper  CreateHelper(string providerAssembly, string providerType)
 		{
@@ -67,12 +67,12 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// Ö´ĞĞ²»·µ»ØÖµµÄ²éÑ¯
+		/// æ‰§è¡Œä¸è¿”å›å€¼çš„æŸ¥è¯¢
 		/// </summary>
-		/// <param name="connectionString">Á¬½Ó×Ö·û´®</param>
-		/// <param name="commandType">ÃüÁîÀàĞÍ</param>
+		/// <param name="connectionString">è¿æ¥å­—ç¬¦ä¸²</param>
+		/// <param name="commandType">å‘½ä»¤ç±»å‹</param>
 		/// <param name="SQL">SQL</param>
-		/// <returns>ÊÜÓ°ÏìµÄĞĞÊı</returns>
+		/// <returns>å—å½±å“çš„è¡Œæ•°</returns>
 		public virtual int ExecuteNonQuery(string connectionString,CommandType commandType,string SQL)
 		{
 			base.ConnectionString=connectionString;
@@ -80,13 +80,13 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// Ö´ĞĞ²»·µ»ØÖµµÄ²éÑ¯
+		/// æ‰§è¡Œä¸è¿”å›å€¼çš„æŸ¥è¯¢
 		/// </summary>
-		/// <param name="connectionString">Á¬½Ó×Ö·û´®</param>
-		/// <param name="commandType">ÃüÁîÀàĞÍ</param>
+		/// <param name="connectionString">è¿æ¥å­—ç¬¦ä¸²</param>
+		/// <param name="commandType">å‘½ä»¤ç±»å‹</param>
 		/// <param name="SQL">SQL</param>
-		/// <param name="parameters">²ÎÊıÊı×é</param>
-		/// <returns>ÊÜÓ°ÏìµÄĞĞÊı</returns>
+		/// <param name="parameters">å‚æ•°æ•°ç»„</param>
+		/// <returns>å—å½±å“çš„è¡Œæ•°</returns>
         public virtual int ExecuteNonQuery(string connectionString, CommandType commandType, string SQL, IDataParameter[] parameters)
 		{
 			base.DataWriteConnectionString=connectionString;
@@ -94,13 +94,13 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// Ö´ĞĞÊı¾İÔÄ¶ÁÆ÷²éÑ¯
+		/// æ‰§è¡Œæ•°æ®é˜…è¯»å™¨æŸ¥è¯¢
 		/// </summary>
-		/// <param name="connectionString">Á¬½Ó×Ö·û´®</param>
-		/// <param name="commandType">ÃüÁîÀàĞÍ</param>
+		/// <param name="connectionString">è¿æ¥å­—ç¬¦ä¸²</param>
+		/// <param name="commandType">å‘½ä»¤ç±»å‹</param>
 		/// <param name="SQL">SQL</param>
-		/// <param name="parameters">²ÎÊıÊı×é</param>
-		/// <returns>Êı¾İÔÄ¶ÁÆ÷</returns>
+		/// <param name="parameters">å‚æ•°æ•°ç»„</param>
+		/// <returns>æ•°æ®é˜…è¯»å™¨</returns>
 		public IDataReader ExecuteReader(string connectionString,CommandType commandType,string SQL,IDataParameter[] parameters)
 		{
 			base.ConnectionString=connectionString;
@@ -108,13 +108,13 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// Ö´ĞĞ·µ»ØÊı¾İ¼¯µÄ²éÑ¯
+		/// æ‰§è¡Œè¿”å›æ•°æ®é›†çš„æŸ¥è¯¢
 		/// </summary>
-		/// <param name="connectionString">Á¬½Ó×Ö·û´®</param>
-		/// <param name="commandType">ÃüÁîÀàĞÍ</param>
+		/// <param name="connectionString">è¿æ¥å­—ç¬¦ä¸²</param>
+		/// <param name="commandType">å‘½ä»¤ç±»å‹</param>
 		/// <param name="SQL">SQL</param>
-		/// <param name="parameters">²ÎÊıÊı×é</param>
-		/// <returns>Êı¾İ¼¯</returns>
+		/// <param name="parameters">å‚æ•°æ•°ç»„</param>
+		/// <returns>æ•°æ®é›†</returns>
 		public DataSet ExecuteDataSet(string connectionString,CommandType commandType,string SQL,IDataParameter[] parameters)
 		{
 			base.ConnectionString=connectionString;
@@ -122,12 +122,12 @@ namespace PWMIS.DataProvider.Data
 		}
 
         /// <summary>
-        /// Ö´ĞĞ·µ»ØÊı¾İ¼¯µÄ²éÑ¯
+        /// æ‰§è¡Œè¿”å›æ•°æ®é›†çš„æŸ¥è¯¢
         /// </summary>
-        /// <param name="connectionString">Á¬½Ó×Ö·û´®</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
+        /// <param name="connectionString">è¿æ¥å­—ç¬¦ä¸²</param>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
         /// <param name="SQL">SQL</param>
-        /// <returns>Êı¾İ¼¯</returns>
+        /// <returns>æ•°æ®é›†</returns>
         public DataSet ExecuteDataSet(string connectionString, CommandType commandType, string SQL)
         {
             base.ConnectionString = connectionString;
@@ -136,28 +136,28 @@ namespace PWMIS.DataProvider.Data
 
 	
 		/// <summary>
-		/// Ö´ĞĞ·µ»Øµ¥Ò»ÖµµÃ²éÑ¯
+		/// æ‰§è¡Œè¿”å›å•ä¸€å€¼å¾—æŸ¥è¯¢
 		/// </summary>
-		/// <param name="connectionString">Á¬½Ó×Ö·û´®</param>
-		/// <param name="commandType">ÃüÁîÀàĞÍ</param>
+		/// <param name="connectionString">è¿æ¥å­—ç¬¦ä¸²</param>
+		/// <param name="commandType">å‘½ä»¤ç±»å‹</param>
 		/// <param name="SQL">SQL</param>
-		/// <param name="parameters">²ÎÊıÊı×é</param>
-		/// <returns>½á¹û</returns>
+		/// <param name="parameters">å‚æ•°æ•°ç»„</param>
+		/// <returns>ç»“æœ</returns>
 		public object ExecuteScalar(string connectionString,CommandType commandType,string SQL,IDataParameter[] parameters)
 		{
 			base.ConnectionString=connectionString;
 			return base.ExecuteScalar (SQL,commandType,parameters);
         }
 
-        #region Ö±½Ó²ÎÊı»¯²éÑ¯À©Õ¹
+        #region ç›´æ¥å‚æ•°åŒ–æŸ¥è¯¢æ‰©å±•
         /// <summary>
-        /// Ö´ĞĞ²»·µ»Ø½á¹û¼¯µÄ²éÑ¯¡£
-        /// ¶ÔÓÚ×Ö·û´®ÀàĞÍµÄ²ÎÊı£¬×îºÃÖ¸¶¨²ÎÊıµÄ³¤¶È£¬¸ñÊ½ÀıÈçÊÇ{0:50}£»
-        /// ¶ÔÓÚDecimalÀàĞÍ£¬×îºÃÖ¸¶¨¾«¶ÈºÍĞ¡ÊıÎ»£¬ÀıÈç{0:8.3}£¬±íÊ¾¾«¶ÈÎª8£¬Ğ¡ÊıÎ»Îª3
+        /// æ‰§è¡Œä¸è¿”å›ç»“æœé›†çš„æŸ¥è¯¢ã€‚
+        /// å¯¹äºå­—ç¬¦ä¸²ç±»å‹çš„å‚æ•°ï¼Œæœ€å¥½æŒ‡å®šå‚æ•°çš„é•¿åº¦ï¼Œæ ¼å¼ä¾‹å¦‚æ˜¯{0:50}ï¼›
+        /// å¯¹äºDecimalç±»å‹ï¼Œæœ€å¥½æŒ‡å®šç²¾åº¦å’Œå°æ•°ä½ï¼Œä¾‹å¦‚{0:8.3}ï¼Œè¡¨ç¤ºç²¾åº¦ä¸º8ï¼Œå°æ•°ä½ä¸º3
         /// </summary>
-        /// <param name="sqlFormat">´ø¸ñÊ½µÄ²éÑ¯ÃüÁî×Ö·û´®£¬ÀıÈçSELECT * FROM TABLE1 WHERE CLASSID={0} AND CLASSNAME={1:50} PRICE={2:8.3}</param>
-        /// <param name="parameters">ÒªÌæ»»µÄ²ÎÊı</param>
-        /// <returns>²éÑ¯ÊÜÓ°ÏìµÄĞĞÊı</returns>
+        /// <param name="sqlFormat">å¸¦æ ¼å¼çš„æŸ¥è¯¢å‘½ä»¤å­—ç¬¦ä¸²ï¼Œä¾‹å¦‚SELECT * FROM TABLE1 WHERE CLASSID={0} AND CLASSNAME={1:50} PRICE={2:8.3}</param>
+        /// <param name="parameters">è¦æ›¿æ¢çš„å‚æ•°</param>
+        /// <returns>æŸ¥è¯¢å—å½±å“çš„è¡Œæ•°</returns>
         public int FormatExecuteNonQuery(string sqlFormat, params object[] parameters)
         {
             DataParameterFormat formater = new DataParameterFormat(this);
@@ -165,13 +165,13 @@ namespace PWMIS.DataProvider.Data
             return base.ExecuteNonQuery(sql,CommandType.Text,formater.DataParameters);
         }
         /// <summary>
-        /// Ö´ĞĞ·µ»ØÊı¾İÔÄ¶ÁÆ÷µÄ²éÑ¯
-        /// ¶ÔÓÚ×Ö·û´®ÀàĞÍµÄ²ÎÊı£¬×îºÃÖ¸¶¨²ÎÊıµÄ³¤¶È£¬¸ñÊ½ÀıÈçÊÇ{0:50}£»
-        /// ¶ÔÓÚDecimalÀàĞÍ£¬×îºÃÖ¸¶¨¾«¶ÈºÍĞ¡ÊıÎ»£¬ÀıÈç{0:8.3}£¬±íÊ¾¾«¶ÈÎª8£¬Ğ¡ÊıÎ»Îª3
+        /// æ‰§è¡Œè¿”å›æ•°æ®é˜…è¯»å™¨çš„æŸ¥è¯¢
+        /// å¯¹äºå­—ç¬¦ä¸²ç±»å‹çš„å‚æ•°ï¼Œæœ€å¥½æŒ‡å®šå‚æ•°çš„é•¿åº¦ï¼Œæ ¼å¼ä¾‹å¦‚æ˜¯{0:50}ï¼›
+        /// å¯¹äºDecimalç±»å‹ï¼Œæœ€å¥½æŒ‡å®šç²¾åº¦å’Œå°æ•°ä½ï¼Œä¾‹å¦‚{0:8.3}ï¼Œè¡¨ç¤ºç²¾åº¦ä¸º8ï¼Œå°æ•°ä½ä¸º3
         /// </summary>
-        /// <param name="sqlFormat">´ø¸ñÊ½µÄ²éÑ¯ÃüÁî×Ö·û´®£¬ÀıÈçSELECT * FROM TABLE1 WHERE CLASSID={0} AND CLASSNAME={1:50} PRICE={2:8.3}</param>
-        /// <param name="parameters">ÒªÌæ»»µÄ²ÎÊı</param>
-        /// <returns>Êı¾İÔÄ¶ÁÆ÷</returns>
+        /// <param name="sqlFormat">å¸¦æ ¼å¼çš„æŸ¥è¯¢å‘½ä»¤å­—ç¬¦ä¸²ï¼Œä¾‹å¦‚SELECT * FROM TABLE1 WHERE CLASSID={0} AND CLASSNAME={1:50} PRICE={2:8.3}</param>
+        /// <param name="parameters">è¦æ›¿æ¢çš„å‚æ•°</param>
+        /// <returns>æ•°æ®é˜…è¯»å™¨</returns>
         public IDataReader FormatExecuteDataReader(string sqlFormat, params object[] parameters)
         {
             if (parameters == null)
@@ -186,13 +186,13 @@ namespace PWMIS.DataProvider.Data
             }
         }
         /// <summary>
-        /// Ö´ĞĞ·µ»ØÊı¾İ¼¯µÄ²éÑ¯
-        /// ¶ÔÓÚ×Ö·û´®ÀàĞÍµÄ²ÎÊı£¬×îºÃÖ¸¶¨²ÎÊıµÄ³¤¶È£¬¸ñÊ½ÀıÈçÊÇ{0:50}£»
-        /// ¶ÔÓÚDecimalÀàĞÍ£¬×îºÃÖ¸¶¨¾«¶ÈºÍĞ¡ÊıÎ»£¬ÀıÈç{0:8.3}£¬±íÊ¾¾«¶ÈÎª8£¬Ğ¡ÊıÎ»Îª3
+        /// æ‰§è¡Œè¿”å›æ•°æ®é›†çš„æŸ¥è¯¢
+        /// å¯¹äºå­—ç¬¦ä¸²ç±»å‹çš„å‚æ•°ï¼Œæœ€å¥½æŒ‡å®šå‚æ•°çš„é•¿åº¦ï¼Œæ ¼å¼ä¾‹å¦‚æ˜¯{0:50}ï¼›
+        /// å¯¹äºDecimalç±»å‹ï¼Œæœ€å¥½æŒ‡å®šç²¾åº¦å’Œå°æ•°ä½ï¼Œä¾‹å¦‚{0:8.3}ï¼Œè¡¨ç¤ºç²¾åº¦ä¸º8ï¼Œå°æ•°ä½ä¸º3
         /// </summary>
-        /// <param name="sqlFormat">´ø¸ñÊ½µÄ²éÑ¯ÃüÁî×Ö·û´®£¬ÀıÈçSELECT * FROM TABLE1 WHERE CLASSID={0} AND CLASSNAME={1:50} PRICE={2:8.3}</param>
-        /// <param name="parameters">ÒªÌæ»»µÄ²ÎÊı</param>
-        /// <returns>Êı¾İ¼¯</returns>
+        /// <param name="sqlFormat">å¸¦æ ¼å¼çš„æŸ¥è¯¢å‘½ä»¤å­—ç¬¦ä¸²ï¼Œä¾‹å¦‚SELECT * FROM TABLE1 WHERE CLASSID={0} AND CLASSNAME={1:50} PRICE={2:8.3}</param>
+        /// <param name="parameters">è¦æ›¿æ¢çš„å‚æ•°</param>
+        /// <returns>æ•°æ®é›†</returns>
         public DataSet FormatExecuteDataSet(string sqlFormat, params object[] parameters)
         {
             DataParameterFormat formater = new DataParameterFormat(this);
@@ -200,13 +200,13 @@ namespace PWMIS.DataProvider.Data
             return base.ExecuteDataSet(sql, CommandType.Text, formater.DataParameters);
         }
         /// <summary>
-        /// Ö´ĞĞ·µ»Øµ¥Öµ½á¹ûµÄ²éÑ¯
-        /// ¶ÔÓÚ×Ö·û´®ÀàĞÍµÄ²ÎÊı£¬×îºÃÖ¸¶¨²ÎÊıµÄ³¤¶È£¬¸ñÊ½ÀıÈçÊÇ{0:50}£»
-        /// ¶ÔÓÚDecimalÀàĞÍ£¬×îºÃÖ¸¶¨¾«¶ÈºÍĞ¡ÊıÎ»£¬ÀıÈç{0:8.3}£¬±íÊ¾¾«¶ÈÎª8£¬Ğ¡ÊıÎ»Îª3
+        /// æ‰§è¡Œè¿”å›å•å€¼ç»“æœçš„æŸ¥è¯¢
+        /// å¯¹äºå­—ç¬¦ä¸²ç±»å‹çš„å‚æ•°ï¼Œæœ€å¥½æŒ‡å®šå‚æ•°çš„é•¿åº¦ï¼Œæ ¼å¼ä¾‹å¦‚æ˜¯{0:50}ï¼›
+        /// å¯¹äºDecimalç±»å‹ï¼Œæœ€å¥½æŒ‡å®šç²¾åº¦å’Œå°æ•°ä½ï¼Œä¾‹å¦‚{0:8.3}ï¼Œè¡¨ç¤ºç²¾åº¦ä¸º8ï¼Œå°æ•°ä½ä¸º3
         /// </summary>
-        /// <param name="sqlFormat">´ø¸ñÊ½µÄ²éÑ¯ÃüÁî×Ö·û´®£¬ÀıÈçSELECT * FROM TABLE1 WHERE CLASSID={0} AND CLASSNAME={1:50} PRICE={2:8.3}</param>
-        /// <param name="parameters">ÒªÌæ»»µÄ²ÎÊı</param>
-        /// <returns>·µ»ØµÄµ¥Öµ½á¹û</returns>
+        /// <param name="sqlFormat">å¸¦æ ¼å¼çš„æŸ¥è¯¢å‘½ä»¤å­—ç¬¦ä¸²ï¼Œä¾‹å¦‚SELECT * FROM TABLE1 WHERE CLASSID={0} AND CLASSNAME={1:50} PRICE={2:8.3}</param>
+        /// <param name="parameters">è¦æ›¿æ¢çš„å‚æ•°</param>
+        /// <returns>è¿”å›çš„å•å€¼ç»“æœ</returns>
         public object FormatExecuteScalar(string sqlFormat, params object[] parameters)
         {
             DataParameterFormat formater = new DataParameterFormat(this);
@@ -216,7 +216,7 @@ namespace PWMIS.DataProvider.Data
         #endregion
 
         /// <summary>
-        /// ¸ù¾İ²éÑ¯£¬»ñÈ¡¶ÔÏóÁĞ±í
+        /// æ ¹æ®æŸ¥è¯¢ï¼Œè·å–å¯¹è±¡åˆ—è¡¨
         /// <example>
         /// <code>
         /// <![CDATA[
@@ -235,11 +235,11 @@ namespace PWMIS.DataProvider.Data
         /// </code>
         /// </example>
         /// </summary>
-        /// <typeparam name="TResult">·µ»ØµÄ¶ÔÏóµÄÀàĞÍ</typeparam>
-        /// <param name="fun">Òª´¦ÀíÊı¾İÔÄ¶ÁÆ÷µÄ¾ßÌå·½·¨£¬¸Ã·½·¨½«·µ»ØÒ»¸ö¶ÔÏó</param>
-        /// <param name="sqlFormat">SQL ¸ñÊ½¿ØÖÆÓï¾ä</param>
-        /// <param name="parameters">ÓÃÓÚÌæ»»µÄ²ÎÊı</param>
-        /// <returns>¶ÔÏóÁĞ±í</returns>
+        /// <typeparam name="TResult">è¿”å›çš„å¯¹è±¡çš„ç±»å‹</typeparam>
+        /// <param name="fun">è¦å¤„ç†æ•°æ®é˜…è¯»å™¨çš„å…·ä½“æ–¹æ³•ï¼Œè¯¥æ–¹æ³•å°†è¿”å›ä¸€ä¸ªå¯¹è±¡</param>
+        /// <param name="sqlFormat">SQL æ ¼å¼æ§åˆ¶è¯­å¥</param>
+        /// <param name="parameters">ç”¨äºæ›¿æ¢çš„å‚æ•°</param>
+        /// <returns>å¯¹è±¡åˆ—è¡¨</returns>
         public IList<TResult> GetList<TResult>(Func<IDataReader, TResult> fun, string sqlFormat, params object[] parameters) where TResult : class
         {
             List<TResult> resultList = new List<TResult>();
@@ -285,11 +285,11 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ¸ù¾İSQL¸ñÊ½»¯´®ºÍ¿ÉÑ¡µÄ²ÎÊı£¬Ö±½Ó²éÑ¯½á¹û²¢Ó³Éäµ½POCO ¶ÔÏó
+        /// æ ¹æ®SQLæ ¼å¼åŒ–ä¸²å’Œå¯é€‰çš„å‚æ•°ï¼Œç›´æ¥æŸ¥è¯¢ç»“æœå¹¶æ˜ å°„åˆ°POCO å¯¹è±¡
         /// <example>
         /// <code>
         /// <![CDATA[
-        /// //¼ÙÉèUserPoco ¶ÔÏó¸ú Table_User ±íÊÇÓ³ÉäµÄÏàÍ¬½á¹¹
+        /// //å‡è®¾UserPoco å¯¹è±¡è·Ÿ Table_User è¡¨æ˜¯æ˜ å°„çš„ç›¸åŒç»“æ„
         /// AdoHelper dbLocal = new SqlServer();
         /// dbLocal.ConnectionString = "Data Source=.;Initial Catalog=LocalDB;Integrated Security=True";
         /// var list=dbLoal.QueryList<UserPoco>("SELECT UID,Name FROM Table_User WHERE Sex={0} And Height>={1:5.2}",1, 1.60M);
@@ -297,10 +297,10 @@ namespace PWMIS.DataProvider.Data
         /// </code>
         /// </example>
         /// </summary>
-        /// <typeparam name="T">POCO ¶ÔÏóÀàĞÍ</typeparam>
-        /// <param name="sqlFormat">SQL¸ñÊ½»¯´®</param>
-        /// <param name="parameters">¿ÉÑ¡µÄ²ÎÊı</param>
-        /// <returns>POCO ¶ÔÏóÁĞ±í</returns>
+        /// <typeparam name="T">POCO å¯¹è±¡ç±»å‹</typeparam>
+        /// <param name="sqlFormat">SQLæ ¼å¼åŒ–ä¸²</param>
+        /// <param name="parameters">å¯é€‰çš„å‚æ•°</param>
+        /// <returns>POCO å¯¹è±¡åˆ—è¡¨</returns>
         public  List<T> QueryList<T>(string sqlFormat, params object[] parameters) where T : class, new()
         {
             IDataReader reader = FormatExecuteDataReader(sqlFormat, parameters);

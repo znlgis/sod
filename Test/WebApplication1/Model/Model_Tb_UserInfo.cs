@@ -1,8 +1,8 @@
-
+﻿
 /*
- 本类由PWMIS 实体类生成工具(Ver 1.1)自动生成
+ 鏈被鐢盤WMIS 瀹炰綋绫荤敓鎴愬伐鍏?Ver 1.1)鑷姩鐢熸垚
  http://www.pwmis.com/sqlmap
- 使用前请先在项目工程中引用 PWMIS.SqlMapper.Entity.dll
+ 浣跨敤鍓嶈鍏堝湪椤圭洰宸ョ▼涓紩鐢?PWMIS.SqlMapper.Entity.dll
  2010-2-1 17:16:42
 
 */
@@ -86,7 +86,7 @@ namespace TestWebAppModel
 
 
 
-      #region ISerializable 成员
+      #region ISerializable 鎴愬憳
 
      
       //void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)

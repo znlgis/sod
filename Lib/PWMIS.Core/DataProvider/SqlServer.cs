@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV4.3
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV4.3
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º2012-4-11                
- * ĞŞ¸ÄËµÃ÷£ºÔÚ»ñÈ¡×ÔÔöÊı¾İµÄÊ±ºò,Ê¹ÓÃ SCOPE_IDENTITY ´úÌæÄ¬ÈÏµÄ·½Ê½
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š2012-4-11                
+ * ä¿®æ”¹è¯´æ˜ï¼šåœ¨è·å–è‡ªå¢æ•°æ®çš„æ—¶å€™,ä½¿ç”¨ SCOPE_IDENTITY ä»£æ›¿é»˜è®¤çš„æ–¹å¼
  * ========================================================================
 */
 using System;
@@ -20,22 +20,22 @@ using System.Data.SqlClient ;
 namespace PWMIS.DataProvider.Data
 {
 	/// <summary>
-	/// SqlServer Êı¾İ´¦Àí
+	/// SqlServer æ•°æ®å¤„ç†
 	/// </summary>
 	public sealed class SqlServer:AdoHelper
 	{
 		/// <summary>
-		/// Ä¬ÈÏ¹¹Ôìº¯Êı
+		/// é»˜è®¤æ„é€ å‡½æ•°
 		/// </summary>
 		public SqlServer()
 		{
 			//
-			// TODO: ÔÚ´Ë´¦Ìí¼Ó¹¹Ôìº¯ÊıÂß¼­
+			// TODO: åœ¨æ­¤å¤„æ·»åŠ æ„é€ å‡½æ•°é€»è¾‘
 			//
 		}
 
         /// <summary>
-        /// »ñÈ¡µ±Ç°Êı¾İ¿âÀàĞÍµÄÃ¶¾Ù
+        /// è·å–å½“å‰æ•°æ®åº“ç±»å‹çš„æšä¸¾
         /// </summary>
         public override PWMIS.Common.DBMSType CurrentDBMSType
         {
@@ -43,9 +43,9 @@ namespace PWMIS.DataProvider.Data
         }
 
 		/// <summary>
-		/// ´´½¨²¢ÇÒ´ò¿ªÊı¾İ¿âÁ¬½Ó
+		/// åˆ›å»ºå¹¶ä¸”æ‰“å¼€æ•°æ®åº“è¿æ¥
 		/// </summary>
-		/// <returns>Êı¾İ¿âÁ¬½Ó</returns>
+		/// <returns>æ•°æ®åº“è¿æ¥</returns>
 		protected override IDbConnection GetConnection()
 		{
 			IDbConnection conn=base.GetConnection ();
@@ -58,9 +58,9 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// »ñÈ¡Êı¾İÊÊÅäÆ÷ÊµÀı
+		/// è·å–æ•°æ®é€‚é…å™¨å®ä¾‹
 		/// </summary>
-		/// <returns>Êı¾İÊÊÅäÆ÷</returns>
+		/// <returns>æ•°æ®é€‚é…å™¨</returns>
 		protected override IDbDataAdapter  GetDataAdapter(IDbCommand command)
 		{
 			IDbDataAdapter ada=new SqlDataAdapter ((SqlCommand )command);
@@ -68,21 +68,21 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+		/// è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
 		/// </summary>
-		/// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+		/// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
 		public override IDataParameter GetParameter()
 		{
 			return new SqlParameter ();
 		}
 
 		/// <summary>
-		///  »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+		///  è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
 		/// </summary>
-		/// <param name="paraName">²ÎÊıÃû</param>
-		/// <param name="dbType">²ÎÊıÊı¾İÀàĞÍ</param>
-		/// <param name="size">²ÎÊı´óĞ¡</param>
-		/// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+		/// <param name="paraName">å‚æ•°å</param>
+		/// <param name="dbType">å‚æ•°æ•°æ®ç±»å‹</param>
+		/// <param name="size">å‚æ•°å¤§å°</param>
+		/// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
 		public override IDataParameter GetParameter(string paraName,System.Data.DbType dbType,int size)
 		{
 			SqlParameter para=new SqlParameter();
@@ -98,13 +98,13 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// Ö´ĞĞ²éÑ¯,²¢ÒÔÖ¸¶¨µÄ(¾ßÓĞÊı¾İ¼Ü¹¹µÄ)Êı¾İ¼¯À´Ìî³äÊı¾İ
+        /// æ‰§è¡ŒæŸ¥è¯¢,å¹¶ä»¥æŒ‡å®šçš„(å…·æœ‰æ•°æ®æ¶æ„çš„)æ•°æ®é›†æ¥å¡«å……æ•°æ®
         /// </summary>
-        /// <param name="SQL">²éÑ¯Óï¾ä</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²éÑ¯²ÎÊı</param>
-        /// <param name="schemaDataSet">Ö¸¶¨µÄ(¾ßÓĞÊı¾İ¼Ü¹¹µÄ)Êı¾İ¼¯</param>
-        /// <returns>¾ßÓĞÊı¾İµÄÊı¾İ¼¯</returns>
+        /// <param name="SQL">æŸ¥è¯¢è¯­å¥</param>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">æŸ¥è¯¢å‚æ•°</param>
+        /// <param name="schemaDataSet">æŒ‡å®šçš„(å…·æœ‰æ•°æ®æ¶æ„çš„)æ•°æ®é›†</param>
+        /// <returns>å…·æœ‰æ•°æ®çš„æ•°æ®é›†</returns>
         public override DataSet ExecuteDataSetWithSchema(string SQL, CommandType commandType, IDataParameter[] parameters, DataSet schemaDataSet)
         {
             IDbConnection conn = GetConnection();
@@ -140,13 +140,13 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// Ö´ĞĞÇ¿ÀàĞÍµÄÊı¾İ¼¯²éÑ¯
+        /// æ‰§è¡Œå¼ºç±»å‹çš„æ•°æ®é›†æŸ¥è¯¢
         /// </summary>
-        /// <param name="SQL">SQLÓï¾ä</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²éÑ¯²ÎÊı</param>
-        /// <param name="schemaDataSet">Ç¿ÀàĞÍµÄÊı¾İ¼¯</param>
-        /// <param name="tableName">ÒªÌî³äµÄ±íÃû³Æ</param>
+        /// <param name="SQL">SQLè¯­å¥</param>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">æŸ¥è¯¢å‚æ•°</param>
+        /// <param name="schemaDataSet">å¼ºç±»å‹çš„æ•°æ®é›†</param>
+        /// <param name="tableName">è¦å¡«å……çš„è¡¨åç§°</param>
         /// <returns></returns>
         public DataSet ExecuteTypedDataSet(string SQL, CommandType commandType, IDataParameter[] parameters, DataSet schemaDataSet, string tableName)
         {
@@ -160,7 +160,7 @@ namespace PWMIS.DataProvider.Data
                 }
             }
             if (!flag)
-                throw new ArgumentException("ÔÚÇ¿ÀàĞÍµÄÊı¾İ¼¯ÖĞ£¬Ã»ÓĞÕÒµ½ÖÆ¶¨µÄÊı¾İ±íÃ÷³Æ£¡");
+                throw new ArgumentException("åœ¨å¼ºç±»å‹çš„æ•°æ®é›†ä¸­ï¼Œæ²¡æœ‰æ‰¾åˆ°åˆ¶å®šçš„æ•°æ®è¡¨æ˜ç§°ï¼");
 
             IDbConnection conn = GetConnection();
             IDbCommand cmd = conn.CreateCommand();
@@ -192,11 +192,11 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// ·µ»Ø´Ë SqlConnection µÄÊı¾İÔ´µÄ¼Ü¹¹ĞÅÏ¢¡£
+        /// è¿”å›æ­¤ SqlConnection çš„æ•°æ®æºçš„æ¶æ„ä¿¡æ¯ã€‚
         /// </summary>
-        /// <param name="collectionName">¼¯ºÏÃû³Æ</param>
-        /// <param name="restrictionValues">ÇëÇóµÄ¼Ü¹¹µÄÒ»×éÏŞÖÆÖµ</param>
-        /// <returns>Êı¾İ¿â¼Ü¹¹ĞÅÏ¢±í</returns>
+        /// <param name="collectionName">é›†åˆåç§°</param>
+        /// <param name="restrictionValues">è¯·æ±‚çš„æ¶æ„çš„ä¸€ç»„é™åˆ¶å€¼</param>
+        /// <returns>æ•°æ®åº“æ¶æ„ä¿¡æ¯è¡¨</returns>
         public override DataTable GetSchema(string collectionName, string[] restrictionValues)
         {
             using (SqlConnection conn = (SqlConnection)this.GetConnection())
@@ -213,9 +213,9 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡´æ´¢¹ı³ÌµÄ¶¨ÒåÄÚÈİ
+        /// è·å–å­˜å‚¨è¿‡ç¨‹çš„å®šä¹‰å†…å®¹
         /// </summary>
-        /// <param name="spName">´æ´¢¹ı³ÌÃû³Æ</param>
+        /// <param name="spName">å­˜å‚¨è¿‡ç¨‹åç§°</param>
         public override  string GetSPDetail(string spName)
         {
             string value = "";
@@ -235,9 +235,9 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡ÊÓÍ¼¶¨Òå£¬Èç¹û×ÓÀàÖ§³Ö£¬ĞèÒªÔÚ×ÓÀàÖĞÖØĞ´
+        /// è·å–è§†å›¾å®šä¹‰ï¼Œå¦‚æœå­ç±»æ”¯æŒï¼Œéœ€è¦åœ¨å­ç±»ä¸­é‡å†™
         /// </summary>
-        /// <param name="viewName">ÊÓÍ¼Ãû³Æ</param>
+        /// <param name="viewName">è§†å›¾åç§°</param>
         /// <returns></returns>
         public override  string GetViweDetail(string viewName)
         {
@@ -247,18 +247,18 @@ namespace PWMIS.DataProvider.Data
 		
 
         /// <summary>
-        /// SQLÅúÁ¿¸´ÖÆ
+        /// SQLæ‰¹é‡å¤åˆ¶
         /// </summary>
-        /// <param name="sourceReader">Êı¾İÔ´µÄDataReader</param>
-        /// <param name="connectionString">Ä¿±êÊı¾İ¿âµÄÁ¬½Ó×Ö·û´®</param>
-        /// <param name="destinationTableName">Òªµ¼ÈëµÄÄ¿±ê±íÃû³Æ</param>
-        /// <param name="batchSize">Ã¿´ÎÅúÁ¿´¦ÀíµÄ´óĞ¡</param>
+        /// <param name="sourceReader">æ•°æ®æºçš„DataReader</param>
+        /// <param name="connectionString">ç›®æ ‡æ•°æ®åº“çš„è¿æ¥å­—ç¬¦ä¸²</param>
+        /// <param name="destinationTableName">è¦å¯¼å…¥çš„ç›®æ ‡è¡¨åç§°</param>
+        /// <param name="batchSize">æ¯æ¬¡æ‰¹é‡å¤„ç†çš„å¤§å°</param>
         public static void BulkCopy(IDataReader sourceReader,string connectionString, string destinationTableName,int batchSize)
         {
-            // Ä¿µÄ 
+            // ç›®çš„ 
             using (SqlConnection destinationConnection = new SqlConnection(connectionString))
             {
-                // ´ò¿ªÁ¬½Ó 
+                // æ‰“å¼€è¿æ¥ 
                 destinationConnection.Open();
 
                 using (SqlBulkCopy bulkCopy = new SqlBulkCopy(destinationConnection))
@@ -273,17 +273,17 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// SQLÅúÁ¿¸´ÖÆ
+        /// SQLæ‰¹é‡å¤åˆ¶
         /// </summary>
-        /// <param name="sourceTable">Êı¾İÔ´±í</param>
-        /// <param name="connectionString">Ä¿±êÊı¾İ¿âµÄÁ¬½Ó×Ö·û´®</param>
-        /// <param name="destinationTableName">Òªµ¼ÈëµÄÄ¿±ê±íÃû³Æ</param>
-        /// <param name="batchSize">Ã¿´ÎÅúÁ¿´¦ÀíµÄ´óĞ¡</param>
+        /// <param name="sourceTable">æ•°æ®æºè¡¨</param>
+        /// <param name="connectionString">ç›®æ ‡æ•°æ®åº“çš„è¿æ¥å­—ç¬¦ä¸²</param>
+        /// <param name="destinationTableName">è¦å¯¼å…¥çš„ç›®æ ‡è¡¨åç§°</param>
+        /// <param name="batchSize">æ¯æ¬¡æ‰¹é‡å¤„ç†çš„å¤§å°</param>
         public static void BulkCopy(DataTable sourceTable, string connectionString, string destinationTableName, int batchSize)
         {
             using (SqlConnection destinationConnection = new SqlConnection(connectionString))
             {
-                // ´ò¿ªÁ¬½Ó 
+                // æ‰“å¼€è¿æ¥ 
                 destinationConnection.Open();
 
                 using (SqlBulkCopy bulkCopy = new SqlBulkCopy(destinationConnection))
@@ -299,13 +299,13 @@ namespace PWMIS.DataProvider.Data
 
 
         /// <summary>
-        /// SqlServer Ö´ĞĞ²åÈëÊı¾İµÄ²éÑ¯£¬Èç¹ûÖ´ĞĞ³É¹¦£¬ÊÜÓ°ÏìµÄĞĞÊıÖ»»á·µ»Ø1
+        /// SqlServer æ‰§è¡Œæ’å…¥æ•°æ®çš„æŸ¥è¯¢ï¼Œå¦‚æœæ‰§è¡ŒæˆåŠŸï¼Œå—å½±å“çš„è¡Œæ•°åªä¼šè¿”å›1
         /// </summary>
-        /// <param name="SQL">²åÈëÊı¾İµÄSQL</param>
-        /// <param name="commandType">ÃüÁîÀàĞÍ</param>
-        /// <param name="parameters">²ÎÊıÊı×é</param>
-        /// <param name="ID">Òª´«³öµÄ±¾´Î²Ù×÷µÄĞÂ²åÈëÊı¾İĞĞµÄÖ÷¼üIDÖµ</param>
-        /// <returns>±¾´Î²éÑ¯ÊÜÓ°ÏìµÄĞĞÊı</returns>
+        /// <param name="SQL">æ’å…¥æ•°æ®çš„SQL</param>
+        /// <param name="commandType">å‘½ä»¤ç±»å‹</param>
+        /// <param name="parameters">å‚æ•°æ•°ç»„</param>
+        /// <param name="ID">è¦ä¼ å‡ºçš„æœ¬æ¬¡æ“ä½œçš„æ–°æ’å…¥æ•°æ®è¡Œçš„ä¸»é”®IDå€¼</param>
+        /// <returns>æœ¬æ¬¡æŸ¥è¯¢å—å½±å“çš„è¡Œæ•°</returns>
         public  override int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID)
         {
             IDbConnection conn = GetConnection();
@@ -327,7 +327,7 @@ namespace PWMIS.DataProvider.Data
                 cmd.CommandText = SQL + " ;SELECT SCOPE_IDENTITY();";
                
                 ID = cmd.ExecuteScalar();
-                //Èç¹ûÔÚÄÚ²¿¿ªÆôÁËÊÂÎñÔòÌá½»ÊÂÎñ£¬·ñÔòÍâ²¿µ÷ÓÃÕß¾ö¶¨ºÎÊ±Ìá½»ÊÂÎñ
+                //å¦‚æœåœ¨å†…éƒ¨å¼€å¯äº†äº‹åŠ¡åˆ™æäº¤äº‹åŠ¡ï¼Œå¦åˆ™å¤–éƒ¨è°ƒç”¨è€…å†³å®šä½•æ—¶æäº¤äº‹åŠ¡
                 result = 1;
 
                 if (inner)

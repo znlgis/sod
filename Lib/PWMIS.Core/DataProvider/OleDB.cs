@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º                
- * ĞŞ¸ÄËµÃ÷£º
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š                
+ * ä¿®æ”¹è¯´æ˜ï¼š
  * ========================================================================
 */
 using System;
@@ -20,22 +20,22 @@ using System.Data.OleDb ;
 namespace PWMIS.DataProvider.Data
 {
 	/// <summary>
-	/// OleDbServer Êı¾İ´¦Àí
+	/// OleDbServer æ•°æ®å¤„ç†
 	/// </summary>
 	public  class OleDb:AdoHelper
 	{
 		/// <summary>
-		/// Ä¬ÈÏ¹¹Ôìº¯Êı
+		/// é»˜è®¤æ„é€ å‡½æ•°
 		/// </summary>
 		public OleDb()
 		{
 			//
-			// TODO: ÔÚ´Ë´¦Ìí¼Ó¹¹Ôìº¯ÊıÂß¼­
+			// TODO: åœ¨æ­¤å¤„æ·»åŠ æ„é€ å‡½æ•°é€»è¾‘
 			//
 		}
 
         /// <summary>
-        /// »ñÈ¡µ±Ç°Êı¾İ¿âÀàĞÍµÄÃ¶¾Ù
+        /// è·å–å½“å‰æ•°æ®åº“ç±»å‹çš„æšä¸¾
         /// </summary>
         public override PWMIS.Common.DBMSType CurrentDBMSType
         {
@@ -43,9 +43,9 @@ namespace PWMIS.DataProvider.Data
         }
 
 		/// <summary>
-		/// ´´½¨²¢ÇÒ´ò¿ªÊı¾İ¿âÁ¬½Ó
+		/// åˆ›å»ºå¹¶ä¸”æ‰“å¼€æ•°æ®åº“è¿æ¥
 		/// </summary>
-		/// <returns>Êı¾İ¿âÁ¬½Ó</returns>
+		/// <returns>æ•°æ®åº“è¿æ¥</returns>
 		protected override IDbConnection GetConnection()
 		{
 			IDbConnection conn=base.GetConnection ();
@@ -58,9 +58,9 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// »ñÈ¡Êı¾İÊÊÅäÆ÷ÊµÀı
+		/// è·å–æ•°æ®é€‚é…å™¨å®ä¾‹
 		/// </summary>
-		/// <returns>Êı¾İÊÊÅäÆ÷</returns>
+		/// <returns>æ•°æ®é€‚é…å™¨</returns>
 		protected override IDbDataAdapter  GetDataAdapter(IDbCommand command)
 		{
 			IDbDataAdapter ada=new OleDbDataAdapter ((OleDbCommand )command);
@@ -68,9 +68,9 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+		/// è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
 		/// </summary>
-		/// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+		/// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
 		public override IDataParameter GetParameter()
 		{
 			return new OleDbParameter ();
@@ -81,12 +81,12 @@ namespace PWMIS.DataProvider.Data
             return ((OleDbParameter)para).OleDbType.ToString();
         }
 		/// <summary>
-		///  »ñÈ¡Ò»¸öĞÂ²ÎÊı¶ÔÏó
+		///  è·å–ä¸€ä¸ªæ–°å‚æ•°å¯¹è±¡
 		/// </summary>
-		/// <param name="paraName">²ÎÊıÃû</param>
-		/// <param name="dbType">²ÎÊıÊı¾İÀàĞÍ</param>
-		/// <param name="size">²ÎÊı´óĞ¡</param>
-		/// <returns>ÌØ¶¨ÓÚÊı¾İÔ´µÄ²ÎÊı¶ÔÏó</returns>
+		/// <param name="paraName">å‚æ•°å</param>
+		/// <param name="dbType">å‚æ•°æ•°æ®ç±»å‹</param>
+		/// <param name="size">å‚æ•°å¤§å°</param>
+		/// <returns>ç‰¹å®šäºæ•°æ®æºçš„å‚æ•°å¯¹è±¡</returns>
 		public override IDataParameter GetParameter(string paraName,System.Data.DbType dbType,int size)
 		{
 			OleDbParameter para=new OleDbParameter();
@@ -97,11 +97,11 @@ namespace PWMIS.DataProvider.Data
 		}
 
         /// <summary>
-        /// ·µ»Ø´Ë OleDbConnection µÄÊı¾İÔ´µÄ¼Ü¹¹ĞÅÏ¢¡£
+        /// è¿”å›æ­¤ OleDbConnection çš„æ•°æ®æºçš„æ¶æ„ä¿¡æ¯ã€‚
         /// </summary>
-        /// <param name="collectionName">¼¯ºÏÃû³Æ</param>
-        /// <param name="restrictionValues">ÇëÇóµÄ¼Ü¹¹µÄÒ»×éÏŞÖÆÖµ</param>
-        /// <returns>Êı¾İ¿â¼Ü¹¹ĞÅÏ¢±í</returns>
+        /// <param name="collectionName">é›†åˆåç§°</param>
+        /// <param name="restrictionValues">è¯·æ±‚çš„æ¶æ„çš„ä¸€ç»„é™åˆ¶å€¼</param>
+        /// <returns>æ•°æ®åº“æ¶æ„ä¿¡æ¯è¡¨</returns>
         public override DataTable GetSchema(string collectionName, string[] restrictionValues)
         {
             using (OleDbConnection conn = (OleDbConnection)this.GetConnection())
@@ -134,7 +134,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// »ñÈ¡µ±Ç°Á¬½Ó×Ö·û´®ÖĞµÄÊı¾İÔ´×Ö·û´®£¬Èç¹ûÊÇ|DataDirectory|£¬½«·µ»ØÊı¾İÔ´ÎÄ¼ş¶ÔÓ¦µÄ¾ø¶ÔÂ·¾¶¡£
+        /// è·å–å½“å‰è¿æ¥å­—ç¬¦ä¸²ä¸­çš„æ•°æ®æºå­—ç¬¦ä¸²ï¼Œå¦‚æœæ˜¯|DataDirectory|ï¼Œå°†è¿”å›æ•°æ®æºæ–‡ä»¶å¯¹åº”çš„ç»å¯¹è·¯å¾„ã€‚
         /// </summary>
         public string ConnectionDataSource
         {
@@ -146,7 +146,7 @@ namespace PWMIS.DataProvider.Data
                     {
                         object obj = AppDomain.CurrentDomain.GetData("DataDirectory");
                         if (obj == null)
-                            throw new InvalidOperationException("µ±Ç°Ó¦ÓÃ³ÌĞòÓòÎ´ÉèÖÃ DataDirectory");
+                            throw new InvalidOperationException("å½“å‰åº”ç”¨ç¨‹åºåŸŸæœªè®¾ç½® DataDirectory");
                         string dataPath = obj.ToString();
                         string fileName = path.Substring("|DataDirectory|".Length);
                         string dbFilePath = System.IO.Path.Combine(dataPath, fileName);
@@ -160,10 +160,10 @@ namespace PWMIS.DataProvider.Data
         }
 
 //		/// <summary>
-//		/// Ö´ĞĞ²»·µ»ØÖµµÃ²éÑ¯
+//		/// æ‰§è¡Œä¸è¿”å›å€¼å¾—æŸ¥è¯¢
 //		/// </summary>
 //		/// <param name="SQL">SQL</param>
-//		/// <returns>ÊÜÓ°ÏìµÄĞĞÊı</returns>
+//		/// <returns>å—å½±å“çš„è¡Œæ•°</returns>
 //		public override int ExecuteNonQuery(string SQL)
 //		{
 //			OleDbConnection conn=new OleDbConnection (base.ConnectionString );
@@ -187,11 +187,11 @@ namespace PWMIS.DataProvider.Data
 //		}
 //
 //		/// <summary>
-//		/// Ö´ĞĞ²åÈëÊı¾İµÄ²éÑ¯
+//		/// æ‰§è¡Œæ’å…¥æ•°æ®çš„æŸ¥è¯¢
 //		/// </summary>
-//		/// <param name="SQL">²åÈëÊı¾İµÄSQL</param>
-//		/// <param name="ID">Òª´«³öµÄ±¾´Î²Ù×÷µÄĞÂ²åÈëÊı¾İĞĞµÄÖ÷¼üIDÖµ</param>
-//		/// <returns>±¾´Î²éÑ¯ÊÜÓ°ÏìµÄĞĞÊı</returns>
+//		/// <param name="SQL">æ’å…¥æ•°æ®çš„SQL</param>
+//		/// <param name="ID">è¦ä¼ å‡ºçš„æœ¬æ¬¡æ“ä½œçš„æ–°æ’å…¥æ•°æ®è¡Œçš„ä¸»é”®IDå€¼</param>
+//		/// <returns>æœ¬æ¬¡æŸ¥è¯¢å—å½±å“çš„è¡Œæ•°</returns>
 //		public override int ExecuteInsertQuery(string SQL,ref int ID)
 //		{
 //			OleDbConnection conn=new OleDbConnection (base.ConnectionString );
@@ -206,7 +206,7 @@ namespace PWMIS.DataProvider.Data
 //				cmd.Transaction =trans;
 //				result=cmd.ExecuteNonQuery ();
 //				cmd.CommandText ="SELECT @@IDENTITY";
-//				//ID=(int)(cmd.ExecuteScalar ());//³ö´í
+//				//ID=(int)(cmd.ExecuteScalar ());//å‡ºé”™
 //				object obj=cmd.ExecuteScalar ();
 //				ID=Convert.ToInt32 (obj);
 //				trans.Commit ();
@@ -226,10 +226,10 @@ namespace PWMIS.DataProvider.Data
 //		}
 //
 //		/// <summary>
-//		/// Ö´ĞĞ·µ»ØÊı¾İ¼¯µÄ²éÑ¯
+//		/// æ‰§è¡Œè¿”å›æ•°æ®é›†çš„æŸ¥è¯¢
 //		/// </summary>
 //		/// <param name="SQL">SQL</param>
-//		/// <returns>Êı¾İ¼¯</returns>
+//		/// <returns>æ•°æ®é›†</returns>
 //		public override DataSet ExecuteDataSet(string SQL)
 //		{
 //			OleDbConnection conn=new OleDbConnection (base.ConnectionString );
@@ -252,10 +252,10 @@ namespace PWMIS.DataProvider.Data
 //		}
 //
 //		/// <summary>
-//		/// ·µ»Øµ¥Ò»ĞĞµÄÊı¾İÔÄ¶ÁÆ÷
+//		/// è¿”å›å•ä¸€è¡Œçš„æ•°æ®é˜…è¯»å™¨
 //		/// </summary>
 //		/// <param name="SQL">SQL</param>
-//		/// <returns>Êı¾İÔÄ¶ÁÆ÷</returns>
+//		/// <returns>æ•°æ®é˜…è¯»å™¨</returns>
 //		public override IDataReader ExecuteDataReaderWithSingleRow(string SQL)
 //		{
 //			OleDbConnection conn=new OleDbConnection (base.ConnectionString );

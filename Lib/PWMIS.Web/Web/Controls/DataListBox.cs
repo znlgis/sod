@@ -1,16 +1,16 @@
-/*
+ï»¿/*
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * ¸ÃÀàµÄ×÷ÓÃ
+ * è¯¥ç±»çš„ä½œç”¨
  * 
- * ×÷Õß£ºµËÌ«»ª     Ê±¼ä£º2008-10-12
- * °æ±¾£ºV3.0
+ * ä½œè€…ï¼šé‚“å¤ªå     æ—¶é—´ï¼š2008-10-12
+ * ç‰ˆæœ¬ï¼šV3.0
  * 
- * ĞŞ¸ÄÕß£º         Ê±¼ä£º                
- * ĞŞ¸ÄËµÃ÷£º
+ * ä¿®æ”¹è€…ï¼š         æ—¶é—´ï¼š                
+ * ä¿®æ”¹è¯´æ˜ï¼š
  * ========================================================================
 */
 using System;
@@ -25,7 +25,7 @@ using PWMIS.Common;
 namespace PWMIS.Web.Controls
 {
 	/// <summary>
-	/// Êı¾İÁĞ±í¿Ø¼ş
+	/// æ•°æ®åˆ—è¡¨æ§ä»¶
 	/// </summary>
     [System.Drawing.ToolboxBitmap(typeof(ControlIcon), "DataListBox.bmp")]
     public class DataListBox : ListBox, IDataControl, IQueryControl
@@ -33,17 +33,17 @@ namespace PWMIS.Web.Controls
 		public DataListBox()
 		{
 			//
-			// TODO: ÔÚ´Ë´¦Ìí¼Ó¹¹Ôìº¯ÊıÂß¼­
+			// TODO: åœ¨æ­¤å¤„æ·»åŠ æ„é€ å‡½æ•°é€»è¾‘
 			//
 		}
 
-		#region IBrainControl ³ÉÔ±
+		#region IBrainControl æˆå‘˜
 
-		#region Êı¾İÊôĞÔ
-        [Category("Data"), Description("Éè¶¨¶ÔÓ¦µÄÊı¾İÔ´£¬¸ñÊ½£ºFullClassName,AssemblyName ¡£Èç¹ûĞèÒª°ó¶¨ÊµÌåÀà£¬¿ÉÒÔÉèÖÃ¸ÃÊôĞÔ¡£")]
+		#region æ•°æ®å±æ€§
+        [Category("Data"), Description("è®¾å®šå¯¹åº”çš„æ•°æ®æºï¼Œæ ¼å¼ï¼šFullClassName,AssemblyName ã€‚å¦‚æœéœ€è¦ç»‘å®šå®ä½“ç±»ï¼Œå¯ä»¥è®¾ç½®è¯¥å±æ€§ã€‚")]
         public string DataProvider { get; set; }
 
-		[Category("Data"),Description("Éè¶¨¶ÔÓ¦µÄÊı¾İ¿â×Ö¶ÎÊÇ·ñÊÇÖ÷¼ü£¬ÓÃÓÚ×Ô¶¯Êı¾İ²éÑ¯ºÍ¸üĞÂµÄÒÀ¾İ")]
+		[Category("Data"),Description("è®¾å®šå¯¹åº”çš„æ•°æ®åº“å­—æ®µæ˜¯å¦æ˜¯ä¸»é”®ï¼Œç”¨äºè‡ªåŠ¨æ•°æ®æŸ¥è¯¢å’Œæ›´æ–°çš„ä¾æ®")]
 		public bool PrimaryKey
 		{
 			get
@@ -58,7 +58,7 @@ namespace PWMIS.Web.Controls
 			}
 		}
 
-		[Category("Data"),Description("Éè¶¨¶ÔÓ¦µÄÊı¾İ×Ö¶ÎÀàĞÍ")]
+		[Category("Data"),Description("è®¾å®šå¯¹åº”çš„æ•°æ®å­—æ®µç±»å‹")]
 		public System.TypeCode SysTypeCode
 		{
 			get
@@ -73,7 +73,7 @@ namespace PWMIS.Web.Controls
 			}
 		}
 
-		[Category("Data"),Description("Éè¶¨ÓëÊı¾İ¿â×Ö¶Î¶ÔÓ¦µÄÊı¾İÃû")]
+		[Category("Data"),Description("è®¾å®šä¸æ•°æ®åº“å­—æ®µå¯¹åº”çš„æ•°æ®å")]
 		public string LinkProperty
 		{
 			get
@@ -88,7 +88,7 @@ namespace PWMIS.Web.Controls
 			}
 		}
 
-		[Category("Data"),Description("Éè¶¨ÓëÊı¾İ±í¶ÔÓ¦µÄÊı¾İ±íÃû")]
+		[Category("Data"),Description("è®¾å®šä¸æ•°æ®è¡¨å¯¹åº”çš„æ•°æ®è¡¨å")]
 		public string LinkObject
 		{
 			get
@@ -105,13 +105,13 @@ namespace PWMIS.Web.Controls
 
 		#endregion
 
-		#region Ä¬ÈÏÊôĞÔ
+		#region é»˜è®¤å±æ€§
 
 		public bool ReadOnly
 		{
 			get
 			{
-                //Î´Ñ¡Ôñ£¬ÉèÖÃÎªÖ»¶ÁÊı¾İÊôĞÔ£¬½«²»¸üĞÂÊı¾İ¿â¡£dth,2008.7.27
+                //æœªé€‰æ‹©ï¼Œè®¾ç½®ä¸ºåªè¯»æ•°æ®å±æ€§ï¼Œå°†ä¸æ›´æ–°æ•°æ®åº“ã€‚dth,2008.7.27
                 if (this.SelectedIndex == -1)
                     return true;
 				return ! this.Enabled ;
@@ -124,7 +124,7 @@ namespace PWMIS.Web.Controls
 
 		#endregion
 
-		#region ½Ó¿Ú·½·¨
+		#region æ¥å£æ–¹æ³•
 
 		public void SetValue(object obj)
 		{
@@ -186,7 +186,7 @@ namespace PWMIS.Web.Controls
 
 		#endregion
 
-        #region ÆäËûÊôĞÔ
+        #region å…¶ä»–å±æ€§
 
 		public bool IsNull
 		{
@@ -214,7 +214,7 @@ namespace PWMIS.Web.Controls
 
 		#endregion 
 
-        #region IQueryControl ³ÉÔ±
+        #region IQueryControl æˆå‘˜
 
         public string CompareSymbol
         {
