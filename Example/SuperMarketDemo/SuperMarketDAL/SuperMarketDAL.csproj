@@ -16,10 +16,14 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
-    <SccProjectName>SAK</SccProjectName>
-    <SccLocalPath>SAK</SccLocalPath>
-    <SccAuxPath>SAK</SccAuxPath>
-    <SccProvider>SAK</SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -115,7 +119,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Lib\PWMIS.Core\PWMIS.Core-2013.csproj">
+    <ProjectReference Include="..\..\..\Lib\PWMIS.Core\PWMIS.Core.csproj">
       <Project>{8f0f4237-4d13-40dd-ae8a-c3de748b26e0}</Project>
       <Name>PWMIS.Core-2013</Name>
     </ProjectReference>
