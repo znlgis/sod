@@ -203,6 +203,15 @@ CREATE TABLE @TABLENAME(
 @FIELDS
 )
                     ";
+
+                    if (this.currDb.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL && !string.IsNullOrEmpty(currEntity.IdentityName))
+                    {
+                        string seq =
+                            "CREATE SEQUENCE " + currEntity.TableName + "_" + currEntity.IdentityName + "_" + "seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;";
+
+                        script = seq + script;
+                    }
+
                     var entityFields = EntityFieldsCache.Item(this.currEntity.GetType());
                     string fieldsText = "";
                     foreach (string field in this.currEntity.PropertyNames)
