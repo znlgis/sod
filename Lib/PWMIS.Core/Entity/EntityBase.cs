@@ -68,11 +68,11 @@ namespace PWMIS.DataMap.Entity
         protected internal static Dictionary<string, int> StringFieldSize = new Dictionary<string, int>();
         protected internal static int GetStringFieldSize(string tableName, string fieldName)
         {
-            string key = string.Format("{0}_{1}", tableName, fieldName);
+            string key = string.Format("{0}", fieldName);
             if (StringFieldSize.ContainsKey(key))
                 return StringFieldSize[key];
             else
-                return 255;
+                return -1;
         }
         protected internal int GetStringFieldSize(string fieldName)
         {
@@ -90,7 +90,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="length">字段长度</param>
         public void SetStringFieldSize(string fieldName, int length)
         {
-            string key = string.Format("{0}_{1}", TableName, fieldName);
+            string key = string.Format("{0}", fieldName);
             StringFieldSize[key] = length;
         }
 
@@ -508,7 +508,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="maxLength">最大长度</param>
         protected internal void setProperty(string propertyFieldName, string Value, int maxLength)
         {
-            string key = string.Format("{0}_{1}", TableName, propertyFieldName);
+            string key = string.Format("{0}", propertyFieldName);
             StringFieldSize[key] = maxLength;
 
             if (Value != null && maxLength > 0 && Value.Length > maxLength)

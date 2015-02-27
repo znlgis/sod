@@ -299,10 +299,22 @@ namespace PWMIS.DataMap.Entity
             IDataParameter para = db.GetParameter(field, defaultValue);
             //需要再获取参数长度
 
-            string temp = "[" + field + "] " + db.GetNativeDbTypeName(para);
+            string temp = "";
             if (t == typeof(string))
             {
-                temp = temp + "(" + entity.GetStringFieldSize(field) + ")";
+                int length = entity.GetStringFieldSize(field);
+                if (length == -1)
+                {
+                    temp = temp + "[" + field + "] text";
+                }
+                else
+                {
+                    temp = temp + "[" + field + "] varchar" + "(" + length + ")";
+                }
+            }
+            else
+            {
+                temp = temp + "[" + field + "] " + db.GetNativeDbTypeName(para);
             }
             //identity(1,1) primary key
             if (entity.PrimaryKeys.Contains(field))
@@ -322,7 +334,13 @@ namespace PWMIS.DataMap.Entity
                 else
                 {
                     if (db.CurrentDBMSType == PWMIS.Common.DBMSType.SQLite)
+                    {
                         temp = temp + " autoincrement";
+                    }
+                    else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL)
+                    {
+                        temp = temp + " DEFAULT nextval('" + entity.TableName + "_" + entity.IdentityName + "_" + "seq'::regclass) NOT NULL";
+                    }
                 }
             }
             return db.GetPreparedSQL(temp);
