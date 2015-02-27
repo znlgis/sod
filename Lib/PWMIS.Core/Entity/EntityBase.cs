@@ -76,7 +76,10 @@ namespace PWMIS.DataMap.Entity
         }
         protected internal int GetStringFieldSize(string fieldName)
         {
-            return GetStringFieldSize(TableName, fieldName);
+            //return GetStringFieldSize(TableName, fieldName);
+            //TableName 在调用了 MapNewTableName 方法后，可能找不到属性字段的长度，故这里取消原来代码的使用方法
+            //感谢网友  广州-玄离 发现该问题 
+            return GetStringFieldSize("T", fieldName);
         }
 
         /// <summary>
