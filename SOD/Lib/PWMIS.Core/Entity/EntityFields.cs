@@ -16,7 +16,8 @@
  * 修改者：         时间：2015-2-5                
  * 修改说明：修复实体类有多个普通属性（即POCO属性）的时候，获取实体类数据库元数据不正确的问题。 
  * 
- * 
+ * 修改者：广州-玄离       时间：2015-2-28                
+ * 修改说明：解决实体类属性字段长度未定义，需要生成text （SqlServer是varchar(max)）字段类型的问题。 
  * ========================================================================
 */
 using System;
@@ -303,9 +304,12 @@ namespace PWMIS.DataMap.Entity
             if (t == typeof(string))
             {
                 int length = entity.GetStringFieldSize(field);
-                if (length == -1)
+                if (length == -1) //实体类未定义属性字段的长度
                 {
-                    temp = temp + "[" + field + "] text";
+                    string fieldType = "text";
+                    if (db is SqlServer) //此处要求SqlServer 2005以上，SqlServer2000 不支持
+                        fieldType = "varchar(max)";
+                    temp = temp + "[" + field + "] "+fieldType;
                 }
                 else
                 {
@@ -329,18 +333,19 @@ namespace PWMIS.DataMap.Entity
                 }
                 else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.Access && entity.PrimaryKeys.Contains(field))
                 {
-                    temp = "[" + field + "] " + " autoincrement PRIMARY KEY ";
+                    temp = temp + " autoincrement PRIMARY KEY ";
+                }
+                else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.SQLite)
+                {
+                    temp = temp + " autoincrement";
+                }
+                else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL)
+                {
+                    temp = temp + " DEFAULT nextval('" + entity.TableName + "_" + entity.IdentityName + "_" + "seq'::regclass) NOT NULL";
                 }
                 else
                 {
-                    if (db.CurrentDBMSType == PWMIS.Common.DBMSType.SQLite)
-                    {
-                        temp = temp + " autoincrement";
-                    }
-                    else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL)
-                    {
-                        temp = temp + " DEFAULT nextval('" + entity.TableName + "_" + entity.IdentityName + "_" + "seq'::regclass) NOT NULL";
-                    }
+                    //暂不支持其它数据库类型的自增标识，比如Oracle 
                 }
             }
             return db.GetPreparedSQL(temp);
