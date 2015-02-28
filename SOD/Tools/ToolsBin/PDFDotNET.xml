@@ -6,55 +6,7 @@ PDFDotNET
 </name>
 </assembly>
 <members>
-<member name="F:PDFDotNET.frmDataBaseExpert.CommandForm">
-	<summary>
- 命令窗体
- </summary>
-	<remarks></remarks>
-</member><member name="M:PDFDotNET.frmDataBaseExpert.CreateEntity">
-	<summary>
- 创建实体类，打开实体类生成器窗口
- </summary>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:PDFDotNET.My.Resources.Resources.ResourceManager">
-	<summary>
-  返回此类使用的缓存的 ResourceManager 实例。
-</summary>
-</member><member name="P:PDFDotNET.My.Resources.Resources.Culture">
-	<summary>
-  使用此强类型资源类，为所有资源查找
-  重写当前线程的 CurrentUICulture 属性。
-</summary>
-</member><member name="P:PDFDotNET.My.Resources.Resources.field">
-	<summary>
-  查找 System.Drawing.Bitmap 类型的本地化资源。
-</summary>
-</member><member name="P:PDFDotNET.My.Resources.Resources.run2">
-	<summary>
-  查找 System.Drawing.Bitmap 类型的本地化资源。
-</summary>
-</member><member name="P:PDFDotNET.My.Resources.Resources.sql">
-	<summary>
-  查找 System.Drawing.Bitmap 类型的本地化资源。
-</summary>
-</member><member name="P:PDFDotNET.My.Resources.Resources.SqlQuery">
-	<summary>
-  查找 System.Drawing.Bitmap 类型的本地化资源。
-</summary>
-</member><member name="P:PDFDotNET.My.Resources.Resources.TextTemplate">
-	<summary>
-  查找 System.Drawing.Bitmap 类型的本地化资源。
-</summary>
-</member><member name="P:PDFDotNET.My.Resources.Resources.数据导出">
-	<summary>
-  查找 System.Drawing.Bitmap 类型的本地化资源。
-</summary>
-</member><member name="T:PDFDotNET.My.Resources.Resources">
-	<summary>
-  一个强类型的资源类，用于查找本地化的字符串等。
-</summary>
-</member><member name="F:PDFDotNET.frmDataQuery.DataConnections">
+<member name="F:PDFDotNET.frmDataQuery.DataConnections">
 	<summary>
  组查询的数据连接列表
  </summary>
@@ -90,81 +42,12 @@ PDFDotNET
  </summary>
 	<returns></returns>
 	<remarks></remarks>
-</member><member name="F:PDFDotNET.frmEntityCreate.CurrDBName">
+</member><member name="P:PDFDotNET.frmEntityFromSQL.IsOK">
 	<summary>
- 当前数据库名称
- </summary>
-	<remarks></remarks>
-</member><member name="P:PDFDotNET.EntityCreateProperty.OutputPath">
-	<summary>
- 代码输出目录
+ 是否确定根据查询生成实体类
  </summary>
 	<value></value>
 	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:PDFDotNET.EntityCreateProperty.UsePartialClass">
-	<summary>
- 是否使用分部类
- </summary>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:PDFDotNET.EntityCreateProperty.Language">
-	<summary>
- 使用的语言
- </summary>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:PDFDotNET.frmDBLogin.ConnectionString">
-	<summary>
- 获取或者设置连接字符串
- </summary>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:PDFDotNET.frmDBLogin.Provider">
-	<summary>
- 获取数据提供程序，默认为空，将使用PDF.NET内置的提供程序
- </summary>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:PDFDotNET.frmDBLogin.ServerName">
-	<summary>
- 获取服务器名称
- </summary>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="P:PDFDotNET.frmDBLogin.DBMSType">
-	<summary>
- 当前选择的数据库类型
- </summary>
-	<value></value>
-	<returns></returns>
-	<remarks></remarks>
-</member><member name="F:PDFDotNET.frmCodeFile.ContentText">
-	<summary>
- 当前操作的内容文本
- </summary>
-	<remarks></remarks>
-</member><member name="M:PDFDotNET.ICommand.Command(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
-	<summary>
- 执行命令
- </summary>
-	<param name="commandName">命令名称</param>
-	<param name="parameters">命令参数</param>
-	<returns>命令执行是否成功</returns>
-	<remarks></remarks>
-</member><member name="M:PDFDotNET.ICommand.OpenWindow(System.Object,System.Windows.Forms.Form,System.String)">
-	<summary>
- 打开指定的窗口实例
- </summary>
-	<param name="sender">发送请求的对象</param>
-	<param name="objectWindow">指定的窗口实例</param>
-	<param name="openStyle">打开窗口的方式</param>
-	<returns>是否成功</returns>
 	<remarks></remarks>
 </member><member name="P:PDFDotNET.DataConnection.CurrAdoHelper">
 	<summary>
@@ -209,6 +92,76 @@ PDFDotNET
  代码生成配置项
  </summary>
 	<remarks></remarks>
+</member><member name="P:PDFDotNET.frmDBLogin.ConnectionString">
+	<summary>
+ 获取或者设置连接字符串
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:PDFDotNET.frmDBLogin.Provider">
+	<summary>
+ 获取数据提供程序，默认为空，将使用PDF.NET内置的提供程序
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:PDFDotNET.frmDBLogin.ServerName">
+	<summary>
+ 获取服务器名称
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:PDFDotNET.frmDBLogin.DBMSType">
+	<summary>
+ 当前选择的数据库类型
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="F:PDFDotNET.frmCodeFile.ContentText">
+	<summary>
+ 当前操作的内容文本
+ </summary>
+	<remarks></remarks>
+</member><member name="F:PDFDotNET.frmDataBaseExpert.CommandForm">
+	<summary>
+ 命令窗体
+ </summary>
+	<remarks></remarks>
+</member><member name="M:PDFDotNET.frmDataBaseExpert.CreateEntity">
+	<summary>
+ 创建实体类，打开实体类生成器窗口
+ </summary>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="F:PDFDotNET.frmEntityCreate.CurrDBName">
+	<summary>
+ 当前数据库名称
+ </summary>
+	<remarks></remarks>
+</member><member name="P:PDFDotNET.EntityCreateProperty.OutputPath">
+	<summary>
+ 代码输出目录
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:PDFDotNET.EntityCreateProperty.UsePartialClass">
+	<summary>
+ 是否使用分部类
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:PDFDotNET.EntityCreateProperty.Language">
+	<summary>
+ 使用的语言
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
 </member><member name="T:PDFDotNET.PDFDotNET.PropertyGridFileItem">
 	<summary>
  属性浏览器文件选择项编辑器
@@ -219,13 +172,60 @@ PDFDotNET
  属性浏览器目录选择项编辑器
  </summary>
 	<remarks></remarks>
-</member><member name="P:PDFDotNET.frmEntityFromSQL.IsOK">
+</member><member name="M:PDFDotNET.ICommand.Command(System.String,System.Collections.Generic.Dictionary{System.String,System.Object})">
 	<summary>
- 是否确定根据查询生成实体类
+ 执行命令
  </summary>
-	<value></value>
-	<returns></returns>
+	<param name="commandName">命令名称</param>
+	<param name="parameters">命令参数</param>
+	<returns>命令执行是否成功</returns>
 	<remarks></remarks>
+</member><member name="M:PDFDotNET.ICommand.OpenWindow(System.Object,System.Windows.Forms.Form,System.String)">
+	<summary>
+ 打开指定的窗口实例
+ </summary>
+	<param name="sender">发送请求的对象</param>
+	<param name="objectWindow">指定的窗口实例</param>
+	<param name="openStyle">打开窗口的方式</param>
+	<returns>是否成功</returns>
+	<remarks></remarks>
+</member><member name="P:PDFDotNET.My.Resources.Resources.ResourceManager">
+	<summary>
+  返回此类使用的缓存的 ResourceManager 实例。
+</summary>
+</member><member name="P:PDFDotNET.My.Resources.Resources.Culture">
+	<summary>
+  使用此强类型资源类，为所有资源查找
+  重写当前线程的 CurrentUICulture 属性。
+</summary>
+</member><member name="P:PDFDotNET.My.Resources.Resources.field">
+	<summary>
+  查找 System.Drawing.Bitmap 类型的本地化资源。
+</summary>
+</member><member name="P:PDFDotNET.My.Resources.Resources.run2">
+	<summary>
+  查找 System.Drawing.Bitmap 类型的本地化资源。
+</summary>
+</member><member name="P:PDFDotNET.My.Resources.Resources.sql">
+	<summary>
+  查找 System.Drawing.Bitmap 类型的本地化资源。
+</summary>
+</member><member name="P:PDFDotNET.My.Resources.Resources.SqlQuery">
+	<summary>
+  查找 System.Drawing.Bitmap 类型的本地化资源。
+</summary>
+</member><member name="P:PDFDotNET.My.Resources.Resources.TextTemplate">
+	<summary>
+  查找 System.Drawing.Bitmap 类型的本地化资源。
+</summary>
+</member><member name="P:PDFDotNET.My.Resources.Resources.数据导出">
+	<summary>
+  查找 System.Drawing.Bitmap 类型的本地化资源。
+</summary>
+</member><member name="T:PDFDotNET.My.Resources.Resources">
+	<summary>
+  一个强类型的资源类，用于查找本地化的字符串等。
+</summary>
 </member>
 </members>
 </doc>

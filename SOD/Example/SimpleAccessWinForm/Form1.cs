@@ -40,7 +40,7 @@ namespace SimpleAccessWinForm
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string dbpath = Application.StartupPath + "\\TEST.mdb";
+            string dbpath = Application.StartupPath + "\\TEST.accdb";
             if (!File.Exists(dbpath))
             {
                
@@ -60,14 +60,14 @@ namespace SimpleAccessWinForm
 
         private void btnCreateDB_Click(object sender, EventArgs e)
         {
-            string dbpath = Application.StartupPath + "\\TEST.mdb";
+            string dbpath = Application.StartupPath + "\\TEST.accdb";
             if (!File.Exists(dbpath))
             {
                 //创建数据库文件
                 PWMIS.AccessExtensions.AccessUility.CreateDataBase(dbpath);
                 //创建表
                 Access access = new Access();
-                access.ConnectionString = "Provider=Microsoft.Jet.Oledb.4.0;Data Source=" + dbpath;
+                access.ConnectionString = PWMIS.AccessExtensions.AccessUility.CreateConnectionString( dbpath);
 
                 PWMIS.AccessExtensions.AccessUility.CreateTable(access, new User());
                 //配置连接
