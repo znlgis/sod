@@ -30,6 +30,16 @@ namespace PWMIS.AccessExtensions
         }
 
         /// <summary>
+        /// 创建Access2007格式的Access 连接字符串
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public static string CreateConnectionString(string filePath)
+        {
+            return providerStr + filePath;
+        }
+
+        /// <summary>
         /// 根据连接字符串，创建数据库文件，适用于OLEDB4.0 之后的Access数据库版本或者64位系统
         /// </summary>
         /// <param name="connString"></param>
