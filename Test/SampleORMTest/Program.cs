@@ -1,4 +1,8 @@
-﻿using PWMIS.DataMap.Entity;
+﻿/*
+ * 有关本程序的详细说明，请参考博客文章
+ * 《.NET ORM 的 “SOD蜜”--零基础入门篇》-- http://www.cnblogs.com/bluedoctor/p/4306131.html  
+ */
+using PWMIS.DataMap.Entity;
 using PWMIS.DataProvider.Adapter;
 using PWMIS.DataProvider.Data;
 using System;
