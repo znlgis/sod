@@ -44,6 +44,9 @@
  *  
  *  * 修改者：         时间：2015-2-11  
  *  修复 MapFrom 方法中，实体类的属性字段可能跟属性名称不一样 造成数据无法复制的问题
+ *  
+ *  * 修改者：         时间：2015-3-3  
+ *  增加 GetPropertyFieldNameIndex 内部方法，优化字段名查找效率
  * 
  * ========================================================================
 */
@@ -356,20 +359,42 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
+        /// 获取属性字段的位置索引，如果找不到，返回-1
+        /// </summary>
+        /// <param name="propertyFieldName">属性字段名</param>
+        /// <returns>属性字段的位置索引，如果找不到，返回-1</returns>
+        protected internal int GetPropertyFieldNameIndex(string propertyFieldName)
+        {
+            if (string.IsNullOrEmpty(propertyFieldName))
+                return -1;
+            string temp = null;
+            int length = propertyFieldName.Length;
+            for (int i = 0; i < PropertyNames.Length; i++)
+            {
+                //原有代码的比较方式不太高效，详细测试代码及原理请参考文章 http://www.cnblogs.com/bluedoctor/p/3899892.html
+                //if (string.Compare(PropertyNames[i], propertyFieldName, true) == 0)
+                temp = PropertyNames[i];
+                if (temp != null && temp.Length == length
+                    && string.Equals(temp, propertyFieldName, StringComparison.OrdinalIgnoreCase))
+                {
+                    return i;
+                }
+            }
+            return -1;
+        }
+
+        /// <summary>
         /// 获取属性列的值
         /// </summary>
         /// <param name="propertyName">属性字段名称</param>
         /// <returns>属性值</returns>
         public object PropertyList(string propertyFieldName)
         {
-            for (int i = 0; i < PropertyNames.Length; i++)
-            {
-                if (string.Compare(PropertyNames[i], propertyFieldName, true) == 0)
-                {
-                    return PropertyValues[i];
-                }
-            }
-            return null;
+            int index = GetPropertyFieldNameIndex(propertyFieldName);
+            if (index == -1)
+                return null;
+            else
+                return PropertyValues[index];
         }
 
         //[NonSerialized()] 
@@ -455,16 +480,27 @@ namespace PWMIS.DataMap.Entity
             if (_IsTestWriteProperty)
                 return;
             //
-            for (int i = 0; i < PropertyNames.Length; i++)
-            {
-                if (string.Compare(PropertyNames[i], propertyFieldName, true) == 0)
-                {
-                    PropertyValues[i] = Value;
+            //for (int i = 0; i < PropertyNames.Length; i++)
+            //{
+            //    if (string.Compare(PropertyNames[i], propertyFieldName, true) == 0)
+            //    {
+            //        PropertyValues[i] = Value;
 
-                    this.OnPropertyChanged(new PropertyChangedEventArgs(propertyFieldName));
-                    changedlist[i] = true;
-                    return;
-                }
+            //        this.OnPropertyChanged(new PropertyChangedEventArgs(propertyFieldName));
+            //        changedlist[i] = true;
+            //        return;
+            //    }
+            //}
+            //用下面的代码替代
+
+            int index = GetPropertyFieldNameIndex(propertyFieldName);
+            if (index >= 0)
+            {
+                PropertyValues[index] = Value;
+
+                this.OnPropertyChanged(new PropertyChangedEventArgs(propertyFieldName));
+                changedlist[index] = true;
+                return;
             }
             //可能实体类来自Select 部分字段
             //备份原来的名值组
@@ -486,16 +522,26 @@ namespace PWMIS.DataMap.Entity
             }
             // 如果propertyName 仍然不在实体类本身类型定义的字段名中，说明是非法的设置，无效；
             //否则，重新设置当前要设置的值。
-            for (int i = 0; i < PropertyNames.Length; i++)
-            {
-                if (string.Compare(PropertyNames[i], propertyFieldName, true) == 0)
-                {
-                    PropertyValues[i] = Value;
+            //for (int i = 0; i < PropertyNames.Length; i++)
+            //{
+            //    if (string.Compare(PropertyNames[i], propertyFieldName, true) == 0)
+            //    {
+            //        PropertyValues[i] = Value;
 
-                    this.OnPropertyChanged(new PropertyChangedEventArgs(propertyFieldName));
-                    changedlist[i] = true;
-                    return;
-                }
+            //        this.OnPropertyChanged(new PropertyChangedEventArgs(propertyFieldName));
+            //        changedlist[i] = true;
+            //        return;
+            //    }
+            //}
+            //用下面的代码替代
+            index = GetPropertyFieldNameIndex(propertyFieldName);
+            if (index >= 0)
+            {
+                PropertyValues[index] = Value;
+
+                this.OnPropertyChanged(new PropertyChangedEventArgs(propertyFieldName));
+                changedlist[index] = true;
+                return;
             }
             throw new ArgumentException("属性字段名称 [" + propertyFieldName + "] 无效，请检查实体类的当前属性定义和重载的SetFieldNames 方法中对PropertyNames 的设置。");
         }
