@@ -274,8 +274,8 @@ namespace OQLTest
 
         void Test6()
         {
-            OQLCompareFunc<Users> cmpResult = (cmp, u) => 
-                cmp.Comparer(u.UserName, OQLCompare.CompareType.IN,"aaa" ); //new string[] { "zhang aa","li bb","wang cc"}
+            OQLCompareFunc<Users> cmpResult = (cmp, u) =>
+                cmp.Comparer(u.UserName, OQLCompare.CompareType.IN, new string[] { "zhang aa", "li bb", "wang cc" }); //
                   
             Users user = new Users();
            
@@ -290,7 +290,7 @@ namespace OQLTest
 
         void TestIfCondition()
         {
-            Users user = new Users() { ID = 1, NickName = "abc", UserName = "zhagnsan", Password = "pwd." };
+            Users user = new Users() { ID = 1, UserName = "zhagnsan", Password = "pwd.",NickName = "" };//NickName = "abc",
             OQLCompareFunc cmpFun = cmp =>
             {
                 OQLCompare cmpResult = null;
