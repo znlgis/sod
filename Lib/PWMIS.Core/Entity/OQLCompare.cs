@@ -20,6 +20,9 @@
  * 修改者：         时间：2014-3-7                
  * 修改说明：修正 在OQLCompare 方法中 跟GUID比较的问题，感谢网友 网友Super Show 发现问题。
  * 
+ * 修改者：         时间：2015-3-7   
+ * 处理条件累加问题某一侧对象可能为空的情况 ，感谢网友 广州-四糸奈 发现此问题
+ * 
  * ========================================================================
 */
 using System;
@@ -85,8 +88,11 @@ namespace PWMIS.DataMap.Entity
         /// <param name="compare2">比较逻辑符号左边的实体比较对象</param>
         public OQLCompare(OQLCompare compare1, CompareLogic logic, OQLCompare compare2)
         {
-            if (object.Equals( compare1 , null))
-                throw new ArgumentNullException("参数compare1 不能为空！");
+            if (object.Equals(compare1, null))
+            {
+                throw new ArgumentNullException("参数compare1 不能都为空！");
+            }
+                
             if (object.Equals(compare2, null) && logic!= CompareLogic.NOT)
                 throw new ArgumentNullException("参数compare2 为空的时候，只能是NOT操作！");
             this.LinkedOQL = compare1.LinkedOQL;
@@ -94,6 +100,8 @@ namespace PWMIS.DataMap.Entity
             this.RightNode = compare2;
             this.Logic = logic;
         }
+
+        #endregion
 
         /// <summary>
         /// 对条件表达式取反
@@ -105,7 +113,7 @@ namespace PWMIS.DataMap.Entity
             return new OQLCompare(cmp, CompareLogic.NOT, null);
         }
 
-        #endregion
+       
 
         #region 其它方法
         /// <summary>
@@ -483,11 +491,55 @@ namespace PWMIS.DataMap.Entity
             return ComparerInner<T>(field, type, Value, sqlFunctionFormat);
         }
 
+        /// <summary>
+        /// 将当前实体类的属性值应用SQL函数以后，与一个值进行比较。
+        /// <example>
+        /// <code>
+        /// <![CDATA[
+        ///   //查询15点后登录的用户
+        ///   Users user = new Users();
+        ///
+        ///   OQL q = OQL.From(user)
+        ///    .Select()
+        ///    .Where(cmp => cmp.ComparerSqlFunction(user.LastLoginTime, OQLCompare.CompareType.Greater, 15, "DATEPART(hh, {0})"))
+        ///    .END;
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// </summary>
+        /// <typeparam name="T">属性的类型</typeparam>
+        /// <param name="field">属性字段</param>
+        /// <param name="type">比较类型枚举</param>
+        /// <param name="Value">应用函数后要比较的值</param>
+        /// <param name="sqlFunctionFormat">SQL 函数格式串，例如 "DATEPART(hh, {0})"</param>
+        /// <returns>比较表达式</returns>
         public OQLCompare ComparerSqlFunction<T>(T field, CompareType type, object Value, string sqlFunctionFormat)
         {
             return ComparerInner<T>(field, type, Value, sqlFunctionFormat);
         }
 
+        /// <summary>
+        /// 将当前实体类的属性值应用SQL函数以后，与一个值进行比较。
+        /// <example>
+        /// <code>
+        /// <![CDATA[
+        ///   //查询15点后登录的用户
+        ///   Users user = new Users();
+        ///
+        ///   OQL q = OQL.From(user)
+        ///    .Select()
+        ///    .Where(cmp => cmp.ComparerSqlFunction(user.LastLoginTime, ">", 15, "DATEPART(hh, {0})"))
+        ///    .END;
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// </summary>
+        /// <typeparam name="T">属性的类型</typeparam>
+        /// <param name="field">属性字段</param>
+        /// <param name="typeString">比较类型字符串</param>
+        /// <param name="Value">应用函数后要比较的值</param>
+        /// <param name="sqlFunctionFormat">SQL 函数格式串，例如 "DATEPART(hh, {0})"</param>
+        /// <returns>比较表达式</returns>
         public OQLCompare ComparerSqlFunction<T>(T field, string typeString, object Value, string sqlFunctionFormat)
         {
             return ComparerInner<T>(field, CompareString2Type(typeString), Value, sqlFunctionFormat);
@@ -851,7 +903,18 @@ namespace PWMIS.DataMap.Entity
         /// <returns>实体比较表达式</returns>
         public static OQLCompare operator &(OQLCompare compare1, OQLCompare compare2)
         {
-            return new OQLCompare(compare1, CompareLogic.AND, compare2);
+            //处理条件累加问题某一侧对象可能为空的情况 2015.3.7 感谢网友 广州-四糸奈 发现此问题
+            if (!object.Equals(compare1, null) && !object.Equals(compare2, null))
+            {
+                return new OQLCompare(compare1, CompareLogic.AND, compare2);
+            }
+            else
+            {
+                if (object.Equals(compare1, null))
+                    return compare2;
+                else
+                    return compare1;
+            }
         }
 
         /// <summary>
@@ -862,7 +925,18 @@ namespace PWMIS.DataMap.Entity
         /// <returns>实体比较表达式</returns>
         public static OQLCompare operator |(OQLCompare compare1, OQLCompare compare2)
         {
-            return new OQLCompare(compare1, CompareLogic.OR, compare2);
+            //处理条件累加问题某一侧对象可能为空的情况
+            if (!object.Equals(compare1, null) && !object.Equals(compare2, null))
+            {
+                return new OQLCompare(compare1, CompareLogic.OR, compare2);
+            }
+            else
+            {
+                if (object.Equals(compare1, null))
+                    return compare2;
+                else
+                    return compare1;
+            }
         }
 
         /// <summary>

@@ -69,7 +69,7 @@ namespace SampleORMTest
             catch (Exception ex)
             {
                 Console.WriteLine("AdoHelper 执行事务异常："+ex.Message );
-                db.Commit();
+                db.Rollback();
                 Console.WriteLine("按任意键退出！");
                 return;
             }
