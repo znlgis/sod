@@ -37,7 +37,9 @@ namespace SuperMarketWeb.FacilityManage
         {
             lblMsg.Text = "Selected id=" + GridView1.SelectedRow.Cells[1].Text;
             //关键，必须为主键控件赋值
-            this.dtbSN.Text = GridView1.SelectedRow.Cells[1].Text;
+            //this.dtbSN 控件为可更新的主键，故不赋值
+            //this.dtbSN.Text = GridView1.SelectedRow.Cells[1].Text;
+            this.dlblSN.Text = GridView1.SelectedRow.Cells[1].Text;
             //填充数据
             MyWebForm.Instance.AutoSelectIBForm(this.Controls);
         }

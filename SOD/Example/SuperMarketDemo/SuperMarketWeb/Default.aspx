@@ -37,7 +37,7 @@
         <a href="欢迎.htm">
     <img  src="images/MarketLog.jpg" alt ="PDF.NET SupperMarket" 
             style="border-width: 0px"/></a><span class="style4"><a 
-            href="http://www.pwmis.com/sqlmap">PDF.NET 框架</a>之<a 
+            href="http://www.pwmis.com/sqlmap">SOD 框架</a>之<a 
             href="http://pwmis.codeplex.com">超市管理系统 Demo实例程序</a></span><br />
         欢迎光临本超市，请输入你的会员号：<br />
         <table>
@@ -136,7 +136,7 @@
         Web服务器版本:(<span  style=" color:Red; font-size: 16pt;"> <%:Request.ServerVariables["Server_SoftWare"]%></span>)
        
         <hr />
-        本系统基于<a href="http://www.pwmis.com/sqlmap">PDF.NET</a> Ver 5.1 构建，<a href="index.htm">系统说明</a>
+        本系统基于<a href="http://www.pwmis.com/sqlmap">PDF.NET</a> <%= System.Reflection.Assembly.GetAssembly(typeof(PWMIS.DataProvider.Data.AdoHelper)).GetName ().Version.ToString() %> 构建，<a href="index.htm">系统说明</a>
         <br />
         使用的数据驱动程序：<%: ConfigurationManager.ConnectionStrings[ConfigurationManager.ConnectionStrings.Count - 1].ProviderName%>
         <br />
