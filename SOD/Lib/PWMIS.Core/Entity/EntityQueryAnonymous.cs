@@ -41,7 +41,8 @@
  * 修改者：         时间：2015-1-6  
  * 增加判断tnf.Name!=null,这可能是因为使用了自定义查询的SqlMap的OQL,感谢网友 吉林-stdbool 发现此问题
  * 
- * 
+ * 修改者：         时间：2015-3-7  
+ * 修复查询中如果字段是 text,varchar(max)类型的时候参数长度设置的问题。
  * ========================================================================
 */
 
@@ -1005,11 +1006,14 @@ namespace PWMIS.DataMap.Entity
                     {
                         //增加字符串长度的检查,如果值得长度大于定义的长度,抛出异常提示 2014.10.21
                         int size=EntityBase.GetStringFieldSize(tnf.Name, tnf.Field);
-                        int length = paras[index].Value.ToString().Length;
-                        if (length > size)
-                            throw new NotSupportedException("当前实体类映射的字段"+paraName+" 长度没有定义或者长度小于了当前实际值的长度："
-                                + length + "，请在实体类定义里面使用 setProperty 的重载方法指定合适的字段长度。");
-                        ((IDbDataParameter)paras[index]).Size = size;
+                        if (size != -1) //如果字段不是text等类型
+                        {
+                            int length = paras[index].Value.ToString().Length;
+                            if (length > size)
+                                throw new NotSupportedException("当前实体类映射的字段" + paraName + " 长度没有定义或者长度小于了当前实际值的长度："
+                                    + length + "，请在实体类定义里面使用 setProperty 的重载方法指定合适的字段长度。");
+                            ((IDbDataParameter)paras[index]).Size = size;
+                        }
                     }
                 }
 
