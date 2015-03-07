@@ -9,7 +9,7 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
-<table style="background-color:#DEBA84;border-color:#DEBA84;border-width:1px;border-style:None;" id="tbGoosBaseInfo" runat="server">
+    <table style="background-color:#DEBA84;border-color:#DEBA84;border-width:1px;border-style:None;" id="tbGoosBaseInfo" runat="server">
        <tr style="color:#8C4510;background-color:#FFF7E7;">
 <td >[存货记录号]*</td><td >
            <cc1:DataLabel ID="dlCHJLH" runat="server" DataFormatString="" isNull="True" 
@@ -77,7 +77,7 @@
        <asp:GridView ID="GridView1" runat="server" BackColor="#DEBA84" 
         BorderColor="#DEBA84" BorderStyle="None" BorderWidth="1px" CellPadding="3" 
         CellSpacing="2" onselectedindexchanged="GridView1_SelectedIndexChanged" 
-        Width="504px">
+        Width="752px">
         <RowStyle BackColor="#FFF7E7" ForeColor="#8C4510" />
         <FooterStyle BackColor="#F7DFB5" ForeColor="#8C4510" />
         <PagerStyle ForeColor="#8C4510" HorizontalAlign="Center" />
@@ -85,7 +85,9 @@
         <HeaderStyle BackColor="#A55129" Font-Bold="True" ForeColor="White" />
         <Columns>
             <asp:ButtonField CommandName="Select" HeaderText="选择" ShowHeader="True" 
-                Text="编辑" />
+                Text="编辑" >
+            <HeaderStyle Width="100px" />
+            </asp:ButtonField>
         </Columns>
     </asp:GridView>
    <cc1:ProPageToolBar ID="ProPageToolBar1" runat="server" BackColor="#FFF7E7" 

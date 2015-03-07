@@ -444,13 +444,9 @@ namespace PWMIS.DataForms.Adapter
                                    
 
                                     //2010.1.25 取消 ibCtr.PrimaryKey 不能更新的限制，例如可以让GUID主键列可以更新
+                                    //2015.3.7 恢复 ibCtr.PrimaryKey 不能更新的限制，如果需要更新主键，请设置另外一个控件并将它绑定位主键字段但不设置 PrimaryKey 属性
                                     //如果是自增列，设置该列的控件属性为 只读属性即可。
-                                    if (!ibCtr.ReadOnly)
-                                    {
-                                        strFields += "[" + ibCtr.LinkProperty + "],";
-                                        strValues += ctlParaName + ",";
-                                        strUpdate += "[" + ibCtr.LinkProperty + "] = " + ctlParaName + ",";
-                                    }
+                                    
                                     if (ibCtr.PrimaryKey) //只要是主键就作为更新的条件
                                     {
                                         strCondition += " And [" + ibCtr.LinkProperty + "] = " + ctlParaName;
@@ -460,8 +456,12 @@ namespace PWMIS.DataForms.Adapter
                                             ID = -2;//主键可能是非数字型
                                         paraPKs.Add(para);
                                     }
-                                    else
+                                    else if (!ibCtr.ReadOnly)
                                     {
+                                        strFields += "[" + ibCtr.LinkProperty + "],";
+                                        strValues += ctlParaName + ",";
+                                        strUpdate += "[" + ibCtr.LinkProperty + "] = " + ctlParaName + ",";
+
                                         paraList.Add(para);
                                     }
                                 }

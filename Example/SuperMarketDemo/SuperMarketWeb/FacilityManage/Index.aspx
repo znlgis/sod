@@ -5,9 +5,13 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
      <table style="background-color:#DEBA84;border-color:#DEBA84;border-width:1px;border-style:None;">
        <tr style="color:#8C4510;background-color:#FFF7E7;">
+<td >（PK）</td><td >
+           <cc1:DataLabel ID="dlblSN" runat="server" DataFormatString="" IsNull="True" LinkObject="设备表" LinkProperty="编号" MaxLength="0" PrimaryKey="True" ReadOnly="True" SysTypeCode="String"></cc1:DataLabel>
+           </td></tr>
+       <tr style="color:#8C4510;background-color:#FFF7E7;">
 <td >[编号]*</td><td >
            <cc1:DataTextBox ID="dtbSN" runat="server" LinkObject="设备表" 
-               LinkProperty="编号" PrimaryKey="True" Width="255px" SysTypeCode="String"></cc1:DataTextBox>
+               LinkProperty="编号" Width="255px" SysTypeCode="String"></cc1:DataTextBox>
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
        <td >[设备名称]</td><td >
