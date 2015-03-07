@@ -113,9 +113,13 @@ namespace PWMIS.DataForms.Adapter
         }
 
         /// <summary>
-        /// 对应的查询参数数组
+        /// 对应的查询参数数组，用于更新和删除
         /// </summary>
         public IDataParameter[] Parameters { get; set; }
+        /// <summary>
+        /// 用于插入数据的参数数组
+        /// </summary>
+        public IDataParameter[] InsertParameters { get; set; }
 
 	}
 }

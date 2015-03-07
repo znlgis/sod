@@ -7,10 +7,10 @@
  * 该类的作用是作为“智能数据表单窗体”的抽象类，用于WebForm、WinForm的基础类
  * 
  * 作者：邓太华     时间：2013-3-22
- * 版本：V4.6
+ * 版本：V5.2
  * 
- * 修改者：         时间：                
- * 修改说明：
+ * 修改者：         时间：2015-3-7                
+ * 修改说明：修复智能表单控件在Access 等数据库上由于参数顺序引起的查询问题
  * ========================================================================
 */
 using System;
@@ -204,7 +204,7 @@ namespace PWMIS.DataForms.Adapter
                 if (insertFlag)
                 {
                     object id = 0;
-                    result = DAO.ExecuteInsertQuery(command.InsertCommand, CommandType.Text, command.Parameters, ref id);
+                    result = DAO.ExecuteInsertQuery(command.InsertCommand, CommandType.Text, command.InsertParameters, ref id);
                     command.InsertedID = Convert.ToInt32(id);
                 }
                 if (result <= 0 && CheckAffectRowCount)
@@ -239,7 +239,7 @@ namespace PWMIS.DataForms.Adapter
                     }
                     else
                     {
-                        result = DAO.ExecuteNonQuery(command.InsertCommand, CommandType.Text, command.Parameters);
+                        result = DAO.ExecuteNonQuery(command.InsertCommand, CommandType.Text, command.InsertParameters);
                     }
                     return result > 0;
                 }
@@ -358,7 +358,10 @@ namespace PWMIS.DataForms.Adapter
                 int ID = -1;
 
                 int paraIndex = 0;
-                List<IDataParameter> paraList = new List<IDataParameter>();
+                //edit at 2015.3.7
+                //定义不同的参数列表，修正Access 等数据库根据参数顺序而不是参数名匹配进行查询的问题
+                List<IDataParameter> paraList = new List<IDataParameter>();//一般参数列表
+                List<IDataParameter> paraPKs = new List<IDataParameter>();//主键参数列表
 
                 for (int i = 0; i < IBControls.Count; i++)// object objCtr in IBControls)
                 {
@@ -421,14 +424,14 @@ namespace PWMIS.DataForms.Adapter
                                 //}
                                 #endregion
 
-                                string cValue = string.Empty;
+                                string ctlParaName = string.Empty;
                                 object ctlValue = ibCtr.GetValue();
 
                                 //非只读的数据才更新
                                 if (ctlValue != DBNull.Value)
                                 {
-                                    cValue = DB.GetParameterChar + "P" + paraIndex++;
-                                    IDataParameter para = DB.GetParameter(cValue, ctlValue);
+                                    ctlParaName = DB.GetParameterChar + "P" + paraIndex++;
+                                    IDataParameter para = DB.GetParameter(ctlParaName, ctlValue);
                                     if (ibCtr.SysTypeCode == System.TypeCode.String || ibCtr.SysTypeCode == System.TypeCode.Empty)
                                     {
                                         if (ibCtr is IDataTextBox)
@@ -438,24 +441,28 @@ namespace PWMIS.DataForms.Adapter
                                                 ((IDbDataParameter)para).Size = maxStringLength;
                                         }
                                     }
-                                    paraList.Add(para);
+                                   
 
                                     //2010.1.25 取消 ibCtr.PrimaryKey 不能更新的限制，例如可以让GUID主键列可以更新
                                     //如果是自增列，设置该列的控件属性为 只读属性即可。
                                     if (!ibCtr.ReadOnly)
                                     {
                                         strFields += "[" + ibCtr.LinkProperty + "],";
-                                        strValues += cValue + ",";
-                                        strUpdate += "[" + ibCtr.LinkProperty + "] = " + cValue + ",";
+                                        strValues += ctlParaName + ",";
+                                        strUpdate += "[" + ibCtr.LinkProperty + "] = " + ctlParaName + ",";
                                     }
                                     if (ibCtr.PrimaryKey) //只要是主键就作为更新的条件
                                     {
-                                        strCondition += " And [" + ibCtr.LinkProperty + "] = " + cValue;
+                                        strCondition += " And [" + ibCtr.LinkProperty + "] = " + ctlParaName;
                                         if (ibCtr.SysTypeCode == System.TypeCode.Int32)
                                             ID = int.Parse(ctlValue.ToString());
                                         else
                                             ID = -2;//主键可能是非数字型
-
+                                        paraPKs.Add(para);
+                                    }
+                                    else
+                                    {
+                                        paraList.Add(para);
                                     }
                                 }
 
@@ -480,6 +487,8 @@ namespace PWMIS.DataForms.Adapter
                 ibcmd.UpdateCommand = strUpdate;
                 //if( ID>0) 
                 ibcmd.InsertedID = ID;
+                ibcmd.InsertParameters = paraList.ToArray();
+                paraList.AddRange(paraPKs);
                 ibcmd.Parameters = paraList.ToArray();
 
                 IBCommands.Add(ibcmd);
