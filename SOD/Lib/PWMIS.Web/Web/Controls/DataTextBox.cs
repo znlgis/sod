@@ -36,6 +36,7 @@ using System.ComponentModel;
 using PWMIS.Common;
 using PWMIS.Web.Validate;
 using PWMIS.DataMap;
+using System.Drawing.Design;
 
 
 namespace PWMIS.Web.Controls
@@ -478,6 +479,7 @@ return true;
         /// 设定与数据库字段对应的数据名
         /// </summary>
         [Category("Data"), Description("设定与数据库字段对应的数据名")]
+        [Editor(typeof(PropertyUITypeEditor), typeof(UITypeEditor))]
         public string LinkProperty
         {
             get
