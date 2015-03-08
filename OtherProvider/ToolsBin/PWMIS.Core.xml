@@ -57,7 +57,12 @@
         </member>
         <member name="P:PWMIS.DataForms.Adapter.IBCommand.Parameters">
             <summary>
-            对应的查询参数数组
+            对应的查询参数数组，用于更新和删除
+            </summary>
+        </member>
+        <member name="P:PWMIS.DataForms.Adapter.IBCommand.InsertParameters">
+            <summary>
+            用于插入数据的参数数组
             </summary>
         </member>
         <member name="T:PWMIS.DataForms.Adapter.UseDataControl">
@@ -2390,6 +2395,13 @@
             </summary>
             <param name="name"></param>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.GetPropertyFieldNameIndex(System.String)">
+            <summary>
+            获取属性字段的位置索引，如果找不到，返回-1
+            </summary>
+            <param name="propertyFieldName">属性字段名</param>
+            <returns>属性字段的位置索引，如果找不到，返回-1</returns>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.PropertyList(System.String)">
             <summary>
             获取属性列的值
@@ -4150,6 +4162,54 @@
             <param name="Value">要比较的值</param>
             <param name="sqlFunctionFormat">SQL 函数格式串，例如 "DATEPART(hh, {0})"</param>
             <returns>比较表达式</returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.OQLCompare.ComparerSqlFunction``1(``0,PWMIS.DataMap.Entity.OQLCompare.CompareType,System.Object,System.String)">
+             <summary>
+             将当前实体类的属性值应用SQL函数以后，与一个值进行比较。
+             <example>
+             <code>
+             <![CDATA[
+               //查询15点后登录的用户
+               Users user = new Users();
+            
+               OQL q = OQL.From(user)
+                .Select()
+                .Where(cmp => cmp.ComparerSqlFunction(user.LastLoginTime, OQLCompare.CompareType.Greater, 15, "DATEPART(hh, {0})"))
+                .END;
+             ]]>
+             </code>
+             </example>
+             </summary>
+             <typeparam name="T">属性的类型</typeparam>
+             <param name="field">属性字段</param>
+             <param name="type">比较类型枚举</param>
+             <param name="Value">应用函数后要比较的值</param>
+             <param name="sqlFunctionFormat">SQL 函数格式串，例如 "DATEPART(hh, {0})"</param>
+             <returns>比较表达式</returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.OQLCompare.ComparerSqlFunction``1(``0,System.String,System.Object,System.String)">
+             <summary>
+             将当前实体类的属性值应用SQL函数以后，与一个值进行比较。
+             <example>
+             <code>
+             <![CDATA[
+               //查询15点后登录的用户
+               Users user = new Users();
+            
+               OQL q = OQL.From(user)
+                .Select()
+                .Where(cmp => cmp.ComparerSqlFunction(user.LastLoginTime, ">", 15, "DATEPART(hh, {0})"))
+                .END;
+             ]]>
+             </code>
+             </example>
+             </summary>
+             <typeparam name="T">属性的类型</typeparam>
+             <param name="field">属性字段</param>
+             <param name="typeString">比较类型字符串</param>
+             <param name="Value">应用函数后要比较的值</param>
+             <param name="sqlFunctionFormat">SQL 函数格式串，例如 "DATEPART(hh, {0})"</param>
+             <returns>比较表达式</returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.OQLCompare.Comparer``1(``0,System.String,``0)">
             <summary>

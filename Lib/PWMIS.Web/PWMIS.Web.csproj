@@ -66,6 +66,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -82,6 +83,13 @@
     <Compile Include="Web\Controls\DataTextBox.cs" />
     <Compile Include="Web\Controls\ProDataGrid.cs" />
     <Compile Include="Web\Controls\ProPageToolBar.cs" />
+    <Compile Include="Web\PropertySelectorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Web\PropertySelectorForm.Designer.cs">
+      <DependentUpon>PropertySelectorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Web\PropertyUITypeEditor.cs" />
     <Compile Include="Web\Validate\EnumRegexType.cs" />
     <Compile Include="Web\Validate\RegexStatic.cs" />
     <Compile Include="Web\Validate\StandardRegexListConvertor.cs" />
@@ -99,6 +107,9 @@
     <EmbeddedResource Include="DataPageToolBar.bmp" />
     <EmbeddedResource Include="DataRadioButton.bmp" />
     <EmbeddedResource Include="DataTextBox.bmp" />
+    <EmbeddedResource Include="Web\PropertySelectorForm.resx">
+      <DependentUpon>PropertySelectorForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PWMIS.Core\PWMIS.Core.csproj">
