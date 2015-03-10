@@ -13,7 +13,7 @@ namespace PWMIS.DataMap
     //}
 
     /// <summary>
-    /// Web 窗体控件数据映射类，提供从实体对象填充数据到窗体数据控件和收集数据到实体对象的功能。
+    /// WinForm     窗体控件数据映射类，提供从实体对象填充数据到窗体数据控件和收集数据到实体对象的功能。
     /// </summary>
     public class WinFormControlDataMap : ControlDataMap
     {
