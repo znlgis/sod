@@ -2014,7 +2014,7 @@ namespace PWMIS.DataMap.Entity
                 tnf.Entity = this.CurrentOQL.currEntity;
                 tnf.Field = currFieldName;
                 tnf.FieldValue = Value;
-                conditionString += logicType + currFieldName + " " + compareType + " " + CurrentOQL.CreateParameter(tnf);
+                conditionString += logicType +"[" +currFieldName + "] " + compareType + " " + CurrentOQL.CreateParameter(tnf);
 
             }
             else if (compareType.StartsWith("is"))
@@ -2135,7 +2135,7 @@ namespace PWMIS.DataMap.Entity
 
             if (strInTemp != "")
             {
-                strResult = " AND " + currFieldName + " " + inType + " (" + strInTemp.TrimStart(',') + ")";
+                strResult = " AND [" + currFieldName + "] " + inType + " (" + strInTemp.TrimStart(',') + ")";
             }
             return strResult;
         }
@@ -2173,7 +2173,7 @@ namespace PWMIS.DataMap.Entity
 
             //２０１３．５．２７　增加替换.Replace("@CP","@INCP")，感谢张善友发现此Ｂｕｇ
             string currFieldName = CurrentOQL.TakeOneStackFields().Field;
-            conditionString += " AND " + currFieldName + inString + "  (\r\n" + childSql + ")";
+            conditionString += " AND [" + currFieldName + "]" + inString + "  (\r\n" + childSql + ")";
 
             //感谢网友 null 发现下面的参数问题
             foreach (string key in q.Parameters.Keys)

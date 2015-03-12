@@ -68,14 +68,14 @@ namespace OQLTest
             Console.WriteLine("q0:one table and select all fields \r\n{0}", q0);
             Console.WriteLine(q0.PrintParameterInfo());
 
-            var userList = EntityQuery<Users>.QueryList(q0);
-            if (userList.Count > 0)
-            {
-                Users u = userList[0];
-                Console.WriteLine("User Type is:" + u.RoleID.ToString());
-                u.RoleID = RoleNames.User;
-                EntityQuery<Users>.Instance.Update(u);
-            }
+            //var userList = EntityQuery<Users>.QueryList(q0);
+            //if (userList.Count > 0)
+            //{
+            //    Users u = userList[0];
+            //    Console.WriteLine("User Type is:" + u.RoleID.ToString());
+            //    u.RoleID = RoleNames.User;
+            //    EntityQuery<Users>.Instance.Update(u);
+            //}
             OQL q = OQL.From(user)
                 .Select(user.ID, user.UserName, user.RoleID)
                 .END;
