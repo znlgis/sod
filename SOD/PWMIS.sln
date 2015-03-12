@@ -59,11 +59,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWIMIS.Core.AccessTest", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleORMTest", "Test\SampleORMTest\SampleORMTest.csproj", "{E50CA187-1EF5-448D-9662-071FC0165159}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SimpleWinForm_SQLServer", "SimpleWinForm_SQLServer\SimpleWinForm_SQLServer.vbproj", "{078CD672-A462-415D-A10F-45C587A50BF3}"
-EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 24
+		SccNumberOfProjects = 23
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
 		SccLocalPath0 = .
@@ -155,10 +153,6 @@ Global
 		SccProjectTopLevelParentUniqueName22 = PWMIS.sln
 		SccProjectName22 = Test/SampleORMTest
 		SccLocalPath22 = Test\\SampleORMTest
-		SccProjectUniqueName23 = SimpleWinForm_SQLServer\\SimpleWinForm_SQLServer.vbproj
-		SccProjectTopLevelParentUniqueName23 = PWMIS.sln
-		SccProjectName23 = SimpleWinForm_SQLServer
-		SccLocalPath23 = SimpleWinForm_SQLServer
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -253,10 +247,6 @@ Global
 		{E50CA187-1EF5-448D-9662-071FC0165159}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E50CA187-1EF5-448D-9662-071FC0165159}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E50CA187-1EF5-448D-9662-071FC0165159}.Release|Any CPU.Build.0 = Release|Any CPU
-		{078CD672-A462-415D-A10F-45C587A50BF3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{078CD672-A462-415D-A10F-45C587A50BF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{078CD672-A462-415D-A10F-45C587A50BF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{078CD672-A462-415D-A10F-45C587A50BF3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -280,7 +270,6 @@ Global
 		{EA876B64-CFF0-4985-B59C-1602B3486D3D} = {2A4234BB-564F-402C-9C23-466843666189}
 		{9338057C-0762-4A72-8B12-9EB907D1538C} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
 		{8CFE6672-4BF7-478B-9059-538D0C93F609} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
-		{078CD672-A462-415D-A10F-45C587A50BF3} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
 		{32A14B75-6845-48B0-9FB9-9F0DD4D58369} = {8CFE6672-4BF7-478B-9059-538D0C93F609}
 		{B685E0F6-0082-453F-9494-4EEA87E204EB} = {8CFE6672-4BF7-478B-9059-538D0C93F609}
 		{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4} = {8CFE6672-4BF7-478B-9059-538D0C93F609}
