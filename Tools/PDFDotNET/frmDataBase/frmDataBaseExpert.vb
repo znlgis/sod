@@ -296,23 +296,24 @@ Public Class frmDataBaseExpert
                         nodeTable.Nodes.Add(childNode)
 
                     Next
-                 
-                    Dim dvOther As New DataView(dtSchema, "OWNER='" & owner & "'", "owner,table_name", DataViewRowState.CurrentRows)
-                    For Each item As DataRowView In dvOther
-                        Dim childNode As New TreeNode(item(0) & "." & item(1))
-                        childNode.Name = item(0) & Chr(34) & "." & Chr(34) & item(1)
-                        childNode.SelectedImageKey = "Table"
-                        childNode.ImageKey = "Table"
 
-                        Dim nodeColumn As New TreeNode("列")
-                        nodeColumn.Name = "表列"
-                        childNode.Nodes.Add(nodeColumn)
-                        childNode.Nodes.Add(New TreeNode("索引"))
-                        childNode.Nodes.Add(New TreeNode("触发器"))
+                    ''下面的代码列出的表没法正确获取到列信息且表名重复，暂时屏蔽
+                    'Dim dvOther As New DataView(dtSchema, "OWNER='" & owner & "'", "owner,table_name", DataViewRowState.CurrentRows)
+                    'For Each item As DataRowView In dvOther
+                    '    Dim childNode As New TreeNode(item(0) & "." & item(1))
+                    '    childNode.Name = item(0) & Chr(34) & "." & Chr(34) & item(1)
+                    '    childNode.SelectedImageKey = "Table"
+                    '    childNode.ImageKey = "Table"
 
-                        nodeTable.Nodes.Add(childNode)
+                    '    Dim nodeColumn As New TreeNode("列")
+                    '    nodeColumn.Name = "表列"
+                    '    childNode.Nodes.Add(nodeColumn)
+                    '    childNode.Nodes.Add(New TreeNode("索引"))
+                    '    childNode.Nodes.Add(New TreeNode("触发器"))
 
-                    Next
+                    '    nodeTable.Nodes.Add(childNode)
+
+                    'Next
 
                 Else
                     tableView.Sort = "table_schema,TABLE_NAME"
