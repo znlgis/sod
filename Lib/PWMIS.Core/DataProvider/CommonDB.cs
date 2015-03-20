@@ -740,7 +740,7 @@ namespace PWMIS.DataProvider.Data
         /// <param name="SQL">插入数据的SQL</param>
         /// <param name="commandType">命令类型</param>
         /// <param name="parameters">参数数组</param>
-        /// <param name="ID">要传出的本次操作的新插入数据行的主键ID值</param>
+        /// <param name="ID">要传出的本次操作的新插入数据行的自增主键ID值，如果没有获取到，则为-1</param>
         /// <returns>本次查询受影响的行数</returns>
         public virtual int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID)
         {
@@ -764,8 +764,16 @@ namespace PWMIS.DataProvider.Data
                 }
 
                 result = cmd.ExecuteNonQuery();
-                cmd.CommandText = this.InsertKey;// "SELECT @@IDENTITY ";
-                ID = cmd.ExecuteScalar();
+                if (!string.IsNullOrEmpty(this.InsertKey))
+                {
+                    cmd.CommandText = this.InsertKey;// "SELECT @@IDENTITY ";
+                    var obj = cmd.ExecuteScalar();
+                }
+                else
+                {
+                    ID = -1;//表示为获取到自增列的值
+                }
+              
                 //如果在内部开启了事务则提交事务，否则外部调用者决定何时提交事务
                 if (inner)
                 {

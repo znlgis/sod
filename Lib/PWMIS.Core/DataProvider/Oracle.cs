@@ -76,6 +76,21 @@ namespace PWMIS.DataProvider.Data
             return new OracleParameter();
         }
 
+        /*
+         * 
+                //Oracle 处理自增
+                //string seqName = entity.GetTableName() + "_" + entity.GetIdentityName() + "_SEQ";
+                //CurrentDataBase.InsertKey = "select " + seqName + ".currval from dual;";
+         */ 
+        /// <summary>
+        /// Oracle 不支持自增，请自己创建触发器和序列
+        /// </summary>
+        public override string InsertKey
+        {
+            get;
+            set;
+        }
+
         /// <summary>
         ///  获取一个新参数对象
         /// </summary>
@@ -94,7 +109,15 @@ namespace PWMIS.DataProvider.Data
 
         public override string GetNativeDbTypeName(IDataParameter para)
         {
-            return ((OracleParameter)para).OracleType.ToString();
+            OracleParameter oraPara = (OracleParameter)para;
+            OracleType oraType = oraPara.OracleType;
+            if (oraType == OracleType.DateTime)
+                return "Date";
+            else if (oraType == OracleType.Int32)
+                return "INT";
+            else
+                return oraType.ToString();
+           
         }
 
         /// <summary>

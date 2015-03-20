@@ -36,25 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Interop.ADOX">
-      <HintPath>..\..\packages\PDF.NET.5.2.1.0215\lib\Interop.ADOX.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
-    <Reference Include="PWMIS.Access.Extensions">
-      <HintPath>..\..\packages\PDF.NET.5.2.1.0215\lib\PWMIS.Access.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="PWMIS.Core">
-      <HintPath>..\..\packages\PDF.NET.5.2.1.0215\lib\PWMIS.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="PWMIS.Core.Extensions">
-      <HintPath>..\..\packages\PDF.NET.5.2.1.0215\lib\PWMIS.Core.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="PWMIS.Web">
-      <HintPath>..\..\packages\PDF.NET.5.2.1.0215\lib\PWMIS.Web.dll</HintPath>
-    </Reference>
-    <Reference Include="PWMIS.Windows">
-      <HintPath>..\..\packages\PDF.NET.5.2.1.0215\lib\PWMIS.Windows.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -71,7 +52,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\PWMIS.Access.Extensions\PWMIS.Access.Extensions.csproj">
+      <Project>{0ace1995-6254-47f1-8758-c79b9cdcf424}</Project>
+      <Name>PWMIS.Access.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Lib\PWMIS.Core.Extensions\PWMIS.Core.Extensions.csproj">
+      <Project>{8f1ae0de-a9f1-43a7-ace4-acf667c2f813}</Project>
+      <Name>PWMIS.Core.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Lib\PWMIS.Core\PWMIS.Core.csproj">
+      <Project>{8f0f4237-4d13-40dd-ae8a-c3de748b26e0}</Project>
+      <Name>PWMIS.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
