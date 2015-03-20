@@ -61,6 +61,7 @@ namespace SampleORMTest
             try
             {
                 count += userQuery.ExecuteOql(insertQ);
+                // userQuery.GetInsertIdentity(insertQ); 获取插入标识，用词方法代替下面的方式
                 //OQL 方式没法取得自增数据，所以下面单独查询
                 object obj_id = db.ExecuteScalar(db.InsertKey);
                 db.Commit();
