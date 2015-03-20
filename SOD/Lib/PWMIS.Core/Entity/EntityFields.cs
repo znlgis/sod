@@ -345,7 +345,7 @@ namespace PWMIS.DataMap.Entity
                 }
                 else
                 {
-                    //暂不支持其它数据库类型的自增标识，比如Oracle 
+                    //Oracle 采用序列和触发器,这里不处理 
                 }
             }
             return db.GetPreparedSQL(temp);

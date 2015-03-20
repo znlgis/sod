@@ -202,7 +202,7 @@ namespace PWMIS.DataMap.Entity
 CREATE TABLE @TABLENAME(
 @FIELDS
 )
-                    ";
+";
 
                     if (this.currDb.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL && !string.IsNullOrEmpty(currEntity.IdentityName))
                     {
@@ -210,6 +210,23 @@ CREATE TABLE @TABLENAME(
                             "CREATE SEQUENCE " + currEntity.TableName + "_" + currEntity.IdentityName + "_" + "seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;";
 
                         script = seq + script;
+                    }
+                    else if (this.currDb.CurrentDBMSType == PWMIS.Common.DBMSType.Oracle && !string.IsNullOrEmpty(currEntity.IdentityName))
+                    {
+                        // --; 语句分割符号
+                        string seqTemp = @"
+
+CREATE SEQUENCE @TableName_@IDName_SEQ MINVALUE 1 NOMAXVALUE INCREMENT BY 1 START WITH 1 NOCACHE
+;--
+
+CREATE OR REPLACE TRIGGER @TableName_INS_TRG BEFORE
+  INSERT ON [@TableName] FOR EACH ROW WHEN(new.[@IDName] IS NULL)
+BEGIN
+  SELECT @TableName_@IDName_SEQ.NEXTVAL INTO :new.[@IDName] FROM DUAL; 
+END;
+;--
+";
+                        script = script + ";--\r\n" + seqTemp.Replace("@TableName", currEntity.TableName).Replace("@IDName", currEntity.IdentityName);
                     }
 
                     var entityFields = EntityFieldsCache.Item(this.currEntity.GetType());

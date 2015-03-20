@@ -117,6 +117,7 @@ namespace PWMIS.Core.Extensions
             }
 
             EntityQuery eq = new EntityQuery(CurrentDataBase);
+           
             int accept = fun(eq, entity);
             return accept;
         }
@@ -129,7 +130,26 @@ namespace PWMIS.Core.Extensions
         /// <returns>操作受影响的行数</returns>
         public int Add<T>(T data) where T : class
         {
-            return ExecuteQuery<T>(data, (q, e) => q.Insert(e));
+            //Oracle 处理自增
+            if (CurrentDataBase.CurrentDBMSType == Common.DBMSType.Oracle)
+            {
+                EntityBase entity = data as EntityBase;
+                if (entity == null) //T 是接口类型，data 是一个实现了该接口的DTO
+                {
+                    T temp = EntityBuilder.CreateEntity<T>();
+                    entity = temp as EntityBase;
+                }
+                string seqName = entity.GetTableName() + "_" + entity.GetIdentityName() + "_SEQ";
+                CurrentDataBase.InsertKey = "select " + seqName + ".currval as id from dual";
+
+                int result = ExecuteQuery<T>(data, (q, e) => q.Insert(e));
+                CurrentDataBase.InsertKey = "";//恢复
+                return result;
+            }
+            else
+            {
+                return ExecuteQuery<T>(data, (q, e) => q.Insert(e));
+            }
         }
 
         /// <summary>

@@ -78,6 +78,7 @@
     <Compile Include="EntityBaseExtension.cs" />
     <Compile Include="ModelCast.cs" />
     <Compile Include="OQLExtension.cs" />
+    <Compile Include="OracleDbContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlServerDbContext.cs" />
   </ItemGroup>
