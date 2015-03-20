@@ -766,8 +766,13 @@ namespace PWMIS.DataProvider.Data
                 result = cmd.ExecuteNonQuery();
                 if (!string.IsNullOrEmpty(this.InsertKey))
                 {
-                    cmd.CommandText = this.InsertKey;// "SELECT @@IDENTITY ";
-                    var obj = cmd.ExecuteScalar();
+                    //cmd.Parameters.Clear();
+                    //不清除参数对象在Oracle会发生错误
+                    //但是清除了参数，会让SQL日志没法记录参数信息，故下面创建一个新的命令对象
+                    IDbCommand cmd2 = conn.CreateCommand();
+                    cmd2.CommandText = this.InsertKey;// "SELECT @@IDENTITY ";
+                    cmd2.Transaction = cmd.Transaction;
+                    ID = cmd2.ExecuteScalar();
                 }
                 else
                 {
