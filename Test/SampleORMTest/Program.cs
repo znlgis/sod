@@ -57,24 +57,27 @@ namespace SampleORMTest
             //同时演示事务使用方法
             AdoHelper db = MyDB.GetDBHelperByConnectionName("local");
             EntityQuery<User> userQuery = new EntityQuery<User>(db);
-            db.BeginTransaction();
-            try
-            {
-                count += userQuery.ExecuteOql(insertQ);
-                // userQuery.GetInsertIdentity(insertQ); 获取插入标识，用词方法代替下面的方式
-                //OQL 方式没法取得自增数据，所以下面单独查询
-                object obj_id = db.ExecuteScalar(db.InsertKey);
-                db.Commit();
-                li_si.ID = Convert.ToInt32( obj_id);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("AdoHelper 执行事务异常："+ex.Message );
-                db.Rollback();
-                Console.WriteLine("按任意键退出！");
-                return;
-            }
-            
+            //db.BeginTransaction();
+            //try
+            //{
+            //    count += userQuery.ExecuteOql(insertQ);
+                
+            //    // userQuery.GetInsertIdentity(insertQ); 获取插入标识，用词方法代替下面的方式
+            //    //OQL 方式没法取得自增数据，所以下面单独查询
+            //    object obj_id = db.ExecuteScalar(db.InsertKey);
+            //    db.Commit();
+            //    li_si.ID = Convert.ToInt32( obj_id);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("AdoHelper 执行事务异常："+ex.Message );
+            //    db.Rollback();
+            //    Console.WriteLine("按任意键退出！");
+            //    return;
+            //}
+
+            //上面的代码注释，采用下面封装的代码：ExecuteInsrtOql
+            li_si.ID =userQuery.ExecuteInsrtOql(insertQ);
             
             User zhang_yeye = new User() { Name = "zhang yeye", Pwd = "456" };
             count += EntityQuery<User>.Instance.Insert(zhang_yeye);//采用泛型 EntityQuery 方式插入数据

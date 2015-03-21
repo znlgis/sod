@@ -1201,6 +1201,50 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
+        /// 执行一个插入数据的OQL查询，返回自增列的值，如果是-1，表示没有自增值，如果是0，表示操作未成功，其它值表示自增值。
+        /// </summary>
+        /// <param name="q"></param>
+        /// <returns></returns>
+        public int ExecuteInsrtOql(OQL q)
+        {
+            DefaultDataBase.BeginTransaction();
+            try
+            {
+                int count = ExecuteOql(q, DefaultDataBase);
+                int result = 0;
+                if (DefaultDataBase.CurrentDBMSType == Common.DBMSType.Oracle)
+                {
+                    EntityBase entity = q.currEntity;
+
+                    string seqName = entity.GetTableName() + "_" + entity.GetIdentityName() + "_SEQ";
+                    DefaultDataBase.InsertKey = "select " + seqName + ".currval as id from dual";
+
+                    var identity = DefaultDataBase.ExecuteScalar(DefaultDataBase.InsertKey);
+                    result = Convert.ToInt32(identity);
+                    DefaultDataBase.InsertKey = "";//恢复
+                   
+                }
+                else if (!string.IsNullOrEmpty(DefaultDataBase.InsertKey))
+                {
+                    var identity = DefaultDataBase.ExecuteScalar(DefaultDataBase.InsertKey);
+                    result = Convert.ToInt32(identity);
+                }
+                else
+                {
+                    result = -1;
+                }
+                DefaultDataBase.Commit();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                DefaultDataBase.Rollback();
+                return 0;
+            }
+          
+        }
+
+        /// <summary>
         ///  执行一个不返回结果集的OQL查询表达式，例如更新，删除实体类的操作。使用自定义的数据访问对象进行操作
         /// </summary>
         /// <param name="oql"></param>
