@@ -11,6 +11,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 
+
 namespace SampleORMTest
 {
     class Program
@@ -30,10 +31,6 @@ namespace SampleORMTest
 
             Console.WriteLine();
             Console.WriteLine("-------PDF.NET SOD ORM 测试 开始 ---------");
-
-            PWMIS.DataProvider.Data.OracleDataAccess.Oracle db1 = new PWMIS.DataProvider.Data.OracleDataAccess.Oracle();
-            db1.ConnectionString = MyDB.Instance.ConnectionString;
-            var dataSet1= db1.ExecuteDataSet("select * from \"Tb_User\"");
 
             LocalDbContext context = new LocalDbContext();//自动创建表
             int count = 0;
