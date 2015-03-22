@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E50CA187-1EF5-448D-9662-071FC0165159}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{71DFF3CA-9558-4B6D-893C-7E3F590B7A56}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SampleORMTest</RootNamespace>
-    <AssemblyName>SampleORMTest</AssemblyName>
+    <RootNamespace>PWMIS.DataProvider.Data.OracleDataAccess</RootNamespace>
+    <AssemblyName>PWMIS.OracleClient</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
@@ -17,7 +17,7 @@
     <SccProvider>SAK</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -35,7 +35,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Oracle.DataAccess, Version=2.121.2.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,31 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LocalDbContext.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="Oracle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UserEntity.cs" />
-    <Compile Include="UserLoginService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Lib\PWMIS.Access.Extensions\PWMIS.Access.Extensions.csproj">
-      <Project>{0ace1995-6254-47f1-8758-c79b9cdcf424}</Project>
-      <Name>PWMIS.Access.Extensions</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Lib\PWMIS.Core.Extensions\PWMIS.Core.Extensions.csproj">
-      <Project>{8f1ae0de-a9f1-43a7-ace4-acf667c2f813}</Project>
-      <Name>PWMIS.Core.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Lib\PWMIS.Core\PWMIS.Core.csproj">
       <Project>{8f0f4237-4d13-40dd-ae8a-c3de748b26e0}</Project>
       <Name>PWMIS.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\OtherProvider\PWMIS.DataProvider.Data.Oracle\PWMIS.DataProvider.Data.Oracle.csproj">
-      <Project>{71dff3ca-9558-4b6d-893c-7e3f590b7a56}</Project>
-      <Name>PWMIS.DataProvider.Data.Oracle</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -59,9 +59,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWIMIS.Core.AccessTest", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleORMTest", "Test\SampleORMTest\SampleORMTest.csproj", "{E50CA187-1EF5-448D-9662-071FC0165159}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.Oracle", "OtherProvider\PWMIS.DataProvider.Data.Oracle\PWMIS.DataProvider.Data.Oracle.csproj", "{71DFF3CA-9558-4B6D-893C-7E3F590B7A56}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 23
+		SccNumberOfProjects = 24
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
 		SccLocalPath0 = .
@@ -153,6 +155,10 @@ Global
 		SccProjectTopLevelParentUniqueName22 = PWMIS.sln
 		SccProjectName22 = Test/SampleORMTest
 		SccLocalPath22 = Test\\SampleORMTest
+		SccProjectUniqueName23 = OtherProvider\\PWMIS.DataProvider.Data.Oracle\\PWMIS.DataProvider.Data.Oracle.csproj
+		SccProjectTopLevelParentUniqueName23 = PWMIS.sln
+		SccProjectName23 = OtherProvider/PWMIS.DataProvider.Data.Oracle
+		SccLocalPath23 = OtherProvider\\PWMIS.DataProvider.Data.Oracle
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -247,6 +253,10 @@ Global
 		{E50CA187-1EF5-448D-9662-071FC0165159}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E50CA187-1EF5-448D-9662-071FC0165159}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E50CA187-1EF5-448D-9662-071FC0165159}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71DFF3CA-9558-4B6D-893C-7E3F590B7A56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71DFF3CA-9558-4B6D-893C-7E3F590B7A56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71DFF3CA-9558-4B6D-893C-7E3F590B7A56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71DFF3CA-9558-4B6D-893C-7E3F590B7A56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -268,6 +278,7 @@ Global
 		{765FFD9B-D356-4E02-BD56-FF52E4E6DD40} = {2A4234BB-564F-402C-9C23-466843666189}
 		{28DFD6DA-925D-41A7-ABBB-A2976CA1A1D8} = {2A4234BB-564F-402C-9C23-466843666189}
 		{EA876B64-CFF0-4985-B59C-1602B3486D3D} = {2A4234BB-564F-402C-9C23-466843666189}
+		{71DFF3CA-9558-4B6D-893C-7E3F590B7A56} = {2A4234BB-564F-402C-9C23-466843666189}
 		{9338057C-0762-4A72-8B12-9EB907D1538C} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
 		{8CFE6672-4BF7-478B-9059-538D0C93F609} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
 		{32A14B75-6845-48B0-9FB9-9F0DD4D58369} = {8CFE6672-4BF7-478B-9059-538D0C93F609}
