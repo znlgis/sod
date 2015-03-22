@@ -636,7 +636,9 @@ namespace PWMIS.DataMap.Entity
             if (type == CompareType.IN || type == CompareType.NotIn)
             {
                 string[] paraNames = new string[Value.Length];
-                Type t=typeof(T);
+                //如果 field== DBNull.value 下面的类型判断将不准。
+                //解决网友 Love๑ 的问题
+                Type t=field ==null? typeof(string) : field.GetType();
                 //网友Super Show 发现GUID和枚举问题 2014.3.11
                 if (t == typeof(string) || t == typeof(DateTime) || t == typeof(Guid) || t.IsEnum) 
                 {

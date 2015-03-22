@@ -384,7 +384,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 获取属性列的值
+        /// 获取属性列的值，但不会产生属性获取事件
         /// </summary>
         /// <param name="propertyName">属性字段名称</param>
         /// <returns>属性值</returns>
@@ -395,6 +395,29 @@ namespace PWMIS.DataMap.Entity
                 return null;
             else
                 return PropertyValues[index];
+        }
+
+        /// <summary>
+        /// 获取属性的值，如果没有，将返回属性类型的默认值；注意该方法调用将发起属性获取事件 。
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <returns></returns>
+        public object GetPropertyValueWithEvent(string propertyName)
+        {
+            EntityFields ef = EntityFieldsCache.Item(this.GetType());
+            string fieldName = ef.GetPropertyField(propertyName);
+            if (fieldName != null)
+            {
+                this.OnPropertyGeting(fieldName);
+                object result= PropertyList(fieldName);
+                if (result == null || result == DBNull.Value)
+                {
+                    Type propType = ef.GetPropertyType(fieldName);
+                    result = Activator.CreateInstance(propType);//活动类型的默认值
+                }
+                return result;
+            }
+            return new ArgumentOutOfRangeException("不存在指定的属性名："+propertyName);
         }
 
         //[NonSerialized()] 
