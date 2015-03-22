@@ -1,0 +1,17 @@
+﻿PDF.NET SOD Oracle  数据访问提供程序
+ODP.NET 使用说明：
+=================================================
+
+当前程序使用的ODP.Net 来代替MS的Oracle.Client,但是，ODP.Net有32位和64位之分，这将影响你的应用程序，
+比如如果使用了32位的ODP.Net，那么你的应用程序应该编译成 x86模式，否则，编译位 Any Cpu 即可。
+
+当前项目使用的是64位的ODP.Net
+根据情况，你可以把它替换成32位的。
+
+要获取它，可以通过安装Oracle XE得到：
+http://www.oracle.com/technetwork/cn/database/database-technologies/express-edition/downloads/index.html
+请选择32位或者64位的安装包。
+
+深蓝医生
+2015.3.22
+
