@@ -1062,7 +1062,7 @@
             <param name="SQL">插入数据的SQL</param>
             <param name="commandType">命令类型</param>
             <param name="parameters">参数数组</param>
-            <param name="ID">要传出的本次操作的新插入数据行的主键ID值</param>
+            <param name="ID">要传出的本次操作的新插入数据行的自增主键ID值，如果没有获取到，则为-1</param>
             <returns>本次查询受影响的行数</returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.CommonDB.ExecuteInsertQuery(System.String,System.Object@)">
@@ -1712,6 +1712,11 @@
         <member name="P:PWMIS.DataProvider.Data.Oracle.CurrentDBMSType">
             <summary>
             获取当前数据库类型的枚举
+            </summary>
+        </member>
+        <member name="P:PWMIS.DataProvider.Data.Oracle.InsertKey">
+            <summary>
+            Oracle 不支持自增，请自己创建触发器和序列
             </summary>
         </member>
         <member name="P:PWMIS.DataProvider.Data.Oracle.GetParameterChar">
@@ -2404,10 +2409,17 @@
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.PropertyList(System.String)">
             <summary>
-            获取属性列的值
+            获取属性列的值，但不会产生属性获取事件
             </summary>
             <param name="propertyName">属性字段名称</param>
             <returns>属性值</returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.GetPropertyValueWithEvent(System.String)">
+            <summary>
+            获取属性的值，如果没有，将返回属性类型的默认值；注意该方法调用将发起属性获取事件 。
+            </summary>
+            <param name="propertyName"></param>
+            <returns></returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.getProperty(System.String,System.TypeCode)">
             <summary>
@@ -2890,6 +2902,13 @@
             </summary>
             <param name="oql">实体查询表达式</param>
             <returns>受影响的行数</returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityQuery`1.ExecuteInsrtOql(PWMIS.DataMap.Entity.OQL)">
+            <summary>
+            执行一个插入数据的OQL查询，返回自增列的值，如果是-1，表示没有自增值，如果是0，表示操作未成功，其它值表示自增值。
+            </summary>
+            <param name="q"></param>
+            <returns></returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityQuery`1.ExecuteOql(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper)">
             <summary>
