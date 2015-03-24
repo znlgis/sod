@@ -12,6 +12,10 @@ ODP.NET 使用说明：
 http://www.oracle.com/technetwork/cn/database/database-technologies/express-edition/downloads/index.html
 请选择32位或者64位的安装包。
 
+更多内容，可以参考下面这篇文章：
+Oracle 免费的数据库--Database 快捷版 11g 安装使用与"SOD框架"对Oracle的CodeFirst支持 
+http://www.cnblogs.com/bluedoctor/p/4359878.html
+
 深蓝医生
 2015.3.22
 
