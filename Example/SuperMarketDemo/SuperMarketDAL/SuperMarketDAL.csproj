@@ -117,7 +117,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\Lib\PWMIS.Core\PWMIS.Core.csproj">
       <Project>{8f0f4237-4d13-40dd-ae8a-c3de748b26e0}</Project>
-      <Name>PWMIS.Core-2013</Name>
+      <Name>PWMIS.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
