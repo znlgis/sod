@@ -50,6 +50,7 @@
  *  
 *  * 修改者：         时间：2015-4-22  
  *  感谢网友 照嘉隆 发现重置属性修改状态的方法中,没有判断字符串属性的问题
+ *  修正Select 的字段不在实体类中查询的问题
  * 
  * 
  * ========================================================================
@@ -351,7 +352,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 新增加实体虚拟字段属性，用来传递内容
+        /// 新增加实体虚拟字段属性，用来传递内容。注意不检查是否重复
         /// </summary>
         /// <param name="name"></param>
         public void AddPropertyName(string name)
@@ -363,8 +364,15 @@ namespace PWMIS.DataMap.Entity
             string[] temp = new string[count];
             this.PropertyNames.CopyTo(temp, 0);
             temp[count - 1] = name;
-
             this.PropertyNames = temp;
+
+            object[] tempValue = new object[count];
+            this.PropertyValues.CopyTo(tempValue, 0);
+            this.PropertyValues = tempValue;
+
+            bool[] tempChanges = new bool[count];
+            this.changedlist.CopyTo(tempChanges, 0);
+            this.changedlist = tempChanges;
         }
 
         /// <summary>
@@ -523,7 +531,7 @@ namespace PWMIS.DataMap.Entity
             //        return;
             //    }
             //}
-            //用下面的代码替代
+            //用下面的代码替代 GetPropertyFieldNameIndex
 
             int index = GetPropertyFieldNameIndex(propertyFieldName);
             if (index >= 0)
@@ -536,46 +544,45 @@ namespace PWMIS.DataMap.Entity
             }
             //可能实体类来自Select 部分字段
             //备份原来的名值组
-            Dictionary<string, object> dictTemp = new Dictionary<string, object>();
-            Dictionary<string, bool> dictChengs = new Dictionary<string, bool>();
-            for (int i = 0; i < PropertyNames.Length; i++)
-            {
-                dictTemp.Add(PropertyNames[i], PropertyValues[i]);
-                dictChengs.Add(PropertyNames[i], changedlist[i]);
-            }
-            //重置字段名数组，names 为空将会触发调用子类重载的 SetFieldNames 方法。
+            string[] namesTemp = PropertyNames;
+            object[] valuesTemp = PropertyValues;
+            bool[] changesTemp = changedlist;
+
+            //重置字段名数组，names 为空,PropertyNames调用将会触发调用子类重载的 SetFieldNames 方法。
             names = null;
             values = null;
-            //复制值
+             //复制值
+            bool setValueFlag = false;
             for (int i = 0; i < PropertyNames.Length; i++)
             {
-                PropertyValues[i] = dictTemp[PropertyNames[i]];
-                changedlist[i] = dictChengs[PropertyNames[i]];
+                string name = PropertyNames[i];
+                if (propertyFieldName == name)
+                {
+                    setValueFlag = true;
+                    PropertyValues[i] = Value;
+                    changedlist[i] = true;
+                }
+                else
+                {
+                    //如果未找到，说明原来实例对象的属性字段不在实体类的定义的属性字段中,否则，复制值
+                    for (int k = 0; k < namesTemp.Length; k++)
+                    {
+                        if (namesTemp[k] == name)
+                        {
+                            PropertyValues[i] = valuesTemp[k];
+                            changedlist[i] = changesTemp[k];
+                            break;
+                        }
+                    }
+                }
             }
-            // 如果propertyName 仍然不在实体类本身类型定义的字段名中，说明是非法的设置，无效；
-            //否则，重新设置当前要设置的值。
-            //for (int i = 0; i < PropertyNames.Length; i++)
-            //{
-            //    if (string.Compare(PropertyNames[i], propertyFieldName, true) == 0)
-            //    {
-            //        PropertyValues[i] = Value;
-
-            //        this.OnPropertyChanged(new PropertyChangedEventArgs(propertyFieldName));
-            //        changedlist[i] = true;
-            //        return;
-            //    }
-            //}
-            //用下面的代码替代
-            index = GetPropertyFieldNameIndex(propertyFieldName);
-            if (index >= 0)
-            {
-                PropertyValues[index] = Value;
-
-                this.OnPropertyChanged(new PropertyChangedEventArgs(propertyFieldName));
-                changedlist[index] = true;
-                return;
+            if (!setValueFlag)
+            { 
+                //要赋值的字段不在实体类定义的字段名中，抛出异常
+                throw new ArgumentException("属性字段名称 [" + propertyFieldName + "] 无效，请检查实体类的当前属性定义和重载的SetFieldNames 方法中对PropertyNames 的设置。");
             }
-            throw new ArgumentException("属性字段名称 [" + propertyFieldName + "] 无效，请检查实体类的当前属性定义和重载的SetFieldNames 方法中对PropertyNames 的设置。");
+            //原来的代码已经优化
+          
         }
 
         /// <summary>
