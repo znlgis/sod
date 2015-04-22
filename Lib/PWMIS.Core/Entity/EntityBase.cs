@@ -47,6 +47,10 @@
  *  
  *  * 修改者：         时间：2015-3-3  
  *  增加 GetPropertyFieldNameIndex 内部方法，优化字段名查找效率
+ *  
+*  * 修改者：         时间：2015-4-22  
+ *  感谢网友 照嘉隆 发现重置属性修改状态的方法中,没有判断字符串属性的问题
+ * 
  * 
  * ========================================================================
 */
@@ -225,6 +229,11 @@ namespace PWMIS.DataMap.Entity
                     {
                         object newValue = Activator.CreateInstance(type);
                         changedlist[i] = !newValue.Equals(value);//等于默认值，未改变
+                    }
+                    else if (type == typeof(string))
+                    {
+                        //感谢网友 照嘉隆 发现没有判断字符串属性的问题
+                        changedlist[i] = value.ToString().Length > 0;
                     }
                 }
                 else
