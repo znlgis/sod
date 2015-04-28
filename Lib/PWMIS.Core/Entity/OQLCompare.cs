@@ -436,7 +436,7 @@ namespace PWMIS.DataMap.Entity
             TableNameField leftField;
             TableNameField rightField;
 
-            compare.LinkedOQL.TakeTwoStackFields(field, out leftField, out rightField);
+            compare.LinkedOQL.TakeTwoStackFields(field, oValue,out leftField, out rightField);
             if (leftField != null)
                 compare.ComparedFieldName = leftField.SqlFieldName;
             else if (rightField != null)
@@ -489,7 +489,7 @@ namespace PWMIS.DataMap.Entity
                 }
             }
             compare.SqlFunctionFormat = sqlFunctionFormat;
-            compare.LinkedOQL.fieldStack.Clear();
+            //compare.LinkedOQL.fieldStack.Clear();//TakeTwoStackFields 方法已经清理过
             return compare;
         }
 
