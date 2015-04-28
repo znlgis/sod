@@ -452,7 +452,7 @@ namespace PWMIS.DataMap.Entity
                 string aliases = "";
                 if (dictAliases.TryGetValue(tnf.Entity, out aliases))
                 {
-                    return string.Format(" {0}.[{1}]", aliases, tnf.Field);
+                    return string.Format(" {0}.[{1}]", aliases, tnf.Field);//关联查询，此处可能需要考虑字段AS别名 问题
                 }
                 else
                 {
@@ -568,9 +568,10 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <typeparam name="T">属性字段的类型</typeparam>
         /// <param name="leftParaValue">左边参数的值</param>
+        /// <param name="rightParaValue">右边待比较参数的值</param>
         /// <param name="leftField">输出的左字段</param>
         /// <param name="rightField">输出的右字段</param>
-        protected internal void TakeTwoStackFields<T>(T leftParaValue, out TableNameField leftField, out TableNameField rightField)
+        protected internal void TakeTwoStackFields<T>(T leftParaValue, object rightParaValue, out TableNameField leftField, out TableNameField rightField)
         {
             leftField = null;
             rightField = null;
@@ -637,13 +638,34 @@ namespace PWMIS.DataMap.Entity
                 string fieldName1 = GetOqlFieldName(tnf1);
                 tnf1.SqlFieldName = fieldName1;
 
-                TableNameField tnf2 = fieldStack.Pop();
-                string fieldName2 = GetOqlFieldName(tnf2);
-                tnf2.SqlFieldName = fieldName2;
+               
                 //正常情况应该是 tnf1.Index > tnf2.Index
-                leftField = tnf2;
-                rightField = tnf1;
+                //tnf1的值如果不是OQLCompare.Comparer方法比较类别右边参数的值，那么tnf1必定是左边参数的值，参照下面这这样的情况：
+                /* //cmp 为 OQLCompare 对象
+                 * OQLCompare cmpResult=null; 
+                 * if(user.City=="bei jing")
+                 *   cmpResult =cmp.Comparer(user.Address,"like","chao yang %");
+                 * 
+                 * string userName=user.Name;
+                 * if(string.IsNullOrEmpty(userName))
+                 *    cmpResult =cmp.Comparer(user.Name,"=",userName);
+                 *    //如果是相等比较，推荐用这种方式实现上面的比较： cmpResult =cmp.EqualValue(userName);
+                 */
+                object Value = tnf1.Entity.PropertyList(tnf1.Field);
+                //有日期问题，待解决
+                if (!object.Equals(Value, rightParaValue))
+                {
+                    leftField = tnf1;
+                }
+                else
+                {
+                    TableNameField tnf2 = fieldStack.Pop();
+                    string fieldName2 = GetOqlFieldName(tnf2);
+                    tnf2.SqlFieldName = fieldName2;
 
+                    leftField = tnf2;
+                    rightField = tnf1;
+                }
                 fieldStack.Clear();
             }
             else
@@ -706,7 +728,7 @@ namespace PWMIS.DataMap.Entity
                 Entity = (EntityBase)sender,
                 Index = this.GetFieldGettingIndex()
             };
-
+            //tnf.FieldValue = tnf.Entity.PropertyList(tnf.Field);
             fieldStack.Push(tnf);
         }
 
