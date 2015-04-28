@@ -23,6 +23,9 @@
  * 修改者：         时间：2015-3-7   
  * 处理条件累加问题某一侧对象可能为空的情况 ，感谢网友 广州-四糸奈 发现此问题
  * 
+ * 修改者：         时间：2015-4-28   
+ * 增加 IsEmptyCompare 比较空条件的方法
+ * 
  * ========================================================================
 */
 using System;
@@ -906,17 +909,26 @@ namespace PWMIS.DataMap.Entity
         public static OQLCompare operator &(OQLCompare compare1, OQLCompare compare2)
         {
             //处理条件累加问题某一侧对象可能为空的情况 2015.3.7 感谢网友 广州-四糸奈 发现此问题
-            if (!object.Equals(compare1, null) && !object.Equals(compare2, null))
+            if (!IsEmptyCompare(compare1) && !IsEmptyCompare(compare2))
             {
                 return new OQLCompare(compare1, CompareLogic.AND, compare2);
             }
             else
             {
-                if (object.Equals(compare1, null))
+                if (IsEmptyCompare(compare1))
                     return compare2;
                 else
                     return compare1;
             }
+        }
+
+        private static bool IsEmptyCompare(OQLCompare cmp)
+        {
+            if (object.Equals(cmp, null))
+                return true;
+            if (cmp.IsLeaf && string.IsNullOrEmpty(cmp.ComparedFieldName))
+                return true;
+            return false;
         }
 
         /// <summary>

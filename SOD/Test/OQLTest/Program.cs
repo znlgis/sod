@@ -293,11 +293,17 @@ namespace OQLTest
             Users user = new Users() { ID = 1, UserName = "zhagnsan", Password = "pwd.",NickName = "" };//NickName = "abc",
             OQLCompareFunc cmpFun = cmp =>
             {
+                //5.2.2.0428 版本之前,仅支持被注释掉的写法,用一个独立的对象来接收条件比较结果,否则会出错.
+                //           之后的版本,按照现在的写法没问题,不过仍然建议使用原来的写法.
                 OQLCompare cmpResult = null;
                 if (user.NickName != "")
-                    cmpResult = cmp.Property(user.AddTime) > new DateTime(2013, 2, 1);
+                    //cmpResult = cmp.Property(user.AddTime) > new DateTime(2013, 2, 1);
+                    cmp = cmp.Property(user.AddTime) > new DateTime(2013, 2, 1);
                 if (user.ID > 0)
-                    cmpResult = cmpResult & cmp.Property(user.UserName) == "ABC" & cmp.Comparer(user.Password, "=", "111");
+                    //cmpResult = cmpResult & cmp.Property(user.UserName) == "ABC" & cmp.Comparer(user.Password, "=", "111");
+                    cmp = cmp & cmp.Property(user.UserName) == "ABC" & cmp.Comparer(user.Password, "=", "111");
+                //return cmpResult;
+                cmpResult = cmp;
                 return cmpResult;
             };
 
