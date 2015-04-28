@@ -25,6 +25,7 @@
  * 
  * 修改者：         时间：2015-4-28   
  * 增加 IsEmptyCompare 比较空条件的方法
+ * 增加 NewCompare 方法用于动态构造条件方法的时候，调用了实体类属性进行条件比较的情况
  * 
  * ========================================================================
 */
@@ -419,6 +420,16 @@ namespace PWMIS.DataMap.Entity
             return Comparer<T>(field, type, Value, null);
         }
 
+        /// <summary>
+        /// 清除字段堆栈,返回当前对象,如果在调用Comparer方法之前调用了关联的实体类属性进行条件判断,动态构造比较条件,此时请调用此方法
+        /// </summary>
+        /// <returns></returns>
+        public OQLCompare NewCompare()
+        {
+            this.LinkedOQL.fieldStack.Clear();
+            return this;
+        }
+
         private OQLCompare ComparerInner<T>(T field, CompareType type, object oValue, string sqlFunctionFormat)
         {
             OQLCompare compare = new OQLCompare(this.LinkedOQL);
@@ -478,6 +489,7 @@ namespace PWMIS.DataMap.Entity
                 }
             }
             compare.SqlFunctionFormat = sqlFunctionFormat;
+            compare.LinkedOQL.fieldStack.Clear();
             return compare;
         }
 
