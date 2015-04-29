@@ -633,9 +633,9 @@ namespace PWMIS.DataMap.Entity
             return Comparer<T>(field, type, Value, null);
         }
 
-        public OQLCompare Comparer<T>(T field, string typeString, T[] Value)
+        public OQLCompare Comparer<T>(T field, string cmpTypeString, T[] Value)
         {
-            return Comparer<T>(field, CompareString2Type(typeString), Value, null);
+            return Comparer<T>(field, CompareString2Type(cmpTypeString), Value, null);
         }
 
         public OQLCompare Comparer<T>(T field, CompareType type, T[] Value, string sqlFunctionFormat)
@@ -744,12 +744,12 @@ namespace PWMIS.DataMap.Entity
         /// 将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
         /// </summary>
         /// <param name="field">实体对象属性</param>
-        /// <param name="compareTypeString">数据库比较类型字符串</param>
+        /// <param name="cmpTypeString">数据库比较类型字符串</param>
         /// <param name="Value">要比较的值</param>
         /// <returns>比较表达式</returns>
-        public OQLCompare Comparer<T>(T field, string compareTypeString, T Value)
+        public OQLCompare Comparer<T>(T field, string cmpTypeString, T Value)
         {
-            return Comparer<T>(field, compareTypeString, Value, null);
+            return Comparer<T>(field, cmpTypeString, Value, null);
         }
 
         private CompareType CompareString2Type(string cmpTypeString)
@@ -815,20 +815,29 @@ namespace PWMIS.DataMap.Entity
             return this.Comparer<T>(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
         }
 
-        public OQLCompare Comparer(object field, string cmpTypeString, string[] Value, string sqlFunctionFormat)
+        /// <summary>
+        /// 将当前实体属性的值和要比较的数组值进行比较，得到一个新的实体比较对象
+        /// </summary>
+        /// <typeparam name="T">实体类属性类型</typeparam>
+        /// <param name="field">实体类属性</param>
+        /// <param name="cmpTypeString">比较类型字符串</param>
+        /// <param name="Value">要比较的数组值</param>
+        /// <param name="sqlFunctionFormat">附加的SQL函数格式串</param>
+        /// <returns></returns>
+        public OQLCompare Comparer<T>(T field, string cmpTypeString, T[] Value, string sqlFunctionFormat)
         {
             return this.Comparer(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
         }
 
-        public OQLCompare Comparer(object field, string cmpTypeString, DateTime[] Value, string sqlFunctionFormat)
-        {
-            return this.Comparer(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
-        }
+        //public OQLCompare Comparer(object field, string cmpTypeString, DateTime[] Value, string sqlFunctionFormat)
+        //{
+        //    return this.Comparer(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
+        //}
 
-        public OQLCompare Comparer(object field, string cmpTypeString, ValueType[] Value, string sqlFunctionFormat)
-        {
-            return this.Comparer(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
-        }
+        //public OQLCompare Comparer(object field, string cmpTypeString, ValueType[] Value, string sqlFunctionFormat)
+        //{
+        //    return this.Comparer(field, CompareString2Type(cmpTypeString), Value, sqlFunctionFormat);
+        //}
 
         /// <summary>
         /// 将当前实体属性的值作为比较的值，得到一个新的实体比较对象

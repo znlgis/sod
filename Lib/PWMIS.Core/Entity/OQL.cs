@@ -3,7 +3,7 @@
  * 有关OQL的概念，参考下面的文章内容：
  * 《ORM查询语言（OQL）简介--概念篇》 http://www.cnblogs.com/bluedoctor/archive/2012/10/06/2712699.html
  * 
- * 版本说明：OQL ver 5.0
+ * 版本说明：OQL ver 5.2
  * 当前版本是在 4.X的版本提供的功能基础上面的重构，新增了实体类内连接支持，Insert，InserForm支持，
  * 并完全重写了内部实现，优化了代码体系，使得扩展性更好。
  * 
@@ -69,6 +69,8 @@
   * 修改者：         时间：2015.1.15                
  *  修改说明：OQL.From<T>() 方法修改修改成返回GOQL的方式，避免之前可能的误用。
  * 
+ *  修改者：         时间：2015.4.29                
+ *  修改说明：修改了条件比较过程中，OQL字段堆栈 的处理方式，解决了“调试陷阱”的问题。
  */
 #endregion
 
@@ -607,6 +609,8 @@ namespace PWMIS.DataMap.Entity
                 else
                 {
                     //通过获取的字段名关联的值，来确定参数所在的顺序
+                    /*
+                     * //下面注释掉的代码 与后面的5 行代码等效 dth,2015.4.29
                     object Value = tnf.Entity.PropertyList(tnf.Field);
                     if (Value == DBNull.Value) Value = null;
                     if (Value != null)
@@ -628,7 +632,13 @@ namespace PWMIS.DataMap.Entity
                         else
                             rightField = tnf;
                     }
-
+                     */ 
+                    //
+                    T Value = PWMIS.Core.CommonUtil.ChangeType<T>(tnf.Entity.PropertyList(tnf.Field));
+                    if (object.Equals(leftParaValue, Value))
+                        leftField = tnf;
+                    else
+                        rightField = tnf;
                 }
             }
             else if (count >= 2)
@@ -651,8 +661,9 @@ namespace PWMIS.DataMap.Entity
                  *    cmpResult =cmp.Comparer(user.Name,"=",userName);
                  *    //如果是相等比较，推荐用这种方式实现上面的比较： cmpResult =cmp.EqualValue(userName);
                  */
-                object Value = tnf1.Entity.PropertyList(tnf1.Field);
-                //有日期问题，待解决
+
+                T Value = PWMIS.Core.CommonUtil.ChangeType<T>( tnf1.Entity.PropertyList(tnf1.Field));
+               
                 if (!object.Equals(Value, rightParaValue))
                 {
                     leftField = tnf1;
