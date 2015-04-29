@@ -670,6 +670,14 @@ namespace PWMIS.DataMap.Entity
                 }
                 else
                 {
+                    /* //示例：假设cmp对象是一个 OQLCompare对象，user是一个实体类，看下面的代码：
+                     * if(user.Age > 20)
+                     *    cmpResult =cmp.Comparer(user.Name,"<>","");
+                     *    
+                     * //如果用户名恰好等于空字符串，那么这个比较条件可能生成下面的查询：
+                     *   " Name <> Age "
+                     * //显然这是不正确的，应该避免这种第一个参数和第三个参数相等，可行的办法就是给 user.Name 赋予一个不同的值，或者调用 cmp.NewCompare() 方法
+                     */
                     TableNameField tnf2 = fieldStack.Pop();
                     string fieldName2 = GetOqlFieldName(tnf2);
                     tnf2.SqlFieldName = fieldName2;

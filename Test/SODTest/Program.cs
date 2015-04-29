@@ -14,7 +14,7 @@ namespace SODTest
         static void Main(string[] args)
         {
             SalesOrder model = new SalesOrder();
-            model.iOrderTypeID = "123";
+            //model.iOrderTypeID = "123";
 
             //string orderTypeID = model.iOrderTypeID;
             BCustomer bCustomer = new BCustomer();
@@ -27,12 +27,13 @@ namespace SODTest
                 if (!string.IsNullOrEmpty(S.iOrderTypeID))
                     cmpResult = cmpResult & cmp.Comparer(S.iOrderTypeID, OQLCompare.CompareType.Equal, S.iOrderTypeID);
 
-                int iCityID = 39;
+                int iCityID = 30;
                 //由于调用了关联实体类的 S.iOrderTypeID 用于条件比较，所以下面需要调用 cmp.NewCompare()
                 //cmpResult = cmpResult & cmp.NewCompare().Comparer<int>(C.iCityID, OQLCompare.CompareType.Equal, iCityID);
                 //感谢网友 红枫星空 发现此问题
 
                 //或者继续采用下面的写法，但是必须确保 Comparer 方法第一个参数调用为实体类属性，而不是待比较的值
+                //且第一个参数的值不能等于第三个参数的值，否则需要调用NewCompare() 方法
                 cmpResult = cmpResult & cmp.Comparer(C.iCityID, OQLCompare.CompareType.Equal, iCityID);
                 return cmpResult;
             };
