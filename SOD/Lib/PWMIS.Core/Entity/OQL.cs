@@ -650,12 +650,30 @@ namespace PWMIS.DataMap.Entity
 
                
                 //正常情况应该是 tnf1.Index > tnf2.Index
-                //tnf1的值如果不是OQLCompare.Comparer方法比较类别右边参数的值，那么tnf1必定是左边参数的值，参照下面这这样的情况：
+                //tnf1的值如果不是OQLCompare.Comparer方法比较类别右边参数的值（即第三个参数），那么tnf1必定是左边参数的值，参照下面这这样的情况：
                 /* //cmp 为 OQLCompare 对象
                  * OQLCompare cmpResult=null; 
                  * if(user.City=="bei jing")
                  *   cmpResult =cmp.Comparer(user.Address,"like","chao yang %");
                  * 
+                 * //上面2行代码并不安全，假如 user.Address=="chao yang %" ，框架无法确定user.Address 是方法上面的第一个调用参数，因为之前有
+                 * //user.City=="bei jing" 调用，对实体类属性获取了值，这样在OQL字段堆栈上，将有 2个元素，而不是1个。正常情况下，字段堆栈首先弹出
+                 * // 的字段 ，也就是属性 user.Address,它会跟 Comparer 方法的第三个参数的值进行比较，如果不一致，则可以确定 user.Address 
+                 * // 是在第一个参数上调用的，否则就可能是在第三个参数上调用的，然后把 user.City 从OQL字段堆栈上弹出来，作为 Comparer 方法的第一个参数，
+                 * // 从而构造这样错误的条件：
+                 *      "[City] like  [Address]"
+                 * //当然，如果能够确信 Comparer 方法的第一个参数与第三个参数值不会相等，那么上面的代码可以放心的使用。如果不能确信，那么最好将
+                 * //代码改写成：
+                 * if(user.City=="bei jing")
+                 *   cmpResult =cmp.NewCompare().Comparer(user.Address,"like","chao yang %");
+                 *   
+                 * //或者改写成下面这样：
+                 * if(user.City=="bei jing")
+                 *   cmpResult =cmp.Comparer(user.Address,"like","chao yang %");
+                 * else
+                 *   cmp.NewCompare();
+                 *   
+                 * //其它情况，如果在构造比较条件之前，要对“同一个实体类属性”进行检查之类，那么是不会有上面问题的担心的，比如下面的代码：
                  * string userName=user.Name;
                  * if(string.IsNullOrEmpty(userName))
                  *    cmpResult =cmp.Comparer(user.Name,"=",userName);
@@ -677,6 +695,7 @@ namespace PWMIS.DataMap.Entity
                      * //如果用户名恰好等于空字符串，那么这个比较条件可能生成下面的查询：
                      *   " Name <> Age "
                      * //显然这是不正确的，应该避免这种第一个参数和第三个参数相等，可行的办法就是给 user.Name 赋予一个不同的值，或者调用 cmp.NewCompare() 方法
+                     * //参见上面的说明
                      */
                     TableNameField tnf2 = fieldStack.Pop();
                     string fieldName2 = GetOqlFieldName(tnf2);
