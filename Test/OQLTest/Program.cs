@@ -312,9 +312,10 @@ namespace OQLTest
             Console.WriteLine(q6.PrintParameterInfo());
         }
 
+        //动态处理查询条件，详细见 http://www.cnblogs.com/bluedoctor/p/4470526.html
         void TestIfCondition2()
         {
-            Users user = new Users() { ID = 1, NickName = "abc" };
+            Users user = new Users() { ID = 0, NickName = "abc", UserName="zhang san", Password="pwd111" };
             OQL q7 = OQL.From(user)
                 .Select()
                 .Where<Users>(CreateCondition)
@@ -325,14 +326,17 @@ namespace OQLTest
 
         OQLCompare CreateCondition(OQLCompare cmp, Users user)
         {
+            Users testUser = new Users {  NickName =user.NickName , ID =user.ID};
+
             OQLCompare cmpResult = null;
-            if (user.NickName != "")
-                //cmpResult = cmp.Property(user.AddTime) > new DateTime(2013, 2, 1);
-                // cmpResult = cmp.EqualValue(user.NickName);//下面一行建议用当前行的写法
+            if (testUser.NickName != "")
                 cmpResult = cmp.Comparer(user.NickName, "=", user.NickName);
-            if (user.ID > 0)
-                cmpResult = cmpResult & cmp.Property(user.UserName) == "ABC"
-                    & cmp.Comparer(user.Password, "=", "111");
+            // 上面一行，也可以采用这样的写法： cmpResult = cmp.EqualValue(user.NickName);
+            if (testUser.ID > 0)
+                cmpResult = cmpResult & cmp.Comparer(user.ID, "=", user.ID);
+            else
+                cmpResult = cmpResult & cmp.Comparer(user.UserName,"=", "zhang san") 
+                                      & cmp.Comparer(user.Password, "=", "pwd111");
             return cmpResult;
         }
 
