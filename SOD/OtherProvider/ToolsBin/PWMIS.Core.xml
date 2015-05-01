@@ -2396,7 +2396,7 @@
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.AddPropertyName(System.String)">
             <summary>
-            新增加实体虚拟字段属性，用来传递内容
+            新增加实体虚拟字段属性，用来传递内容。注意不检查是否重复
             </summary>
             <param name="name"></param>
         </member>
@@ -3653,12 +3653,13 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.OQL.TakeTwoStackFields``1(``0,PWMIS.DataMap.Entity.TableNameField@,PWMIS.DataMap.Entity.TableNameField@)">
+        <member name="M:PWMIS.DataMap.Entity.OQL.TakeTwoStackFields``1(``0,System.Object,PWMIS.DataMap.Entity.TableNameField@,PWMIS.DataMap.Entity.TableNameField@)">
             <summary>
             从堆栈上获取2个字段信息，可能只获取到一个字段信息并自动判断字段是左还是右
             </summary>
             <typeparam name="T">属性字段的类型</typeparam>
             <param name="leftParaValue">左边参数的值</param>
+            <param name="rightParaValue">右边待比较参数的值</param>
             <param name="leftField">输出的左字段</param>
             <param name="rightField">输出的右字段</param>
         </member>
@@ -4172,6 +4173,12 @@
             <param name="Value">要比较的值</param>
             <returns>比较表达式</returns>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.OQLCompare.NewCompare">
+            <summary>
+            清除字段堆栈,返回当前对象,如果在调用Comparer方法之前调用了关联的实体类属性进行条件判断,动态构造比较条件,此时请调用此方法
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.OQLCompare.Comparer``1(``0,PWMIS.DataMap.Entity.OQLCompare.CompareType,``0,System.String)">
             <summary>
             将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
@@ -4235,7 +4242,7 @@
             将当前实体属性的值和要比较的值进行比较，得到一个新的实体比较对象
             </summary>
             <param name="field">实体对象属性</param>
-            <param name="compareTypeString">数据库比较类型字符串</param>
+            <param name="cmpTypeString">数据库比较类型字符串</param>
             <param name="Value">要比较的值</param>
             <returns>比较表达式</returns>
         </member>
@@ -4248,6 +4255,17 @@
             <param name="Value">要比较的值</param>
             <param name="sqlFunctionFormat">SQL 函数格式串，例如 "DATEPART(hh, {0})"</param>
             <returns>比较表达式</returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.OQLCompare.Comparer``1(``0,System.String,``0[],System.String)">
+            <summary>
+            将当前实体属性的值和要比较的数组值进行比较，得到一个新的实体比较对象
+            </summary>
+            <typeparam name="T">实体类属性类型</typeparam>
+            <param name="field">实体类属性</param>
+            <param name="cmpTypeString">比较类型字符串</param>
+            <param name="Value">要比较的数组值</param>
+            <param name="sqlFunctionFormat">附加的SQL函数格式串</param>
+            <returns></returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.OQLCompare.EqualValue(System.Object)">
             <summary>
