@@ -473,7 +473,7 @@ ORDER
                 Application.DoEvents()
                 Dim mapSql As String = row(5).ToString()
                 If mapSql = "" Then
-                    mapSql = "SELECT * FROM " & tableName
+                    mapSql = "SELECT * FROM [" & tableName & "] "
                 End If
 
                 Dim classText As String = Me.MakeClassText(entityName, mapSql, _

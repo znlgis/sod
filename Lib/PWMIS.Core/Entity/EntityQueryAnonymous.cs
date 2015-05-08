@@ -181,7 +181,7 @@ namespace PWMIS.DataMap.Entity
         private List<string> GetTargetFields(string tableName, string[] PropertyNames,CommonDB DB)
         {
             //有可能目标库的字段数量跟实体类定义的不一致，需要先到目标库查询有哪些实际的字段
-            DataSet dsTemp = DB.ExecuteDataSetSchema("select * from " + tableName, CommandType.Text, null);
+            DataSet dsTemp = DB.ExecuteDataSetSchema("select * from [" + tableName +"]", CommandType.Text, null);
             List<string> targetFields = new List<string>();
             if (dsTemp != null && dsTemp.Tables.Count > 0)
             {
