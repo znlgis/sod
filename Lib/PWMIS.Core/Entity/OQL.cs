@@ -71,6 +71,9 @@
  * 
  *  修改者：         时间：2015.4.29                
  *  修改说明：修改了条件比较过程中，OQL字段堆栈 的处理方式，解决了“调试陷阱”的问题。
+ *  
+ *  修改者：         时间：2015.4.29                
+ *  修改说明：修改了条件比较过程中，OQLCompare对象Comparer 方法上处理可空类型可能发生的问题。
  */
 #endregion
 
@@ -637,8 +640,10 @@ namespace PWMIS.DataMap.Entity
                     T Value = PWMIS.Core.CommonUtil.ChangeType<T>(tnf.Entity.PropertyList(tnf.Field));
                     if (object.Equals(leftParaValue, Value))
                         leftField = tnf;
-                    else
+                    else if (object.Equals(rightParaValue, Value)) //增加对右边参数值的判断 2015.5.11
                         rightField = tnf;
+                    else
+                        leftField = tnf;
                 }
             }
             else if (count >= 2)
@@ -682,8 +687,13 @@ namespace PWMIS.DataMap.Entity
 
                 T Value = PWMIS.Core.CommonUtil.ChangeType<T>( tnf1.Entity.PropertyList(tnf1.Field));
                
-                if (!object.Equals(Value, rightParaValue))
+                if (object.Equals(Value,leftParaValue) && !object.Equals(Value, rightParaValue))
                 {
+                    Type genericTypeDefinition = typeof(T).GetGenericTypeDefinition();
+                    if (genericTypeDefinition == typeof(Nullable<>))
+                    {
+                        throw new ArgumentException("当前情况下 Comparer 方法调用的参数有可空类型于非可空类型的属性进行比较，无法推断参数调用顺序！");
+                    }
                     leftField = tnf1;
                 }
                 else
