@@ -124,9 +124,9 @@ namespace OQLTest
         /// <summary>
         /// 
         /// </summary>
-        public System.DateTime LastLoginTime
+        public System.DateTime? LastLoginTime
         {
-            get { return getProperty<System.DateTime>("LastLoginTime"); }
+            get { return getProperty<System.DateTime?>("LastLoginTime"); }
             set { setProperty("LastLoginTime", value); }
         }
 
@@ -151,9 +151,9 @@ namespace OQLTest
         /// <summary>
         /// 
         /// </summary>
-        public System.DateTime AddTime
+        public System.DateTime? AddTime
         {
-            get { return getProperty<System.DateTime>("AddTime"); }
+            get { return getProperty<System.DateTime?>("AddTime"); }
             set { setProperty("AddTime", value); }
         }
 
