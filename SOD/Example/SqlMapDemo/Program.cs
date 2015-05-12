@@ -1,4 +1,8 @@
-﻿using PWMIS.DataProvider.Adapter;
+﻿/*
+ * 详细使用过程，请参考 http://www.cnblogs.com/bluedoctor/p/4498066.html
+ * 使用前，请先按照 http://www.cnblogs.com/tianxue/p/4493260.html 准备数据
+ */
+using PWMIS.DataProvider.Adapter;
 using PWMIS.DataProvider.Data;
 using System;
 using System.Collections.Generic;
