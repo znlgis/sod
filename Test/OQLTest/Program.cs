@@ -68,6 +68,16 @@ namespace OQLTest
             Console.WriteLine("q0:one table and select all fields \r\n{0}", q0);
             Console.WriteLine(q0.PrintParameterInfo());
 
+            OQL q01 = OQL.From(user)
+               .Select()
+               .Where(cmp=> cmp.Comparer(user.ID, OQLCompare.CompareType.Equal,0 ))
+               .OrderBy(user.ID)
+               .END;
+            q01.SelectStar = true;
+            Console.WriteLine("q01:one table and select all fields \r\n{0}", q01);
+            Console.WriteLine(q01.PrintParameterInfo());
+
+
             //var userList = EntityQuery<Users>.QueryList(q0);
             //if (userList.Count > 0)
             //{
