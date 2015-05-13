@@ -18,11 +18,16 @@ namespace SqlMapDemo
         {
             Console.WriteLine("PDF.NET SOD框架 SqlMap示例程序--2015.5.12-------");
             Console.WriteLine("http://www.pwmis.com/sqlmap ---------");
-            //AdoHelper db = new SqlServer();
-            AdoHelper db = MyDB.GetDBHelper();
+           
             SqlMapDemo.SqlMapDAL.TestSqlMapClass test = new SqlMapDAL.TestSqlMapClass();
-            test.CurrentDataBase = db;
+
+            //AdoHelper db = new SqlServer();
+            //取最后一个连接配置
+            AdoHelper db = MyDB.GetDBHelper();
+            //SQL-MAP DAL 默认也会取最后一个连接配置，所以下面一行代码可以注释
+            //test.CurrentDataBase = db;
             DataSet data = test.QueryStudentSores();
+
             Console.WriteLine("查询到记录数量：{0}",data.Tables[0].Rows.Count);
             Console.WriteLine("测试完成。");
             Console.Read();
