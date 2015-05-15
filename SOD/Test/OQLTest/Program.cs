@@ -6,6 +6,7 @@ using PWMIS.DataMap.Entity;
 using UPMS.Core.Model;
 using System.Threading;
 using PWMIS.Core;
+using PWMIS.Core.Extensions;
 
 namespace OQLTest
 {
@@ -22,6 +23,7 @@ namespace OQLTest
             Console.Read();
 
             Program p = new Program();
+            p.TestMapOql();
             p.Test1();
             p.Test2();
             p.Test3();
@@ -565,6 +567,18 @@ namespace OQLTest
 
             Console.WriteLine("OQL Test Child Query:\r\n{0}\r\n", oql);
             Console.WriteLine(oql.PrintParameterInfo());
+        }
+
+        void TestMapOql()
+        {
+            Users user = new Users() { NickName = "pdf.net", RoleID = RoleNames.Admin };
+            OQL q = OQL.From(user).Select().Where(user.RoleID).END;
+            var list = q.MapToList(new  { 
+                P1= user.ID,
+                P2=user.UserName
+            });
+            Console.WriteLine("OQL Test Child Query:\r\n{0}\r\n", q);
+            Console.WriteLine(q.PrintParameterInfo());
         }
 
         static void TestThread()
