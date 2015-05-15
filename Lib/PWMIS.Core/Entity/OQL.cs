@@ -845,6 +845,19 @@ namespace PWMIS.DataMap.Entity
             return Select(fields);
         }
 
+        /// <summary>
+        /// 直接将结果映射到POCO对象,待实现
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="q"></param>
+        /// <param name="mapObject"></param>
+        /// <returns></returns>
+        public  IList<TResult> MapToList<TResult>( TResult mapObject) where TResult : class
+        {
+
+            return null;
+        }
+
         private string PreUpdate()
         {
             string sqlUpdate = "UPDATE " + mainTableName + " SET ";

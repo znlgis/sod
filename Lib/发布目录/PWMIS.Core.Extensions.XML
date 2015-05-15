@@ -325,6 +325,15 @@
         </member>
         <!-- 对于成员“M:PWMIS.Core.Extensions.OQLExtension.ToObjectList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper,PWMIS.DataMap.Entity.ECResultFunc{``0})”忽略有格式错误的 XML 注释 -->
         <!-- 对于成员“M:PWMIS.Core.Extensions.OQLExtension.ToObjectList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataMap.Entity.ECResultFunc{``0})”忽略有格式错误的 XML 注释 -->
+        <member name="M:PWMIS.Core.Extensions.OQLExtension.MapToList``1(PWMIS.DataMap.Entity.OQL,``0)">
+            <summary>
+            直接将结果映射到POCO对象,待实现
+            </summary>
+            <typeparam name="TResult"></typeparam>
+            <param name="q"></param>
+            <param name="mapObject"></param>
+            <returns></returns>
+        </member>
         <member name="M:PWMIS.Core.Extensions.OQLExtension.Execute(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper)">
             <summary>
             执行OQL
