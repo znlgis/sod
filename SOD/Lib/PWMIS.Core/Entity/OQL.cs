@@ -850,13 +850,13 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
         /// <param name="q"></param>
-        /// <param name="mapObject"></param>
+        /// <param name="mapAction"></param>
         /// <returns></returns>
-        public  IList<TResult> MapToList<TResult>( TResult mapObject) where TResult : class
-        {
-
-            return null;
-        }
+        //public IList<TResult> MapToList<TResult>(PWMIS.Common.MyFunc<TResult,TResult> mapFun) where TResult : class
+        //{
+        //    mapAction();
+        //    return null;
+        //}
 
         private string PreUpdate()
         {
