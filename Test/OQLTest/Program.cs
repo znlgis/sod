@@ -573,10 +573,14 @@ namespace OQLTest
         {
             Users user = new Users() { NickName = "pdf.net", RoleID = RoleNames.Admin };
             OQL q = OQL.From(user).Select().Where(user.RoleID).END;
-            var list = q.MapToList(new  { 
-                P1= user.ID,
-                P2=user.UserName
-            });
+            EntityContainer ec = new EntityContainer(q);
+            var list = ec.MapToList(user, u => new 
+                    { 
+                        P1=u.ID,
+                        P2=u.UserName
+                    }
+                );
+           
             Console.WriteLine("OQL Test Child Query:\r\n{0}\r\n", q);
             Console.WriteLine(q.PrintParameterInfo());
         }

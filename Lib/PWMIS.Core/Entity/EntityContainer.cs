@@ -45,6 +45,21 @@ namespace PWMIS.DataMap.Entity
 
     public delegate TResult ECResultFunc<TResult>(EntityContainer ec);
 
+    public delegate TResult ECMapFunc<TResult>() 
+        where TResult : class;
+    public delegate TResult ECMapFunc<T,TResult>(T entity) 
+        where T:EntityBase
+        where TResult : class;
+    public delegate TResult ECMapFunc<T1, T2, TResult>(T1 entity1, T2 entity2)
+        where T1 : EntityBase
+        where T2 : EntityBase
+        where TResult :class ;
+    public delegate TResult ECMapFunc<T1, T2, T3, TResult>(T1 entity1, T2 entity2,T3 entity3)
+        where T1 : EntityBase
+        where T2 : EntityBase
+        where T3 : EntityBase
+        where TResult : class;
+
     /// <summary>
     /// 实体数据容器
     /// </summary>
@@ -450,26 +465,63 @@ namespace PWMIS.DataMap.Entity
         /// <typeparam name="TResult">要映射的结果类型</typeparam>
         /// <param name="fun">自定义的返回结果类型的函数</param>
         /// <returns>结果列表</returns>
-        public IList<TResult> MapToList<TResult>(MyFunc<TResult> fun) where TResult : class
-        {
-            if (this.Values == null)
-                this.Execute();
-            List<TResult> resultList = new List<TResult>();
-            if (this.Values != null && this.fieldNames != null)
-            {
-                foreach (object[] itemValues in this.Values)
-                {
+        //public IList<TResult> MapToList<TResult>(MyFunc<TResult> fun) where TResult : class
+        //{
+        //    if (this.Values == null)
+        //        this.Execute();
+        //    List<TResult> resultList = new List<TResult>();
+        //    if (this.Values != null && this.fieldNames != null)
+        //    {
+        //        foreach (object[] itemValues in this.Values)
+        //        {
                     
-                    this.currValue = itemValues;
-                   TResult t = fun();
-                   resultList.Add(t);
-                }
-                return resultList;
-            }
-            else
-            {
-                throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
-            }
+        //            this.currValue = itemValues;
+        //           TResult t = fun();
+        //           resultList.Add(t);
+        //        }
+        //        return resultList;
+        //    }
+        //    else
+        //    {
+        //        throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
+        //    }
+        //}
+
+        public IList<TResult> MapToList<T,TResult>(T para, ECMapFunc<T,TResult> fun) 
+            where T:EntityBase
+            where TResult : class
+        {
+            this.oql.fieldStack.Clear();
+            var result= fun(para);
+
+            int count =this.oql.fieldStack.Count;
+            this.oql.Select(new object[count]);
+
+            //已经获取到自定义实体类对象中选择的字段，可以用此OQL进行查询了，待完成
+           
+            return null;
+        }
+
+        /// <summary>
+        /// 将实体类的部分字段结果集或者实体类联和查询的字段的结果集映射到一个新的POCO类
+        /// </summary>
+        /// <typeparam name="TResult">POCO类类型</typeparam>
+        /// <param name="fun">包含实体属性访问的POCO类生成函数，注意至少包含2个以上的实体类属性访问</param>
+        /// <returns></returns>
+        public IList<TResult> MapToList< TResult>( ECMapFunc<TResult> fun)
+            where TResult : class
+        {
+            this.oql.fieldStack.Clear();//清除可能的调试信息
+            var result = fun();
+
+            int count = this.oql.fieldStack.Count;
+            if (count <= 1)
+                throw new ArgumentException("要将结果映射的查询的字段太少，如果只需要查询一个字段，请用EntityQuery 对象或者其它方式");
+            this.oql.Select(new object[count]);
+
+            //已经获取到自定义实体类对象中选择的字段，可以用此OQL进行查询了，待完成
+
+            return null;
         }
 
         /// <summary>
