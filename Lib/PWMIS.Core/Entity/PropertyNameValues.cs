@@ -77,6 +77,20 @@ namespace PWMIS.DataMap.Entity
 
         /// <summary>
         /// 填充实体类
+        /// <example>
+        /// <code>
+        /// <![CDATA[
+        ///  //WCF,WebService 等服务方法，para 仅包含实体类上更改过的数据，可调用实体类的GetChangedValues 方法得到
+        ///  public void Dosomething(PropertyNameValues para)
+        ///  {
+        ///    UserEntity user = new UserEntity();
+        ///    PropertyNameValuesSerializer ser = new PropertyNameValuesSerializer(para);
+        ///    ser.FillEntity(user);
+        ///    //To Dosomething.....
+        ///  }
+        /// ]]>
+        /// </code>
+        /// </example>
         /// </summary>
         /// <param name="entity"></param>
         public void FillEntity(EntityBase entity)

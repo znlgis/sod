@@ -51,7 +51,9 @@
 *  * 修改者：         时间：2015-4-22  
  *  感谢网友 照嘉隆 发现重置属性修改状态的方法中,没有判断字符串属性的问题
  *  修正Select 的字段不在实体类中查询的问题
- * 
+ *  
+ * * 修改者：         时间：2015-5-27  
+ *  实体类增加 GetChangedValues 方法，获取修改过的属性字段名称和值
  * 
  * ========================================================================
 */
@@ -611,6 +613,29 @@ namespace PWMIS.DataMap.Entity
             PropertyNameValues result = new PropertyNameValues();
             result.PropertyNames = this.PropertyNames;
             result.PropertyValues = this.PropertyValues;
+            return result;
+        }
+
+        /// <summary>
+        /// 获取实体类属性改变过的属性名称值对象
+        /// </summary>
+        /// <returns></returns>
+        public PropertyNameValues GetChangedValues()
+        {
+            PropertyNameValues result = new PropertyNameValues();
+            List<string> names = new List<string>();
+            List<object> values = new List<object>();
+            for (int i = 0; i < this.PropertyNames.Length; i++)
+            {
+                if (this.changedlist[i])
+                {
+                    names.Add(this.PropertyNames[i]);
+                    values.Add(this.PropertyValues[i]);                
+                }
+            }
+
+            result.PropertyNames = names.ToArray();
+            result.PropertyValues = values.ToArray();
             return result;
         }
 
