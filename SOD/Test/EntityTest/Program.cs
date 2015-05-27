@@ -78,6 +78,9 @@ namespace EntityTest
 
             Console.WriteLine("实体类序列化测试");
             var entityNameValues= user3.GetNameValues();
+            //序列化之后的属性是否修改的情况测试,下面的实体类,LastName 属性没有被修改
+            UserEntity user4 = new UserEntity() {  UserID =100, Age=20, FirstName ="zhang san"};
+            entityNameValues = user4.GetChangedValues();
             PropertyNameValuesSerializer ser = new PropertyNameValuesSerializer(entityNameValues);
             string strEntity = ser.Serializer();
             Console.WriteLine(strEntity);
