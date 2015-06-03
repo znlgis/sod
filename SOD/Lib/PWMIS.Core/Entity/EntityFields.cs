@@ -358,6 +358,7 @@ namespace PWMIS.DataMap.Entity
     public class EntityFieldsCache
     {
         private static Dictionary<string, EntityFields> dict = new Dictionary<string, EntityFields>();
+        private static object _syncObj = new object();
         /// <summary>
         /// 获取缓存项，如果没有，将自动创建一个
         /// </summary>
@@ -367,11 +368,21 @@ namespace PWMIS.DataMap.Entity
         {
             if (dict.ContainsKey(entityType.FullName))
                 return dict[entityType.FullName];
-
-            EntityFields ef = new EntityFields();
-            if (ef.InitEntity(entityType)) //2015.2.5 修改
-                dict.Add(entityType.FullName, ef);
-            return ef;
+            lock (_syncObj)
+            {
+                if (dict.ContainsKey(entityType.FullName))
+                {
+                    return dict[entityType.FullName];
+                }
+                else
+                {
+                    EntityFields ef = new EntityFields();
+                    if (ef.InitEntity(entityType)) //2015.2.5 修改
+                        dict.Add(entityType.FullName, ef);
+                    return ef;
+                }
+            }
+           
         }
     }
 }
