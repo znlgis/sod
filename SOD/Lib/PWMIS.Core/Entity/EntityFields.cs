@@ -17,7 +17,10 @@
  * 修改说明：修复实体类有多个普通属性（即POCO属性）的时候，获取实体类数据库元数据不正确的问题。 
  * 
  * 修改者：广州-玄离       时间：2015-2-28                
- * 修改说明：解决实体类属性字段长度未定义，需要生成text （SqlServer是varchar(max)）字段类型的问题。 
+ * 修改说明：解决实体类属性字段长度未定义，需要生成text （SqlServer是varchar(max)）字段类型的问题。
+ * 
+ * 修改者：      时间：2015-6-3   
+ * 修改说明：增加 GetPropertyFieldSize，获取属性字段的长度
  * ========================================================================
 */
 using System;
@@ -41,6 +44,7 @@ namespace PWMIS.DataMap.Entity
         private string[] propertyNames = null;
         private Type[] typeNames = null;
         private string tableName = null;
+        private Type entityType = null;//当前实体类类型
 
         /// <summary>
         /// 获取实体类对应的表字段名称数组
@@ -112,6 +116,18 @@ namespace PWMIS.DataMap.Entity
             }
             return null;
         }
+
+        /// <summary>
+        /// 根据实体类内部的属性字段名称，获取对应的数据库字段长度
+        /// </summary>
+        /// <param name="fieldName">属性字段名称</param>
+        /// <returns></returns>
+        public int GetPropertyFieldSize(string fieldName)
+        {
+            EntityBase entity = Activator.CreateInstance(this.entityType) as EntityBase;
+            return entity.GetStringFieldSize(fieldName);
+        }
+
         /// <summary>
         /// 获取属性名对应的字段名
         /// </summary>
@@ -131,6 +147,8 @@ namespace PWMIS.DataMap.Entity
             }
             return null;
         }
+
+
         /// <summary>
         /// 初始化实体信息（已经过时）
         /// </summary>
@@ -270,7 +288,7 @@ namespace PWMIS.DataMap.Entity
                 this.fields = fieldList.ToArray();
                 this.propertyNames = propertyNameList.ToArray();
                 this.typeNames = typeNameList.ToArray();
-
+                this.entityType = entityType;
                 return true;
             }
             return false;
