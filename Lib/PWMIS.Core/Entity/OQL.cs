@@ -768,6 +768,24 @@ namespace PWMIS.DataMap.Entity
             return null;
         }
 
+        /// <summary>
+        /// 获取当前OQL使用的所有实体类
+        /// </summary>
+        /// <returns></returns>
+        protected internal EntityBase[] GetAllUsedEntity()
+        {
+            List<EntityBase> list = new List<EntityBase>();
+            list.Add(this.currEntity);
+            if (dictAliases != null)
+            {
+                foreach (object key in dictAliases.Keys)
+                {
+                    list.Add(key as EntityBase);
+                }
+            }
+            return list.ToArray();
+        }
+
         void e_PropertyGetting(object sender, PropertyGettingEventArgs e)
         {
             TableNameField tnf = new TableNameField()

@@ -572,16 +572,25 @@ namespace OQLTest
         void TestMapOql()
         {
             Users user = new Users() { NickName = "pdf.net", RoleID = RoleNames.Admin };
+            //插入一个数据便于测试
+            EntityQuery<Users>.Instance.Insert(user);
+
             OQL q = OQL.From(user).Select().Where(user.RoleID).END;
             EntityContainer ec = new EntityContainer(q);
+            //第一种映射方式，适用于OQL单实体类查询：
             var list = ec.MapToList(user, u => new 
                     { 
                         P1=u.ID,
-                        P2=u.UserName
+                        P2=u.NickName
                     }
                 );
-           
-            Console.WriteLine("OQL Test Child Query:\r\n{0}\r\n", q);
+            //第二种映射方式，推荐用于OQL多个实体类关联查询的情况：
+            var list2 = ec.MapToList(() => new { 
+                     P1= user.ID,
+                     P2= user.NickName
+                });
+
+            Console.WriteLine("OQL TestMapOql Query:\r\n{0}\r\n", q);
             Console.WriteLine(q.PrintParameterInfo());
         }
 
