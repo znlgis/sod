@@ -294,7 +294,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public IEnumerable<T> Map<T>() where T : EntityBase
+        public IEnumerable<T> Map<T>() where T : EntityBase,new()
         {
             if (this.Values == null)
             {
@@ -309,7 +309,7 @@ namespace PWMIS.DataMap.Entity
                     yield break;
 
                 Dictionary<string, int> dictNameIndex = new Dictionary<string, int>();
-                T entity = Activator.CreateInstance<T>();
+                T entity = new T();
                 string tabeName = entity.TableName;
                 //查找字段匹配情况
                 //entity.PropertyNames 存储的仅仅是查询出来的列名称，由于有连表查询，
@@ -325,6 +325,7 @@ namespace PWMIS.DataMap.Entity
                             if (this.OQL.sql_fields.Contains(cmpString))
                             {
                                 dictNameIndex[this.fieldNames[i]] = i;
+                                break;
                             }
                         }
 
@@ -340,6 +341,7 @@ namespace PWMIS.DataMap.Entity
                             if (this.fieldNames[i] == entity.PropertyNames[j])
                             {
                                 dictNameIndex[this.fieldNames[i]] = i;
+                                break;
                             }
                         }
                     }
@@ -361,13 +363,107 @@ namespace PWMIS.DataMap.Entity
                     }
                     yield return entity;
                     //创建一个新实例
-                    entity = Activator.CreateInstance<T>();
+                    entity = new T ();
                 }
             }
             else
             {
                 throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
             }
+        }
+
+        /// <summary>
+        /// 根据OQL内部的实体类，将查询结果直接映射到这些实体类实例对象上去
+        /// </summary>
+        /// <param name="entitys">OQL内部的实体类</param>
+        /// <returns></returns>
+        private IEnumerable<object[]> MapMoreEntity(EntityBase[] entitys)
+        {
+            if (this.Values == null)
+            {
+                int rowsCount = this.Execute();
+                if (rowsCount <= 0)
+                    yield break;
+
+            }
+            if (this.Values != null && this.fieldNames != null)
+            {
+                if (this.Values.Count == 0)
+                    yield break;
+
+                TableNameField[] fieldInfo = new TableNameField[this.fieldNames.Length];
+                //查找字段匹配情况
+                //entity.PropertyNames 存储的仅仅是查询出来的列名称，由于有连表查询，
+                //如果要映射到指定的实体，还得检查当前列对应的表名称
+                if (this.OQL.haveJoinOpt)
+                {
+                    //是连表查询
+                    for (int i = 0; i < this.fieldNames.Length; i++)
+                    {
+                        foreach (EntityBase entity in entitys)
+                        {
+                            string tabeName = entity.TableName;
+                            for (int j = 0; j < entity.PropertyNames.Length; j++)
+                            {
+                                string cmpString = "[" + tabeName + "].[" + entity.PropertyNames[j] + "]";
+                                if (this.OQL.sql_fields.Contains(cmpString))
+                                {
+                                    TableNameField tnf = new TableNameField()
+                                    {
+                                            Entity = entity,
+                                            Field = entity.PropertyNames[j],
+                                            Index = j //记录下当前字段在实体类属性的索引
+                                    };
+                                    fieldInfo[i] = tnf;
+                                    break;
+                                }
+                            }
+                            if (fieldInfo[i].Entity == entity)
+                                break;
+
+                        }// end for
+                    }// next i
+                }
+                else
+                {
+                    EntityBase entity = entitys[0];
+                    for (int i = 0; i < this.fieldNames.Length; i++)
+                    {
+                        for (int j = 0; j < entity.PropertyNames.Length; j++)
+                        {
+                            if (this.fieldNames[i] == entity.PropertyNames[j])
+                            {
+                                TableNameField tnf = new TableNameField()
+                                {
+                                    Entity = entity,
+                                    Field = entity.PropertyNames[j],
+                                    Index = j //记录下当前字段在实体类属性的索引
+                                };
+                                fieldInfo[i] = tnf;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                //int length = entity.PropertyValues.Length;
+                foreach (object[] itemValues in this.Values)
+                {
+                    for (int m = 0; m < itemValues.Length; m++)
+                    {
+                        //将容器的值赋值给实体的值元素
+                        EntityBase entity = fieldInfo[m].Entity;
+                        int index = fieldInfo[m].Index;
+                        entity.PropertyValues[index] = itemValues[m];
+                    }
+                    yield return itemValues;
+                }
+            }
+            else
+            {
+                throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
+            }
+
         }
 
         private object propertyList(string propertyName, object[] itemValues)
@@ -436,6 +532,7 @@ namespace PWMIS.DataMap.Entity
             }
         }
 
+        #region 注释掉的方法
         /// <summary>
         /// 将结果映射到相应类型的列表（可以使匿名类型）
         /// <example>
@@ -486,9 +583,18 @@ namespace PWMIS.DataMap.Entity
         //        throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
         //    }
         //}
+        #endregion
 
+        /// <summary>
+        /// 将实体类的部分字段结果集或者实体类联和查询的字段的结果集映射到一个新的POCO类
+        /// </summary>
+        /// <typeparam name="T">OQL使用的实体类类型</typeparam>
+        /// <typeparam name="TResult">要映射的结果类型</typeparam>
+        /// <param name="para">OQL使用的实体类</param>
+        /// <param name="fun">完成映射的用户方法</param>
+        /// <returns>映射的用户类型数据列表</returns>
         public IList<TResult> MapToList<T,TResult>(T para, ECMapFunc<T,TResult> fun) 
-            where T:EntityBase
+            where T:EntityBase,new()
             where TResult : class
         {
             this.oql.fieldStack.Clear();
@@ -497,9 +603,14 @@ namespace PWMIS.DataMap.Entity
             int count =this.oql.fieldStack.Count;
             this.oql.Select(new object[count]);
 
-            //已经获取到自定义实体类对象中选择的字段，可以用此OQL进行查询了，待完成
-           
-            return null;
+            //已经获取到自定义实体类对象中选择的字段，可以用此OQL进行查询了
+            List<TResult> resultList = new List<TResult>();
+            foreach (T entity in this.Map<T>())
+            {
+                TResult item = fun(entity);
+                resultList.Add(item);
+            }
+            return resultList;
         }
 
         /// <summary>
@@ -508,7 +619,7 @@ namespace PWMIS.DataMap.Entity
         /// <typeparam name="TResult">POCO类类型</typeparam>
         /// <param name="fun">包含实体属性访问的POCO类生成函数，注意至少包含2个以上的实体类属性访问</param>
         /// <returns></returns>
-        public IList<TResult> MapToList< TResult>( ECMapFunc<TResult> fun)
+        public IList<TResult> MapToList<TResult>(ECMapFunc<TResult> fun)
             where TResult : class
         {
             this.oql.fieldStack.Clear();//清除可能的调试信息
@@ -520,8 +631,14 @@ namespace PWMIS.DataMap.Entity
             this.oql.Select(new object[count]);
 
             //已经获取到自定义实体类对象中选择的字段，可以用此OQL进行查询了，待完成
-
-            return null;
+            List<TResult> resultList = new List<TResult>();
+            foreach (var data in this.MapMoreEntity(this.OQL.GetAllUsedEntity()))
+            {
+                TResult obj = fun();
+                resultList.Add(obj);
+            }
+          
+            return resultList;
         }
 
         /// <summary>
