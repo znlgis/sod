@@ -349,13 +349,17 @@ namespace PWMIS.DataMap.Entity
                 {
                     temp = temp + " IDENTITY(1,1)";
                 }
-                else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.Access && entity.PrimaryKeys.Contains(field))
+                else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.Access )
                 {
-                    temp = temp + " autoincrement PRIMARY KEY ";
+                    temp = temp + " autoincrement";
                 }
                 else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.SQLite)
                 {
                     temp = temp + " autoincrement";
+                }
+                else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.MySql)
+                {
+                    temp = temp + " AUTO_INCREMENT";
                 }
                 else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL)
                 {

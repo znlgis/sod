@@ -81,7 +81,12 @@ namespace PWMIS.DataProvider.Data
 
         public override string GetNativeDbTypeName(IDataParameter para)
         {
-            return ((MySqlParameter)para).MySqlDbType.ToString();
+            MySqlParameter mysqlPara = para as MySqlParameter;
+            MySqlDbType dbType = mysqlPara.MySqlDbType;
+            if (dbType == MySqlDbType.Int32)
+                return "INT";
+            else
+                return dbType.ToString();
         }
 
         /// <summary>

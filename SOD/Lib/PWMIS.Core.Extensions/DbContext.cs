@@ -5,15 +5,17 @@ using PWMIS.DataProvider.Adapter;
 using System.IO;
 using PWMIS.DataProvider.Data;
 using PWMIS.DataMap.Entity;
+using PWMIS.Core.Interface;
 
 namespace PWMIS.Core.Extensions
 {
     /// <summary>
     /// 数据上下文，可以实现自动检查数据库，创建表，获取EntityQuery 泛型实例对象等功能，封装了AdoHelper的使用。
     /// </summary>
-    public abstract class DbContext
+    public abstract class DbContext:IDbContextProvider
     {
         private AdoHelper db;
+        private IDbContextProvider provider ;
         private static object lock_obj = new object();
         private static bool checkedDb = false;//数据库文件是否已经创建
         /// <summary>
@@ -35,8 +37,10 @@ namespace PWMIS.Core.Extensions
                         checkedDb = CheckDB();
                 }
             }
+            //在这里初始化合适的 IDbContextProvider
         }
 
+        #region 接口实现
         /// <summary>
         /// 关联的当期数据库访问对象
         /// </summary>
@@ -44,6 +48,15 @@ namespace PWMIS.Core.Extensions
         {
             get { return db; }
         }
+
+        public void CheckTableExists<T>() where T : EntityBase, new()
+        {
+            if (this.provider == null)
+                InitContextProvider();
+            provider.CheckTableExists<T>();
+        }
+        #endregion
+
 
         /// <summary>
         /// 检查数据库，检查表是否已经初始化。如果是Access 数据库，还会检查数据库文件是否存在，可以在系统中设置DBFilePath 字段。
@@ -61,11 +74,8 @@ namespace PWMIS.Core.Extensions
         /// </summary>
         /// <returns></returns>
         protected abstract bool CheckAllTableExists();
-        /// <summary>
-        /// 检查实体类对应的数据表是否在数据库中存在，需要在子类中实现
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        protected abstract void CheckTableExists<T>() where T : EntityBase, new();
+        
+       
         
         /// <summary>
         /// 创建一个新的EntityQuery泛型类实例对象
@@ -200,5 +210,57 @@ namespace PWMIS.Core.Extensions
         }
 
         #endregion
+
+        /// <summary>
+        /// 初始化DbContextProvider ,如果是SqlServer,Oracle之外的数据库，需要按照约定，提供XXXDbContext
+        /// <remarks>
+        ///   约定，根据 CurrentDataBase 所在的程序集，来确定 XXXDbContext 的位置
+        ///  XXXDbContext的名字，XXX总是CurrentDataBase的类型名字，(Name,not full Name)
+        ///  XXXDbContext 可以在不同的命名空间中
+        /// </remarks>
+        /// </summary>
+        private void InitContextProvider()
+        {
+            if (CurrentDataBase.CurrentDBMSType == Common.DBMSType.SqlServer)
+            {
+                provider = new SqlServerDbContext(CurrentDataBase);
+            }
+            else if (CurrentDataBase.CurrentDBMSType == Common.DBMSType.Oracle)
+            {
+                provider = new OracleDbContext(CurrentDataBase);
+            }
+            else if (CurrentDataBase.CurrentDBMSType == Common.DBMSType.Access)
+            {
+                var assembly = System.Reflection.Assembly.LoadFrom("PWMIS.Access.Extensions");
+                string typeName = "PWMIS.AccessExtensions.AccessDbContext";
+                var obj = assembly.CreateInstance(typeName, false,
+                    System.Reflection.BindingFlags.Default, null, new object[] { CurrentDataBase }, null, null);
+                provider = obj as IDbContextProvider;
+                if (provider == null)
+                    throw new Exception("类型 " + typeName + " 不是IDbContextProvider 的实例类型");
+            }
+            else
+            {
+                //约定，根据 CurrentDataBase 所在的程序集，来确定 XXXDbContext 的位置
+                //XXXDbContext的名字，XXX总是CurrentDataBase的类型名字，(Name,not full Name)
+                //XXXDbContext 可以在不同的命名空间中
+                var assembly = System.Reflection.Assembly.GetAssembly(CurrentDataBase.GetType());
+
+                string typeName = CurrentDataBase.GetType().Name + "DbContext";
+                foreach (Type t in assembly.GetTypes())
+                {
+                    if (t.Name == typeName)
+                    {
+                        var obj = Activator.CreateInstance(t, CurrentDataBase);
+                        provider = obj as IDbContextProvider;
+                        if (provider == null)
+                            throw new Exception("类型 " + typeName + " 不是IDbContextProvider 的实例类型");
+                        break;
+                    }
+                }
+                if (provider == null)
+                    throw new Exception("未能在程序集 " + assembly.FullName + " 中找到约定的DbContext 类型： " + typeName);
+            }
+        }
     }
 }

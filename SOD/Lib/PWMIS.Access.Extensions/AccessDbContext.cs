@@ -1,4 +1,5 @@
 ﻿using PWMIS.Core.Extensions;
+using PWMIS.Core.Interface;
 using PWMIS.DataMap.Entity;
 using PWMIS.DataProvider.Data;
 using System;
@@ -11,9 +12,11 @@ namespace PWMIS.AccessExtensions
      /// <summary>
     /// Access数据库上下文，可以实现自动检查数据库，创建表，获取EntityQuery 泛型实例对象等功能，封装了AdoHelper的使用。
     /// </summary>
-    public abstract class AccessDbContext : DbContext
+    public  class AccessDbContext : IDbContextProvider
     {
-        public AccessDbContext(string connName):base(connName)
+        public AdoHelper CurrentDataBase { get; private set; }
+
+        public AccessDbContext(AdoHelper db)
         { 
         
         }
@@ -23,25 +26,25 @@ namespace PWMIS.AccessExtensions
         /// 如果需要更多的检查，可以重写该方法，但一定请保留 base.CheckDB();这行代码。
         /// </summary>
         /// <returns>检查是否通过</returns>
-        protected  override bool CheckDB()
+        public   bool CheckDB()
         {
-            if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.Access)
-            {
-                if (DBFilePath != string.Empty)
-                {
-                    if (!File.Exists(DBFilePath))
-                    {
-                        //创建数据库文件
-                        PWMIS.AccessExtensions.AccessUility.CreateDataBase(DBFilePath);
-                    }
-                    return CheckAllTableExists();
-                }
-            }
-            else
-            {
-                //其它类型的数据库，仅检查表是否存在
-                return CheckAllTableExists();
-            }
+            //if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.Access)
+            //{
+            //    if (DBFilePath != string.Empty)
+            //    {
+            //        if (!File.Exists(DBFilePath))
+            //        {
+            //            //创建数据库文件
+            //            PWMIS.AccessExtensions.AccessUility.CreateDataBase(DBFilePath);
+            //        }
+            //        return CheckAllTableExists();
+            //    }
+            //}
+            //else
+            //{
+            //    //其它类型的数据库，仅检查表是否存在
+            //    return CheckAllTableExists();
+            //}
             return false;
         }
 
@@ -49,7 +52,7 @@ namespace PWMIS.AccessExtensions
         /// 检查实体类对应的数据表是否在数据库中存在
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        protected override void CheckTableExists<T>() 
+        public  void CheckTableExists<T>() where T : EntityBase, new()
         {
             //创建表
             if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.Access)

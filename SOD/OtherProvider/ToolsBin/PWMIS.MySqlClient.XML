@@ -66,5 +66,10 @@
             获取数据库参数前缀资费
             </summary>
         </member>
+        <member name="T:PWMIS.DataProvider.Data.MySQLDbContext">
+            <summary>
+            MySQL 数据上下文提供程序
+            </summary>
+        </member>
     </members>
 </doc>

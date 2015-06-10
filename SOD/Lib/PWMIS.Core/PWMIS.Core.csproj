@@ -117,6 +117,7 @@
     <Compile Include="Entity\PropertyNameValues.cs" />
     <Compile Include="Entity\QueryParameter.cs" />
     <Compile Include="Interface\IDataControl.cs" />
+    <Compile Include="Interface\IDbContextProvider.cs" />
     <Compile Include="Interface\IEntity.cs" />
     <Compile Include="Interface\IQueryControl.cs" />
     <Compile Include="Interface\IReadData.cs" />

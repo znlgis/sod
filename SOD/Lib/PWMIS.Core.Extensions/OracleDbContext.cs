@@ -1,4 +1,6 @@
-﻿using PWMIS.DataMap.Entity;
+﻿using PWMIS.Core.Interface;
+using PWMIS.DataMap.Entity;
+using PWMIS.DataProvider.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,21 +8,22 @@ using System.Text;
 
 namespace PWMIS.Core.Extensions
 {
-    public abstract class OracleDbContext :DbContext
+    public sealed class OracleDbContext : IDbContextProvider
     {
+        public AdoHelper CurrentDataBase { get; private set; }
+
         /// <summary>
         /// 用连接字符串名字初始化本类
         /// </summary>
         /// <param name="connName"></param>
-        public OracleDbContext(string connName)
-            : base(connName)
-        { 
-        
+        public OracleDbContext(AdoHelper db)
+        {
+            this.CurrentDataBase = db;
         }
         /// <summary>
         /// 检查实体类对应的数据表是否在数据库中存在
         /// </summary>
-        protected override void CheckTableExists<T>()
+        public  void CheckTableExists<T>() where T : EntityBase, new()
         {
             //创建表
             if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.Oracle)

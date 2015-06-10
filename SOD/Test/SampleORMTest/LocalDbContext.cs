@@ -9,7 +9,7 @@ namespace SampleORMTest
     /// <summary>
     /// 用来测试的本地SqlServer 数据库上下文类
     /// </summary>
-    public class LocalDbContext : OracleDbContext  // SqlServerDbContext
+    public class LocalDbContext : DbContext  // 不在继承自SqlServerDbContext
     {
         public LocalDbContext()
             : base("local")

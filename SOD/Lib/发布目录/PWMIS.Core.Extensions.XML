@@ -33,12 +33,6 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:PWMIS.Core.Extensions.DbContext.CheckTableExists``1">
-            <summary>
-            检查实体类对应的数据表是否在数据库中存在，需要在子类中实现
-            </summary>
-            <typeparam name="T"></typeparam>
-        </member>
         <member name="M:PWMIS.Core.Extensions.DbContext.NewQuery``1">
             <summary>
             创建一个新的EntityQuery泛型类实例对象
@@ -87,6 +81,16 @@
             <typeparam name="T">实体类或者接口</typeparam>
             <param name="list">数据列表</param>
             <returns>操作受影响的行数</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.DbContext.InitContextProvider">
+            <summary>
+            初始化DbContextProvider ,如果是SqlServer,Oracle之外的数据库，需要按照约定，提供XXXDbContext
+            <remarks>
+              约定，根据 CurrentDataBase 所在的程序集，来确定 XXXDbContext 的位置
+             XXXDbContext的名字，XXX总是CurrentDataBase的类型名字，(Name,not full Name)
+             XXXDbContext 可以在不同的命名空间中
+            </remarks>
+            </summary>
         </member>
         <member name="P:PWMIS.Core.Extensions.DbContext.CurrentDataBase">
             <summary>
@@ -356,7 +360,7 @@
             <param name="FilterContainValue">要筛选的枚举值</param>
             <returns>返回所有可能的枚举值组合</returns>
         </member>
-        <member name="M:PWMIS.Core.Extensions.OracleDbContext.#ctor(System.String)">
+        <member name="M:PWMIS.Core.Extensions.OracleDbContext.#ctor(PWMIS.DataProvider.Data.AdoHelper)">
             <summary>
             用连接字符串名字初始化本类
             </summary>
@@ -372,7 +376,7 @@
             SqlServer 数据上下文基类，可以自动创建实体类对应的表
             </summary>
         </member>
-        <member name="M:PWMIS.Core.Extensions.SqlServerDbContext.#ctor(System.String)">
+        <member name="M:PWMIS.Core.Extensions.SqlServerDbContext.#ctor(PWMIS.DataProvider.Data.AdoHelper)">
             <summary>
             用连接字符串名字初始化本类
             </summary>

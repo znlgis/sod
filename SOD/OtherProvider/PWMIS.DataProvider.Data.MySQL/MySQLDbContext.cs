@@ -1,34 +1,31 @@
 ﻿using PWMIS.Core.Interface;
 using PWMIS.DataMap.Entity;
-using PWMIS.DataProvider.Data;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
-namespace PWMIS.Core.Extensions
+namespace PWMIS.DataProvider.Data
 {
     /// <summary>
-    /// SqlServer 数据上下文基类，可以自动创建实体类对应的表
+    /// MySQL 数据上下文提供程序
     /// </summary>
-    public sealed class SqlServerDbContext : IDbContextProvider
+    public class MySQLDbContext:IDbContextProvider
     {
-       public  AdoHelper CurrentDataBase { get; private set; }
-        /// <summary>
-        /// 用连接字符串名字初始化本类
-        /// </summary>
-        /// <param name="connName"></param>
-        public SqlServerDbContext(AdoHelper db)
+        public AdoHelper CurrentDataBase
+        {
+            get;
+            private set;
+        }
+
+        public MySQLDbContext(AdoHelper db)
         {
             this.CurrentDataBase = db;
         }
-        /// <summary>
-        /// 检查实体类对应的数据表是否在数据库中存在
-        /// </summary>
-        public void CheckTableExists<T>() where T : EntityBase, new()
+
+        public void CheckTableExists<T>() where T : DataMap.Entity.EntityBase, new()
         {
             //创建表
-            if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.SqlServer)
+            if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.MySql)
             {
                 var entity = new T();
                 var dsScheme = CurrentDataBase.GetSchema("Tables", new string[] { null, null, null, "BASE TABLE" });
