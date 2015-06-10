@@ -89,7 +89,7 @@
             PostgreSQL数据库上下文，可以实现自动检查数据库，创建表，获取EntityQuery 泛型实例对象等功能，封装了AdoHelper的使用。
             </summary>
         </member>
-        <member name="M:PWMIS.PostgreSQLClient.PostgreSQLDbContext.#ctor(System.String)">
+        <member name="M:PWMIS.PostgreSQLClient.PostgreSQLDbContext.#ctor(PWMIS.DataProvider.Data.AdoHelper)">
             <summary>
             用连接字符串名字初始化本类
             </summary>

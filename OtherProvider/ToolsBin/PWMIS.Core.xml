@@ -2052,6 +2052,13 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityContainer.MapMoreEntity(PWMIS.DataMap.Entity.EntityBase[])">
+            <summary>
+            根据OQL内部的实体类，将查询结果直接映射到这些实体类实例对象上去
+            </summary>
+            <param name="entitys">OQL内部的实体类</param>
+            <returns></returns>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.EntityContainer.GetItemValue``1(System.String)">
             <summary>
             根据字段名，从当前行获取值
@@ -2078,34 +2085,13 @@
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityContainer.MapToList``2(``0,PWMIS.DataMap.Entity.ECMapFunc{``0,``1})">
             <summary>
-            将结果映射到相应类型的列表（可以使匿名类型）
-            <example>
-            <code>
-            <![CDATA[
-            OQL q=OQL.From(entity1)
-                     .Join(entity2).On(entity1.PK,entity2.FK)
-                     .Select(entity1.Field1,entity2.Field2)
-                  .End;
-            EntityContainer ec=new EntityContainer(q);
-            var list=ec.MapToList(()=>
-                     {
-                        return new {
-                                     Property1=ec.GetItemValue<int>(0), 
-                                     Property2=ec.GetItemValue<string>(1) 
-                                   };
-                     });
-            
-            foreache(var item in list)
-            {
-                Console.WriteLine("Property1={0},Property2={1}",item.Property1,item.Property2);
-            }
-            ]]>
-            </code>
-            </example>
+            将实体类的部分字段结果集或者实体类联和查询的字段的结果集映射到一个新的POCO类
             </summary>
+            <typeparam name="T">OQL使用的实体类类型</typeparam>
             <typeparam name="TResult">要映射的结果类型</typeparam>
-            <param name="fun">自定义的返回结果类型的函数</param>
-            <returns>结果列表</returns>
+            <param name="para">OQL使用的实体类</param>
+            <param name="fun">完成映射的用户方法</param>
+            <returns>映射的用户类型数据列表</returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityContainer.MapToList``1(PWMIS.DataMap.Entity.ECMapFunc{``0})">
             <summary>
@@ -2466,6 +2452,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.GetChangedValues">
+            <summary>
+            获取实体类属性改变过的属性名称值对象
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.SetPropertyValues(System.Object[])">
             <summary>
             设置所有属性的值
@@ -2615,6 +2607,13 @@
             根据字段名称获取对应的实体属性类型
             </summary>
             <param name="fieldName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityFields.GetPropertyFieldSize(System.String)">
+            <summary>
+            根据实体类内部的属性字段名称，获取对应的数据库字段长度
+            </summary>
+            <param name="fieldName">属性字段名称</param>
             <returns></returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityFields.GetPropertyField(System.String)">
@@ -3685,6 +3684,12 @@
             <typeparam name="T"></typeparam>
             <returns></returns>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.OQL.GetAllUsedEntity">
+            <summary>
+            获取当前OQL使用的所有实体类
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.OQL.Select(System.Object[])">
             <summary>
             选取要调用的实体类属性字段。该方法可以在OQL实例对象上多次调用
@@ -4574,6 +4579,20 @@
         <member name="M:PWMIS.DataMap.Entity.PropertyNameValuesSerializer.FillEntity(PWMIS.DataMap.Entity.EntityBase)">
             <summary>
             填充实体类
+            <example>
+            <code>
+            <![CDATA[
+             //WCF,WebService 等服务方法，para 仅包含实体类上更改过的数据，可调用实体类的GetChangedValues 方法得到
+             public void Dosomething(PropertyNameValues para)
+             {
+               UserEntity user = new UserEntity();
+               PropertyNameValuesSerializer ser = new PropertyNameValuesSerializer(para);
+               ser.FillEntity(user);
+               //To Dosomething.....
+             }
+            ]]>
+            </code>
+            </example>
             </summary>
             <param name="entity"></param>
         </member>
@@ -4741,6 +4760,22 @@
         <member name="P:PWMIS.Common.IDataControl.PrimaryKey">
             <summary>
             是否是主键
+            </summary>
+        </member>
+        <member name="T:PWMIS.Core.Interface.IDbContextProvider">
+            <summary>
+            数据库上下文提供程序接口
+            </summary>
+        </member>
+        <member name="M:PWMIS.Core.Interface.IDbContextProvider.CheckTableExists``1">
+            <summary>
+            检查实体类对应的数据表是否在数据库中存在，需要在子类中实现
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:PWMIS.Core.Interface.IDbContextProvider.CurrentDataBase">
+            <summary>
+            当前的数据库访问对象
             </summary>
         </member>
         <member name="T:PWMIS.Common.IQueryControl">
