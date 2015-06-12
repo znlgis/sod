@@ -16,9 +16,16 @@
         </member>
         <member name="M:PWMIS.Core.Extensions.DbContext.#ctor(System.String)">
             <summary>
-            初始化数据访问上下文
+            初始化数据访问上下文,程序会自动寻找合适的数据上下文提供程序
             </summary>
             <param name="connName">在应用程序配置文件的数据库连接配置的连接名称</param>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.DbContext.#ctor(System.String,PWMIS.Core.Interface.IDbContextProvider)">
+            <summary>
+            使用数据库连接配置名字和数据上下文提供程序,初始化数据访问上下文
+            </summary>
+            <param name="connName">数据库连接配置名字</param>
+            <param name="contextProvider">数据上下文提供程序</param>
         </member>
         <member name="M:PWMIS.Core.Extensions.DbContext.CheckDB">
             <summary>
@@ -95,6 +102,11 @@
         <member name="P:PWMIS.Core.Extensions.DbContext.CurrentDataBase">
             <summary>
             关联的当期数据库访问对象
+            </summary>
+        </member>
+        <member name="P:PWMIS.Core.Extensions.DbContext.DbContextProvider">
+            <summary>
+            获取数据上下文提供程序
             </summary>
         </member>
         <member name="T:PWMIS.Core.Extensions.EntityBaseExtension">
