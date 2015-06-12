@@ -23,10 +23,20 @@ namespace PWMIS.Core.Extensions
         /// </summary>
         public static string DBFilePath = string.Empty;
         /// <summary>
-        /// 初始化数据访问上下文
+        /// 初始化数据访问上下文,程序会自动寻找合适的数据上下文提供程序
         /// </summary>
         /// <param name="connName">在应用程序配置文件的数据库连接配置的连接名称</param>
-        public DbContext(string connName)
+        public DbContext(string connName):this(connName,null)
+        {
+           
+        }
+
+        /// <summary>
+        /// 使用数据库连接配置名字和数据上下文提供程序,初始化数据访问上下文
+        /// </summary>
+        /// <param name="connName">数据库连接配置名字</param>
+        /// <param name="contextProvider">数据上下文提供程序</param>
+        public DbContext(string connName, IDbContextProvider contextProvider)
         {
             db = MyDB.GetDBHelperByConnectionName(connName);
             if (!checkedDb)
@@ -38,6 +48,7 @@ namespace PWMIS.Core.Extensions
                 }
             }
             //在这里初始化合适的 IDbContextProvider
+            this.provider = contextProvider;
         }
 
         #region 接口实现
@@ -57,6 +68,15 @@ namespace PWMIS.Core.Extensions
         }
         #endregion
 
+        /// <summary>
+        /// 获取数据上下文提供程序
+        /// </summary>
+        public IDbContextProvider DbContextProvider
+        {
+            get {
+                return this.provider;
+            }
+        }
 
         /// <summary>
         /// 检查数据库，检查表是否已经初始化。如果是Access 数据库，还会检查数据库文件是否存在，可以在系统中设置DBFilePath 字段。

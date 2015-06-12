@@ -22,6 +22,7 @@ namespace EntityTest
 
         protected override bool CheckAllTableExists()
         {
+            //可以使用 base.DbContextProvider 获取具体的提供程序，调用特定的方法
             //创建用户表
             CheckTableExists<UserEntity>();
             return true;
