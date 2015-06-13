@@ -11,7 +11,7 @@ namespace PWMIS.PostgreSQLClient
     /// <summary>
     /// PostgreSQL数据库上下文，可以实现自动检查数据库，创建表，获取EntityQuery 泛型实例对象等功能，封装了AdoHelper的使用。
     /// </summary>
-    public abstract class PostgreSQLDbContext : IDbContextProvider
+    public sealed class PostgreSQLDbContext : IDbContextProvider
     {
         public AdoHelper CurrentDataBase { get; private set; }
         /// <summary>

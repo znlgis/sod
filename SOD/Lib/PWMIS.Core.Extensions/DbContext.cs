@@ -62,9 +62,7 @@ namespace PWMIS.Core.Extensions
 
         public void CheckTableExists<T>() where T : EntityBase, new()
         {
-            if (this.provider == null)
-                InitContextProvider();
-            provider.CheckTableExists<T>();
+            DbContextProvider.CheckTableExists<T>();
         }
         #endregion
 
@@ -73,7 +71,10 @@ namespace PWMIS.Core.Extensions
         /// </summary>
         public IDbContextProvider DbContextProvider
         {
-            get {
+            get
+            {
+                if (this.provider == null)
+                    InitContextProvider();
                 return this.provider;
             }
         }
