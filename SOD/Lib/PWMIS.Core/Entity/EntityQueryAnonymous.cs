@@ -1005,7 +1005,7 @@ namespace PWMIS.DataMap.Entity
                     if (tnf.Name!=null && paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
                     {
                         //增加字符串长度的检查,如果值得长度大于定义的长度,抛出异常提示 2014.10.21
-                        int size=EntityBase.GetStringFieldSize(tnf.Name, tnf.Field);
+                        int size = tnf.Entity.GetStringFieldSize(tnf.Field);
                         if (size != -1) //如果字段不是text等类型
                         {
                             int length = paras[index].Value.ToString().Length;

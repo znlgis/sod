@@ -55,6 +55,8 @@
  * * 修改者：         时间：2015-5-27  
  *  实体类增加 GetChangedValues 方法，获取修改过的属性字段名称和值
  * 
+ *  * 修改者：         时间：2015-7-5  
+ *  修改实体类字符串长度获取的Bug，当有同名字段的时候会出现问题，感谢网友 阳光尚好 发现此问题
  * ========================================================================
 */
 using System;
@@ -76,9 +78,9 @@ namespace PWMIS.DataMap.Entity
         #region 处理字符串属性与对应列的长度映射
         //为字符串字段指定长度，将有利于查询提高效率 edit at 2012.4.23
         protected internal static Dictionary<string, int> StringFieldSize = new Dictionary<string, int>();
-        protected internal static int GetStringFieldSize(string tableName, string fieldName)
+        protected  static int GetStringFieldSize(string ownerName, string fieldName)
         {
-            string key = string.Format("{0}", fieldName);
+            string key = string.Format("{0}_{1}", ownerName,fieldName);
             if (StringFieldSize.ContainsKey(key))
                 return StringFieldSize[key];
             else
@@ -89,7 +91,8 @@ namespace PWMIS.DataMap.Entity
             //return GetStringFieldSize(TableName, fieldName);
             //TableName 在调用了 MapNewTableName 方法后，可能找不到属性字段的长度，故这里取消原来代码的使用方法
             //感谢网友  广州-玄离 发现该问题 
-            return GetStringFieldSize("T", fieldName);
+            //这里必须使用实体类的类型名称来限定，感谢网友  发现问题
+            return GetStringFieldSize(this.GetType().FullName , fieldName);
         }
 
         /// <summary>

@@ -689,11 +689,13 @@ namespace PWMIS.DataMap.Entity
                
                 if (object.Equals(Value,leftParaValue) && !object.Equals(Value, rightParaValue))
                 {
-                    Type genericTypeDefinition = typeof(T).GetGenericTypeDefinition();
-                    if (genericTypeDefinition == typeof(Nullable<>))
-                    {
-                        throw new ArgumentException("当前情况下 Comparer 方法调用的参数有可空类型于非可空类型的属性进行比较，无法推断参数调用顺序！");
-                    }
+                    //修改 2015.7.5
+                    //如果 T 是 int 等基础类型，下面代码无法创建泛型类型，注释 
+                    //Type genericTypeDefinition = typeof(T).GetGenericTypeDefinition();
+                    //if (genericTypeDefinition == typeof(Nullable<>))
+                    //{
+                    //    throw new ArgumentException("当前情况下 Comparer 方法调用的参数有可空类型于非可空类型的属性进行比较，无法推断参数调用顺序！");
+                    //}
                     leftField = tnf1;
                 }
                 else
