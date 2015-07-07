@@ -11,6 +11,9 @@
  * 
  * 修改者：         时间：2015-3-7                
  * 修改说明：修复智能表单控件在Access 等数据库上由于参数顺序引起的查询问题
+ * 
+ *  修改者：         时间：2015-7-7                
+ * 修改说明：修复设置为主键的表单控件，无法插入主键数据的问题
  * ========================================================================
 */
 using System;
@@ -205,7 +208,19 @@ namespace PWMIS.DataForms.Adapter
                 {
                     object id = 0;
                     result = DAO.ExecuteInsertQuery(command.InsertCommand, CommandType.Text, command.InsertParameters, ref id);
-                    command.InsertedID = Convert.ToInt32(id);
+                    if (id != DBNull.Value)
+                    {
+                        try
+                        {
+                            command.InsertedID = Convert.ToInt32(id);
+                        }
+                        catch
+                        { }
+                    }
+                    else
+                    {
+                        command.InsertedID = -2;
+                    }
                 }
                 if (result <= 0 && CheckAffectRowCount)
                     throw new Exception("在更新表" + command.TableName + "中未取得受影响的行数，数据错误信息：" + DAO.ErrorMessage);
@@ -213,14 +228,14 @@ namespace PWMIS.DataForms.Adapter
             }
         }
 
-        protected bool AutoUpdateIBFormDataInner(List<IBCommand> ibCommandList, IDataControl guidControl)
+        protected bool AutoUpdateIBFormDataInner(List<IBCommand> ibCommandList, IDataControl pkControl)
         {
-            object guidObj = guidControl.GetValue();
-            if (guidObj == null || guidObj.ToString() == "")
-                throw new Exception("GUID 主键或字符型主键列更新数据不能为空！");
-            if (guidControl.ReadOnly)
-                throw new Exception("GUID 主键或字符型主键列更新数据时不能设置为只读！");
-            if (!guidControl.PrimaryKey)
+            object guidObj = pkControl.GetValue();
+            //if (guidObj == null || guidObj.ToString() == "")
+            //    throw new Exception("GUID 主键或字符型主键列更新数据不能为空！");
+            //if (pkControl.ReadOnly)
+            //    throw new Exception("GUID 主键或字符型主键列更新数据时不能设置为只读！");
+            if (!pkControl.PrimaryKey)
                 throw new Exception("GUID 主键或字符型主键列更新数据时必须设置PrimaryKey属性！");
 
             string guidText = guidObj.ToString();
@@ -228,9 +243,9 @@ namespace PWMIS.DataForms.Adapter
             int result = 0;
             foreach (IBCommand command in ibCommandList)
             {
-                if (command.TableName == guidControl.LinkObject)
+                if (command.TableName == pkControl.LinkObject)
                 {
-                    string sql = "SELECT [" + guidControl.LinkProperty + "] FROM [" + guidControl.LinkObject + "] WHERE [" + guidControl.LinkProperty + "] = '" + guidText + "'";
+                    string sql = "SELECT [" + pkControl.LinkProperty + "] FROM [" + pkControl.LinkObject + "] WHERE [" + pkControl.LinkProperty + "] = '" + guidText + "'";
                     object guidInDb = DAO.ExecuteScalar(sql);
                     if (guidInDb != null && guidInDb.ToString() == guidText)
                     {
@@ -342,6 +357,18 @@ namespace PWMIS.DataForms.Adapter
             return count;
         }
 
+        /// <summary>
+        /// 获取更新表单数据的智能表单命令，以备将这些控件中的数据保存到数据库
+        /// <remarks>
+        /// 注意：1，主键数据可以插入数据库，但不可直接更新，
+        ///          如果想更新主键字段，需要另外增加一个数据文本框控件，绑定主键字段名，但不设置主键属性，
+        ///          同时放置一个标签数据控件，设置为主键属性并需要运行是赋值给此控件。
+        ///       2，自增主键字段对应的数据控件，需要设置主键属性并且不可以更新此控件的值到数据库。
+        /// </remarks>
+        /// </summary>
+        /// <param name="IBControls"></param>
+        /// <param name="DB"></param>
+        /// <returns></returns>
         protected static List<IBCommand> GetIBFormDataInner(List<IDataControl> IBControls, CommonDB DB)
         {
             List<IBCommand> IBCommands = new List<IBCommand>();
@@ -360,7 +387,8 @@ namespace PWMIS.DataForms.Adapter
                 int paraIndex = 0;
                 //edit at 2015.3.7
                 //定义不同的参数列表，修正Access 等数据库根据参数顺序而不是参数名匹配进行查询的问题
-                List<IDataParameter> paraList = new List<IDataParameter>();//一般参数列表
+                List<IDataParameter> paraUpdateList = new List<IDataParameter>();//更新，删除参数列表
+                List<IDataParameter> paraInsertList = new List<IDataParameter>();//插入参数列表
                 List<IDataParameter> paraPKs = new List<IDataParameter>();//主键参数列表
 
                 for (int i = 0; i < IBControls.Count; i++)// object objCtr in IBControls)
@@ -444,17 +472,25 @@ namespace PWMIS.DataForms.Adapter
                                    
 
                                     //2010.1.25 取消 ibCtr.PrimaryKey 不能更新的限制，例如可以让GUID主键列可以更新
-                                    //2015.3.7 恢复 ibCtr.PrimaryKey 不能更新的限制，如果需要更新主键，请设置另外一个控件并将它绑定位主键字段但不设置 PrimaryKey 属性
+                                    //2015.3.7 恢复 ibCtr.PrimaryKey 不能更新的限制，
+                                    //如果需要更新主键，请设置另外一个控件并将它绑定位主键字段但不设置 PrimaryKey 属性
                                     //如果是自增列，设置该列的控件属性为 只读属性即可。
-                                    
-                                    if (ibCtr.PrimaryKey) //只要是主键就作为更新的条件
+
+                                    if (ibCtr.PrimaryKey ) //只要是主键就作为更新的条件
                                     {
-                                        strCondition += " And [" + ibCtr.LinkProperty + "] = " + ctlParaName;
-                                        if (ibCtr.SysTypeCode == System.TypeCode.Int32)
-                                            ID = int.Parse(ctlValue.ToString());
-                                        else
-                                            ID = -2;//主键可能是非数字型
-                                        paraPKs.Add(para);
+                                        if (!string.IsNullOrEmpty(ctlValue.ToString()))
+                                        {
+                                            strCondition += " And [" + ibCtr.LinkProperty + "] = " + ctlParaName;
+                                            if (ibCtr.SysTypeCode == System.TypeCode.Int32)
+                                                ID = int.Parse(ctlValue.ToString());
+                                            else
+                                                ID = -2;//主键可能是非数字型
+                                            paraPKs.Add(para);
+                                            //主键数据也可能需要插入
+                                            strFields += "[" + ibCtr.LinkProperty + "],";
+                                            strValues += ctlParaName + ",";
+                                            paraInsertList.Add(para);
+                                        }
                                     }
                                     else if (!ibCtr.ReadOnly)
                                     {
@@ -462,7 +498,8 @@ namespace PWMIS.DataForms.Adapter
                                         strValues += ctlParaName + ",";
                                         strUpdate += "[" + ibCtr.LinkProperty + "] = " + ctlParaName + ",";
 
-                                        paraList.Add(para);
+                                        paraUpdateList.Add(para);
+                                        paraInsertList.Add(para);
                                     }
                                 }
 
@@ -487,9 +524,10 @@ namespace PWMIS.DataForms.Adapter
                 ibcmd.UpdateCommand = strUpdate;
                 //if( ID>0) 
                 ibcmd.InsertedID = ID;
-                ibcmd.InsertParameters = paraList.ToArray();
-                paraList.AddRange(paraPKs);
-                ibcmd.Parameters = paraList.ToArray();
+                ibcmd.InsertParameters = paraInsertList.ToArray();
+
+                paraUpdateList.AddRange(paraPKs);
+                ibcmd.Parameters = paraUpdateList.ToArray();
 
                 IBCommands.Add(ibcmd);
             }//end while

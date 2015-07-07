@@ -109,10 +109,10 @@ namespace SuperMarketWeb.Setup
 
         protected void Button2_Click(object sender, EventArgs e)
         {
-            string sql = @"SELECT `工号`,`姓名` 
-FROM `雇员表`
-   Where `职务名称`='ss'
-       ORDER BY `姓名` asc";
+            string sql = @"SELECT [工号],[姓名] 
+FROM [雇员表]
+   Where [职务名称]='ss'
+       ORDER BY [姓名] asc";
 
             AdoHelper db = MyDB.Instance;
             try

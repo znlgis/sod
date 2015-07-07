@@ -47,7 +47,7 @@
         </member>
         <member name="P:PWMIS.DataForms.Adapter.IBCommand.InsertedID">
             <summary>
-            插入标识，用于数据库的自增列，等于0表示还未插入，大鱼0表示已经插入过数据自增标识值，等于-2表示非数字类型的主键。
+            插入标识，用于数据库的自增列，等于0表示还未插入，大于0表示已经插入过数据自增标识值，等于-2表示非数字类型的主键。
             </summary>
         </member>
         <member name="P:PWMIS.DataForms.Adapter.IBCommand.GuidPrimaryKey">
@@ -82,6 +82,20 @@
             </summary>
             <param name="IBControls">已经收集的控件集合</param>
             <returns> ArrayList 中的成员为 IBCommand 对象，包含具体的CRUD SQL</returns>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyDataForm.GetIBFormDataInner(System.Collections.Generic.List{PWMIS.Common.IDataControl},PWMIS.DataProvider.Data.CommonDB)">
+            <summary>
+            获取更新表单数据的智能表单命令，以备将这些控件中的数据保存到数据库
+            <remarks>
+            注意：1，主键数据可以插入数据库，但不可直接更新，
+                     如果想更新主键字段，需要另外增加一个数据文本框控件，绑定主键字段名，但不设置主键属性，
+                     同时放置一个标签数据控件，设置为主键属性并需要运行是赋值给此控件。
+                  2，自增主键字段对应的数据控件，需要设置主键属性并且不可以更新此控件的值到数据库。
+            </remarks>
+            </summary>
+            <param name="IBControls"></param>
+            <param name="DB"></param>
+            <returns></returns>
         </member>
         <member name="P:PWMIS.DataForms.Adapter.MyDataForm.CheckAffectRowCount">
             <summary>
