@@ -30,7 +30,7 @@ namespace SuperMarketWeb.EmployeeManage
             else
             {
                 //保存数据
-                bool result = MyWebForm.Instance.AutoUpdateIBFormData(this.Controls, this.dtbWorkNumber);
+                bool result = MyWebForm.Instance.AutoUpdateIBFormData(this.Controls, this.dlbWorkNumber);
                 if (result)
                 {
                     lblMsg.Text = "保存成功！";
@@ -50,7 +50,7 @@ namespace SuperMarketWeb.EmployeeManage
         {
             lblMsg.Text = "Selected id=" + GridView1.SelectedRow.Cells[1].Text;
             //关键，必须为主键控件赋值
-            dtbWorkNumber.Text = GridView1.SelectedRow.Cells[1].Text;
+            dlbWorkNumber.Text = GridView1.SelectedRow.Cells[1].Text;
             //填充数据
             MyWebForm.Instance.AutoSelectIBForm(this.Controls);
         }

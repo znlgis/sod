@@ -7,10 +7,16 @@
         雇员管理</p>
         <hr />
        <table style="background-color:#DEBA84;border-color:#DEBA84;border-width:1px;border-style:None;">
+           <tr>
+               <td>[工号](PK)</td>
+               <td>
+                   <cc1:DataLabel ID="dlbWorkNumber" runat="server" DataFormatString="" IsNull="True" LinkObject="雇员表" LinkProperty="工号" MaxLength="0" PrimaryKey="True" ReadOnly="True" SysTypeCode="String"></cc1:DataLabel>
+               </td>
+           </tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">
 <td >[工号]*</td><td >
            <cc1:DataTextBox ID="dtbWorkNumber" runat="server" LinkObject="雇员表" 
-               LinkProperty="工号" PrimaryKey="True" Width="256px" SysTypeCode="String" 
+               LinkProperty="工号" Width="256px" SysTypeCode="String" 
                ErrorMessage="工号不能为空" MessageType="提示框"></cc1:DataTextBox>
            </td></tr>
        <tr style="color:#8C4510;background-color:#FFF7E7;">

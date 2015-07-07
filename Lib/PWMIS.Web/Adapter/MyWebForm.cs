@@ -191,10 +191,10 @@ namespace PWMIS.DataForms.Adapter
         /// <param name="Controls">控件集合</param>
         /// <param name="guidControl">Gudi或字符型主键控件</param>
         /// <returns>更新是否成功</returns>
-        public bool AutoUpdateIBFormData(ControlCollection Controls, IDataControl guidControl)
+        public bool AutoUpdateIBFormData(ControlCollection Controls, IDataControl primaryKeyControl)
         {
             List<IBCommand> ibCommandList = GetIBFormData(Controls, this.DAO);
-            return AutoUpdateIBFormDataInner(ibCommandList, guidControl);
+            return AutoUpdateIBFormDataInner(ibCommandList, primaryKeyControl);
         }
 
         /// <summary>
