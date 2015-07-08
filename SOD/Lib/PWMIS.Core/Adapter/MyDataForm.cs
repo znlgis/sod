@@ -12,8 +12,9 @@
  * 修改者：         时间：2015-3-7                
  * 修改说明：修复智能表单控件在Access 等数据库上由于参数顺序引起的查询问题
  * 
- *  修改者：         时间：2015-7-7                
+ *  修改者：         时间：2015-7-8                
  * 修改说明：修复设置为主键的表单控件，无法插入主键数据的问题
+ *           修复设置为主键的表单控件，对应的数据库标识字段插入的问题
  * ========================================================================
 */
 using System;
@@ -487,9 +488,12 @@ namespace PWMIS.DataForms.Adapter
                                                 ID = -2;//主键可能是非数字型
                                             paraPKs.Add(para);
                                             //主键数据也可能需要插入
-                                            strFields += "[" + ibCtr.LinkProperty + "],";
-                                            strValues += ctlParaName + ",";
-                                            paraInsertList.Add(para);
+                                            if (!ibCtr.ReadOnly)
+                                            {
+                                                strFields += "[" + ibCtr.LinkProperty + "],";
+                                                strValues += ctlParaName + ",";
+                                                paraInsertList.Add(para);
+                                            }
                                         }
                                     }
                                     else if (!ibCtr.ReadOnly)
