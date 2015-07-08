@@ -59,7 +59,8 @@ namespace PWMIS.Web.Controls
 			writer.AddAttribute(HtmlTextWriterAttribute.Align,"absBottom");
 			writer.AddAttribute(HtmlTextWriterAttribute.Src,this.ScriptPath+"in4_05.gif");
 			writer.AddAttribute("alt","单击选择日期");
-			writer.AddAttribute(HtmlTextWriterAttribute.Onclick,"selectDate('"+objDateBox.ClientID+"')");
+            writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "WdatePicker({el:" + objDateBox.ClientID + "})");
+            //writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "WdatePicker()");
 			writer.RenderBeginTag(HtmlTextWriterTag.Img);
 			writer.RenderEndTag();
 			
@@ -91,7 +92,7 @@ namespace PWMIS.Web.Controls
 			
 			objDateBox.EnableViewState=true;
 			//文本输入区增加日期格式验证 邓太华 2008.2.20
-			objDateBox.Attributes.Add ("onblur","if(this.value!='')TestDate(this);");
+			//objDateBox.Attributes.Add ("onblur","if(this.value!='')TestDate(this);");
 			Controls.Add(objDateBox);
 //			RegularExpressionValidator REV = new RegularExpressionValidator();
 //			REV.ErrorMessage = "错了！";
@@ -101,6 +102,7 @@ namespace PWMIS.Web.Controls
 
 		}
 
+        /*
 		protected virtual void RegisterClientScript() 
 		{
 			string versionInfo = System.Reflection.Assembly.GetAssembly(this.GetType()).FullName;
@@ -165,14 +167,19 @@ document.getElementById(objname).value=objwin;
 			//Page.RegisterClientScriptBlock(base.ID + "_Info",selDate);
 			Page.ClientScript.RegisterClientScriptBlock(this.GetType (),versionInfo + "_script",selDate);
 		}
+            *   * */
 
-		protected override void OnPreRender( EventArgs e ) 
+        protected override void OnPreRender( EventArgs e ) 
 		{
-			this.RegisterClientScript();
+			//this.RegisterClientScript();
+            //string path = string.IsNullOrEmpty(ScriptPath) ? "System/JS/My97DatePicker/WdatePicker.js" : ScriptPath;
+            string path = "/System/JS/My97DatePicker/WdatePicker.js";
+            this.Page.ClientScript.RegisterStartupScript(this.GetType(), "JS_calendar", "\r\n<script language='javascript' type='text/javascript' src='" + path + "'></script>\r\n");
 			base.OnPreRender(e);
 		}
+    
 
-//
+        //
 //		[Category("Data"),Description("设定对应的数据字段类型")]
 //		public System.TypeCode SysTypeCode
 //		{

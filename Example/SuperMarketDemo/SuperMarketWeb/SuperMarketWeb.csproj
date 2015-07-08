@@ -38,6 +38,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -70,6 +71,10 @@
     <Content Include="App_Data\SqlSuperMarket_log.LDF">
       <DependentUpon>SqlSuperMarket.mdf</DependentUpon>
     </Content>
+    <Content Include="Calendar\calendar.htm" />
+    <Content Include="Calendar\calendar.js" />
+    <Content Include="Calendar\DateDialog.js" />
+    <Content Include="Calendar\in4_05.gif" />
     <Content Include="Default.aspx" />
     <Content Include="index.htm" />
     <Content Include="Setup\安装说明.txt" />
@@ -222,10 +227,6 @@
     <Content Include="Web.sitemap" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Calendar\calendar.htm" />
-    <Content Include="Calendar\calendar.js" />
-    <Content Include="Calendar\DateDialog.js" />
-    <Content Include="Calendar\in4_05.gif" />
     <Content Include="CashierManage\CashierConsole.aspx" />
     <Content Include="CustomerManage\Index.aspx" />
     <Content Include="EmployeeManage\Index.aspx" />

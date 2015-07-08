@@ -134,6 +134,20 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="System\JS\My97DatePicker\calendar.js" />
+    <Content Include="System\JS\My97DatePicker\lang\en.js" />
+    <Content Include="System\JS\My97DatePicker\lang\zh-cn.js" />
+    <Content Include="System\JS\My97DatePicker\lang\zh-tw.js" />
+    <Content Include="System\JS\My97DatePicker\skin\datePicker.gif" />
+    <Content Include="System\JS\My97DatePicker\skin\default\datepicker.css" />
+    <Content Include="System\JS\My97DatePicker\skin\default\img.gif" />
+    <Content Include="System\JS\My97DatePicker\skin\WdatePicker.css" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\bg.jpg" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\datepicker.css" />
+    <Content Include="System\JS\My97DatePicker\skin\whyGreen\img.gif" />
+    <Content Include="System\JS\My97DatePicker\WdatePicker.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
