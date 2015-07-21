@@ -2828,11 +2828,12 @@
             <param name="entityType">根据当前实体类所在程序集，获取其中的嵌入式EntityMapSql 文件</param>
             <returns>映射的SQL语句</returns>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.EntityQuery`1.QueryList(System.Data.IDataReader)">
+        <member name="M:PWMIS.DataMap.Entity.EntityQuery`1.QueryList(System.Data.IDataReader,System.String)">
             <summary>
             根据数据阅读器对象，查询实体对象集合(注意查询完毕将自动释放该阅读器对象)
             </summary>
             <param name="reader">数据阅读器对象</param>
+            <param name="tableName">指定实体类要映射的表名字,默认不指定</param>
             <returns>实体类集合</returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityQuery`1.QueryList(PWMIS.DataMap.Entity.ConditionHandle{`0})">
@@ -3070,12 +3071,13 @@
             <param name="db"></param>
             <returns></returns>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.EntityQuery.QueryList``1(System.Data.IDataReader)">
+        <member name="M:PWMIS.DataMap.Entity.EntityQuery.QueryList``1(System.Data.IDataReader,System.String)">
             <summary>
             万能根据数据阅读器对象，将结果查询到（实体）对象集合(注意查询完毕将自动释放该阅读器对象)
             </summary>
             <typeparam name="T">元素类型，可以是EntityBase,IReadData 派生类型，其它接口类型，或者POCO类型的对象</typeparam>
             <param name="reader">数据阅读器对象</param>
+            <param name="tableName">可能要映射的表名字</param>
             <returns>实体类集合</returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityQuery.QueryList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper)">
@@ -3831,6 +3833,12 @@
             制定实体查询的时候表的锁定类型。仅支持SqlServer。
             </summary>
             <param name="lockType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.OQL.GetEntityTableName">
+            <summary>
+            获取关联的实体类的表名字，如果是关联查询，返回空
+            </summary>
             <returns></returns>
         </member>
         <member name="P:PWMIS.DataMap.Entity.OQL.GroupbyFieldNames">

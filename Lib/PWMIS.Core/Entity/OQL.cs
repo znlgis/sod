@@ -1473,6 +1473,18 @@ namespace PWMIS.DataMap.Entity
             }
         }
 
+        /// <summary>
+        /// 获取关联的实体类的表名字，如果是关联查询，返回空
+        /// </summary>
+        /// <returns></returns>
+        protected internal string GetEntityTableName()
+        {
+            if (this.haveChildOql || this.haveJoinOpt)
+                return "";
+            else
+                return this.currEntity.TableName;
+        }
+
         #endregion
     }
 

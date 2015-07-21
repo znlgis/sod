@@ -755,7 +755,7 @@ namespace PWMIS.DataMap.Entity
             }
             SqlInfo result = new SqlInfo(sql, Parameters);
             result.CommandType = CommandType.Text;
-            result.TableName = oql.sql_table;
+            result.TableName = oql.GetEntityTableName();
             return result;
         }
 

@@ -50,6 +50,8 @@
  *  修改者：         时间：2015-3-7                
  * 修改说明：修正Varchar(max),text 字段查询设置字段长度的问题。
  * 
+ *  修改者：         时间：2015-7-21                
+ * 修改说明：修正当实体类映射了新的表名字，OQL查询出来的实体类列表表名字不是新名字的问题
  * ========================================================================
 */
 
@@ -323,7 +325,7 @@ namespace PWMIS.DataMap.Entity
                 sql = FillParameter(oql, entity, out paras);
 
                 IDataReader reader = DefaultDataBase.ExecuteDataReader(sql, CommandType.Text, paras);
-                return QueryList(reader);
+                return QueryList(reader,oql.GetEntityTableName());
             }
             else
                 return QueryList(oql);
@@ -647,7 +649,7 @@ namespace PWMIS.DataMap.Entity
                 }
             }
             IDataReader reader = EntityQueryAnonymous.ExecuteDataReader(oql, db, typeof(T));
-            return QueryList(reader);
+            return QueryList(reader,oql.GetEntityTableName());
         }
 
         /// <summary>
@@ -670,7 +672,7 @@ namespace PWMIS.DataMap.Entity
                 SqlInfo.AddToCache(cacheKey, si);
             }
             IDataReader reader = EntityQueryAnonymous.ExecuteDataReader(si, db, false);
-            return QueryList(reader);
+            return QueryList(reader,si.TableName);
         }
 
         /// <summary>
@@ -705,8 +707,9 @@ namespace PWMIS.DataMap.Entity
         /// 根据数据阅读器对象，查询实体对象集合(注意查询完毕将自动释放该阅读器对象)
         /// </summary>
         /// <param name="reader">数据阅读器对象</param>
+        /// <param name="tableName">指定实体类要映射的表名字,默认不指定</param>
         /// <returns>实体类集合</returns>
-        public static List<T> QueryList(System.Data.IDataReader reader)
+        public static List<T> QueryList(System.Data.IDataReader reader,string tableName="")
         {
             List<T> list = new List<T>();
             using (reader)
@@ -719,6 +722,8 @@ namespace PWMIS.DataMap.Entity
                     for (int i = 0; i < fcount; i++)
                         names[i] = reader.GetName(i);
                     T t0 = new T();
+                    if (!string.IsNullOrEmpty(tableName))
+                        t0.MapNewTableName(tableName);
                     t0.PropertyNames = names;
                     do
                     {
@@ -798,7 +803,7 @@ namespace PWMIS.DataMap.Entity
             //如果字段名跟实体类属性名不一致,下面这样使用会有问题,
             //return AdoHelper.QueryList<TChild>(reader);//还需要分析到对应的父实体类上
             //修改成下面的代码 2014.10.30 感谢 网友 发呆数星星 发现此问题
-            return EntityQuery<TChild>.QueryList(reader);
+            return EntityQuery<TChild>.QueryList(reader, child.GetTableName());
         }
 
         private  void QueryAndSetChild<TChild>(List<T> entitys, AdoHelper db) where TChild : EntityBase, new()
@@ -1638,8 +1643,9 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <typeparam name="T">元素类型，可以是EntityBase,IReadData 派生类型，其它接口类型，或者POCO类型的对象</typeparam>
         /// <param name="reader">数据阅读器对象</param>
+        /// <param name="tableName">可能要映射的表名字</param>
         /// <returns>实体类集合</returns>
-        public static List<T> QueryList<T>(System.Data.IDataReader reader) where T : class
+        public static List<T> QueryList<T>(System.Data.IDataReader reader,string tableName="") where T : class
         {
             List<T> list = new List<T>();
             using (reader)
@@ -1657,6 +1663,8 @@ namespace PWMIS.DataMap.Entity
                     {
                         EntityBase entity = t as EntityBase;
                         entity.PropertyNames = names;
+                        if (!string.IsNullOrEmpty(tableName))
+                            entity.MapNewTableName(tableName);
                         do
                         {
                             object[] values = new object[fcount];
@@ -1743,7 +1751,7 @@ namespace PWMIS.DataMap.Entity
             if (oql.PageEnable && oql.PageWithAllRecordCount <= 0)
                 return new List<T>();
             IDataReader reader = EntityQueryAnonymous.ExecuteDataReader(oql, db, typeof(T));
-            return QueryList<T>(reader);
+            return QueryList<T>(reader,oql.GetEntityTableName());
         }
 
         public static T QueryObject<T>(OQL oql, AdoHelper db) where T : class

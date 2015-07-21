@@ -111,7 +111,7 @@ namespace PWMIS.Core.Extensions
             //如果字段名跟实体类属性名不一致,下面这样使用会有问题,
             //return AdoHelper.QueryList<TChild>(reader);//还需要分析到对应的父实体类上
             //修改成下面的代码 2014.10.30 感谢 网友 发呆数星星 发现此问题
-            return EntityQuery<T>.QueryList(reader);
+            return EntityQuery<T>.QueryList(reader, child.GetTableName());
 
         }
 
