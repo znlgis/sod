@@ -17,8 +17,8 @@ namespace PWMIS.AccessExtensions
         public AdoHelper CurrentDataBase { get; private set; }
 
         public AccessDbContext(AdoHelper db)
-        { 
-        
+        {
+            this.CurrentDataBase = db;
         }
 
         /// <summary>
