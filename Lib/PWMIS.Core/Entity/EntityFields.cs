@@ -338,11 +338,7 @@ namespace PWMIS.DataMap.Entity
             {
                 temp = temp + "[" + field + "] " + db.GetNativeDbTypeName(para);
             }
-            //identity(1,1) primary key
-            if (entity.PrimaryKeys.Contains(field))
-            {
-                temp = temp + " PRIMARY KEY";
-            }
+           
             if (field == entity.IdentityName)
             {
                 if (db.CurrentDBMSType == PWMIS.Common.DBMSType.SqlServer || db.CurrentDBMSType == PWMIS.Common.DBMSType.SqlServerCe)
@@ -351,7 +347,7 @@ namespace PWMIS.DataMap.Entity
                 }
                 else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.Access )
                 {
-                    temp = temp + " autoincrement";
+                    temp = temp.Replace("Integer", " autoincrement");
                 }
                 else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.SQLite)
                 {
@@ -369,6 +365,12 @@ namespace PWMIS.DataMap.Entity
                 {
                     //Oracle 采用序列和触发器,这里不处理 
                 }
+            }
+            //identity(1,1) primary key
+            //Access 要求主键申明必须在自增之后，否则语法错误
+            if (entity.PrimaryKeys.Contains(field))
+            {
+                temp = temp + " PRIMARY KEY";
             }
             return db.GetPreparedSQL(temp);
         }

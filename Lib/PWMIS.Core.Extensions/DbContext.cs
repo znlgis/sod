@@ -252,7 +252,7 @@ namespace PWMIS.Core.Extensions
             }
             else if (CurrentDataBase.CurrentDBMSType == Common.DBMSType.Access)
             {
-                var assembly = System.Reflection.Assembly.LoadFrom("PWMIS.Access.Extensions");
+                var assembly = System.Reflection.Assembly.Load("PWMIS.Access.Extensions");
                 string typeName = "PWMIS.AccessExtensions.AccessDbContext";
                 var obj = assembly.CreateInstance(typeName, false,
                     System.Reflection.BindingFlags.Default, null, new object[] { CurrentDataBase }, null, null);
