@@ -352,7 +352,7 @@ ORDER
                 dr(0) = True
                 dr(1) = table
                 dr(2) = "表"
-                dr(3) = table
+                dr(3) = table.Replace("dbo.", "") '暂时处理架构问题
                 dr(4) = "<默认>"
                 dtMapInfo.Rows.Add(dr)
             Next
