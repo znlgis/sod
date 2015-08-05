@@ -146,6 +146,11 @@ namespace PWMIS.DataMap.Entity
             set { _identity = value; }
         }
 
+        /// <summary>
+        /// 实体类映射的表的架构名字
+        /// </summary>
+        protected internal string Scheme { get; set; }
+
         private string setingFieldName = string.Empty;
 
         /// <summary>

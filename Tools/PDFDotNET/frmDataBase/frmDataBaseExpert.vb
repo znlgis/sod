@@ -713,7 +713,7 @@ Public Class frmDataBaseExpert
                 'MessageBox.Show("表/视图" + currNode.Text)
 
                 For Each node As TreeNode In currNode.Nodes
-                    tables.Add(node.Name)
+                    tables.Add(node.Text) 'node.Name 可能遇到不同的表Scheme问题
                 Next
                 dbName = currNode.Parent.Name
             ElseIf currNode.Text = "视图" Then
@@ -721,7 +721,7 @@ Public Class frmDataBaseExpert
                 'MessageBox.Show("表/视图" + currNode.Text)
 
                 For Each node As TreeNode In currNode.Nodes
-                    views.Add(node.Name)
+                    views.Add(node.Text) 'node.Name 可能遇到不同的表Scheme问题
                 Next
 
                 dbName = currNode.Parent.Name
