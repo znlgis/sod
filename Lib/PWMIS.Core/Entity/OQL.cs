@@ -125,7 +125,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         public EntityBase Entity;
         /// <summary>
-        /// 在一系列字段使用中的索引号
+        /// 在一系列字段使用中的索引号或者当前字段在实体类字段名字数组中的索引
         /// </summary>
         public int Index;
         /// <summary>
@@ -395,6 +395,9 @@ namespace PWMIS.DataMap.Entity
                 return _groupbyFieldNames;
             }
         }
+
+        protected internal List<TableNameField> selectedFieldInfo = new List<TableNameField>();
+
         #endregion
 
         #region 旧方法
@@ -835,10 +838,12 @@ namespace PWMIS.DataMap.Entity
                 {
                     TableNameField tnf = fieldStack.Pop();
                     selectedFieldNames.Add(string.Format("\r\n    {0}", GetOqlFieldName(tnf)));
+                    selectedFieldInfo.Add(tnf); 
                 }
             }
             fieldStack.Clear();
             selectedFieldNames.Reverse();//恢复正常的字段选取顺序
+            selectedFieldInfo.Reverse(); 
             return new OQL1(this);
         }
 

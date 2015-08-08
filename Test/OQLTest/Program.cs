@@ -578,20 +578,32 @@ namespace OQLTest
             OQL q = OQL.From(user).Select().Where(user.RoleID).END;
             EntityContainer ec = new EntityContainer(q);
             //第一种映射方式，适用于OQL单实体类查询：
-            var list = ec.MapToList(user, u => new 
-                    { 
-                        P1=u.ID,
-                        P2=u.NickName
+            var list = ec.MapToList(user, u => new
+                    {
+                        P1 = u.ID,
+                        P2 = u.NickName
                     }
                 );
+
+            UserRoles role = new UserRoles();
+            OQL q2 = OQL.From(user)
+                .Join(role).On(user.RoleID, role.ID)
+                .Select()
+                .Where(cmp => cmp.Comparer(role.ID, "=", RoleNames.User))
+                .END;
+            q2.Limit(10);
+
+            EntityContainer ec2 = new EntityContainer(q2);
             //第二种映射方式，推荐用于OQL多个实体类关联查询的情况：
-            var list2 = ec.MapToList(() => new { 
+            var list2 = ec2.MapToList(() => new { 
                      P1= user.ID,
-                     P2= user.NickName
+                     P2= user.NickName,
+                     P3= role.ID ,
+                     P4 =role.Description 
                 });
 
-            Console.WriteLine("OQL TestMapOql Query:\r\n{0}\r\n", q);
-            Console.WriteLine(q.PrintParameterInfo());
+            Console.WriteLine("OQL TestMapOql Query:\r\n{0}\r\n", q2);
+            Console.WriteLine(q2.PrintParameterInfo());
         }
 
         static void TestThread()

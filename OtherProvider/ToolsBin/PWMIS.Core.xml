@@ -3508,7 +3508,7 @@
         </member>
         <member name="F:PWMIS.DataMap.Entity.TableNameField.Index">
             <summary>
-            在一系列字段使用中的索引号
+            在一系列字段使用中的索引号或者当前字段在实体类字段名字数组中的索引
             </summary>
         </member>
         <member name="F:PWMIS.DataMap.Entity.TableNameField.FieldValue">
