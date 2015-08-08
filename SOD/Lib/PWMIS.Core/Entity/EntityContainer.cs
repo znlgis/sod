@@ -29,6 +29,9 @@
  * 修改者：         时间：2015-1-29                
  * 修改说明：如果查询记录为0条记录，转换成DataTable 的时候会抱错，感谢网友 成都-小兵 发现此问题。
  * 
+ * 修改者：         时间：2015-8-8               
+ * 修改说明：修正 MapToList 方法在使用于实体类关联查询的错误，感谢网友 发现此问题。
+ * 
  * ========================================================================
 */
 using System;
@@ -393,60 +396,14 @@ namespace PWMIS.DataMap.Entity
 
                 TableNameField[] fieldInfo = new TableNameField[this.fieldNames.Length];
                 //查找字段匹配情况
-                //entity.PropertyNames 存储的仅仅是查询出来的列名称，由于有连表查询，
-                //如果要映射到指定的实体，还得检查当前列对应的表名称
-                if (this.OQL.haveJoinOpt)
+                //entity.PropertyNames 存储的仅仅是查询出来的列名称
+                for (int i = 0; i < this.OQL.selectedFieldInfo.Count; i++)
                 {
-                    //是连表查询
-                    for (int i = 0; i < this.fieldNames.Length; i++)
-                    {
-                        foreach (EntityBase entity in entitys)
-                        {
-                            string tabeName = entity.TableName;
-                            for (int j = 0; j < entity.PropertyNames.Length; j++)
-                            {
-                                string cmpString = "[" + tabeName + "].[" + entity.PropertyNames[j] + "]";
-                                if (this.OQL.sql_fields.Contains(cmpString))
-                                {
-                                    TableNameField tnf = new TableNameField()
-                                    {
-                                            Entity = entity,
-                                            Field = entity.PropertyNames[j],
-                                            Index = j //记录下当前字段在实体类属性的索引
-                                    };
-                                    fieldInfo[i] = tnf;
-                                    break;
-                                }
-                            }
-                            if (fieldInfo[i].Entity == entity)
-                                break;
-
-                        }// end for
-                    }// next i
-                }
-                else
-                {
-                    EntityBase entity = entitys[0];
-                    for (int i = 0; i < this.fieldNames.Length; i++)
-                    {
-                        for (int j = 0; j < entity.PropertyNames.Length; j++)
-                        {
-                            if (this.fieldNames[i] == entity.PropertyNames[j])
-                            {
-                                TableNameField tnf = new TableNameField()
-                                {
-                                    Entity = entity,
-                                    Field = entity.PropertyNames[j],
-                                    Index = j //记录下当前字段在实体类属性的索引
-                                };
-                                fieldInfo[i] = tnf;
-                                break;
-                            }
-                        }
-                    }
+                    TableNameField tnf = this.OQL.selectedFieldInfo[i];
+                    tnf.Index = tnf.Entity.GetPropertyFieldNameIndex(tnf.Field);
+                    fieldInfo[i] = tnf;
                 }
 
-                //int length = entity.PropertyValues.Length;
                 foreach (object[] itemValues in this.Values)
                 {
                     for (int m = 0; m < itemValues.Length; m++)
@@ -634,6 +591,7 @@ namespace PWMIS.DataMap.Entity
             List<TResult> resultList = new List<TResult>();
             foreach (var data in this.MapMoreEntity(this.OQL.GetAllUsedEntity()))
             {
+                //执行之前，必须先给相应的实体对象赋值，否则报错
                 TResult obj = fun();
                 resultList.Add(obj);
             }

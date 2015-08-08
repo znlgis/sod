@@ -9,9 +9,9 @@ namespace OQLTest
 {
     public enum RoleNames
     { 
-        User,
-        Manager,
-        Admin
+        User=1,
+        Manager=2,
+        Admin=3
     }
     public partial class Users : EntityBase
     {
