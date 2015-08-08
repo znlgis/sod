@@ -78,6 +78,7 @@ Public Class frmDataBaseExpert
                     Dim connNode As New TreeNode()
                     connNode.SelectedImageKey = "SQLHost"
                     connNode.ImageKey = "SQLHost"
+                    'connNode.
                     connNode.Name = conn.Attributes("DbType").Value
                     connNode.Text = conn.Attributes("DbType").Value & ":" & conn.Attributes("Name").Value
                     connNode.ToolTipText = conn.Attributes("ConnectionString").Value
@@ -99,17 +100,21 @@ Public Class frmDataBaseExpert
     End Sub
 
     Private Sub frmDataBaseExpert_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        Me.ImageList1.Images.Add("CfgNode", Image.FromFile(".\images\ConfigurationNode.bmp"))
-        Me.ImageList1.Images.Add("ConnStrSection", Image.FromFile(".\images\ConnectionStringsSectionNode.bmp"))
-        Me.ImageList1.Images.Add("ConnStrSettings", Image.FromFile(".\images\ConnectionStringSettingsNode.bmp"))
-        Me.ImageList1.Images.Add("DBSection", Image.FromFile(".\images\DatabaseSectionNode.bmp"))
-        Me.ImageList1.Images.Add("SQLHost", Image.FromFile(".\images\SQLHost.bmp"))
-        Me.ImageList1.Images.Add("ProviderMap", Image.FromFile(".\images\ProviderMappingNode.bmp"))
-        Me.ImageList1.Images.Add("Tables", Image.FromFile(".\images\customizing.bmp"))
-        Me.ImageList1.Images.Add("Table", Image.FromFile(".\images\show_columns.bmp"))
-        Me.ImageList1.Images.Add("Functions", Image.FromFile(".\images\AppSettingsNode.bmp"))
-        Me.ImageList1.Images.Add("Function", Image.FromFile(".\images\AppSettingNode.bmp"))
-        Me.ImageList1.Images.Add("Element", Image.FromFile(".\images\OraclePackageElementNode.bmp"))
+        Me.ImageList1.Images.Add("CfgNode", LoadImageFile(".\images\ConfigurationNode.bmp"))
+        Me.ImageList1.Images.Add("ConnStrSection", LoadImageFile(".\images\ConnectionStringsSectionNode.bmp"))
+        Me.ImageList1.Images.Add("ConnStrSettings", LoadImageFile(".\images\ConnectionStringSettingsNode.bmp"))
+        Me.ImageList1.Images.Add("DBSection", LoadImageFile(".\images\DatabaseSectionNode.bmp"))
+        Me.ImageList1.Images.Add("SQLHost", LoadImageFile(".\images\SQLHost.bmp"))
+        Me.ImageList1.Images.Add("ProviderMap", LoadImageFile(".\images\ProviderMappingNode.bmp"))
+        Me.ImageList1.Images.Add("Tables", LoadImageFile(".\images\customizing.bmp"))
+        Me.ImageList1.Images.Add("Table", LoadImageFile(".\images\show_columns.bmp"))
+        Me.ImageList1.Images.Add("Functions", LoadImageFile(".\images\AppSettingsNode.bmp"))
+        Me.ImageList1.Images.Add("Function", LoadImageFile(".\images\AppSettingNode.bmp"))
+        Me.ImageList1.Images.Add("Element", LoadImageFile(".\images\OraclePackageElementNode.bmp"))
+
+        'For Each bmp As Bitmap In Me.ImageList1.Images
+        '    bmp.MakeTransparent()
+        'Next
 
         Me.TreeView1.ImageList = Me.ImageList1
         'Me.TreeView1.ImageKey = "CfgNode"
@@ -119,6 +124,14 @@ Public Class frmDataBaseExpert
         initTreeView()
 
     End Sub
+
+    Private Function LoadImageFile(fileName As String) As Image
+        Dim img As Image = Image.FromFile(fileName)
+        Dim bmp As New Bitmap(img)
+        bmp.MakeTransparent()
+        img.Dispose()
+        Return bmp
+    End Function
 
     Private Sub tsmiProperty_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmiProperty.Click
         Dim paras As New Dictionary(Of String, Object)
@@ -699,7 +712,7 @@ Public Class frmDataBaseExpert
         If currNode IsNot Nothing Then
             If currNode.Nodes.Count > 0 AndAlso currNode.FirstNode.Text = "列" Then
                 '当前节点是表或者视图名称
-                Dim tableName As String = currNode.Name
+                Dim tableName As String = currNode.Text
                 'MessageBox.Show(tableName)
 
                 If currNode.FirstNode.Name = "表列" Then
@@ -766,7 +779,15 @@ Public Class frmDataBaseExpert
         If currNode IsNot Nothing Then
             If currNode.Nodes.Count > 0 AndAlso currNode.FirstNode.Text = "列" Then
                 '当前节点是表或者视图名称
-                Dim tableName As String = currNode.Name
+                Dim noteText As String = currNode.Text
+
+                Dim strScheme As String = ""
+                Dim strTableName As String = noteText
+                Dim dotIndex As Integer = noteText.IndexOf("."c)
+                If dotIndex > 0 Then
+                    strScheme = noteText.Substring(0, dotIndex)
+                    strTableName = noteText.Substring(dotIndex + 1)
+                End If
 
                 Dim columns As String = ""
                 For Each node As TreeNode In currNode.FirstNode.Nodes
@@ -777,7 +798,11 @@ Public Class frmDataBaseExpert
                 Else
                     columns = columns.TrimEnd(",", vbCr, vbLf) & vbCrLf
                 End If
-                SQL = "SELECT" & columns & " FROM " & dbLeftChar & tableName & dbRightChar & vbCrLf
+
+                Dim strSchemeTable As String = dbLeftChar & strTableName & dbRightChar
+                If strScheme <> "" Then strSchemeTable = dbLeftChar & strScheme & dbRightChar & "." & strSchemeTable
+
+                SQL = "SELECT" & columns & " FROM " & strSchemeTable & vbCrLf
 
             End If
         End If

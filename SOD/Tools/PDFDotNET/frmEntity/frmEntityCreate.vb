@@ -212,7 +212,8 @@ End NameSpace
         If dotIndex > 0 Then
             strScheme = sql_tableName.Substring(0, dotIndex)
             '默认的架构 dbo 不做处理
-            If strScheme.ToLower() = "dbo" Then strScheme = ""
+            Dim defaultTableScheme As String = Me.propWindow.DefaultTableScheme
+            If strScheme.ToLower() = defaultTableScheme Then strScheme = ""
 
             strTableName = sql_tableName.Substring(dotIndex + 1)
         End If
@@ -699,6 +700,22 @@ Public Class EntityCreateProperty
         End Get
         Set(ByVal value As DevelopLanguage)
             _language = value
+        End Set
+    End Property
+
+    Private _defaultTableScheme As String
+
+    <Category("代码"), Description("表默认的架构名称,比如dbo"), DefaultValue("dbo")> _
+    Public Property DefaultTableScheme As String
+        Get
+            If String.IsNullOrEmpty(_defaultTableScheme) Then
+                Return ""
+            Else
+                Return _defaultTableScheme.ToLower()
+            End If
+        End Get
+        Set(value As String)
+            _defaultTableScheme = value
         End Set
     End Property
 End Class
