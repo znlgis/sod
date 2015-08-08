@@ -955,7 +955,7 @@ namespace PWMIS.DataMap.Entity
 
             //Entity e = entitys.Count > 0 ? entitys[0] : new Entity();
             Entity entity = entitys[0];
-            string tableName = entity.TableName == null ? "Table1" : entity.TableName;
+            string tableName = entity.TableName == null ? "Table1" : entity.GetSchemeTableName ();
             DataTable dt = new DataTable(tableName);
             foreach (string str in entity.PropertyNames)
             {

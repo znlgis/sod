@@ -194,6 +194,18 @@ namespace PWMIS.DataMap.Entity
             }
             return false;
         }
+
+        /// <summary>
+        /// 获取带架构的表名称，带中括号
+        /// </summary>
+        /// <returns></returns>
+        protected internal  string GetSchemeTableName()
+        {
+            if (!string.IsNullOrEmpty(Scheme))
+                return string.Format("[{0}].[{1}]", Scheme, TableName);
+            else
+                return string.Format("[{1}]", Scheme, TableName); 
+        }
         #endregion
 
         #region 属性状态改变状态成员

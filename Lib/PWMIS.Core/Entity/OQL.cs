@@ -1016,7 +1016,7 @@ namespace PWMIS.DataMap.Entity
         public OQL(EntityBase e)
         {
             currEntity = e;
-            mainTableName = "[" + e.GetTableName() + "] ";
+            mainTableName = e.GetSchemeTableName();
             sql_table = mainTableName;
             EntityMap = e.EntityMap;
             e.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(e_PropertyGetting);
@@ -1033,7 +1033,7 @@ namespace PWMIS.DataMap.Entity
                 string aliases = "T" + dictAliases.Count;
                 dictAliases.Add(entity, aliases);
                 entity.PropertyGetting += new EventHandler<PropertyGettingEventArgs>(e_PropertyGetting);
-                oqlString += string.Format(",[{0}] {1}", entity.GetTableName(), aliases);
+                oqlString += string.Format(",{0} {1}", entity.GetSchemeTableName(), aliases);
             }
         }
 
