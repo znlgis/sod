@@ -33,6 +33,9 @@ namespace PWMIS.DataMap.Entity
     public class EntityCommand
     {
         private EntityBase currEntity;
+        /// <summary>
+        /// 当前表名称，带中括号
+        /// </summary>
         private string currTableName = string.Empty;
         private CommonDB currDb;
         List<IDataParameter> _insertParas;
@@ -48,7 +51,7 @@ namespace PWMIS.DataMap.Entity
         {
             this.currEntity = entity;
             this.currDb = db;
-            this.currTableName = entity.TableName;
+            this.currTableName = entity.GetSchemeTableName();
         }
 
         private string[] _targetFields;
@@ -79,7 +82,7 @@ namespace PWMIS.DataMap.Entity
 
 
 
-                    _insertCommand = "INSERT INTO [" + currTableName +"] ";
+                    _insertCommand = "INSERT INTO " + currTableName ;
                     string fields = "";
                     string values = "";
                    
@@ -128,7 +131,7 @@ namespace PWMIS.DataMap.Entity
 
                     _updateParas = new List<IDataParameter>();
 
-                    _updateCommand = "UPDATE [" + currTableName + "] SET ";
+                    _updateCommand = "UPDATE " + currTableName + " SET ";
                     string values = "";
                     string condition = "";
                   
@@ -170,7 +173,7 @@ namespace PWMIS.DataMap.Entity
 
                     _deleteParas = new List<IDataParameter>();
 
-                    _deleteCommand="DELETE FROM [" + currTableName + "] WHERE ";
+                    _deleteCommand="DELETE FROM " + currTableName + " WHERE ";
                     string condition = "";
                     
                     foreach (string key in this.currEntity.PrimaryKeys)
@@ -236,7 +239,7 @@ END;
                         string columnScript =entityFields.CreateTableColumnScript(this.currDb as AdoHelper, this.currEntity, field);
                         fieldsText = fieldsText + "," + columnScript+"\r\n";
                     }
-                    string tableName =this.currDb.GetPreparedSQL("["+ currTableName+"]");
+                    string tableName =this.currDb.GetPreparedSQL( currTableName);
                     _createTableCommand = script.Replace("@TABLENAME", tableName).Replace("@FIELDS", fieldsText.Substring(1));
                 }
                 return _createTableCommand;

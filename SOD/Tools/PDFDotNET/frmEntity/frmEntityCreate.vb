@@ -22,7 +22,7 @@ Public Class frmEntityCreate
         <FileHead>
             <![CDATA[
 ''' 
-''本类由PWMIS 实体类生成工具(Ver 4.1)自动生成
+''本类由PWMIS 实体类生成工具(适用于 PWMIS.Core Version: 5.3 以上)自动生成
 ''http://www.pwmis.com/sqlmap
 ''使用前请先在项目工程中引用 PWMIS.Core.dll
 ''%DateTime%
@@ -44,6 +44,7 @@ namespace [NameSpace]
     public [ClassName]()
     {
             TableName = "[SqlTableName]";
+            Scheme="[Scheme]";
             EntityMap=[EntityMapType.Table];
             //IdentityName = "标识字段名";
 %IdentityName%
@@ -95,6 +96,7 @@ Inherits  EntityBase
  
     Sub New() 
             TableName = "[SqlTableName]" 
+            Scheme="[Scheme]"
             EntityMap=[EntityMapType.Table] 
             'IdentityName = "标识字段名"
             %IdentityName%
@@ -203,9 +205,22 @@ End NameSpace
                 langLine = ";" & vbLf
         End Select
 
+        '处理架构
+        Dim strScheme As String = ""
+        Dim strTableName As String = sql_tableName
+        Dim dotIndex As Integer = sql_tableName.IndexOf("."c)
+        If dotIndex > 0 Then
+            strScheme = sql_tableName.Substring(0, dotIndex)
+            '默认的架构 dbo 不做处理
+            If strScheme.ToLower() = "dbo" Then strScheme = ""
+
+            strTableName = sql_tableName.Substring(dotIndex + 1)
+        End If
+        classText = classText.Replace("[Scheme]", strScheme)
+
         classText = classText.Replace("[NameSpace]", Me.propWindow.DefaultNamespace) _
         .Replace("[ClassName]", className) _
-                .Replace("[SqlTableName]", sql_tableName) _
+                .Replace("[SqlTableName]", strTableName) _
                 .Replace("[EntityMapType.Table]", "EntityMapType." & entityMap.ToString())
 
 
@@ -223,6 +238,8 @@ End NameSpace
             dtTableFiledDesc = Me.getSqlTableFieldDescription(Me.isSqlServer2000, sql_tableName)
 
         End If
+       
+
         Dim perpertyNames As String = ""
         For Each col As DataColumn In dt.Columns
             Dim strLength As String = IIf(col.MaxLength > 0, "," & col.MaxLength, "")
@@ -338,6 +355,7 @@ ORDER
         dtMapInfo.Columns.Add("OutputFile", GetType(String))
         dtMapInfo.Columns.Add("SQLMap", GetType(String))
         dtMapInfo.Columns(0).ReadOnly = False
+        dtMapInfo.Columns(1).ReadOnly = True
         dtMapInfo.Columns(3).ReadOnly = False
         dtMapInfo.PrimaryKey = New Data.DataColumn() {dtMapInfo.Columns(1)}
     End Sub
@@ -414,8 +432,9 @@ ORDER
         If dgv.Columns(e.ColumnIndex).Name = "colFirstLook" Then
             Dim rowView As DataRowView = dgv.CurrentRow.DataBoundItem
             Dim tableName As String = rowView(1)
+            Dim className As String = rowView(3)
             Dim sqlMap As String = GetSqlMapString(rowView)
-            Dim classText As String = Me.MakeClassText(tableName, sqlMap, _
+            Dim classText As String = Me.MakeClassText(className, sqlMap, _
                                       tableName, GetEntityMapType(rowView(2)))
             Dim frmCode As New frmCodeFile
             frmCode.Text = "PDF.NET 实体类 预览"

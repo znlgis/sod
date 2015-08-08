@@ -2355,6 +2355,12 @@
             <param name="newTableName">新的表名称</param>
             <returns>是否成功</returns>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.GetSchemeTableName">
+            <summary>
+            获取带架构的表名称，带中括号
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.ResetChanges">
             <summary>
             重置属性值的修改状态
@@ -2534,6 +2540,11 @@
             标识字段名称（有些数据库可能内置不支持），该字段不可更新，但是插入数据的时候可以获取该字段
             </summary>
         </member>
+        <member name="P:PWMIS.DataMap.Entity.EntityBase.Scheme">
+            <summary>
+            实体类映射的表的架构名字
+            </summary>
+        </member>
         <member name="P:PWMIS.DataMap.Entity.EntityBase.TableName">
             <summary>
             实体类对应的数据库表名称
@@ -2587,6 +2598,11 @@
         <member name="T:PWMIS.DataMap.Entity.EntityCommand">
             <summary>
             实体类命令，将实体类转换成合适的SQL更新语句和参数
+            </summary>
+        </member>
+        <member name="F:PWMIS.DataMap.Entity.EntityCommand.currTableName">
+            <summary>
+            当前表名称，带中括号
             </summary>
         </member>
         <member name="F:PWMIS.DataMap.Entity.EntityCommand.IdentityEnable">

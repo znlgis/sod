@@ -395,7 +395,7 @@ namespace PWMIS.DataMap.Entity
                     paras[index] = para;
                     index++;
                 }
-                string tableName = " [" + entity.TableName + "]";
+                string tableName = entity.GetSchemeTableName ();
                 int whereIndex = sql.IndexOf(tableName);
                 sql = sql.Substring(0, whereIndex + tableName.Length) + (string.IsNullOrEmpty(condition) ? " " : (" WHERE " + condition.Substring(" AND ".Length)))
                     + sql.Substring(whereIndex + tableName.Length);
@@ -753,7 +753,7 @@ namespace PWMIS.DataMap.Entity
         {
             AdoHelper db = MyDB.Instance;
             T entity = new T();
-            string sql = "SELECT " + string.Join(",", CommonUtil.PrepareSqlFields(entity.PropertyNames)) + " FROM [" + entity.TableName + "]";
+            string sql = "SELECT " + string.Join(",", CommonUtil.PrepareSqlFields(entity.PropertyNames)) + " FROM " + entity.GetSchemeTableName();
             IDataReader reader = db.ExecuteDataReader(sql);
             List<T> list = new List<T>();
             using (reader)
@@ -1012,7 +1012,7 @@ namespace PWMIS.DataMap.Entity
 
                 string tableName = entity.TableName;
                 string identityName = entity.IdentityName;
-                string sql = "INSERT INTO [" + tableName + "]";
+                string sql = "INSERT INTO " + entity.GetSchemeTableName();
                 string fields = "";
                 string values = "";
                 int index = 0;
@@ -1787,7 +1787,7 @@ namespace PWMIS.DataMap.Entity
             //CommonDB DB = MyDB.GetDBHelper();
 
             IDataParameter[] paras = new IDataParameter[fieldCount];
-            string sql = "DELETE FROM [" + entity.TableName + "] WHERE ";
+            string sql = "DELETE FROM " + entity.GetSchemeTableName() + " WHERE ";
             string values = "";
             string condition = "";
             int index = 0;
@@ -1830,7 +1830,7 @@ namespace PWMIS.DataMap.Entity
                 index++;
             }
 
-            sql = sql + " FROM [" + entity.TableName + "] WHERE " + condition.Substring(" AND ".Length);
+            sql = sql + " FROM " + entity.GetSchemeTableName () + " WHERE " + condition.Substring(" AND ".Length);
             object obj = DB.ExecuteScalar(sql, CommandType.Text, paras);
             int count = Convert.ToInt32(obj);
 
@@ -1927,7 +1927,7 @@ namespace PWMIS.DataMap.Entity
 
             string tableName = entity.TableName;
             string identityName = entity.IdentityName;
-            string sql = "INSERT INTO [" + tableName + "]";
+            string sql = "INSERT INTO " + entity.GetSchemeTableName();
             string fields = "";
             string values = "";
             int index = 0;
@@ -1992,7 +1992,7 @@ namespace PWMIS.DataMap.Entity
 
             //CommonDB DB = MyDB.GetDBHelper();
             IDataParameter[] paras = new IDataParameter[fieldCount];
-            string sql = "UPDATE [" + entity.TableName + "] SET ";
+            string sql = "UPDATE " + entity.GetSchemeTableName() + " SET ";
             string values = "";
             string condition = "";
             int index = 0;
