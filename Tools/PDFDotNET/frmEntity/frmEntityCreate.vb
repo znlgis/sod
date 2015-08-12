@@ -183,6 +183,9 @@ End NameSpace
         Dim classText, propertyText, addProp As String
         Dim isPartial As Boolean = propWindow.UsePartialClass
         Dim langLine As String
+        className = className.Replace(".", "_").Replace(" ", "_") _
+              .Replace("[", "").Replace("]", "") _
+              .Replace("#", "").Replace("@", "")
 
         Select Case propWindow.Language
             Case DevelopLanguage.CSharp
@@ -493,7 +496,7 @@ ORDER
                 Application.DoEvents()
                 Dim mapSql As String = row(5).ToString()
                 If mapSql = "" Then
-                    mapSql = "SELECT * FROM [" & tableName & "] "
+                    mapSql = "SELECT * FROM " & Me.GetSchemeTableName(tableName)
                 End If
 
                 Dim classText As String = Me.MakeClassText(entityName, mapSql, _
@@ -636,6 +639,29 @@ ORDER
     Private Sub btnMakeFile_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles btnMakeFile.DragEnter
 
     End Sub
+
+    ''' <summary>
+    ''' 根据 "dbo.TableName" 格式的表名字，处理成 "[dbo].[TableName]" 的格式
+    ''' </summary>
+    ''' <param name="sql_tableName"></param>
+    ''' <returns></returns>
+    ''' <remarks></remarks>
+    Private Function GetSchemeTableName(sql_tableName As String) As String
+        Dim strScheme As String = ""
+        Dim strTableName As String = sql_tableName
+        Dim dotIndex As Integer = sql_tableName.IndexOf("."c)
+        If dotIndex > 0 Then
+            strScheme = sql_tableName.Substring(0, dotIndex)
+            '默认的架构 dbo 不做处理
+            Dim defaultTableScheme As String = Me.propWindow.DefaultTableScheme
+            If strScheme.ToLower() = defaultTableScheme Then strScheme = ""
+
+            strTableName = sql_tableName.Substring(dotIndex + 1)
+            Return String.Format("[{0}].[{1}]", strScheme, strTableName)
+        Else
+            Return "[" & strTableName & "]"
+        End If
+    End Function
 End Class
 
 Public Class EntityCreateProperty
