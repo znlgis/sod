@@ -219,6 +219,8 @@ End NameSpace
             If strScheme.ToLower() = defaultTableScheme Then strScheme = ""
 
             strTableName = sql_tableName.Substring(dotIndex + 1)
+        ElseIf dotIndex = 0 Then
+            strTableName = sql_tableName.Substring(1)
         End If
         classText = classText.Replace("[Scheme]", strScheme)
 
@@ -658,6 +660,8 @@ ORDER
 
             strTableName = sql_tableName.Substring(dotIndex + 1)
             Return String.Format("[{0}].[{1}]", strScheme, strTableName)
+        ElseIf dotIndex = 0 Then
+            Return "[" & strTableName.Substring(1) & "]"
         Else
             Return "[" & strTableName & "]"
         End If
