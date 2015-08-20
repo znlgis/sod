@@ -659,7 +659,11 @@ ORDER
             If strScheme.ToLower() = defaultTableScheme Then strScheme = ""
 
             strTableName = sql_tableName.Substring(dotIndex + 1)
-            Return String.Format("[{0}].[{1}]", strScheme, strTableName)
+            If strScheme = "" Then
+                Return "[" & strTableName & "]"
+            Else
+                Return String.Format("[{0}].[{1}]", strScheme, strTableName)
+            End If
         ElseIf dotIndex = 0 Then
             Return "[" & strTableName.Substring(1) & "]"
         Else
