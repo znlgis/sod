@@ -4,6 +4,7 @@ using System.Text;
 using System.Reflection;
 using System.IO;
 using System.Data;
+using System.Text.RegularExpressions;
 
 namespace PWMIS.Core
 {
@@ -77,50 +78,49 @@ namespace PWMIS.Core
            return result;
        }
 
-       /// <summary>
-       /// 替换Web路径格式中的相对虚拟路径（~）为当前程序执行的绝对路径
-       /// </summary>
-       /// <param name="sourcePath"></param>
-       public static void ReplaceWebRootPath(ref string sourcePath)
-       {
-           if (!string.IsNullOrEmpty(sourcePath) && sourcePath.IndexOf('~') >=0)
-           {
-               string appRootPath = "";
-               string EscapedCodeBase = Assembly.GetExecutingAssembly().EscapedCodeBase;
-               Uri u = new Uri(EscapedCodeBase);
-               string path = Path.GetDirectoryName(u.LocalPath);
-               if (path.Length > 4 && path.EndsWith("bin", StringComparison.OrdinalIgnoreCase))
-               {
-                   appRootPath = path.Substring(0, path.Length - 4);// 去除Web项目的 \bin，获取根目录
-                   sourcePath = sourcePath.Replace("~", appRootPath);
-               }
-               else
-               {
-                   sourcePath = sourcePath.Replace("~", ".");
-               }
-           }
-       }
+        /// <summary>
+        /// 替换Web路径格式中的相对虚拟路径（~）为当前程序执行的绝对路径
+        /// </summary>
+        /// <param name="sourcePath"></param>
+        public static void ReplaceWebRootPath(ref string sourcePath)
+        {
+            string appRootPath;
+            var escapedCodeBase = Assembly.GetExecutingAssembly().EscapedCodeBase;
+            var u = new Uri(escapedCodeBase);
+            var path = Path.GetDirectoryName(u.LocalPath);
+            if (path != null && (path.Length > 4 && path.EndsWith("bin", StringComparison.OrdinalIgnoreCase)))
+            {
+                appRootPath = path.Substring(0, path.Length - 3);// 去除Web项目的 \bin，获取根目录
+            }
+            else
+            {
+                appRootPath = "./";
+            }
 
-       /// <summary>
-       /// 泛型类型转换方法
-       /// </summary>
-       /// <example>
-       ///  object o1 = 111;
-       /// int i = getProperty《int》(o1);
-       /// o1 = DBNull.Value;
-       /// i = getProperty《int》(o1);
-       /// DateTime d = getProperty《DateTime》(o1);
-       /// o1 = 123.33m;
-       /// double db = getProperty《double》(o1);
-       /// o1 = "123.4";
-       /// float f = getProperty《float》(o1);
-       /// o1 = null;
-       /// f = getProperty《float》(o1);
-       /// </example>
-       /// <typeparam name="T">要转换的目标类型</typeparam>
-       /// <param name="Value">Object类型的待转换对象</param>
-       /// <returns>目标类型</returns>
-       public static T ChangeType<T>(object Value)
+            sourcePath = Regex.Replace(sourcePath, @"^\s*~[\\/]", appRootPath);
+            sourcePath = Regex.Replace(sourcePath, @"data source\s*=\s*~[\\/]", "Data Source=" + appRootPath, RegexOptions.IgnoreCase);
+        }
+
+        /// <summary>
+        /// 泛型类型转换方法
+        /// </summary>
+        /// <example>
+        ///  object o1 = 111;
+        /// int i = getProperty《int》(o1);
+        /// o1 = DBNull.Value;
+        /// i = getProperty《int》(o1);
+        /// DateTime d = getProperty《DateTime》(o1);
+        /// o1 = 123.33m;
+        /// double db = getProperty《double》(o1);
+        /// o1 = "123.4";
+        /// float f = getProperty《float》(o1);
+        /// o1 = null;
+        /// f = getProperty《float》(o1);
+        /// </example>
+        /// <typeparam name="T">要转换的目标类型</typeparam>
+        /// <param name="Value">Object类型的待转换对象</param>
+        /// <returns>目标类型</returns>
+        public static T ChangeType<T>(object Value)
        {
            if (Value is T)
                return (T)Value;
