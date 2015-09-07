@@ -38,5 +38,12 @@ namespace PWMIS.DataProvider.Data
                 }
             }
         }
+
+
+        public bool CheckDB()
+        {
+            //throw new NotImplementedException();
+            return true;
+        }
     }
 }

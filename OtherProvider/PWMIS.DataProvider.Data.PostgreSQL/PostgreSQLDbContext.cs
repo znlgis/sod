@@ -64,5 +64,12 @@ namespace PWMIS.PostgreSQLClient
                 }
             }
         }
+
+
+        public bool CheckDB()
+        {
+            //throw new NotImplementedException();
+            return true;
+        }
     }
 }

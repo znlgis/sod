@@ -14,10 +14,13 @@ namespace PWMIS.AccessExtensions
     /// </summary>
     public  class AccessDbContext : IDbContextProvider
     {
+        public string DBFilePath = string.Empty;
         public AdoHelper CurrentDataBase { get; private set; }
 
         public AccessDbContext(AdoHelper db)
         {
+            if(db.CurrentDBMSType != Common.DBMSType.Access)
+                throw new Exception("当前数据库类型不是Access ");
             this.CurrentDataBase = db;
         }
 
@@ -26,26 +29,28 @@ namespace PWMIS.AccessExtensions
         /// 如果需要更多的检查，可以重写该方法，但一定请保留 base.CheckDB();这行代码。
         /// </summary>
         /// <returns>检查是否通过</returns>
-        public   bool CheckDB()
+        public  bool CheckDB()
         {
-            //if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.Access)
-            //{
-            //    if (DBFilePath != string.Empty)
-            //    {
-            //        if (!File.Exists(DBFilePath))
-            //        {
-            //            //创建数据库文件
-            //            PWMIS.AccessExtensions.AccessUility.CreateDataBase(DBFilePath);
-            //        }
-            //        return CheckAllTableExists();
-            //    }
-            //}
-            //else
-            //{
-            //    //其它类型的数据库，仅检查表是否存在
-            //    return CheckAllTableExists();
-            //}
-            return false;
+            if (DBFilePath == string.Empty)
+            {
+                object objDataDir = AppDomain.CurrentDomain.GetData("DataDirectory");
+                if (objDataDir != null)
+                {
+                    string dataSource = ((System.Data.OleDb.OleDbConnectionStringBuilder)CurrentDataBase.ConnectionStringBuilder).DataSource;
+                    string dbPath = objDataDir.ToString();
+                    DBFilePath = dataSource.Replace("|DataDirectory|", dbPath);
+                }
+            }
+            if (DBFilePath != string.Empty)
+            {
+                if (!File.Exists(DBFilePath))
+                {
+                    //创建数据库文件
+                    PWMIS.AccessExtensions.AccessUility.CreateDataBase(DBFilePath);
+                }
+
+            }
+            return true;
         }
 
         /// <summary>
@@ -55,19 +60,14 @@ namespace PWMIS.AccessExtensions
         public  void CheckTableExists<T>() where T : EntityBase, new()
         {
             //创建表
-            if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.Access)
+            var entity = new T();
+            Access access = (Access)CurrentDataBase;
+            var dsScheme = access.GetSchema("Tables", new string[] { null, null, null, "TABLE" });
+            var rows = dsScheme.Select("table_name='" + entity.GetTableName() + "'");
+            if (rows.Length == 0)
             {
-                var entity = new T();
-                Access access = (Access)CurrentDataBase;
-                var dsScheme = access.GetSchema("Tables", new string[] { null, null, null, "TABLE" });
-                var rows = dsScheme.Select("table_name='" + entity.GetTableName() + "'");
-                if (rows.Length == 0)
-                {
-                    PWMIS.AccessExtensions.AccessUility.CreateTable(access, entity);
-                }
+                PWMIS.AccessExtensions.AccessUility.CreateTable(access, entity);
             }
-            else
-                throw new Exception("当前数据库类型不是Access ");
         }
     }
 }
