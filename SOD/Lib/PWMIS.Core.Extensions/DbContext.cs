@@ -17,11 +17,12 @@ namespace PWMIS.Core.Extensions
         private AdoHelper db;
         private IDbContextProvider provider ;
         private static object lock_obj = new object();
-        private static bool checkedDb = false;//数据库文件是否已经创建
+        private bool checkedDb = false;//数据库文件是否已经创建
+        private static Dictionary<string, bool> dictCheckedDb = new Dictionary<string, bool>();
         /// <summary>
         /// 数据库文件，对于文件型数据库需要设置该字段，并且在CheckDB 实现类里面做适当的处理
         /// </summary>
-        public static string DBFilePath = string.Empty;
+        public string DBFilePath = string.Empty;
         /// <summary>
         /// 初始化数据访问上下文,程序会自动寻找合适的数据上下文提供程序
         /// </summary>
@@ -39,16 +40,20 @@ namespace PWMIS.Core.Extensions
         public DbContext(string connName, IDbContextProvider contextProvider)
         {
             db = MyDB.GetDBHelperByConnectionName(connName);
-            if (!checkedDb)
-            {
-                lock (lock_obj)
-                {
-                    if (!checkedDb)
-                        checkedDb = CheckDB();
-                }
-            }
             //在这里初始化合适的 IDbContextProvider
             this.provider = contextProvider;
+            dictCheckedDb.TryGetValue(connName, out checkedDb);
+            if (!checkedDb)
+                {
+                    lock (lock_obj)
+                    {
+                        if (!checkedDb)
+                        {
+                            checkedDb = CheckDB();
+                            dictCheckedDb[connName] = checkedDb;
+                        }
+                    }
+                }
         }
 
         #region 接口实现
@@ -80,14 +85,16 @@ namespace PWMIS.Core.Extensions
         }
 
         /// <summary>
-        /// 检查数据库，检查表是否已经初始化。如果是Access 数据库，还会检查数据库文件是否存在，可以在系统中设置DBFilePath 字段。
-        /// 如果需要更多的检查，可以重写该方法，但一定请保留 base.CheckDB();这行代码。
+        /// 检查数据库和相关的表是否已经初始化。如果是Access 数据库，还会检查数据库文件是否存在。
+        /// 如果需要更多的检查，可以重写该方法，但一定在方法第一行保留 base.CheckDB();这行代码。
         /// </summary>
         /// <returns>检查是否通过</returns>
-        protected virtual bool CheckDB()
+        public  bool CheckDB()
         {
-            //其它类型的数据库，仅检查表是否存在
-            return CheckAllTableExists();
+            if (this.DbContextProvider.CheckDB())
+                return CheckAllTableExists();//其它类型的数据库，仅检查表是否存在
+            else
+                return false;
         }
 
         /// <summary>

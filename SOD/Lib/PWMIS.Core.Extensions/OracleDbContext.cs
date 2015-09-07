@@ -18,6 +18,8 @@ namespace PWMIS.Core.Extensions
         /// <param name="connName"></param>
         public OracleDbContext(AdoHelper db)
         {
+            if (db.CurrentDBMSType != Common.DBMSType.Oracle)
+                throw new Exception("当前数据库类型不是Oracle ");
             this.CurrentDataBase = db;
         }
         /// <summary>
@@ -26,26 +28,30 @@ namespace PWMIS.Core.Extensions
         public  void CheckTableExists<T>() where T : EntityBase, new()
         {
             //创建表
-            if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.Oracle)
+            var entity = new T();
+            var dsScheme = CurrentDataBase.GetSchema("Tables", null);
+            string owner = CurrentDataBase.ConnectionUserID;
+            var rows = dsScheme.Select("OWNER='" + owner + "' and table_name='" + entity.GetTableName() + "'");
+            if (rows.Length == 0)
             {
-                var entity = new T();
-                var dsScheme = CurrentDataBase.GetSchema("Tables", null);
-                string owner = CurrentDataBase.ConnectionUserID;
-                var rows = dsScheme.Select("OWNER='"+ owner +"' and table_name='" + entity.GetTableName() + "'");
-                if (rows.Length == 0)
+                EntityCommand ecmd = new EntityCommand(entity, CurrentDataBase);
+                string sql = ecmd.CreateTableCommand;
+                //OracleClient 不能批量执行多条SQL语句
+                string[] sqlArr = sql.Split(new string[] { ";--" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string item in sqlArr)
                 {
-                    EntityCommand ecmd = new EntityCommand(entity, CurrentDataBase);
-                    string sql = ecmd.CreateTableCommand;
-                    //OracleClient 不能批量执行多条SQL语句
-                    string[] sqlArr = sql.Split(new string[] {";--" }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach (string item in sqlArr)
-                    {
-                        if(item.Length >10) //去除回车行
-                            CurrentDataBase.ExecuteNonQuery(item);
-                    }
-                   
+                    if (item.Length > 10) //去除回车行
+                        CurrentDataBase.ExecuteNonQuery(item);
                 }
+
             }
+        }
+
+
+        public bool CheckDB()
+        {
+            //带实现详细的创建数据库的过程
+            return true;
         }
     }
 }

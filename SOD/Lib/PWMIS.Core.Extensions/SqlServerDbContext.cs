@@ -20,6 +20,8 @@ namespace PWMIS.Core.Extensions
         /// <param name="connName"></param>
         public SqlServerDbContext(AdoHelper db)
         {
+            if (db.CurrentDBMSType != Common.DBMSType.SqlServer)
+                throw new Exception("当前数据库类型不是SqlServer ");
             this.CurrentDataBase = db;
         }
         /// <summary>
@@ -28,18 +30,32 @@ namespace PWMIS.Core.Extensions
         public void CheckTableExists<T>() where T : EntityBase, new()
         {
             //创建表
-            if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.SqlServer)
+            var entity = new T();
+            var dsScheme = CurrentDataBase.GetSchema("Tables", new string[] { null, null, null, "BASE TABLE" });
+            var rows = dsScheme.Select("table_name='" + entity.GetTableName() + "'");
+            if (rows.Length == 0)
             {
-                var entity = new T();
-                var dsScheme = CurrentDataBase.GetSchema("Tables", new string[] { null, null, null, "BASE TABLE" });
-                var rows = dsScheme.Select("table_name='" + entity.GetTableName() + "'");
-                if (rows.Length == 0)
-                {
-                    EntityCommand ecmd = new EntityCommand(entity, CurrentDataBase);
-                    string sql = ecmd.CreateTableCommand;
-                    CurrentDataBase.ExecuteNonQuery(sql);
-                }
+                EntityCommand ecmd = new EntityCommand(entity, CurrentDataBase);
+                string sql = ecmd.CreateTableCommand;
+                CurrentDataBase.ExecuteNonQuery(sql);
             }
+        }
+
+
+        public bool CheckDB()
+        {
+            var connBuilder = CurrentDataBase.ConnectionStringBuilder as System.Data.SqlClient.SqlConnectionStringBuilder;
+            string database = connBuilder.InitialCatalog;
+            if (!string.IsNullOrEmpty(database))
+            {
+                string sqlformat = @"
+if not exists (select * From master.dbo.sysdatabases where name='{0}')
+create database '{1}'
+";
+                string sql = string.Format(sqlformat, database, database);
+                CurrentDataBase.ExecuteNonQuery(sql);
+            }
+            return true;
         }
     }
 }
