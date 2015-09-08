@@ -40,13 +40,22 @@ namespace WebApplication2 {
         protected global::PWMIS.Web.Controls.DataTextBox dtPersonID;
         
         /// <summary>
-        /// DataTextBox3 控件。
+        /// dtPhone 控件。
         /// </summary>
         /// <remarks>
         /// 自动生成的字段。
         /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
         /// </remarks>
-        protected global::PWMIS.Web.Controls.DataTextBox DataTextBox3;
+        protected global::PWMIS.Web.Controls.DataTextBox dtPhone;
+        
+        /// <summary>
+        /// DataTextBox1 控件。
+        /// </summary>
+        /// <remarks>
+        /// 自动生成的字段。
+        /// 若要进行修改，请将字段声明从设计器文件移到代码隐藏文件。
+        /// </remarks>
+        protected global::PWMIS.Web.Controls.DataTextBox DataTextBox1;
         
         /// <summary>
         /// DataCheckBox1 控件。

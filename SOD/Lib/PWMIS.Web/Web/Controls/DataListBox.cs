@@ -20,6 +20,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.ComponentModel;
 using PWMIS.Common;
+using System.Drawing.Design;
 
 
 namespace PWMIS.Web.Controls
@@ -74,6 +75,7 @@ namespace PWMIS.Web.Controls
 		}
 
 		[Category("Data"),Description("设定与数据库字段对应的数据名")]
+        [Editor(typeof(PropertyUITypeEditor), typeof(UITypeEditor))]
 		public string LinkProperty
 		{
 			get

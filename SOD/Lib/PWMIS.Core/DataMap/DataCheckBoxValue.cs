@@ -5,6 +5,9 @@ using PWMIS.Common;
 
 namespace PWMIS.DataMap
 {
+    /// <summary>
+    /// 数据复选框控件值处理类，用于WinFrom,WebForm的复选框控件
+    /// </summary>
     public class DataCheckBoxValue
     {
         private IDataCheckBox dataCheckBox;
@@ -54,6 +57,10 @@ namespace PWMIS.DataMap
 
         public object GetValue()
         {
+            //对于布尔型直接处理返回值 2015.9.8
+            if (dataCheckBox.SysTypeCode == TypeCode.Boolean)
+                return this.Checked;
+
             if (!this.Checked)
                 return DBNull.Value;
 
@@ -104,21 +111,6 @@ namespace PWMIS.DataMap
                         }
                         //return 0;
                         return DBNull.Value;
-                    }
-                case TypeCode.Boolean:
-                    {
-                        if (strValue != "")
-                        {
-                            try
-                            {
-                                return Convert.ToBoolean(strValue);
-                            }
-                            catch
-                            {
-                                return DBNull.Value; //"1900-1-1";
-                            }
-                        }
-                        return DBNull.Value;//"1900-1-1";
                     }
                 default:
                     if (strValue == "")

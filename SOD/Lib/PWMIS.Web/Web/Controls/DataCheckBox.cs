@@ -21,6 +21,7 @@ using System.Web.UI.WebControls;
 using System.ComponentModel;
 using PWMIS.Common;
 using PWMIS.DataMap;
+using System.Drawing.Design;
 
 
 namespace PWMIS.Web.Controls
@@ -79,6 +80,7 @@ namespace PWMIS.Web.Controls
         }
 
         [Category("Data"), Description("设定与数据库字段对应的数据名")]
+        [Editor(typeof(PropertyUITypeEditor), typeof(UITypeEditor))]
         public string LinkProperty
         {
             get
@@ -122,6 +124,8 @@ namespace PWMIS.Web.Controls
                 return true;
             }
         }
+
+        [Category("Data"), Description("设定数据类型代码")]
         public System.TypeCode SysTypeCode
         {
             get

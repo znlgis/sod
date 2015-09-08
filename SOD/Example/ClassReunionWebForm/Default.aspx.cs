@@ -27,6 +27,11 @@ namespace WebApplication2
                 this.dlMsg.Text = "请输入姓名！";
                 return;
             }
+            if (this.dtPhone.Text == "")
+            {
+                this.dlMsg.Text = "请输入电话！";
+                return;
+            }
             if (this.dtPersonID.Text == "")
             {
                 this.dlMsg.Text = "请输入身份证号！";
@@ -34,27 +39,43 @@ namespace WebApplication2
             }
             else
             {
-                //保存数据
-                //实例化一个控件数据映射对象
-                ControlDataMap cdm = new ControlDataMap();
-                //收集数据到实体对象
-                ContactInfo info = cdm.CollectDataToObject<ContactInfo>(
-                    MyWebForm.GetIBControls(this.Controls)
+                //从页面收集数据到实体类
+                ContactInfo info= MyWebForm.DataMap.CollectDataToObject<ContactInfo>(
+                    MyWebForm.GetIBControls(this.Controls));
+                info.AtTime = DateTime.Now;
+                //保存数据到数据库
+                ClassReunionRepository rep = new ClassReunionRepository();
+                //如果查询到名字和身份证号一致的数据，则修改，否则添加数据
+                var existsInfo = rep.UserQuery.GetObject (
+                    OQL.From(info)
+                    .Select()
+                    .Where (cmp=> cmp.EqualValue (info.Name ) & cmp.EqualValue(info.PersonID ))
+                    .END
                     );
 
-                //调用业务类，保存数据
-                ClassReunionRepository rep = new ClassReunionRepository();
-                int count= rep.Add<ContactInfo>(info);
+                int count=0;
+                string optMsg = "";
+                if (existsInfo == null)
+                {
+                    optMsg = "添加";
+                    count = rep.Add<ContactInfo>(info);
+                }
+                else
+                {
+                    optMsg = "修改";
+                    info.CID = existsInfo.CID; //指定ID主键的值，才可以修改
+                    count = rep.Update<ContactInfo>(info);
+                }
 
                 if (count>0)
                 {
-                    this.dlMsg.Text = "保存成功！";
+                    this.dlMsg.Text = optMsg+" 成功！";
                     //重新绑定数据
                     BindLIstData();
                 }
                 else
                 {
-                    this.dlMsg.Text = "保存失败！[数据库操作异常，详细信息请检查SQL日志]";
+                    this.dlMsg.Text = optMsg+ " 失败！[数据库操作异常，详细信息请检查SQL日志]";
                 }
             }
         }
@@ -64,12 +85,13 @@ namespace WebApplication2
              ClassReunionRepository rep = new ClassReunionRepository();
              ContactInfo s = new ContactInfo();
              var q = OQL.From(s)
-                 .Select(s.CID, s.Name, s.NeedRoom, s.OtherInfo )
+                 .Select(s.CID, s.Name, s.ContactPhone, s.ComeFrom, s.NeedRoom, s.HomeMemberCount, s.OtherInfo)
                  .OrderBy(s.CID )
                  .END;
              var list = rep.UserQuery.GetList(q);
-
-             this.GridView1.DataSource = list;
+             //转换成DataTable 类型，表头可以绑定表格的字段而不是实体类的属性名
+             var dataTable = EntityQueryAnonymous.EntitysToDataTable<ContactInfo>(list);
+             this.GridView1.DataSource = dataTable;
              this.GridView1.DataBind();
         }
     }

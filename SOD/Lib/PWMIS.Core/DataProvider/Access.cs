@@ -104,6 +104,8 @@ namespace PWMIS.DataProvider.Data
                 type = OleDbType.Date;
             else if (type == OleDbType.DBTimeStamp) //2014.5.14 增加，感谢网友 广州-晓伟 发现此问题
                 type = OleDbType.Date;
+            else if (type == OleDbType.Boolean)
+                return "YESNO";
             return type.ToString();
         }
     }
