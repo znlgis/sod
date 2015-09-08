@@ -43,6 +43,9 @@ namespace PWMIS.AccessExtensions
             }
             if (DBFilePath != string.Empty)
             {
+                string directory = Path.GetDirectoryName(DBFilePath);
+                if (!Directory.Exists(directory))
+                    Directory.CreateDirectory(directory);
                 if (!File.Exists(DBFilePath))
                 {
                     //创建数据库文件
