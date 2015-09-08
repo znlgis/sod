@@ -843,6 +843,11 @@
             <param name="conlObject">容器对象</param>
             <returns>查询字符串</returns>
         </member>
+        <member name="T:PWMIS.DataMap.DataCheckBoxValue">
+            <summary>
+            数据复选框控件值处理类，用于WinFrom,WebForm的复选框控件
+            </summary>
+        </member>
         <member name="T:PWMIS.DataMap.DataTextBoxValue">
             <summary>
             数据文本框、标签控件值读写通用类，可以处理WinForm，WebForm等窗体的数据文本框控件和标签控件。
@@ -4804,6 +4809,13 @@
             <summary>
             数据库上下文提供程序接口
             </summary>
+        </member>
+        <member name="M:PWMIS.Core.Interface.IDbContextProvider.CheckDB">
+            <summary>
+            检查数据库，检查表是否已经初始化。如果是Access 数据库，还会检查数据库文件是否存在，可以在系统中设置DBFilePath 字段。
+            如果需要更多的检查，可以重写该方法，但一定请保留 base.CheckDB();这行代码。
+            </summary>
+            <returns>检查是否通过</returns>
         </member>
         <member name="M:PWMIS.Core.Interface.IDbContextProvider.CheckTableExists``1">
             <summary>

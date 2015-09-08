@@ -20,6 +20,7 @@ using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using System.ComponentModel;
 using PWMIS.Common;
+using System.Drawing.Design;
 
 namespace PWMIS.Web.Controls
 {
@@ -232,6 +233,7 @@ document.getElementById(objname).value=objwin;
 		/// 设定与数据库字段对应的数据名
 		/// </summary>
 		[Category("Data"),Description("设定与数据库字段对应的数据名")]
+        [Editor(typeof(PropertyUITypeEditor), typeof(UITypeEditor))]
 		public string LinkProperty
 		{
 			get
@@ -380,6 +382,7 @@ document.getElementById(objname).value=objwin;
 			}
 		}
 
+         [Category("Data"), Description("设定数据类型代码")]
 		public System.TypeCode SysTypeCode
 		{
 			get

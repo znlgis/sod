@@ -615,7 +615,8 @@ namespace PWMIS.DataMap.Entity
         /// <param name="maxLength">最大长度</param>
         protected internal void setProperty(string propertyFieldName, string Value, int maxLength)
         {
-            string key = string.Format("{0}", propertyFieldName);
+            //string key = string.Format("{0}_{1}", ownerName,fieldName);
+            string key = string.Format("{0}_{1}",this.GetType().FullName, propertyFieldName);
             StringFieldSize[key] = maxLength;
 
             if (Value != null && maxLength > 0 && Value.Length > maxLength)

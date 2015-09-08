@@ -500,6 +500,7 @@ return true;
         /// 设定与数据库字段对应的数据表名
         /// </summary>
         [Category("Data"), Description("设定与数据库字段对应的数据表名")]
+        [Editor(typeof(LinkObjectUITypeEditor), typeof(UITypeEditor))]
         public string LinkObject
         {
             get

@@ -13,7 +13,7 @@ namespace WebApplication2.Model
     {
         public ContactInfo()
         {
-            TableName = "联系信息";
+            TableName = "联系信息5";
             IdentityName = "编号";
             PrimaryKeys.Add("编号");
         }
@@ -75,7 +75,7 @@ namespace WebApplication2.Model
         public string OtherInfo
         {
             get { return getProperty<string>("其它信息"); }
-            set { setProperty("其它信息", value, 50); }
+            set { setProperty("其它信息", value, 200); }
         }
 
         public DateTime AtTime
