@@ -53,6 +53,8 @@ namespace PWMIS.Common
 
     public delegate TResult MyFunc<T, TResult>(T arg);
 
+    public delegate TResult MyFunc<T1,T2, TResult>(T1 arg1,T2 arg2);
+
     public delegate void MyAction<T1, T2>(T1 arg1, T2 arg2);
 
     public delegate void MyAction<T1, T2,T3>(T1 arg1, T2 arg2,T3 arg3);

@@ -25,6 +25,7 @@ using System.Data;
 using System.Collections.Generic;
 using PWMIS.Core;
 using PWMIS.DataProvider.Adapter;
+using PWMIS.Common;
 namespace PWMIS.DataProvider.Data
 {
 	/// <summary>
@@ -254,6 +255,12 @@ namespace PWMIS.DataProvider.Data
             return resultList;
         }
 
+        /// <summary>
+        /// 采用快速的方法，将数据阅读器的结果映射到一个POCO类的列表上
+        /// </summary>
+        /// <typeparam name="T">POCO类类型</typeparam>
+        /// <param name="reader">抽象数据阅读器</param>
+        /// <returns>POCO类的列表</returns>
         public static List<T> QueryList<T>(IDataReader reader) where T : class, new()
         {
             List<T> list = new List<T>();
@@ -262,16 +269,18 @@ namespace PWMIS.DataProvider.Data
                 if (reader.Read())
                 {
                     int fcount = reader.FieldCount;
+                    //使用类型化委托读取正确的数据，解决MySQL等数据库可能的问题，感谢网友 @卖女孩的小肥羊 发现此问题
+                    Dictionary<Type, MyFunc<IDataReader, int, object>> readerDelegates = DataReaderDelegate();
+                    MyFunc<IDataReader, int, object>[] getDataMethods = new MyFunc<IDataReader, int, object>[fcount];
+
                     INamedMemberAccessor[] accessors = new INamedMemberAccessor[fcount];
-                    Type[] itemTypes = new Type[fcount];
-                    DelegatedReflectionMemberAccessor drm = new DelegatedReflectionMemberAccessor();
+                    DelegatedReflectionMemberAccessor accessorMethod = new DelegatedReflectionMemberAccessor();
                     for (int i = 0; i < fcount; i++)
                     {
-                        accessors[i] = drm.FindAccessor<T>(reader.GetName(i));
-                        itemTypes[i] = reader.GetFieldType(i);
+                        accessors[i] = accessorMethod.FindAccessor<T>(reader.GetName(i));
+                        getDataMethods[i] = readerDelegates[reader.GetFieldType(i)];
                     }
-                    //使用类型化委托读取正确的数据
-                    Dictionary<Type, Func<int, object>> readerDelegate = DataReaderDelegate(reader);
+                    
 
                     do
                     {
@@ -280,8 +289,9 @@ namespace PWMIS.DataProvider.Data
                         {
                             if (!reader.IsDBNull(i))
                             {
-                                Func<int, object> del = readerDelegate[itemTypes[i]];
-                                accessors[i].SetValue(t, del(i));
+                                MyFunc<IDataReader, int, object> read = getDataMethods[i];
+                                object value=read(reader,i);
+                                accessors[i].SetValue(t, value);
                             }
                                 
                         }
@@ -292,22 +302,22 @@ namespace PWMIS.DataProvider.Data
             return list;
         }
 
-        private static Dictionary<Type, Func<int, object>> DataReaderDelegate(IDataReader reader)
+        private static Dictionary<Type, MyFunc<IDataReader, int, object>> DataReaderDelegate()
         {
-            Dictionary<Type, Func<int, object>> dictReader = new Dictionary<Type, Func<int, object>>();
-            dictReader.Add(typeof(int), i => reader.GetInt32(i));
-            dictReader.Add(typeof(bool), i => reader.GetBoolean(i));
-            dictReader.Add(typeof(byte), i => reader.GetByte(i));
-            dictReader.Add(typeof(char), i => reader.GetChar(i));
-            dictReader.Add(typeof(DateTime), i => reader.GetDateTime(i));
-            dictReader.Add(typeof(decimal), i => reader.GetDecimal(i));
-            dictReader.Add(typeof(double), i => reader.GetDouble(i));
-            dictReader.Add(typeof(float), i => reader.GetFloat(i));
-            dictReader.Add(typeof(Guid), i => reader.GetGuid(i));
-            dictReader.Add(typeof(System.Int16), i => reader.GetInt16(i));
-            dictReader.Add(typeof(System.Int64), i => reader.GetInt64(i));
-            dictReader.Add(typeof(string), i => reader.GetString(i));
-
+            Dictionary<Type, MyFunc<IDataReader, int, object>> dictReader = new Dictionary<Type, MyFunc<IDataReader, int, object>>();
+            dictReader.Add(typeof(int), (reader,i) => reader.GetInt32(i));
+            dictReader.Add(typeof(bool), (reader, i) => reader.GetBoolean(i));
+            dictReader.Add(typeof(byte), (reader, i) => reader.GetByte(i));
+            dictReader.Add(typeof(char), (reader, i) => reader.GetChar(i));
+            dictReader.Add(typeof(DateTime), (reader, i) => reader.GetDateTime(i));
+            dictReader.Add(typeof(decimal), (reader, i) => reader.GetDecimal(i));
+            dictReader.Add(typeof(double), (reader, i) => reader.GetDouble(i));
+            dictReader.Add(typeof(float), (reader, i) => reader.GetFloat(i));
+            dictReader.Add(typeof(Guid), (reader, i) => reader.GetGuid(i));
+            dictReader.Add(typeof(System.Int16), (reader, i) => reader.GetInt16(i));
+            dictReader.Add(typeof(System.Int64), (reader, i) => reader.GetInt64(i));
+            dictReader.Add(typeof(string), (reader, i) => reader.GetString(i));
+            dictReader.Add(typeof(object), (reader, i) => reader.GetValue(i));
             return dictReader;
         }
 
