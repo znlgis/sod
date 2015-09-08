@@ -7,7 +7,7 @@
 // </自动生成>
 //------------------------------------------------------------------------------
 
-namespace WebApplication2 {
+namespace ClassReunionWeb {
     
     
     public partial class _Default {

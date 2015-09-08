@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 using WebApplication2.Model;
 using WebApplication2.Repository;
 
-namespace WebApplication2
+namespace ClassReunionWeb
 {
     public partial class _Default : System.Web.UI.Page
     {
