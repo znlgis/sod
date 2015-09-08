@@ -263,11 +263,15 @@ namespace PWMIS.DataProvider.Data
                 {
                     int fcount = reader.FieldCount;
                     INamedMemberAccessor[] accessors = new INamedMemberAccessor[fcount];
+                    Type[] itemTypes = new Type[fcount];
                     DelegatedReflectionMemberAccessor drm = new DelegatedReflectionMemberAccessor();
                     for (int i = 0; i < fcount; i++)
                     {
                         accessors[i] = drm.FindAccessor<T>(reader.GetName(i));
+                        itemTypes[i] = reader.GetFieldType(i);
                     }
+                    //使用类型化委托读取正确的数据
+                    Dictionary<Type, Func<int, object>> readerDelegate = DataReaderDelegate(reader);
 
                     do
                     {
@@ -275,13 +279,36 @@ namespace PWMIS.DataProvider.Data
                         for (int i = 0; i < fcount; i++)
                         {
                             if (!reader.IsDBNull(i))
-                                accessors[i].SetValue(t, reader.GetValue(i));
+                            {
+                                Func<int, object> del = readerDelegate[itemTypes[i]];
+                                accessors[i].SetValue(t, del(i));
+                            }
+                                
                         }
                         list.Add(t);
                     } while (reader.Read());
                 }
             }
             return list;
+        }
+
+        private static Dictionary<Type, Func<int, object>> DataReaderDelegate(IDataReader reader)
+        {
+            Dictionary<Type, Func<int, object>> dictReader = new Dictionary<Type, Func<int, object>>();
+            dictReader.Add(typeof(int), i => reader.GetInt32(i));
+            dictReader.Add(typeof(bool), i => reader.GetBoolean(i));
+            dictReader.Add(typeof(byte), i => reader.GetByte(i));
+            dictReader.Add(typeof(char), i => reader.GetChar(i));
+            dictReader.Add(typeof(DateTime), i => reader.GetDateTime(i));
+            dictReader.Add(typeof(decimal), i => reader.GetDecimal(i));
+            dictReader.Add(typeof(double), i => reader.GetDouble(i));
+            dictReader.Add(typeof(float), i => reader.GetFloat(i));
+            dictReader.Add(typeof(Guid), i => reader.GetGuid(i));
+            dictReader.Add(typeof(System.Int16), i => reader.GetInt16(i));
+            dictReader.Add(typeof(System.Int64), i => reader.GetInt64(i));
+            dictReader.Add(typeof(string), i => reader.GetString(i));
+
+            return dictReader;
         }
 
         /// <summary>
