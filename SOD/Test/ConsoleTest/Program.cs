@@ -481,9 +481,12 @@ namespace ConsoleTest
 
             sw.Reset();
 
-            Console.Write("query by AdoHelper Poco Query,begin...");
+            Console.Write("query by AdoHelper Poco Query,10000 times,begin...");
             sw.Start();
-            List<UserPoco> list = db.QueryList<UserPoco>(sql);
+            for (int i = 0; i < 100; i++)
+            {
+                List<UserPoco> list = db.QueryList<UserPoco>(sql);
+            }
             sw.Stop();
             Console.WriteLine("end,used time(ms){0}", sw.ElapsedMilliseconds);
 
