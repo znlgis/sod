@@ -33,6 +33,7 @@ namespace PWMIS.Core
 
     public interface INamedMemberAccessor
     {
+        Type MemberType { get; }
         object GetValue(object instance);
         void SetValue(object instance, object newValue);
     }
@@ -41,6 +42,7 @@ namespace PWMIS.Core
     {
         private MyFunc<T, P> GetValueDelegate;
         private MyAction<T, P> SetValueDelegate;
+        private Type memberType;
 
         public PropertyAccessor(Type type, string propertyName)
         {
@@ -50,6 +52,7 @@ namespace PWMIS.Core
                 GetValueDelegate = (MyFunc<T, P>)Delegate.CreateDelegate(typeof(MyFunc<T, P>), propertyInfo.GetGetMethod());
                 SetValueDelegate = (MyAction<T, P>)Delegate.CreateDelegate(typeof(MyAction<T, P>), propertyInfo.GetSetMethod());
             }
+            this.memberType = propertyInfo.PropertyType;
         }
 
         public object GetValue(object instance)
@@ -60,6 +63,13 @@ namespace PWMIS.Core
         public void SetValue(object instance, object newValue)
         {
             SetValueDelegate((T)instance, (P)newValue);
+        }
+
+
+
+        public Type MemberType
+        {
+            get { return this.memberType; }
         }
     }
 
