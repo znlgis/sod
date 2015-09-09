@@ -278,10 +278,13 @@ namespace PWMIS.DataProvider.Data
                     for (int i = 0; i < fcount; i++)
                     {
                         accessors[i] = accessorMethod.FindAccessor<T>(reader.GetName(i));
-                        getDataMethods[i] = readerDelegates[reader.GetFieldType(i)];
+
+                        if (!readerDelegates.TryGetValue(reader.GetFieldType(i), out getDataMethods[i]))
+                        {
+                            getDataMethods[i] = (rd, ii) => rd.GetValue(ii);
+                        }
                     }
                     
-
                     do
                     {
                         T t = new T();
