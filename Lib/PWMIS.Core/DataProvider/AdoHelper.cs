@@ -278,8 +278,8 @@ namespace PWMIS.DataProvider.Data
                     for (int i = 0; i < fcount; i++)
                     {
                         accessors[i] = accessorMethod.FindAccessor<T>(reader.GetName(i));
-
-                        if (!readerDelegates.TryGetValue(reader.GetFieldType(i), out getDataMethods[i]))
+                        //修改成从POCO实体类的属性上来获取DataReader类型化数据访问的方法，而不是之前的DataReader 的字段的类型
+                        if (!readerDelegates.TryGetValue(accessors[i].MemberType, out getDataMethods[i]))
                         {
                             getDataMethods[i] = (rd, ii) => rd.GetValue(ii);
                         }
