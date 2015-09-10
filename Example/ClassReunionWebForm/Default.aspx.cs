@@ -85,7 +85,7 @@ namespace ClassReunionWeb
              ClassReunionRepository rep = new ClassReunionRepository();
              ContactInfo s = new ContactInfo();
              var q = OQL.From(s)
-                 .Select(s.CID, s.Name, s.ContactPhone, s.ComeFrom, s.NeedRoom, s.HomeMemberCount, s.OtherInfo)
+                 .Select(s.CID, s.Name, s.ClassNum, s.ContactPhone, s.ComeFrom, s.NeedRoom, s.HomeMemberCount, s.OtherInfo)
                  .OrderBy(s.CID )
                  .END;
              var list = rep.UserQuery.GetList(q);
