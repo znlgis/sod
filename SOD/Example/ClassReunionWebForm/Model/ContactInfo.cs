@@ -13,7 +13,7 @@ namespace WebApplication2.Model
     {
         public ContactInfo()
         {
-            TableName = "联系信息5";
+            TableName = "联系信息";
             IdentityName = "编号";
             PrimaryKeys.Add("编号");
         }
@@ -21,7 +21,7 @@ namespace WebApplication2.Model
         protected override void SetFieldNames()
         {
             base.PropertyNames = new string[] { "编号", "身份证号", "姓名", "家属人数", "联系电话", "是否预定房间", 
-                "出发地", "其它信息","填写时间" };
+                "出发地", "原班级","其它信息","填写时间" };
         }
 
         public int CID
@@ -70,6 +70,12 @@ namespace WebApplication2.Model
         {
             get { return getProperty<string>("出发地"); }
             set { setProperty("出发地", value, 50); }
+        }
+
+        public string ClassNum
+        {
+            get { return getProperty<string>("原班级"); }
+            set { setProperty("原班级", value, 10); }
         }
 
         public string OtherInfo

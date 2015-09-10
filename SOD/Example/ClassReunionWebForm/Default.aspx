@@ -53,6 +53,11 @@
             </td><td class="auto-style2">请填写，修改信息需要，18位数字</td>
         </tr>
         <tr>
+            <td class="auto-style2">原班级</td><td class="auto-style3">
+            <cc1:DataTextBox ID="dtClassNum" runat="server" LinkProperty="ClassNum" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="10"></cc1:DataTextBox>
+            </td><td class="auto-style2">必填，如： 一班</td>
+        </tr>
+        <tr>
             <td class="auto-style2">联系电话</td><td class="auto-style3">
             <cc1:DataTextBox ID="dtPhone" runat="server" LinkProperty="ContactPhone" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="20"></cc1:DataTextBox>
             </td><td class="auto-style2">必填，建议手机</td>
