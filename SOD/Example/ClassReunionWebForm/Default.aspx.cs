@@ -19,6 +19,9 @@ namespace ClassReunionWeb
         protected int SchoolYear = 1;
         protected string Head_reg_link = "";
         protected string Head_reg_memo = "";
+        protected string Head_Holidays = "";
+        protected string Head_ReunionDate = "";
+        protected string Head_ReunionNote = "";
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -29,11 +32,16 @@ namespace ClassReunionWeb
                 SchoolYear = int.Parse(System.Configuration.ConfigurationManager.AppSettings["SchoolYear"]);
                 Head_reg_link = System.Configuration.ConfigurationManager.AppSettings["Head_reg_link"];
                 Head_reg_memo = System.Configuration.ConfigurationManager.AppSettings["Head_reg_memo"];
+                Head_Holidays = System.Configuration.ConfigurationManager.AppSettings["Head_Holidays"];
+                Head_ReunionDate = System.Configuration.ConfigurationManager.AppSettings["Head_ReunionDate"];
+                Head_ReunionNote = System.Configuration.ConfigurationManager.AppSettings["Head_ReunionNote"];
+
             }
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
         {
+            this.dlMsg.CssClass = "label label-danger";
             if (this.dtName.Text == "")
             {
                 this.dlMsg.Text = "请输入姓名！";
@@ -46,7 +54,7 @@ namespace ClassReunionWeb
             }
             if (this.dtPersonID.Text == "")
             {
-                this.dlMsg.Text = "请输入身份证号！";
+                this.dlMsg.Text = "请输入身份ID！";
                 return;
             }
             else
@@ -81,12 +89,14 @@ namespace ClassReunionWeb
 
                 if (count>0)
                 {
+                    this.dlMsg.CssClass = "label label-info";
                     this.dlMsg.Text = optMsg+" 成功！";
                     //重新绑定数据
                     BindLIstData();
                 }
                 else
                 {
+                    this.dlMsg.CssClass = "label label-danger";
                     this.dlMsg.Text = optMsg+ " 失败！[数据库操作异常，详细信息请检查SQL日志]";
                 }
             }
