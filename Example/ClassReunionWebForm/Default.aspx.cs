@@ -14,10 +14,22 @@ namespace ClassReunionWeb
 {
     public partial class _Default : System.Web.UI.Page
     {
+        protected int MemberCount = 3;
+        protected string SchoolName = "";
+        protected int SchoolYear = 1;
+        protected string Head_reg_link = "";
+        protected string Head_reg_memo = "";
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(! IsPostBack)
+            if (!IsPostBack)
+            {
                 BindLIstData();
+                SchoolName = System.Configuration.ConfigurationManager.AppSettings["SchoolName"];
+                SchoolYear = int.Parse(System.Configuration.ConfigurationManager.AppSettings["SchoolYear"]);
+                Head_reg_link = System.Configuration.ConfigurationManager.AppSettings["Head_reg_link"];
+                Head_reg_memo = System.Configuration.ConfigurationManager.AppSettings["Head_reg_memo"];
+            }
         }
 
         protected void btnSubmit_Click(object sender, EventArgs e)
@@ -93,6 +105,7 @@ namespace ClassReunionWeb
              var dataTable = EntityQueryAnonymous.EntitysToDataTable<ContactInfo>(list);
              this.GridView1.DataSource = dataTable;
              this.GridView1.DataBind();
+             this.MemberCount = list.Count;
         }
     }
 }
