@@ -6,95 +6,149 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+    <meta charset="utf-8"  />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
     <title></title>
-    <style type="text/css">
-        .auto-style1 {
-            width: 274px;
-        }
-        .auto-style2 {
-            height: 20px;
-        }
-        .auto-style3 {
-            width: 274px;
-            height: 20px;
-        }
-    </style>
+   
     
     <link href="Content/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="Content/bootstrap-theme.css" rel="stylesheet" type="text/css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
 </head>
 <body>
-    <form id="form1" runat="server">
- <div class="container">
-      
+    
+ <div class="container-fluid">
+  <div class="jumbotron">
+  <h1>同学们, 大家好!</h1>
+  <p>今年时值<span class="label label-info"><%=this.SchoolName %></span>毕业<%=this.SchoolYear %>周年了，国庆期间有些在外地的同学可以回来，
+看能不能搞一个同学聚会庆祝下，愿意参加的同学，请网上填报下表格；不能来的
+同学，也请奔走相告，捎个信儿：）</p>
+      <p>
+    网上报名地址：<%=this.Head_reg_link %> ( <%=this.Head_reg_memo %> ，该网址手机也可以访问。)
+</p>
+     
+      <h2>“大家都是一个班级”，<%=this.SchoolYear %>周年同学会，期待您的参与和支持！</h2>
+      <p> 2015.9月</p>
+</div>
   <div class="row-fluid">
-   <div class="span2">
+      <form id="form1" runat="server">
+   <div class="col-md-3">
      <!--Sidebar content-->
+        <div class="row">
+          <div class="col-sm-6 col-md-12">
+            <div class="thumbnail">
+              <img src="images/95_20.png" alt="风雨20年">
+              <div class="caption">
+                <h3><%=this.SchoolName %></h3>
+                <p>风雨<%=this.SchoolYear %>年，难忘同窗情...</p>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+       <div class="panel panel-info">
+          <!-- Default panel contents -->
+          <div class="panel-heading">同学会议程</div>
+          <div class="panel-body">
+              <div class="list-group">
+              <a href="#" class="list-group-item list-group-item-success">发起倡议--2015春节</a>
+              <a href="#" class="list-group-item list-group-item-success">网站上线--9.11</a>
+              <a href="#" class="list-group-item list-group-item-info active">网上报名</a>
+              <a href="#" class="list-group-item list-group-item-info">成立筹备委员会</a>
+              <a href="#" class="list-group-item list-group-item-info">现场筹备</a>
+              <a href="#" class="list-group-item list-group-item-info">会后纪念</a>
+            </div>
+          </div>
+      
+        </div>
       
     </div>
-    <div class="span10">
+    <div class="col-md-9">
       <!--Body content-->
           <div class="row-fluid">
-            <div class ="row">
-                <h1>同学会联系信息</h1>
-            </div>
-   
-        <div class="row">
-    <div >
-    <table class="table table-striped table-bordered">
+              <div class="panel panel-info">
+                  <!-- Default panel contents -->
+                  <div class="panel-heading"><h4>同学会联系信息</h4></div>
+                  <div class="panel-body">
+                    <p>同学会具体组织形式，可以在“其它说明”中简短说明，或者在QQ群讨论；
+“身份证号”当密码使用，同时验证是否是德阳的同学，如果需要联系住宿，方便登记订房。</p>
+                      <p>
+                          <cc1:DataLabel ID="dlMsg" runat="server" DataFormatString="" IsNull="True" LinkObject="" LinkProperty="" MaxLength="0" PrimaryKey="False" ReadOnly="True" SysTypeCode="Empty">就绪，如果输入姓名和身份证号已经存在，则是修改信息</cc1:DataLabel>
+                      </p>
+                  </div>
+
+                  <!-- Table -->
+                  <table class="table table-striped table-bordered">
         <tr >
-            <td>姓名</td><td class="auto-style1">
-            <cc1:DataTextBox ID="dtName" runat="server" LinkProperty="Name" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="10" ></cc1:DataTextBox>
+            <td>姓名</td><td >
+            <cc1:DataTextBox ID="dtName" runat="server" CssClass="form-control" LinkProperty="Name" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="10" ></cc1:DataTextBox>
             </td><td>请填写同学实名，修改信息需要</td>
         </tr>
         <tr>
-            <td class="auto-style2">身份证号</td><td class="auto-style3">
-            <cc1:DataTextBox ID="dtPersonID" runat="server" LinkProperty="PersonID" SysTypeCode="String" LinkObject="ContactInfo" MaxLength="20"></cc1:DataTextBox>
+            <td >身份证号</td><td >
+            <cc1:DataTextBox ID="dtPersonID" runat="server" CssClass="form-control" LinkProperty="PersonID" SysTypeCode="String" LinkObject="ContactInfo" MaxLength="20"></cc1:DataTextBox>
             </td><td class="auto-style2">请填写，修改信息需要，18位数字</td>
         </tr>
         <tr>
-            <td class="auto-style2">原班级</td><td class="auto-style3">
-            <cc1:DataTextBox ID="dtClassNum" runat="server" LinkProperty="ClassNum" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="10"></cc1:DataTextBox>
-            </td><td class="auto-style2">必填，如： 一班</td>
+            <td >原班级</td><td >
+            <cc1:DataTextBox ID="dtClassNum" runat="server" CssClass="form-control" LinkProperty="ClassNum" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="10"></cc1:DataTextBox>
+            </td><td >必填，如： 一班</td>
         </tr>
         <tr>
-            <td class="auto-style2">联系电话</td><td class="auto-style3">
-            <cc1:DataTextBox ID="dtPhone" runat="server" LinkProperty="ContactPhone" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="20"></cc1:DataTextBox>
-            </td><td class="auto-style2">必填，建议手机</td>
+            <td >联系电话</td><td >
+            <cc1:DataTextBox ID="dtPhone" runat="server" CssClass="form-control" LinkProperty="ContactPhone" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="20"></cc1:DataTextBox>
+            </td><td >必填，建议手机</td>
         </tr>
         <tr>
-            <td>家属人数</td><td class="auto-style1">
-            <cc1:DataTextBox ID="DataTextBox1" runat="server" LinkProperty="HomeMemberCount" LinkObject="ContactInfo" SysTypeCode="Int32" MaxLength="5"></cc1:DataTextBox>
+            <td>家属人数</td><td >
+            <cc1:DataTextBox ID="DataTextBox1" runat="server" CssClass="form-control" LinkProperty="HomeMemberCount" LinkObject="ContactInfo" SysTypeCode="Int32" MaxLength="5"></cc1:DataTextBox>
             </td><td>没有，请写0</td>
         </tr>
         <tr>
-            <td>是否预定房间</td><td class="auto-style1">
-            <cc1:DataCheckBox ID="DataCheckBox1" runat="server" Text="预定" LinkProperty="NeedRoom" LinkObject="ContactInfo" SysTypeCode="Boolean"/>
+            <td>是否预定房间</td><td >
+            <cc1:DataCheckBox ID="DataCheckBox1" runat="server" CssClass="form-control-static" Text="预定" LinkProperty="NeedRoom" LinkObject="ContactInfo" SysTypeCode="Boolean"/>
             </td><td>我们将为你安排住宿</td>
         </tr>
         <tr>
-            <td>出发地</td><td class="auto-style1">
-            <cc1:DataTextBox ID="DataTextBox4" runat="server" LinkProperty="ComeFrom" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="50"></cc1:DataTextBox>
+            <td>出发地</td><td >
+            <cc1:DataTextBox ID="DataTextBox4" runat="server" CssClass="form-control" LinkProperty="ComeFrom" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="50"></cc1:DataTextBox>
             </td><td>比如来自北京</td>
         </tr>
         <tr>
-            <td>其它说明</td><td class="auto-style1">
-            <cc1:DataTextBox ID="DataTextBox5" runat="server" Height="65px" TextMode="MultiLine" Width="264px" LinkProperty="OtherInfo"  SysTypeCode="String" LinkObject="ContactInfo" MaxLength="200"></cc1:DataTextBox>
+            <td>其它说明</td><td >
+            <cc1:DataTextBox ID="DataTextBox5" runat="server" CssClass="form-control" Height="65px" TextMode="MultiLine"  LinkProperty="OtherInfo"  SysTypeCode="String" LinkObject="ContactInfo" MaxLength="200"></cc1:DataTextBox>
             </td><td>你的特殊需求，200字</td>
         </tr>
     </table>
-    </div>
-       
-    <p>
-        &nbsp;
-        <asp:Button ID="btnSubmit" runat="server"  Text="提交" Width="71px" OnClick="btnSubmit_Click" CssClass="btn btn-success" />&nbsp;
-        <input type="reset" value ="重置" class="btn btn-info "/>
-        <br />
-<cc1:DataLabel ID="dlMsg" runat="server" DataFormatString="" IsNull="True" LinkObject="" LinkProperty="" MaxLength="0" PrimaryKey="False" ReadOnly="True" SysTypeCode="Empty">就绪，如果输入姓名和身份证号已经存在，则是修改信息</cc1:DataLabel>
-    </p>
-          </div>
-        <div class ="row">
-        <asp:GridView ID="GridView1" runat="server" CellPadding="4" EnableModelValidation="True" CssClass="table table-striped" GridLines="None">
+                   <div class="panel-footer">
+                    <asp:Button ID="btnSubmit" runat="server"  Text="提交" Width="71px" OnClick="btnSubmit_Click" CssClass="btn btn-success" />&nbsp;
+                    <input type="reset" value ="重置" class="btn btn-info "/>
+                 </div>
+            </div>
+
+              <div class="panel panel-success">
+              <!-- Default panel contents -->
+              <div class="panel-heading"><h4>已报名的同学</h4></div>
+           <div class="panel-body">
+               <% if(this.MemberCount>0) { %>
+               感谢下列同学报名支持本次活动！
+                   <button class="btn btn-success" type="button">
+                          报名人数 <span class="badge"><%= this.MemberCount %></span>
+                    </button>
+               <% }else { %>
+               期待您的参与！
+               <% } %>
+            </div>
+              <!-- Table -->
+               <asp:GridView ID="GridView1" runat="server" CellPadding="4" EnableModelValidation="True" CssClass="table table-striped" GridLines="None">
             <AlternatingRowStyle BackColor="White" />
             <EditRowStyle BackColor="#7C6F57" />
             <FooterStyle BackColor="#1C5E55" Font-Bold="True" ForeColor="White" />
@@ -102,17 +156,20 @@
             <PagerStyle BackColor="#666666" ForeColor="White" HorizontalAlign="Center" />
             <RowStyle BackColor="#E3EAEB" />
             <SelectedRowStyle BackColor="#C5BBAF" Font-Bold="True" ForeColor="#333333" />
-        </asp:GridView>
+        </asp:GridView>    
+                  <div class="panel-footer">
+                      技术支持 <a href="http://www.pwmis.com/sqlmap" target="_blank"> PDF.NET SOD开源框架</a>
+                  </div> 
             </div>
-
+        </div>
+          <div >
+              
         </div>
    </div>
+      </form>
   </div>
-        <div class="row">
-            技术支持 <a href="http://www.pwmis.com/sqlmap" target="_blank"> PDF.NET SOD开源框架</a>
-
-        </div>
+  
 </div>
-          </form>
+          
     </body>
 </html>
