@@ -28,10 +28,10 @@
  <div class="container-fluid">
   <div class="jumbotron">
   <h1>同学们, 大家好!</h1>
-  <p>今年时值<span class="label label-info"><%=this.SchoolName %></span>毕业<%=this.SchoolYear %>周年了，国庆期间有些在外地的同学可以回来，
+  <p>今年时值<span class="label label-info"><%=this.SchoolName %></span>毕业<%=this.SchoolYear %>周年了，<%=this.Head_Holidays %>间有些在外地的同学可以回来，
 看能不能搞一个同学聚会庆祝下，愿意参加的同学，请网上填报下表格；不能来的
 同学，也请奔走相告，捎个信儿：）</p>
-      <p>
+      <p>初步计划时间：<%=this.Head_ReunionDate %>，活动内容：<%=this.Head_ReunionNote %>。
     网上报名地址：<%=this.Head_reg_link %> ( <%=this.Head_reg_memo %> ，该网址手机也可以访问。)
 </p>
      
@@ -69,7 +69,20 @@
           </div>
       
         </div>
-      
+      <div class="row">
+          <div class="col-sm-5 col-md-12">
+            <div class="thumbnail">
+              <img src="http://www.pwmis.com/sqlmap/alipay-jk.png" alt="风雨20年">
+              <div class="caption">
+                <h3>土豪，我们交个朋友吧！</h3>
+                <p>如果有哪位土豪（不限于）同学原意捐助本次同学会，请用手机扫描此二维码，我们将在同学会上为你打广告：）</p>
+                <p>捐助名单：
+                    <br />虚位以待......
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
     </div>
     <div class="col-md-9">
       <!--Body content-->
@@ -78,24 +91,25 @@
                   <!-- Default panel contents -->
                   <div class="panel-heading"><h4>同学会联系信息</h4></div>
                   <div class="panel-body">
-                    <p>同学会具体组织形式，可以在“其它说明”中简短说明，或者在QQ群讨论；
-“身份证号”当密码使用，同时验证是否是德阳的同学，如果需要联系住宿，方便登记订房。</p>
+                    <p>同学会具体组织形式，可以在“其它说明”中简短说明，或者在QQ群讨论；</p>
+                    <p> 填写本联系表<span class="label label-info">无需注册，无需登录</span>，所以请填写<span class="label label-primary">“身份ID”</span>，当密码使用，用于修改数据和其它功能，
+                        请使用你常用不会遗忘的数字，建议使用身份证号，这样如果您需要联系住宿或者预定车票的话，方便为您服务。</p>
                       <p>
-                          <cc1:DataLabel ID="dlMsg" runat="server" DataFormatString="" IsNull="True" LinkObject="" LinkProperty="" MaxLength="0" PrimaryKey="False" ReadOnly="True" SysTypeCode="Empty">就绪，如果输入姓名和身份证号已经存在，则是修改信息</cc1:DataLabel>
-                      </p>
+                          <cc1:DataLabel ID="dlMsg" runat="server" CssClass="label label-info" DataFormatString="" IsNull="True" LinkObject="" LinkProperty="" MaxLength="0" PrimaryKey="False" ReadOnly="True" SysTypeCode="Empty">就绪，如果输入姓名和身份证号已经存在，则是修改信息</cc1:DataLabel>
+                          </p>
                   </div>
 
                   <!-- Table -->
                   <table class="table table-striped table-bordered">
         <tr >
             <td>姓名</td><td >
-            <cc1:DataTextBox ID="dtName" runat="server" CssClass="form-control" LinkProperty="Name" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="10" ></cc1:DataTextBox>
+            <cc1:DataTextBox ID="dtName" runat="server" CssClass="form-control" LinkProperty="Name" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="10" ErrorMessage="请输入汉字格式的姓名！" IsNull="False" MessageType="提示框" OftenType="中文字符" OnClickShowInfo="True" RegexName="姓名" ></cc1:DataTextBox>
             </td><td>请填写同学实名，修改信息需要</td>
         </tr>
         <tr>
-            <td >身份证号</td><td >
+            <td >身份ID</td><td >
             <cc1:DataTextBox ID="dtPersonID" runat="server" CssClass="form-control" LinkProperty="PersonID" SysTypeCode="String" LinkObject="ContactInfo" MaxLength="20"></cc1:DataTextBox>
-            </td><td class="auto-style2">请填写，修改信息需要，18位数字</td>
+            </td><td class="auto-style2">请填写，修改信息需要，6-18位数字</td>
         </tr>
         <tr>
             <td >原班级</td><td >
@@ -104,7 +118,7 @@
         </tr>
         <tr>
             <td >联系电话</td><td >
-            <cc1:DataTextBox ID="dtPhone" runat="server" CssClass="form-control" LinkProperty="ContactPhone" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="20"></cc1:DataTextBox>
+            <cc1:DataTextBox ID="dtPhone" runat="server" CssClass="form-control" LinkProperty="ContactPhone" LinkObject="ContactInfo" SysTypeCode="String" MaxLength="20" ErrorMessage="联系电话填写不正确" IsNull="False" MessageType="提示框" OftenType="电话号码或手机" OnClickShowInfo="True" RegexName="联系电话"></cc1:DataTextBox>
             </td><td >必填，建议手机</td>
         </tr>
         <tr>
