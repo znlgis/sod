@@ -331,24 +331,25 @@ namespace ConsoleTest
         {
             LT_UserRoles roles = new LT_UserRoles() { NickName = "Role1" };
             LT_UserRoles roles2 = new LT_UserRoles();
-            OQL q2 = OQL.From(roles).Join(roles2).On(roles.ID, roles2.ID)
-                .Select(roles.ID, roles2.RoleName)
-                .Where(cmp => cmp.EqualValue(roles.NickName))
+            OQL q2 = OQL.From(roles)
+                    .Join(roles2).On(roles.ID, roles2.ID)
+                    .Select(roles.ID, roles2.RoleName)
+                    .Where(cmp => cmp.EqualValue(roles.NickName))
                 .END;
             Console.WriteLine("OQL 自连接：{0}", q2);
 
             LT_Users users = new LT_Users();
             OQL q = OQL.From(users)
-                .Join(roles).On(users.RoleID, roles.ID)
-                .Select(
-                    users.ID, 
-                    users.UserName, 
-                    roles.ID, 
-                    roles.RoleName
-                )
-                .Where(
-                    cmp => cmp.EqualValue(roles.NickName)
-                )
+                    .Join(roles).On(users.RoleID, roles.ID)
+                    .Select(
+                        users.ID, 
+                        users.UserName, 
+                        roles.ID, 
+                        roles.RoleName
+                    )
+                    .Where(
+                        cmp => cmp.EqualValue(roles.NickName)
+                    )
                 .END;
             Console.WriteLine("OQL to SQL:\r\n{0}", q);
 

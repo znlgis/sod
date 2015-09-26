@@ -1436,6 +1436,14 @@
             <param name="parameters">用于替换的参数</param>
             <returns>对象列表</returns>
         </member>
+        <member name="M:PWMIS.DataProvider.Data.AdoHelper.QueryList``1(System.Data.IDataReader)">
+            <summary>
+            采用快速的方法，将数据阅读器的结果映射到一个POCO类的列表上
+            </summary>
+            <typeparam name="T">POCO类类型</typeparam>
+            <param name="reader">抽象数据阅读器</param>
+            <returns>POCO类的列表</returns>
+        </member>
         <member name="M:PWMIS.DataProvider.Data.AdoHelper.QueryList``1(System.String,System.Object[])">
             <summary>
             根据SQL格式化串和可选的参数，直接查询结果并映射到POCO 对象
@@ -4809,13 +4817,6 @@
             <summary>
             数据库上下文提供程序接口
             </summary>
-        </member>
-        <member name="M:PWMIS.Core.Interface.IDbContextProvider.CheckDB">
-            <summary>
-            检查数据库，检查表是否已经初始化。如果是Access 数据库，还会检查数据库文件是否存在，可以在系统中设置DBFilePath 字段。
-            如果需要更多的检查，可以重写该方法，但一定请保留 base.CheckDB();这行代码。
-            </summary>
-            <returns>检查是否通过</returns>
         </member>
         <member name="M:PWMIS.Core.Interface.IDbContextProvider.CheckDB">
             <summary>

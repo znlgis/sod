@@ -2070,23 +2070,50 @@ namespace PWMIS.DataMap.Entity
         }
         /// <summary>
         /// 指定要关联查询的实体类属性（内部对应字段）
+        /// <example>
+        /// <![CDATA[
+        /// var q1 = OQL.From(a)
+        ///             .InnerJoin(b).On(a.ID,b.ID)
+        ///             .Select(a.ID,a.Name,b.Name)
+        ///          .END;
+        /// //感谢网友 Tony 扩展了下面的使用方式         
+        /// var q2 =  OQL.From(a)
+        ///              .LeftJoin(b).On(a.ID,b.ID, a.Name,b.Name)
+        ///              .Select(a.ID,a.Name,b.OtherInfo)
+        ///          .END;
+        /// ]]>
+        /// </example>
         /// </summary>
-        /// <param name="field1">主实体类的主键属性</param>
-        /// <param name="field2">从实体类的外键属性</param>
+        /// <param name="fields">主实体类的关联的属性与从实体关联的属性，必须成对出现</param>
         /// <returns></returns>
-        public OQL On(object field1, object field2)
+        public OQL On(params object[] fields)
         {
-            TableNameField tnfRight = this._mainOql.fieldStack.Pop();
-            TableNameField tnfLeft = this._mainOql.fieldStack.Pop();
-            LeftString = this._mainOql.GetOqlFieldName(tnfLeft);
-            RightString = this._mainOql.GetOqlFieldName(tnfRight);
+            if (fields.Length > 0)
+            {
+                if (fields.Length % 2 > 0)
+                    throw new Exception("参数个数应为偶数！");
+                int count = fields.Length;
 
-            this.JoinedString = string.Format("\r\n{0} [{1}] {2}  ON {3} ={4} ", _joinType,
-                _joinedEntity.GetTableName(),
-                this._mainOql.GetTableAliases(_joinedEntity),
-                LeftString,
-                RightString);
-            this._mainOql.oqlString += this.JoinedString;
+                TableNameField tnfRight = this._mainOql.fieldStack.Pop();
+                TableNameField tnfLeft = this._mainOql.fieldStack.Pop();
+                LeftString = this._mainOql.GetOqlFieldName(tnfLeft);
+                RightString = this._mainOql.GetOqlFieldName(tnfRight);
+
+                this.JoinedString = string.Format("\r\n{0} [{1}] {2}  ON {3} ={4} ", _joinType,
+                    _joinedEntity.GetTableName(),
+                    this._mainOql.GetTableAliases(_joinedEntity),
+                    LeftString,
+                    RightString);
+                this._mainOql.oqlString += this.JoinedString;
+                for (int i = 0; i < (count - 2) / 2; i++)
+                {
+                    TableNameField tnf1 = this._mainOql.fieldStack.Pop();
+                    TableNameField tnf2 = this._mainOql.fieldStack.Pop();
+                    string tnf1String = this._mainOql.GetOqlFieldName(tnf1);
+                    string tnf2String = this._mainOql.GetOqlFieldName(tnf2);
+                    this._mainOql.oqlString += string.Format(" AND {0} = {1} ", tnf1String, tnf2String);
+                }
+            }
             return this._mainOql;
         }
         /// <summary>
