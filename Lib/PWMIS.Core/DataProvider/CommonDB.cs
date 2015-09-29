@@ -87,6 +87,11 @@ namespace PWMIS.DataProvider.Data
 {
     /// <summary>
     /// 公共数据访问基础类
+    /// <remarks>
+    /// 正常情况下CRUD方法都是使用一个局部的连接变量，因此是线程安全的原子操作；
+    /// 如果开启了事务，或者开启了 opensession，将共享同一个连接对象，直到事务结束或者关闭会话，因此此时连接对象不是线程安全的。
+    /// 所以，MyDB.Instance 不可以用于多线程环境下开启会话或者执行事务方法。
+    /// </remarks>
     /// </summary>
     public abstract class CommonDB : IDisposable
     {
@@ -1202,14 +1207,31 @@ namespace PWMIS.DataProvider.Data
                 _connection.Close();
         }
 
+        //Dispose与GC的关系，参考 http://www.cnblogs.com/coolkiss/archive/2010/08/23/1806382.html
+
         void IDisposable.Dispose()
         {
             if (!disposed)
             {
-                CloseGlobalConnection();
-                CloseSession();
+                Dispose(true);
                 disposed = true;
             }
         }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // Free other state (managed objects).
+                CloseGlobalConnection();
+                CloseSession();
+            }
+            // Free your own state (unmanaged objects).
+            // Set large fields to null.
+            _connection = null;
+            _transation = null;
+            sessionConnection = null;
+        }
+
     }
 }
