@@ -186,6 +186,7 @@ namespace ConsoleTest
             /////////////////测试事务////////////////////////////////////
             Console.WriteLine("19，测试测试事务...");
             TestTransaction();
+            TestTransaction2();
             Console.WriteLine("事务测试完成！");
             Console.WriteLine("-------PDF.NET SOD 测试全部完成-------");
 
@@ -250,6 +251,39 @@ namespace ConsoleTest
                 Console.WriteLine("Error:" + ex.Message);
                 db.Rollback();
             }
+        }
+
+        private static void TestTransaction2()
+        {
+            using (var db = MyDB.GetDBHelper())
+            {
+                EntityQuery<AuctionOperationLog> query = new EntityQuery<AuctionOperationLog>(db);
+
+                AuctionOperationLog optLog = new AuctionOperationLog();
+                optLog.OperaterID = 1000;
+                optLog.Module = "Login";
+                optLog.Operation = "登录成功2";
+                optLog.LogSource = "PC";
+                //开启事务
+                db.BeginTransaction();
+                int count= query.Insert(optLog);
+
+                //模拟数据操作失败，抛出异常
+                if (count > 0)
+                {
+                    //throw new Exception("测试在事务过程中数据操作异常");
+                    Console.WriteLine("测试在事务过程中数据操作异常 退出");
+                    return;
+                }
+                //必须设置为全部属性已经修改，否则仅会更新 Operation 字段
+                optLog.ResetChanges(true);
+                optLog.Operation = "退出登录";
+                query.Insert(optLog);
+
+                db.Commit();
+            }
+          
+            
         }
 
         private static void TestAutoSave()
