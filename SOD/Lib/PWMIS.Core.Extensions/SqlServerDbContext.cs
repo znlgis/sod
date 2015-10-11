@@ -50,7 +50,7 @@ namespace PWMIS.Core.Extensions
             {
                 string sqlformat = @"
 if not exists (select * From master.dbo.sysdatabases where name='{0}')
-create database '{1}'
+create database {1}
 ";
                 string sql = string.Format(sqlformat, database, database);
                 CurrentDataBase.ExecuteNonQuery(sql);
