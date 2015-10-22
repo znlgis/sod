@@ -57,6 +57,9 @@
  * 
  *  * 修改者：         时间：2015-7-5  
  *  修改实体类字符串长度获取的Bug，当有同名字段的时候会出现问题，感谢网友 阳光尚好 发现此问题
+ *  
+ *  * 修改者：         时间：2015-10-22  
+ *  修改MapFrom 方法，增加设置修改状态的功能，感谢网友 石家庄-零点 提供此建议
  * ========================================================================
 */
 using System;
@@ -823,8 +826,9 @@ namespace PWMIS.DataMap.Entity
         /// 要求拷贝的同名属性是读写属性且类型相同。
         /// </summary>
         /// <param name="pocoClass">POCO实体类，提供源数据</param>
+        /// <param name="isChange">是否改变属性的修改状态</param>
         /// <returns>映射成功的属性数量</returns>
-        public int MapFrom(object pocoClass)
+        public int MapFrom(object pocoClass,bool isChange=false)
         {
           if (pocoClass == null)
               return 0;
@@ -846,6 +850,8 @@ namespace PWMIS.DataMap.Entity
               if (accessors[i] != null)
               {
                   this.PropertyValues[i] = accessors[i].GetValue(pocoClass);
+                  if (isChange) //设置属性修改状态
+                      this.changedlist[i] = true; 
                   count++;              
               }
           }

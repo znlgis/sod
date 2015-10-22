@@ -49,20 +49,26 @@ namespace PWMIS.Core
             var propertyInfo = type.GetProperty(propertyName);
             if (propertyInfo != null)
             {
-                GetValueDelegate = (MyFunc<T, P>)Delegate.CreateDelegate(typeof(MyFunc<T, P>), propertyInfo.GetGetMethod());
-                SetValueDelegate = (MyAction<T, P>)Delegate.CreateDelegate(typeof(MyAction<T, P>), propertyInfo.GetSetMethod());
+                if(propertyInfo.CanRead)
+                    GetValueDelegate = (MyFunc<T, P>)Delegate.CreateDelegate(typeof(MyFunc<T, P>), propertyInfo.GetGetMethod());
+                if(propertyInfo.CanWrite)
+                    SetValueDelegate = (MyAction<T, P>)Delegate.CreateDelegate(typeof(MyAction<T, P>), propertyInfo.GetSetMethod());
             }
             this.memberType = propertyInfo.PropertyType;
         }
 
         public object GetValue(object instance)
         {
-            return GetValueDelegate((T)instance);
+            if (GetValueDelegate != null)
+                return GetValueDelegate((T)instance);
+            else
+                return null;
         }
 
         public void SetValue(object instance, object newValue)
         {
-            SetValueDelegate((T)instance, (P)newValue);
+            if (SetValueDelegate!=null)
+                SetValueDelegate((T)instance, (P)newValue);
         }
 
 

@@ -150,8 +150,8 @@ namespace PWMIS.Core.Extensions
                 T temp = EntityBuilder.CreateEntity<T>();
                 entity = temp as EntityBase;
 
-                entity.MapFrom(data);
-                entity.ResetChanges(true);
+                entity.MapFrom(data,true);//使用该重载方法，可以不用调用下面一行代码
+                //entity.ResetChanges(true);
             }
 
             EntityQuery eq = new EntityQuery(CurrentDataBase);
@@ -227,8 +227,8 @@ namespace PWMIS.Core.Extensions
                 T obj = EntityBuilder.CreateEntity<T>();
                 EntityBase entity = obj as EntityBase;
                 //为实体类属性赋值
-                entity.MapFrom(data);
-                entity.ResetChanges(true);
+                entity.MapFrom(data,true);//使用该重载，不用调用下面一行代码了
+                //entity.ResetChanges(true);
 
                 objList.Add(entity);
             }

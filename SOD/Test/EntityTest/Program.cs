@@ -29,6 +29,10 @@ namespace EntityTest
 
             Console.WriteLine();
             Console.WriteLine("-------PDF.NET SOD 实体类 测试---------");
+            //实体类属性拷贝
+            var userTemp = new {  FirstName = "zhang ", LasttName = "san" };
+            UserEntity userTest = new UserEntity();
+            userTest.MapFrom(userTemp, true);
             //注册实体类
             EntityBuilder.RegisterType(typeof(IUser), typeof(UserEntity));
 
