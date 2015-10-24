@@ -60,6 +60,10 @@
  *  
  *  * 修改者：         时间：2015-10-22  
  *  修改MapFrom 方法，增加设置修改状态的功能，感谢网友 石家庄-零点 提供此建议
+ *  
+ *  * 修改者：         时间：2015-10-24  
+ *  修改MapToPOCO 方法，可以避免覆盖POCO对象不想赋值的属性，感谢网友 石家庄-零点 发现此问题 
+ * 
  * ========================================================================
 */
 using System;
@@ -859,7 +863,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 将当前实体类的属性值映射到相同属性名称的POCO实体类中。要求拷贝的同名属性是读写属性且类型相同。
+        /// 将当前实体类的属性值（非空值）映射到相同属性名称的POCO实体类中。要求拷贝的同名属性是读写属性且类型相同。
         /// </summary>
         /// <param name="pocoClass">POCO实体类</param>
         /// <returns>映射成功的属性数量</returns>
@@ -872,16 +876,25 @@ namespace PWMIS.DataMap.Entity
             INamedMemberAccessor[] accessors = new INamedMemberAccessor[fcount];
             DelegatedReflectionMemberAccessor drm = new DelegatedReflectionMemberAccessor();
             Type type = pocoClass.GetType();
+            var ef = EntityFieldsCache.Item(this.GetType());
             for (int i = 0; i < fcount; i++)
             {
-                accessors[i] = drm.TryFindAccessor(type, PropertyNames[i]);
+                //实体类的属性字段可能跟属性名称不一样 edit at 2015.10.24
+                string perpertyName = ef.GetPropertyName(PropertyNames[i]);
+                accessors[i] = drm.TryFindAccessor(type, perpertyName);
             }
             for (int i = 0; i < fcount; i++)
             {
                 if (accessors[i] != null)
                 {
-                    accessors[i].SetValue(pocoClass, this.PropertyValues[i]);
-                    count++;
+                    //this.PropertyValues[i] 可能为空，这会导致下面的赋值报错
+                    //这种情况可能发生在实体类的数据是经过OQL部分Select 字段造成的，或者字段本身的值为NULL
+                    object Value = this.PropertyValues[i];
+                    if (Value != null && Value != DBNull.Value)
+                    {
+                        accessors[i].SetValue(pocoClass, this.PropertyValues[i]);
+                        count++;
+                    }
                 }
             }
             return count;
