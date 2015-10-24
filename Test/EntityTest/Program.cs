@@ -33,6 +33,8 @@ namespace EntityTest
             var userTemp = new {  FirstName = "zhang ", LasttName = "san" };
             UserEntity userTest = new UserEntity();
             userTest.MapFrom(userTemp, true);
+            userTest.Age = 20;
+            userTest.MapToPOCO(new UserDto());
             //注册实体类
             EntityBuilder.RegisterType(typeof(IUser), typeof(UserEntity));
 
