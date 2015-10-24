@@ -29,12 +29,7 @@ namespace EntityTest
 
             Console.WriteLine();
             Console.WriteLine("-------PDF.NET SOD 实体类 测试---------");
-            //实体类属性拷贝
-            var userTemp = new {  FirstName = "zhang ", LasttName = "san" };
-            UserEntity userTest = new UserEntity();
-            userTest.MapFrom(userTemp, true);
-            userTest.Age = 20;
-            userTest.MapToPOCO(new UserDto());
+           
             //注册实体类
             EntityBuilder.RegisterType(typeof(IUser), typeof(UserEntity));
 
@@ -96,6 +91,24 @@ namespace EntityTest
             PropertyNameValuesSerializer des = new PropertyNameValuesSerializer(null);
             UserEntity desUser = des.Deserialize<UserEntity>(strEntity);
             Console.WriteLine("成功");
+
+            //实体类属性拷贝
+            var userTemp = new { FirstName = "zhang ", LasttName = "san" };
+            UserEntity userTest = new UserEntity();
+            userTest.MapFrom(userTemp, true);
+            userTest.Age = 20;
+            userTest.MapToPOCO(new UserDto());
+
+            user3 = context.UserQuery.GetObject(q3);
+            user3.MapToPOCO(new UserDto());
+
+            UserEntity ue=new UserEntity ();
+            OQL q4 = OQL.From(ue).Select().END;
+            var list4 = EntityQuery<UserEntity>.QueryList(q4);
+            UserDto ud = new UserDto() {  Age =20};
+            //请注意list4[0].Age属性，由于数据库对应的值为DBNull.Value，所以下面的代码不会被覆盖该属性值。
+            list4[0].MapToPOCO(ud);
+
 
             Console.WriteLine();
             Console.WriteLine("----测试完毕，回车结束-----");
