@@ -156,7 +156,7 @@ namespace PWMIS.DataMap.Entity
         /// <summary>
         /// 实体类映射的表的架构名字
         /// </summary>
-        protected internal string Scheme { get; set; }
+        protected internal string Schema { get; set; }
 
         private string setingFieldName = string.Empty;
 
@@ -208,10 +208,10 @@ namespace PWMIS.DataMap.Entity
         /// <returns></returns>
         protected internal  string GetSchemeTableName()
         {
-            if (!string.IsNullOrEmpty(Scheme))
-                return string.Format("[{0}].[{1}]", Scheme, TableName);
+            if (!string.IsNullOrEmpty(Schema))
+                return string.Format("[{0}].[{1}]", Schema, TableName);
             else
-                return string.Format("[{1}]", Scheme, TableName); 
+                return string.Format("[{1}]", Schema, TableName); 
         }
         #endregion
 
