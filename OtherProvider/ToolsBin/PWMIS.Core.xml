@@ -871,6 +871,11 @@
         <member name="T:PWMIS.DataProvider.Data.CommonDB">
             <summary>
             公共数据访问基础类
+            <remarks>
+            正常情况下CRUD方法都是使用一个局部的连接变量，因此是线程安全的原子操作；
+            如果开启了事务，或者开启了 opensession，将共享同一个连接对象，直到事务结束或者关闭会话，因此此时连接对象不是线程安全的。
+            所以，MyDB.Instance 不可以用于多线程环境下开启会话或者执行事务方法。
+            </remarks>
             </summary>
         </member>
         <member name="M:PWMIS.DataProvider.Data.CommonDB.#ctor">
@@ -2528,17 +2533,18 @@
             <typeparam name="Parent">父实体类</typeparam>
             <returns>外键字段名称，必须是当前实体类使用的一个字段</returns>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.EntityBase.MapFrom(System.Object)">
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.MapFrom(System.Object,System.Boolean)">
             <summary>
             从POCO实体类获取跟当前实体类的属性名称相同的属性的值，拷贝到当前实体类中，完成数据的映射。
             要求拷贝的同名属性是读写属性且类型相同。
             </summary>
             <param name="pocoClass">POCO实体类，提供源数据</param>
+            <param name="isChange">是否改变属性的修改状态</param>
             <returns>映射成功的属性数量</returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.MapToPOCO(System.Object)">
             <summary>
-            将当前实体类的属性值映射到相同属性名称的POCO实体类中。要求拷贝的同名属性是读写属性且类型相同。
+            将当前实体类的属性值（非空值）映射到相同属性名称的POCO实体类中。要求拷贝的同名属性是读写属性且类型相同。
             </summary>
             <param name="pocoClass">POCO实体类</param>
             <returns>映射成功的属性数量</returns>
@@ -2553,7 +2559,7 @@
             标识字段名称（有些数据库可能内置不支持），该字段不可更新，但是插入数据的时候可以获取该字段
             </summary>
         </member>
-        <member name="P:PWMIS.DataMap.Entity.EntityBase.Scheme">
+        <member name="P:PWMIS.DataMap.Entity.EntityBase.Schema">
             <summary>
             实体类映射的表的架构名字
             </summary>
@@ -4041,12 +4047,24 @@
             </summary>
             <param name="mainOql"></param>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.JoinEntity.On(System.Object,System.Object)">
+        <member name="M:PWMIS.DataMap.Entity.JoinEntity.On(System.Object[])">
             <summary>
             指定要关联查询的实体类属性（内部对应字段）
+            <example>
+            <![CDATA[
+            var q1 = OQL.From(a)
+                        .InnerJoin(b).On(a.ID,b.ID)
+                        .Select(a.ID,a.Name,b.Name)
+                     .END;
+            //感谢网友 Tony 扩展了下面的使用方式         
+            var q2 =  OQL.From(a)
+                         .LeftJoin(b).On(a.ID,b.ID, a.Name,b.Name)
+                         .Select(a.ID,a.Name,b.OtherInfo)
+                     .END;
+            ]]>
+            </example>
             </summary>
-            <param name="field1">主实体类的主键属性</param>
-            <param name="field2">从实体类的外键属性</param>
+            <param name="fields">主实体类的关联的属性与从实体关联的属性，必须成对出现</param>
             <returns></returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.JoinEntity.AddJoinFieldName(System.String)">
