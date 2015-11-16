@@ -58,6 +58,12 @@
     <DocumentationFile>..\发布目录\PWMIS.PostgreSQLClient.XML</DocumentationFile>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>PDFKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Security">
       <HintPath>..\..\packages\Npgsql.2.2.4.3\lib\net35\Mono.Security.dll</HintPath>

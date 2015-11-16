@@ -11,6 +11,10 @@
  * 
  * 修改者：         时间：2012-11-6                
  * 修改说明：补充Oracle参数名前缀
+ * 
+ * 修改者：         时间：2015-11-16                
+ * 修改说明：长度大于2000，将引发clob类型错误的问题，感谢网友 台州-红枫星空 发现问题
+ * 
  * ========================================================================
 */
 using System;
@@ -102,8 +106,18 @@ namespace PWMIS.DataProvider.Data
         {
             OracleParameter para = new OracleParameter();
             para.ParameterName = paraName;
-            para.DbType = dbType;
-            para.Size = size;
+            if (size > 2000)
+            {
+                //长度大于2000，将引发clob类型错误的问题，详细请参考 http://blog.csdn.net/pojianbing/article/details/2789426
+                para.OracleType = OracleType.Clob;
+                para.Size = size;
+            }
+            else
+            {
+                para.DbType = dbType;
+                para.Size = size;
+            }
+            
             return para;
         }
 
