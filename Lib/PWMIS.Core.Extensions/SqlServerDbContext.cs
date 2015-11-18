@@ -1,4 +1,19 @@
-﻿using PWMIS.Core.Interface;
+﻿/*
+ * ========================================================================
+ * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
+ * Welcom use the PDF.NET (PWMIS Data Process Framework).
+ * See more information,Please goto http://www.pwmis.com/sqlmap 
+ * ========================================================================
+ * 该类的作用 管理SqlServer数据库上下文，比如创建数据库，检查并创建不存在的表，获取EntitQuery对象等
+ * 
+ * 作者：深蓝医生     时间：2015-9-1
+ * 版本：V5.3.6
+ * 
+ * 修改者：         时间：2015-11-18                
+ * 修改说明：修复不能自动根据连接字符串，创建 SqlServer数据库的问题
+  * ========================================================================
+*/
+using PWMIS.Core.Interface;
 using PWMIS.DataMap.Entity;
 using PWMIS.DataProvider.Data;
 using System;
@@ -53,7 +68,13 @@ if not exists (select * From master.dbo.sysdatabases where name='{0}')
 create database {1}
 ";
                 string sql = string.Format(sqlformat, database, database);
+                //移除初始化的数据库名称，否则下面的执行打不开数据库
+                connBuilder.InitialCatalog = "";
+                CurrentDataBase.ConnectionString = connBuilder.ConnectionString;
                 CurrentDataBase.ExecuteNonQuery(sql);
+                //恢复连接字符串
+                connBuilder.InitialCatalog = database;
+                CurrentDataBase.ConnectionString = connBuilder.ConnectionString;
             }
             return true;
         }
