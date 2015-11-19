@@ -147,7 +147,7 @@ namespace PWMIS.Core.Extensions
         /// <![CDATA[
         /// string msg;
         /// User user=new User(){ /* init property value */ };
-        /// Role role=new Role(){/* init property value */  }
+        /// Role role=new Role(){/* init property value */  };
         /// 
         /// LocalContext localDb=new LocalContext("local");
         /// bool result= localDb.Transaction( c=>{
