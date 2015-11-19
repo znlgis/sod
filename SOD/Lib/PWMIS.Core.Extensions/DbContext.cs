@@ -121,8 +121,8 @@ namespace PWMIS.Core.Extensions
         /// <param name="instance">实例对象</param>
         /// <param name="action">操作的方法</param>
         /// <param name="errorMessage">出错信息</param>
-        /// <returns>事务是否执行成功。</returns>
-        public static bool Tansaction<T>(T instance, Action<T> action, out string errorMessage) where T : DbContext
+        /// <returns>事务是否执行成功</returns>
+        public static bool Transaction<T>(T instance, Action<T> action, out string errorMessage) where T : DbContext
         {
             try
             {
@@ -139,6 +139,30 @@ namespace PWMIS.Core.Extensions
                 errorMessage = ex.Message;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 开启事务执行上下文，如果你的方法执行成功，自动提交事务，否则，回滚事务。
+        /// <example>
+        /// <![CDATA[
+        /// string msg;
+        /// User user=new User(){ /* init property value */ };
+        /// Role role=new Role(){/* init property value */  }
+        /// 
+        /// LocalContext localDb=new LocalContext("local");
+        /// bool result= localDb.Transaction( c=>{
+        ///                      c.Add(user);
+        ///                      c.Add(role);
+        ///                                       },out msg);
+        /// ]]>
+        /// </example>
+        /// </summary>
+        /// <param name="action">自定义的操作方法</param>
+        /// <param name="errorMessage">出错信息</param>
+        /// <returns>事务是否执行成功</returns>
+        public bool Transaction(Action<DbContext> action, out string errorMessage) 
+        {
+            return Transaction(this, action, out errorMessage);
         }
 
         #region 增，删，改公共方法
