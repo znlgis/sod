@@ -1079,7 +1079,7 @@
             <param name="SQL">SQL</param>
             <returns>受影响的行数</returns>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.CommonDB.ExecuteInsertQuery(System.String,System.Data.CommandType,System.Data.IDataParameter[],System.Object@)">
+        <member name="M:PWMIS.DataProvider.Data.CommonDB.ExecuteInsertQuery(System.String,System.Data.CommandType,System.Data.IDataParameter[],System.Object@,System.String)">
             <summary>
             执行插入数据的查询，仅限于Access，SqlServer
             </summary>
@@ -1905,7 +1905,7 @@
             <param name="destinationTableName">要导入的目标表名称</param>
             <param name="batchSize">每次批量处理的大小</param>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.SqlServer.ExecuteInsertQuery(System.String,System.Data.CommandType,System.Data.IDataParameter[],System.Object@)">
+        <member name="M:PWMIS.DataProvider.Data.SqlServer.ExecuteInsertQuery(System.String,System.Data.CommandType,System.Data.IDataParameter[],System.Object@,System.String)">
             <summary>
             SqlServer 执行插入数据的查询，如果执行成功，受影响的行数只会返回1
             </summary>
@@ -2628,6 +2628,12 @@
             <summary>
             插入数据的时候是否插入自增列，默认否
             </summary>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityCommand.GetInsertKey">
+            <summary>
+            获取当前实体相关的插入记录获取自增值的的SQL语句
+            </summary>
+            <returns></returns>
         </member>
         <member name="P:PWMIS.DataMap.Entity.EntityCommand.TargetFields">
             <summary>

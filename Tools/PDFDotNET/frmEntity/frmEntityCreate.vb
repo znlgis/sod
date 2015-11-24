@@ -44,7 +44,7 @@ namespace [NameSpace]
     public [ClassName]()
     {
             TableName = "[SqlTableName]";
-            Scheme="[Scheme]";
+            Schema="[Schema]";
             EntityMap=[EntityMapType.Table];
             //IdentityName = "标识字段名";
 %IdentityName%
@@ -96,7 +96,7 @@ Inherits  EntityBase
  
     Sub New() 
             TableName = "[SqlTableName]" 
-            Scheme="[Scheme]"
+            Schema="[Schema]"
             EntityMap=[EntityMapType.Table] 
             'IdentityName = "标识字段名"
             %IdentityName%
@@ -209,20 +209,20 @@ End NameSpace
         End Select
 
         '处理架构
-        Dim strScheme As String = ""
+        Dim strSchema As String = ""
         Dim strTableName As String = sql_tableName
         Dim dotIndex As Integer = sql_tableName.IndexOf("."c)
         If dotIndex > 0 Then
-            strScheme = sql_tableName.Substring(0, dotIndex)
+            strSchema = sql_tableName.Substring(0, dotIndex)
             '默认的架构 dbo 不做处理
             Dim defaultTableScheme As String = Me.propWindow.DefaultTableScheme
-            If strScheme.ToLower() = defaultTableScheme Then strScheme = ""
+            If strSchema.ToLower() = defaultTableScheme Then strSchema = ""
 
             strTableName = sql_tableName.Substring(dotIndex + 1)
         ElseIf dotIndex = 0 Then
             strTableName = sql_tableName.Substring(1)
         End If
-        classText = classText.Replace("[Scheme]", strScheme)
+        classText = classText.Replace("[Schema]", strSchema)
 
         classText = classText.Replace("[NameSpace]", Me.propWindow.DefaultNamespace) _
         .Replace("[ClassName]", className) _

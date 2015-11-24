@@ -747,7 +747,7 @@ namespace PWMIS.DataProvider.Data
         /// <param name="parameters">参数数组</param>
         /// <param name="ID">要传出的本次操作的新插入数据行的自增主键ID值，如果没有获取到，则为-1</param>
         /// <returns>本次查询受影响的行数</returns>
-        public virtual int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID)
+        public virtual int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID,string insertKey="")
         {
             IDbConnection conn = GetConnection();
             if (conn.State != ConnectionState.Open) //连接已经打开，不能切换连接字符串，感谢网友 “长的没礼貌”发现此Bug 
@@ -769,13 +769,15 @@ namespace PWMIS.DataProvider.Data
                 }
 
                 result = cmd.ExecuteNonQuery();
-                if (!string.IsNullOrEmpty(this.InsertKey))
+                //这里使用 参数而不是 this.InsertKey ，避免多线程插入不同实体类在Oracle数据库上的问题
+                if (insertKey == "") insertKey = this.InsertKey;
+                if (!string.IsNullOrEmpty(insertKey)) 
                 {
                     //cmd.Parameters.Clear();
                     //不清除参数对象在Oracle会发生错误
                     //但是清除了参数，会让SQL日志没法记录参数信息，故下面创建一个新的命令对象
                     IDbCommand cmd2 = conn.CreateCommand();
-                    cmd2.CommandText = this.InsertKey;// "SELECT @@IDENTITY ";
+                    cmd2.CommandText = insertKey;// "SELECT @@IDENTITY ";
                     cmd2.Transaction = cmd.Transaction;
                     ID = cmd2.ExecuteScalar();
                 }

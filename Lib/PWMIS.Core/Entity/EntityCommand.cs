@@ -119,6 +119,25 @@ namespace PWMIS.DataMap.Entity
             private set { _insertCommand = value; }
         }
 
+        /// <summary>
+        /// 获取当前实体相关的插入记录获取自增值的的SQL语句
+        /// </summary>
+        /// <returns></returns>
+        public string GetInsertKey()
+        {
+            if (this.currDb.CurrentDBMSType == PWMIS.Common.DBMSType.Oracle && !string.IsNullOrEmpty(currEntity.IdentityName))
+            {
+                string seqName = currEntity.GetTableName() + "_" + currEntity.GetIdentityName() + "_SEQ";
+                string insertKey = "select " + seqName + ".currval as id from dual";
+                return insertKey;
+            }
+            else
+            {
+                return this.currDb.InsertKey;
+            }
+            
+        }
+
         private string _updateCommand;
         public string UpdateCommand
         {

@@ -52,6 +52,9 @@
  * 
  *  修改者：         时间：2015-7-21                
  * 修改说明：修正当实体类映射了新的表名字，OQL查询出来的实体类列表表名字不是新名字的问题
+ * 
+ * 修改者：         时间：2015-11-24                
+ * 修改说明：修改Insert内部方法，在参数上传递 InsertKey，避免Oracle多线程插入自增数据的问题
  * ========================================================================
 */
 
@@ -1966,7 +1969,11 @@ namespace PWMIS.DataMap.Entity
             {
                 //有自增字段
                 object id = entity.PropertyList(identityName);
-                count = DB.ExecuteInsertQuery(sql, CommandType.Text, paras, ref id);
+
+                EntityCommand ec = new EntityCommand(entity, DB);
+                string insertKey = ec.GetInsertKey();
+
+                count = DB.ExecuteInsertQuery(sql, CommandType.Text, paras, ref id,insertKey);
                 entity.setProperty(identityName, Convert.ToInt32(id));
             }
             else
