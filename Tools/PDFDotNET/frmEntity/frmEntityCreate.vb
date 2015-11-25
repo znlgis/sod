@@ -216,7 +216,14 @@ End NameSpace
             strSchema = sql_tableName.Substring(0, dotIndex)
             '默认的架构 dbo 不做处理
             Dim defaultTableScheme As String = Me.propWindow.DefaultTableScheme
-            If strSchema.ToLower() = defaultTableScheme Then strSchema = ""
+            If defaultTableScheme <> "" Then
+                If strSchema.ToLower() = defaultTableScheme Then
+                    strSchema = ""
+                Else
+                    strSchema = defaultTableScheme
+                End If
+            End If
+
 
             strTableName = sql_tableName.Substring(dotIndex + 1)
         ElseIf dotIndex = 0 Then
@@ -745,7 +752,7 @@ Public Class EntityCreateProperty
             If String.IsNullOrEmpty(_defaultTableScheme) Then
                 Return ""
             Else
-                Return _defaultTableScheme.ToLower()
+                Return _defaultTableScheme
             End If
         End Get
         Set(value As String)
