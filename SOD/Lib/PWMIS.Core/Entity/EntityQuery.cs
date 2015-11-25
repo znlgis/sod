@@ -55,6 +55,10 @@
  * 
  * 修改者：         时间：2015-11-24                
  * 修改说明：修改Insert内部方法，在参数上传递 InsertKey，避免Oracle多线程插入自增数据的问题
+ * 
+ * 修改者：         时间：2015-11-25                
+ * 修改说明：修改ExecuteInsrtOql 内部实现，使用EntityCommand的 GetInsertKey 方法
+ * 
  * ========================================================================
 */
 
@@ -1220,21 +1224,11 @@ namespace PWMIS.DataMap.Entity
             {
                 int count = ExecuteOql(q, DefaultDataBase);
                 int result = 0;
-                if (DefaultDataBase.CurrentDBMSType == Common.DBMSType.Oracle)
+                EntityCommand ec = new EntityCommand(q.currEntity, DefaultDataBase);
+                string insertKey= ec.GetInsertKey();
+                if (!string.IsNullOrEmpty(insertKey))
                 {
-                    EntityBase entity = q.currEntity;
-
-                    string seqName = entity.GetTableName() + "_" + entity.GetIdentityName() + "_SEQ";
-                    DefaultDataBase.InsertKey = "select " + seqName + ".currval as id from dual";
-
-                    var identity = DefaultDataBase.ExecuteScalar(DefaultDataBase.InsertKey);
-                    result = Convert.ToInt32(identity);
-                    DefaultDataBase.InsertKey = "";//恢复
-                   
-                }
-                else if (!string.IsNullOrEmpty(DefaultDataBase.InsertKey))
-                {
-                    var identity = DefaultDataBase.ExecuteScalar(DefaultDataBase.InsertKey);
+                    var identity = DefaultDataBase.ExecuteScalar(insertKey);
                     result = Convert.ToInt32(identity);
                 }
                 else
