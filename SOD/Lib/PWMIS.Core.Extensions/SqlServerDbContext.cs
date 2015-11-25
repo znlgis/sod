@@ -64,8 +64,8 @@ namespace PWMIS.Core.Extensions
             if (!string.IsNullOrEmpty(database))
             {
                 string sqlformat = @"
-if not exists (select * From master.dbo.sysdatabases where name='{0}')
-create database {1}
+if not exists (select * From master.dbo.sysdatabases where name=N'[{0}]')
+create database [{1}]
 ";
                 string sql = string.Format(sqlformat, database, database);
                 //移除初始化的数据库名称，否则下面的执行打不开数据库
