@@ -248,7 +248,7 @@ End NameSpace
         Dim dtTableFiledDesc As DataTable = Nothing
         If sql_tableName <> "" And entityMap = PWMIS.Common.EntityMapType.Table Then
             '生成字段说明
-            dtTableFiledDesc = Me.getSqlTableFieldDescription(Me.isSqlServer2000, sql_tableName)
+            dtTableFiledDesc = Me.getSqlTableFieldDescription(Me.isSqlServer2000, strTableName)
 
         End If
        

@@ -32,6 +32,10 @@
 
         TestWriteCfg()
         TestReadCfg()
+
+        Dim welcomForm As New frmWelcom
+        Me.TabControlMain.TabPages.Add(welcomForm)
+
     End Sub
 
     Private Sub TestWriteCfg()

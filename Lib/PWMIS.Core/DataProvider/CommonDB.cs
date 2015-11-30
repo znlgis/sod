@@ -224,7 +224,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// 数据连结字符串
+        /// 获取或者设置数据连结字符串
         /// </summary>
         public string ConnectionString
         {
@@ -235,19 +235,6 @@ namespace PWMIS.DataProvider.Data
             set
             {
                 _connString = value;
-                //处理 相对路径，假定 ~ 路径格式就是Web程序的相对路径
-                //if(!string.IsNullOrEmpty (value) && _connString.IndexOf ('~')>0)
-                //{
-                //    if (appRootPath == "")
-                //    {
-                //        string EscapedCodeBase = Assembly.GetExecutingAssembly().EscapedCodeBase;
-                //        Uri u = new Uri(EscapedCodeBase);
-                //        string path = Path.GetDirectoryName(u.LocalPath);
-                //        if (path.Length > 4)
-                //            appRootPath = path.Substring(0, path.Length - 3);// 去除 \bin，获取根目录
-                //    }
-                //    _connString = _connString.Replace("~", appRootPath);
-                //}
                 CommonUtil.ReplaceWebRootPath(ref _connString);
             }
         }
