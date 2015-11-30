@@ -13,7 +13,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyCompany("PWMIS")> 
 <Assembly: AssemblyProduct("PDFDotNET")> 
 <Assembly: AssemblyCopyright("Copyright © PWMIS 2010")> 
-<Assembly: AssemblyTrademark("5.3.4")> 
+<Assembly: AssemblyTrademark("SOD")> 
 
 <Assembly: ComVisible(False)>
 
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' 方法是按如下所示使用“*”:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("5.3.6.1125")> 
-<Assembly: AssemblyFileVersion("5.3.6.1125")> 
+<Assembly: AssemblyVersion("5.3.6.1130")> 
+<Assembly: AssemblyFileVersion("5.3.6.1130")> 

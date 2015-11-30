@@ -84,21 +84,25 @@ namespace PWMIS.Core
         /// <param name="sourcePath"></param>
         public static void ReplaceWebRootPath(ref string sourcePath)
         {
-            string appRootPath;
-            var escapedCodeBase = Assembly.GetExecutingAssembly().EscapedCodeBase;
-            var u = new Uri(escapedCodeBase);
-            var path = Path.GetDirectoryName(u.LocalPath);
-            if (path != null && (path.Length > 4 && path.EndsWith("bin", StringComparison.OrdinalIgnoreCase)))
+            //处理 相对路径，假定 ~ 路径格式就是Web程序的相对路径 edit at 2015-11-29
+            if (!string.IsNullOrEmpty(sourcePath) && sourcePath.IndexOf('~') > 0)
             {
-                appRootPath = path.Substring(0, path.Length - 3);// 去除Web项目的 \bin，获取根目录
-            }
-            else
-            {
-                appRootPath = "./";
-            }
+                string appRootPath;
+                var escapedCodeBase = Assembly.GetExecutingAssembly().EscapedCodeBase;
+                var u = new Uri(escapedCodeBase);
+                var path = Path.GetDirectoryName(u.LocalPath);
+                if (path != null && (path.Length > 4 && path.EndsWith("bin", StringComparison.OrdinalIgnoreCase)))
+                {
+                    appRootPath = path.Substring(0, path.Length - 3);// 去除Web项目的 \bin，获取根目录
+                }
+                else
+                {
+                    appRootPath = "./";
+                }
 
-            sourcePath = Regex.Replace(sourcePath, @"^\s*~[\\/]", appRootPath);
-            sourcePath = Regex.Replace(sourcePath, @"data source\s*=\s*~[\\/]", "Data Source=" + appRootPath, RegexOptions.IgnoreCase);
+                sourcePath = Regex.Replace(sourcePath, @"^\s*~[\\/]", appRootPath);
+                sourcePath = Regex.Replace(sourcePath, @"data source\s*=\s*~[\\/]", "Data Source=" + appRootPath, RegexOptions.IgnoreCase);
+            }
         }
 
         /// <summary>

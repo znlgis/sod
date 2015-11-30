@@ -1245,7 +1245,7 @@
         </member>
         <member name="P:PWMIS.DataProvider.Data.CommonDB.ConnectionString">
             <summary>
-            数据连结字符串
+            获取或者设置数据连结字符串
             </summary>
         </member>
         <member name="P:PWMIS.DataProvider.Data.CommonDB.DataWriteConnectionString">
