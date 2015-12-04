@@ -63,7 +63,11 @@
  *  
  *  * 修改者：         时间：2015-10-24  
  *  修改MapToPOCO 方法，可以避免覆盖POCO对象不想赋值的属性，感谢网友 石家庄-零点 发现此问题 
+ *  
  * 
+ * 
+ *  * 修改者：         时间：2015-12-4  
+ *  新增 GetGolbalEntityID 方法，解决在多线程环境下，获取字符串类型属性字段长度可能引起的问题，感谢网友 Rookie 发现该问题。
  * ========================================================================
 */
 using System;
@@ -99,7 +103,7 @@ namespace PWMIS.DataMap.Entity
             //TableName 在调用了 MapNewTableName 方法后，可能找不到属性字段的长度，故这里取消原来代码的使用方法
             //感谢网友  广州-玄离 发现该问题 
             //这里必须使用实体类的类型名称来限定，感谢网友  发现问题
-            return GetStringFieldSize(this.GetType().FullName , fieldName);
+            return GetStringFieldSize(GetGolbalEntityID(), fieldName);
         }
 
         /// <summary>
@@ -110,8 +114,11 @@ namespace PWMIS.DataMap.Entity
         /// <param name="length">字段长度</param>
         public void SetStringFieldSize(string fieldName, int length)
         {
-            string key = string.Format("{0}", fieldName);
-            StringFieldSize[key] = length;
+            if (_IsTestWriteProperty)
+            {
+                string key = string.Format("{0}_{1}", GetGolbalEntityID(), fieldName);
+                StringFieldSize[key] = length;
+            }
         }
 
         #endregion
@@ -325,11 +332,12 @@ namespace PWMIS.DataMap.Entity
         /// 触发属性改变事件
         /// </summary>
         /// <param name="e">属性改变事件对象</param>
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
+        protected virtual void OnPropertyChanged(string propertyFieldName)
         {
             if (this.PropertyChanged != null)
             {
-                this.PropertyChanged(this, e);
+                string currPropName = EntityFieldsCache.Item(this.GetType()).GetPropertyName(propertyFieldName);
+                this.PropertyChanged(this, new PropertyChangedEventArgs(currPropName));
             }
         }
 
@@ -567,7 +575,7 @@ namespace PWMIS.DataMap.Entity
             {
                 PropertyValues[index] = Value;
 
-                this.OnPropertyChanged(new PropertyChangedEventArgs(propertyFieldName));
+                this.OnPropertyChanged(propertyFieldName);
                 changedlist[index] = true;
                 return;
             }
@@ -623,8 +631,9 @@ namespace PWMIS.DataMap.Entity
         protected internal void setProperty(string propertyFieldName, string Value, int maxLength)
         {
             //string key = string.Format("{0}_{1}", ownerName,fieldName);
-            string key = string.Format("{0}_{1}",this.GetType().FullName, propertyFieldName);
-            StringFieldSize[key] = maxLength;
+            //string key = string.Format("{0}_{1}",this.GetType().FullName, propertyFieldName);
+            //StringFieldSize[key] = maxLength;
+            SetStringFieldSize(propertyFieldName, maxLength);
 
             if (Value != null && maxLength > 0 && Value.Length > maxLength)
                 throw new Exception("字段" + propertyFieldName + "的实际长度超出了最大长度" + maxLength);
@@ -794,6 +803,15 @@ namespace PWMIS.DataMap.Entity
         protected virtual void InitMetaDataExt()
         { 
         
+        }
+
+        /// <summary>
+        /// 获取实体类的全局标识，建议实体类具体实现类重写该方法，默认取类型全名称
+        /// </summary>
+        /// <returns></returns>
+        public virtual string GetGolbalEntityID()
+        {
+            return GetType().FullName;
         }
 
         /// <summary>
