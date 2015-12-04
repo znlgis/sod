@@ -221,6 +221,11 @@ namespace PWMIS.DataMap.Entity
             return false;
         }
 
+        /// <summary>
+        /// 初始化实体类信息，必须确保单线程调用本方法
+        /// </summary>
+        /// <param name="entityType"></param>
+        /// <returns></returns>
         public bool InitEntity(Type entityType)
         {
             //未来版本，考虑不以EntityBase 明确类型来操作，避免在VS设计器无法类型转换到父类的问题
