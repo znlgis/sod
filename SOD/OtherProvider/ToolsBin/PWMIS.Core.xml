@@ -2309,6 +2309,16 @@
             属性名称
             </summary>
         </member>
+        <member name="T:PWMIS.DataMap.Entity.PropertyChangingEventArgs">
+            <summary>
+            属性改变前事件
+            </summary>
+        </member>
+        <member name="P:PWMIS.DataMap.Entity.PropertyChangingEventArgs.IsCancel">
+            <summary>
+            是否取消改变属性的值
+            </summary>
+        </member>
         <member name="T:PWMIS.DataMap.Entity.EntityBase">
             <summary>
             PDF.NET 5.1 实体类基础类
@@ -2403,7 +2413,7 @@
             </summary>
             <param name="name"></param>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.EntityBase.OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs)">
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.OnPropertyChanged(System.String)">
             <summary>
             触发属性改变事件
             </summary>
@@ -2414,17 +2424,6 @@
             获取表名称。如果实体类有分表策略，那么请重写该方法
             </summary>
             <returns></returns>
-        </member>
-        <member name="M:PWMIS.DataMap.Entity.EntityBase.GetSetPropertyFieldName">
-            <summary>
-            获取设置过的属性字段名称，用于映射到表字段的属性进行赋值操作之后
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:PWMIS.DataMap.Entity.EntityBase.TestWriteProperty">
-            <summary>
-            测试写入属性（仅程序集内部使用）
-            </summary>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.AddPropertyName(System.String)">
             <summary>
@@ -2469,12 +2468,13 @@
             <param name="propertyFieldName">属性名称</param>
             <returns>属性值</returns>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.EntityBase.setProperty(System.String,System.Object)">
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.setPropertyValueAndLength(System.String,System.Object,System.Int32)">
             <summary>
-            设置属性值
+            设置属性值和长度信息
             </summary>
             <param name="propertyFieldName">属性字段名称</param>
             <param name="Value">属性值</param>
+            <param name="length"></param>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.setProperty(System.String,System.String,System.Int32)">
             <summary>
@@ -2518,6 +2518,12 @@
             初始化元数据扩展，比如在此中手工设置子实体类与父实体类的外键关系，
             如果在用户的分部类文件中重写该方法，可以防止代码生成器覆盖该方法
             </summary>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.GetGolbalEntityID">
+            <summary>
+            获取实体类的全局标识，建议实体类具体实现类重写该方法，默认取类型全名称
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.SetForeignKey``1(System.String)">
             <summary>
@@ -2577,6 +2583,11 @@
         <member name="E:PWMIS.DataMap.Entity.EntityBase.PropertyGetting">
             <summary>
             属性获取事件
+            </summary>
+        </member>
+        <member name="E:PWMIS.DataMap.Entity.EntityBase.PropertyChanging">
+            <summary>
+            属性改变前事件
             </summary>
         </member>
         <member name="E:PWMIS.DataMap.Entity.EntityBase.PropertyChanged">
@@ -2664,11 +2675,12 @@
             <param name="fieldName"></param>
             <returns></returns>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.EntityFields.GetPropertyFieldSize(System.String)">
+        <member name="M:PWMIS.DataMap.Entity.EntityFields.GetPropertyFieldSize(System.String,PWMIS.DataMap.Entity.EntityBase)">
             <summary>
             根据实体类内部的属性字段名称，获取对应的数据库字段长度
             </summary>
             <param name="fieldName">属性字段名称</param>
+            <param name="entity">要访问的实体类对象</param>
             <returns></returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityFields.GetPropertyField(System.String)">
@@ -2681,6 +2693,13 @@
         <member name="M:PWMIS.DataMap.Entity.EntityFields.Init(System.Type)">
             <summary>
             初始化实体信息（已经过时）
+            </summary>
+            <param name="entityType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityFields.InitEntity(System.Type)">
+            <summary>
+            初始化实体类信息，必须确保单线程调用本方法
             </summary>
             <param name="entityType"></param>
             <returns></returns>

@@ -43,6 +43,9 @@
  * 
  * 修改者：         时间：2015-3-7  
  * 修复查询中如果字段是 text,varchar(max)类型的时候参数长度设置的问题。
+ * 
+ * 修改者：         时间：2015-12-5  
+ * 修复查询中字符串类型字段获取字段长度，没有实体类元数据缓存获取失败的问题。
  * ========================================================================
 */
 
@@ -1005,7 +1008,10 @@ namespace PWMIS.DataMap.Entity
                     if (tnf.Name!=null && paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
                     {
                         //增加字符串长度的检查,如果值得长度大于定义的长度,抛出异常提示 2014.10.21
-                        int size = tnf.Entity.GetStringFieldSize(tnf.Field);
+                        //int size = tnf.Entity.GetStringFieldSize(tnf.Field);
+                        //采用下面的方法，避免没有实体类元数据缓存 edit at 2015-12-5
+                        int size =EntityFieldsCache.Item(tnf.Entity.GetType()).GetPropertyFieldSize(tnf.Field,tnf.Entity );
+
                         if (size != -1) //如果字段不是text等类型
                         {
                             int length = paras[index].Value.ToString().Length;

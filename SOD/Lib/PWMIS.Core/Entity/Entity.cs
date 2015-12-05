@@ -328,4 +328,30 @@ namespace PWMIS.DataMap.Entity
             this.PropertyName = name;
         }
     }
+
+    /// <summary>
+    /// 属性改变前事件
+    /// </summary>
+    public class PropertyChangingEventArgs : EventArgs
+    {
+        public PropertyChangingEventArgs(string propertyName,object value,int length)
+        {
+            this.PropertyName = propertyName;
+            this.NewValue = value;
+            this.MaxValueLength = length;
+        }
+
+        public virtual string PropertyName { get; private set; }
+
+        public object NewValue { get; private set; }
+
+        public int MaxValueLength { get; private set; }
+        /// <summary>
+        /// 是否取消改变属性的值
+        /// </summary>
+        public bool IsCancel { get; set; }
+
+
+    }
+
 }

@@ -45,7 +45,11 @@ namespace PWMIS.DataMap.Entity
         private Type[] typeNames = null;
         private string tableName = null;
         private Type entityType = null;//当前实体类类型
+        private PropertyInfo currPropertyInfo = null;
 
+        private List<string> fieldList = null;
+        private List<string> propertyNameList = null;
+        private List<Type> typeNameList = null;
         /// <summary>
         /// 获取实体类对应的表字段名称数组
         /// </summary>
@@ -121,10 +125,12 @@ namespace PWMIS.DataMap.Entity
         /// 根据实体类内部的属性字段名称，获取对应的数据库字段长度
         /// </summary>
         /// <param name="fieldName">属性字段名称</param>
+        /// <param name="entity">要访问的实体类对象</param>
         /// <returns></returns>
-        public int GetPropertyFieldSize(string fieldName)
+        public int GetPropertyFieldSize(string fieldName, EntityBase entity=null)
         {
-            EntityBase entity = Activator.CreateInstance(this.entityType) as EntityBase;
+            if(entity==null)
+                entity = Activator.CreateInstance(this.entityType) as EntityBase;
             return entity.GetStringFieldSize(fieldName);
         }
 
@@ -233,11 +239,17 @@ namespace PWMIS.DataMap.Entity
 
             if (entityType.BaseType.FullName == "PWMIS.DataMap.Entity.EntityBase")
             {
+                EntityBase instance = entity as EntityBase;
+                if (instance != null)
+                {
+                    instance.PropertyChanging += instance_PropertyChanging; 
+                }
+
                 this.tableName = (string)entityType.GetMethod("GetTableName").Invoke(entity, null);
 
-                var methodInfo = entityType.GetMethod("GetSetPropertyFieldName");
-                var testMethodInfo = entityType.GetMethod("TestWriteProperty", BindingFlags.Instance | BindingFlags.NonPublic);
-                testMethodInfo.Invoke(entity, null);//设置虚拟属性写入标记
+                //var methodInfo = entityType.GetMethod("GetSetPropertyFieldName");
+                //var testMethodInfo = entityType.GetMethod("TestWriteProperty", BindingFlags.Instance | BindingFlags.NonPublic);
+                //testMethodInfo.Invoke(entity, null);//设置虚拟属性写入标记
 
                 PropertyInfo[] propertys = entityType.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
                 //下面的方式弃用 dth 2015.2.8
@@ -246,9 +258,9 @@ namespace PWMIS.DataMap.Entity
                 //this.propertyNames = new string[count];
                 //this.typeNames = new Type[count];
 
-                List<string> fieldList = new List<string>();
-                List<string> propertyNameList = new List<string>();
-                List<Type> typeNameList = new List<Type>();
+                fieldList = new List<string>();
+                propertyNameList = new List<string>();
+                typeNameList = new List<Type>();
 
                 //count = 0;
                 string last_field = string.Empty;
@@ -267,22 +279,23 @@ namespace PWMIS.DataMap.Entity
                     }
                     try
                     {
+                        currPropertyInfo = propertys[i];
                         //这里需要设置属性，以便获取字段长度
                         object Value = null;// 感谢网友 stdbool 发现byte[] 判断的问题
                         if (currPropType != typeof(string) && currPropType != typeof(byte[]))
                             Value = Activator.CreateInstance(currPropType);
-                        propertys[i].SetValue(entity, Value, null); //这里可能有普通属性在被赋值 
-                        string field= (string)methodInfo.Invoke(entity,null);
-                        if (last_field != field)
-                        {
-                            //跟之前的对比，确定当前是属性字段对应的属性
-                            //fields[count] = field;
-                            fieldList.Add(field);
-                            propertyNameList.Add(propertys[i].Name);
-                            typeNameList.Add(currPropType);
+                        currPropertyInfo.SetValue(entity, Value, null); //这里可能有普通属性在被赋值 
+                        //string field= (string)methodInfo.Invoke(entity,null);
+                        //if (last_field != field)
+                        //{
+                        //    //跟之前的对比，确定当前是属性字段对应的属性
+                        //    //fields[count] = field;
+                        //    fieldList.Add(field);
+                        //    propertyNameList.Add(currPropertyInfo.Name);
+                        //    typeNameList.Add(currPropType);
 
-                            last_field = field;
-                        }
+                        //    last_field = field;
+                        //}
                     }
                     catch
                     {
@@ -297,6 +310,17 @@ namespace PWMIS.DataMap.Entity
                 return true;
             }
             return false;
+        }
+
+        void instance_PropertyChanging(object sender, PropertyChangingEventArgs e)
+        {
+            fieldList.Add(e.PropertyName);
+            propertyNameList.Add(currPropertyInfo.Name);
+            typeNameList.Add(currPropertyInfo.PropertyType);
+
+            EntityBase entity = sender as EntityBase;
+            entity.SetStringFieldSize(e.PropertyName, e.MaxValueLength);
+            e.IsCancel = true;
         }
 
         void entity_PropertyGetting(object sender, PropertyGettingEventArgs e)

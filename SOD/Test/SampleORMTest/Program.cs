@@ -22,18 +22,44 @@ namespace SampleORMTest
             Assembly coreAss = Assembly.GetAssembly(typeof(AdoHelper));//获得引用程序集
             Console.WriteLine("框架核心程序集 PWMIS.Core Version:{0}", coreAss.GetName().Version.ToString());
             Console.WriteLine();
-            Console.WriteLine("  应用程序配置文件默认的数据库配置信息：\r\n  当前使用的数据库类型是：{0}\r\n  连接字符串为:{1}\r\n  请确保数据库服务器和数据库是否有效，\r\n继续请回车，退出请输入字母 Q ."
+            Console.WriteLine(@"====应用程序配置文件默认的数据库配置信息：===========================
+当前使用的数据库类型是：{0}
+连接字符串为:{1}
+请确保数据库服务器和数据库是否有效（SqlServer,Access 会自动创建数据库），
+继续请回车，退出请输入字母 Q ."
                 , MyDB.Instance.CurrentDBMSType.ToString(), MyDB.Instance.ConnectionString);
-            Console.WriteLine("=====Power by Bluedoctor,2015.3.1 http://www.pwmis.com/sqlmap ====");
+            Console.WriteLine("=====Power by Bluedoctor,2015.3.1 http://www.pwmis.com/sqlmap =======");
             string read = Console.ReadLine();
             if (read.ToUpper() == "Q")
                 return;
 
             Console.WriteLine();
             Console.WriteLine("-------PDF.NET SOD ORM 测试 开始 ---------");
-
-            LocalDbContext context = new LocalDbContext();//自动创建表
+            //自动创建数据库和表
+            LocalDbContext context = new LocalDbContext();
             int count = 0;
+
+            //测试查询&&更新
+            User zhang_san = new User() { Name = "zhang san" };
+            User dbZhangSan = EntityQuery<User>.QueryObject(
+                OQL.From(zhang_san)
+                    .Select(zhang_san.ID, zhang_san.Name, zhang_san.Pwd)
+                    .Where(cmp => cmp.EqualValue(zhang_san.Name))
+                .END
+                );
+            if (dbZhangSan != null)
+            {
+                dbZhangSan.Pwd = "111111";
+                dbZhangSan.RegistedDate = DateTime.Now;
+
+                int updateCount = EntityQuery<User>.Instance.Update(dbZhangSan);
+                Console.WriteLine("测试：用户{0} 的密码和注册日期已经更新",zhang_san.Name);
+            }
+            else
+            {
+                Console.WriteLine("测试：用户{0} 的记录不存在，如果需要测试查询和更新，请先添加一条记录。继续测试，请按任意键。",zhang_san.Name );
+                Console.Read();
+            }
 
             //删除 测试数据-----------------------------------------------------
             User user = new User();
@@ -47,7 +73,7 @@ namespace SampleORMTest
 
             //插入 测试数据-----------------------------------------------------
             count = 0;
-            User zhang_san = new User() { Name = "zhang san", Pwd = "123" };
+            zhang_san = new User() { Name = "zhang san", Pwd = "123" };
             count += context.Add<User>(zhang_san);//采用 DbContext 方式插入数据
 
             User li_si = new User() { Name = "li si", Pwd = "123" };
