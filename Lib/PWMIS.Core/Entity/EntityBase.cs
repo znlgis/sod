@@ -112,9 +112,9 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="fieldName">字段名称</param>
         /// <param name="length">字段长度</param>
-        public void SetStringFieldSize(string fieldName, int length)
+        protected internal void SetStringFieldSize(string fieldName, int length)
         {
-            if (_IsTestWriteProperty)
+            if (length > 0)
             {
                 string key = string.Format("{0}_{1}", GetGolbalEntityID(), fieldName);
                 StringFieldSize[key] = length;
@@ -323,6 +323,10 @@ namespace PWMIS.DataMap.Entity
         #endregion
 
         #region INotifyPropertyChanged 成员
+        /// <summary>
+        /// 属性改变前事件
+        /// </summary>
+        public event EventHandler<PropertyChangingEventArgs> PropertyChanging;
 
         /// <summary>
         /// 属性改变事件
@@ -370,23 +374,23 @@ namespace PWMIS.DataMap.Entity
             return _tableName; ;
         }
 
-        /// <summary>
-        /// 获取设置过的属性字段名称，用于映射到表字段的属性进行赋值操作之后
-        /// </summary>
-        /// <returns></returns>
-        public string GetSetPropertyFieldName()
-        {
-            return setingFieldName;
-        }
+        ///// <summary>
+        ///// 获取设置过的属性字段名称，用于映射到表字段的属性进行赋值操作之后
+        ///// </summary>
+        ///// <returns></returns>
+        //public string GetSetPropertyFieldName()
+        //{
+        //    return setingFieldName;
+        //}
 
-        private bool _IsTestWriteProperty;
-        /// <summary>
-        /// 测试写入属性（仅程序集内部使用）
-        /// </summary>
-        internal void TestWriteProperty()
-        {
-            _IsTestWriteProperty = true;
-        }
+        //private bool _IsTestWriteProperty;
+        ///// <summary>
+        ///// 测试写入属性（仅程序集内部使用）
+        ///// </summary>
+        //internal void TestWriteProperty()
+        //{
+        //    _IsTestWriteProperty = true;
+        //}
 
         /// <summary>
         /// 新增加实体虚拟字段属性，用来传递内容。注意不检查是否重复
@@ -545,17 +549,31 @@ namespace PWMIS.DataMap.Entity
             return CommonUtil.ChangeType<T>(PropertyList(propertyFieldName));
         }
 
+        protected internal void setProperty(string propertyFieldName, object Value)
+        {
+            setPropertyValueAndLength(propertyFieldName, Value, -1);
+        }
+
         /// <summary>
-        /// 设置属性值
+        /// 设置属性值和长度信息
         /// </summary>
         /// <param name="propertyFieldName">属性字段名称</param>
         /// <param name="Value">属性值</param>
-        protected internal void setProperty(string propertyFieldName, object Value)
+        /// <param name="length"></param>
+        private void setPropertyValueAndLength(string propertyFieldName, object Value,int length)
         {
-            setingFieldName = propertyFieldName;
             //
-            if (_IsTestWriteProperty)
-                return;
+            //if (_IsTestWriteProperty)
+            //    return;
+
+            if (this.PropertyChanging != null)
+            {
+                setingFieldName = propertyFieldName;
+                PropertyChangingEventArgs changingArg = new PropertyChangingEventArgs(propertyFieldName, Value, length);
+                this.PropertyChanging(this, changingArg);
+                if (changingArg.IsCancel)
+                    return;
+            }
             //
             //for (int i = 0; i < PropertyNames.Length; i++)
             //{
@@ -633,12 +651,12 @@ namespace PWMIS.DataMap.Entity
             //string key = string.Format("{0}_{1}", ownerName,fieldName);
             //string key = string.Format("{0}_{1}",this.GetType().FullName, propertyFieldName);
             //StringFieldSize[key] = maxLength;
-            SetStringFieldSize(propertyFieldName, maxLength);
+            //SetStringFieldSize(propertyFieldName, maxLength);
 
             if (Value != null && maxLength > 0 && Value.Length > maxLength)
                 throw new Exception("字段" + propertyFieldName + "的实际长度超出了最大长度" + maxLength);
             else
-                setProperty(propertyFieldName, Value);
+                setPropertyValueAndLength(propertyFieldName, Value,maxLength);
         }
 
         /// <summary>
