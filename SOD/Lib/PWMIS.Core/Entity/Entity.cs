@@ -334,17 +334,30 @@ namespace PWMIS.DataMap.Entity
     /// </summary>
     public class PropertyChangingEventArgs : EventArgs
     {
-        public PropertyChangingEventArgs(string propertyName,object value,int length)
+        /// <summary>
+        /// 初始化属性改变前事件
+        /// </summary>
+        /// <param name="propertyFieldName">属性字段名</param>
+        /// <param name="value">当前属性要设置的值</param>
+        /// <param name="length">当前属性字段的长度</param>
+        public PropertyChangingEventArgs(string propertyFieldName,object value,int length)
         {
-            this.PropertyName = propertyName;
+            this.PropertyName = propertyFieldName;
             this.NewValue = value;
             this.MaxValueLength = length;
         }
 
+        /// <summary>
+        /// 属性名，如果属性对应的字段名与属性名不同，那么这里是属性字段名
+        /// </summary>
         public virtual string PropertyName { get; private set; }
-
+        /// <summary>
+        /// 新设置的属性值
+        /// </summary>
         public object NewValue { get; private set; }
-
+        /// <summary>
+        /// 新设置的属性值的最大长度，仅仅对string类型有效，其它类型，都是-1
+        /// </summary>
         public int MaxValueLength { get; private set; }
         /// <summary>
         /// 是否取消改变属性的值
