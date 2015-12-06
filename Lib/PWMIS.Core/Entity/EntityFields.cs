@@ -307,8 +307,13 @@ namespace PWMIS.DataMap.Entity
                 this.propertyNames = propertyNameList.ToArray();
                 this.typeNames = typeNameList.ToArray();
                 this.entityType = entityType;
+
+                if (instance != null)
+                {
+                    instance.PropertyChanging -= instance_PropertyChanging;
+                }
                 return true;
-            }
+            }//end if
             return false;
         }
 
