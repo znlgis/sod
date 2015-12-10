@@ -54,6 +54,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Lib\PWMIS.Access.Extensions\PWMIS.Access.Extensions.csproj">
+      <Project>{0ace1995-6254-47f1-8758-c79b9cdcf424}</Project>
+      <Name>PWMIS.Access.Extensions</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Lib\PWMIS.Core.Extensions\PWMIS.Core.Extensions.csproj">
       <Project>{8f1ae0de-a9f1-43a7-ace4-acf667c2f813}</Project>
       <Name>PWMIS.Core.Extensions</Name>

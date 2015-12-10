@@ -2314,6 +2314,29 @@
             属性改变前事件
             </summary>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.PropertyChangingEventArgs.#ctor(System.String,System.Object,System.Int32)">
+            <summary>
+            初始化属性改变前事件
+            </summary>
+            <param name="propertyFieldName">属性字段名</param>
+            <param name="value">当前属性要设置的值</param>
+            <param name="length">当前属性字段的长度</param>
+        </member>
+        <member name="P:PWMIS.DataMap.Entity.PropertyChangingEventArgs.PropertyName">
+            <summary>
+            属性名，如果属性对应的字段名与属性名不同，那么这里是属性字段名
+            </summary>
+        </member>
+        <member name="P:PWMIS.DataMap.Entity.PropertyChangingEventArgs.NewValue">
+            <summary>
+            新设置的属性值
+            </summary>
+        </member>
+        <member name="P:PWMIS.DataMap.Entity.PropertyChangingEventArgs.MaxValueLength">
+            <summary>
+            新设置的属性值的最大长度，仅仅对string类型有效，其它类型，都是-1
+            </summary>
+        </member>
         <member name="P:PWMIS.DataMap.Entity.PropertyChangingEventArgs.IsCancel">
             <summary>
             是否取消改变属性的值

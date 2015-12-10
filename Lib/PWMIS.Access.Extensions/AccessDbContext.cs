@@ -34,17 +34,21 @@ namespace PWMIS.AccessExtensions
             if (DBFilePath == string.Empty)
             {
                 object objDataDir = AppDomain.CurrentDomain.GetData("DataDirectory");
+                string dataSource = ((System.Data.OleDb.OleDbConnectionStringBuilder)CurrentDataBase.ConnectionStringBuilder).DataSource;
                 if (objDataDir != null)
                 {
-                    string dataSource = ((System.Data.OleDb.OleDbConnectionStringBuilder)CurrentDataBase.ConnectionStringBuilder).DataSource;
                     string dbPath = objDataDir.ToString();
                     DBFilePath = dataSource.Replace("|DataDirectory|", dbPath);
+                }
+                else
+                {
+                    DBFilePath = dataSource;
                 }
             }
             if (DBFilePath != string.Empty)
             {
                 string directory = Path.GetDirectoryName(DBFilePath);
-                if (!Directory.Exists(directory))
+                if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
                     Directory.CreateDirectory(directory);
                 if (!File.Exists(DBFilePath))
                 {
