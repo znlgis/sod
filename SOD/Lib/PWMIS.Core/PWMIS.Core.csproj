@@ -87,6 +87,7 @@
     <Compile Include="DataMap\DataTextBoxValue.cs" />
     <Compile Include="DataProvider\Access.cs" />
     <Compile Include="DataProvider\AdoHelper.cs" />
+    <Compile Include="DataProvider\CommandHandle.cs" />
     <Compile Include="DataProvider\CommandLog.cs" />
     <Compile Include="DataProvider\CommonDB.cs" />
     <Compile Include="DataProvider\ConnectionSession.cs" />
