@@ -865,12 +865,12 @@
         </member>
         <member name="T:PWMIS.DataProvider.Data.AdoHelper">
             <summary>
-            公共数据访问抽象类 兼容 AdoHelper 类 ,实例使用方法参见 PWMIS.CommonDataProvider.Adapter.MyDB
+            初始化通用数据访问对象，如果配置了日志记录，将同时初始化命令执行日志处理器到【命令处理管道】中。
             </summary>
         </member>
         <member name="T:PWMIS.DataProvider.Data.CommonDB">
             <summary>
-            公共数据访问基础类
+            通用数据访问对象，如果配置了日志记录，将同时初始化命令执行日志处理器到【命令处理管道】中。
             <remarks>
             正常情况下CRUD方法都是使用一个局部的连接变量，因此是线程安全的原子操作；
             如果开启了事务，或者开启了 opensession，将共享同一个连接对象，直到事务结束或者关闭会话，因此此时连接对象不是线程安全的。
@@ -880,7 +880,7 @@
         </member>
         <member name="M:PWMIS.DataProvider.Data.CommonDB.#ctor">
             <summary>
-            默认构造函数
+            初始化通用数据访问对象，如果配置了日志记录，将同时初始化命令执行日志处理器到【命令处理管道】中。
             </summary>
         </member>
         <member name="M:PWMIS.DataProvider.Data.CommonDB.GetDBMSType(PWMIS.DataProvider.Data.CommonDB)">
@@ -1037,11 +1037,11 @@
             关闭连接会话
             </summary>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.CommonDB.PrepareSQL(System.String@)">
+        <member name="M:PWMIS.DataProvider.Data.CommonDB.PrepareSQL(System.String)">
             <summary>
             对应SQL语句进行其它的处理，例如将SQLSERVER的字段名外的中括号替换成数据库特定的字符。该方法会在执行查询前调用，默认情况下不进行任何处理。
             </summary>
-            <param name="SQL"></param>
+            <param name="sql"></param>
             <returns></returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.CommonDB.GetPreparedSQL(System.String)">
@@ -1051,7 +1051,7 @@
             <param name="sql"></param>
             <returns></returns>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.CommonDB.CompleteCommand(System.Data.IDbCommand,System.String@,System.Data.CommandType@,System.Data.IDataParameter[]@)">
+        <member name="M:PWMIS.DataProvider.Data.CommonDB.CompleteCommand(System.Data.IDbCommand,System.String,System.Data.CommandType,System.Data.IDataParameter[])">
             <summary>
             完善命令对象,处理命令对象关联的事务和连接，如果未打开连接这里将打开它
             注意：为提高效率，不再继续内部进行参数克隆处理，请多条SQL语句不要使用同名的参数对象
@@ -1060,6 +1060,12 @@
             <param name="SQL">SQL</param>
             <param name="commandType">命令类型</param>
             <param name="parameters">参数数组</param>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.CommonDB.RegisterCommandHandle(PWMIS.DataProvider.Data.ICommandHandle)">
+            <summary>
+            注册一个命令处理器
+            </summary>
+            <param name="handles"></param>
         </member>
         <member name="M:PWMIS.DataProvider.Data.CommonDB.ExecuteNonQuery(System.String,System.Data.CommandType,System.Data.IDataParameter[])">
             <summary>
@@ -1536,6 +1542,49 @@
             在插入具有自增列的数据后，获取刚才自增列的数据的
             </summary>
         </member>
+        <member name="T:PWMIS.DataProvider.Data.ICommandHandle">
+            <summary>
+            查询命令处理器接口
+            </summary>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.ICommandHandle.OnExecuting(PWMIS.DataProvider.Data.CommonDB,System.String@,System.Data.CommandType,System.Data.IDataParameter[])">
+            <summary>
+            执行前处理，返回是否继续进行查询执行
+            </summary>
+            <param name="db">数据库访问对象</param>
+            <param name="SQL"></param>
+            <param name="commandType"></param>
+            <param name="parameters"></param>
+            <returns>返回真，以便最终执行查询，否则将终止查询</returns>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.ICommandHandle.OnExecuteError(System.Data.IDbCommand,System.String)">
+            <summary>
+            执行过程中出错情况处理
+            </summary>
+            <param name="cmd"></param>
+            <param name="errorMessage"></param>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.ICommandHandle.OnExected(System.Data.IDbCommand)">
+            <summary>
+            查询执行完成后的处理，不管是否执行出错都会进行的处理
+            </summary>
+            <param name="cmd"></param>
+        </member>
+        <member name="P:PWMIS.DataProvider.Data.ICommandHandle.ApplayDBMSType">
+            <summary>
+            获取当前适用的数据库类型，如果通用，请设置为 UNKNOWN
+            </summary>
+        </member>
+        <member name="T:PWMIS.DataProvider.Data.CommandExecuteLogHandle">
+            <summary>
+            命令执行日志处理器，可以记录SQL和参数，执行时间等信息
+            </summary>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.CommandExecuteLogHandle.#ctor">
+            <summary>
+            初始化一个命令执行日志处理器
+            </summary>
+        </member>
         <member name="T:PWMIS.DataProvider.Data.CommandLog">
             <summary>
             命令对象日志2008.7.18 增加线程处理,2011.5.9 增加执行时间记录
@@ -1734,11 +1783,11 @@
             <param name="restrictionValues">请求的架构的一组限制值</param>
             <returns>数据库架构信息表</returns>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.Oracle.PrepareSQL(System.String@)">
+        <member name="M:PWMIS.DataProvider.Data.Oracle.PrepareSQL(System.String)">
             <summary>
             预处理SQL语句，语句中不能包含"["，"]"左右中括号，如果需要，请使用参数化查询。
             </summary>
-            <param name="SQL"></param>
+            <param name="sql"></param>
             <returns></returns>
         </member>
         <member name="P:PWMIS.DataProvider.Data.Oracle.CurrentDBMSType">

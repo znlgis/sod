@@ -144,11 +144,11 @@ namespace PWMIS.DataProvider.Data.OracleDataAccess
         /// <summary>
         /// 预处理SQL语句，语句中不能包含"["，"]"左右中括号，如果需要，请使用参数化查询。
         /// </summary>
-        /// <param name="SQL"></param>
+        /// <param name="sql"></param>
         /// <returns></returns>
-        protected override string PrepareSQL(ref string SQL)
+        protected override string PrepareSQL( string sql)
         {
-            return SQL.Replace("[", "\"").Replace("]", "\"").Replace("@", ":");
+            return sql.Replace("[", "\"").Replace("]", "\"").Replace("@", ":");
         }
 
         public override System.Data.Common.DbConnectionStringBuilder ConnectionStringBuilder

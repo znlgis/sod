@@ -28,9 +28,9 @@ using PWMIS.DataProvider.Adapter;
 using PWMIS.Common;
 namespace PWMIS.DataProvider.Data
 {
-	/// <summary>
-    /// 公共数据访问抽象类 兼容 AdoHelper 类 ,实例使用方法参见 PWMIS.CommonDataProvider.Adapter.MyDB
-	/// </summary>
+    /// <summary>
+    /// 初始化通用数据访问对象，如果配置了日志记录，将同时初始化命令执行日志处理器到【命令处理管道】中。
+    /// </summary>
 	public abstract class AdoHelper:CommonDB
 	{
         public delegate TResult Func<T,TResult>(T arg);

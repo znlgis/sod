@@ -109,7 +109,7 @@ namespace PWMIS.DataProvider.Data
         {
             IDbConnection conn = GetConnection();
             IDbCommand cmd = conn.CreateCommand();
-            CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
+            CompleteCommand(cmd,  SQL,  commandType,  parameters);
             SqlDataAdapter ada = new SqlDataAdapter((SqlCommand)cmd);
 
             CommandLog cmdLog = new CommandLog(true);
@@ -164,7 +164,7 @@ namespace PWMIS.DataProvider.Data
 
             IDbConnection conn = GetConnection();
             IDbCommand cmd = conn.CreateCommand();
-            CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
+            CompleteCommand(cmd,  SQL,  commandType,  parameters);
             SqlDataAdapter ada = new SqlDataAdapter((SqlCommand)cmd);
 
             CommandLog cmdLog = new CommandLog(true);
@@ -310,7 +310,7 @@ namespace PWMIS.DataProvider.Data
         {
             IDbConnection conn = GetConnection();
             IDbCommand cmd = conn.CreateCommand();
-            CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
+            CompleteCommand(cmd,  SQL,  commandType,  parameters);
 
             CommandLog cmdLog = new CommandLog(true);
 

@@ -70,6 +70,10 @@
  * 
  * * 修改者：         时间：2015-1-29
  * 修正OpenSession 打开连接会话之后，DataReader关闭连接的问题
+ * 
+ *  修改者：         时间：2015-12-12
+ * 增加命令处理管道，以便你管理框架的查询命令处理行为，比如插入命令执行日志处理器或者自定义的其他命令执行处理器，
+ * 详细内容，请看 SampleORMTest 项目的 LocalDbContext 类的示例代码。
  * ========================================================================
 */
 
@@ -86,7 +90,7 @@ using System.Collections.Generic;
 namespace PWMIS.DataProvider.Data
 {
     /// <summary>
-    /// 公共数据访问基础类
+    /// 通用数据访问对象，如果配置了日志记录，将同时初始化命令执行日志处理器到【命令处理管道】中。
     /// <remarks>
     /// 正常情况下CRUD方法都是使用一个局部的连接变量，因此是线程安全的原子操作；
     /// 如果开启了事务，或者开启了 opensession，将共享同一个连接对象，直到事务结束或者关闭会话，因此此时连接对象不是线程安全的。
@@ -110,20 +114,22 @@ namespace PWMIS.DataProvider.Data
         private IDbConnection sessionConnection = null;//会话使用的连接
         private bool disposed;
 
-        //		//日志相关
-        //		private string DataLogFile ;
-        //		private bool SaveCommandLog;
-        /// <summary>
-        /// 默认构造函数
-        /// </summary>
+       /// <summary>
+       /// 初始化通用数据访问对象，如果配置了日志记录，将同时初始化命令执行日志处理器到【命令处理管道】中。
+       /// </summary>
         public CommonDB()
         {
-            //			DataLogFile=System.Configuration .ConfigurationSettings .AppSettings ["DataLogFile"];
-            //			string temp=System.Configuration .ConfigurationSettings .AppSettings ["SaveCommandLog"];
-            //			if(temp!=null && DataLogFile!=null && DataLogFile!="")
-            //			{
-            //				if(temp.ToUpper() =="TRUE") SaveCommandLog=true ;else SaveCommandLog=false;
-            //			}
+            //CommandLog.SaveCommandLog 取决于应用程序配置文件的配置名称 "SaveCommandLog"，
+            //如果是"true"，则 CommandLog.SaveCommandLog ==true;
+            //开启记录SQL日志后，如果没有指定日志文件路径，日志文件将在应用程序的根目录下，文件名为 sql.log
+            //加入配置了日志文件路径但是没有配置需要记录日志，当应用程序查询出错的时候，会在日志文件中记录错误信息。
+            //
+            //除了通过配置文件配置日志处理行为，也可以通过 RegisterCommandHandle 方法注册你的日志处理程序
+            if (CommandLog.SaveCommandLog)
+            {
+                commandHandles = new List<ICommandHandle>();
+                commandHandles.Add(new CommandExecuteLogHandle());
+            }
         }
 
         /// <summary>
@@ -574,11 +580,11 @@ namespace PWMIS.DataProvider.Data
         /// <summary>
         /// 对应SQL语句进行其它的处理，例如将SQLSERVER的字段名外的中括号替换成数据库特定的字符。该方法会在执行查询前调用，默认情况下不进行任何处理。
         /// </summary>
-        /// <param name="SQL"></param>
+        /// <param name="sql"></param>
         /// <returns></returns>
-        protected virtual string PrepareSQL(ref string SQL)
+        protected virtual string PrepareSQL( string sql)
         {
-            return SQL;
+            return sql;
         }
 
         /// <summary>
@@ -588,7 +594,7 @@ namespace PWMIS.DataProvider.Data
         /// <returns></returns>
         public string GetPreparedSQL(string sql)
         {
-            return this.PrepareSQL(ref sql);
+            return this.PrepareSQL( sql);
         }
 
         /// <summary>
@@ -599,9 +605,10 @@ namespace PWMIS.DataProvider.Data
         /// <param name="SQL">SQL</param>
         /// <param name="commandType">命令类型</param>
         /// <param name="parameters">参数数组</param>
-        protected void CompleteCommand(IDbCommand cmd, ref string SQL, ref CommandType commandType, ref IDataParameter[] parameters)
+        protected void CompleteCommand(IDbCommand cmd,  string SQL,  CommandType commandType,  IDataParameter[] parameters)
         {
-            cmd.CommandText = SqlServerCompatible ? PrepareSQL(ref  SQL) : SQL;
+            //SQL 可能在OnExecuting 已经处理，因此PrepareSQL 对于某些Oracle大写的字段名，不会有影响
+            cmd.CommandText = SqlServerCompatible ? PrepareSQL(  SQL) : SQL;
             cmd.CommandType = commandType;
             cmd.Transaction = this.Transaction;
             if (this.CommandTimeOut > 0)
@@ -636,36 +643,69 @@ namespace PWMIS.DataProvider.Data
             //CommandLog.Instance.WriteLog(cmd,"AdoHelper");
         }
 
-        //		/// <summary>
-        //		/// 记录命令信息
-        //		/// </summary>
-        //		/// <param name="command"></param>
-        //		private void RecordCommandLog(IDbCommand command)
-        //		{
-        //			WriteLog("'"+DateTime.Now.ToString ()+ " @AdoHelper 执行命令：\rSQL=\""+command.CommandText+"\"\r'命令类型："+command.CommandType.ToString ());
-        //			if(command.Parameters.Count >0)
-        //			{
-        //				WriteLog("'共有　"+command.Parameters.Count+"　个命令参数：");
-        //				for(int i=0;i<command.Parameters.Count ;i++)
-        //				{
-        //					IDataParameter p=(IDataParameter)command.Parameters[i];
-        //					WriteLog ("Parameter["+p.ParameterName+"]=\""+p.Value.ToString ()+"\"  'DbType=" +p.DbType.ToString ());
-        //				}
-        //			}
-        //			WriteLog ("\r\n");
-        //
-        //		}
-        //
-        //		/// <summary>
-        //		/// 写入日志
-        //		/// </summary>
-        //		/// <param name="log"></param>
-        //		private void WriteLog(string log)
-        //		{
-        //			StreamWriter sw=File.AppendText (this.DataLogFile );;
-        //			sw.WriteLine (log);
-        //			sw.Close ();
-        //		}
+        #region 命令处理器
+        private List<ICommandHandle> commandHandles;
+        /// <summary>
+        /// 注册一个命令处理器
+        /// </summary>
+        /// <param name="handles"></param>
+        public void RegisterCommandHandle(ICommandHandle handle)
+        {
+            if (handle != null)
+            {
+                if (this.commandHandles == null)
+                    this.commandHandles = new List<ICommandHandle>();
+                this.commandHandles.Add(handle);
+            }
+        }
+
+        private bool OnCommandExecuting(ref string sql, CommandType commandType, IDataParameter[] parameters)
+        {
+            if (commandHandles != null)
+            {
+                foreach (ICommandHandle handle in this.commandHandles)
+                {
+                    if (handle.ApplayDBMSType== DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
+                    {
+                        bool flag = handle.OnExecuting(this,ref sql, commandType, parameters);
+                        if (!flag)
+                            return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        private void OnCommandExecuteError(IDbCommand cmd, string errorMessage)
+        {
+            if (commandHandles != null)
+            {
+                foreach (ICommandHandle handle in this.commandHandles)
+                {
+                    if (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
+                        handle.OnExecuteError(cmd, errorMessage);
+                }
+            }
+        }
+
+        private void OnCommandExected(IDbCommand cmd)
+        {
+            if (commandHandles != null)
+            {
+                foreach (ICommandHandle handle in this.commandHandles)
+                {
+                    if (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
+                    {
+                        long result = handle.OnExected(cmd);
+                        if (handle is CommandExecuteLogHandle)
+                            this._elapsedMilliseconds = result;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
 
         /// <summary>
         /// 执行不返回值的查询，如果此查询出现了错误并且设置 OnErrorThrow 属性为 是，将抛出错误；否则将返回 -1，此时请检查ErrorMessage属性；
@@ -677,14 +717,15 @@ namespace PWMIS.DataProvider.Data
         /// <returns>受影响的行数</returns>
         public virtual int ExecuteNonQuery(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
+            if (!OnCommandExecuting(ref SQL, commandType, parameters))
+                return -1;
+
             ErrorMessage = "";
             IDbConnection conn = GetConnection();
             if (conn.State != ConnectionState.Open) //连接已经打开，不能切换连接字符串，感谢网友 “长的没礼貌”发现此Bug 
                 conn.ConnectionString = this.DataWriteConnectionString;
             IDbCommand cmd = conn.CreateCommand();
-            CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
-            //cmd.Prepare();
-            CommandLog cmdLog = new CommandLog(true);
+            CompleteCommand(cmd,  SQL,  commandType,  parameters);
 
             int result = -1;
             try
@@ -701,7 +742,7 @@ namespace PWMIS.DataProvider.Data
                 if (cmd.Transaction != null && OnErrorRollback)
                     cmd.Transaction.Rollback();
 
-                cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
+                OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
                     throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
@@ -709,7 +750,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
+                OnCommandExected(cmd);
                 CloseConnection(conn, cmd);
             }
             return result;
@@ -736,13 +777,13 @@ namespace PWMIS.DataProvider.Data
         /// <returns>本次查询受影响的行数</returns>
         public virtual int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID,string insertKey="")
         {
+            if (!OnCommandExecuting(ref SQL, commandType, parameters))
+                return -1;
             IDbConnection conn = GetConnection();
             if (conn.State != ConnectionState.Open) //连接已经打开，不能切换连接字符串，感谢网友 “长的没礼貌”发现此Bug 
                 conn.ConnectionString = this.DataWriteConnectionString;
             IDbCommand cmd = conn.CreateCommand();
-            CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
-
-            CommandLog cmdLog = new CommandLog(true);
+            CompleteCommand(cmd,  SQL,  commandType,  parameters);
 
             bool inner = false;
             int result = -1;
@@ -789,7 +830,7 @@ namespace PWMIS.DataProvider.Data
                 if (inner)
                     cmd.Transaction = null;
 
-                cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
+                OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
                     throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
@@ -798,7 +839,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
+                OnCommandExected(cmd);
                 CloseConnection(conn, cmd);
             }
             return result;
@@ -824,9 +865,11 @@ namespace PWMIS.DataProvider.Data
         /// <returns>查询结果</returns>
         public virtual object ExecuteScalar(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
+            if (!OnCommandExecuting(ref SQL, commandType, parameters))
+                return -1;
             IDbConnection conn = GetConnection();
             IDbCommand cmd = conn.CreateCommand();
-            CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
+            CompleteCommand(cmd,  SQL,  commandType,  parameters);
 
             CommandLog cmdLog = new CommandLog(true);
 
@@ -844,7 +887,7 @@ namespace PWMIS.DataProvider.Data
                 //    cmd.Transaction.Rollback ();
 
                 bool inTransaction = cmd.Transaction == null ? false : true;
-                cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
+                OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
                     throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
@@ -852,7 +895,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
+                OnCommandExected(cmd);
                 CloseConnection(conn, cmd);
             }
             return result;
@@ -877,38 +920,6 @@ namespace PWMIS.DataProvider.Data
         /// <returns>数据集</returns>
         public virtual DataSet ExecuteDataSet(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
-            //IDbConnection conn=GetConnection();
-            //IDbCommand cmd=conn.CreateCommand ();
-            //CompleteCommand(cmd,ref SQL,ref commandType,ref parameters);
-            //IDataAdapter ada=GetDataAdapter(cmd);
-
-            //CommandLog cmdLog = new CommandLog(true);
-
-            //DataSet ds=new DataSet ();
-            //try
-            //{
-            //    ada.Fill(ds);//FillSchema(ds,SchemaType.Mapped )
-            //}
-            //catch(Exception ex)
-            //{
-            //    ErrorMessage=ex.Message ;
-            //    bool inTransaction = cmd.Transaction == null ? false : true;
-            //    cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
-            //    if (OnErrorThrow)
-            //    {
-            //        throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
-            //    }
-            //}
-            //finally
-            //{
-            //    if(cmd.Transaction==null && conn.State ==ConnectionState.Open )
-            //        conn.Close ();
-            //}
-
-            //cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
-
-            //return ds;
-
             DataSet ds = new DataSet();
             return ExecuteDataSetWithSchema(SQL, commandType, parameters, ds);
         }
@@ -922,9 +933,11 @@ namespace PWMIS.DataProvider.Data
         /// <returns>数据架构</returns>
         public virtual DataSet ExecuteDataSetSchema(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
+            if (!OnCommandExecuting(ref SQL, commandType, parameters))
+                return null;
             IDbConnection conn = GetConnection();
             IDbCommand cmd = conn.CreateCommand();
-            CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
+            CompleteCommand(cmd,  SQL,  commandType,  parameters);
             IDataAdapter ada = GetDataAdapter(cmd);
 
             DataSet ds = new DataSet();
@@ -936,7 +949,7 @@ namespace PWMIS.DataProvider.Data
             {
                 ErrorMessage = ex.Message;
                 bool inTransaction = cmd.Transaction == null ? false : true;
-                CommandLog.Instance.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
+                OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
                     throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
@@ -944,8 +957,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                //    conn.Close();
+                OnCommandExected(cmd);
                 CloseConnection(conn, cmd);
             }
             return ds;
@@ -960,9 +972,11 @@ namespace PWMIS.DataProvider.Data
         /// <returns>具有数据架构的数据集</returns>
         public virtual DataSet ExecuteDataSetWithSchema(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
+            if (!OnCommandExecuting(ref SQL, commandType, parameters))
+                return null;
             IDbConnection conn = GetConnection();
             IDbCommand cmd = conn.CreateCommand();
-            CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
+            CompleteCommand(cmd,  SQL,  commandType,  parameters);
             IDataAdapter ada = GetDataAdapter(cmd);
 
             CommandLog cmdLog = new CommandLog(true);
@@ -976,7 +990,7 @@ namespace PWMIS.DataProvider.Data
             {
                 ErrorMessage = ex.Message;
                 bool inTransaction = cmd.Transaction == null ? false : true;
-                cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
+                OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
                     throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
@@ -984,12 +998,9 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                //    conn.Close();
+                OnCommandExected(cmd);
                 CloseConnection(conn, cmd);
             }
-
-            cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
 
             return ds;
         }
@@ -1004,12 +1015,12 @@ namespace PWMIS.DataProvider.Data
         /// <returns>具有数据的数据集</returns>
         public virtual DataSet ExecuteDataSetWithSchema(string SQL, CommandType commandType, IDataParameter[] parameters, DataSet schemaDataSet)
         {
+            if (!OnCommandExecuting(ref SQL, commandType, parameters))
+                return null;
             IDbConnection conn = GetConnection();
             IDbCommand cmd = conn.CreateCommand();
-            CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
+            CompleteCommand(cmd,  SQL,  commandType,  parameters);
             IDataAdapter ada = GetDataAdapter(cmd);
-
-            CommandLog cmdLog = new CommandLog(true);
 
             try
             {
@@ -1020,7 +1031,7 @@ namespace PWMIS.DataProvider.Data
             {
                 ErrorMessage = ex.Message;
                 bool inTransaction = cmd.Transaction == null ? false : true;
-                cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
+                OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
                     throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
@@ -1028,7 +1039,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
+                OnCommandExected(cmd);
                 CloseConnection(conn, cmd);
             }
             return schemaDataSet;
@@ -1142,11 +1153,11 @@ namespace PWMIS.DataProvider.Data
         /// <returns>数据阅读器</returns>
         protected virtual IDataReader ExecuteDataReader(ref string SQL, CommandType commandType, CommandBehavior cmdBehavior, ref IDataParameter[] parameters)
         {
+            if (!OnCommandExecuting(ref SQL, commandType, parameters))
+                return null;
             IDbConnection conn = GetConnection();
             IDbCommand cmd = conn.CreateCommand();
-            CompleteCommand(cmd, ref SQL, ref commandType, ref parameters);
-
-            CommandLog cmdLog = new CommandLog(true);
+            CompleteCommand(cmd,  SQL,  commandType,  parameters);
 
             IDataReader reader = null;
             try
@@ -1165,14 +1176,14 @@ namespace PWMIS.DataProvider.Data
                 CloseConnection(conn, cmd);
 
                 bool inTransaction = cmd.Transaction == null ? false : true;
-                cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
+                OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
                     throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
                 }
             }
 
-            cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
+            OnCommandExected(cmd);
             cmd.Parameters.Clear();
 
             return reader;

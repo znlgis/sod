@@ -35,18 +35,26 @@ namespace PWMIS.DataProvider.Data
             get {
                 if (string.IsNullOrEmpty(_dataLogFile))
                 {
-                    _dataLogFile = System.Configuration.ConfigurationSettings.AppSettings["DataLogFile"];
-                    if (!string.IsNullOrEmpty(_dataLogFile))
-                    {
-                        CommonUtil.ReplaceWebRootPath(ref _dataLogFile);
-                        string temp = System.Configuration.ConfigurationSettings.AppSettings["SaveCommandLog"];
-                        if(temp != null)
-                            _saveCommandLog = temp.ToUpper() == "TRUE";
-                    }
+                    _dataLogFile = System.Configuration.ConfigurationManager.AppSettings["DataLogFile"];
+                    setDataLogFile();
                 }
                 return _dataLogFile;
             }
-            set { _dataLogFile = value; }
+            set { 
+                _dataLogFile = value;
+                setDataLogFile();
+            }
+        }
+
+        private static void setDataLogFile()
+        {
+            if (!string.IsNullOrEmpty(_dataLogFile))
+            {
+                CommonUtil.ReplaceWebRootPath(ref _dataLogFile);
+                string temp = System.Configuration.ConfigurationManager.AppSettings["SaveCommandLog"];
+                if (temp != null)
+                    _saveCommandLog = temp.ToUpper() == "TRUE";
+            }
         }
 
         private static bool _saveCommandLog;
@@ -71,7 +79,7 @@ namespace PWMIS.DataProvider.Data
             get {
                 if (_logExecutedTime ==-1)
                 {
-                    string temp = System.Configuration.ConfigurationSettings.AppSettings["LogExecutedTime"];
+                    string temp = System.Configuration.ConfigurationManager.AppSettings["LogExecutedTime"];
                     if(string.IsNullOrEmpty (temp ))
                         _logExecutedTime =0;
                     else
@@ -135,7 +143,10 @@ namespace PWMIS.DataProvider.Data
         public void ReSet()
         {
             if (watch != null)
+            {
                 watch.Reset();
+                watch.Start();            
+            }
         }
 
         /// <summary>
@@ -157,21 +168,23 @@ namespace PWMIS.DataProvider.Data
 		{
             CommandText = command.CommandText;
             elapsedMilliseconds = 0;
-            if (SaveCommandLog)
+            if (watch != null)
             {
-                if (watch != null)
+                elapsedMilliseconds = watch.ElapsedMilliseconds;
+                if (SaveCommandLog)
                 {
-                    elapsedMilliseconds = watch.ElapsedMilliseconds;
                     if ((LogExecutedTime > 0 && elapsedMilliseconds > LogExecutedTime) || LogExecutedTime == 0)
                     {
                         RecordCommandLog(command, who);
                         WriteLog("Execueted Time(ms):" + elapsedMilliseconds + "\r\n", who);
                     }
                 }
-                else
-                {
+                watch.Stop();
+            }
+            else
+            {
+                if (SaveCommandLog)
                     RecordCommandLog(command, who);
-                }
             }
 		}
 
