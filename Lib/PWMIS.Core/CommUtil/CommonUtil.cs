@@ -85,7 +85,7 @@ namespace PWMIS.Core
         public static void ReplaceWebRootPath(ref string sourcePath)
         {
             //处理 相对路径，假定 ~ 路径格式就是Web程序的相对路径 edit at 2015-11-29
-            if (!string.IsNullOrEmpty(sourcePath) && sourcePath.IndexOf('~') > 0)
+            if (!string.IsNullOrEmpty(sourcePath) && sourcePath.IndexOf('~') >= 0)
             {
                 string appRootPath;
                 var escapedCodeBase = Assembly.GetExecutingAssembly().EscapedCodeBase;

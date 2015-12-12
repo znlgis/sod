@@ -49,11 +49,11 @@
             <param name="restrictionValues">请求的架构的一组限制值</param>
             <returns>数据库架构信息表</returns>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.PostgreSQL.PrepareSQL(System.String@)">
+        <member name="M:PWMIS.DataProvider.Data.PostgreSQL.PrepareSQL(System.String)">
             <summary>
             预处理SQL语句，语句中不能包含"`"(反引号，tab键上面的那个符号)号，如果需要，请使用参数化查询。
             </summary>
-            <param name="SQL"></param>
+            <param name="sql"></param>
             <returns></returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.PostgreSQL.createFunctionArgsInfo">

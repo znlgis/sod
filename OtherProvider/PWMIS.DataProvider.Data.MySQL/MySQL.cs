@@ -112,11 +112,11 @@ namespace PWMIS.DataProvider.Data
         /// <summary>
         /// 预处理SQL语句，语句中不能包含"`"(反引号，tab键上面的那个符号)号，如果需要，请使用参数化查询。
         /// </summary>
-        /// <param name="SQL"></param>
+        /// <param name="sql"></param>
         /// <returns></returns>
-        protected override string PrepareSQL(ref string SQL)
+        protected override string PrepareSQL( string sql)
         {
-            return SQL.Replace("[", "`").Replace("]", "`").Replace("@", "?");
+            return sql.Replace("[", "`").Replace("]", "`").Replace("@", "?");
         }
 
         /// <summary>
