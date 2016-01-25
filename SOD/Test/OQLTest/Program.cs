@@ -7,6 +7,7 @@ using UPMS.Core.Model;
 using System.Threading;
 using PWMIS.Core;
 using PWMIS.Core.Extensions;
+using PWMIS.Common;
 
 namespace OQLTest
 {
@@ -17,7 +18,7 @@ namespace OQLTest
             HotDictionaryTest();
             //TestThread();
             //TestProperty();
-            //TestCached();
+            TestCached();
             
             Console.WriteLine("OQL 测试，按任意键开始");
             Console.Read();
@@ -590,8 +591,62 @@ namespace OQLTest
                 .Join(role).On(user.RoleID, role.ID)
                 .Select()
                 .Where(cmp => cmp.Comparer(role.ID, "=", RoleNames.User))
+                .OrderBy(role.RoleName)
                 .END;
-            q2.Limit(10);
+            q2.Limit(10,2);
+            q2.PageWithAllRecordCount = 0;
+
+            //分页，需要在 select 子句中包含排序的字段，然后排序使用字段别名
+            string pageSql = @"
+SELECT  	
+ M.[ID],	
+ M.[NickName],	
+ T0.[ID] AS [T0_ID],	
+ T0.[Description] AS [T0_Description]
+FROM [LT_Users] M   
+INNER JOIN [LT_UserRoles] T0  ON  M.[RoleID] = T0.[ID] 
+WHERE  T0.[ID] = 1
+ORDER BY T0.[RoleName] ASC 
+";
+            //如果上面的SQL语句升序排序，每页10行，取第二页，那么应该生成下面的分页语句
+            /*
+             SELECT Top 10 * FROM(
+				SELECT Top 10 * FROM ( 
+						SELECT  top 20	
+						 M.[ID],	
+						 M.[NickName],	
+						 T0.[ID] AS [T0_ID],	
+						 T0.[Description] AS [T0_Description],
+						 T0.[RoleName]  
+						FROM [LT_Users] M   
+						INNER JOIN [LT_UserRoles] T0  ON  M.[RoleID] = T0.[ID] 
+						WHERE  T0.[ID] = 1
+						ORDER BY T0.[RoleName] ASC 
+									) P_T0  
+				ORDER BY [RoleName] DESC 
+                   ) P_T1
+             ORDER BY [RoleName] ASC
+             * 
+             * 注意内部的分页语句，应该附加上排序的字段 T0.[RoleName] 才可以供外部的排序条件使用，
+             * 所以OQL处理的时候应该考虑这个问题，比如下面的查询：
+             SELECT Top 10 * FROM(
+				SELECT Top 10 * FROM ( 
+						SELECT  top 20	
+						 M.[ID],	
+						 M.[NickName],	
+						 T0.[ID] AS [T0_ID],	
+						 T0.[Description] AS [T0_Description],
+						 T0.[RoleName] AS [T0_RoleName]
+						FROM [LT_Users] M   
+						INNER JOIN [LT_UserRoles] T0  ON  M.[RoleID] = T0.[ID] 
+						WHERE  T0.[ID] = 1
+						ORDER BY T0.[RoleName] ASC 
+									) P_T0  
+				ORDER BY [T0_RoleName] DESC 
+                   ) P_T1
+             ORDER BY [T0_RoleName] ASC
+             * 
+             */
 
             EntityContainer ec2 = new EntityContainer(q2);
             //第二种映射方式，推荐用于OQL多个实体类关联查询的情况：
@@ -755,7 +810,48 @@ namespace OQLTest
         static void TestCached()
         {
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
+            string sql = @"select Age,t.[User Name] As UserName from tab t 
+                   where ID>1000 order   by    t.[User Name]  , id desc 
+                   option(hash group,fast 10) ";
+            SqlOrderBuilder sob = new SqlOrderBuilder(sql);
+            string sqlOrder = sob.Build(50,"Age>=20");
+            
             TestA a = new TestA();
+            /*
+            Point p = a.SearchWordsIndex(sql, "order by");
+            Console.Write(p.A  );
+            //ROW_NUMBER() OVER(PARTITION BY PostalCode ORDER BY SalesYTD DESC) AS "Row Number", //这种应该不予处理
+            //所以 如果还有PARTITION BY  子句，则认为是复杂的SQL，抛出异常语句
+            int wordIndex;
+            string word= a.FindNearWords(sql, p.B, 255,'[',']',out wordIndex );
+            int orderTypeIndex;
+            string orderType = a.FindNearWords(sql, wordIndex + word.Length, 10, out orderTypeIndex);
+            //寻找可能有多个排序的分隔逗号
+            int dIndex = orderTypeIndex == -1 ? wordIndex + +word.Length : orderTypeIndex + orderType.Length;
+            int orderSep = a.FindPunctuationBeforWord(sql, dIndex, ',');
+            if (orderSep != -1)
+            { 
+                //寻找第二组排序字段信息
+                string word2 = a.FindNearWords(sql, orderSep+1, 10, out wordIndex);
+                if (wordIndex != -1)
+                {
+                    string orderType2 = a.FindNearWords(sql, wordIndex + word2.Length, 10, out orderTypeIndex);
+                }
+            }
+            //搜索排序字段在SELECT子句中的别名
+            int selectFieldIndex = sql.IndexOf(word, 0, StringComparison.OrdinalIgnoreCase);
+            if (selectFieldIndex > 0)
+            { 
+                //寻找临近的单词，可能是AS，也可能直接就是字段别名
+                string fieldAsName = a.FindNearWords(sql, selectFieldIndex + word.Length , 50, out wordIndex);
+                if (fieldAsName.ToLower() == "as")
+                {
+                    fieldAsName = a.FindNearWords(sql, wordIndex+2, 50, out wordIndex);
+                }
+            }
+            */
+
+
             sw.Start();
             for (int i = 0; i < 1000000; i++)
             {
@@ -778,6 +874,7 @@ namespace OQLTest
 
     }
 
+    
     class TestA
     {
         public string P1 { get; set; }
@@ -808,6 +905,198 @@ namespace OQLTest
                 miStringArg = realMethod;
             }
             miStringArg.Invoke(this, new object[] { 123 });
+        }
+
+        
+
+        /// <summary>
+        /// 在 source句子字符串中搜索一个短语，并忽略source和短语中多余1个的空白字符，忽略大小写
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="words"></param>
+        /// <returns>返回短语在句子中最后一个开始的位置和结束位置的结构</returns>
+        public Point SearchWordsIndex(string source, string words)
+        {
+            string[] matchWrodArray = words.Split(new char[]{' ','\r','\n','\t'}, StringSplitOptions.RemoveEmptyEntries);
+            int firstMatchIndex = source.LastIndexOf(matchWrodArray[0], source.Length -1, StringComparison.OrdinalIgnoreCase);
+            if (firstMatchIndex == -1) return new Point(-1,0);
+            int matchWordIndex = 1;
+            int startIndex = firstMatchIndex + matchWrodArray[0].Length;
+            bool needSpace = true;
+            List<char> charList = new List<char>(); 
+            for (int i = startIndex; i < source.Length; i++)
+            {
+                //匹配一个单词后，需要至少一个空白字符
+                if (needSpace)
+                {
+                    if (char.IsWhiteSpace(source[i]))
+                    {
+                        needSpace = false;
+                        continue;
+                    }
+                }
+                if ( !char.IsWhiteSpace(source[i]))
+                { 
+                    //遇到非空白字符，处理字符串叠加
+                    charList.Clear();
+                    while (i < source.Length)
+                    {
+                        char c = source[i];
+                        if (!char.IsWhiteSpace(c))
+                        {
+                            charList.Add(c);
+                            i++;                        
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                    //遇到空白字符，循环结束
+                    string findWord = new string(charList.ToArray());
+                    string matchWord = matchWrodArray[matchWordIndex];
+                    if (string.Equals(findWord, matchWord, StringComparison.OrdinalIgnoreCase))
+                    {
+                        //如果当前句子中找到的单词跟当前要匹配的单词一致，则匹配成功，则进行下一轮匹配，直到要匹配的词语结束
+                        matchWordIndex++;
+                        if (matchWordIndex >= matchWrodArray.Length)
+                            return new Point ( firstMatchIndex ,i);
+                        else
+                            needSpace = true;
+                    }
+                    else
+                    {
+                        //否则，当前不匹配，中断处理，结束句子查找
+                        break;
+                    }
+                }
+            }//end for
+            return new Point(-1, 0);
+        }
+
+        /// <summary>
+        /// 从输入字符串的指定位置开始寻找一个临近的单词，忽略前面的空白字符，直到遇到单词之后第一个空白字符或者分割符或者标点符号为止。
+        /// </summary>
+        /// <param name="inputString">输入的字符串</param>
+        /// <param name="startIndex">在输入字符串中要寻找单词的起始位置</param>
+        /// <param name="maxLength">单词的最大长度，忽略超出部分</param>
+        /// <param name="targetIndex">所找到目标单词在源字符串中的位置索引，如果没有找到，返回-1</param>
+        /// <returns>找到的新单词</returns>
+        public string FindNearWords(string inputString, int startIndex, int maxLength, out int targetIndex)
+        {
+            return FindNearWords(inputString, startIndex, maxLength, '[', ']', out targetIndex);
+        }
+
+        /// <summary>
+        /// 从输入字符串的指定位置开始寻找一个临近的单词，忽略前面的空白字符，直到遇到单词之后第一个空白字符或者分割符或者标点符号为止。
+        /// </summary>
+        /// <param name="inputString">输入的字符串</param>
+        /// <param name="startIndex">在输入字符串中要寻找单词的起始位置</param>
+        /// <param name="maxLength">要索搜的最大长度，忽略超出部分，注意目标单词可能有空白字符，所以该长度应该大于单词的长度</param>
+        /// <param name="leftSqlSeparator">SQL名字左分隔符</param>
+        /// <param name="rightSqlSeparator">SQL名字右分隔符</param>
+        /// <param name="targetIndex">所找到目标单词在源字符串中的位置索引，如果没有找到，返回-1</param>
+        /// <returns>找到的新单词</returns>
+        public string FindNearWords(string inputString, int startIndex, int maxLength, char leftSqlSeparator, char rightSqlSeparator,out int targetIndex)
+        {
+            if (startIndex + maxLength > inputString.Length)
+                maxLength = inputString.Length - startIndex;
+            bool start = false;
+            char[] words = new char[maxLength];//存储过程名字，最大长度255；
+            int index = 0;
+            bool sqlSeparator = false;//SQL 分割符，比如[],如果遇到，则忽略中间的空格，标点符号等
+            int countWhiteSpace = 0;
+            targetIndex = -1;
+
+            foreach (char c in inputString.ToCharArray(startIndex, maxLength))
+            {
+                if (Char.IsWhiteSpace(c))
+                {
+                    countWhiteSpace++;
+                    if (!start)
+                        continue;//过滤前面的空白字符
+                    else
+                    {
+                        if (!sqlSeparator)
+                            break;//已经获取过字母字符，又遇到了空白字符，说明单词已经结束，跳出。
+                        else
+                            words[index++] = c;//空白字符在SQL分隔符内部，放入字母，找单词
+                    }
+                }
+                else
+                {
+                    if (Char.IsSeparator(c) || Char.IsPunctuation(c))
+                    {
+                        if (sqlSeparator && c == rightSqlSeparator)
+                            sqlSeparator = false;
+                        else if (c == leftSqlSeparator) 
+                            sqlSeparator = true;
+                        
+                        //需要处理[] 之间的的字符串
+                        if (c == '.' || c == '_' || c == '-' || c == leftSqlSeparator || c == rightSqlSeparator)
+                        {
+                            words[index++] = c;//放入字母，找单词
+                        }
+                        else
+                        {
+                            if (!sqlSeparator)
+                                break;//分割符（比如空格）或者标点符号，跳出。
+                        }
+
+                    }
+                    else
+                    {
+                        words[index++] = c;//放入字母，找单词
+
+                    }
+                    if (!start)
+                    {
+                        start = true;
+                        targetIndex = startIndex + countWhiteSpace;
+                    }
+                }
+            }
+            return new string(words, 0, index);
+        }
+
+        /// <summary>
+        /// 从一个句子中指定的位置开始搜索目标字符，直到遇到非空白字符为止，返回该字符的位置索引。该字符不包括在单引号内
+        /// </summary>
+        /// <param name="inputString">要搜索的源字符串</param>
+        /// <param name="startIndex">在源中搜索的其实位置</param>
+        /// <param name="targetChar">目标字符</param>
+        /// <returns>目标字符的在源字符串的位置索引，如果没有找到，返回-1</returns>
+        public int FindPunctuationBeforWord(string inputString, int startIndex, char targetChar)
+        {
+            if (startIndex >= inputString.Length - 1)
+                return -1;
+            bool isSqlStringFlag = false;
+            for (int i = startIndex; i < inputString.Length; i++)
+            {
+                if (isSqlStringFlag)
+                {
+                    if (inputString[i] != '\'')
+                        continue;
+                    else
+                        isSqlStringFlag = false;
+                }
+                else
+                {
+                    if (inputString[i] == targetChar)
+                    {
+                        return i;
+                    }
+                    else if (inputString[i] == '\'')
+                    {
+                        isSqlStringFlag = true;
+                    }
+                    else if (!char.IsWhiteSpace(inputString[i]))
+                    {
+                        break;
+                    }
+                }//end if
+            }//end for
+            return -1;
         }
     }
 

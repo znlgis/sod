@@ -850,23 +850,16 @@ namespace PWMIS.DataMap.Entity
         /// <summary>
         /// 使用是否排除重复记录的方式，来选取实体对象的属性
         /// <remarks>2014.1.6  网友※DS 调用本方法的时候，发现调用的第一个实体类属性是bool类型，
-        /// 引起少了一个字段查询的问题 </remarks>
+        /// 引起少了一个字段查询的问题
+        /// 2016.1.21 去除原来Select的重载，修改为SelectDistinct ，以解决只有一个参数且属性值为bool类型引起的问题
+        /// </remarks>
         /// </summary>
         /// <param name="distinct"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
-        public OQL1 Select(bool distinct, params object[] fields)
+        public OQL1 SelectDistinct( params object[] fields)
         {
-            int count = fieldStack.Count;
-            if (count == fields.Length + 1)
-            {
-                object[] newFields = new object[count];
-                for (int i = 1; i < count; i++)
-                    newFields[i] = fields[i - 1];
-                newFields[0] = false;
-                return Select(newFields);
-            }
-            this.Distinct = distinct;
+            this.Distinct = true ;
             return Select(fields);
         }
 
@@ -1283,10 +1276,28 @@ namespace PWMIS.DataMap.Entity
             }
             #endregion
 
-            sql_fields = string.Join(",", selectedFieldNames.ToArray());
+            
 
             if (dictAliases != null)//有关联查询
             {
+                //处理字段别名问题
+                string aliases = null;
+                sql_fields = string.Empty;
+                foreach (var tnf in selectedFieldInfo)
+                {
+                    if (dictAliases.TryGetValue(tnf.Entity, out aliases))
+                    {
+                        sql_fields += ",\t\r\n" + string.Format(" {0}.[{1}] AS [{0}_{1}]", aliases, tnf.Field);//关联查询，此处可能需要考虑字段AS别名 问题
+                    }
+                    else
+                    {
+                        sql_fields += ",\t\r\n" + string.Format(" M.[{0}]", tnf.Field);
+                        //sql_fields += ",\t\r\n" + string.Format(" M.[{0}] AS [M_{0}]", tnf.Field);//test only
+                    }
+                }
+               
+                sql_fields = sql_fields.TrimStart(',');
+
                 sql_from = mainTableName + " M ";
                 if (sql_fields == "" && sqlFunctionString.Length == 0)
                 {
@@ -1304,6 +1315,7 @@ namespace PWMIS.DataMap.Entity
             }
             else
             {
+                sql_fields = string.Join(",", selectedFieldNames.ToArray());
                 sql_from = mainTableName;
                 if (sql_fields == "" && sqlFunctionString.Length == 0)
                 {

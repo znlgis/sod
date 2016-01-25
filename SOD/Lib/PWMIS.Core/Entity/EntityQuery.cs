@@ -710,13 +710,18 @@ namespace PWMIS.DataMap.Entity
             return EntityQueryAnonymous.GetMapSql(entityType);
         }
 
+        public static List<T> QueryList(System.Data.IDataReader reader)
+        {
+            return QueryList(reader, "");
+        }
+
         /// <summary>
         /// 根据数据阅读器对象，查询实体对象集合(注意查询完毕将自动释放该阅读器对象)
         /// </summary>
         /// <param name="reader">数据阅读器对象</param>
         /// <param name="tableName">指定实体类要映射的表名字,默认不指定</param>
         /// <returns>实体类集合</returns>
-        public static List<T> QueryList(System.Data.IDataReader reader,string tableName="")
+        public static List<T> QueryList(System.Data.IDataReader reader,string tableName)
         {
             List<T> list = new List<T>();
             using (reader)
@@ -1642,8 +1647,9 @@ namespace PWMIS.DataMap.Entity
         /// <param name="reader">数据阅读器对象</param>
         /// <param name="tableName">可能要映射的表名字</param>
         /// <returns>实体类集合</returns>
-        public static List<T> QueryList<T>(System.Data.IDataReader reader,string tableName="") where T : class
+        public static List<T> QueryList<T>(System.Data.IDataReader reader,string tableName) where T : class
         {
+            if (tableName == null) tableName = "";
             List<T> list = new List<T>();
             using (reader)
             {

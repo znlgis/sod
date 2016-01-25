@@ -794,6 +794,62 @@
             </summary>
             <param name="basePath"></param>
         </member>
+        <member name="M:PWMIS.Core.TextSearchUtil.SearchWordsIndex(System.String,System.String)">
+            <summary>
+            在 source句子字符串中搜索一个短语，并忽略source和短语中多余1个的空白字符，忽略大小写
+            </summary>
+            <param name="source">要搜索的源字符串</param>
+            <param name="words">要匹配的字符串，以空格隔开的多个单词</param>
+            <returns>返回短语在句子中第一次开始的位置和结束位置的结构</returns>
+        </member>
+        <member name="M:PWMIS.Core.TextSearchUtil.SearchWordsLastIndex(System.String,System.String)">
+            <summary>
+            在 source句子字符串中搜索一个短语，并忽略source和短语中多余1个的空白字符，忽略大小写
+            </summary>
+            <param name="source">要搜索的源字符串</param>
+            <param name="words">要匹配的字符串，以空格隔开的多个单词</param>
+            <returns>返回短语在句子中最后一个开始的位置和结束位置的结构</returns>
+        </member>
+        <member name="M:PWMIS.Core.TextSearchUtil.SearchWordsIndex(System.String,System.String[],System.Int32)">
+            <summary>
+            在 source句子字符串中搜索一个短语，并忽略source和短语中多余1个的空白字符，忽略大小写
+            </summary>
+            <param name="source">要搜索的源字符串</param>
+            <param name="matchWrodArray">要匹配的字符串数组</param>
+            <param name="firstMatchIndex">目标字符串在源字符串里面首次匹配的位置</param>
+            <returns>返回短语在句子中开始的位置和结束位置的结构</returns>
+        </member>
+        <member name="M:PWMIS.Core.TextSearchUtil.FindNearWords(System.String,System.Int32,System.Int32,System.Int32@)">
+            <summary>
+            从输入字符串的指定位置开始寻找一个临近的单词，忽略前面的空白字符，直到遇到单词之后第一个空白字符或者分割符或者标点符号为止。
+            </summary>
+            <param name="inputString">输入的字符串</param>
+            <param name="startIndex">在输入字符串中要寻找单词的起始位置</param>
+            <param name="maxLength">单词的最大长度，忽略超出部分</param>
+            <param name="targetIndex">所找到目标单词在源字符串中的位置索引，如果没有找到，返回-1</param>
+            <returns>找到的新单词</returns>
+        </member>
+        <member name="M:PWMIS.Core.TextSearchUtil.FindNearWords(System.String,System.Int32,System.Int32,System.Char,System.Char,System.Int32@)">
+            <summary>
+            从输入字符串的指定位置开始寻找一个临近的单词，忽略前面的空白字符，直到遇到单词之后第一个空白字符或者分割符或者标点符号为止。
+            </summary>
+            <param name="inputString">输入的字符串</param>
+            <param name="startIndex">在输入字符串中要寻找单词的起始位置</param>
+            <param name="maxLength">要索搜的最大长度，忽略超出部分，注意目标单词可能有空白字符，所以该长度应该大于单词的长度</param>
+            <param name="leftSqlSeparator">SQL名字左分隔符</param>
+            <param name="rightSqlSeparator">SQL名字右分隔符</param>
+            <param name="targetIndex">所找到目标单词在源字符串中的位置索引，如果没有找到，返回-1</param>
+            <returns>找到的新单词</returns>
+        </member>
+        <member name="M:PWMIS.Core.TextSearchUtil.FindPunctuationBeforWord(System.String,System.Int32,System.Char)">
+            <summary>
+            从一个句子中指定的位置开始搜索目标字符，直到遇到非空白字符为止，返回该字符的位置索引。该字符不包括在单引号内
+            </summary>
+            <param name="inputString">要搜索的源字符串</param>
+            <param name="startIndex">在源中搜索的其实位置</param>
+            <param name="targetChar">目标字符</param>
+            <returns>目标字符的在源字符串的位置索引，如果没有找到，返回-1</returns>
+        </member>
         <member name="T:PWMIS.DataMap.ControlDataMap">
             <summary>
             BrainControl 的摘要说明。
@@ -3845,11 +3901,13 @@
             <param name="fields"></param>
             <returns></returns>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.OQL.Select(System.Boolean,System.Object[])">
+        <member name="M:PWMIS.DataMap.Entity.OQL.SelectDistinct(System.Object[])">
             <summary>
             使用是否排除重复记录的方式，来选取实体对象的属性
             <remarks>2014.1.6  网友※DS 调用本方法的时候，发现调用的第一个实体类属性是bool类型，
-            引起少了一个字段查询的问题 </remarks>
+            引起少了一个字段查询的问题
+            2016.1.21 去除原来Select的重载，修改为SelectDistinct ，以解决只有一个参数且属性值为bool类型引起的问题
+            </remarks>
             </summary>
             <param name="distinct"></param>
             <param name="fields"></param>
@@ -5380,6 +5438,93 @@
             </summary>
             <param name="key"></param>
             <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PWMIS.Common.SqlOrderBuilder">
+            <summary>
+            SQL语句解析和排序构造器，为Access,SqlCe和早期的SqlServer等分页提供帮助
+            </summary>
+        </member>
+        <member name="M:PWMIS.Common.SqlOrderBuilder.#ctor(System.String)">
+            <summary>
+            以一个原始的SQL语句构造本对象实例
+            </summary>
+            <param name="sourceSql">源SQL</param>
+        </member>
+        <member name="M:PWMIS.Common.SqlOrderBuilder.ParseSelect(System.String,System.Int32@)">
+            <summary>
+            解析SQL语句中的Select 字段信息，并返回 From 谓词在SQL语句中的位置索引
+            </summary>
+            <param name="sql">SQL语句</param>
+            <param name="fromIndex">From 谓词在SQL语句中的位置索引</param>
+            <returns>Select 字段信息</returns>
+        </member>
+        <member name="M:PWMIS.Common.SqlOrderBuilder.ParseOrder(System.String,PWMIS.Common.Point@)">
+            <summary>
+            解析排序部分
+            </summary>
+            <param name="sql"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.Common.SqlOrderBuilder.Build(System.Int32)">
+            <summary>
+            构造可分页的排序SQL语句
+            </summary>
+            <param name="topCount">如果指定大于0的值，将生成Top子句</param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.Common.SqlOrderBuilder.Build(System.Int32,System.String)">
+            <summary>
+            构造可分页排序的SQL，并可以附带结果过滤条件
+            </summary>
+            <param name="topCount">要限制的记录条数</param>
+            <param name="filterConditions">附带结果过滤条件，注意字段不能带表名字或者表的别名</param>
+            <returns></returns>
+        </member>
+        <member name="P:PWMIS.Common.SqlOrderBuilder.OrderFields">
+            <summary>
+            排序字段信息
+            </summary>
+        </member>
+        <member name="P:PWMIS.Common.SqlOrderBuilder.SelectFields">
+            <summary>
+            执行构造后获得的字段选择信息
+            </summary>
+        </member>
+        <member name="T:PWMIS.Common.SqlField">
+            <summary>
+            SQL字段信息
+            </summary>
+        </member>
+        <member name="F:PWMIS.Common.SqlField.Field">
+            <summary>
+            字段名
+            </summary>
+        </member>
+        <member name="F:PWMIS.Common.SqlField.Alias">
+            <summary>
+            字段别名
+            </summary>
+        </member>
+        <member name="T:PWMIS.Common.OrderField">
+            <summary>
+            排序字段信息
+            </summary>
+        </member>
+        <member name="F:PWMIS.Common.OrderField.IsAsc">
+            <summary>
+            是否升序
+            </summary>
+        </member>
+        <member name="F:PWMIS.Common.OrderField.InSelect">
+            <summary>
+            是否存在于Select子句中
+            </summary>
+        </member>
+        <member name="M:PWMIS.Common.OrderField.ToString">
+            <summary>
+            获取排序表达式
+            </summary>
             <returns></returns>
         </member>
         <member name="T:PWMIS.Common.SQLPage">

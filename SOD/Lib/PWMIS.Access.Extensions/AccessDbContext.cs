@@ -53,7 +53,8 @@ namespace PWMIS.AccessExtensions
                 if (!File.Exists(DBFilePath))
                 {
                     //创建数据库文件
-                    PWMIS.AccessExtensions.AccessUility.CreateDataBase(DBFilePath);
+                    PWMIS.AccessExtensions.AccessUility.CreateDataBase(DBFilePath,
+                        CurrentDataBase.ConnectionStringBuilder as System.Data.OleDb.OleDbConnectionStringBuilder);
                 }
 
             }

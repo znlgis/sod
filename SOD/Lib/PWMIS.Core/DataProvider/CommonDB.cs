@@ -775,8 +775,9 @@ namespace PWMIS.DataProvider.Data
         /// <param name="parameters">参数数组</param>
         /// <param name="ID">要传出的本次操作的新插入数据行的自增主键ID值，如果没有获取到，则为-1</param>
         /// <returns>本次查询受影响的行数</returns>
-        public virtual int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID,string insertKey="")
+        public virtual int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID,string insertKey)
         {
+            if (insertKey == null) insertKey = "";
             if (!OnCommandExecuting(ref SQL, commandType, parameters))
                 return -1;
             IDbConnection conn = GetConnection();
@@ -853,7 +854,7 @@ namespace PWMIS.DataProvider.Data
         /// <returns>本次查询受影响的行数</returns>
         public int ExecuteInsertQuery(string SQL, ref object ID)
         {
-            return ExecuteInsertQuery(SQL, CommandType.Text, null, ref ID);
+            return ExecuteInsertQuery(SQL, CommandType.Text, null, ref ID,null);
         }
 
         /// <summary>

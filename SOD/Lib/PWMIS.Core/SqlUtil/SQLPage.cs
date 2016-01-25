@@ -212,7 +212,7 @@ namespace PWMIS.Common
 
             #region SQL 复杂度分析
             //SQL 复杂度分析 开始
-            bool SqlFlag = true;//简单SQL标记
+            bool isSimpleSql = true;//简单SQL标记
             string TestSQL = strSQLInfo.ToUpper();
             int n = TestSQL.IndexOf("SELECT ", 0);
             n = TestSQL.IndexOf("SELECT ", n + 7);
@@ -220,7 +220,7 @@ namespace PWMIS.Common
             {
                 //可能是简单的查询，再次处理
                 n = TestSQL.IndexOf(" JOIN ", n + 7);
-                if (n != -1) SqlFlag = false;
+                if (n != -1) isSimpleSql = false;
                 else
                 {
                     //判断From 谓词情况
@@ -236,20 +236,21 @@ namespace PWMIS.Common
                     string strTableName = TestSQL.Substring(n, m - n);
                     //表名中有 , 号表示是多表查询
                     if (strTableName.IndexOf(",") != -1)
-                        SqlFlag = false;
+                        isSimpleSql = false;
                 }
             }
             else
             {
                 //有子查询；
-                SqlFlag = false;
+                isSimpleSql = false;
             }
             //SQL 复杂度分析 结束
             #endregion
 
             #region 排序语法分析
             //排序语法分析 开始
-            int iOrderAt = strSQLInfo.ToLower().LastIndexOf("order by ");
+            int iOrderAt = strSQLInfo.LastIndexOf("order by ", StringComparison.OrdinalIgnoreCase);
+            
             //如果没有ORDER BY 谓词，那么无法排序分页，退出；
             if (iOrderAt == -1)
             {
@@ -313,7 +314,7 @@ namespace PWMIS.Common
 
             #region 构造分页查询
             string SQL = string.Empty;
-            if (!SqlFlag)
+            if (!isSimpleSql)
             {
                 //复杂查询处理
                 switch (strSQLType.ToUpper())
@@ -350,17 +351,17 @@ namespace PWMIS.Common
             else
             {
                 //简单查询处理
-                string strUpperSQLInfo = strSQLInfo.ToUpper();
-                bool isDistinct = strUpperSQLInfo.IndexOf("DISTINCT") >= 7;
+                string strUpperSQLInfo = strSQLInfo;//不能转大写
+                bool isDistinct = strUpperSQLInfo.IndexOf("DISTINCT", StringComparison.OrdinalIgnoreCase) >= 7;
                 if (isDistinct)
-                    strUpperSQLInfo = strUpperSQLInfo.Replace("DISTINCT", "");
+                    strUpperSQLInfo =ReplaceNoCase( strUpperSQLInfo,"DISTINCT", "");
                 switch (strSQLType.ToUpper())
                 {
                     case "FIRST":
                         if(isDistinct)
-                            SQL = strUpperSQLInfo.Replace("DISTINCT", "DISTINCT TOP @@PageSize");
+                            SQL = ReplaceNoCase(strUpperSQLInfo, "DISTINCT", "DISTINCT TOP @@PageSize");
                         else
-                            SQL = strUpperSQLInfo.Replace("SELECT ", "SELECT TOP @@PageSize ");
+                            SQL = ReplaceNoCase(strUpperSQLInfo, "SELECT ", "SELECT TOP @@PageSize ");
                         SQL += "  @@Where ORDER BY " + strOrder;
                         break;
                     case "MID":
@@ -371,7 +372,7 @@ namespace PWMIS.Common
                         if (isDistinct)
                             strRep = strRep.Replace("SELECT Top @@Page_Size_Number ", "SELECT DISTINCT Top @@Page_Size_Number");
 
-                        SQL = strUpperSQLInfo.Replace("SELECT ", strRep);
+                        SQL = ReplaceNoCase(strUpperSQLInfo, "SELECT ", strRep);
                         SQL += "  @@Where ORDER BY " + strOrder;
                         SQL += "  ) P_T0 ORDER BY " + strNewOrder + " " +
                             " ) P_T1 ORDER BY " + strOrder;
@@ -381,7 +382,7 @@ namespace PWMIS.Common
                           Select Top @@LeftSize ";
                         if (isDistinct)
                             strRep2 = strRep2.Replace("Select Top @@LeftSize", "Select DISTINCT Top @@LeftSize");
-                        SQL = strUpperSQLInfo.Replace("SELECT ", strRep2);
+                        SQL = ReplaceNoCase(strUpperSQLInfo, "SELECT ", strRep2);
                         SQL += " @@Where ORDER BY " + strNewOrder + " " +
                             " ) P_T1 ORDER BY " + strOrder;
                         break;
@@ -406,7 +407,7 @@ namespace PWMIS.Common
             {
                 throw new Exception("分页额外查询条件不能带Where谓词！");
             }
-            if (!SqlFlag)
+            if (!isSimpleSql)
             {
                 if (strWhere != "") strWhere = " Where " + strWhere;
                 SQL = SQL.Replace("@@Where", strWhere);
@@ -419,6 +420,15 @@ namespace PWMIS.Common
             return SQL;
             #endregion
 
+        }
+
+        private static string ReplaceNoCase(string source,string replaceText,string targetText)
+        {
+            int at = source.IndexOf(replaceText, StringComparison.CurrentCultureIgnoreCase);
+            if (at == -1)
+                return source;
+            string newStr = source.Substring(0, at) + targetText + source.Substring(at + replaceText.Length);
+            return newStr;
         }
 
 

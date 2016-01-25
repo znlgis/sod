@@ -19,15 +19,7 @@ using System.Text;
 
 namespace PWMIS.Common
 {
-    /// <summary>
-    /// 参数结构
-    /// </summary>
-    /// <remarks></remarks>
-    public struct ParamMapType
-    {
-        public string ParamName;
-        public System.TypeCode TypeCode;
-    }
+    
 
 
     /// <summary>

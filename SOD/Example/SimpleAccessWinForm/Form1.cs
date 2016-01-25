@@ -64,7 +64,7 @@ namespace SimpleAccessWinForm
             if (!File.Exists(dbpath))
             {
                 //创建数据库文件
-                PWMIS.AccessExtensions.AccessUility.CreateDataBase(dbpath);
+                PWMIS.AccessExtensions.AccessUility.CreateDataBase(dbpath,null);
                 //创建表
                 Access access = new Access();
                 access.ConnectionString = PWMIS.AccessExtensions.AccessUility.CreateConnectionString( dbpath);

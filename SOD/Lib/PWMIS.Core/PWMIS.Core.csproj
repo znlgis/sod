@@ -75,6 +75,7 @@
     <Compile Include="Adapter\MyDataForm.cs" />
     <Compile Include="Adapter\MyDB.cs" />
     <Compile Include="CommonType\CommonEnum.cs" />
+    <Compile Include="CommonType\CommonStruct.cs" />
     <Compile Include="CommonType\SqlMapEnum.cs" />
     <Compile Include="CommUtil\CommonUtil.cs" />
     <Compile Include="CommUtil\DelegatedReflectionMemberAccessor.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="CommUtil\MemoryCache.cs" />
     <Compile Include="CommUtil\RemoteLoaderFactory.cs" />
     <Compile Include="CommUtil\RuntimeHandle.cs" />
+    <Compile Include="CommUtil\TextSearchUtil.cs" />
     <Compile Include="DataMap\ControlDataMap.cs" />
     <Compile Include="DataMap\DataCheckBoxValue.cs" />
     <Compile Include="DataMap\DataTextBoxValue.cs" />
@@ -128,6 +130,7 @@
     <Compile Include="SqlMap\XmlCommand.cs" />
     <Compile Include="SqlMap\SqlMapper.cs" />
     <Compile Include="SqlUtil\SqlCache.cs" />
+    <Compile Include="SqlUtil\SqlOrderBuilder.cs" />
     <Compile Include="SqlUtil\SQLPage.cs" />
   </ItemGroup>
   <ItemGroup>

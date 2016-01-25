@@ -127,7 +127,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="fieldName">属性字段名称</param>
         /// <param name="entity">要访问的实体类对象</param>
         /// <returns></returns>
-        public int GetPropertyFieldSize(string fieldName, EntityBase entity=null)
+        public int GetPropertyFieldSize(string fieldName, EntityBase entity)
         {
             if(entity==null)
                 entity = Activator.CreateInstance(this.entityType) as EntityBase;

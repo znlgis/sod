@@ -144,8 +144,7 @@ namespace PWMIS.DataMap.Entity
 
         private IDataReader ExecuteDataReader(OQL oql, AdoHelper db)
         {
-            string sql = "";
-            sql = oql.ToString();
+            string sql = null;
 
             //处理实体类分页 2010.6.20
             if (oql.PageEnable)
@@ -153,10 +152,18 @@ namespace PWMIS.DataMap.Entity
                 //处理分页统前的记录数量统计问题 感谢网友 @成都-小兵 发现此问题
                 if (oql.PageWithAllRecordCount == 0)
                 {
+                    //网友 if-else 发现以下问题，备注：
+                    //这个函数在只有where而没有排序的时候，生成的统计语句的sql字符串的不对，会生成这种sql
+                    //发现没有排序，且pagenumber为1的时候，就直接返回了这种select top这个字符串，自然就查不到count了
+                    //其次就是有分页的时候，把字段名转大写了
+                    //都在SQLpage.cs
                     object oValue = EntityQueryAnonymous.ExecuteOQLCount(oql, db);
                     oql.PageWithAllRecordCount = CommonUtil.ChangeType<int>(oValue);
                 }
 
+                #region 下面代码已经重构
+                /*
+               
                 switch (db.CurrentDBMSType)
                 {
                     case PWMIS.Common.DBMSType.Access:
@@ -199,7 +206,14 @@ namespace PWMIS.DataMap.Entity
                         throw new Exception("实体类分页错误：不支持此种类型的数据库分页。");
 
                 }
+                */
+                #endregion
 
+                sql = EntityQueryAnonymous.GetOQLPageSql(oql, db);
+            }
+            else
+            {
+                sql = oql.ToString();
             }
 
             IDataReader reader = null;
@@ -221,6 +235,9 @@ namespace PWMIS.DataMap.Entity
                 reader = db.ExecuteDataReader(sql);
             }
             return reader;
+               
+ 
+
         }
 
         /// <summary>

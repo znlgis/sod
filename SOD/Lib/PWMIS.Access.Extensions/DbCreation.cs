@@ -23,10 +23,19 @@ namespace PWMIS.AccessExtensions
         /// 指定文件名，创建Access数据库文件，适用于32位系统的Access
         /// </summary>
         /// <param name="filePath">数据库文件路径</param>
-        public static void CreateDataBase(string filePath)
+        public static void CreateDataBase(string filePath, System.Data.OleDb.OleDbConnectionStringBuilder connBuilder)
         {
             ADOX.Catalog catalog = new Catalog();
-            catalog.Create(providerStr + filePath );
+            if (connBuilder==null)
+            {
+                catalog.Create(providerStr + filePath);
+            }
+            else
+            {
+                connBuilder.DataSource = filePath;
+                string connStr = connBuilder.ConnectionString;
+                catalog.Create(connStr);
+            }
         }
 
         /// <summary>

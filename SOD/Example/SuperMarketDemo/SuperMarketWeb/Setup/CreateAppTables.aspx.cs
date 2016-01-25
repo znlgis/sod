@@ -31,7 +31,8 @@ namespace SuperMarketWeb.Setup
                    string dbFilePath = access.ConnectionDataSource;
                    if (!System.IO.File.Exists(dbFilePath))
                    {
-                       PWMIS.AccessExtensions.AccessUility.CreateDataBase(dbFilePath);
+                       PWMIS.AccessExtensions.AccessUility.CreateDataBase(dbFilePath, 
+                           MyDB.Instance.ConnectionStringBuilder as System.Data.OleDb.OleDbConnectionStringBuilder);
                        this.lblErrMsg.Text += ";Access 数据库文件已经自动创建，请刷新或者继续操作本页面。 ";
                    }
 
