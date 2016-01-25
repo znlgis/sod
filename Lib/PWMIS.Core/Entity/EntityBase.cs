@@ -868,7 +868,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="pocoClass">POCO实体类，提供源数据</param>
         /// <param name="isChange">是否改变属性的修改状态</param>
         /// <returns>映射成功的属性数量</returns>
-        public int MapFrom(object pocoClass,bool isChange=false)
+        public int MapFrom(object pocoClass,bool isChange)
         {
           if (pocoClass == null)
               return 0;

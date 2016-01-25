@@ -666,6 +666,11 @@ namespace PWMIS.DataMap.Entity
                     }
                 }
 
+                //这里可能需要特别处理分页 --ToDo
+                SqlInfo si = new SqlInfo(sql, Parameters);
+                si.CommandType = CommandType.StoredProcedure;
+                return si;
+
             }
             else if (oql.EntityMap == PWMIS.Common.EntityMapType.StoredProcedure)
             {
@@ -717,49 +722,70 @@ namespace PWMIS.DataMap.Entity
 
                 SqlInfo si = new SqlInfo(sql, Parameters);
                 si.CommandType = CommandType.StoredProcedure;
-                //return db.ExecuteDataReader(sql, CommandType.StoredProcedure, paras);
                 return si;
             }
             else
             {
+                //return OQL2SqlInfo(oql, db, single, oql.Parameters);
+                //函数内连，注释
+                if (oql.PageEnable && (!single || oql.PageWithAllRecordCount <= 0))
+                    sql = GetOQLPageSql(oql, db);
+                else
+                    sql = oql.ToString();
+
+                SqlInfo result = new SqlInfo(sql, oql.Parameters);
+                result.CommandType = CommandType.Text;
+                result.TableName = oql.GetEntityTableName();
+                return result;
+            }
+        }
+
+        /*
+        internal static SqlInfo OQL2SqlInfo(OQL oql, AdoHelper db, bool single, Dictionary<string, TableNameField> Parameters)
+        {
+            string sql = string.Empty;
+            if (oql.PageEnable && (!single || oql.PageWithAllRecordCount <= 0))
+                sql = GetOQLPageSql(oql, db);
+            else
                 sql = oql.ToString();
-                Parameters = oql.Parameters;
-            }
 
-
-           if (oql.PageEnable && (!single || oql.PageWithAllRecordCount<=0))
-            {
-                switch (db.CurrentDBMSType)
-                {
-                    case PWMIS.Common.DBMSType.Access:
-                    case PWMIS.Common.DBMSType.SqlServer:
-                    case PWMIS.Common.DBMSType.SqlServerCe:
-                        //如果含有Order By 子句，则不能使用主键分页
-                        if (oql.haveJoinOpt || sql.IndexOf("order by", StringComparison.OrdinalIgnoreCase) > 0)
-                        {
-                            sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.SqlServer, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
-                        }
-                        else
-                        {
-                            //如果是字符串类型的主键，下面的分页可能不准确
-                            if (oql.PageOrderDesc)
-                                sql = PWMIS.Common.SQLPage.GetDescPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields, oql.sql_table, oql.PageField, oql.sql_condition);
-                            else
-                                sql = PWMIS.Common.SQLPage.GetAscPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields, oql.sql_table, oql.PageField, oql.sql_condition);
-                        }
-                        break;
-
-                    default:
-                        sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(db.CurrentDBMSType, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
-                        break;
-
-                }
-
-            }
             SqlInfo result = new SqlInfo(sql, Parameters);
             result.CommandType = CommandType.Text;
             result.TableName = oql.GetEntityTableName();
             return result;
+        }
+        */ 
+
+        internal static string GetOQLPageSql(OQL oql, AdoHelper db)
+        {
+            string sql = oql.ToString();
+            string page_sql = null;
+            switch (db.CurrentDBMSType)
+            {
+                case PWMIS.Common.DBMSType.Access:
+                case PWMIS.Common.DBMSType.SqlServer:
+                case PWMIS.Common.DBMSType.SqlServerCe:
+                    //如果含有Order By 子句，则不能使用主键分页
+                    if (oql.haveJoinOpt || sql.IndexOf("order by", StringComparison.OrdinalIgnoreCase) > 0)
+                    {
+                        page_sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.SqlServer, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
+                    }
+                    else
+                    {
+                        //如果是字符串类型的主键，下面的分页可能不准确
+                        if (oql.PageOrderDesc)
+                            page_sql = PWMIS.Common.SQLPage.GetDescPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields, oql.sql_table, oql.PageField, oql.sql_condition);
+                        else
+                            page_sql = PWMIS.Common.SQLPage.GetAscPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields, oql.sql_table, oql.PageField, oql.sql_condition);
+                    }
+                    break;
+
+                default:
+                    page_sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(db.CurrentDBMSType, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
+                    break;
+
+            }
+            return page_sql;
         }
 
         /// <summary>

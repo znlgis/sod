@@ -208,7 +208,7 @@ namespace PWMIS.DataForms.Adapter
                 if (insertFlag)
                 {
                     object id = 0;
-                    result = DAO.ExecuteInsertQuery(command.InsertCommand, CommandType.Text, command.InsertParameters, ref id);
+                    result = DAO.ExecuteInsertQuery(command.InsertCommand, CommandType.Text, command.InsertParameters, ref id,null);
                     if (id != DBNull.Value)
                     {
                         try
