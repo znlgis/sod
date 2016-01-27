@@ -1772,9 +1772,17 @@ namespace PWMIS.DataMap.Entity
             if (para.Value != null && para.Value.GetType() == typeof(string))
             {
                 int size = entity.GetStringFieldSize(field);
-                if (size > 0) //==-1 可能是varcharmax 或者 text类型的字段
+                if (size > 0) //==0 可能是varcharmax 或者 text类型的字段
                 {
                     ((IDbDataParameter)para).Size = size;
+                    ((IDbDataParameter)para).DbType = DbType.String;
+                }
+                else if (size < 0)
+                {
+                    ((IDbDataParameter)para).Size =Math.Abs (size);
+                    //DbType.AnsiString 非Unicode字符可变长度流，范围为1-8000个字符
+                    //长度小于0，将生成 varchar的参数类型
+                    ((IDbDataParameter)para).DbType = DbType.AnsiString;
                 }
             }
         }

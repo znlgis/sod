@@ -89,13 +89,19 @@ namespace PWMIS.DataMap.Entity
         #region 处理字符串属性与对应列的长度映射
         //为字符串字段指定长度，将有利于查询提高效率 edit at 2012.4.23
         protected internal static Dictionary<string, int> StringFieldSize = new Dictionary<string, int>();
+        /// <summary>
+        /// 寻找字符串字段的长度，如果找不到，返回0，表示未指定
+        /// </summary>
+        /// <param name="ownerName">字段的所有者，是一个标识</param>
+        /// <param name="fieldName">字段名</param>
+        /// <returns>字段的长度</returns>
         protected  static int GetStringFieldSize(string ownerName, string fieldName)
         {
             string key = string.Format("{0}_{1}", ownerName,fieldName);
             if (StringFieldSize.ContainsKey(key))
                 return StringFieldSize[key];
             else
-                return -1;
+                return 0;
         }
         protected internal int GetStringFieldSize(string fieldName)
         {
@@ -551,7 +557,7 @@ namespace PWMIS.DataMap.Entity
 
         protected internal void setProperty(string propertyFieldName, object Value)
         {
-            setPropertyValueAndLength(propertyFieldName, Value, -1);
+            setPropertyValueAndLength(propertyFieldName, Value, 0);
         }
 
         /// <summary>
@@ -645,7 +651,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="propertyFieldName">字段名称</param>
         /// <param name="Value">值</param>
-        /// <param name="maxLength">最大长度</param>
+        /// <param name="maxLength">最大长度，如果为负数，将生成varchar类型的参数</param>
         protected internal void setProperty(string propertyFieldName, string Value, int maxLength)
         {
             //string key = string.Format("{0}_{1}", ownerName,fieldName);
