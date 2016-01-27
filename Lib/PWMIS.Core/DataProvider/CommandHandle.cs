@@ -16,7 +16,7 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         DBMSType ApplayDBMSType { get; }
         /// <summary>
-        /// 执行前处理，返回是否继续进行查询执行
+        /// 执行前处理，比如预处理SQ，补充设定参数类型邓，返回是否继续进行查询执行
         /// </summary>
         /// <param name="db">数据库访问对象</param>
         /// <param name="SQL"></param>

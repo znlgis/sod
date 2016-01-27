@@ -1605,7 +1605,7 @@
         </member>
         <member name="M:PWMIS.DataProvider.Data.ICommandHandle.OnExecuting(PWMIS.DataProvider.Data.CommonDB,System.String@,System.Data.CommandType,System.Data.IDataParameter[])">
             <summary>
-            执行前处理，返回是否继续进行查询执行
+            执行前处理，比如预处理SQ，补充设定参数类型邓，返回是否继续进行查询执行
             </summary>
             <param name="db">数据库访问对象</param>
             <param name="SQL"></param>
@@ -2484,6 +2484,14 @@
             获取属性字段名数组
             </summary>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.GetStringFieldSize(System.String,System.String)">
+            <summary>
+            寻找字符串字段的长度，如果找不到，返回0，表示未指定
+            </summary>
+            <param name="ownerName">字段的所有者，是一个标识</param>
+            <param name="fieldName">字段名</param>
+            <returns>字段的长度</returns>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.SetStringFieldSize(System.String,System.Int32)">
             <summary>
             设置字符串类型的属性字段在数据库读写的时候使用的字段长度。
@@ -2610,7 +2618,7 @@
             </summary>
             <param name="propertyFieldName">字段名称</param>
             <param name="Value">值</param>
-            <param name="maxLength">最大长度</param>
+            <param name="maxLength">最大长度，如果为负数，将生成varchar类型的参数</param>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.GetNameValues">
             <summary>

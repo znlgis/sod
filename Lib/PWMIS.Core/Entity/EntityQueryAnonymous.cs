@@ -1038,13 +1038,22 @@ namespace PWMIS.DataMap.Entity
                         //采用下面的方法，避免没有实体类元数据缓存 edit at 2015-12-5
                         int size =EntityFieldsCache.Item(tnf.Entity.GetType()).GetPropertyFieldSize(tnf.Field,tnf.Entity );
 
-                        if (size != -1) //如果字段不是text等类型
+                        if (size !=0) //如果字段不是text等类型
                         {
                             int length = paras[index].Value.ToString().Length;
                             if (length > size)
                                 throw new NotSupportedException("当前实体类映射的字段" + paraName + " 长度没有定义或者长度小于了当前实际值的长度："
                                     + length + "，请在实体类定义里面使用 setProperty 的重载方法指定合适的字段长度。");
-                            ((IDbDataParameter)paras[index]).Size = size;
+                            if (size > 0)
+                            {
+                                ((IDbDataParameter)paras[index]).Size = size;
+                                ((IDbDataParameter)paras[index]).DbType = DbType.String;
+                            }
+                            else
+                            {
+                                ((IDbDataParameter)paras[index]).Size =Math.Abs ( size);
+                                ((IDbDataParameter)paras[index]).DbType = DbType.AnsiString ;
+                            }
                         }
                     }
                 }
