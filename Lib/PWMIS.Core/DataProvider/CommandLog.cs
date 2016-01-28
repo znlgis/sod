@@ -34,7 +34,7 @@ namespace PWMIS.DataProvider.Data
 	/// <summary>
 	/// 命令对象日志2008.7.18 增加线程处理,2011.5.9 增加执行时间记录
 	/// </summary>
-	public class CommandLog : PWMIS.Common.ICommandLog
+	public class CommandLog : PWMIS.Common.ICommonLog
 	{
 		//日志相关
         private static  string _dataLogFile;
