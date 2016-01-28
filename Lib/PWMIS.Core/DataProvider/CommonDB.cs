@@ -74,6 +74,9 @@
  *  修改者：         时间：2015-12-12
  * 增加命令处理管道，以便你管理框架的查询命令处理行为，比如插入命令执行日志处理器或者自定义的其他命令执行处理器，
  * 详细内容，请看 SampleORMTest 项目的 LocalDbContext 类的示例代码。
+ * 
+ * 修改者：         时间：2016-1-28
+ * 增加通用日志接口，可以记录事务的日志。如果开启了事务，但没有设置日志对象，系统会使用默认的命令日志对象，但需要配置文件进行相应的配置，才会真正记录日志。
  * ========================================================================
 */
 
@@ -306,6 +309,34 @@ namespace PWMIS.DataProvider.Data
             set { _onErrorThrow = value; }
         }
 
+        private PWMIS.Common.ICommandLog _logger;
+        /// <summary>
+        /// 获取或者设置日志组件
+        /// </summary>
+        public PWMIS.Common.ICommandLog Logger
+        {
+            get {
+                if (_logger == null)
+                {
+                    if (commandHandles != null)
+                    {
+                        foreach (ICommandHandle handle in this.commandHandles)
+                        {
+                            if (handle is CommandExecuteLogHandle)
+                            {
+                                _logger = ((CommandExecuteLogHandle)handle).CurrCommandLog;
+                                break;
+                            }
+                        }
+                    }
+                }
+                if (_logger == null)
+                    _logger = new CommandLog();
+                return _logger; 
+            }
+            set { _logger = value; }
+        }
+
         /// <summary>
         /// 获取事务的数据连结对象
         /// </summary>
@@ -505,7 +536,7 @@ namespace PWMIS.DataProvider.Data
                 _connection.Open();
             if (transCount == 1)
                 _transation = _connection.BeginTransaction(ilevel);
-            CommandLog.Instance.WriteLog("打开连接并开启事务", "AdoHelper");
+            Logger.WriteLog("打开连接并开启事务", "AdoHelper Transaction");
         }
 
         /// <summary>
@@ -522,7 +553,7 @@ namespace PWMIS.DataProvider.Data
                 CloseGlobalConnection();
                 transCount = 0;            
             }
-            CommandLog.Instance.WriteLog("提交事务并关闭连接", "AdoHelper");
+            Logger.WriteLog("提交事务并关闭连接", "AdoHelper Transaction");
         }
 
         /// <summary>
@@ -533,8 +564,13 @@ namespace PWMIS.DataProvider.Data
             transCount--;
             if (_transation != null && _transation.Connection != null)
                 _transation.Rollback();
-            CloseGlobalConnection();
-            CommandLog.Instance.WriteLog("回滚事务并关闭连接", "AdoHelper");
+           
+            if (transCount <= 0)
+            {
+                CloseGlobalConnection();
+                transCount = 0;
+            }
+            Logger.WriteLog("回滚事务并关闭连接", "AdoHelper Transaction");
         }
 
         /// <summary>
@@ -548,7 +584,7 @@ namespace PWMIS.DataProvider.Data
             if (sessionConnection.State != ConnectionState.Open)
                 sessionConnection.Open();
 
-            CommandLog.Instance.WriteLog("打开会话连接", "ConnectionSession");
+            Logger.WriteLog("打开会话连接", "ConnectionSession");
             return new ConnectionSession(sessionConnection);
         }
 

@@ -4,7 +4,18 @@
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
  * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
- * 该类的作用
+ * 使用方法：
+ * 在使用该对象的时候，应该在应用程序配置文件的  <appSettings> 增加下面三个配置项：
+ * 
+    <add key="SaveCommandLog" value="True"/>
+ * 如果设置成 True,不区分大小写，才可以记录日志，所以这是一个日志开关；
+ * 
+    <add key="DataLogFile" value="~\SqlLog.txt"/>
+ * 日志路径，支持Web日志路径格式，如上表示在当前Web站点根目录（不是bin）下面的日志文件SqlLog.txt；
+ * 
+    <add key="LogExecutedTime" value ="0"/>
+ * 需要记录的时间，如果该值等于0会记录所有查询，否则只记录大于该时间的查询，单位毫秒；
+ * 
  * 
  * 作者：邓太华     时间：2008-10-12
  * 版本：V3.0
@@ -23,7 +34,7 @@ namespace PWMIS.DataProvider.Data
 	/// <summary>
 	/// 命令对象日志2008.7.18 增加线程处理,2011.5.9 增加执行时间记录
 	/// </summary>
-	public class CommandLog
+	public class CommandLog : PWMIS.Common.ICommandLog
 	{
 		//日志相关
         private static  string _dataLogFile;

@@ -94,6 +94,7 @@
     <Compile Include="DataProvider\CommonDB.cs" />
     <Compile Include="DataProvider\ConnectionSession.cs" />
     <Compile Include="DataProvider\DataParameterFormat.cs" />
+    <Compile Include="Interface\ICommonLog.cs" />
     <Compile Include="DataProvider\ODBC.cs" />
     <Compile Include="DataProvider\OleDB.cs" />
     <Compile Include="DataProvider\Oracle.cs" />
