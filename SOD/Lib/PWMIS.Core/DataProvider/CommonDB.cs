@@ -309,11 +309,11 @@ namespace PWMIS.DataProvider.Data
             set { _onErrorThrow = value; }
         }
 
-        private PWMIS.Common.ICommandLog _logger;
+        private PWMIS.Common.ICommonLog _logger;
         /// <summary>
         /// 获取或者设置日志组件
         /// </summary>
-        public PWMIS.Common.ICommandLog Logger
+        public PWMIS.Common.ICommonLog Logger
         {
             get {
                 if (_logger == null)
