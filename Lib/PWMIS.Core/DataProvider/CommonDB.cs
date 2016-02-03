@@ -724,7 +724,7 @@ namespace PWMIS.DataProvider.Data
             }
         }
 
-        private void OnCommandExected(IDbCommand cmd)
+        private void OnCommandExected(IDbCommand cmd, int recordAffected)
         {
             if (commandHandles != null)
             {
@@ -732,7 +732,7 @@ namespace PWMIS.DataProvider.Data
                 {
                     if (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
                     {
-                        long result = handle.OnExected(cmd);
+                        long result = handle.OnExected(cmd,recordAffected );
                         if (handle is CommandExecuteLogHandle)
                             this._elapsedMilliseconds = result;
                     }
@@ -786,7 +786,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                OnCommandExected(cmd);
+                OnCommandExected(cmd,result );
                 CloseConnection(conn, cmd);
             }
             return result;
@@ -876,7 +876,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                OnCommandExected(cmd);
+                OnCommandExected(cmd,result );
                 CloseConnection(conn, cmd);
             }
             return result;
@@ -909,12 +909,13 @@ namespace PWMIS.DataProvider.Data
             CompleteCommand(cmd,  SQL,  commandType,  parameters);
 
             CommandLog cmdLog = new CommandLog(true);
-
+            int count = 0;
             object result = null;
             try
             {
                 result = cmd.ExecuteScalar();
                 //如果开启事务，则由上层调用者决定何时提交事务
+                count = 1;
             }
             catch (Exception ex)
             {
@@ -932,7 +933,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                OnCommandExected(cmd);
+                OnCommandExected(cmd,count );
                 CloseConnection(conn, cmd);
             }
             return result;
@@ -994,7 +995,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                OnCommandExected(cmd);
+                OnCommandExected(cmd,0);
                 CloseConnection(conn, cmd);
             }
             return ds;
@@ -1018,10 +1019,12 @@ namespace PWMIS.DataProvider.Data
 
             CommandLog cmdLog = new CommandLog(true);
             DataSet ds = new DataSet();
+            int count = 0;
             try
             {
                 ada.FillSchema(ds, SchemaType.Mapped);
                 ada.Fill(ds);
+                count = ds.Tables[0].Rows.Count; 
             }
             catch (Exception ex)
             {
@@ -1035,7 +1038,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                OnCommandExected(cmd);
+                OnCommandExected(cmd,count );
                 CloseConnection(conn, cmd);
             }
 
@@ -1076,7 +1079,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                OnCommandExected(cmd);
+                OnCommandExected(cmd,-1);
                 CloseConnection(conn, cmd);
             }
             return schemaDataSet;
@@ -1219,8 +1222,8 @@ namespace PWMIS.DataProvider.Data
                     throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
                 }
             }
-
-            OnCommandExected(cmd);
+            //必须等到 Reader关闭后才能得到记录行数，这里返回-1
+            OnCommandExected(cmd,-1);
             cmd.Parameters.Clear();
 
             return reader;

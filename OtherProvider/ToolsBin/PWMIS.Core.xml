@@ -1342,6 +1342,11 @@
             如果在事务执行期间，期望出现错误后立刻结束处理，请设置本属性为 是。
             </summary>
         </member>
+        <member name="P:PWMIS.DataProvider.Data.CommonDB.Logger">
+            <summary>
+            获取或者设置日志组件
+            </summary>
+        </member>
         <member name="P:PWMIS.DataProvider.Data.CommonDB.Transaction">
             <summary>
             获取或者设置事务对象
@@ -1620,11 +1625,12 @@
             <param name="cmd"></param>
             <param name="errorMessage"></param>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.ICommandHandle.OnExected(System.Data.IDbCommand)">
+        <member name="M:PWMIS.DataProvider.Data.ICommandHandle.OnExected(System.Data.IDbCommand,System.Int32)">
             <summary>
             查询执行完成后的处理，不管是否执行出错都会进行的处理
             </summary>
             <param name="cmd"></param>
+            <param name="recordAffected">命令执行的受影响记录行数</param>
         </member>
         <member name="P:PWMIS.DataProvider.Data.ICommandHandle.ApplayDBMSType">
             <summary>
@@ -1644,6 +1650,11 @@
         <member name="T:PWMIS.DataProvider.Data.CommandLog">
             <summary>
             命令对象日志2008.7.18 增加线程处理,2011.5.9 增加执行时间记录
+            </summary>
+        </member>
+        <member name="T:PWMIS.Common.ICommandLog">
+            <summary>
+            通用日志接口
             </summary>
         </member>
         <member name="M:PWMIS.DataProvider.Data.CommandLog.#ctor">

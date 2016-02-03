@@ -35,7 +35,8 @@ namespace PWMIS.DataProvider.Data
         /// 查询执行完成后的处理，不管是否执行出错都会进行的处理
         /// </summary>
         /// <param name="cmd"></param>
-        long OnExected(IDbCommand cmd);
+        /// <param name="recordAffected">命令执行的受影响记录行数</param>
+        long OnExected(IDbCommand cmd, int recordAffected);
     }
 
     /// <summary>
@@ -69,10 +70,11 @@ namespace PWMIS.DataProvider.Data
             CurrCommandLog.WriteErrLog(cmd, "AdoHelper:" + errorMessage);
         }
 
-        public long OnExected(IDbCommand cmd)
+        public long OnExected(IDbCommand cmd, int recordAffected)
         {
             long elapsedMilliseconds;
             CurrCommandLog.WriteLog(cmd, "AdoHelper", out elapsedMilliseconds);
+            CurrCommandLog.WriteLog("RecordAffected:"+recordAffected , "AdoHelper");
             return elapsedMilliseconds;
         }
 
