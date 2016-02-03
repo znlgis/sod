@@ -47,6 +47,14 @@
             <typeparam name="T">实体类类型</typeparam>
             <returns></returns>
         </member>
+        <member name="M:PWMIS.Core.Extensions.DbContext.QueryList``1(PWMIS.DataMap.Entity.OQL)">
+            <summary>
+            查询实体类列表
+            </summary>
+            <typeparam name="T">实体类类型</typeparam>
+            <param name="q">OQL查询表达式</param>
+            <returns>实体类列表</returns>
+        </member>
         <member name="M:PWMIS.Core.Extensions.DbContext.Transaction``1(``0,System.Action{``0},System.String@)">
             <summary>
             开启事务执行上下文，程序会自动提交或者回滚事务。

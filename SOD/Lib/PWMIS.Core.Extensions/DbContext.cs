@@ -114,6 +114,19 @@ namespace PWMIS.Core.Extensions
         {
             return new EntityQuery<T>(db);
         }
+
+        /// <summary>
+        /// 查询实体类列表
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="q">OQL查询表达式</param>
+        /// <returns>实体类列表</returns>
+        public List<T> QueryList<T>(OQL q) where T : EntityBase, new()
+        {
+            var list= this.NewQuery<T>().GetList(q);
+            db.Logger.WriteLog("记录条数：" + list.Count, "DbContext");
+            return list;
+        }
         /// <summary>
         /// 开启事务执行上下文，程序会自动提交或者回滚事务。
         /// </summary>
