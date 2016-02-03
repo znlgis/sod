@@ -45,6 +45,7 @@
 							 SelectFields FROM TABLE @@Where ORDER BY OrderFields DESC
 						   ) P_T0 ORDER BY OrderFields ASC
 						 ) P_T1 ORDER BY OrderFields DESC
+         * 实际上，为了提高效率，对于靠近最后页的中间页应该采取反排序的方式实现。  
 		 * 最后页：
 		 * SELECT * FROM (	 
 	                      Select Top @@LeftSize 
@@ -60,6 +61,8 @@
 		 * 谓词 FROM 后只能有一个表名；
 		 * 
 		 * 否则，视为该查询为一个复杂查询，采用复杂查询分页方案；
+ *         注意：从 2016.1.30日起，不再区分复杂和简单查询，将采用新的词法分析方案，基本上类似于之前的简单分页方案。
+ * 
 Oracle ：
 基本的分页原理利用Oracle内指的 rownum 伪列，它是一个递增序列，但是它在Order by 之前生成，通常
 采用下面的分页语句：
@@ -78,8 +81,8 @@ select * from
 1，最外层的查询不能含有 TOP 谓词(最好不要使用TOP，可以避免Oracle 不兼容的问题)；
 2，最外层查询必须含有 ORDER BY 语句（Oracle除外）；
 3，不能含有下列替换参数(区分大小写)：@@PageSize,@@Page_Size_Number,@@LeftSize,@@Where
-4，SQL必须符合 SQL-92 以上标准，且 最外层ORDER BY 语句之后不能有其他语句，
-5，如果使用SQLSERVER 以外的数据库系统，请在Web.config配置节里面注明 EngineType 的值；
+4，SQL必须符合 SQL-92 以上标准，且 最外层ORDER BY 语句之后不能有其他语句，【已作废】
+5，如果使用SQLSERVER 以外的数据库系统，请在Web.config配置节里面注明 EngineType 的值；【已作废】
 Group by 等放在Order by 之前；
 **
  *
@@ -97,6 +100,28 @@ where id>
        )    
   order by id
 
+ * 
+ * ===================SQLSERVER 2005/2008 分页方法===========================
+ * 可以采用Row_Number 分页，比如下面的例子：
+ * SELECT LastName, FirstName, EmailAddress
+FROM (SELECT LastName, FirstName, EmailAddress,
+ROW_NUMBER() OVER (ORDER BY LastName, FirstName, EmailAddress) AS RowNumber
+FROM Employee) EmployeePage
+WHERE RowNumber > @Start AND RowNumber <= @End
+ORDER BY LastName, FirstName, EmailAddress
+ * 
+ * 但是Row_Number 分页在查询第一页或者记录数超过一半之后的分页，效率比起传统分页方式没有优势，故应该酌情使用
+ * 
+ * ==================SQL SERVER 2012  分页方法==============================
+ * 支持OFFSET，因此分页更加给力，如下面的例子：
+ * 
+SELECT LastName, FirstName, EmailAddress
+FROM Employee
+ORDER BY LastName, FirstName, EmailAddress
+OFFSET 14000 ROWS
+FETCH NEXT 50 ROWS ONLY;
+ * 
+ * 如果前面加上TOP（50），效果会更好，具体可以参考 http://www.cnblogs.com/ebread/p/SQLServer.html
 		 */
 using System;
 
@@ -122,7 +147,7 @@ namespace PWMIS.Common
         /// </summary>
         /// <param name="dbmsType">数据库类型</param>
         /// <param name="strSQLInfo">原始SQL语句</param>
-        /// <param name="strWhere">在分页前要替换的字符串，用于分页前的筛选</param>
+        /// <param name="strWhere">在分页时候要的筛选条件，不带Where 语句</param>
         /// <param name="PageSize">页大小</param>
         /// <param name="PageNumber">页码</param>
         /// <param name="AllCount">记录总数，如果是0则生成统计记录数量的查询</param>
@@ -135,6 +160,7 @@ namespace PWMIS.Common
             {
                 case DBMSType.Access:
                 case DBMSType.SqlServer:
+                case  DBMSType.SqlServerCe:
                     SQL = MakePageSQLStringByMSSQL(strSQLInfo, strWhere, PageSize, PageNumber, AllCount);
                     break;
                 case DBMSType.Oracle:
@@ -211,7 +237,9 @@ namespace PWMIS.Common
             #endregion
 
             #region SQL 复杂度分析
-            //SQL 复杂度分析 开始
+            /*
+             * 复杂度分析在 2016.1月之后不在使用
+            //SQL 复杂度分析 开始 
             bool isSimpleSql = true;//简单SQL标记
             string TestSQL = strSQLInfo.ToUpper();
             int n = TestSQL.IndexOf("SELECT ", 0);
@@ -245,27 +273,111 @@ namespace PWMIS.Common
                 isSimpleSql = false;
             }
             //SQL 复杂度分析 结束
-            #endregion
+            */
+             #endregion
 
             #region 排序语法分析
             //排序语法分析 开始
+            SqlOrderBuilder sob = new SqlOrderBuilder(strSQLInfo);
             int iOrderAt = strSQLInfo.LastIndexOf("order by ", StringComparison.OrdinalIgnoreCase);
-            
-            //如果没有ORDER BY 谓词，那么无法排序分页，退出；
-            if (iOrderAt == -1)
+
+            if (iOrderAt == -1 && strSQLType != "Count")
             {
                 if (PageNumber == 1)
                 {
-                    string sqlTemp = "Select Top @@PageSize * FROM ( " + strSQLInfo +
-                           " ) P_T0 @@Where ";
-                    return sqlTemp.Replace("@@PageSize", PageSize.ToString()).Replace("@@Where", strWhere);
+                    return string.IsNullOrEmpty (strWhere)? 
+                        sob.Build(PageSize):
+                        sob.Build (PageSize ,strWhere );
                 }
                 else
                 {
-                    throw new Exception("查询语句分析：当前没有为分页查询指定排序字段！请适当修改SQL语句。\n" + strSQLInfo);
+                    throw new Exception("查询语句分析：在取大于1页数据的情况下，当前没有为分页查询指定排序字段！请适当修改SQL语句。\n" + strSQLInfo);
                 }
             }
+            
+            //分页语句预处理
+            
+            //取首页特殊处理，不在加工
+            if (strSQLType == "First")
+            {
+                return string.IsNullOrEmpty(strWhere) ?
+                           sob.Build(PageSize) :
+                           sob.Build(PageSize, strWhere);
+            }
+            else if (strSQLType == "Mid")
+            {
+                int recordCount = PageSize * PageNumber;
+                string prepareSql = string.IsNullOrEmpty(strWhere) ?
+                        sob.Build(recordCount) :
+                        sob.Build(recordCount, strWhere);
+                /*
+SELECT Top @@PageSize * 
+FROM (
+         SELECT Top @@PageSize * 
+         FROM (
+                @@TopRecordCountQuery
+		      ) P_T0 
+         ORDER BY @@InverseOrderString
+     ) P_T1
+ORDER BY @@OrderString
+                 */
+                string sqlTemp = @"
+SELECT Top {0} * 
+FROM (
+         SELECT Top {0} * 
+         FROM (
+                {1}
+		      ) P_T0 
+         ORDER BY {2}
+     ) P_T1
+ORDER BY {3}
+";
+                string pageSql = string.Format(sqlTemp, PageSize, 
+                    prepareSql, 
+                    sob.GetInverseOrderExpString(),
+                    sob.GetOrderExpString());
+                return pageSql;
+            }
+            else if (strSQLType == "Last")
+            {
+                /*
+                 *算法：
+                 SELECT * 
+                 FROM (	 
+                              Select Top @@LeftSize 
+                                    SelectFields 
+                              FROM TABLE 
+                              ORDER BY @@InverseOrderString
+                      )  P_T0 
+                 ORDER BY @@OrderString
+                 */
+                string sqlTemp = @"
+ SELECT * 
+ FROM (	 
+       {0}
+      )  P_T0 
+ ORDER BY {1}
+";
+                string prepareSql = string.IsNullOrEmpty(strWhere) ?
+                       sob.Build(PageSize ) :
+                       sob.Build(PageSize, strWhere);
+                string pageSql = string.Format(sqlTemp, 
+                       prepareSql,
+                       sob.GetOrderExpString());
+                return pageSql;
 
+            }
+            else if (strSQLType == "Count")
+            {
+
+            }
+            else
+            { 
+                //没有识别的处理类型
+                return strSQLInfo;
+            }
+          
+            /*
             string strOrder = strSQLInfo.Substring(iOrderAt + 9);
             strSQLInfo = strSQLInfo.Substring(0, iOrderAt);
             string[] strArrOrder = strOrder.Split(new char[] { ',' });
@@ -418,8 +530,11 @@ namespace PWMIS.Common
                 SQL = SQL.Replace("@@Where", strWhere);
             }
             return SQL;
+            
+            */
             #endregion
 
+            return "";
         }
 
         private static string ReplaceNoCase(string source,string replaceText,string targetText)

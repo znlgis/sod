@@ -74,12 +74,18 @@ namespace PWMIS.Common
         /// 解析排序部分
         /// </summary>
         /// <param name="sql"></param>
+        /// <param name="orderBlockPoint">Order语句块位置信息</param>
         /// <returns></returns>
         public  List<OrderField> ParseOrder(string sql,out Point orderBlockPoint)
         {
             Point p = TextSearchUtil.SearchWordsLastIndex(sql, "order by");
             if (p.A == -1)
-                throw new ArgumentException("没有 order by子句，无法分页:\r\n"+sql);
+            {
+                //没有 order by子句，无法分页，但是可能是取前面N条记录
+                orderBlockPoint = p;
+                return null;
+            }
+                
             //ROW_NUMBER() OVER(PARTITION BY PostalCode ORDER BY SalesYTD DESC) AS "Row Number", //这种应该不予处理
             //所以 如果还有PARTITION BY  子句，则认为是复杂的SQL，抛出异常语句
             List<OrderField> OrderFields = new List<OrderField>();
@@ -144,28 +150,28 @@ namespace PWMIS.Common
         }
 
         /// <summary>
-        /// 构造可分页的排序SQL语句
+        /// 构造可分页的排序SQL语句，如果topCount小于0，源SQL必须带排序语句
         /// </summary>
-        /// <param name="topCount">如果指定大于0的值，将生成Top子句</param>
+        /// <param name="topCount">如果指定大于0的值，将生成Top子句，如果小于0，则是限制逆向排序的记录数</param>
         /// <returns></returns>
         public string Build(int topCount)
         {
             int fromIndex;
             Point orderBlockPoint;
+            bool isSelectStart = false;
             List<SqlField> sqlFields = ParseSelect(this.sourceSql,out fromIndex );
             this.OrderFields = ParseOrder(this.sourceSql, out orderBlockPoint);
             if (sqlFields[0].Field == "*")
             {
-                this.SelectFields = sqlFields;
-                return this.sourceSql;
+                isSelectStart = true;
             }
-            else
+            else if (this.OrderFields != null)
             {
                 //检查参与排序的字段是否在SELECT中，如果不在，添加进去
                 foreach (OrderField orderItem in this.OrderFields)
                 {
-                    var target = sqlFields.Find (p => string.Equals(p.Field, orderItem.Field, StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(p.Alias , orderItem.Field, StringComparison.OrdinalIgnoreCase));
+                    var target = sqlFields.Find(p => string.Equals(p.Field, orderItem.Field, StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(p.Alias, orderItem.Field, StringComparison.OrdinalIgnoreCase));
                     if (target == null)
                     {
                         sqlFields.Add(new SqlField() { Field = orderItem.Field });
@@ -178,43 +184,69 @@ namespace PWMIS.Common
                         orderItem.InSelect = true;
                     }
                 }
-                this.SelectFields = sqlFields;
             }
+            this.SelectFields = sqlFields;
             //重新构造Select语句块
             System.Text.StringBuilder sb = new StringBuilder();
             if (topCount > 0)
                 sb.Append("SELECT Top "+ topCount +"\r\n");
+            else if (topCount < 0)
+                sb.Append("SELECT Top " + (-topCount) + "\r\n");
             else
                 sb.Append("SELECT \r\n");
-            int count = this.SelectFields.Count;
-            int index = 0;
-            foreach (SqlField  item in this.SelectFields)
+            if (isSelectStart)
             {
-                index++;
-                sb.Append('\t');
-                sb.Append(item.Field);
-                if (!string.IsNullOrEmpty(item.Alias))
-                {
-                    sb.Append(" AS ");
-                    sb.Append(item.Alias);
-                }
-                if(index !=count )
-                    sb.Append(',');
-                sb.Append("\r\n");
+                sb.Append(" * \r\n");
             }
-
-            sb.Append(this.sourceSql.Substring(fromIndex));
+            else
+            {
+                int count = this.SelectFields.Count;
+                int index = 0;
+                foreach (SqlField item in this.SelectFields)
+                {
+                    index++;
+                    sb.Append('\t');
+                    sb.Append(item.Field);
+                    if (!string.IsNullOrEmpty(item.Alias))
+                    {
+                        sb.Append(" AS ");
+                        sb.Append(item.Alias);
+                    }
+                    if (index != count)
+                        sb.Append(',');
+                    sb.Append("\r\n");
+                }
+            }
+            if (topCount < 0)
+            {
+                //逆排序，用于获取最后几页的数据，包括最后一页
+                if (orderBlockPoint.A == -1)
+                    throw new Exception("当参数 topCount小于0（逆排序），必须指定排序信息");
+                //改变Order by 子句，生成逆向排序查询
+                string beforOrder = this.sourceSql.Substring(fromIndex, orderBlockPoint.A - fromIndex);
+                string afterOrder = this.sourceSql.Substring(orderBlockPoint.B);
+                string InverseOrderString = "\r\n ORDER BY " + this.GetInverseOrderExpString() + "\r\n";
+                sb.Append(beforOrder);
+                sb.Append(InverseOrderString);
+                sb.Append(afterOrder);
+            }
+            else
+            {
+                sb.Append(this.sourceSql.Substring(fromIndex));
+            }
             return sb.ToString();
         }
 
         /// <summary>
         /// 构造可分页排序的SQL，并可以附带结果过滤条件
         /// </summary>
-        /// <param name="topCount">要限制的记录条数</param>
+        /// <param name="topCount">要限制的记录条数，如果小于0，则是限制逆向排序的记录数</param>
         /// <param name="filterConditions">附带结果过滤条件，注意字段不能带表名字或者表的别名</param>
         /// <returns></returns>
         public string Build(int topCount,string filterConditions )
         {
+            if (topCount == 0)
+                throw new ArgumentOutOfRangeException("参数 topCount 不能为0，必须是大于或者小于0的一个整数");
             int fromIndex;
             Point orderBlockPoint;
             string templateSql = @"
@@ -232,7 +264,8 @@ ORDER BY {3}
                 this.SelectFields = sqlFields;
                 string tempSql = this.sourceSql.Substring(0, orderBlockPoint.A);
                 tempSql = tempSql + this.sourceSql.Substring(orderBlockPoint.B); ;
-                return string.Format(templateSql, topCount, tempSql, filterConditions);
+                //return string.Format(templateSql, topCount, tempSql, filterConditions);
+                throw new ArgumentException("暂不支持 * 查询的带额外过滤条件的查询。");
             }
             else
             {
@@ -257,10 +290,7 @@ ORDER BY {3}
             }
             //重新构造Select语句块
             System.Text.StringBuilder sb = new StringBuilder();
-            //if (topCount > 0)
-            //    sb.Append("SELECT Top " + topCount + "\r\n");
-            //else
-                sb.Append("SELECT \r\n");
+            sb.Append("SELECT \r\n");
             int count = this.SelectFields.Count;
             int index = 0;
             foreach (SqlField item in this.SelectFields)
@@ -284,10 +314,39 @@ ORDER BY {3}
             sb.Append(afterOrder);
             string innerSql= sb.ToString();
 
+            if(topCount >0)
+                return string.Format(templateSql, topCount, innerSql, filterConditions, GetOrderExpString());
+            else
+                return string.Format(templateSql, -topCount, innerSql, filterConditions, GetInverseOrderExpString());
+        }
+
+        /// <summary>
+        /// 获取排序表达式字符串
+        /// </summary>
+        /// <returns></returns>
+        public string GetOrderExpString()
+        {
+            if (this.OrderFields == null || this.OrderFields.Count == 0)
+                throw new Exception("排序字段为空，可能源SQL语句没有指定，或者没有调用过Build方法");
             string[] orderExpArr = this.OrderFields.ConvertAll<string>(p => p.ToString()).ToArray();
             string orderString = string.Join(",", orderExpArr);
-            return string.Format(templateSql, topCount, innerSql, filterConditions, orderString);
+            return orderString;
         }
+
+        /// <summary>
+        /// 获取逆排序表达式字符串
+        /// </summary>
+        /// <returns></returns>
+        public string GetInverseOrderExpString()
+        {
+            if (this.OrderFields == null || this.OrderFields.Count == 0)
+                throw new Exception("排序字段为空，可能源SQL语句没有指定，或者没有调用过Build方法");
+            string[] orderExpArr = this.OrderFields.ConvertAll<string>(p => p.ToInverseString()).ToArray();
+            string orderString = string.Join(",", orderExpArr);
+            return orderString;
+        }
+
+
     }
     /// <summary>
     /// SQL字段信息
@@ -326,6 +385,16 @@ ORDER BY {3}
         {
             return string.Format("{0} {1}", string.IsNullOrEmpty(this.Alias) ? this.Field : this.Alias
                 , this.IsAsc ?"ASC":"DESC");
+        }
+
+        /// <summary>
+        /// 获取反向的排序表达式
+        /// </summary>
+        /// <returns></returns>
+        public string ToInverseString()
+        {
+            return string.Format("{0} {1}", string.IsNullOrEmpty(this.Alias) ? this.Field : this.Alias
+                , this.IsAsc ? "DESC" : "ASC");
         }
     }
 

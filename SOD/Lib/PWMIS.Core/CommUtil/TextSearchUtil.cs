@@ -5,6 +5,9 @@ using PWMIS.Common;
 
 namespace PWMIS.Core
 {
+    /// <summary>
+    /// 文本搜索实用工具类
+    /// </summary>
     public  class TextSearchUtil
     {
 
@@ -193,7 +196,7 @@ namespace PWMIS.Core
         /// 从一个句子中指定的位置开始搜索目标字符，直到遇到非空白字符为止，返回该字符的位置索引。该字符不包括在单引号内
         /// </summary>
         /// <param name="inputString">要搜索的源字符串</param>
-        /// <param name="startIndex">在源中搜索的其实位置</param>
+        /// <param name="startIndex">在源中搜索的起始位置</param>
         /// <param name="targetChar">目标字符</param>
         /// <returns>目标字符的在源字符串的位置索引，如果没有找到，返回-1</returns>
         public static int FindPunctuationBeforWord(string inputString, int startIndex, char targetChar)
