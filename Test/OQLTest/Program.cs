@@ -810,48 +810,8 @@ ORDER BY T0.[RoleName] ASC
         static void TestCached()
         {
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
-            string sql = @"select Age,t.[User Name] As UserName from tab t 
-                   where ID>1000 order   by    t.[User Name]  , id desc 
-                   option(hash group,fast 10) ";
-            SqlOrderBuilder sob = new SqlOrderBuilder(sql);
-            string sqlOrder = sob.Build(50,"Age>=20");
-            
+           
             TestA a = new TestA();
-            /*
-            Point p = a.SearchWordsIndex(sql, "order by");
-            Console.Write(p.A  );
-            //ROW_NUMBER() OVER(PARTITION BY PostalCode ORDER BY SalesYTD DESC) AS "Row Number", //这种应该不予处理
-            //所以 如果还有PARTITION BY  子句，则认为是复杂的SQL，抛出异常语句
-            int wordIndex;
-            string word= a.FindNearWords(sql, p.B, 255,'[',']',out wordIndex );
-            int orderTypeIndex;
-            string orderType = a.FindNearWords(sql, wordIndex + word.Length, 10, out orderTypeIndex);
-            //寻找可能有多个排序的分隔逗号
-            int dIndex = orderTypeIndex == -1 ? wordIndex + +word.Length : orderTypeIndex + orderType.Length;
-            int orderSep = a.FindPunctuationBeforWord(sql, dIndex, ',');
-            if (orderSep != -1)
-            { 
-                //寻找第二组排序字段信息
-                string word2 = a.FindNearWords(sql, orderSep+1, 10, out wordIndex);
-                if (wordIndex != -1)
-                {
-                    string orderType2 = a.FindNearWords(sql, wordIndex + word2.Length, 10, out orderTypeIndex);
-                }
-            }
-            //搜索排序字段在SELECT子句中的别名
-            int selectFieldIndex = sql.IndexOf(word, 0, StringComparison.OrdinalIgnoreCase);
-            if (selectFieldIndex > 0)
-            { 
-                //寻找临近的单词，可能是AS，也可能直接就是字段别名
-                string fieldAsName = a.FindNearWords(sql, selectFieldIndex + word.Length , 50, out wordIndex);
-                if (fieldAsName.ToLower() == "as")
-                {
-                    fieldAsName = a.FindNearWords(sql, wordIndex+2, 50, out wordIndex);
-                }
-            }
-            */
-
-
             sw.Start();
             for (int i = 0; i < 1000000; i++)
             {
@@ -870,6 +830,16 @@ ORDER BY T0.[RoleName] ASC
             sw.Stop();
             Console.WriteLine("Reflection Cached ElapsedMilliseconds {0}", sw.ElapsedMilliseconds);
 
+        }
+
+        private static void TestSqlOrderBuilder()
+        {
+            string sql = @"select Age,t.[User Name] As UserName from tab t 
+                   where ID>1000 order   by    t.[User Name]  , id desc 
+                   option(hash group,fast 10) ";
+            SqlOrderBuilder sob = new SqlOrderBuilder(sql);
+            string sqlOrder1 = sob.Build(50);
+            string sqlOrder2 = sob.Build(50, "Age>=20");
         }
 
     }

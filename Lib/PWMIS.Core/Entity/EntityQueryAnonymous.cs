@@ -763,7 +763,7 @@ namespace PWMIS.DataMap.Entity
             switch (db.CurrentDBMSType)
             {
                 case PWMIS.Common.DBMSType.Access:
-                case PWMIS.Common.DBMSType.SqlServer:
+                case PWMIS.Common.DBMSType.SqlServer: //可以在这里判断版本，以支持SQLSERVER 2012的分页
                 case PWMIS.Common.DBMSType.SqlServerCe:
                     //如果含有Order By 子句，则不能使用主键分页
                     if (oql.haveJoinOpt || sql.IndexOf("order by", StringComparison.OrdinalIgnoreCase) > 0)

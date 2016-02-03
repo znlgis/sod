@@ -794,6 +794,11 @@
             </summary>
             <param name="basePath"></param>
         </member>
+        <member name="T:PWMIS.Core.TextSearchUtil">
+            <summary>
+            文本搜索实用工具类
+            </summary>
+        </member>
         <member name="M:PWMIS.Core.TextSearchUtil.SearchWordsIndex(System.String,System.String)">
             <summary>
             在 source句子字符串中搜索一个短语，并忽略source和短语中多余1个的空白字符，忽略大小写
@@ -846,7 +851,7 @@
             从一个句子中指定的位置开始搜索目标字符，直到遇到非空白字符为止，返回该字符的位置索引。该字符不包括在单引号内
             </summary>
             <param name="inputString">要搜索的源字符串</param>
-            <param name="startIndex">在源中搜索的其实位置</param>
+            <param name="startIndex">在源中搜索的起始位置</param>
             <param name="targetChar">目标字符</param>
             <returns>目标字符的在源字符串的位置索引，如果没有找到，返回-1</returns>
         </member>
@@ -1625,12 +1630,11 @@
             <param name="cmd"></param>
             <param name="errorMessage"></param>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.ICommandHandle.OnExected(System.Data.IDbCommand,System.Int32)">
+        <member name="M:PWMIS.DataProvider.Data.ICommandHandle.OnExected(System.Data.IDbCommand)">
             <summary>
             查询执行完成后的处理，不管是否执行出错都会进行的处理
             </summary>
             <param name="cmd"></param>
-            <param name="recordAffected">命令执行的受影响记录行数</param>
         </member>
         <member name="P:PWMIS.DataProvider.Data.ICommandHandle.ApplayDBMSType">
             <summary>
@@ -1652,7 +1656,7 @@
             命令对象日志2008.7.18 增加线程处理,2011.5.9 增加执行时间记录
             </summary>
         </member>
-        <member name="T:PWMIS.Common.ICommandLog">
+        <member name="T:PWMIS.Common.ICommonLog">
             <summary>
             通用日志接口
             </summary>
@@ -5483,21 +5487,34 @@
             解析排序部分
             </summary>
             <param name="sql"></param>
+            <param name="orderBlockPoint">Order语句块位置信息</param>
             <returns></returns>
         </member>
         <member name="M:PWMIS.Common.SqlOrderBuilder.Build(System.Int32)">
             <summary>
-            构造可分页的排序SQL语句
+            构造可分页的排序SQL语句，如果topCount小于0，源SQL必须带排序语句
             </summary>
-            <param name="topCount">如果指定大于0的值，将生成Top子句</param>
+            <param name="topCount">如果指定大于0的值，将生成Top子句，如果小于0，则是限制逆向排序的记录数</param>
             <returns></returns>
         </member>
         <member name="M:PWMIS.Common.SqlOrderBuilder.Build(System.Int32,System.String)">
             <summary>
             构造可分页排序的SQL，并可以附带结果过滤条件
             </summary>
-            <param name="topCount">要限制的记录条数</param>
+            <param name="topCount">要限制的记录条数，如果小于0，则是限制逆向排序的记录数</param>
             <param name="filterConditions">附带结果过滤条件，注意字段不能带表名字或者表的别名</param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.Common.SqlOrderBuilder.GetOrderExpString">
+            <summary>
+            获取排序表达式字符串
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.Common.SqlOrderBuilder.GetInverseOrderExpString">
+            <summary>
+            获取逆排序表达式字符串
+            </summary>
             <returns></returns>
         </member>
         <member name="P:PWMIS.Common.SqlOrderBuilder.OrderFields">
@@ -5546,6 +5563,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:PWMIS.Common.OrderField.ToInverseString">
+            <summary>
+            获取反向的排序表达式
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:PWMIS.Common.SQLPage">
             <summary>
             SQL SERVER 分页处理，自动识别标准SQL语句并生成适合分页的SQL语句
@@ -5557,7 +5580,7 @@
             </summary>
             <param name="dbmsType">数据库类型</param>
             <param name="strSQLInfo">原始SQL语句</param>
-            <param name="strWhere">在分页前要替换的字符串，用于分页前的筛选</param>
+            <param name="strWhere">在分页时候要的筛选条件，不带Where 语句</param>
             <param name="PageSize">页大小</param>
             <param name="PageNumber">页码</param>
             <param name="AllCount">记录总数，如果是0则生成统计记录数量的查询</param>
