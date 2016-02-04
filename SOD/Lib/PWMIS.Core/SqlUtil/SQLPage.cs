@@ -207,6 +207,10 @@ namespace PWMIS.Common
         /// <returns>生成SQL分页语句</returns>
         private static string MakePageSQLStringByMSSQL(string strSQLInfo, string strWhere, int PageSize, int PageNumber, int AllCount)
         {
+            if (PageSize <= 0)
+                throw new ArgumentOutOfRangeException("分页的页大小必须大于0");
+            if (PageNumber <= 0)
+                throw new ArgumentOutOfRangeException("分页的页码小必须大于0");
             #region 分页位置分析
             string strSQLType = string.Empty;
             if (AllCount > 0)
@@ -217,7 +221,7 @@ namespace PWMIS.Common
                 }
                 else if (PageSize * PageNumber > AllCount) //最后的页 @@LeftSize
                 {
-                    PageSize = AllCount - PageSize * (PageNumber - 1);
+                   
                     strSQLType = "Last";
                 }
                 else //中间页
@@ -358,9 +362,10 @@ ORDER BY {3}
       )  P_T0 
  ORDER BY {1}
 ";
+                int recordCount = AllCount - PageSize * (PageNumber - 1);
                 string prepareSql = string.IsNullOrEmpty(strWhere) ?
-                       sob.Build(PageSize ) :
-                       sob.Build(PageSize, strWhere);
+                       sob.Build(-recordCount) :
+                       sob.Build(-recordCount, strWhere);
                 string pageSql = string.Format(sqlTemp, 
                        prepareSql,
                        sob.GetOrderExpString());
@@ -369,7 +374,7 @@ ORDER BY {3}
             }
             else if (strSQLType == "Count")
             {
-
+                return sob.BuildCountRecordSql(strWhere);
             }
             else
             { 
