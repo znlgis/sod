@@ -321,6 +321,24 @@ ORDER BY {3}
         }
 
         /// <summary>
+        /// 构造统计记录数的SQL查询
+        /// </summary>
+        /// <param name="filterConditions"></param>
+        /// <returns></returns>
+        public string BuildCountRecordSql(string filterConditions)
+        {
+            Point orderBlockPoint;
+            this.OrderFields = ParseOrder(this.sourceSql, out orderBlockPoint);
+            //剔除Order by 子句，用于构建外层过滤查询
+            string beforOrder = this.sourceSql.Substring(0, orderBlockPoint.A );
+            string afterOrder = this.sourceSql.Substring(orderBlockPoint.B);
+            string countSql = "Select COUNT(*) FROM ( " + beforOrder +"\r\n" + afterOrder +" ) P_Count ";
+            if (!string.IsNullOrEmpty(filterConditions))
+                countSql += "\r\n WHERE " + filterConditions ;
+            return countSql;
+        }
+
+        /// <summary>
         /// 获取排序表达式字符串
         /// </summary>
         /// <returns></returns>
