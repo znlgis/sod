@@ -37,7 +37,7 @@ namespace PWMIS.DataProvider.Adapter
         #region 获取静态实例
 
         /// <summary>
-        /// 数据访问静态实例对象，如果有事务并且有可能存在并发访问，请勿使用该属性，而是创建该类的动态实例对象。
+        /// 数据访问静态实例对象，已经禁止当前对象执行事务。如果有事务并且有可能存在并发访问，请创建该AdoHelper类的动态实例对象。
         /// </summary>
         public static AdoHelper Instance
         {
@@ -50,6 +50,7 @@ namespace PWMIS.DataProvider.Adapter
                         if (_instance == null)
                         {
                             _instance = MyDB.GetDBHelper();
+                            _instance.AllowTransaction = false; 
                         }
                     }
                 }

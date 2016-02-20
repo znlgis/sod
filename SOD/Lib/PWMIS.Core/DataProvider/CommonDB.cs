@@ -77,6 +77,9 @@
  * 
  * 修改者：         时间：2016-1-28
  * 增加通用日志接口，可以记录事务的日志。如果开启了事务，但没有设置日志对象，系统会使用默认的命令日志对象，但需要配置文件进行相应的配置，才会真正记录日志。
+ * 
+ * 修改者：         时间：2016-2-20
+ * 增加 AllowTransaction 属性，用于在某些情况下跨线程使用的安全，可以禁止开启事务，比如 MyDB.Instance
  * ========================================================================
 */
 
@@ -133,6 +136,7 @@ namespace PWMIS.DataProvider.Data
                 commandHandles = new List<ICommandHandle>();
                 commandHandles.Add(new CommandExecuteLogHandle());
             }
+            this.AllowTransaction = true; ;
         }
 
         /// <summary>
@@ -394,6 +398,11 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
+        /// 是否允许当前对象执行事务，默认允许。在某些情况下，特别是跨线程的情况下使用本类，应该禁止在当前对象上使用事务。
+        /// </summary>
+        public bool AllowTransaction { get; set; }
+
+        /// <summary>
         /// 获取参数名的标识字符，默认为SQLSERVER格式，如果其它数据库则可能需要重写该属性
         /// </summary>
         public virtual string GetParameterChar
@@ -520,6 +529,8 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         public void BeginTransaction()
         {
+            if (!this.AllowTransaction)
+                throw new InvalidOperationException("当前对象可能出于线程安全的考虑，已经禁止开启事务，请根据情况设定AllowTransaction 属性。");
             BeginTransaction(IsolationLevel.ReadCommitted);
         }
 

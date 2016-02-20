@@ -633,9 +633,25 @@ namespace PWMIS.DataMap.Entity
         {
             string sql = "";
             Dictionary<string, TableNameField> Parameters = null;
-            //处理用户查询映射的实体类
-            if (oql.EntityMap == PWMIS.Common.EntityMapType.SqlMap)
+            if (oql.EntityMap == PWMIS.Common.EntityMapType.Table || 
+                oql.EntityMap == PWMIS.Common.EntityMapType.View )
             {
+                #region OQL2SqlInfo
+                if (oql.PageEnable && (!single || oql.PageWithAllRecordCount <= 0))
+                    sql = GetOQLPageSql(oql, db);
+                else
+                    sql = oql.ToString();
+
+                SqlInfo result = new SqlInfo(sql, oql.Parameters);
+                result.CommandType = CommandType.Text;
+                result.TableName = oql.GetEntityTableName();
+                return result;
+                #endregion
+            }
+            else if (oql.EntityMap == PWMIS.Common.EntityMapType.SqlMap) 
+            {
+                #region SQLMAP
+                //处理用户查询映射的实体类
                 if (CommonUtil.CacheEntityMapSql == null)
                     CommonUtil.CacheEntityMapSql = new Dictionary<string, string>();
                 if (!CommonUtil.CacheEntityMapSql.ContainsKey(oql.sql_table))
@@ -668,12 +684,13 @@ namespace PWMIS.DataMap.Entity
 
                 //这里可能需要特别处理分页 --ToDo
                 SqlInfo si = new SqlInfo(sql, Parameters);
-                si.CommandType = CommandType.StoredProcedure;
+                si.CommandType = CommandType.Text ;
                 return si;
-
+                #endregion
             }
-            else if (oql.EntityMap == PWMIS.Common.EntityMapType.StoredProcedure)
+            else 
             {
+                #region StoredProcedure
                 string script = "";
                 if (CommonUtil.CacheEntityMapSql == null)
                     CommonUtil.CacheEntityMapSql = new Dictionary<string, string>();
@@ -723,38 +740,10 @@ namespace PWMIS.DataMap.Entity
                 SqlInfo si = new SqlInfo(sql, Parameters);
                 si.CommandType = CommandType.StoredProcedure;
                 return si;
-            }
-            else
-            {
-                //return OQL2SqlInfo(oql, db, single, oql.Parameters);
-                //函数内连，注释
-                if (oql.PageEnable && (!single || oql.PageWithAllRecordCount <= 0))
-                    sql = GetOQLPageSql(oql, db);
-                else
-                    sql = oql.ToString();
-
-                SqlInfo result = new SqlInfo(sql, oql.Parameters);
-                result.CommandType = CommandType.Text;
-                result.TableName = oql.GetEntityTableName();
-                return result;
+                #endregion
             }
         }
 
-        /*
-        internal static SqlInfo OQL2SqlInfo(OQL oql, AdoHelper db, bool single, Dictionary<string, TableNameField> Parameters)
-        {
-            string sql = string.Empty;
-            if (oql.PageEnable && (!single || oql.PageWithAllRecordCount <= 0))
-                sql = GetOQLPageSql(oql, db);
-            else
-                sql = oql.ToString();
-
-            SqlInfo result = new SqlInfo(sql, Parameters);
-            result.CommandType = CommandType.Text;
-            result.TableName = oql.GetEntityTableName();
-            return result;
-        }
-        */ 
 
         internal static string GetOQLPageSql(OQL oql, AdoHelper db)
         {
