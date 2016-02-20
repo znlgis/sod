@@ -134,12 +134,28 @@ namespace PWMIS.Common
     {
         //public static string DBType=System.Configuration.ConfigurationSettings .AppSettings ["EngineType"];
         public static DBMSType DbmsType = DBMSType.SqlServer;
+        /// <summary>
+        /// 系统使用的SqlServer数据库的版本
+        /// </summary>
+        public static string SqlServerVersion = "2000";
 
-        public SQLPage()
+        /// <summary>
+        /// 初始化并检查配置SqlServer的版本（AppSettings SqlServerVersion）
+        /// </summary>
+        static  SQLPage()
         {
-            //
-            // TODO: 在此处添加构造函数逻辑
-            //
+            string sqlVer = System.Configuration.ConfigurationManager.AppSettings["SqlServerVersion"];
+            if (!string.IsNullOrEmpty(sqlVer))
+                SqlServerVersion = sqlVer;
+        }
+
+        /// <summary>
+        /// 检查系统使用的SqlServer数据库的版本，如果成功，将设置 SqlServerVersion 属性的值【待实现】
+        /// </summary>
+        /// <param name="server">SqlServer 数据访问对象</param>
+        public static void CheckSqlServerVersion(PWMIS.DataProvider.Data.SqlServer server )
+        { 
+        
         }
 
         /// <summary>
@@ -211,6 +227,9 @@ namespace PWMIS.Common
                 throw new ArgumentOutOfRangeException("分页的页大小必须大于0");
             if (PageNumber <= 0)
                 throw new ArgumentOutOfRangeException("分页的页码小必须大于0");
+            //未来版本，可以考虑在此根据SqlServer版本不同，采用不同的分页方案
+            if (SqlServerVersion != "2000")
+                throw new Exception("当前暂时不支持其它版本的SQLSERVER 分页。Version:"+SqlServerVersion );
             #region 分页位置分析
             string strSQLType = string.Empty;
             if (AllCount > 0)

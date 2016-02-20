@@ -59,13 +59,16 @@ namespace PWMIS.Common
                 {
                     int targetIndex = 0;
                     string field = TextSearchUtil.FindNearWords(fieldItem, 0, 100,out targetIndex);
-                    //寻找临近的单词，可能没有，可能是AS，也可能直接就是字段别名
-                    string fieldAsName = TextSearchUtil.FindNearWords(fieldItem, targetIndex + field.Length, 50, out targetIndex);
-                    if (fieldAsName.ToLower() == "as")
+                    if (targetIndex >= 0)
                     {
-                        fieldAsName = TextSearchUtil.FindNearWords(fieldItem, targetIndex + 2, 50, out targetIndex);
+                        //寻找临近的单词，可能没有，可能是AS，也可能直接就是字段别名
+                        string fieldAsName = TextSearchUtil.FindNearWords(fieldItem, targetIndex + field.Length, 50, out targetIndex);
+                        if (fieldAsName.ToLower() == "as")
+                        {
+                            fieldAsName = TextSearchUtil.FindNearWords(fieldItem, targetIndex + 2, 50, out targetIndex);
+                        }
+                        sqlFields.Add(new SqlField() { Field = field, Alias = fieldAsName });
                     }
-                    sqlFields.Add(new SqlField() { Field = field, Alias =fieldAsName  });
                 }
             }
             return sqlFields;
@@ -174,7 +177,9 @@ namespace PWMIS.Common
                         string.Equals(p.Alias, orderItem.Field, StringComparison.OrdinalIgnoreCase));
                     if (target == null)
                     {
-                        sqlFields.Add(new SqlField() { Field = orderItem.Field });
+                        orderItem.CreateAlias("");
+                        var tempField = new SqlField() { Field = orderItem.Field, Alias = orderItem.Alias };
+                        sqlFields.Add(tempField);
                         orderItem.InSelect = false;
                     }
                     else
@@ -276,7 +281,9 @@ ORDER BY {3}
                         string.Equals(p.Alias, orderItem.Field, StringComparison.OrdinalIgnoreCase));
                     if (target == null)
                     {
-                        sqlFields.Add(new SqlField() { Field = orderItem.Field });
+                        orderItem.CreateAlias("");
+                        var tempField= new SqlField() { Field = orderItem.Field, Alias = orderItem.Alias };
+                        sqlFields.Add(tempField);
                         orderItem.InSelect = false;
                     }
                     else
@@ -379,6 +386,40 @@ ORDER BY {3}
         /// 字段别名
         /// </summary>
         public string Alias;
+
+        /// <summary>
+        /// 如果没有别名，根据字段名，构造别名
+        /// <param name="otherText">构造时候要附加的文本</param>
+        /// </summary>
+        public void CreateAlias(string otherText)
+        {
+            if (!string.IsNullOrEmpty(Alias))
+                return;
+            if (string.IsNullOrEmpty(Field))
+                return;
+            string[] arr = Field.Split('.');
+            string result = string.Empty;
+            if (arr.Length > 1)
+            {
+                if (!string.IsNullOrEmpty(otherText))
+                    result = arr[0].TrimEnd(']') + "_" + otherText + arr[1].TrimStart('[');
+                else
+                    result = arr[0].TrimEnd(']') + "_" + arr[1].TrimStart('[');
+            }
+            else
+            {
+                result = arr[0].TrimStart('[').TrimEnd(']');
+                if (!string.IsNullOrEmpty(otherText))
+                    result = result + "_" + otherText;
+                else
+                    result ="A" + DateTime.Now.Day  + "_" + result ;
+            }
+            if (result[0] != '[')
+                result = result.Insert(0, "[");
+            if (result[result.Length - 1] != ']')
+                result = result + "]";
+            this.Alias = result;
+        }
     }
 
     /// <summary>

@@ -216,15 +216,35 @@ namespace SuperMarketBLL
         {
             GoodsBaseInfo bInfo = new GoodsBaseInfo();
             GoodsStock stock = new GoodsStock();
+            /*
+             * Select采用指定详细实体类属性的方式：
             OQL joinQ = OQL.From(bInfo)
                 .Join(stock).On(bInfo.SerialNumber, stock.SerialNumber)
-                .Select(bInfo.GoodsName, bInfo.Manufacturer, bInfo.SerialNumber, stock.GoodsPrice, stock.MakeOnDate, bInfo.CanUserMonth, stock.Stocks, stock.GoodsID)
+                .Select(
+                        bInfo.GoodsName, 
+                        bInfo.Manufacturer, 
+                        bInfo.SerialNumber, 
+                        stock.GoodsPrice, 
+                        stock.MakeOnDate, 
+                        bInfo.CanUserMonth, 
+                        stock.Stocks, 
+                        stock.GoodsID)
+                .OrderBy(bInfo.GoodsName, "asc")
+                .END;
+            */
+
+            //Select 方法不指定具体要选择的实体类属性，可以推迟到EntityContainer类的MapToList 方法上指定
+            OQL joinQ = OQL.From(bInfo)
+                .Join(stock).On(bInfo.SerialNumber, stock.SerialNumber)
+                .Select()
                 .OrderBy(bInfo.GoodsName, "asc")
                 .END;
 
             PWMIS.DataProvider.Data.AdoHelper db = PWMIS.DataProvider.Adapter.MyDB.GetDBHelper();
             EntityContainer ec = new EntityContainer(joinQ, db);
-            ec.Execute();
+           
+            /*
+             * 如果OQL的Select方法指定了详细的实体类属性，那么映射结果，可以采取下面的方式：
             var result = ec.Map<GoodsSaleInfoVM>(e =>
                 {
                     e.GoodsName = ec.GetItemValue<string>(0); 
@@ -238,6 +258,18 @@ namespace SuperMarketBLL
                     return e;
                 }
             );
+             */ 
+            var result = ec.MapToList<GoodsSaleInfoVM>(() => new GoodsSaleInfoVM()
+            {
+                GoodsName = bInfo.GoodsName,
+                Manufacturer=bInfo.Manufacturer,
+                SerialNumber=bInfo.SerialNumber,
+                GoodsPrice=stock.GoodsPrice,
+                MakeOnDate=stock.MakeOnDate,
+                CanUserMonth=bInfo.CanUserMonth,
+                Stocks=stock.Stocks,
+                GoodsID=stock.GoodsID
+            });
             return result;
         }
 

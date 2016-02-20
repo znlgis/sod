@@ -319,7 +319,7 @@
         </member>
         <member name="P:PWMIS.DataProvider.Adapter.MyDB.Instance">
             <summary>
-            数据访问静态实例对象，如果有事务并且有可能存在并发访问，请勿使用该属性，而是创建该类的动态实例对象。
+            数据访问静态实例对象，已经禁止当前对象执行事务。如果有事务并且有可能存在并发访问，请创建该AdoHelper类的动态实例对象。
             </summary>
         </member>
         <member name="P:PWMIS.DataProvider.Adapter.MyDB.Message">
@@ -1357,6 +1357,11 @@
             获取或者设置事务对象
             </summary>
         </member>
+        <member name="P:PWMIS.DataProvider.Data.CommonDB.AllowTransaction">
+            <summary>
+            是否允许当前对象执行事务，默认允许。在某些情况下，特别是跨线程的情况下使用本类，应该禁止在当前对象上使用事务。
+            </summary>
+        </member>
         <member name="P:PWMIS.DataProvider.Data.CommonDB.GetParameterChar">
             <summary>
             获取参数名的标识字符，默认为SQLSERVER格式，如果其它数据库则可能需要重写该属性
@@ -1630,11 +1635,12 @@
             <param name="cmd"></param>
             <param name="errorMessage"></param>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.ICommandHandle.OnExected(System.Data.IDbCommand)">
+        <member name="M:PWMIS.DataProvider.Data.ICommandHandle.OnExected(System.Data.IDbCommand,System.Int32)">
             <summary>
             查询执行完成后的处理，不管是否执行出错都会进行的处理
             </summary>
             <param name="cmd"></param>
+            <param name="recordAffected">命令执行的受影响记录行数</param>
         </member>
         <member name="P:PWMIS.DataProvider.Data.ICommandHandle.ApplayDBMSType">
             <summary>
@@ -2181,6 +2187,7 @@
         <member name="M:PWMIS.DataMap.Entity.EntityContainer.Execute">
             <summary>
             执行OQL查询，并将查询结果缓存。如果未设置记录数量，那么查询会先进行一次记录数量查询。
+            注意在 MapToList 方法执行的时候，不能先调用此Execute 方法
             </summary>
             <returns>结果的行数</returns>
         </member>
@@ -5505,6 +5512,13 @@
             <param name="filterConditions">附带结果过滤条件，注意字段不能带表名字或者表的别名</param>
             <returns></returns>
         </member>
+        <member name="M:PWMIS.Common.SqlOrderBuilder.BuildCountRecordSql(System.String)">
+            <summary>
+            构造统计记录数的SQL查询
+            </summary>
+            <param name="filterConditions"></param>
+            <returns></returns>
+        </member>
         <member name="M:PWMIS.Common.SqlOrderBuilder.GetOrderExpString">
             <summary>
             获取排序表达式字符串
@@ -5542,6 +5556,12 @@
             字段别名
             </summary>
         </member>
+        <member name="M:PWMIS.Common.SqlField.CreateAlias(System.String)">
+            <summary>
+            如果没有别名，根据字段名，构造别名
+            <param name="otherText">构造时候要附加的文本</param>
+            </summary>
+        </member>
         <member name="T:PWMIS.Common.OrderField">
             <summary>
             排序字段信息
@@ -5573,6 +5593,22 @@
             <summary>
             SQL SERVER 分页处理，自动识别标准SQL语句并生成适合分页的SQL语句
             </summary>
+        </member>
+        <member name="F:PWMIS.Common.SQLPage.SqlServerVersion">
+            <summary>
+            系统使用的SqlServer数据库的版本
+            </summary>
+        </member>
+        <member name="M:PWMIS.Common.SQLPage.#cctor">
+            <summary>
+            初始化并检查配置SqlServer的版本（AppSettings SqlServerVersion）
+            </summary>
+        </member>
+        <member name="M:PWMIS.Common.SQLPage.CheckSqlServerVersion(PWMIS.DataProvider.Data.SqlServer)">
+            <summary>
+            检查系统使用的SqlServer数据库的版本，如果成功，将设置 SqlServerVersion 属性的值【待实现】
+            </summary>
+            <param name="server">SqlServer 数据访问对象</param>
         </member>
         <member name="M:PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType,System.String,System.String,System.Int32,System.Int32,System.Int32)">
             <summary>

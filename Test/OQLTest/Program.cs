@@ -15,15 +15,19 @@ namespace OQLTest
     {
         static void Main(string[] args)
         {
-            HotDictionaryTest();
+            //HotDictionaryTest();
             //TestThread();
             //TestProperty();
-            TestCached();
+            //TestCached();
             
             Console.WriteLine("OQL 测试，按任意键开始");
-            Console.Read();
+           
 
             Program p = new Program();
+            p.TestSqlPage();
+            p.TestOqlPage();
+            Console.Read();
+
             p.TestMapOql();
             p.Test1();
             p.Test2();
@@ -596,8 +600,58 @@ namespace OQLTest
             q2.Limit(10,2);
             q2.PageWithAllRecordCount = 0;
 
+           
+
+            EntityContainer ec2 = new EntityContainer(q2);
+            //第二种映射方式，推荐用于OQL多个实体类关联查询的情况：
+            var list2 = ec2.MapToList(() => new { 
+                     P1= user.ID,
+                     P2= user.NickName,
+                     P3= role.ID ,
+                     P4 =role.Description 
+                });
+
+            Console.WriteLine("OQL TestMapOql Query:\r\n{0}\r\n", q2);
+            Console.WriteLine(q2.PrintParameterInfo());
+        }
+
+        void TestOqlPage()
+        {
+            Users user = new Users() { NickName = "pdf.net", RoleID = RoleNames.Admin };
+            UserRoles roles = new UserRoles() { RoleName = "role1" };
+            //测试字段直接比较
+            OQL q00 = OQL.From(user)
+                .Select(user.ID ,user.NickName ,user.LastLoginIP )
+                .Where(cmp => cmp.Comparer(user.AddTime, "=", user.LastLoginTime))
+                .OrderBy (o=>o.Desc (user.LastLoginTime ))
+            .END;
+            Console.WriteLine("q00:one table and select all fields \r\n{0}", q00);
+            Console.WriteLine(q00.PrintParameterInfo());
+
+            string pageSql = SQLPage.MakeSQLStringByPage(DBMSType.SqlServer, q00.ToString(), "", 10, 2, 999);
+            Console.WriteLine("Page SQL");
+            Console.WriteLine(pageSql);
+
+            OQL q2 = OQL.From(user)
+               .InnerJoin(roles).On(user.RoleID, roles.ID)
+               .Select(user.RoleID, roles.RoleName)
+               .Where(user.NickName, roles.RoleName)
+               .GroupBy(user.RoleID, roles.RoleName)
+               .OrderBy(user.ID)
+               .END;
+
+            Console.WriteLine("q2:two table query use join\r\n{0}", q2);
+            Console.WriteLine(q2.PrintParameterInfo());
+            pageSql = SQLPage.MakeSQLStringByPage(DBMSType.SqlServer, q2.ToString(), "", 10, 2, 999);
+            Console.WriteLine("Page SQL");
+            Console.WriteLine(pageSql);
+        }
+
+        void TestSqlPage()
+        {
+            Console.WriteLine("----SQL 词法分析 自动分页语句构造测试 开始----");
             //分页，需要在 select 子句中包含排序的字段，然后排序使用字段别名
-            string pageSql = @"
+            string sql = @"
 SELECT  	
  M.[ID],	
  M.[NickName],	
@@ -646,19 +700,33 @@ ORDER BY T0.[RoleName] ASC
                    ) P_T1
              ORDER BY [T0_RoleName] ASC
              * 
+             跟上面的查询的区别， T0.[RoleName] AS [T0_RoleName] 这里对参与排序字段使用了别名
              */
+            string pageSql = string.Empty;
+            pageSql=SQLPage.MakeSQLStringByPage(DBMSType.SqlServer, sql, "", 10, 2, 999);
+            Console.WriteLine("SQL:");
+            Console.WriteLine(sql);
+            Console.WriteLine("Page SQL:");
+            Console.WriteLine(pageSql);
+            //其它SQL查询
+            sql = "select ID,[User Name],Age from User where Age>20 order by Age desc ";
+            pageSql = SQLPage.MakeSQLStringByPage(DBMSType.SqlServer, sql, "", 10, 2, 999);
+            Console.WriteLine("SQL:");
+            Console.WriteLine(sql);
+            Console.WriteLine("Page SQL:");
+            Console.WriteLine(pageSql);
+            //下面的查询会把排序字段 Age 附加到select字段里面
+            sql = "select ID,[User Name] from User where Age>20 order by Age desc ";
+            pageSql = SQLPage.MakeSQLStringByPage(DBMSType.SqlServer, sql, "", 10, 2, 999);
+            Console.WriteLine("SQL:");
+            Console.WriteLine(sql);
+            Console.WriteLine("Page SQL:");
+            Console.WriteLine(pageSql);
+            pageSql = SQLPage.MakeSQLStringByPage(DBMSType.SqlServer, sql, "", 10, 2, 0);
+            Console.WriteLine("Count SQL:");
+            Console.WriteLine(pageSql);
 
-            EntityContainer ec2 = new EntityContainer(q2);
-            //第二种映射方式，推荐用于OQL多个实体类关联查询的情况：
-            var list2 = ec2.MapToList(() => new { 
-                     P1= user.ID,
-                     P2= user.NickName,
-                     P3= role.ID ,
-                     P4 =role.Description 
-                });
-
-            Console.WriteLine("OQL TestMapOql Query:\r\n{0}\r\n", q2);
-            Console.WriteLine(q2.PrintParameterInfo());
+            Console.WriteLine("----SQL 词法分析 自动分页语句构造测试 结束----");
         }
 
         static void TestThread()

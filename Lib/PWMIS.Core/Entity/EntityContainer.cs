@@ -74,7 +74,7 @@ namespace PWMIS.DataMap.Entity
         private Type[] fieldTypes;
         private List<object[]> Values;
         private object[] currValue;
-
+        private bool executed;//是否已经执行过Execute方法
         /// <summary>
         /// 以 TResult为输入参数，并返回此类型的函数的委托定义
         /// </summary>
@@ -242,10 +242,12 @@ namespace PWMIS.DataMap.Entity
 
         /// <summary>
         /// 执行OQL查询，并将查询结果缓存。如果未设置记录数量，那么查询会先进行一次记录数量查询。
+        /// 注意在 MapToList 方法执行的时候，不能先调用此Execute 方法
         /// </summary>
         /// <returns>结果的行数</returns>
         public int Execute()
         {
+            executed = true;
             IDataReader reader = ExecuteDataReader(this.OQL, this.DataBase);
             return Execute(reader);
         }
@@ -411,7 +413,7 @@ namespace PWMIS.DataMap.Entity
                 if (this.Values.Count == 0)
                     yield break;
 
-                TableNameField[] fieldInfo = new TableNameField[this.fieldNames.Length];
+                TableNameField[] fieldInfo = new TableNameField[this.OQL.selectedFieldInfo.Count];
                 //查找字段匹配情况
                 //entity.PropertyNames 存储的仅仅是查询出来的列名称
                 for (int i = 0; i < this.OQL.selectedFieldInfo.Count; i++)
@@ -423,7 +425,7 @@ namespace PWMIS.DataMap.Entity
 
                 foreach (object[] itemValues in this.Values)
                 {
-                    for (int m = 0; m < itemValues.Length; m++)
+                    for (int m = 0; m < fieldInfo.Length; m++)
                     {
                         //将容器的值赋值给实体的值元素
                         EntityBase entity = fieldInfo[m].Entity;
@@ -596,6 +598,8 @@ namespace PWMIS.DataMap.Entity
         public IList<TResult> MapToList<TResult>(ECMapFunc<TResult> fun)
             where TResult : class
         {
+            if (executed)
+                throw new Exception("在执行 MapToList 方法之前，不能先执行 Execute 方法！");
             this.oql.fieldStack.Clear();//清除可能的调试信息
             var result = fun();
 
