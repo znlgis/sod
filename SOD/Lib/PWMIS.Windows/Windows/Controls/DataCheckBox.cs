@@ -99,13 +99,13 @@ namespace PWMIS.Windows.Controls
 
         public void SetValue(object value)
         {
-            DataCheckBoxValue dcbv = new DataCheckBoxValue(this);
+            DataCheckBoxValue dcbv = new DataCheckBoxValue(this,false );
             dcbv.SetValue(value);
         }
 
         public object GetValue()
         {
-            DataCheckBoxValue dcbv = new DataCheckBoxValue(this);
+            DataCheckBoxValue dcbv = new DataCheckBoxValue(this,false );
             return dcbv.GetValue();
         }
 

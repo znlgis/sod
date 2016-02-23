@@ -1,30 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{783A0458-39C6-44A1-927F-3DC075749CC8}</ProjectGuid>
+    <ProjectGuid>{8C197DD4-82E0-4AB3-9091-C61556F4CE64}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>SuperMarketTestConsole</RootNamespace>
-    <AssemblyName>SuperMarketTestConsole</AssemblyName>
+    <RootNamespace>OQLTest</RootNamespace>
+    <AssemblyName>OQLTest</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <StartupObject>SuperMarketTestConsole.Class1</StartupObject>
-    <FileUpgradeFlags>
-    </FileUpgradeFlags>
-    <OldToolsVersion>3.5</OldToolsVersion>
-    <UpgradeBackupLocation />
-    <SccProjectName>
-    </SccProjectName>
-    <SccLocalPath>
-    </SccLocalPath>
-    <SccAuxPath>
-    </SccAuxPath>
-    <SccProvider>
-    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,7 +21,6 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -43,7 +29,6 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -60,21 +45,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Base_FunctionInfo.cs" />
+    <Compile Include="Base_Person_FunctionInfo.cs" />
+    <Compile Include="Base_Person_RoleInfo.cs" />
+    <Compile Include="Base_Role_FunctionInfo.cs" />
+    <Compile Include="LT_UserRoles.cs" />
+    <Compile Include="LT_Users.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SuperMarketBLL\SuperMarketBLL.csproj">
-      <Project>{32A14B75-6845-48B0-9FB9-9F0DD4D58369}</Project>
-      <Name>SuperMarketBLL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SuperMarketModel\SuperMarketModel.csproj">
-      <Project>{3A9CEFCA-C78A-40C4-AD67-3BA26F88FBA4}</Project>
-      <Name>SuperMarketModel</Name>
-    </ProjectReference>
+    <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <ProjectReference Include="..\..\Lib\PWMIS.Core.Extensions\PWMIS.Core.Extensions-2008.csproj">
+      <Project>{8F1AE0DE-A9F1-43A7-ACE4-ACF667C2F813}</Project>
+      <Name>PWMIS.Core.Extensions-2008</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Lib\PWMIS.Core\PWMIS.Core-2008.csproj">
+      <Project>{8F0F4237-4D13-40DD-AE8A-C3DE748B26E0}</Project>
+      <Name>PWMIS.Core-2008</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -84,29 +84,6 @@
             获取或者设置自增列对应的序列名称
             </summary>
         </member>
-        <member name="T:PWMIS.PostgreSQLClient.PostgreSQLDbContext">
-            <summary>
-            PostgreSQL数据库上下文，可以实现自动检查数据库，创建表，获取EntityQuery 泛型实例对象等功能，封装了AdoHelper的使用。
-            </summary>
-        </member>
-        <member name="M:PWMIS.PostgreSQLClient.PostgreSQLDbContext.#ctor(PWMIS.DataProvider.Data.AdoHelper)">
-            <summary>
-            用连接字符串名字初始化本类
-            </summary>
-            <param name="connName"></param>
-        </member>
-        <member name="M:PWMIS.PostgreSQLClient.PostgreSQLDbContext.CheckTableExists``1">
-            <summary>
-            检查实体类对应的数据表是否在数据库中存在
-            </summary>
-        </member>
-        <member name="M:PWMIS.PostgreSQLClient.PostgreSQLDbContext.CheckTableExists``1(System.String)">
-            <summary>
-            检查实体类和表名对应的数据表是否在数据库中存在
-            </summary>
-            <param name="tableName">表名</param>
-            <typeparam name="T">实体类</typeparam>
-        </member>
         <member name="T:PWMIS.PostgreSQLClient.Properties.Resources">
             <summary>
               一个强类型的资源类，用于查找本地化的字符串等。

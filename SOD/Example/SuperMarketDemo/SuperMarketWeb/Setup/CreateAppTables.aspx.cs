@@ -8,6 +8,7 @@ using System.Configuration;
 using PWMIS.DataProvider.Adapter;
 using PWMIS.DataProvider.Data;
 using System.Data;
+using PWMIS.AccessExtensions;
 
 namespace SuperMarketWeb.Setup
 {
@@ -27,15 +28,19 @@ namespace SuperMarketWeb.Setup
 
                if (MyDB.Instance.CurrentDBMSType == PWMIS.Common.DBMSType.Access)
                {
-                   Access access = MyDB.Instance as Access;
-                   string dbFilePath = access.ConnectionDataSource;
-                   if (!System.IO.File.Exists(dbFilePath))
-                   {
-                       PWMIS.AccessExtensions.AccessUility.CreateDataBase(dbFilePath, 
-                           MyDB.Instance.ConnectionStringBuilder as System.Data.OleDb.OleDbConnectionStringBuilder);
-                       this.lblErrMsg.Text += ";Access 数据库文件已经自动创建，请刷新或者继续操作本页面。 ";
-                   }
+                   //Access access = MyDB.Instance as Access;
+                   //string dbFilePath = access.ConnectionDataSource;
+                   //if (!System.IO.File.Exists(dbFilePath))
+                   //{
+                   //    PWMIS.AccessExtensions.AccessUility.CreateDataBase(dbFilePath, 
+                   //        MyDB.Instance.ConnectionStringBuilder as System.Data.OleDb.OleDbConnectionStringBuilder);
+                   //    this.lblErrMsg.Text += ";Access 数据库文件已经自动创建，请刷新或者继续操作本页面。 ";
+                   //}
 
+                   AccessDbContext accCtx = new AccessDbContext(MyDB.Instance as Access);
+                   accCtx.CheckDB();
+
+                   this.lblScript.Text = "当前数据库文件："+accCtx .DBFilePath ;
                }
             }
         }
