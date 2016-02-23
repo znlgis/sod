@@ -129,16 +129,16 @@
           <asp:Label ID="lblMsg" runat="server" BackColor="White" ForeColor="Red"></asp:Label>
         </div>
         <br />
-        服务器操作系统：<%=Environment.OSVersion.ToString() %> <%=Environment.Is64BitOperatingSystem? 64:32 %>位系统
+        服务器操作系统：<%=Environment.OSVersion.ToString() %> 位系统
         <br />
         .NET 运行库版本：<%=Environment.Version.ToString() %>
          <br />
-        Web服务器版本:(<span  style=" color:Red; font-size: 16pt;"> <%:Request.ServerVariables["Server_SoftWare"]%></span>)
+        Web服务器版本:(<span  style=" color:Red; font-size: 16pt;"> <%=Request.ServerVariables["Server_SoftWare"]%></span>)
        
         <hr />
         本系统基于<a href="http://www.pwmis.com/sqlmap">PDF.NET</a> <%= System.Reflection.Assembly.GetAssembly(typeof(PWMIS.DataProvider.Data.AdoHelper)).GetName ().Version.ToString() %> 构建，<a href="index.htm">系统说明</a>
         <br />
-        使用的数据驱动程序：<%: ConfigurationManager.ConnectionStrings[ConfigurationManager.ConnectionStrings.Count - 1].ProviderName%>
+        使用的数据驱动程序：<%= ConfigurationManager.ConnectionStrings[ConfigurationManager.ConnectionStrings.Count - 1].ProviderName%>
         <br />
         
          </form>

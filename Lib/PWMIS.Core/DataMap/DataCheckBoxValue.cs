@@ -6,11 +6,12 @@ using PWMIS.Common;
 namespace PWMIS.DataMap
 {
     /// <summary>
-    /// 数据复选框控件值处理类，用于WinFrom,WebForm的复选框控件
+    /// 数据选择框控件值处理类，用于WinFrom,WebForm的复选框控件和单选框控件
     /// </summary>
     public class DataCheckBoxValue
     {
         private IDataCheckBox dataCheckBox;
+        private bool singleSelect;
 
         public bool Checked
         {
@@ -18,9 +19,15 @@ namespace PWMIS.DataMap
             set { dataCheckBox.Checked = value; }
         }
 
-        public DataCheckBoxValue(IDataCheckBox dataCheckBox)
+        /// <summary>
+        /// 初始化数据控件
+        /// </summary>
+        /// <param name="dataCheckBox">当前控件实例</param>
+        /// <param name="singleSelect">是否单选</param>
+        public DataCheckBoxValue(IDataCheckBox dataCheckBox, bool singleSelect)
         {
             this.dataCheckBox = dataCheckBox;
+            this.singleSelect = singleSelect;
         }
 
         public void SetValue(object obj)
@@ -57,8 +64,8 @@ namespace PWMIS.DataMap
 
         public object GetValue()
         {
-            //对于布尔型直接处理返回值 2015.9.8
-            if (dataCheckBox.SysTypeCode == TypeCode.Boolean)
+            //对于布尔型也不能直接处理返回值，比如成组的单选按钮控件，当前控件如果没有选择，则不应该收集当前控件的值
+            if (!this.singleSelect && dataCheckBox.SysTypeCode == TypeCode.Boolean)
                 return this.Checked;
 
             if (!this.Checked)
@@ -111,6 +118,10 @@ namespace PWMIS.DataMap
                         }
                         //return 0;
                         return DBNull.Value;
+                    }
+                case TypeCode.Boolean :
+                    {
+                        return this.Checked;
                     }
                 default:
                     if (strValue == "")

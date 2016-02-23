@@ -146,11 +146,26 @@ namespace PWMIS.Common
         int MaxLength { get; set; }
     }
 
+    /// <summary>
+    /// 数据勾选框控件接口
+    /// </summary>
     public interface IDataCheckBox : IDataControl
     {
+        /// <summary>
+        /// 控件的值
+        /// </summary>
         string Value { get; set; }
+        /// <summary>
+        /// 是否已经选择
+        /// </summary>
         bool Checked { get; set; }
+        /// <summary>
+        /// 控件的文本
+        /// </summary>
         string Text { get; set; }
+        /// <summary>
+        /// 选择改变事件
+        /// </summary>
         event EventHandler CheckedChanged;
     }
 

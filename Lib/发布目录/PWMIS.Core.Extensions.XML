@@ -4,6 +4,156 @@
         <name>PWMIS.Core.Extensions</name>
     </assembly>
     <members>
+        <member name="T:PWMIS.Core.Extensions.EntityBaseExtension">
+            <summary>
+            EntityBase 扩展，由网友“吉林-stdbool”提供
+            </summary>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.EntityBaseExtension.GetParentEntity``1(PWMIS.DataMap.Entity.EntityBase,PWMIS.DataProvider.Data.AdoHelper)">
+            <summary>
+            通过子表实例获取所对应的父表实例 【**仅仅支持单一主键，不支持联合主键的情况**】
+            </summary>
+            <typeparam name="T">父表所对应的类</typeparam>
+            <param name="entity"></param>
+            <param name="db"></param>
+            <returns>所对应的父表实例</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.EntityBaseExtension.GetParentEntity``1(PWMIS.DataMap.Entity.EntityBase)">
+            <summary>
+            通过子表实例获取所对应的父表实例 【**仅仅支持单一主键，不支持联合主键的情况**】
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.EntityBaseExtension.GetChildList``2(PWMIS.DataMap.Entity.EntityBase,PWMIS.DataProvider.Data.AdoHelper)">
+            <summary>
+            通过 父表实例 查找 查询关联的特定子实体类集合 【参照“医生”的QueryListWithChild函数，不足：ParentType应该可以通过 entity获取。。。】
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="ParentType"></typeparam>
+            <param name="entity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.OracleDbContext.#ctor(PWMIS.DataProvider.Data.AdoHelper)">
+            <summary>
+            用连接字符串名字初始化本类
+            </summary>
+            <param name="connName"></param>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.OracleDbContext.CheckTableExists``1">
+            <summary>
+            检查实体类对应的数据表是否在数据库中存在
+            </summary>
+        </member>
+        <member name="T:PWMIS.Core.Extensions.OQLExtension">
+            <summary>
+            OQL扩展类
+            </summary>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.OQLExtension.ToList``1(PWMIS.DataMap.Entity.OQL)">
+            <summary>
+            OQL 扩展，可以直接返回查询的列表
+            <example>
+            <code>
+            <![CDATA[
+            
+              User user=new User();
+              OQL q=OQL.From(user).Select(user.ID,user.Name).End;
+              List<User> list = q.ToList<User>();
+            
+            ]]>
+            </code>
+            </example>
+            </summary>
+            <typeparam name="T">实体类类型</typeparam>
+            <param name="q">OQL对象</param>
+            <returns>实体类列表</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.OQLExtension.ToList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper)">
+            <summary>
+            OQL 扩展，可以直接返回查询的列表
+            </summary>
+            <typeparam name="T">实体类类型</typeparam>
+            <param name="q">OQL对象</param>
+            <param name="db">数据访问对象</param>
+            <returns>实体类列表</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.OQLExtension.ToEntity``1(PWMIS.DataMap.Entity.OQL)">
+            <summary>
+            OQL 扩展，可以直接返回查询的实体类
+            <example>
+            <code>
+            <![CDATA[
+              User user=new User(){ID=100};
+              OQL q=OQL.From(user).Select(user.ID,user.Name).Where(user.ID).End;
+              User result = q.ToEntity<User>();
+            ]]>
+            </code>
+            </example>
+            </summary>
+            <typeparam name="T">实体类类型</typeparam>
+            <param name="q">OQL对象</param>
+            <returns>实体类</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.OQLExtension.ToEntity``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper)">
+            <summary>
+             OQL 扩展，可以直接返回查询的实体类
+            </summary>
+            <typeparam name="T">实体类类型</typeparam>
+            <param name="q">OQL对象</param>
+            <param name="db">数据访问对象</param>
+            <returns>实体类</returns>
+        </member>
+        <!-- 对于成员“M:PWMIS.Core.Extensions.OQLExtension.ToObjectList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper,PWMIS.DataMap.Entity.ECResultFunc{``0})”忽略有格式错误的 XML 注释 -->
+        <!-- 对于成员“M:PWMIS.Core.Extensions.OQLExtension.ToObjectList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataMap.Entity.ECResultFunc{``0})”忽略有格式错误的 XML 注释 -->
+        <member name="M:PWMIS.Core.Extensions.OQLExtension.Execute(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper)">
+            <summary>
+            执行OQL
+            </summary>
+            <param name="oql">OQL</param>
+            <param name="db">数据访问对象</param>
+            <returns>操作受影响的行数</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.OQLExtension.Execute(PWMIS.DataMap.Entity.OQL)">
+            <summary>
+            使用默认连接，执行OQL
+            </summary>
+            <param name="oql">OQL</param>
+            <returns>操作受影响的行数</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.OQLExtension.FilterEnumValues(System.Type,System.Int32)">
+            <summary>
+            过滤枚举中包含指定值的组合方式值，比如在OQL中比较，要求使用的枚举类型的值是2的次方
+            感谢网友 深圳-Panke 2014.11.11 提供
+            <example>
+            <![CDATA[
+            OQL q=OQL.From(paper)
+                     .Where(cmp=>cmp.Compare(paper.Color,"in",typeof(Colors).FilterEnumValues((int)Colors.Blue) ))
+               .END;
+            ]]>
+            </example>
+            </summary>
+            <param name="enumType"></param>
+            <param name="FilterContainValue">要筛选的枚举值</param>
+            <returns>返回所有可能的枚举值组合</returns>
+        </member>
+        <member name="T:PWMIS.Core.Extensions.SqlServerDbContext">
+            <summary>
+            SqlServer 数据上下文基类，可以自动创建实体类对应的表
+            </summary>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.SqlServerDbContext.#ctor(PWMIS.DataProvider.Data.AdoHelper)">
+            <summary>
+            用连接字符串名字初始化本类
+            </summary>
+            <param name="connName"></param>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.SqlServerDbContext.CheckTableExists``1">
+            <summary>
+            检查实体类对应的数据表是否在数据库中存在
+            </summary>
+        </member>
         <member name="T:PWMIS.Core.Extensions.DbContext">
             <summary>
             数据上下文，可以实现自动检查数据库，创建表，获取EntityQuery 泛型实例对象等功能，封装了AdoHelper的使用。
@@ -137,37 +287,6 @@
             <summary>
             获取数据上下文提供程序
             </summary>
-        </member>
-        <member name="T:PWMIS.Core.Extensions.EntityBaseExtension">
-            <summary>
-            EntityBase 扩展，由网友“吉林-stdbool”提供
-            </summary>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.EntityBaseExtension.GetParentEntity``1(PWMIS.DataMap.Entity.EntityBase,PWMIS.DataProvider.Data.AdoHelper)">
-            <summary>
-            通过子表实例获取所对应的父表实例 【**仅仅支持单一主键，不支持联合主键的情况**】
-            </summary>
-            <typeparam name="T">父表所对应的类</typeparam>
-            <param name="entity"></param>
-            <param name="db"></param>
-            <returns>所对应的父表实例</returns>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.EntityBaseExtension.GetParentEntity``1(PWMIS.DataMap.Entity.EntityBase)">
-            <summary>
-            通过子表实例获取所对应的父表实例 【**仅仅支持单一主键，不支持联合主键的情况**】
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="entity"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.EntityBaseExtension.GetChildList``2(PWMIS.DataMap.Entity.EntityBase,PWMIS.DataProvider.Data.AdoHelper)">
-            <summary>
-            通过 父表实例 查找 查询关联的特定子实体类集合 【参照“医生”的QueryListWithChild函数，不足：ParentType应该可以通过 entity获取。。。】
-            </summary>
-            <typeparam name="T"></typeparam>
-            <typeparam name="ParentType"></typeparam>
-            <param name="entity"></param>
-            <returns></returns>
         </member>
         <member name="T:PWMIS.Core.Extensions.ModelCast">
              <summary>
@@ -308,125 +427,6 @@
             <typeparam name="T">目标对象类型</typeparam>
             <param name="source">当前对象</param>
             <returns>返回赋值过后的目标对象</returns>
-        </member>
-        <member name="T:PWMIS.Core.Extensions.OQLExtension">
-            <summary>
-            OQL扩展类
-            </summary>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.OQLExtension.ToList``1(PWMIS.DataMap.Entity.OQL)">
-            <summary>
-            OQL 扩展，可以直接返回查询的列表
-            <example>
-            <code>
-            <![CDATA[
-            
-              User user=new User();
-              OQL q=OQL.From(user).Select(user.ID,user.Name).End;
-              List<User> list = q.ToList<User>();
-            
-            ]]>
-            </code>
-            </example>
-            </summary>
-            <typeparam name="T">实体类类型</typeparam>
-            <param name="q">OQL对象</param>
-            <returns>实体类列表</returns>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.OQLExtension.ToList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper)">
-            <summary>
-            OQL 扩展，可以直接返回查询的列表
-            </summary>
-            <typeparam name="T">实体类类型</typeparam>
-            <param name="q">OQL对象</param>
-            <param name="db">数据访问对象</param>
-            <returns>实体类列表</returns>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.OQLExtension.ToEntity``1(PWMIS.DataMap.Entity.OQL)">
-            <summary>
-            OQL 扩展，可以直接返回查询的实体类
-            <example>
-            <code>
-            <![CDATA[
-              User user=new User(){ID=100};
-              OQL q=OQL.From(user).Select(user.ID,user.Name).Where(user.ID).End;
-              User result = q.ToEntity<User>();
-            ]]>
-            </code>
-            </example>
-            </summary>
-            <typeparam name="T">实体类类型</typeparam>
-            <param name="q">OQL对象</param>
-            <returns>实体类</returns>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.OQLExtension.ToEntity``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper)">
-            <summary>
-             OQL 扩展，可以直接返回查询的实体类
-            </summary>
-            <typeparam name="T">实体类类型</typeparam>
-            <param name="q">OQL对象</param>
-            <param name="db">数据访问对象</param>
-            <returns>实体类</returns>
-        </member>
-        <!-- 对于成员“M:PWMIS.Core.Extensions.OQLExtension.ToObjectList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper,PWMIS.DataMap.Entity.ECResultFunc{``0})”忽略有格式错误的 XML 注释 -->
-        <!-- 对于成员“M:PWMIS.Core.Extensions.OQLExtension.ToObjectList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataMap.Entity.ECResultFunc{``0})”忽略有格式错误的 XML 注释 -->
-        <member name="M:PWMIS.Core.Extensions.OQLExtension.Execute(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper)">
-            <summary>
-            执行OQL
-            </summary>
-            <param name="oql">OQL</param>
-            <param name="db">数据访问对象</param>
-            <returns>操作受影响的行数</returns>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.OQLExtension.Execute(PWMIS.DataMap.Entity.OQL)">
-            <summary>
-            使用默认连接，执行OQL
-            </summary>
-            <param name="oql">OQL</param>
-            <returns>操作受影响的行数</returns>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.OQLExtension.FilterEnumValues(System.Type,System.Int32)">
-            <summary>
-            过滤枚举中包含指定值的组合方式值，比如在OQL中比较，要求使用的枚举类型的值是2的次方
-            感谢网友 深圳-Panke 2014.11.11 提供
-            <example>
-            <![CDATA[
-            OQL q=OQL.From(paper)
-                     .Where(cmp=>cmp.Compare(paper.Color,"in",typeof(Colors).FilterEnumValues((int)Colors.Blue) ))
-               .END;
-            ]]>
-            </example>
-            </summary>
-            <param name="enumType"></param>
-            <param name="FilterContainValue">要筛选的枚举值</param>
-            <returns>返回所有可能的枚举值组合</returns>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.OracleDbContext.#ctor(PWMIS.DataProvider.Data.AdoHelper)">
-            <summary>
-            用连接字符串名字初始化本类
-            </summary>
-            <param name="connName"></param>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.OracleDbContext.CheckTableExists``1">
-            <summary>
-            检查实体类对应的数据表是否在数据库中存在
-            </summary>
-        </member>
-        <member name="T:PWMIS.Core.Extensions.SqlServerDbContext">
-            <summary>
-            SqlServer 数据上下文基类，可以自动创建实体类对应的表
-            </summary>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.SqlServerDbContext.#ctor(PWMIS.DataProvider.Data.AdoHelper)">
-            <summary>
-            用连接字符串名字初始化本类
-            </summary>
-            <param name="connName"></param>
-        </member>
-        <member name="M:PWMIS.Core.Extensions.SqlServerDbContext.CheckTableExists``1">
-            <summary>
-            检查实体类对应的数据表是否在数据库中存在
-            </summary>
         </member>
     </members>
 </doc>
