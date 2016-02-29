@@ -356,14 +356,20 @@ namespace PWMIS.DataMap.Entity
             if (t == typeof(string))
             {
                 int length = entity.GetStringFieldSize(field);
-                if (length == -1) //实体类未定义属性字段的长度
+                if (length == 0) //实体类未定义属性字段的长度
                 {
                     string fieldType = "text";
                     if (db is SqlServer) //此处要求SqlServer 2005以上，SqlServer2000 不支持
                         fieldType = "varchar(max)";
-                    temp = temp + "[" + field + "] "+fieldType;
+                    if(db.CurrentDBMSType == DBMSType.SqlServerCe)
+                        fieldType = "ntext";
+                    temp = temp + "[" + field + "] " + fieldType;
                 }
-                else
+                else if (length > 0)
+                {
+                    temp = temp + "[" + field + "] nvarchar" + "(" + length + ")";
+                }
+                else if (length < 0)
                 {
                     temp = temp + "[" + field + "] varchar" + "(" + length + ")";
                 }

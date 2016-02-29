@@ -174,7 +174,7 @@ namespace PWMIS.DataProvider.Data
 
         public override System.Data.Common.DbConnectionStringBuilder ConnectionStringBuilder
         {
-            get { throw new NotImplementedException(); }
+            get { return new SqlCeConnectionStringBuilder(this.ConnectionString); }
         }
 
         public override string ConnectionUserID

@@ -200,7 +200,7 @@ namespace PWMIS.DataProvider.Adapter
                     case "PWMIS.DataProvider.Data.OleDb": helper = new OleDb(); break;
                     case "PWMIS.DataProvider.Data.Odbc": helper = new Odbc(); break;
                     case "PWMIS.DataProvider.Data.Access": helper = new Access(); break;
-                    case "PWMIS.DataProvider.Data.SqlServerCe": helper = new SqlServerCe(); break;
+                    //case "PWMIS.DataProvider.Data.SqlServerCe": helper = new SqlServerCe(); break;
                     default: helper = new SqlServer(); break;
                 }
             }
