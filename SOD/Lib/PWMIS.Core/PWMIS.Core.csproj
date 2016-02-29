@@ -67,7 +67,6 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data.OracleClient" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.SqlServerCe, Version=3.5.1.0, PublicKeyToken=89845dcd8080cc91" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -100,7 +99,6 @@
     <Compile Include="DataProvider\Oracle.cs" />
     <Compile Include="DataProvider\QueryException.cs" />
     <Compile Include="DataProvider\SqlServer.cs" />
-    <Compile Include="DataProvider\SqlServerCe.cs" />
     <Compile Include="Entity\EntityBuilder.cs" />
     <Compile Include="Entity\EntityContainer.cs" />
     <Compile Include="Entity\Entity.cs">
