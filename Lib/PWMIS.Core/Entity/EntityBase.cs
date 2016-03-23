@@ -68,6 +68,9 @@
  * 
  *  * 修改者：         时间：2015-12-4  
  *  新增 GetGolbalEntityID 方法，解决在多线程环境下，获取字符串类型属性字段长度可能引起的问题，感谢网友 Rookie 发现该问题。
+ *  
+ *  *修改者：         时间：2016-3-23  
+ *  新增 属性索引功能，加快实体类在多次使用的情况下的属性访问效率
  * ========================================================================
 */
 using System;
@@ -555,6 +558,78 @@ namespace PWMIS.DataMap.Entity
             return CommonUtil.ChangeType<T>(PropertyList(propertyFieldName));
         }
 
+        #region 实体类属性索引 2016.3.23
+        //属性的索引号对应属性值的关系数组
+        private int[] propertyValueIndex = null;
+
+
+        /// <summary>
+        /// 根据属性字段名称和属性索引号，获取属性的值；采用此方法将加快属性值的获取效率。
+        /// 建议实体类属性数量多余10个以上的时候使用本方法，效率将接近 Log(N)=1
+        /// <example>
+        /// <![CDATA[
+        ///   public string Name
+        ///   {
+        ///       get{ return getProperty<string>("User Name",1);}
+        ///       set{ setProperty("User Name",value,50);}
+        ///   }
+        /// 
+        /// ]]>
+        /// </example>
+        /// </summary>
+        /// <typeparam name="T">属性类型</typeparam>
+        /// <param name="propertyFieldName">属性字段名</param>
+        /// <param name="propertyIndex">属性的索引号</param>
+        /// <returns>属性值</returns>
+        protected T getProperty<T>(string propertyFieldName,int propertyIndex)
+        {
+            this.OnPropertyGeting(propertyFieldName);
+            if (propertyIndex >= 0)
+            {
+                int index = getPropertyValueIndex(propertyIndex);
+                if (index == -1)
+                {
+                    index = GetPropertyFieldNameIndex(propertyFieldName);
+                    if (index == -1)
+                        return default(T);
+                    else
+                        propertyValueIndex[propertyIndex] = index;
+                }
+                return CommonUtil.ChangeType<T>(PropertyValues[index]);
+            }
+            else
+            {
+                return CommonUtil.ChangeType<T>(PropertyList(propertyFieldName));
+            }
+        }
+
+        /// <summary>
+        /// 根据实体类属性的索引号，获取实体类属性值的索引
+        /// </summary>
+        /// <param name="propertyIndex">实体类属性的索引号</param>
+        /// <returns></returns>
+        private int getPropertyValueIndex(int propertyIndex)
+        {
+            if (propertyIndex <0 )
+                throw new Exception("当前实体类属性读取方法指定的 属性索引 值不能小于0 ");
+            if (propertyValueIndex == null)
+            {
+                //下面一行代码会阻塞多余的线程
+                EntityFields ef = EntityFieldsCache.Item(this.GetType());
+                int[] tempArr = new int[ef.Fields.Length];
+                for (int i = 0; i < tempArr.Length; i++)
+                    tempArr[i] = -1; 
+                if (propertyValueIndex == null)
+                    propertyValueIndex = tempArr; 
+            }
+            if (propertyIndex > propertyValueIndex.Length)
+                throw new Exception("当前实体类属性读取方法指定的 属性索引 值（" + propertyIndex + "）大于可用的实体类属性数量");
+          
+            return propertyValueIndex[propertyIndex];
+        }
+
+        #endregion
+        
         protected internal void setProperty(string propertyFieldName, object Value)
         {
             setPropertyValueAndLength(propertyFieldName, Value, 0);
