@@ -837,8 +837,13 @@ namespace PWMIS.DataMap.Entity
                 for (int i = 0; i < count; i++)
                 {
                     TableNameField tnf = fieldStack.Pop();
-                    selectedFieldNames.Add(string.Format("\r\n    {0}", GetOqlFieldName(tnf)));
-                    selectedFieldInfo.Add(tnf); 
+                    //排除重复的选择字段信息
+                    string fullFieldName = string.Format("\r\n    {0}", GetOqlFieldName(tnf));
+                    if (!selectedFieldNames.Contains(fullFieldName))
+                    {
+                        selectedFieldNames.Add(fullFieldName);
+                        selectedFieldInfo.Add(tnf); 
+                    }
                 }
             }
             fieldStack.Clear();

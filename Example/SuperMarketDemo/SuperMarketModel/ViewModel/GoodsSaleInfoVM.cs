@@ -39,6 +39,10 @@ namespace SuperMarketModel.ViewModel
         /// </summary>
         public int CanUserMonth { get; set; }
         /// <summary>
+        /// 过期时间（计算列）
+        /// </summary>
+        public DateTime ExpireDate { get; set; }
+        /// <summary>
         /// 库存数量
         /// </summary>
         public int Stocks { get; set; }

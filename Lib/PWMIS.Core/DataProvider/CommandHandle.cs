@@ -16,7 +16,7 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         DBMSType ApplayDBMSType { get; }
         /// <summary>
-        /// 执行前处理，比如预处理SQ，补充设定参数类型邓，返回是否继续进行查询执行
+        /// 执行前处理，比如预处理SQL，补充设定参数类型邓，返回是否继续进行查询执行
         /// </summary>
         /// <param name="db">数据库访问对象</param>
         /// <param name="SQL"></param>
@@ -36,7 +36,7 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="recordAffected">命令执行的受影响记录行数</param>
-        long OnExected(IDbCommand cmd, int recordAffected);
+        long OnExecuted(IDbCommand cmd, int recordAffected);
     }
 
     /// <summary>
@@ -70,7 +70,7 @@ namespace PWMIS.DataProvider.Data
             CurrCommandLog.WriteErrLog(cmd, "AdoHelper:" + errorMessage);
         }
 
-        public long OnExected(IDbCommand cmd, int recordAffected)
+        public long OnExecuted(IDbCommand cmd, int recordAffected)
         {
             long elapsedMilliseconds;
             CurrCommandLog.WriteLog(cmd, "AdoHelper", out elapsedMilliseconds);

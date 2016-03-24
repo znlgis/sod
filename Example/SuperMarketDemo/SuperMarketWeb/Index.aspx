@@ -31,7 +31,8 @@
             <asp:BoundField DataField="SerialNumber" HeaderText="条码号" />
             <asp:BoundField DataField="GoodsPrice" HeaderText="售价" />
             <asp:BoundField DataField="MakeOnDate" HeaderText="生产日期" />
-            <asp:BoundField DataField="CanUserMonth" HeaderText="保质期" />
+            <asp:BoundField DataField="CanUserMonth" HeaderText="保质期（月）" />
+            <asp:BoundField DataField="ExpireDate" HeaderText="过期时间" />
             <asp:BoundField DataField="Stocks" HeaderText="库存数量" />
            
         </Columns>
