@@ -268,7 +268,8 @@ namespace SuperMarketBLL
                 MakeOnDate=stock.MakeOnDate,
                 CanUserMonth=bInfo.CanUserMonth,
                 Stocks=stock.Stocks,
-                GoodsID=stock.GoodsID
+                GoodsID=stock.GoodsID,
+                ExpireDate = stock.MakeOnDate.AddMonths(bInfo.CanUserMonth)
             });
             return result;
         }

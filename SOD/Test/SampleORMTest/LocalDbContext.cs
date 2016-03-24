@@ -53,7 +53,7 @@ namespace SampleORMTest
             
         }
 
-        public long OnExected(System.Data.IDbCommand cmd, int recordAffected)
+        public long OnExecuted(System.Data.IDbCommand cmd, int recordAffected)
         {
             return 1;
         }

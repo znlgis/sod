@@ -743,7 +743,7 @@ namespace PWMIS.DataProvider.Data
                 {
                     if (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
                     {
-                        long result = handle.OnExected(cmd,recordAffected );
+                        long result = handle.OnExecuted(cmd,recordAffected );
                         if (handle is CommandExecuteLogHandle)
                             this._elapsedMilliseconds = result;
                     }
