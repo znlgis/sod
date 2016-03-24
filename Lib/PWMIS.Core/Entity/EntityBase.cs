@@ -83,12 +83,38 @@ using PWMIS.Core;
 namespace PWMIS.DataMap.Entity
 {
     /// <summary>
-    /// PDF.NET 5.1 实体类基础类
+    /// PDF.NET 5.5 实体类基础类
     /// </summary>
-    //[System.SerializableAttribute()]
-    //[System.Runtime.Serialization.DataContract(Namespace = "http://schemas.datacontract.org/2004/07/")]
     public abstract class EntityBase : INotifyPropertyChanged, ICloneable, PWMIS.Common.IEntity
     {
+        #region 构造和初始化
+        /// <summary>
+        /// 默认构造函数
+        /// </summary>
+        public EntityBase()
+        {
+            InitMetaDataExt();
+        }
+
+        /// <summary>
+        /// 初始化元数据扩展，比如在此中手工设置子实体类与父实体类的外键关系，
+        /// 如果在用户的分部类文件中重写该方法，可以防止代码生成器覆盖该方法
+        /// </summary>
+        protected virtual void InitMetaDataExt()
+        {
+
+        }
+
+        /// <summary>
+        /// 获取实体类的全局标识，建议实体类具体实现类重写该方法，默认取类型全名称
+        /// </summary>
+        /// <returns></returns>
+        public virtual string GetGolbalEntityID()
+        {
+            return GetType().FullName;
+        }
+        #endregion
+
         #region 处理字符串属性与对应列的长度映射
         //为字符串字段指定长度，将有利于查询提高效率 edit at 2012.4.23
         protected internal static Dictionary<string, int> StringFieldSize = new Dictionary<string, int>();
@@ -512,6 +538,19 @@ namespace PWMIS.DataMap.Entity
 
         #endregion
 
+        #region ICloneable 成员
+        /// <summary>
+        /// 获取当前对象的浅表副本
+        /// </summary>
+        /// <returns>当前对象的浅表副本</returns>
+        public object Clone()
+        {
+            object newObj = this.MemberwiseClone();
+            return newObj;
+        }
+
+        #endregion
+
         #region 获取或者设置属性值
         /// <summary>
         /// 获取属性值
@@ -629,10 +668,46 @@ namespace PWMIS.DataMap.Entity
         }
 
         #endregion
-        
+
+        #region 设置属性值的多个重载相关
+        /// <summary>
+        /// 设置属性值
+        /// </summary>
+        /// <param name="propertyFieldName">属性字段名</param>
+        /// <param name="Value">要设置的值</param>
         protected internal void setProperty(string propertyFieldName, object Value)
         {
-            setPropertyValueAndLength(propertyFieldName, Value, 0);
+            setPropertyValueAndLength(propertyFieldName,-1, Value, 0);
+        }
+
+        /// <summary>
+        /// 根据属性字段名和属性的索引号设置属性的值，用于快速设置属性值的情况
+        /// </summary>
+        /// <param name="propertyFieldName">属性字段名</param>
+        /// <param name="propertyIndex">属性的索引号</param>
+        /// <param name="Value">要设置的值</param>
+        protected internal void setProperty(string propertyFieldName,int propertyIndex, object Value)
+        {
+            setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, 0);
+        }
+
+        /// <summary>
+        /// 设置字符串属性的值，如果值是字符类型且设置了最大长度大于0，那么不允许设置大于此长度的字符串
+        /// </summary>
+        /// <param name="propertyFieldName">属性字段名</param>
+        /// <param name="Value">要设置的值</param>
+        /// <param name="maxLength">字段最大长度，如果为负数，将生成varchar类型的参数</param>
+        protected internal void setProperty(string propertyFieldName, string Value, int maxLength)
+        {
+            setProperty(propertyFieldName, -1, Value, maxLength);
+        }
+
+        protected internal void setProperty(string propertyFieldName, int propertyIndex, string Value, int maxLength)
+        {
+            if (Value != null && maxLength > 0 && Value.Length > maxLength)
+                throw new Exception("字段" + propertyFieldName + "的实际长度超出了最大长度" + maxLength);
+            else
+                setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, maxLength);
         }
 
         /// <summary>
@@ -641,7 +716,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="propertyFieldName">属性字段名称</param>
         /// <param name="Value">属性值</param>
         /// <param name="length"></param>
-        private void setPropertyValueAndLength(string propertyFieldName, object Value,int length)
+        private void setPropertyValueAndLength(string propertyFieldName,int propertyIndex, object Value,int length)
         {
             //
             //if (_IsTestWriteProperty)
@@ -669,7 +744,11 @@ namespace PWMIS.DataMap.Entity
             //}
             //用下面的代码替代 GetPropertyFieldNameIndex
 
-            int index = GetPropertyFieldNameIndex(propertyFieldName);
+            int index = -1;
+            if (propertyIndex >= 0 && propertyValueIndex != null)
+                index = propertyValueIndex[propertyIndex];
+            if(index==-1)
+                index = GetPropertyFieldNameIndex(propertyFieldName);
             if (index >= 0)
             {
                 PropertyValues[index] = Value;
@@ -720,25 +799,8 @@ namespace PWMIS.DataMap.Entity
             //原来的代码已经优化
           
         }
-
-        /// <summary>
-        /// 设置属性，如果值是字符类型且设置了最大长度大于0，那么不允许设置大于此长度的字符串
-        /// </summary>
-        /// <param name="propertyFieldName">字段名称</param>
-        /// <param name="Value">值</param>
-        /// <param name="maxLength">最大长度，如果为负数，将生成varchar类型的参数</param>
-        protected internal void setProperty(string propertyFieldName, string Value, int maxLength)
-        {
-            //string key = string.Format("{0}_{1}", ownerName,fieldName);
-            //string key = string.Format("{0}_{1}",this.GetType().FullName, propertyFieldName);
-            //StringFieldSize[key] = maxLength;
-            //SetStringFieldSize(propertyFieldName, maxLength);
-
-            if (Value != null && maxLength > 0 && Value.Length > maxLength)
-                throw new Exception("字段" + propertyFieldName + "的实际长度超出了最大长度" + maxLength);
-            else
-                setPropertyValueAndLength(propertyFieldName, Value,maxLength);
-        }
+        
+        #endregion
 
         /// <summary>
         /// 获取实体类的属性名值对对象
@@ -810,19 +872,6 @@ namespace PWMIS.DataMap.Entity
 
         #endregion
 
-        #region ICloneable 成员
-        /// <summary>
-        /// 获取当前对象的浅表副本
-        /// </summary>
-        /// <returns>当前对象的浅表副本</returns>
-        public object Clone()
-        {
-            object newObj = this.MemberwiseClone();
-            return newObj;
-        }
-
-        #endregion
-
         #region 索引器
         /// <summary>
         /// 获取或者设置指定属性名称的值，属性名必须是一个PDF.NET实体类的属性（调用了getProperty 和 setProperty方法），不能是普通属性。
@@ -887,32 +936,7 @@ namespace PWMIS.DataMap.Entity
         }
         #endregion
 
-        /// <summary>
-        /// 默认构造函数
-        /// </summary>
-        public EntityBase()
-        {
-            InitMetaDataExt();
-        }
-
-        /// <summary>
-        /// 初始化元数据扩展，比如在此中手工设置子实体类与父实体类的外键关系，
-        /// 如果在用户的分部类文件中重写该方法，可以防止代码生成器覆盖该方法
-        /// </summary>
-        protected virtual void InitMetaDataExt()
-        { 
-        
-        }
-
-        /// <summary>
-        /// 获取实体类的全局标识，建议实体类具体实现类重写该方法，默认取类型全名称
-        /// </summary>
-        /// <returns></returns>
-        public virtual string GetGolbalEntityID()
-        {
-            return GetType().FullName;
-        }
-
+        #region 外键处理
         /// <summary>
         /// 设置对应于父实体类的外键字段名称
         /// </summary>
@@ -942,7 +966,11 @@ namespace PWMIS.DataMap.Entity
             return "";
         }
 
-        /// <summary>
+        #endregion
+
+        #region 实体类跟POCO类的相互映射
+
+      /// <summary>
         /// 从POCO实体类获取跟当前实体类的属性名称相同的属性的值，拷贝到当前实体类中，完成数据的映射。
         /// 要求拷贝的同名属性是读写属性且类型相同。
         /// </summary>
@@ -1016,5 +1044,8 @@ namespace PWMIS.DataMap.Entity
             }
             return count;
         }
+
+      #endregion
+
     }
 }
