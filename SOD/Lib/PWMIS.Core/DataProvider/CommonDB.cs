@@ -695,7 +695,7 @@ namespace PWMIS.DataProvider.Data
         /// <summary>
         /// 注册一个命令处理器
         /// </summary>
-        /// <param name="handles"></param>
+        /// <param name="handle">命令处理器实例对象</param>
         public void RegisterCommandHandle(ICommandHandle handle)
         {
             if (handle != null)

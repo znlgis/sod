@@ -28,26 +28,26 @@ namespace SuperMarketDAL.Entitys
 
         public string SerialNumber
         {
-            get { return getProperty<string>("条码号"); }
-            set { setProperty("条码号", value); }
+            get { return getProperty<string>("条码号",0); }
+            set { setProperty("条码号",0, value); }
         }
 
         public string GoodsName
         {
-            get { return getProperty<string>("商品名称"); }
-            set { setProperty("商品名称", value); }
+            get { return getProperty<string>("商品名称",1); }
+            set { setProperty("商品名称",1, value); }
         }
       
         public string Manufacturer
         {
-            get { return getProperty<string>("厂商名称"); }
-            set { setProperty("厂商名称", value); }
+            get { return getProperty<string>("厂商名称",2); }
+            set { setProperty("厂商名称",2, value); }
         }
 
         public int CanUserMonth
         {
-            get { return getProperty<int>("保质期"); }
-            set { setProperty("保质期", value); }
+            get { return getProperty<int>("保质期",3); }
+            set { setProperty("保质期",3, value); }
         }
     }
 
