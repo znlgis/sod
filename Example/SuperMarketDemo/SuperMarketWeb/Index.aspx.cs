@@ -49,7 +49,7 @@ namespace SuperMarketWeb
             ViewState["BuyGoodsName"] = GridView1.SelectedRow.Cells[3].Text;
             ViewState["SerialNumber"] = GridView1.SelectedRow.Cells[4].Text;
 
-            int stocks = int.Parse(GridView1.SelectedRow.Cells[8].Text);
+            int stocks = int.Parse(GridView1.SelectedRow.Cells[9].Text);
             ViewState["Stocks"] = stocks;
             btnBuy.Enabled = stocks > 0;
             btnEditBuyCount.Enabled = true;

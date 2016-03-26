@@ -8,6 +8,7 @@ namespace PWMIS.DataProvider.Data
 {
     /// <summary>
     /// 查询命令处理器接口
+    /// 可以参见 http://www.cnblogs.com/bluedoctor/p/5278995.html
     /// </summary>
     public interface ICommandHandle
     {
@@ -36,6 +37,7 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         /// <param name="cmd"></param>
         /// <param name="recordAffected">命令执行的受影响记录行数</param>
+        /// <returns>返回执行时间或者其它信息</returns>
         long OnExecuted(IDbCommand cmd, int recordAffected);
     }
 
