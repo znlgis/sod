@@ -166,7 +166,8 @@ namespace PWMIS.Core
                             sqlSeparator = true;
 
                         //需要处理[] 之间的的字符串
-                        if (c == '.' || c == '_' || c == '-' || c == leftSqlSeparator || c == rightSqlSeparator)
+                        //感谢网友 “福州初学者” 发现多表查询使用 * 号查询的问题，2016.3.31
+                        if (c == '*' || c == '.' || c == '_' || c == '-' || c == leftSqlSeparator || c == rightSqlSeparator)
                         {
                             words[index++] = c;//放入字母，找单词
                         }
