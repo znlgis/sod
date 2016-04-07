@@ -1282,6 +1282,7 @@ namespace PWMIS.DataProvider.Data
             _connection = null;
             _transation = null;
             sessionConnection = null;
+            Logger.Dispose(); 
         }
 
     }

@@ -22,20 +22,29 @@
  * 
  * 修改者：         时间：2010-4-13                
  * 修改说明：       增加适时查看执行的SQL属性 CommandText
+ * 
+ * 修改者：         时间：2016-4-7                
+ * 修改说明：       批量写入日志
  * ========================================================================
 */
 using System;
 using System.IO ;
 using System.Data ;
 using PWMIS.Core;
+using System.Collections.Generic;
 
 namespace PWMIS.DataProvider.Data
 {
 	/// <summary>
-	/// 命令对象日志2008.7.18 增加线程处理,2011.5.9 增加执行时间记录
+    /// 命令对象日志2008.7.18 增加线程处理,2011.5.9 增加执行时间记录 2016.4.7 增加批量写入功能
 	/// </summary>
 	public class CommandLog : PWMIS.Common.ICommonLog
 	{
+        private List<string> _logBuffer = new List<string>();
+        private DateTime _lastWrite=DateTime.Now ;
+        private const int WriteTime = 30;//30秒写入一次
+        private const int BufferCount = 20;//每20条写入一次
+
 		//日志相关
         private static  string _dataLogFile;
         /// <summary>
@@ -261,39 +270,52 @@ namespace PWMIS.DataProvider.Data
 		}
 
 		/// <summary>
-		/// 写入日志
+		/// 批量写入日志
 		/// </summary>
 		/// <param name="log"></param>
 		private void WriteLog(string log)
 		{
-            //edit at 2012.10.17 改成无锁异步写如日志文件
-            using (FileStream fs = new FileStream(DataLogFile, FileMode.Append, FileAccess.Write, FileShare.Write, 1024, FileOptions.Asynchronous))
+            if (!string.IsNullOrEmpty(log))
+                _logBuffer.Add(log);
+
+            if (_logBuffer.Count >0 && ( DateTime.Now.Subtract(_lastWrite).TotalSeconds > WriteTime || _logBuffer.Count > BufferCount))
             {
-                byte[] buffer = System.Text.Encoding.UTF8.GetBytes(log + "\r\n");
-                IAsyncResult writeResult = fs.BeginWrite(buffer, 0, buffer.Length,
-                    (asyncResult) =>
-                    {
-                        FileStream fStream = (FileStream)asyncResult.AsyncState;
-                        fStream.EndWrite(asyncResult);
-                        //fs.Close();//这里加了会报错
-                    },
-                    fs);
-                //fs.EndWrite(writeResult);//这种方法异步起不到效果
-                fs.Flush();
-                //fs.Close();//可以不用加
+                List<string> tempList = _logBuffer;
+                _logBuffer = new List<string>();
+                System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                foreach (string item in tempList)
+                {
+                    sb.Append(item);
+                    sb.Append("\r\n");
+                }
+                string writeText = sb.ToString ();
+
+                //edit at 2012.10.17 改成无锁异步写如日志文件
+                using (FileStream fs = new FileStream(DataLogFile, FileMode.Append, FileAccess.Write, FileShare.Write, 2048, FileOptions.Asynchronous))
+                {
+                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes(writeText );
+                    IAsyncResult writeResult = fs.BeginWrite(buffer, 0, buffer.Length,
+                        (asyncResult) =>
+                        {
+                            FileStream fStream = (FileStream)asyncResult.AsyncState;
+                            fStream.EndWrite(asyncResult);
+                            //fs.Close();//这里加了会报错
+                        },
+                        fs);
+                    //fs.EndWrite(writeResult);//这种方法异步起不到效果
+                    fs.Flush();
+                    //fs.Close();//可以不用加
+                }
             }
-
-            //lock (lockObj)
-            //{
-
-            //    //using (StreamWriter sw = File.AppendText(DataLogFile))
-            //    //{
-
-            //    //    sw.WriteLine(log);
-            //    //    sw.Flush();
-            //    //    sw.Close();
-            //    //}
-            //}
 		}
-	}
+
+        /// <summary>
+        /// 将日志全部写入
+        /// </summary>
+        public void Dispose()
+        {
+            _lastWrite = DateTime.Now.AddMinutes(-10);
+            WriteLog(null);
+        }
+    }
 }
