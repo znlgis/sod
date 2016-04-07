@@ -159,6 +159,8 @@ namespace PWMIS.DataMap.Entity
                     //都在SQLpage.cs
                     object oValue = EntityQueryAnonymous.ExecuteOQLCount(oql, db);
                     oql.PageWithAllRecordCount = CommonUtil.ChangeType<int>(oValue);
+                    if (oql.PageWithAllRecordCount == 0)
+                        return null;
                 }
 
                 #region 下面代码已经重构
@@ -235,9 +237,6 @@ namespace PWMIS.DataMap.Entity
                 reader = db.ExecuteDataReader(sql);
             }
             return reader;
-               
- 
-
         }
 
         /// <summary>
@@ -260,31 +259,35 @@ namespace PWMIS.DataMap.Entity
         public int Execute(IDataReader reader)
         {
             List<object[]> list = new List<object[]>();
-            using (reader)
+            if (reader != null)
             {
-                int fcount = reader.FieldCount;
-                fieldNames = new string[fcount];
-                fieldTypes=new Type[fcount];
-                if (reader.Read())
+                using (reader)
                 {
-
-                    object[] values = null;
-
-                    for (int i = 0; i < fcount; i++)
+                    int fcount = reader.FieldCount;
+                    fieldNames = new string[fcount];
+                    fieldTypes = new Type[fcount];
+                    if (reader.Read())
                     {
-                        fieldNames[i] = reader.GetName(i);
-                        fieldTypes[i] = reader.GetFieldType(i);
+
+                        object[] values = null;
+
+                        for (int i = 0; i < fcount; i++)
+                        {
+                            fieldNames[i] = reader.GetName(i);
+                            fieldTypes[i] = reader.GetFieldType(i);
+                        }
+
+                        do
+                        {
+                            values = new object[fcount];
+                            reader.GetValues(values);
+                            list.Add(values);
+                        } while (reader.Read());
+
                     }
-
-                    do
-                    {
-                        values = new object[fcount];
-                        reader.GetValues(values);
-                        list.Add(values);
-                    } while (reader.Read());
-
                 }
             }
+            
             this.Values = list;
             return list.Count;
         }
@@ -494,12 +497,19 @@ namespace PWMIS.DataMap.Entity
                 this.Execute();
             if (this.Values != null && this.fieldNames != null)
             {
-                foreach (object[] itemValues in this.Values)
+                if (this.Values.Count == 0)
                 {
-                    TResult t = new TResult();
-                    this.currValue = itemValues;
-                    fun(t);
-                    yield return t;
+                    yield break;
+                }
+                else
+                {
+                    foreach (object[] itemValues in this.Values)
+                    {
+                        TResult t = new TResult();
+                        this.currValue = itemValues;
+                        fun(t);
+                        yield return t;
+                    }
                 }
             }
             else
