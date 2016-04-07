@@ -240,6 +240,8 @@ namespace SuperMarketBLL
                 .OrderBy(bInfo.GoodsName, "asc")
                 .END;
 
+            joinQ.Limit(3, 2);
+
             PWMIS.DataProvider.Data.AdoHelper db = PWMIS.DataProvider.Adapter.MyDB.GetDBHelper();
             EntityContainer ec = new EntityContainer(joinQ, db);
            

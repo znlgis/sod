@@ -543,10 +543,27 @@ namespace PWMIS.DataMap.Entity
         /// 获取当前对象的浅表副本
         /// </summary>
         /// <returns>当前对象的浅表副本</returns>
+        public object Clone(bool isDeep)
+        {
+            object result= this.MemberwiseClone();
+            if (isDeep)
+            {
+                EntityBase entity = (EntityBase)result;
+                object[] Values = new object[this.PropertyNames.Length];
+                for (int i = 0; i < Values.Length; i++)
+                    Values[i] = this.PropertyValues[i];
+                entity.SetPropertyValues(Values);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 返回当前对象的副本
+        /// </summary>
+        /// <returns></returns>
         public object Clone()
         {
-            object newObj = this.MemberwiseClone();
-            return newObj;
+            return Clone(true );
         }
 
         #endregion
