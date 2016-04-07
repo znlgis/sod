@@ -854,7 +854,7 @@ namespace PWMIS.DataMap.SqlMap
                             values = new object[fcount];
                             reader.GetValues(values);
 
-                            EntityBase item = (EntityBase)result.Clone();
+                            EntityBase item = (EntityBase)result.Clone(false );
                             item.PropertyNames = names;
                             item.PropertyValues = values;
 

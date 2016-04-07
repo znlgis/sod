@@ -742,7 +742,7 @@ namespace PWMIS.DataMap.Entity
                         object[] values = new object[fcount];
                         reader.GetValues(values);
 
-                        T t = (T)t0.Clone();
+                        T t = (T)t0.Clone(false );
 
                         //t.PropertyNames = names;
                         t.PropertyValues = values;
@@ -1673,7 +1673,7 @@ namespace PWMIS.DataMap.Entity
                             object[] values = new object[fcount];
                             reader.GetValues(values);
 
-                            EntityBase entityNew = (EntityBase)entity.Clone();
+                            EntityBase entityNew = (EntityBase)entity.Clone(false );
                             entityNew.PropertyValues = values;
 
                             list.Add(entityNew as T);

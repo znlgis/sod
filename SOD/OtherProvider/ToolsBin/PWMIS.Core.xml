@@ -1133,7 +1133,7 @@
             <summary>
             注册一个命令处理器
             </summary>
-            <param name="handles"></param>
+            <param name="handle">命令处理器实例对象</param>
         </member>
         <member name="M:PWMIS.DataProvider.Data.CommonDB.ExecuteNonQuery(System.String,System.Data.CommandType,System.Data.IDataParameter[])">
             <summary>
@@ -1623,6 +1623,7 @@
         <member name="T:PWMIS.DataProvider.Data.ICommandHandle">
             <summary>
             查询命令处理器接口
+            可以参见 http://www.cnblogs.com/bluedoctor/p/5278995.html
             </summary>
         </member>
         <member name="M:PWMIS.DataProvider.Data.ICommandHandle.OnExecuting(PWMIS.DataProvider.Data.CommonDB,System.String@,System.Data.CommandType,System.Data.IDataParameter[])">
@@ -1648,6 +1649,7 @@
             </summary>
             <param name="cmd"></param>
             <param name="recordAffected">命令执行的受影响记录行数</param>
+            <returns>返回执行时间或者其它信息</returns>
         </member>
         <member name="P:PWMIS.DataProvider.Data.ICommandHandle.ApplayDBMSType">
             <summary>
