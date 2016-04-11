@@ -1668,7 +1668,7 @@
         </member>
         <member name="T:PWMIS.DataProvider.Data.CommandLog">
             <summary>
-            命令对象日志2008.7.18 增加线程处理,2011.5.9 增加执行时间记录
+            命令对象日志2008.7.18 增加线程处理,2011.5.9 增加执行时间记录 2016.4.7 增加批量写入功能
             </summary>
         </member>
         <member name="T:PWMIS.Common.ICommonLog">
@@ -1729,9 +1729,14 @@
         </member>
         <member name="M:PWMIS.DataProvider.Data.CommandLog.WriteLog(System.String)">
             <summary>
-            写入日志
+            批量写入日志
             </summary>
             <param name="log"></param>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.CommandLog.Dispose">
+            <summary>
+            将日志全部写入
+            </summary>
         </member>
         <member name="P:PWMIS.DataProvider.Data.CommandLog.DataLogFile">
             <summary>
@@ -2586,11 +2591,17 @@
             <param name="propertyName"></param>
             <returns></returns>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.EntityBase.Clone">
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.Clone(System.Boolean)">
             <summary>
             获取当前对象的浅表副本
             </summary>
             <returns>当前对象的浅表副本</returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.Clone">
+            <summary>
+            返回当前对象的副本
+            </summary>
+            <returns></returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.getProperty(System.String,System.TypeCode)">
             <summary>
