@@ -186,6 +186,7 @@ namespace PWMIS.Common
                     {
                         orderItem.Field = target.Field;
                         orderItem.Alias = target.Alias;
+                       
                         orderItem.InSelect = true;
                     }
                 }
@@ -290,6 +291,7 @@ ORDER BY {3}
                     {
                         orderItem.Field = target.Field;
                         orderItem.Alias = target.Alias;
+                      
                         orderItem.InSelect = true;
                     }
                 }
@@ -353,7 +355,7 @@ ORDER BY {3}
         {
             if (this.OrderFields == null || this.OrderFields.Count == 0)
                 throw new Exception("排序字段为空，可能源SQL语句没有指定，或者没有调用过Build方法");
-            string[] orderExpArr = this.OrderFields.ConvertAll<string>(p => p.ToString()).ToArray();
+            string[] orderExpArr = this.OrderFields.ConvertAll<string>(p => p.ToOutString()).ToArray();
             string orderString = string.Join(",", orderExpArr);
             return orderString;
         }
@@ -366,7 +368,7 @@ ORDER BY {3}
         {
             if (this.OrderFields == null || this.OrderFields.Count == 0)
                 throw new Exception("排序字段为空，可能源SQL语句没有指定，或者没有调用过Build方法");
-            string[] orderExpArr = this.OrderFields.ConvertAll<string>(p => p.ToInverseString()).ToArray();
+            string[] orderExpArr = this.OrderFields.ConvertAll<string>(p => p.ToOutInverseString()).ToArray();
             string orderString = string.Join(",", orderExpArr);
             return orderString;
         }
@@ -446,6 +448,12 @@ ORDER BY {3}
                 , this.IsAsc ?"ASC":"DESC");
         }
 
+        public  string ToOutString()
+        {
+            return string.Format("{0} {1}", string.IsNullOrEmpty(this.Alias) ? getShortFieldName(this.Field) : this.Alias
+                , this.IsAsc ? "ASC" : "DESC");
+        }
+
         /// <summary>
         /// 获取反向的排序表达式
         /// </summary>
@@ -454,6 +462,21 @@ ORDER BY {3}
         {
             return string.Format("{0} {1}", string.IsNullOrEmpty(this.Alias) ? this.Field : this.Alias
                 , this.IsAsc ? "DESC" : "ASC");
+        }
+
+        public string ToOutInverseString()
+        {
+            return string.Format("{0} {1}", string.IsNullOrEmpty(this.Alias) ? getShortFieldName(this.Field) : this.Alias
+                , this.IsAsc ? "DESC" : "ASC");
+        }
+
+        private string getShortFieldName(string field)
+        {
+            string[] arr = field.Split('.');
+            if (arr.Length == 2)
+                return arr[1];
+            else
+                return arr[0];
         }
     }
 

@@ -237,7 +237,7 @@ namespace SuperMarketBLL
             OQL joinQ = OQL.From(bInfo)
                 .Join(stock).On(bInfo.SerialNumber, stock.SerialNumber)
                 .Select()
-                .OrderBy(bInfo.GoodsName, "asc")
+                .OrderBy(bInfo.GoodsName, "asc").OrderBy (bInfo.Manufacturer,"asc" )
                 .END;
 
             joinQ.Limit(3, 2);
