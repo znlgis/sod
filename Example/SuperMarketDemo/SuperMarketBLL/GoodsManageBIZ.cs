@@ -237,10 +237,10 @@ namespace SuperMarketBLL
             OQL joinQ = OQL.From(bInfo)
                 .Join(stock).On(bInfo.SerialNumber, stock.SerialNumber)
                 .Select()
-                .OrderBy(bInfo.GoodsName, "asc").OrderBy (bInfo.Manufacturer,"asc" )
+                .OrderBy(bInfo.SerialNumber , "asc").OrderBy(bInfo.GoodsName, "asc")
                 .END;
 
-            joinQ.Limit(3, 2);
+            joinQ.Limit(3, 3);
 
             PWMIS.DataProvider.Data.AdoHelper db = PWMIS.DataProvider.Adapter.MyDB.GetDBHelper();
             EntityContainer ec = new EntityContainer(joinQ, db);

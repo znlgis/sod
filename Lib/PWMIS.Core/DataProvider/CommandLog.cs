@@ -40,8 +40,8 @@ namespace PWMIS.DataProvider.Data
 	/// </summary>
 	public class CommandLog : PWMIS.Common.ICommonLog
 	{
-        private List<string> _logBuffer = new List<string>();
-        private DateTime _lastWrite=DateTime.Now ;
+        private static  List<string> _logBuffer = new List<string>();
+        private static  DateTime _lastWrite=DateTime.Now ;
         private const int WriteTime = 30;//30秒写入一次
         private const int BufferCount = 20;//每20条写入一次
 
@@ -116,7 +116,7 @@ namespace PWMIS.DataProvider.Data
         
 
 		/// <summary>
-		/// 获取单例对象
+		/// 获取单例对象(不开启执行时间记录)
 		/// </summary>
 		public static CommandLog Instance
 		{
