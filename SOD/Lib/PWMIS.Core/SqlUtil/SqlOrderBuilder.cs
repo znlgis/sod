@@ -231,7 +231,7 @@ namespace PWMIS.Common
                 //改变Order by 子句，生成逆向排序查询
                 string beforOrder = this.sourceSql.Substring(fromIndex, orderBlockPoint.A - fromIndex);
                 string afterOrder = this.sourceSql.Substring(orderBlockPoint.B);
-                string InverseOrderString = "\r\n ORDER BY " + this.GetInverseOrderExpString() + "\r\n";
+                string InverseOrderString = "\r\n ORDER BY " + this.GetLastInverseOrderExpString() + "\r\n";
                 sb.Append(beforOrder);
                 sb.Append(InverseOrderString);
                 sb.Append(afterOrder);
@@ -369,6 +369,19 @@ ORDER BY {3}
             if (this.OrderFields == null || this.OrderFields.Count == 0)
                 throw new Exception("排序字段为空，可能源SQL语句没有指定，或者没有调用过Build方法");
             string[] orderExpArr = this.OrderFields.ConvertAll<string>(p => p.ToOutInverseString()).ToArray();
+            string orderString = string.Join(",", orderExpArr);
+            return orderString;
+        }
+
+        /// <summary>
+        /// 获取分页去最后一页逆排序表达式字符串
+        /// </summary>
+        /// <returns></returns>
+        public string GetLastInverseOrderExpString()
+        {
+            if (this.OrderFields == null || this.OrderFields.Count == 0)
+                throw new Exception("排序字段为空，可能源SQL语句没有指定，或者没有调用过Build方法");
+            string[] orderExpArr = this.OrderFields.ConvertAll<string>(p => p.ToInverseString()).ToArray();
             string orderString = string.Join(",", orderExpArr);
             return orderString;
         }
