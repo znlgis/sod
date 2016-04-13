@@ -287,7 +287,10 @@ namespace PWMIS.DataMap.Entity
                     }
                 }
             }
-            
+            else
+            {
+                fieldNames = new string[0];//避免抛异常
+            }
             this.Values = list;
             return list.Count;
         }
