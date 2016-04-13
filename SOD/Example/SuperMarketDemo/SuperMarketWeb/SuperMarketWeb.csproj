@@ -70,6 +70,8 @@
     <Content Include="App_Data\SqlSuperMarket_log.LDF">
       <DependentUpon>SqlSuperMarket.mdf</DependentUpon>
     </Content>
+    <Content Include="App_Data\SuperMarket.accdb" />
+    <Content Include="App_Data\SuperMarket.mdb" />
     <Content Include="Calendar\calendar.htm" />
     <Content Include="Calendar\calendar.js" />
     <Content Include="Calendar\DateDialog.js" />
