@@ -71,6 +71,9 @@
  *  
  *  *修改者：         时间：2016-3-23  
  *  新增 属性索引功能，加快实体类在多次使用的情况下的属性访问效率
+ *  
+ *  * 修改者：         时间：2016-4-30  
+ *  新增 属性字段描述功能，代码生成器可以将数据库表设计的字段说明信息生成到实体类上，方便运行时获取该信息。
  * ========================================================================
 */
 using System;
@@ -118,6 +121,7 @@ namespace PWMIS.DataMap.Entity
         #region 处理字符串属性与对应列的长度映射
         //为字符串字段指定长度，将有利于查询提高效率 edit at 2012.4.23
         protected internal static Dictionary<string, int> StringFieldSize = new Dictionary<string, int>();
+        protected internal static Dictionary<string, string> PropertyDesciption = new Dictionary<string, string>();
         /// <summary>
         /// 寻找字符串字段的长度，如果找不到，返回0，表示未指定
         /// </summary>
@@ -182,6 +186,57 @@ namespace PWMIS.DataMap.Entity
             EntityFields ef=EntityFieldsCache.Item(this.GetType());
             this.names = ef.Fields;
         }
+
+        /// <summary>
+        /// 获取字段描述信息，默认无，如果需要请在具体的实现类里面重写该方法。
+        /// 代码生成器可能会重写该方法。
+        /// </summary>
+        /// <returns></returns>
+        protected internal virtual string[] SetFieldDescriptions()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// 获取所有字段的描述，跟字段名一一对应
+        /// </summary>
+        /// <returns></returns>
+        public string[] GetFieldDescriptions()
+        {
+            string[] desc = this.SetFieldDescriptions();
+            if (desc == null)
+            {
+                EntityFields ef = EntityFieldsCache.Item(this.GetType());
+                desc = ef.FieldDescriptions;
+                if (desc == null)
+                    throw new NotImplementedException("实体类没有重写实现 SetFieldDescriptions 方法。");
+            }
+            return desc;
+        }
+
+        /// <summary>
+        /// 获取指定字段名对应的描述
+        /// </summary>
+        /// <param name="fieldName">字段名</param>
+        /// <returns>字段描述</returns>
+        public string GetFieldDescription(string fieldName)
+        {
+            int index = -1;
+            EntityFields ef = EntityFieldsCache.Item(this.GetType());
+            for (int i=0;i<ef.Fields.Length;i++)
+            {
+                string s = ef.Fields[i];
+                if (s == fieldName)
+                {
+                    index = i;
+                    break;
+                }
+            }
+            if (index == -1)
+                throw new ArgumentOutOfRangeException(fieldName+" 不在实体类定义的字段范围内。");
+            return GetFieldDescriptions()[index];
+        }
+
 
         //[NonSerialized()] 
         private string _identity = string.Empty;
