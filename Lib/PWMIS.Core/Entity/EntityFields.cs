@@ -42,6 +42,7 @@ namespace PWMIS.DataMap.Entity
         private string currPropName = null;
         private string[] fields = null;
         private string[] propertyNames = null;
+        private string[] fieldDescriptions = null;
         private Type[] typeNames = null;
         private string tableName = null;
         private Type entityType = null;//当前实体类类型
@@ -56,6 +57,22 @@ namespace PWMIS.DataMap.Entity
         public string[] Fields
         {
             get { return fields; }
+        }
+
+        /// <summary>
+        /// 获取或者设置字段对应的描述，跟 Fields相对应，优先采用实体类自身的定义
+        /// </summary>
+        public string[] FieldDescriptions
+        {
+            get {
+                if (fieldDescriptions == null)
+                {
+                     EntityBase   entity = Activator.CreateInstance(this.entityType) as EntityBase;
+                     fieldDescriptions = entity.SetFieldDescriptions();
+                }
+                return fieldDescriptions; 
+            }
+            set { fieldDescriptions = value; }
         }
 
         /// <summary>

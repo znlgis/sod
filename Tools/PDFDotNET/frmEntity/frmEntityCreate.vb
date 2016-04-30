@@ -22,7 +22,7 @@ Public Class frmEntityCreate
         <FileHead>
             <![CDATA[
 ''' 
-''本类由PWMIS 实体类生成工具(适用于 PWMIS.Core Version: 5.3 以上)自动生成
+''本类由PWMIS 实体类生成工具(适用于 PWMIS.Core Version: 5.5.4 以上)自动生成
 ''http://www.pwmis.com/sqlmap
 ''使用前请先在项目工程中引用 PWMIS.Core.dll
 ''%DateTime%
@@ -78,6 +78,12 @@ namespace [NameSpace]
       protected override void SetFieldNames()
       {
            PropertyNames = new string[] { %PropertyNames% };
+      }
+
+      protected override string[] SetFieldDescriptions()
+      {
+           //字段对应的描述
+           return new string[] { %FieldDescriptions% };
       }
 ]]>
             </AddProperty>
@@ -135,6 +141,11 @@ End NameSpace
     
            PropertyNames =  New String() { %PropertyNames% }
    End Sub
+
+   Protected Overrides Function SetFieldDescriptions() As String()
+           //字段对应的描述
+           return New String() { %FieldDescriptions% };
+   End Function
 
 ]]>
             </AddProperty>
@@ -254,6 +265,7 @@ End NameSpace
        
 
         Dim perpertyNames As String = ""
+        Dim fieldDescriptions As String = ""
         For Each col As DataColumn In dt.Columns
             Dim strLength As String = IIf(col.MaxLength > 0, "," & col.MaxLength, "")
             Dim fieldDesc As String = ""
@@ -273,9 +285,11 @@ End NameSpace
                     .Replace("[FieldDesc]", fieldDesc)
 
             perpertyNames += """" & col.ColumnName & ""","
+            fieldDescriptions += """" & fieldDesc & ""","
         Next
 
         str2 = addProp.Replace("%PropertyNames%", perpertyNames.TrimEnd(","c))
+        str2 = str2.Replace("%FieldDescriptions%", fieldDescriptions.TrimEnd(","c))
         classText = classText.Replace("%Propertys%", str).Replace("%AddProperty%", str2)
 
        
