@@ -77,6 +77,13 @@ namespace EntityTest
             Console.WriteLine("user[\"Age\"] == null :{0}", flag);
             Console.WriteLine("user.Age:{0}", user3.Age);
 
+            //模糊查询测试
+            OQL q5 = OQL.From(uq)
+             .Select(uq.UserID, uq.FirstName,uq.LasttName ) //未查询 user.Age 字段
+             .Where(cmp=>cmp.Comparer (uq.LasttName,"like","%san456789%"))
+            .END;
+            UserEntity user5 = context.UserQuery.GetObject(q5);
+
             Console.WriteLine("实体类序列化测试");
             var entityNameValues= user3.GetNameValues();
             //序列化之后的属性是否修改的情况测试,下面的实体类,LastName 属性没有被修改

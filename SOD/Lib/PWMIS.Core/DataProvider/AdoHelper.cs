@@ -18,6 +18,10 @@
  * 
  * 修改者：         时间：2015-2-15                
  * 修改说明：新增  List<T> QueryList<T>(string sqlFormat, params object[] parameters) 方法，以增强对“微型ORM”的支持。
+ * 
+ * 修改者：         时间：2016-5-7                
+ * 修改说明：新增  ExecuteMapper 方法，以增强对“微型ORM”的支持。
+ * 
  * ========================================================================
 */
 using System;
@@ -33,7 +37,7 @@ namespace PWMIS.DataProvider.Data
     /// </summary>
 	public abstract class AdoHelper:CommonDB
 	{
-        public delegate TResult Func<T,TResult>(T arg);
+        //public delegate TResult Func<T,TResult>(T arg);
 
 		/// <summary>
 		/// 默认构造函数
@@ -217,7 +221,7 @@ namespace PWMIS.DataProvider.Data
         #endregion
 
         /// <summary>
-        /// 根据查询，获取对象列表
+        /// 根据查询，获取对象列表（已经过时）
         /// <example>
         /// <code>
         /// <![CDATA[
@@ -241,7 +245,8 @@ namespace PWMIS.DataProvider.Data
         /// <param name="sqlFormat">SQL 格式控制语句</param>
         /// <param name="parameters">用于替换的参数</param>
         /// <returns>对象列表</returns>
-        public IList<TResult> GetList<TResult>(Func<IDataReader, TResult> fun, string sqlFormat, params object[] parameters) where TResult : class
+        [Obsolete("该方法已经过时，请使用 ExecuteMapper方法")]
+        public IList<TResult> GetList<TResult>(MyFunc<IDataReader, TResult> fun, string sqlFormat, params object[] parameters) where TResult : class
         {
             List<TResult> resultList = new List<TResult>();
             using (IDataReader reader = FormatExecuteDataReader(sqlFormat, parameters))
@@ -253,6 +258,30 @@ namespace PWMIS.DataProvider.Data
                 }
             }
             return resultList;
+        }
+
+        /// <summary>
+        /// 根据查询语句和参数，执行数据读取映射器，以便将结果映射到一个列表
+        /// <example>
+        /// <![CDATA[
+        ///   AdoHelper dbLocal = new SqlServer();
+        ///   dbLocal.ConnectionString = "Data Source=.;Initial Catalog=LocalDB;Integrated Security=True";
+        ///   var dataList = dbLocal.ExecuteMapper("SELECT UID,Name FROM Table_User WHERE Sex={0} And Height>={0:5.2}", 1, 1.60)
+        ///                          .MapToList(reader => new
+        ///                          {
+        ///                              UID = reader.GetInt32(0),
+        ///                              Name = reader.GetString(1)
+        ///                          });
+        /// ]]>
+        /// </example>
+        /// </summary>
+        /// <param name="sqlFormat">带格式化占位符的SQL语句</param>
+        /// <param name="parameters">SQL语句中的参数</param>
+        /// <returns></returns>
+        public DataReaderMapper ExecuteMapper(string sqlFormat, params object[] parameters) 
+        {
+            IDataReader reader = FormatExecuteDataReader(sqlFormat, parameters);
+            return new DataReaderMapper(reader);
         }
 
         /// <summary>
@@ -352,6 +381,42 @@ namespace PWMIS.DataProvider.Data
         {
             IDataReader reader = FormatExecuteDataReader(sqlFormat, parameters);
             return QueryList<T>(reader);
+        }
+    }
+
+    /// <summary>
+    /// 数据阅读映射器
+    /// </summary>
+    public class DataReaderMapper
+    {
+        private IDataReader dataReader;
+        /// <summary>
+        /// 以一个数据阅读器初始化本类
+        /// </summary>
+        /// <param name="reader"></param>
+        public DataReaderMapper(IDataReader reader)
+        {
+            dataReader = reader;
+        }
+
+        /// <summary>
+        /// 将数据阅读器的结果映射到列表
+        /// </summary>
+        /// <typeparam name="TResult">结果类型</typeparam>
+        /// <param name="fun"></param>
+        /// <returns></returns>
+        public IList<TResult> MapToList<TResult>(MyFunc<IDataReader, TResult> fun) where TResult : class
+        {
+            List<TResult> resultList = new List<TResult>();
+            using (this.dataReader)
+            {
+                while (dataReader.Read())
+                {
+                    TResult t = fun(dataReader);
+                    resultList.Add(t);
+                }
+            }
+            return resultList;
         }
     }
 }

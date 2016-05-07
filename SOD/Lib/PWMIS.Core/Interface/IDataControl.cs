@@ -77,14 +77,7 @@ namespace PWMIS.Common
 			set;
 		}
 
-		/// <summary>
-		/// 是否客户端验证
-		/// </summary>
-//		bool isClientValidation
-//		{
-//			get;
-//			set;
-//		}
+
 
 		/// <summary>
 		/// 是否允许空值

@@ -1498,9 +1498,9 @@
             <param name="parameters">要替换的参数</param>
             <returns>返回的单值结果</returns>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.AdoHelper.GetList``1(PWMIS.DataProvider.Data.AdoHelper.Func{System.Data.IDataReader,``0},System.String,System.Object[])">
+        <member name="M:PWMIS.DataProvider.Data.AdoHelper.GetList``1(PWMIS.Common.MyFunc{System.Data.IDataReader,``0},System.String,System.Object[])">
             <summary>
-            根据查询，获取对象列表
+            根据查询，获取对象列表（已经过时）
             <example>
             <code>
             <![CDATA[
@@ -1524,6 +1524,26 @@
             <param name="sqlFormat">SQL 格式控制语句</param>
             <param name="parameters">用于替换的参数</param>
             <returns>对象列表</returns>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.AdoHelper.ExecuteMapper(System.String,System.Object[])">
+            <summary>
+            根据查询语句和参数，执行数据读取映射器，以便将结果映射到一个列表
+            <example>
+            <![CDATA[
+              AdoHelper dbLocal = new SqlServer();
+              dbLocal.ConnectionString = "Data Source=.;Initial Catalog=LocalDB;Integrated Security=True";
+              var dataList = dbLocal.ExecuteMapper("SELECT UID,Name FROM Table_User WHERE Sex={0} And Height>={0:5.2}", 1, 1.60)
+                                     .MapToList(reader => new
+                                     {
+                                         UID = reader.GetInt32(0),
+                                         Name = reader.GetString(1)
+                                     });
+            ]]>
+            </example>
+            </summary>
+            <param name="sqlFormat">带格式化占位符的SQL语句</param>
+            <param name="parameters">SQL语句中的参数</param>
+            <returns></returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.AdoHelper.QueryList``1(System.Data.IDataReader)">
             <summary>
@@ -1619,6 +1639,25 @@
             <summary>
             在插入具有自增列的数据后，获取刚才自增列的数据的
             </summary>
+        </member>
+        <member name="T:PWMIS.DataProvider.Data.DataReaderMapper">
+            <summary>
+            数据阅读映射器
+            </summary>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.DataReaderMapper.#ctor(System.Data.IDataReader)">
+            <summary>
+            以一个数据阅读器初始化本类
+            </summary>
+            <param name="reader"></param>
+        </member>
+        <member name="M:PWMIS.DataProvider.Data.DataReaderMapper.MapToList``1(PWMIS.Common.MyFunc{System.Data.IDataReader,``0})">
+            <summary>
+            将数据阅读器的结果映射到列表
+            </summary>
+            <typeparam name="TResult">结果类型</typeparam>
+            <param name="fun"></param>
+            <returns></returns>
         </member>
         <member name="T:PWMIS.DataProvider.Data.ICommandHandle">
             <summary>
@@ -1755,7 +1794,7 @@
         </member>
         <member name="P:PWMIS.DataProvider.Data.CommandLog.Instance">
             <summary>
-            获取单例对象
+            获取单例对象(不开启执行时间记录)
             </summary>
         </member>
         <member name="P:PWMIS.DataProvider.Data.CommandLog.CommandText">
@@ -2510,6 +2549,26 @@
             <remarks>为了兼容性,这里不作为抽象方法</remarks>
             </summary>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.SetFieldDescriptions">
+            <summary>
+            获取字段描述信息，默认无，如果需要请在具体的实现类里面重写该方法。
+            代码生成器可能会重写该方法。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.GetFieldDescriptions">
+            <summary>
+            获取所有字段的描述，跟字段名一一对应
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.GetFieldDescription(System.String)">
+            <summary>
+            获取指定字段名对应的描述
+            </summary>
+            <param name="fieldName">字段名</param>
+            <returns>字段描述</returns>
+        </member>
         <member name="F:PWMIS.DataMap.Entity.EntityBase.foreignKeys">
             <summary>
             外键
@@ -2886,6 +2945,11 @@
         <member name="P:PWMIS.DataMap.Entity.EntityFields.Fields">
             <summary>
             获取实体类对应的表字段名称数组
+            </summary>
+        </member>
+        <member name="P:PWMIS.DataMap.Entity.EntityFields.FieldDescriptions">
+            <summary>
+            获取或者设置字段对应的描述，跟 Fields相对应，优先采用实体类自身的定义
             </summary>
         </member>
         <member name="P:PWMIS.DataMap.Entity.EntityFields.PropertyNames">
@@ -4321,8 +4385,8 @@
         <member name="M:PWMIS.DataMap.Entity.OQLCondition.IN(System.Object,PWMIS.DataMap.Entity.OQL)">
             <summary>
             以另外一个OQL条件作为In的子查询
+            <example>参见 http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html </example>
             </summary>
-            <seealso cref="!:http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html"/>
             <param name="field">属性字段</param>
             <param name="q">OQL表达式</param>
             <returns></returns>
@@ -4330,8 +4394,10 @@
         <member name="M:PWMIS.DataMap.Entity.OQLCondition.NotIn(System.Object,PWMIS.DataMap.Entity.OQL)">
             <summary>
             以另外一个OQL条件作为Not In的子查询
+            <example>
+            参见 http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html
+            </example>
             </summary>
-            <seealso cref="!:http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html"/>
             <param name="field">属性字段</param>
             <param name="q">OQL表达式</param>
             <returns></returns>
@@ -4417,8 +4483,8 @@
         <member name="M:PWMIS.DataMap.Entity.OQLCompare.#ctor(PWMIS.DataMap.Entity.OQLCompare,PWMIS.DataMap.Entity.OQLCompare.CompareLogic,PWMIS.DataMap.Entity.OQLCompare)">
             <summary>
             采用两个实体比较对象按照某种比较逻辑进行处理，构造一个新的实体比较对象
+            <example>参见 http://www.cnblogs.com/bluedoctor/archive/2010/11/28/1870095.html </example>
             </summary>
-            <seealso cref="!:http://www.cnblogs.com/bluedoctor/archive/2010/11/28/1870095.html"/>
             <param name="compare1">比较逻辑符号左边的实体比较对象</param>
             <param name="logic">比较逻辑</param>
             <param name="compare2">比较逻辑符号左边的实体比较对象</param>
@@ -4446,8 +4512,8 @@
         <member name="M:PWMIS.DataMap.Entity.OQLCompare.Comparer(System.Collections.Generic.List{PWMIS.DataMap.Entity.OQLCompare},PWMIS.DataMap.Entity.OQLCompare.CompareLogic)">
             <summary>
             对一组OQLCompare 对象，执行CompareLogic 类型的比较，通常用于构造复杂的带括号的条件查询
+            <example>参见 http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html </example>
             </summary>
-            <seealso cref="!:http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html"/>
             <param name="compares">OQL比较对象列表</param>
             <param name="logic">各组比较条件的组合方式，And，Or，Not</param>
             <returns>新的条件比较对象</returns>
@@ -5565,6 +5631,12 @@
         <member name="M:PWMIS.Common.SqlOrderBuilder.GetInverseOrderExpString">
             <summary>
             获取逆排序表达式字符串
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.Common.SqlOrderBuilder.GetLastInverseOrderExpString">
+            <summary>
+            获取分页去最后一页逆排序表达式字符串
             </summary>
             <returns></returns>
         </member>

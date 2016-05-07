@@ -2306,8 +2306,8 @@ namespace PWMIS.DataMap.Entity
 
         /// <summary>
         /// 以另外一个OQL条件作为In的子查询
+        /// <example>参见 http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html </example>
         /// </summary>
-        /// <seealso cref="http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html"/>
         /// <param name="field">属性字段</param>
         /// <param name="q">OQL表达式</param>
         /// <returns></returns>
@@ -2318,8 +2318,10 @@ namespace PWMIS.DataMap.Entity
 
         /// <summary>
         /// 以另外一个OQL条件作为Not In的子查询
-        /// </summary>
-        /// <seealso cref="http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html"/>
+        /// <example>
+        /// 参见 http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html
+        /// </example>
+         /// </summary>
         /// <param name="field">属性字段</param>
         /// <param name="q">OQL表达式</param>
         /// <returns></returns>

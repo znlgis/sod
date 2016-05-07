@@ -85,8 +85,8 @@ namespace PWMIS.DataMap.Entity
 
         /// <summary>
         /// 采用两个实体比较对象按照某种比较逻辑进行处理，构造一个新的实体比较对象
+        /// <example>参见 http://www.cnblogs.com/bluedoctor/archive/2010/11/28/1870095.html </example>
         /// </summary>
-        /// <seealso cref="http://www.cnblogs.com/bluedoctor/archive/2010/11/28/1870095.html"/>
         /// <param name="compare1">比较逻辑符号左边的实体比较对象</param>
         /// <param name="logic">比较逻辑</param>
         /// <param name="compare2">比较逻辑符号左边的实体比较对象</param>
@@ -355,8 +355,8 @@ namespace PWMIS.DataMap.Entity
 
         /// <summary>
         /// 对一组OQLCompare 对象，执行CompareLogic 类型的比较，通常用于构造复杂的带括号的条件查询
+        /// <example>参见 http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html </example>
         /// </summary>
-        /// <seealso cref="http://www.cnblogs.com/bluedoctor/archive/2011/02/24/1963606.html"/>
         /// <param name="compares">OQL比较对象列表</param>
         /// <param name="logic">各组比较条件的组合方式，And，Or，Not</param>
         /// <returns>新的条件比较对象</returns>
