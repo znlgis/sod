@@ -803,7 +803,7 @@ namespace PWMIS.Core
     /// </summary>
     public class SpinLock
     {
-        private volatile int locked;
+        private  int locked;
         /// <summary>
         /// 获得自旋锁
         /// </summary>

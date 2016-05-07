@@ -226,8 +226,8 @@ namespace PWMIS.DataProvider.Adapter
             switch (EngineType.ToUpper())
             {
                 case "SQLSERVER":
-                    assembly = ConfigurationSettings.AppSettings["SqlServerHelperAssembly"];
-                    type = ConfigurationSettings.AppSettings["SqlServerHelperType"];
+                    assembly = ConfigurationManager.AppSettings["SqlServerHelperAssembly"];
+                    type = ConfigurationManager.AppSettings["SqlServerHelperType"];
                     if (string.IsNullOrEmpty(assembly))
                     {
                         assembly = "PWMIS.Core";
@@ -235,8 +235,8 @@ namespace PWMIS.DataProvider.Adapter
                     }
                     break;
                 case "SQLSERVERCE":
-                    assembly = ConfigurationSettings.AppSettings["SqlServerCeHelperAssembly"];
-                    type = ConfigurationSettings.AppSettings["SqlServerCeHelperType"];
+                    assembly = ConfigurationManager.AppSettings["SqlServerCeHelperAssembly"];
+                    type = ConfigurationManager.AppSettings["SqlServerCeHelperType"];
                     if (string.IsNullOrEmpty(assembly))
                     {
                         assembly = "PWMIS.Core";
@@ -244,8 +244,8 @@ namespace PWMIS.DataProvider.Adapter
                     }
                     break;
                 case "OLEDB":
-                    assembly = ConfigurationSettings.AppSettings["OleDbHelperAssembly"];
-                    type = ConfigurationSettings.AppSettings["OleDbHelperType"];
+                    assembly = ConfigurationManager.AppSettings["OleDbHelperAssembly"];
+                    type = ConfigurationManager.AppSettings["OleDbHelperType"];
                     if (string.IsNullOrEmpty(assembly))
                     {
                         assembly = "PWMIS.Core";
@@ -253,8 +253,8 @@ namespace PWMIS.DataProvider.Adapter
                     }
                     break;
                 case "ACCESS":
-                    assembly = ConfigurationSettings.AppSettings["OleDbHelperAssembly"];
-                    type = ConfigurationSettings.AppSettings["OleDbHelperType"];
+                    assembly = ConfigurationManager.AppSettings["OleDbHelperAssembly"];
+                    type = ConfigurationManager.AppSettings["OleDbHelperType"];
                     if (string.IsNullOrEmpty(assembly))
                     {
                         assembly = "PWMIS.Core";
@@ -262,8 +262,8 @@ namespace PWMIS.DataProvider.Adapter
                     }
                     break;
                 case "ODBC":
-                    assembly = ConfigurationSettings.AppSettings["OdbcHelperAssembly"];
-                    type = ConfigurationSettings.AppSettings["OdbcHelperType"];
+                    assembly = ConfigurationManager.AppSettings["OdbcHelperAssembly"];
+                    type = ConfigurationManager.AppSettings["OdbcHelperType"];
                     if (string.IsNullOrEmpty(assembly))
                     {
                         assembly = "PWMIS.Core";
@@ -271,8 +271,8 @@ namespace PWMIS.DataProvider.Adapter
                     }
                     break;
                 case "ORACLE":
-                    assembly = ConfigurationSettings.AppSettings["OracleHelperAssembly"];
-                    type = ConfigurationSettings.AppSettings["OracleHelperType"];
+                    assembly = ConfigurationManager.AppSettings["OracleHelperAssembly"];
+                    type = ConfigurationManager.AppSettings["OracleHelperType"];
                     if (string.IsNullOrEmpty(assembly))
                     {
                         assembly = "PWMIS.Core";
