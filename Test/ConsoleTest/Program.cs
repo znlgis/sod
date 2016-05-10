@@ -149,7 +149,7 @@ namespace ConsoleTest
                 };
             }, "SELECT UID,Name FROM Table_User WHERE Sex={0} And Height>={0:5.2}",1, 1.60);
             */
-            var dataList = dbLocal.ExecuteMapper("SELECT UID,Name FROM Table_User WHERE Sex={0} And Height>={0:5.2}", 1, 1.60)
+            var dataList = dbLocal.ExecuteMapper("SELECT UID,Name FROM Table_User WHERE Sex={0} And Height>={1:5.2}", 1, 1.60)
                                   .MapToList(reader => new
                                   {
                                       UID = reader.GetInt32(0),
