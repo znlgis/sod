@@ -19,6 +19,8 @@ namespace OQLTest
             //TestThread();
             //TestProperty();
             //TestCached();
+
+            TestSqlOrderBuilder();
             
             Console.WriteLine("OQL 测试，按任意键开始");
            
@@ -902,9 +904,10 @@ ORDER BY T0.[RoleName] ASC
 
         private static void TestSqlOrderBuilder()
         {
-            string sql = @"select Age,t.[User Name] As UserName from tab t 
-                   where ID>1000 order   by    t.[User Name]  , id desc 
-                   option(hash group,fast 10) ";
+            string sql = @"SELECT  [OrderID],[OrderCode],[AirComNo],[AirLine],[OrderDate],[IsInternational],[IsTeam],[OutTicUserID],[OutTicTime],[PerCount],[PerCountAdult],[PerCountBaby],[TicPrice],[FactPrice],[TaxFee],[DisRate],[TicSum],[FactSum],[PaySum],[InsSum],[MacSum],[FueSum],[TaxSum],[OthSum],[RecSum],[TotalSum],[DisSum],[PNR1],[PNR2],[AirCount],[OrderType],[RecieveDate],[RecieveState],[ProcessDate],[ProcessState],[PayDate],[PayState],[OriginalOrderInfo],[MessageID],[FailedState],[FailedMemo]  
+FROM [dbo].[OrderFailed]  
+     WHERE  [AirComNo] = @P0
+                 ORDER     BY  [OrderID] desc";
             SqlOrderBuilder sob = new SqlOrderBuilder(sql);
             string sqlOrder1 = sob.Build(50);
             string sqlOrder2 = sob.Build(50, "Age>=20");

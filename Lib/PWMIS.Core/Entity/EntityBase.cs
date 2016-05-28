@@ -425,7 +425,7 @@ namespace PWMIS.DataMap.Entity
         /// <summary>
         /// 触发属性改变事件
         /// </summary>
-        /// <param name="e">属性改变事件对象</param>
+        /// <param name="propertyFieldName">属性改变事件对象</param>
         protected virtual void OnPropertyChanged(string propertyFieldName)
         {
             if (this.PropertyChanged != null)
@@ -534,7 +534,7 @@ namespace PWMIS.DataMap.Entity
         /// <summary>
         /// 获取属性列的值，但不会产生属性获取事件
         /// </summary>
-        /// <param name="propertyName">属性字段名称</param>
+        /// <param name="propertyFieldName">属性字段名称</param>
         /// <returns>属性值</returns>
         public object PropertyList(string propertyFieldName)
         {
@@ -627,7 +627,7 @@ namespace PWMIS.DataMap.Entity
         /// <summary>
         /// 获取属性值
         /// </summary>
-        /// <param name="propertyName">属性字段名称</param>
+        /// <param name="propertyFieldName">属性字段名称</param>
         /// <param name="t">属性类型代码</param>
         /// <returns>属性值</returns>
         protected object getProperty(string propertyFieldName, TypeCode t)

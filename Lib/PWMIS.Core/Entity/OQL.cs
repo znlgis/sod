@@ -527,49 +527,52 @@ namespace PWMIS.DataMap.Entity
             tnf.SqlFieldName= GetOqlFieldName(tnf);
             return tnf;
         }
+
+        /*
         /// <summary>
         /// 从堆栈上取一个字段
         /// </summary>
         /// <param name="index">使用的索引号</param>
         /// <returns></returns>
-        //protected internal string TakeOneStackFields(out int index)
-        //{
-        //    if (fieldStack.Count == 0)
-        //    {
-        //        //如果父OQL不为空，则从父对象获取字段堆栈
-        //        if (parentOql != null)
-        //            return TackOneParentStackField(out index);
-        //        else
-        //            throw new ArgumentException("OQL 字段堆栈为空！可能为方法参数未曾调用过OQL关联的实体类的属性。");
+        protected internal string TakeOneStackFields(out int index)
+        {
+            if (fieldStack.Count == 0)
+            {
+                //如果父OQL不为空，则从父对象获取字段堆栈
+                if (parentOql != null)
+                    return TackOneParentStackField(out index);
+                else
+                    throw new ArgumentException("OQL 字段堆栈为空！可能为方法参数未曾调用过OQL关联的实体类的属性。");
 
-        //    }
-        //    TableNameField tnf = fieldStack.Pop();
-        //    index = tnf.Index;
-        //    return GetOqlFieldName(tnf);
-        //}
+            }
+            TableNameField tnf = fieldStack.Pop();
+            index = tnf.Index;
+            return GetOqlFieldName(tnf);
+        }
 
         /// <summary>
         /// 尝试获取另一个堆栈中的字段，仅当堆栈中剩下一个的时候有效
         /// </summary>
         /// <returns></returns>
-        //protected internal string TryTakeOneStackFields()
-        //{
-        //    if (fieldStack.Count == 1)
-        //    {
-        //        TableNameField tnf = fieldStack.Pop();
-        //        return GetOqlFieldName(tnf);
-        //    }
-        //    else
-        //    {
-        //        if (parentOql != null)
-        //        {
-        //            int index = 0;
-        //            return TackOneParentStackField(out index);
-        //        }
+        protected internal string TryTakeOneStackFields()
+        {
+            if (fieldStack.Count == 1)
+            {
+                TableNameField tnf = fieldStack.Pop();
+                return GetOqlFieldName(tnf);
+            }
+            else
+            {
+                if (parentOql != null)
+                {
+                    int index = 0;
+                    return TackOneParentStackField(out index);
+                }
 
-        //    }
-        //    return "";
-        //}
+            }
+            return "";
+        }
+         */
 
         /// <summary>
         /// 从堆栈上获取2个字段信息，可能只获取到一个字段信息并自动判断字段是左还是右
@@ -859,7 +862,6 @@ namespace PWMIS.DataMap.Entity
         /// 2016.1.21 去除原来Select的重载，修改为SelectDistinct ，以解决只有一个参数且属性值为bool类型引起的问题
         /// </remarks>
         /// </summary>
-        /// <param name="distinct"></param>
         /// <param name="fields"></param>
         /// <returns></returns>
         public OQL1 SelectDistinct( params object[] fields)
@@ -868,18 +870,6 @@ namespace PWMIS.DataMap.Entity
             return Select(fields);
         }
 
-        /// <summary>
-        /// 直接将结果映射到POCO对象,待实现
-        /// </summary>
-        /// <typeparam name="TResult"></typeparam>
-        /// <param name="q"></param>
-        /// <param name="mapAction"></param>
-        /// <returns></returns>
-        //public IList<TResult> MapToList<TResult>(PWMIS.Common.MyFunc<TResult,TResult> mapFun) where TResult : class
-        //{
-        //    mapAction();
-        //    return null;
-        //}
 
         private string PreUpdate()
         {
@@ -1819,9 +1809,6 @@ namespace PWMIS.DataMap.Entity
             if (!string.IsNullOrEmpty(CurrentOQL.sqlFunctionString))
                 CurrentOQL.sqlFunctionString += ", ";
             CurrentOQL.sqlFunctionString += sqlFunctionName + "(" + fieldName + ") AS " + asFieldName;
-           
-
-            CurrentOQL.sqlFunctionString = sqlFunctionName + "(" + fieldName + ") AS " + asFieldName;
 
             //asFieldName 必须处理，否则找不到字段。感谢网友Super Show 发现问题 
             if(fieldName==asFieldName)
@@ -2065,6 +2052,9 @@ namespace PWMIS.DataMap.Entity
         }
     }
 
+    /// <summary>
+    /// OQL语法之实体连接
+    /// </summary>
     public class JoinEntity
     {
         private OQL _mainOql;
@@ -2075,9 +2065,11 @@ namespace PWMIS.DataMap.Entity
         public string LeftString { get; private set; }
         public string RightString { get; private set; }
         /// <summary>
-        /// 以一个OQL对象关联本类
+        /// 以一个OQL对象关联本类，内部使用的构造函数
         /// </summary>
-        /// <param name="mainOql"></param>
+        /// <param name="mainOql">关联的主OQL对象</param>
+        /// <param name="entity">要关联的实体类</param>
+        /// <param name="joinType">关联类型，分为左连接，右连接，外连接</param>
         public JoinEntity(OQL mainOql, EntityBase entity, string joinType)
         {
             this._mainOql = mainOql;
@@ -2088,6 +2080,7 @@ namespace PWMIS.DataMap.Entity
         /// <summary>
         /// 指定要关联查询的实体类属性（内部对应字段）
         /// <example>
+        /// <code>
         /// <![CDATA[
         /// var q1 = OQL.From(a)
         ///             .InnerJoin(b).On(a.ID,b.ID)
@@ -2099,6 +2092,7 @@ namespace PWMIS.DataMap.Entity
         ///              .Select(a.ID,a.Name,b.OtherInfo)
         ///          .END;
         /// ]]>
+        /// </code>
         /// </example>
         /// </summary>
         /// <param name="fields">主实体类的关联的属性与从实体关联的属性，必须成对出现</param>

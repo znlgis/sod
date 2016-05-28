@@ -522,6 +522,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         #region 注释掉的方法
+        /*
         /// <summary>
         /// 将结果映射到相应类型的列表（可以使匿名类型）
         /// <example>
@@ -551,27 +552,28 @@ namespace PWMIS.DataMap.Entity
         /// <typeparam name="TResult">要映射的结果类型</typeparam>
         /// <param name="fun">自定义的返回结果类型的函数</param>
         /// <returns>结果列表</returns>
-        //public IList<TResult> MapToList<TResult>(MyFunc<TResult> fun) where TResult : class
-        //{
-        //    if (this.Values == null)
-        //        this.Execute();
-        //    List<TResult> resultList = new List<TResult>();
-        //    if (this.Values != null && this.fieldNames != null)
-        //    {
-        //        foreach (object[] itemValues in this.Values)
-        //        {
-                    
-        //            this.currValue = itemValues;
-        //           TResult t = fun();
-        //           resultList.Add(t);
-        //        }
-        //        return resultList;
-        //    }
-        //    else
-        //    {
-        //        throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
-        //    }
-        //}
+        public IList<TResult> MapToList<TResult>(MyFunc<TResult> fun) where TResult : class
+        {
+            if (this.Values == null)
+                this.Execute();
+            List<TResult> resultList = new List<TResult>();
+            if (this.Values != null && this.fieldNames != null)
+            {
+                foreach (object[] itemValues in this.Values)
+                {
+
+                    this.currValue = itemValues;
+                    TResult t = fun();
+                    resultList.Add(t);
+                }
+                return resultList;
+            }
+            else
+            {
+                throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
+            }
+        }
+         */ 
         #endregion
 
         /// <summary>
@@ -617,8 +619,8 @@ namespace PWMIS.DataMap.Entity
             var result = fun();
 
             int count = this.oql.fieldStack.Count;
-            if (count <= 1)
-                throw new ArgumentException("要将结果映射的查询的字段太少，如果只需要查询一个字段，请用EntityQuery 对象或者其它方式");
+            if (count < 1)
+                throw new ArgumentException("要将结果映射的查询的字段太少，请至少指定一个要查询的字段！");
             this.oql.Select(new object[count]);
 
             //已经获取到自定义实体类对象中选择的字段，可以用此OQL进行查询了，待完成

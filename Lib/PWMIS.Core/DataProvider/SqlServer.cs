@@ -305,6 +305,7 @@ namespace PWMIS.DataProvider.Data
         /// <param name="commandType">命令类型</param>
         /// <param name="parameters">参数数组</param>
         /// <param name="ID">要传出的本次操作的新插入数据行的主键ID值</param>
+        /// <param name="insertKey">插入标记名</param>
         /// <returns>本次查询受影响的行数</returns>
         public  override int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID,string insertKey)
         {
