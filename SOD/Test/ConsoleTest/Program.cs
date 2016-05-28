@@ -33,6 +33,12 @@ namespace ConsoleTest
             if (read.ToUpper() == "Q")
                 return;
 
+            EntityUser etu = new EntityUser();
+            ITable_User itu = etu.AsEntity();
+            DateTime dtt = itu.Birthday;
+          
+
+
             //测试 AdoHelper的并发能力
             //for (int i = 0; i < 100; i++)
             //{
@@ -639,5 +645,35 @@ namespace ConsoleTest
         }
 
         #endregion
+    }
+
+    public class Entity2<T> : EntityBase where T:class
+    {
+        protected T dynObj;
+        public Entity2()
+        {
+            dynObj = EntityBuilder.CreateEntity<T>();
+            EntityBase e = dynObj as EntityBase;
+            this.TableName = e.GetTableName();
+            this.PropertyNames = e.PropertyNames;
+            this.PropertyValues = e.PropertyValues;
+
+        }
+        public T AsEntity()
+        {
+            return dynObj;
+        }
+    }
+
+    /*
+      //使用示例：
+      EntityUser etu = new EntityUser();
+      ITable_User itu = etu.AsEntity();
+      DateTime dtt = itu.Birthday;
+    
+     */
+    public class EntityUser : Entity2<ITable_User>
+    { 
+    
     }
 }

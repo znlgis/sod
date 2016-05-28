@@ -1117,41 +1117,7 @@ namespace PWMIS.DataMap.Entity
             return count;
         }
 
-        /// <summary>
-        /// 从数据库删除实体对象对应的记录
-        /// </summary>
-        /// <param name="entity"></param>
-        /// <param name="DB">数据访问对象实例</param>
-        /// <returns></returns>
-        //private static int DeleteInnerByDB(T entity, CommonDB DB)
-        //{
-        //    if (entity.PrimaryKeys.Count == 0)
-        //        throw new Exception("EntityQuery Error:当前实体类未指定主键字段");
-        //    int fieldCount = entity.PropertyNames.Length;
-        //    if (fieldCount == 0)
-        //        throw new Exception("EntityQuery Error:实体类属性字段数量为0");
-
-        //    //CommonDB DB = MyDB.GetDBHelper();
-
-        //    IDataParameter[] paras = new IDataParameter[fieldCount];
-        //    string sql = "DELETE FROM [" + entity.TableName + "] WHERE ";
-        //    string values = "";
-        //    string condition = "";
-        //    int index = 0;
-
-        //    foreach (string key in entity.PrimaryKeys)
-        //    {
-        //        string paraName = DB.GetParameterChar + "P" + index.ToString();
-        //        condition += " AND [" + key + "]=" + paraName;
-        //        paras[index] = DB.GetParameter(paraName, entity.PropertyList(key));
-        //        index++;
-        //    }
-
-
-        //    sql = sql + values.TrimStart(',') + " " + condition.Substring(" AND ".Length);
-        //    int count = DB.ExecuteNonQuery(sql, CommandType.Text, paras);
-        //    return count;
-        //}
+        
 
         /// <summary>
         /// 从数据库删除实体对象对应的记录

@@ -27,27 +27,29 @@ namespace PWMIS.Core
         }
 
         /// <summary>
-        /// 在 source句子字符串中搜索一个短语，并忽略source和短语中多余1个的空白字符，忽略大小写
+        /// 在 source句子字符串中搜索一个单词（全文匹配），并忽略source和单词中多余1个的空白字符，忽略大小写
         /// </summary>
         /// <param name="source">要搜索的源字符串</param>
-        /// <param name="words">要匹配的字符串，以空格隔开的多个单词</param>
+        /// <param name="words">要匹配的一个或者多个单词，以空格隔开的多个单词</param>
         /// <returns>返回短语在句子中最后一个开始的位置和结束位置的结构</returns>
         public static Point SearchWordsLastIndex(string source, string words)
         {
             string[] matchWrodArray = words.Split(new char[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-            int firstMatchIndex = source.LastIndexOf(matchWrodArray[0], source.Length - 1, StringComparison.OrdinalIgnoreCase);
+            //如果有多个单词，之前的搜索会有问题，因此需要增加一个空格，感谢网友 “青岛-无刃剑”发现此问题！
+            string matchWord = matchWrodArray.Length > 1 ? matchWrodArray[0] + " " : matchWrodArray[0];
+            int firstMatchIndex = source.LastIndexOf(matchWord, source.Length - 1, StringComparison.OrdinalIgnoreCase);
             if (matchWrodArray.Length == 1 && firstMatchIndex != -1)
-                return new Point(firstMatchIndex, firstMatchIndex + matchWrodArray[0].Length);
+                return new Point(firstMatchIndex, firstMatchIndex + matchWord.Length);
             return SearchWordsIndex(source, matchWrodArray, firstMatchIndex);
         }
 
         /// <summary>
-        /// 在 source句子字符串中搜索一个短语，并忽略source和短语中多余1个的空白字符，忽略大小写
+        /// 在 source句子字符串中搜索一组单词，并忽略source和短语中多余1个的空白字符，忽略大小写
         /// </summary>
         /// <param name="source">要搜索的源字符串</param>
-        /// <param name="matchWrodArray">要匹配的字符串数组</param>
-        /// <param name="firstMatchIndex">目标字符串在源字符串里面首次匹配的位置</param>
-        /// <returns>返回短语在句子中开始的位置和结束位置的结构</returns>
+        /// <param name="matchWrodArray">要匹配的单词数组</param>
+        /// <param name="firstMatchIndex">目标单词在源字符串里面首次匹配的位置</param>
+        /// <returns>返回单词在句子中开始的位置和结束位置的结构</returns>
         public static Point SearchWordsIndex(string source, string[] matchWrodArray, int firstMatchIndex)
         {
             //string[] matchWrodArray = words.Split(new char[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries);

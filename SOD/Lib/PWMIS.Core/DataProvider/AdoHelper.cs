@@ -261,8 +261,9 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// 根据查询语句和参数，执行数据读取映射器，以便将结果映射到一个列表
+        /// 根据查询语句和参数，执行数据读取映射器，以便将结果映射到一个列表，支持匿名类型
         /// <example>
+        /// <code>
         /// <![CDATA[
         ///   AdoHelper dbLocal = new SqlServer();
         ///   dbLocal.ConnectionString = "Data Source=.;Initial Catalog=LocalDB;Integrated Security=True";
@@ -273,11 +274,12 @@ namespace PWMIS.DataProvider.Data
         ///                              Name = reader.GetString(1)
         ///                          });
         /// ]]>
+        /// </code>
         /// </example>
         /// </summary>
         /// <param name="sqlFormat">带格式化占位符的SQL语句</param>
         /// <param name="parameters">SQL语句中的参数</param>
-        /// <returns></returns>
+        /// <returns>数据阅读器</returns>
         public DataReaderMapper ExecuteMapper(string sqlFormat, params object[] parameters) 
         {
             IDataReader reader = FormatExecuteDataReader(sqlFormat, parameters);

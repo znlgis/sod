@@ -993,7 +993,8 @@ namespace PWMIS.DataMap.Entity
         /// <summary>
         /// 将字典形式的参数数据，转换成数据库格式的参数素组
         /// </summary>
-        /// <param name="dictPara"></param>
+        /// <param name="dictPara">表字段名字典</param>
+        /// <param name="db">数据访问对象</param>
         /// <returns></returns>
         protected internal static IDataParameter[] GetParameters(Dictionary<string, TableNameField> dictPara,AdoHelper db)
         {

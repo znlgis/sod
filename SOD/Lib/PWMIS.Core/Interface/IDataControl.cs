@@ -111,7 +111,7 @@ namespace PWMIS.Common
 		/// <summary>
 		/// 设置值
 		/// </summary>
-		/// <param name="obj"></param>
+        /// <param name="value"></param>
 		void SetValue(object value);
 
 		/// <summary>
