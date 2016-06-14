@@ -218,9 +218,9 @@ namespace PWMIS.DataMap.Entity
 
         #region 分页相关
         /// <summary>
-        /// 查询前N条记录，目前仅支持Access/SqlServer，其它数据库可以使用Limit(N) 方法替代。
+        /// 查询前N条记录，目前仅支持Access/SqlServer，其它数据库可以使用Limit(N) 方法替代。只有设置成不小于0有效
         /// </summary>
-        public int TopCount = 0;
+        public int TopCount = -1;
         /// <summary>
         /// 是否开启分页功能，如果启用，OQL不能设定“排序”信息，分页标识字段将作为排序字段
         /// </summary>
@@ -1236,7 +1236,7 @@ namespace PWMIS.DataMap.Entity
             string sqlVar = "";
             if (this.Distinct)
                 sqlVar += " DISTINCT ";
-            if (TopCount > 0)
+            if (TopCount >= 0)
                 sqlVar += " TOP " + TopCount + " ";//仅限于SQLSERVER/ACCESS
 
             #region 校验GROUP BY 子句
