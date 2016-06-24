@@ -48,6 +48,11 @@ namespace ConsoleTest
             //    t.Start();
               
             //}
+
+            //测试生成列的脚本
+            EntityCommand ecmd = new EntityCommand(new Table_User(), new SqlServer());
+            string table_script = ecmd.CreateTableCommand;
+
             Console.Write("1，测试 OpenSession 长连接数据库访问...");
             TestDataSetAndOQL(null);
             Console.WriteLine("OK");

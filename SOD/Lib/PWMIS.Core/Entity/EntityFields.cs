@@ -363,6 +363,8 @@ namespace PWMIS.DataMap.Entity
             object defaultValue = null;
             if (t == typeof(string))
                 defaultValue = "";
+            else if (t == typeof(byte[]))
+                defaultValue = new byte[1];//这里只是构造默认值，不需要实际的长度
             else
                 defaultValue = Activator.CreateInstance(t);
 
@@ -389,6 +391,19 @@ namespace PWMIS.DataMap.Entity
                 else if (length < 0)
                 {
                     temp = temp + "[" + field + "] varchar" + "(" + length + ")";
+                }
+            }
+            else if (t == typeof(byte[])) //感谢CSDN网友 ccliushou 发现此问题，原贴：http://bbs.csdn.net/topics/391967495
+            {
+                int length = entity.GetStringFieldSize(field);
+                temp = temp + "[" + field + "] " + db.GetNativeDbTypeName(para);
+                if (length == 0)
+                {
+                    temp = temp + "(max)";
+                }
+                else
+                {
+                    temp = temp + "("+length+")";
                 }
             }
             else

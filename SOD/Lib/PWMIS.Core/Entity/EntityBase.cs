@@ -774,6 +774,20 @@ namespace PWMIS.DataMap.Entity
             setProperty(propertyFieldName, -1, Value, maxLength);
         }
 
+        /// <summary>
+        /// 设置byte[] 类型的属性字段的值
+        /// </summary>
+        /// <param name="propertyFieldName">属性字段名</param>
+        /// <param name="Value">要设置的值</param>
+        /// <param name="maxLength">字段最大长度，如果为负数，将生成varchar类型的参数</param>
+        protected internal void setProperty(string propertyFieldName, byte[] Value, int maxLength)
+        {
+            if (Value != null && maxLength > 0 && Value.Length > maxLength)
+                throw new Exception("字段" + propertyFieldName + "的实际长度超出了最大长度" + maxLength);
+            else
+                setPropertyValueAndLength(propertyFieldName, -1, Value, maxLength);
+        }
+
         protected internal void setProperty(string propertyFieldName, int propertyIndex, string Value, int maxLength)
         {
             if (Value != null && maxLength > 0 && Value.Length > maxLength)

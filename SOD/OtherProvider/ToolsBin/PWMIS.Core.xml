@@ -809,20 +809,20 @@
         </member>
         <member name="M:PWMIS.Core.TextSearchUtil.SearchWordsLastIndex(System.String,System.String)">
             <summary>
-            在 source句子字符串中搜索一个短语，并忽略source和短语中多余1个的空白字符，忽略大小写
+            在 source句子字符串中搜索一个单词（全文匹配），并忽略source和单词中多余1个的空白字符，忽略大小写
             </summary>
             <param name="source">要搜索的源字符串</param>
-            <param name="words">要匹配的字符串，以空格隔开的多个单词</param>
+            <param name="words">要匹配的一个或者多个单词，以空格隔开的多个单词</param>
             <returns>返回短语在句子中最后一个开始的位置和结束位置的结构</returns>
         </member>
         <member name="M:PWMIS.Core.TextSearchUtil.SearchWordsIndex(System.String,System.String[],System.Int32)">
             <summary>
-            在 source句子字符串中搜索一个短语，并忽略source和短语中多余1个的空白字符，忽略大小写
+            在 source句子字符串中搜索一组单词，并忽略source和短语中多余1个的空白字符，忽略大小写
             </summary>
             <param name="source">要搜索的源字符串</param>
-            <param name="matchWrodArray">要匹配的字符串数组</param>
-            <param name="firstMatchIndex">目标字符串在源字符串里面首次匹配的位置</param>
-            <returns>返回短语在句子中开始的位置和结束位置的结构</returns>
+            <param name="matchWrodArray">要匹配的单词数组</param>
+            <param name="firstMatchIndex">目标单词在源字符串里面首次匹配的位置</param>
+            <returns>返回单词在句子中开始的位置和结束位置的结构</returns>
         </member>
         <member name="M:PWMIS.Core.TextSearchUtil.FindNearWords(System.String,System.Int32,System.Int32,System.Int32@)">
             <summary>
@@ -1527,8 +1527,9 @@
         </member>
         <member name="M:PWMIS.DataProvider.Data.AdoHelper.ExecuteMapper(System.String,System.Object[])">
             <summary>
-            根据查询语句和参数，执行数据读取映射器，以便将结果映射到一个列表
+            根据查询语句和参数，执行数据读取映射器，以便将结果映射到一个列表，支持匿名类型
             <example>
+            <code>
             <![CDATA[
               AdoHelper dbLocal = new SqlServer();
               dbLocal.ConnectionString = "Data Source=.;Initial Catalog=LocalDB;Integrated Security=True";
@@ -1539,11 +1540,12 @@
                                          Name = reader.GetString(1)
                                      });
             ]]>
+            </code>
             </example>
             </summary>
             <param name="sqlFormat">带格式化占位符的SQL语句</param>
             <param name="parameters">SQL语句中的参数</param>
-            <returns></returns>
+            <returns>数据阅读器</returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.AdoHelper.QueryList``1(System.Data.IDataReader)">
             <summary>
@@ -1714,6 +1716,13 @@
             <summary>
             通用日志接口
             </summary>
+        </member>
+        <member name="M:PWMIS.Common.ICommonLog.WriteLog(System.String,System.String)">
+            <summary>
+            写日志文件
+            </summary>
+            <param name="msg">日志消息</param>
+            <param name="who">写日志人</param>
         </member>
         <member name="M:PWMIS.DataProvider.Data.CommandLog.#ctor">
             <summary>
@@ -2092,6 +2101,7 @@
             <param name="commandType">命令类型</param>
             <param name="parameters">参数数组</param>
             <param name="ID">要传出的本次操作的新插入数据行的主键ID值</param>
+            <param name="insertKey">插入标记名</param>
             <returns>本次查询受影响的行数</returns>
         </member>
         <member name="P:PWMIS.DataProvider.Data.SqlServer.CurrentDBMSType">
@@ -2615,7 +2625,7 @@
             <summary>
             触发属性改变事件
             </summary>
-            <param name="e">属性改变事件对象</param>
+            <param name="propertyFieldName">属性改变事件对象</param>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.GetTableName">
             <summary>
@@ -2640,7 +2650,7 @@
             <summary>
             获取属性列的值，但不会产生属性获取事件
             </summary>
-            <param name="propertyName">属性字段名称</param>
+            <param name="propertyFieldName">属性字段名称</param>
             <returns>属性值</returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.GetPropertyValueWithEvent(System.String)">
@@ -2666,7 +2676,7 @@
             <summary>
             获取属性值
             </summary>
-            <param name="propertyName">属性字段名称</param>
+            <param name="propertyFieldName">属性字段名称</param>
             <param name="t">属性类型代码</param>
             <returns>属性值</returns>
         </member>
@@ -2723,6 +2733,14 @@
         <member name="M:PWMIS.DataMap.Entity.EntityBase.setProperty(System.String,System.String,System.Int32)">
             <summary>
             设置字符串属性的值，如果值是字符类型且设置了最大长度大于0，那么不允许设置大于此长度的字符串
+            </summary>
+            <param name="propertyFieldName">属性字段名</param>
+            <param name="Value">要设置的值</param>
+            <param name="maxLength">字段最大长度，如果为负数，将生成varchar类型的参数</param>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.setProperty(System.String,System.Byte[],System.Int32)">
+            <summary>
+            设置byte[] 类型的属性字段的值
             </summary>
             <param name="propertyFieldName">属性字段名</param>
             <param name="Value">要设置的值</param>
@@ -3665,7 +3683,8 @@
             <summary>
             将字典形式的参数数据，转换成数据库格式的参数素组
             </summary>
-            <param name="dictPara"></param>
+            <param name="dictPara">表字段名字典</param>
+            <param name="db">数据访问对象</param>
             <returns></returns>
         </member>
         <member name="P:PWMIS.DataMap.Entity.EntityQueryAnonymous.DefaultDataBase">
@@ -3811,7 +3830,7 @@
         </member>
         <member name="F:PWMIS.DataMap.Entity.OQL.TopCount">
             <summary>
-            查询前N条记录，目前仅支持Access/SqlServer，其它数据库可以使用Limit(N) 方法替代。
+            查询前N条记录，目前仅支持Access/SqlServer，其它数据库可以使用Limit(N) 方法替代。只有设置成不小于0有效
             </summary>
         </member>
         <member name="F:PWMIS.DataMap.Entity.OQL.PageEnable">
@@ -4015,17 +4034,7 @@
             2016.1.21 去除原来Select的重载，修改为SelectDistinct ，以解决只有一个参数且属性值为bool类型引起的问题
             </remarks>
             </summary>
-            <param name="distinct"></param>
             <param name="fields"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PWMIS.DataMap.Entity.OQL.PreUpdate">
-            <summary>
-            直接将结果映射到POCO对象,待实现
-            </summary>
-            <typeparam name="TResult"></typeparam>
-            <param name="q"></param>
-            <param name="mapAction"></param>
             <returns></returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.OQL.Update(System.Object[])">
@@ -4302,16 +4311,24 @@
             <param name="asFieldName">字段别名，如果不指定，则使用字段名称</param>
             <returns>OQL1</returns>
         </member>
+        <member name="T:PWMIS.DataMap.Entity.JoinEntity">
+            <summary>
+            OQL语法之实体连接
+            </summary>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.JoinEntity.#ctor(PWMIS.DataMap.Entity.OQL,PWMIS.DataMap.Entity.EntityBase,System.String)">
             <summary>
-            以一个OQL对象关联本类
+            以一个OQL对象关联本类，内部使用的构造函数
             </summary>
-            <param name="mainOql"></param>
+            <param name="mainOql">关联的主OQL对象</param>
+            <param name="entity">要关联的实体类</param>
+            <param name="joinType">关联类型，分为左连接，右连接，外连接</param>
         </member>
         <member name="M:PWMIS.DataMap.Entity.JoinEntity.On(System.Object[])">
             <summary>
             指定要关联查询的实体类属性（内部对应字段）
             <example>
+            <code>
             <![CDATA[
             var q1 = OQL.From(a)
                         .InnerJoin(b).On(a.ID,b.ID)
@@ -4323,6 +4340,7 @@
                          .Select(a.ID,a.Name,b.OtherInfo)
                      .END;
             ]]>
+            </code>
             </example>
             </summary>
             <param name="fields">主实体类的关联的属性与从实体关联的属性，必须成对出现</param>
@@ -5045,7 +5063,7 @@
             <summary>
             设置值
             </summary>
-            <param name="obj"></param>
+            <param name="value"></param>
         </member>
         <member name="M:PWMIS.Common.IDataControl.GetValue">
             <summary>

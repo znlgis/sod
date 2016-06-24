@@ -31,7 +31,7 @@ namespace LocalDB
 
         protected override void SetFieldNames()
         {
-            PropertyNames = new string[] { "UID", "Name", "Sex", "Height", "Birthday" };
+            PropertyNames = new string[] { "UID", "Name", "Sex", "Height", "Birthday", "Photo" };
         }
 
 
@@ -81,6 +81,13 @@ namespace LocalDB
             set { setProperty("Birthday", value); }
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        public System.Byte[] Photo
+        {
+            get { return getProperty<System.Byte[]>("Photo"); }
+            set { setProperty("Photo", value,1024); }
+        }
     }
 }
