@@ -53,7 +53,7 @@ namespace PWMIS.DataMap.Entity
        {
            this.FieldName = filedName;
            this.FieldValue = fieldValue;
-           switch (compareTypeString.Trim ())
+           switch (compareTypeString.Trim ().ToLower())
            {
                case "=": this.CompareType = enumCompare.Equal; break;
                case "<>": this.CompareType = enumCompare.NotEqual; break;
@@ -62,14 +62,13 @@ namespace PWMIS.DataMap.Entity
                case ">=": this.CompareType = enumCompare.NoSmaller ; break;
                case "<=": this.CompareType = enumCompare.NoGreater ; break;
                case "like":
-               case "LIKE":
-               this.CompareType = enumCompare.Like ; break;
+                          this.CompareType = enumCompare.Like ; break;
                case "is null":
-               case "IS NULL":
-                   this.CompareType = enumCompare.IsNull ; break;
+                          this.CompareType = enumCompare.IsNull ; break;
                case "is not null":
-               case "IS NOT NULL":
-                   this.CompareType = enumCompare.IsNotNull ; break;
+                          this.CompareType = enumCompare.IsNotNull ; break;
+               case "in":
+                          this.CompareType = enumCompare.IN ; break;
                default :
                    this.CompareType = enumCompare.Equal; break;
                    

@@ -461,6 +461,11 @@
             非空
             </summary>
         </member>
+        <member name="F:PWMIS.Common.enumCompare.IN">
+            <summary>
+            属于值列表
+            </summary>
+        </member>
         <member name="T:PWMIS.Common.EntityMapType">
             <summary>
             实体类的映射类型

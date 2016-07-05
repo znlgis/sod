@@ -1593,14 +1593,26 @@ namespace PWMIS.DataMap.Entity
                                 case PWMIS.Common.enumCompare.IsNotNull:
                                     cmpType = " IS NOT NULL ";
                                     break;
+                                case PWMIS.Common.enumCompare.IN:
+                                    cmpType = " IN ";
+                                    break;
                                 default:
                                     cmpType = "=";
                                     break;
                             }
+                            if (para.CompareType == Common.enumCompare.IN)
+                            {
+                                paras.Remove(paraName);
+                                str += " AND [" + temp + "]" + cmpType + " (" + para.FieldValue.ToString () + " ) ";
+                            }
                             if (para.CompareType != PWMIS.Common.enumCompare.IsNull && para.CompareType != PWMIS.Common.enumCompare.IsNotNull)
+                            {
                                 str += " AND [" + temp + "]" + cmpType + "@" + paraName;
+                            }
                             else
+                            {
                                 str += " AND [" + temp + "]" + cmpType;
+                            }
                         }
                         break;
                     }
