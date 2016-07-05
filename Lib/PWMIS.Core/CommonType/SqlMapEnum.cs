@@ -134,7 +134,11 @@ namespace PWMIS.Common
         /// <summary>
         /// 非空
         /// </summary>
-        IsNotNull
+        IsNotNull,
+        /// <summary>
+        /// 属于值列表
+        /// </summary>
+        IN
     }
 
     /// <summary>
