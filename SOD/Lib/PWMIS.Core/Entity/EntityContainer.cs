@@ -575,7 +575,7 @@ namespace PWMIS.DataMap.Entity
         }
          */ 
         #endregion
-
+       
         /// <summary>
         /// 将实体类的部分字段结果集或者实体类联和查询的字段的结果集映射到一个新的POCO类
         /// </summary>
@@ -603,6 +603,7 @@ namespace PWMIS.DataMap.Entity
             }
             return resultList;
         }
+      
 
         /// <summary>
         /// 将实体类的部分字段结果集或者实体类联和查询的字段的结果集映射到一个新的POCO类

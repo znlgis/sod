@@ -36,7 +36,7 @@ namespace ConsoleTest
             EntityUser etu = new EntityUser();
             ITable_User itu = etu.AsEntity();
             DateTime dtt = itu.Birthday;
-          
+
 
 
             //测试 AdoHelper的并发能力
@@ -46,7 +46,7 @@ namespace ConsoleTest
             //        new System.Threading.ParameterizedThreadStart(TestDataSetAndOQL));
             //    t.Name = "thread "+i;
             //    t.Start();
-              
+
             //}
 
             //测试生成列的脚本
@@ -70,18 +70,18 @@ namespace ConsoleTest
             RoadTeam.Model.CS.TbCsEvent CsEvent2 = new RoadTeam.Model.CS.TbCsEvent();
             CsEvent.EventID = 1;
             OQL oql2 = OQL.From(CsEvent2)
-                .Select(true,CsEvent2.EventCheck, CsEvent2.EventCheckInfo, CsEvent2.EventCheckor, CsEvent2.EventCheckTime)
+                .Select(true, CsEvent2.EventCheck, CsEvent2.EventCheckInfo, CsEvent2.EventCheckor, CsEvent2.EventCheckTime)
                 .Where(CsEvent2.EventID)
                 .END;
             Console.WriteLine(oql2.ToString());
             Console.WriteLine("-----------------------");
-            Console.WriteLine("OK"); 
+            Console.WriteLine("OK");
             //
             Console.Write("3，测试实体类动态增加虚拟属性...");
             UserModels um1 = new UserModels();
             um1.AddPropertyName("TestName");
             um1["TestName"] = 123;
-            int testi =(int) um1["TestName"];
+            int testi = (int)um1["TestName"];
 
             um1["TestName"] = "abc";
             string teststr = (string)um1["TestName"];
@@ -114,7 +114,7 @@ namespace ConsoleTest
             Console.WriteLine("SELECT top 100000 UID,Sex,Height,Birthday,Name FROM Table_User");
             for (int i = 0; i < 10; i++)
             {
-                Console.WriteLine("-------------Testt No.{0}----------------",i+1);
+                Console.WriteLine("-------------Testt No.{0}----------------", i + 1);
                 TestPocoQuery();
             }
             Console.WriteLine("--------OK---------------");
@@ -177,17 +177,17 @@ namespace ConsoleTest
 
             UserModels um = vum.CopyTo<UserModels>();
             Console.WriteLine("OK");
-           
+
             //
             Console.Write("17，测试【自定义查询】的实体类...");
             UserPropertyView up = new UserPropertyView();
             OQL q11 = new OQL(up);
             OQLOrder order = new OQLOrder(q11);
             q11.Select()
-                .Where(q11.Condition.AND(up.PropertyName, "=", "总成绩").AND(up.PropertyValue,">",1000))
+                .Where(q11.Condition.AND(up.PropertyName, "=", "总成绩").AND(up.PropertyValue, ">", 1000))
                 .OrderBy(order.Asc(up.UID));
             AdoHelper db11 = MyDB.GetDBHelperByConnectionName("local");
-            var result = EntityQuery<UserPropertyView>.QueryList(q11,db11);
+            var result = EntityQuery<UserPropertyView>.QueryList(q11, db11);
             //下面2行不是必须
             q11.Dispose();
             Console.WriteLine("OK");
@@ -196,7 +196,7 @@ namespace ConsoleTest
             //var ecResult = ec.MapToList(() => {
             //    return new { AAA = ec.GetItemValue<int>(0), BBB = ec.GetItemValue<string>(1) };
             //});
-            
+
             /////////////////////////////////////////////////////
             Console.WriteLine("18，测试实体类【自动保存】数据...");
 
@@ -285,7 +285,7 @@ namespace ConsoleTest
                 optLog.LogSource = "PC";
                 //开启事务
                 db.BeginTransaction();
-                int count= query.Insert(optLog);
+                int count = query.Insert(optLog);
 
                 //模拟数据操作失败，抛出异常
                 if (count > 0)
@@ -301,8 +301,8 @@ namespace ConsoleTest
 
                 db.Commit();
             }
-          
-            
+
+
         }
 
         private static void TestAutoSave()
@@ -337,7 +337,7 @@ namespace ConsoleTest
         /// 自动创建实体类表
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        private static void AutoCreateEntityTable<T>() where T:EntityBase,new()
+        private static void AutoCreateEntityTable<T>() where T : EntityBase, new()
         {
             T entity = new T();
             EntityCommand ecmd = new EntityCommand(entity, MyDB.Instance);
@@ -346,7 +346,7 @@ namespace ConsoleTest
             try
             {
                 MyDB.Instance.ExecuteNonQuery(ecmd.CreateTableCommand);
-                Console.WriteLine("Create Table {0} OK!",entity.GetTableName());
+                Console.WriteLine("Create Table {0} OK!", entity.GetTableName());
             }
             catch (Exception ex)
             {
@@ -366,18 +366,18 @@ namespace ConsoleTest
 
         static void OqlInTest()
         {
-            LT_UserRoles roles = new LT_UserRoles() { NickName="Role1"};
+            LT_UserRoles roles = new LT_UserRoles() { NickName = "Role1" };
             LT_Users users = new LT_Users();
             OQL qRole = OQL.From(roles).Select(roles.ID).Where(
-                cmp=> cmp.Comparer(roles.NickName,"like","123%")
+                cmp => cmp.Comparer(roles.NickName, "like", "123%")
                 ).END;
 
             OQL qUser = new OQL(users);
             qUser.Select().Where(qUser.Condition
-                .AND(users.LastLoginTime,">=",DateTime.Now.AddDays(-10))
+                .AND(users.LastLoginTime, ">=", DateTime.Now.AddDays(-10))
                 .NotIn(users.RoleID, qRole));
-            Console.WriteLine("OQL to SQL:\r\n{0},\r\n{1}",qUser,qUser.PrintParameterInfo());
-        
+            Console.WriteLine("OQL to SQL:\r\n{0},\r\n{1}", qUser, qUser.PrintParameterInfo());
+
         }
 
         static void OqlJoinTest()
@@ -395,9 +395,9 @@ namespace ConsoleTest
             OQL q = OQL.From(users)
                     .Join(roles).On(users.RoleID, roles.ID)
                     .Select(
-                        users.ID, 
-                        users.UserName, 
-                        roles.ID, 
+                        users.ID,
+                        users.UserName,
+                        roles.ID,
                         roles.RoleName
                     )
                     .Where(
@@ -407,13 +407,13 @@ namespace ConsoleTest
             Console.WriteLine("OQL to SQL:\r\n{0}", q);
 
             EntityContainer ec = new EntityContainer(q);
-            var list = ec.MapToList(() => {
-                return new { 
-                    UserID = ec.GetItemValue<int>(0),
-                    UserName = ec.GetItemValue<string>(1),
-                    RolesID=ec.GetItemValue<int>(2),
-                    RoleName = ec.GetItemValue<string>(3)
-                }; 
+            var list = ec.Map<UserRoleDto>(u =>
+            {
+                u.UserID = ec.GetItemValue<int>(0);
+                u.UserName = ec.GetItemValue<string>(1);
+                u.RolesID = ec.GetItemValue<int>(2);
+                u.RoleName = ec.GetItemValue<string>(3);
+                return u;
             });
 
         }
@@ -434,12 +434,12 @@ namespace ConsoleTest
             List<LT_Users> userList = new List<LT_Users>();
             for (int i = 0; i < 10000; i++)
             {
-                userList.Add(new LT_Users() 
+                userList.Add(new LT_Users()
                 {
-                    UserName = "Name"+i, 
+                    UserName = "Name" + i,
                     Password = "1111",
-                    RoleID = 1, 
-                    AddTime = DateTime.Now 
+                    RoleID = 1,
+                    AddTime = DateTime.Now
                 }
                 );
             }
@@ -450,46 +450,46 @@ namespace ConsoleTest
             int count = EntityQuery<LT_Users>.Instance.QuickInsert(userList);
             st.Stop();
             Console.WriteLine("成功插入数据{0}条，耗时{1}ms", count, st.ElapsedMilliseconds);
-           
+
         }
 
         static void UpdateTest()
         {
-            LT_Users userCmp = new LT_Users() {  Authority="admin", IsEnable=true, Remarks="add"};
-           // LT_Users userQ = new LT_Users();
+            LT_Users userCmp = new LT_Users() { Authority = "admin", IsEnable = true, Remarks = "add" };
+            // LT_Users userQ = new LT_Users();
             //OQLCompare cmp = new OQLCompare(userCmp);
             //OQL q = new OQL(userQ);
             OQL q = new OQL(userCmp);
             OQLCompare cmp = new OQLCompare(q);
 
-            cmp = cmp.Comparer(userCmp.ID, "in", new int[]{1,2,3})
+            cmp = cmp.Comparer(userCmp.ID, "in", new int[] { 1, 2, 3 })
                 & cmp.Comparer(userCmp.LastLoginIP, "=", "127.0.0.1");
             //------分界线-------
 
-            q.Update(userCmp.Authority,userCmp.IsEnable,userCmp.Remarks).Where(cmp);
+            q.Update(userCmp.Authority, userCmp.IsEnable, userCmp.Remarks).Where(cmp);
 
-            Console.WriteLine("update test:{0}\r\n{1}",q,q.PrintParameterInfo());
+            Console.WriteLine("update test:{0}\r\n{1}", q, q.PrintParameterInfo());
         }
 
         //95行源码，一行代码调用实现带字段选取＋条件判断＋排序＋分页功能的增强ＯＲＭ框架
         static void TestGOQL()
         {
-            string sqlInfo="";
+            string sqlInfo = "";
             //下面使用　ITable_User　或者　Table_User均可
             List<ITable_User> userList =
                 OQL.FromObject<ITable_User>()
-                    //.Select()
+                //.Select()
                     .Select(s => new object[] { s.UID, s.Name, s.Sex }) //仅选取３个字段
                     .Where((cmp, user) => cmp.Property(user.UID) < 100)
-                    .OrderBy((o,user)=>o.Asc(user.UID))
+                    .OrderBy((o, user) => o.Asc(user.UID))
                 .Limit(5, 1) //限制５条记录每页，取第一页
                 .Print(out sqlInfo)
                 .ToList();
 
             Console.WriteLine(sqlInfo);
-            Console.WriteLine("User List item count:{0}",userList.Count);
+            Console.WriteLine("User List item count:{0}", userList.Count);
             if (userList.Count > 0)
-                Console.WriteLine("User Entity Type:{0}",userList[0].GetType());
+                Console.WriteLine("User Entity Type:{0}", userList[0].GetType());
         }
 
         static void Test1(SelectFieldFun sfun)
@@ -518,7 +518,7 @@ namespace ConsoleTest
 
         static void TestPocoQuery()
         {
-           
+
             string sql = "SELECT top 100000 UID,Sex,Height,Birthday,Name FROM Table_User";
             AdoHelper db = MyDB.Instance;
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
@@ -526,9 +526,9 @@ namespace ConsoleTest
             sw.Start();
             DataSet ds = db.ExecuteDataSet(sql);
             sw.Stop();
-            Console.WriteLine("end,used time(ms){0}",sw.ElapsedMilliseconds);
+            Console.WriteLine("end,used time(ms){0}", sw.ElapsedMilliseconds);
 
-           
+
             //PocoQuery query = new PocoQuery();
             ////预热
             //List<UserPoco> list1 = query.QueryList<UserPoco>(db.ExecuteDataReader("SELECT top 1 * FROM Table_User"));
@@ -539,7 +539,7 @@ namespace ConsoleTest
             sw.Start();
             //for (int i = 0; i < 100; i++)
             //{
-                List<UserPoco> list = db.QueryList<UserPoco>(sql);
+            List<UserPoco> list = db.QueryList<UserPoco>(sql);
             //}
             sw.Stop();
             Console.WriteLine("end,used time(ms){0}", sw.ElapsedMilliseconds);
@@ -555,9 +555,11 @@ namespace ConsoleTest
             Console.Write("query by PDF.NET AdoHelper (handle),begin...");
             sw.Start();
             //UID,Sex,Height,Birthday,Name
-            IList<UserPoco> list4=db.GetList<UserPoco>(reader => {
-                return new UserPoco() { 
-                    UID=reader.IsDBNull(0)?0: reader.GetInt32(0),
+            IList<UserPoco> list4 = db.GetList<UserPoco>(reader =>
+            {
+                return new UserPoco()
+                {
+                    UID = reader.IsDBNull(0) ? 0 : reader.GetInt32(0),
                     Sex = reader.IsDBNull(1) ? false : reader.GetBoolean(1),
                     Height = reader.IsDBNull(2) ? 0 : reader.GetFloat(2),
                     Birthday = reader.IsDBNull(3) ? default(DateTime) : reader.GetDateTime(3),
@@ -576,8 +578,8 @@ namespace ConsoleTest
         /// </summary>
         static void TestEntityFK()
         {
-            LT_UserRoles roles = new LT_UserRoles() {  RoleName="admin"};
-            OQL q= OQL.From(roles)
+            LT_UserRoles roles = new LT_UserRoles() { RoleName = "admin" };
+            OQL q = OQL.From(roles)
                     .Select()
                     .Where(roles.RoleName)
                 .END;
@@ -593,7 +595,7 @@ namespace ConsoleTest
             OQL qt = new OQL(user);
             qt.Select().Where(qt.Condition.IN(user.Name, new object[] { "a", "b", "c" })).OrderBy(user.Name);
             //qt.Select().Where(cmp => cmp.Comparer(user.Name, "in", new string[] { "a", "b", "c" }));
-            
+
             //OQL qt = OQL.From(user).Select().END;
             //qt.TopCount = 10;
             qt.Limit(10, 10);
@@ -610,8 +612,16 @@ namespace ConsoleTest
                 List<Table_User> list = EntityQuery<Table_User>.QueryList(qt, db);
                 DataSet ds = db.ExecuteDataSet(sql);
             }
-            
+
         }
+    }
+
+    public class UserRoleDto
+    {
+        public int UserID { get; set; }
+        public string UserName { get; set; }
+        public int RolesID { get; set; }
+        public string RoleName { get; set; }
     }
 
     public class UserPoco : ITable_User
@@ -652,7 +662,7 @@ namespace ConsoleTest
         #endregion
     }
 
-    public class Entity2<T> : EntityBase where T:class
+    public class Entity2<T> : EntityBase where T : class
     {
         protected T dynObj;
         public Entity2()
@@ -678,7 +688,7 @@ namespace ConsoleTest
     
      */
     public class EntityUser : Entity2<ITable_User>
-    { 
-    
+    {
+
     }
 }

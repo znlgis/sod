@@ -15,7 +15,7 @@ namespace PWMIS.Core.Extensions
         /// <summary>
         /// 用连接字符串名字初始化本类
         /// </summary>
-        /// <param name="connName"></param>
+        /// <param name="db">数据访问对象</param>
         public OracleDbContext(AdoHelper db)
         {
             if (db.CurrentDBMSType != Common.DBMSType.Oracle)

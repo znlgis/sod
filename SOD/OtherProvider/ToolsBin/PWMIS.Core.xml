@@ -1806,6 +1806,11 @@
             需要记录的时间，只有该值等于0会记录所有查询，否则只记录大于该时间的查询。单位毫秒。
             </summary>
         </member>
+        <member name="P:PWMIS.DataProvider.Data.CommandLog.LogBufferCount">
+            <summary>
+            日志信息的缓存数量，默认是20条
+            </summary>
+        </member>
         <member name="P:PWMIS.DataProvider.Data.CommandLog.Instance">
             <summary>
             获取单例对象(不开启执行时间记录)
