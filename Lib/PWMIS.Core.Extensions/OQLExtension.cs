@@ -99,7 +99,6 @@ namespace PWMIS.Core.Extensions
         ///     Console.WriteLine("Property1={0},Property2={1}",item.Property1,item.Property2);
         /// }
         /// ]]>
-        /// ]]>
         /// </code>
         /// </example>
         /// </summary>
@@ -137,7 +136,6 @@ namespace PWMIS.Core.Extensions
         ///     Console.WriteLine("Property1={0},Property2={1}",item.Property1,item.Property2);
         /// }
         /// ]]>
-        /// ]]>
         /// </code>
         /// </example>
         /// </summary>
@@ -151,6 +149,56 @@ namespace PWMIS.Core.Extensions
             return ec.ToObjectList<TResult>(ecFun);
         }
 
+        /// <summary>
+        /// 将关联查询结果映射到POCO类型列表
+        /// <example>
+        /// <code>
+        /// <![CDATA[
+        /// OQL joinQ = OQL.From(bInfo)
+        ///   .Join(stock).On(bInfo.SerialNumber, stock.SerialNumber)
+        ///   .Select()
+        ///   .OrderBy(bInfo.SerialNumber, "asc").OrderBy(bInfo.GoodsName, "asc")
+        /// .END;
+        ///
+        /// var resultList = joinQ.MapToList<GoodsSaleInfoVM>(() => new GoodsSaleInfoVM()
+        /// {
+        ///     GoodsName = bInfo.GoodsName,
+        ///     Manufacturer = bInfo.Manufacturer,
+        ///     SerialNumber = bInfo.SerialNumber,
+        ///     GoodsPrice = stock.GoodsPrice,
+        ///     MakeOnDate = stock.MakeOnDate,
+        ///     CanUserMonth = bInfo.CanUserMonth,
+        ///     Stocks = stock.Stocks,
+        ///     GoodsID = stock.GoodsID,
+        ///     ExpireDate = stock.MakeOnDate.AddMonths(bInfo.CanUserMonth)
+        /// });
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// </summary>
+        /// <typeparam name="TResult">POCO类型</typeparam>
+        /// <param name="q">实体类关联查询的OQL语句</param>
+        /// <param name="fun">映射方法委托</param>
+        /// <returns>POCO类型列表</returns>
+        public static IList<TResult> MapToList<TResult>(this OQL q, ECMapFunc<TResult> fun) where TResult : class
+        {
+            EntityContainer ec = new EntityContainer(q);
+            return ec.MapToList<TResult>(fun);
+        }
+
+        /// <summary>
+        /// 将关联查询结果映射到POCO类型列表
+        /// </summary>
+        /// <typeparam name="TResult">POCO类型</typeparam>
+        /// <param name="q">实体类关联查询的OQL语句</param>
+        /// <param name="db">数据访问对象</param>
+        /// <param name="fun">映射方法委托</param>
+        /// <returns>POCO类型列表</returns>
+        public static IList<TResult> MapToList<TResult>(this OQL q, AdoHelper db, ECMapFunc<TResult> fun) where TResult : class
+        {
+            EntityContainer ec = new EntityContainer(q,db);
+            return ec.MapToList<TResult>(fun);
+        }
        
 
         /// <summary>

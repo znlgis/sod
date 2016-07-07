@@ -368,8 +368,113 @@
             <param name="db">数据访问对象</param>
             <returns>实体类</returns>
         </member>
-        <!-- 对于成员“M:PWMIS.Core.Extensions.OQLExtension.ToObjectList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper,PWMIS.DataMap.Entity.ECResultFunc{``0})”忽略有格式错误的 XML 注释 -->
-        <!-- 对于成员“M:PWMIS.Core.Extensions.OQLExtension.ToObjectList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataMap.Entity.ECResultFunc{``0})”忽略有格式错误的 XML 注释 -->
+        <member name="M:PWMIS.Core.Extensions.OQLExtension.ToObjectList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper,PWMIS.DataMap.Entity.ECResultFunc{``0})">
+            <summary>
+            直接返回实体类列表查询结果
+            <example>
+            <code>
+            <![CDATA[
+            AdoHelper dbHelper=new SqlServer(){ConnectionString="....."};
+            var list= OQL.From(entity1)
+                     .Join(entity2).On(entity1.PK,entity2.FK)
+                     .Select(entity1.Field1,entity2.Field2)
+                  .End
+                  .ToObjectList(dbHelper, e =>
+                     {
+                        return new {
+                                     Property1=e.GetItemValue<int>(0), 
+                                     Property2=e.GetItemValue<string>(1) 
+                                   };
+                     });
+            
+            foreache(var item in list)
+            {
+                Console.WriteLine("Property1={0},Property2={1}",item.Property1,item.Property2);
+            }
+            ]]>
+            </code>
+            </example>
+            </summary>
+            <param name="q">OQL对象</param>
+            <param name="db">数据访问对象</param>
+            <param name="ecFun">结果对象映射委托</param>
+            <typeparam name="TResult">结果元素类型</typeparam>
+            <returns>实体类列表</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.OQLExtension.ToObjectList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataMap.Entity.ECResultFunc{``0})">
+            <summary>
+            直接返回实体类列表查询结果
+            <example>
+            <code>
+            <![CDATA[
+            var list= OQL.From(entity1)
+                     .Join(entity2).On(entity1.PK,entity2.FK)
+                     .Select(entity1.Field1,entity2.Field2)
+                  .End
+                  .ToObjectList( e =>
+                     {
+                        return new MyViewModel{
+                                     Property1=e.GetItemValue<int>(0), 
+                                     Property2=e.GetItemValue<string>(1) 
+                                   };
+                     });
+            
+            foreache(MyViewModel item in list)
+            {
+                Console.WriteLine("Property1={0},Property2={1}",item.Property1,item.Property2);
+            }
+            ]]>
+            </code>
+            </example>
+            </summary>
+            <param name="q">OQL对象</param>
+            <param name="ecFun">结果对象映射委托</param>
+            <typeparam name="TResult">结果元素类型</typeparam>
+            <returns>实体类列表</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.OQLExtension.MapToList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataMap.Entity.ECMapFunc{``0})">
+             <summary>
+             将关联查询结果映射到POCO类型列表
+             <example>
+             <code>
+             <![CDATA[
+             OQL joinQ = OQL.From(bInfo)
+               .Join(stock).On(bInfo.SerialNumber, stock.SerialNumber)
+               .Select()
+               .OrderBy(bInfo.SerialNumber, "asc").OrderBy(bInfo.GoodsName, "asc")
+             .END;
+            
+             var resultList = joinQ.MapToList<GoodsSaleInfoVM>(() => new GoodsSaleInfoVM()
+             {
+                 GoodsName = bInfo.GoodsName,
+                 Manufacturer = bInfo.Manufacturer,
+                 SerialNumber = bInfo.SerialNumber,
+                 GoodsPrice = stock.GoodsPrice,
+                 MakeOnDate = stock.MakeOnDate,
+                 CanUserMonth = bInfo.CanUserMonth,
+                 Stocks = stock.Stocks,
+                 GoodsID = stock.GoodsID,
+                 ExpireDate = stock.MakeOnDate.AddMonths(bInfo.CanUserMonth)
+             });
+             ]]>
+             </code>
+             </example>
+             </summary>
+             <typeparam name="TResult">POCO类型</typeparam>
+             <param name="q">实体类关联查询的OQL语句</param>
+             <param name="fun">映射方法委托</param>
+             <returns>POCO类型列表</returns>
+        </member>
+        <member name="M:PWMIS.Core.Extensions.OQLExtension.MapToList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper,PWMIS.DataMap.Entity.ECMapFunc{``0})">
+            <summary>
+            将关联查询结果映射到POCO类型列表
+            </summary>
+            <typeparam name="TResult">POCO类型</typeparam>
+            <param name="q">实体类关联查询的OQL语句</param>
+            <param name="db">数据访问对象</param>
+            <param name="fun">映射方法委托</param>
+            <returns>POCO类型列表</returns>
+        </member>
         <member name="M:PWMIS.Core.Extensions.OQLExtension.Execute(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper)">
             <summary>
             执行OQL

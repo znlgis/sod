@@ -16,15 +16,17 @@
     <add key="LogExecutedTime" value ="0"/>
  * 需要记录的时间，如果该值等于0会记录所有查询，否则只记录大于该时间的查询，单位毫秒；
  * 
+ *  <add key="LogBufferCount" value ="0"/>
+ * 日志信息缓存的数量，如果该值等于0会立即写入日志文件，默认缓存20条信息；注意一次查询可能会写入多条日志信息。
  * 
  * 作者：邓太华     时间：2008-10-12
- * 版本：V3.0
+ * 版本：V5.5
  * 
  * 修改者：         时间：2010-4-13                
  * 修改说明：       增加适时查看执行的SQL属性 CommandText
  * 
- * 修改者：         时间：2016-4-7                
- * 修改说明：       批量写入日志
+ * 修改者：         时间：2016-7-7                
+ * 修改说明：       批量写入日志并增加配置缓存数量
  * ========================================================================
 */
 using System;
@@ -40,8 +42,8 @@ namespace PWMIS.DataProvider.Data
 	/// </summary>
 	public class CommandLog : PWMIS.Common.ICommonLog
 	{
-        private static  List<string> _logBuffer = new List<string>();
-        private static  DateTime _lastWrite=DateTime.Now ;
+        private   List<string> _logBuffer = new List<string>();
+        private   DateTime _lastWrite=DateTime.Now ;
         private const int WriteTime = 30;//30秒写入一次
         private const int BufferCount = 20;//每20条写入一次
 
@@ -108,6 +110,34 @@ namespace PWMIS.DataProvider.Data
                 return _logExecutedTime;
             }
             set { _logExecutedTime = value; }
+        }
+
+        private static int _logBufferCount = -1;
+        /// <summary>
+        /// 日志信息的缓存数量，默认是20条
+        /// </summary>
+        public static int LogBufferCount
+        {
+            get {
+                if (_logBufferCount == -1)
+                {
+                    string temp = System.Configuration.ConfigurationManager.AppSettings["LogBufferCount"];
+                    if (string.IsNullOrEmpty(temp))
+                    {
+                        _logBufferCount = BufferCount;
+                    }
+                    else
+                    {
+                        if (!int.TryParse(temp, out _logBufferCount))
+                            _logBufferCount = BufferCount;
+                    }
+                }
+                return _logBufferCount;
+            }
+            set
+            {
+                _logBufferCount = value;
+            }
         }
 
 		private static CommandLog _Instance;
@@ -278,7 +308,7 @@ namespace PWMIS.DataProvider.Data
             if (!string.IsNullOrEmpty(log))
                 _logBuffer.Add(log);
 
-            if (_logBuffer.Count >0 && ( DateTime.Now.Subtract(_lastWrite).TotalSeconds > WriteTime || _logBuffer.Count > BufferCount))
+            if (_logBuffer.Count > 0 && (DateTime.Now.Subtract(_lastWrite).TotalSeconds > WriteTime || _logBuffer.Count > LogBufferCount))
             {
                 List<string> tempList = _logBuffer;
                 _logBuffer = new List<string>();
@@ -306,6 +336,7 @@ namespace PWMIS.DataProvider.Data
                     fs.Flush();
                     //fs.Close();//可以不用加
                 }
+                _lastWrite = DateTime.Now;
             }
 		}
 
