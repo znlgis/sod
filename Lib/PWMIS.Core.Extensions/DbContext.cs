@@ -71,6 +71,16 @@ namespace PWMIS.Core.Extensions
         }
         #endregion
 
+        public void CheckTableExistsOf<T>() where T:class   
+        {
+            //DbContextProvider.CheckTableExists<T>();
+            T obj = EntityBuilder.CreateEntity<T>();
+            var mi = DbContextProvider.GetType().GetMethod("CheckTableExists");
+            var g_mi= mi.MakeGenericMethod(obj.GetType());
+            g_mi.Invoke(DbContextProvider,null);
+        }
+
+
         /// <summary>
         /// 获取数据上下文提供程序
         /// </summary>
