@@ -145,6 +145,7 @@
                 Me.cmbLoginType.Enabled = True
                 Me.cmbLoginType.DataSource = New String() {"Normal", "SysDBA"}
                 Me.btnFileBrowser.Visible = False
+                Me.btnProviderBrowser.Enabled = True
                 Me.txtServerName.Text = ""
                 Me.currDbmsType = PWMIS.Common.DBMSType.Oracle
                 Me.txtProviderName.Text = "PWMIS.DataProvider.Data.Oracle,PWMIS.Core"
@@ -180,6 +181,12 @@
                 Me.cmbLoginType.Enabled = False
                 Me.btnFileBrowser.Enabled = True
                 Me.OpenFileDialog1.Filter = "SQLite数据库文件|*.*"
+            Case PWMIS.Common.DBMSType.Oracle
+                Me.lblServerName.Text = "服务器地址："
+                Me.lblLoginType.Text = "登录类型："
+                Me.cmbLoginType.Enabled = True
+                Me.cmbLoginType.DataSource = New String() {"Normal", "SysDBA"}
+                Me.txtServerName.Text = ""
             Case Else
                 Me.btnFileBrowser.Visible = True
                 Me.txtServerName.Text = ""
@@ -238,7 +245,7 @@
                 End If
                 '
             Case "Oracle数据库服务"
-                connStr = "Data Source=" & Me.txtServerName.Text & ";User Id=" & txtLogName.Text & ";Password=" & txtPwd.Text & ";Integrated Security=no;"
+                connStr = "Data Source=" & Me.txtServerName.Text & ";User Id=" & txtLogName.Text & ";Password=" & txtPwd.Text & ";"
             Case "其它数据库驱动程序"
                 If Me.currDbmsType = PWMIS.Common.DBMSType.MySql _
                 Or Me.currDbmsType = PWMIS.Common.DBMSType.PostgreSQL Then
@@ -307,7 +314,7 @@
         Me.OpenFileDialog1.FileName = ""
         Me.OpenFileDialog1.ShowDialog()
 
-        If Me.cmbDbEngine.SelectedValue = "其它数据库驱动程序" And Me.OpenFileDialog1.FileName <> "" Then
+        If Me.OpenFileDialog1.FileName <> "" Then
             Dim helperName As String = ""
             Dim adoHelperType As Type = GetType(PWMIS.DataProvider.Data.AdoHelper)
             Dim ass As System.Reflection.Assembly = System.Reflection.Assembly.LoadFrom(Me.OpenFileDialog1.FileName)
