@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using PWMIS.Core.Extensions;
 
 
 namespace EntityTest
@@ -115,6 +116,18 @@ namespace EntityTest
             UserDto ud = new UserDto() {  Age =20};
             //请注意list4[0].Age属性，由于数据库对应的值为DBNull.Value，所以下面的代码不会被覆盖该属性值。
             list4[0].MapToPOCO(ud);
+
+
+            //实体类JSON测试
+            var model = new UserEntity();
+            model.UserID = 1;
+            model.FirstName = "tian";
+            model.LasttName = "jie";
+            model.Age = 2;
+            var json = model.ToJson();
+            var obj = new UserEntity();
+            obj.FromJson(json);
+            Console.WriteLine("实体类JSON测试成功");
 
 
             Console.WriteLine();
