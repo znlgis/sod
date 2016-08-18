@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace PWMIS.Core.Extensions
 {
@@ -122,6 +123,48 @@ namespace PWMIS.Core.Extensions
             return entity.GetChildList<T, ParentType>(MyDB.Instance);
         }
 
+        #region 实体类跟JSON的转化
+
+        public static string ToJson(this EntityBase entity)
+        {
+            EntityFields ef = EntityFieldsCache.Item(entity.GetType());
+            JObject json = new JObject();
+            for (var i = 0; i < entity.PropertyNames.Length; i++)
+            {
+                var name = entity.PropertyNames[i];
+                var value = entity.PropertyValues[i];
+
+                json.Add(new JProperty(ef.GetPropertyName(name), value));
+            }
+
+            return json.ToString();
+        }
+
+        public static void FromJson(this EntityBase entity, string json)
+        {
+            EntityFields ef = EntityFieldsCache.Item(entity.GetType());
+            var obj = JObject.Parse(json);
+            foreach (var p in obj.Properties())
+            {
+                var name = ef.GetPropertyField(p.Name);
+                if (!string.IsNullOrEmpty(name))
+                {
+                    string temp = null;
+                    int length = name.Length;
+                    for (int i = 0; i < entity.PropertyNames.Length; i++)
+                    {
+                        temp = entity.PropertyNames[i];
+                        if (temp != null && temp.Length == length
+                            && string.Equals(temp, name, StringComparison.OrdinalIgnoreCase))
+                        {
+                            entity.PropertyValues[i] = p.Value.Value<object>();
+                        }
+                    }
+                }
+            }
+        }
+
+        #endregion
     }
 
 }
