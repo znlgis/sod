@@ -349,4 +349,80 @@ namespace PWMIS.DataProvider.Data
             WriteLog(null);
         }
     }
+
+
+    public class BufferTextWriter : IDisposable
+    {
+
+        private bool disposed = false;
+        private static BufferTextWriter _Instance;
+        private static object lockObj = new object();
+
+        public static BufferTextWriter Instance
+        {
+            get
+            {
+                if (_Instance == null)
+                {
+                    lock (lockObj)
+                    {
+                        if (_Instance == null)
+                        {
+                            _Instance = new BufferTextWriter();
+                        }
+                    }
+                }
+                return _Instance;
+            }
+        }
+
+        public void AddText(string text)
+        { 
+        
+        }
+
+        public void WriteBufferText()
+        { 
+        
+        }
+
+        #region Dispose模式实现
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        public void Close()
+        {
+            Dispose(true);
+        }
+
+        ~BufferTextWriter()
+        {
+            Dispose(false);
+        }
+
+        private void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    Console.WriteLine("调用引用对象的Dispose()方法");
+                }
+                Console.WriteLine("释放类本身的非托管资源");
+                disposed = true;
+                if (disposing)
+                {
+                    GC.SuppressFinalize(this);
+                }
+            }
+
+        }
+        #endregion
+
+    }
+
+
 }
