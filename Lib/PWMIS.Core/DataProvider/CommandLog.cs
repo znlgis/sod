@@ -40,14 +40,39 @@ namespace PWMIS.DataProvider.Data
 	/// <summary>
     /// 命令对象日志2008.7.18 增加线程处理,2011.5.9 增加执行时间记录 2016.4.7 增加批量写入功能
 	/// </summary>
-	public class CommandLog : PWMIS.Common.ICommonLog
+	public class CommandLog  
 	{
-        private   List<string> _logBuffer = new List<string>();
-        private   DateTime _lastWrite=DateTime.Now ;
-        private const int WriteTime = 30;//30秒写入一次
         private const int BufferCount = 20;//每20条写入一次
+        private static CommandLog _Instance;
+        private static object lockObj = new object();
+        private System.Diagnostics.Stopwatch watch = null;
 
-		//日志相关
+        private PWMIS.Common.ICommonLog _logWriter;
+        /// <summary>
+        /// 获取或者设置日志写入对象
+        /// </summary>
+        public PWMIS.Common.ICommonLog LogWriter {
+            get {
+                if (_logWriter == null)
+                {
+                    InnerLogWriter logger = new InnerLogWriter();
+                    logger.DataLogFile = DataLogFile;
+                    logger.SaveCommandLog = SaveCommandLog;
+                    logger.LogBufferCount = LogBufferCount;
+
+                    _logWriter = logger;
+                }
+                 
+                return _logWriter;
+            }
+            set
+            {
+                _logWriter = value;
+            }
+        }
+
+        #region 日志配置相关属性设置
+        //日志相关
         private static  string _dataLogFile;
         /// <summary>
         /// 获取或者设置日志文件的路径，可以带Web相对路径
@@ -140,12 +165,10 @@ namespace PWMIS.DataProvider.Data
             }
         }
 
-		private static CommandLog _Instance;
-        private static object lockObj = new object();
-        private System.Diagnostics.Stopwatch watch = null;
-        
+        #endregion
 
-		/// <summary>
+
+        /// <summary>
 		/// 获取单例对象(不开启执行时间记录)
 		/// </summary>
 		public static CommandLog Instance
@@ -226,7 +249,7 @@ namespace PWMIS.DataProvider.Data
                     if ((LogExecutedTime > 0 && elapsedMilliseconds > LogExecutedTime) || LogExecutedTime == 0)
                     {
                         RecordCommandLog(command, who);
-                        WriteLog("Execueted Time(ms):" + elapsedMilliseconds + "\r\n", who);
+                        this.LogWriter.WriteLog("Execueted Time(ms):" + elapsedMilliseconds + "\r\n", who);
                     }
                 }
                 watch.Stop();
@@ -238,17 +261,11 @@ namespace PWMIS.DataProvider.Data
             }
 		}
 
-		/// <summary>
-		///写入日志消息
-		/// </summary>
-		/// <param name="msg">消息</param>
-		/// <param name="who">发送者</param>
-		public void WriteLog(string msg,string who)
-		{
-			if(SaveCommandLog)
-				WriteLog ("//"+DateTime.Now.ToString ()+ " @"+who+" ："+msg+"\r\n");
-		}
-
+       public void WriteLog(string msg, string who) 
+       {
+           this.LogWriter.WriteLog(msg, who);
+       }
+       
         /// <summary>
         /// 写错误日志，将使用 DataLogFile 配置键的文件名写文件，不受SaveCommandLog 影响，除非 DataLogFile 未设置或为空。
         /// </summary>
@@ -285,26 +302,55 @@ namespace PWMIS.DataProvider.Data
 			string temp="//"+DateTime.Now.ToString ()+ " @"+who+" 执行命令：\r\nSQL=\""+command.CommandText+"\"\r\n//命令类型："+command.CommandType.ToString ();
 			if(command.Transaction !=null)
 				temp=temp.Replace ("执行命令","执行事务");
-			WriteLog(temp);
+			this.LogWriter.WriteLog(temp);
 			if(command.Parameters.Count >0)
 			{
-				WriteLog("//"+command.Parameters.Count+"个命令参数：");
+                this.LogWriter.WriteLog("//" + command.Parameters.Count + "个命令参数：");
 				for(int i=0;i<command.Parameters.Count ;i++)
 				{
 					IDataParameter p=(IDataParameter)command.Parameters[i];
-					WriteLog ("Parameter[\""+p.ParameterName+"\"]\t=\t\""+Convert.ToString ( p.Value)+"\"  \t\t\t//DbType=" +p.DbType.ToString ());
+                    this.LogWriter.WriteLog("Parameter[\"" + p.ParameterName + "\"]\t=\t\"" + Convert.ToString(p.Value) + "\"  \t\t\t//DbType=" + p.DbType.ToString());
 				}
 			}
-			
-
 		}
 
-		/// <summary>
-		/// 批量写入日志
-		/// </summary>
-		/// <param name="log"></param>
-		private void WriteLog(string log)
-		{
+       
+        /// <summary>
+        /// 将日志全部写入
+        /// </summary>
+        public void Dispose()
+        {
+            this.LogWriter.Dispose();
+        }
+    }
+
+    class InnerLogWriter: PWMIS.Common.ICommonLog 
+    {
+        public string DataLogFile { get; set; }
+        public bool SaveCommandLog { get; set; }
+        public int LogBufferCount { get; set; }
+
+        private List<string> _logBuffer = new List<string>();
+        private DateTime _lastWrite = DateTime.Now;
+        private const int WriteTime = 30;//30秒写入一次
+       
+        /// <summary>
+        ///写入日志消息
+        /// </summary>
+        /// <param name="msg">消息</param>
+        /// <param name="who">发送者</param>
+        public void WriteLog(string msg, string who)
+        {
+            if (SaveCommandLog)
+                WriteLog("//" + DateTime.Now.ToString() + " @" + who + " ：" + msg + "\r\n");
+        }
+
+        /// <summary>
+        /// 批量写入日志
+        /// </summary>
+        /// <param name="log"></param>
+        public void WriteLog(string log)
+        {
             if (!string.IsNullOrEmpty(log))
                 _logBuffer.Add(log);
 
@@ -318,12 +364,12 @@ namespace PWMIS.DataProvider.Data
                     sb.Append(item);
                     sb.Append("\r\n");
                 }
-                string writeText = sb.ToString ();
+                string writeText = sb.ToString();
 
                 //edit at 2012.10.17 改成无锁异步写如日志文件
                 using (FileStream fs = new FileStream(DataLogFile, FileMode.Append, FileAccess.Write, FileShare.Write, 2048, FileOptions.Asynchronous))
                 {
-                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes(writeText );
+                    byte[] buffer = System.Text.Encoding.UTF8.GetBytes(writeText);
                     IAsyncResult writeResult = fs.BeginWrite(buffer, 0, buffer.Length,
                         (asyncResult) =>
                         {
@@ -338,15 +384,11 @@ namespace PWMIS.DataProvider.Data
                 }
                 _lastWrite = DateTime.Now;
             }
-		}
+        }
 
-        /// <summary>
-        /// 将日志全部写入
-        /// </summary>
         public void Dispose()
         {
             _lastWrite = DateTime.Now.AddMinutes(-10);
-            WriteLog(null);
         }
     }
 

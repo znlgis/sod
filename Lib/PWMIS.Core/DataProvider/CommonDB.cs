@@ -328,17 +328,36 @@ namespace PWMIS.DataProvider.Data
                         {
                             if (handle is CommandExecuteLogHandle)
                             {
-                                _logger = ((CommandExecuteLogHandle)handle).CurrCommandLog;
+                                _logger = ((CommandExecuteLogHandle)handle).CurrCommandLog.LogWriter;
                                 break;
                             }
                         }
                     }
                 }
-                if (_logger == null)
-                    _logger = new CommandLog();
                 return _logger; 
             }
-            set { _logger = value; }
+            set {
+                _logger = value;
+
+                if (commandHandles == null)
+                {
+                    CommandExecuteLogHandle handle = new CommandExecuteLogHandle();
+                    handle.CurrCommandLog.LogWriter = _logger;
+                    commandHandles = new List<ICommandHandle>();
+                    commandHandles.Add(handle);
+                }
+                else
+                {
+                    foreach (ICommandHandle handle in this.commandHandles)
+                    {
+                        if (handle is CommandExecuteLogHandle)
+                        {
+                            ((CommandExecuteLogHandle)handle).CurrCommandLog.LogWriter = _logger;
+                            break;
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
