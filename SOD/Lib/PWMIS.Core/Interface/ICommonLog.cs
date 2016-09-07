@@ -12,5 +12,10 @@ namespace PWMIS.Common
        /// <param name="msg">日志消息</param>
        /// <param name="who">写日志人</param>
         void WriteLog(string msg, string who);
+        /// <summary>
+        /// 写日志文件
+        /// </summary>
+        /// <param name="log">日志内容</param>
+        void WriteLog(string log);
     }
 }
