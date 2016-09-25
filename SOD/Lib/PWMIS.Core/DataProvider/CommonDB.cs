@@ -334,6 +334,9 @@ namespace PWMIS.DataProvider.Data
                         }
                     }
                 }
+                //感谢网友 “芜湖－大枕头” 发现_logger==null 的问题。2016.9.23
+                if (_logger == null)
+                    _logger = CommandLog.Instance.LogWriter;
                 return _logger; 
             }
             set {
