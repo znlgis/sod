@@ -254,6 +254,10 @@ namespace PWMIS.DataMap.Entity
         /// 实体类映射的表的架构名字
         /// </summary>
         protected internal string Schema { get; set; }
+        /// <summary>
+        /// 当前实体类对应的数据源名称，通常对应一个连接字符串名字，用于主子实体查询
+        /// </summary>
+        protected string DataSource { get; set; }
 
         private string setingFieldName = string.Empty;
 

@@ -1746,7 +1746,10 @@ namespace PWMIS.DataMap.Entity
                     //感谢网友 【不抖机灵】 发现此问题 2016.4.29
                     //((IDbDataParameter)para).Size = size;
                     //((IDbDataParameter)para).DbType = DbType.String;
-                    para = DB.GetParameter(para.ParameterName, DbType.String, size);
+                    //需要为新参数赋值，感谢网友 @广州-银古 发现此问题
+                   var  paratemp = DB.GetParameter(para.ParameterName, DbType.String, size);
+                   paratemp.Value = para.Value;
+                   para = paratemp;
                     
                 }
                 else if (size < 0)
@@ -1755,7 +1758,9 @@ namespace PWMIS.DataMap.Entity
                     ////DbType.AnsiString 非Unicode字符可变长度流，范围为1-8000个字符
                     ////长度小于0，将生成 varchar的参数类型
                     //((IDbDataParameter)para).DbType = DbType.AnsiString;
-                    para = DB.GetParameter(para.ParameterName, DbType.AnsiString, Math.Abs(size));
+                    var paratemp = DB.GetParameter(para.ParameterName, DbType.AnsiString, Math.Abs(size));
+                    paratemp.Value = para.Value;
+                    para = paratemp;
                 }
             }
         }
