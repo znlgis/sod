@@ -139,5 +139,26 @@ namespace PWMIS.DataProvider.Data
         {
             get { throw new NotImplementedException(); }
         }
+
+        private string _insertKey;
+        /// <summary>
+        /// 在插入具有自增列的数据后，获取刚才自增列的数据的
+        /// </summary>
+        public override string InsertKey
+        {
+            get
+            {
+                if (string.IsNullOrEmpty(_insertKey))
+                    //MySQL 支持 SELECT @@IDENTITY，但是 MariaDB 不支持，换用下面都支持的方式：
+                    //注意必须在一个连接中有效
+                    return "SELECT LAST_INSERT_ID() ";
+                else
+                    return _insertKey;
+            }
+            set
+            {
+                _insertKey = value;
+            }
+        }
     }
 }
