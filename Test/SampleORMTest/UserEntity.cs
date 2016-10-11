@@ -48,7 +48,7 @@ namespace SampleORMTest
         public string Pwd
         {
             get { return getProperty<string>("Pwd"); }
-            set { setProperty("Pwd", value, 50); }
+            set { setProperty("Pwd", value, 4000); }
         }
 
         public DateTime RegistedDate
