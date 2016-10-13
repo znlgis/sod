@@ -105,7 +105,7 @@ namespace PWMIS.DataProvider.Data.OracleDataAccess
             para.ParameterName = paraName;
             if (size == 2147483647)
             {
-                para.OracleDbType = OracleDbType.Clob;
+                para.OracleDbType = OracleDbType.NClob;
             }
             else
             {

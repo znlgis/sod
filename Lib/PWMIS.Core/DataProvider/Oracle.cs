@@ -109,7 +109,7 @@ namespace PWMIS.DataProvider.Data
             if (size > 2000)
             {
                 //长度大于2000，将引发clob类型错误的问题，详细请参考 http://blog.csdn.net/pojianbing/article/details/2789426
-                para.OracleType = OracleType.Clob;
+                para.OracleType = OracleType.NClob;
                 para.Size = size;
             }
             else
