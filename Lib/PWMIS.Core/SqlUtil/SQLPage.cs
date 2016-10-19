@@ -600,9 +600,9 @@ ORDER BY {3}
                     + (string.IsNullOrEmpty( strWhere)?"":"WHERE "+strWhere);
             }
             //分页摸板语句
-
+            //rownum r_n 必须放到最后，避免多表联合查询分页可能引起的问题，感谢网友 上海-暗夜 发现此问题。
             string SqlTemplate = @"SELECT * FROM
- (SELECT rownum r_n,temptable.* FROM  
+ (SELECT temptable.*, rownum r_n FROM  
    ( @@SourceSQL ) temptable Where rownum <= @@RecEnd
  ) temptable2 WHERE r_n >= @@RecStart ";
 
