@@ -18,6 +18,12 @@ namespace SimpleAccessWinForm
         {
             InitializeComponent();
         }
+        /*
+        private User BindingUserData;
+         * 增加类似的代码：
+         * TextBox1.DataBindings.Add("Text", company, "Name");
+         * TextBox1.DataBindings.Add("Text", company, "Employees.Name");
+         */
 
         private void Form2_Load(object sender, EventArgs e)
         {

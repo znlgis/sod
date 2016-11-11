@@ -50,7 +50,14 @@ namespace PWMIS.Windows
                         //return fieldName;
                         return currentFieldName;
                     }
-                    return propName;
+                    else
+                    {
+                        int at = propName.IndexOf('.');
+                        if(at>0)
+                            return propName.Substring(at+1);
+                        else
+                            return propName;
+                    }
                 }
                 else
                     return "";
@@ -113,7 +120,12 @@ namespace PWMIS.Windows
                 else
                 {
                     this.DialogResult = DialogResult.OK;
-                    currDataControl.LinkObject = this.txtFullTypeName.Text;
+                    string propName = cmbProperty.SelectedValue.ToString();
+                    int at = propName.IndexOf('.');
+                    if (at > 0)
+                        currDataControl.LinkObject = propName.Substring(0,at);
+                    else
+                        currDataControl.LinkObject = propName;
                 }
                
                 //不能使用SelectText 在不是只读的下拉框的情况下

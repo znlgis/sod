@@ -510,7 +510,7 @@
             <summary>
             用连接字符串名字初始化本类
             </summary>
-            <param name="connName"></param>
+            <param name="db">数据访问对象</param>
         </member>
         <member name="M:PWMIS.Core.Extensions.OracleDbContext.CheckTableExists``1">
             <summary>
@@ -526,7 +526,7 @@
             <summary>
             用连接字符串名字初始化本类
             </summary>
-            <param name="connName"></param>
+            <param name="db">数据访问对象</param>
         </member>
         <member name="M:PWMIS.Core.Extensions.SqlServerDbContext.CheckTableExists``1">
             <summary>

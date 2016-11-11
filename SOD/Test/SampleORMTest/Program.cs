@@ -60,7 +60,8 @@ namespace SampleORMTest
                 Console.WriteLine("测试：用户{0} 的记录不存在，如果需要测试查询和更新，请先添加一条记录。继续测试，请按任意键。",zhang_san.Name );
                 Console.Read();
             }
-
+            System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
             //删除 测试数据-----------------------------------------------------
             User user = new User();
             OQL deleteQ = OQL.From(user)
@@ -105,9 +106,12 @@ namespace SampleORMTest
 
             //上面的代码注释，采用下面封装的代码：ExecuteInsrtOql
             li_si.ID =userQuery.ExecuteInsrtOql(insertQ);
-            
-            User zhang_yeye = new User() { Name = "zhang yeye", Pwd = "456" };
-            count += EntityQuery<User>.Instance.Insert(zhang_yeye);//采用泛型 EntityQuery 方式插入数据
+            for (int i = 0; i < 1000; i++)
+            {
+                User zhang_yeye = new User() { Name = "zhang yeye" + i, Pwd = "pwd" + i };
+                count += EntityQuery<User>.Instance.Insert(zhang_yeye);//采用泛型 EntityQuery 方式插入数据
+            }
+           
 
             Console.WriteLine("--插入 {0}条数据--", count);
             //-----------------------------------------------------------------
@@ -136,13 +140,16 @@ namespace SampleORMTest
             Console.WriteLine("Login3:{0}", service.Login3("zhang san", "123"));
             Console.WriteLine("Login4:{0}", service.Login4("zhang san", "123"));
             Console.WriteLine("Login5:{0}", service.Login5("zhang san", "123"));
-            Console.WriteLine("Login6:{0}", service.Login6("zhang san", "123"));
+            Console.WriteLine("Login6:{0}", service.Login6("zhang yeye", "pwd100"));
             //查询列表
             var users=service.FuzzyQueryUser("zhang");
             Console.WriteLine("模糊查询姓 张 的用户，数量:{0}",users.Count );
             //-----------------------------------------------------------------
 
             Console.WriteLine("-------PDF.NET SOD ORM 测试 全部结束----- ");
+
+            watch.Stop();
+            Console.WriteLine("耗时：(ms)"+watch.ElapsedMilliseconds);
             Console.Read();
         }
     }

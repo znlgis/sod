@@ -64,24 +64,35 @@ namespace PWMIS.Core
                 this.IsEntityClass = (objType.BaseType.FullName == "PWMIS.DataMap.Entity.EntityBase");
 
                 List<KeyValuePair<string, string>>  dataList = new List<KeyValuePair<string, string>>();
-                //
-                foreach (var prop in objType.GetProperties(BindingFlags.Instance | BindingFlags.Public))
-                {
-                    if (prop.CanRead && prop.CanWrite)
-                    {
-                        var propType = prop.PropertyType;
-                        if (propType.IsValueType || propType == typeof(string))
-                        {
-                            string info = prop.Name.PadRight(20) + "|" + Type.GetTypeCode(propType).ToString();
-                            dataList.Add(new KeyValuePair<string, string>(info, prop.Name));
-                        }
-                    }
-                }
+                SearchPropertys(objType, "", dataList);
                 return dataList;
             }
             this.IsEntityClass = false;
             this.ErrorMessage = "未找到类型 "+className;
             return null;
+        }
+
+        private void SearchPropertys(Type objType, string parentPropName, List<KeyValuePair<string, string>> dataList)
+        {
+            foreach (var prop in objType.GetProperties(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.NonPublic))
+            {
+                if (prop.CanRead && prop.CanWrite)
+                {
+                    var propType = prop.PropertyType;
+                    if (propType.IsValueType || propType == typeof(string))
+                    {
+                        string info = parentPropName + prop.Name.PadRight(20) + "|" + Type.GetTypeCode(propType).ToString();
+                        dataList.Add(new KeyValuePair<string, string>(info, parentPropName + prop.Name));
+                    }
+                    else
+                    {
+                        //对于复杂类型，递归解析出所有的类型和属性
+                        string info = parentPropName+prop.Name.PadRight(20) + "|" + propType.ToString();
+                        dataList.Add(new KeyValuePair<string, string>(info, parentPropName + prop.Name));
+                        SearchPropertys(propType, parentPropName + prop.Name + ".", dataList);
+                    }
+                }
+            }
         }
 
         public object Invoke(string fullClassName, string methodName, object[] paraValues)

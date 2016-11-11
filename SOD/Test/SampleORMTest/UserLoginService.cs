@@ -148,7 +148,9 @@ namespace SampleORMTest
             OQL q = OQL.From(user)
               .Select()
               .Where(cmp => cmp.Comparer(user.Name, "like", likeName+"%") )
+              .OrderBy (user.ID )
             .END;
+            q.Limit(10,5);
 
             List<User> users = EntityQuery<User>.QueryList(q);
             return users;
