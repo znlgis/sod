@@ -1,0 +1,519 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PWMIS.Windows</name>
+    </assembly>
+    <members>
+        <member name="T:PWMIS.DataForms.Adapter.MyWinForm">
+            <summary>
+            智能WinForm窗体数据处理类，包括数据收集和数据持久化（保存到数据库）等方法；如果使用事务请勿使用该类中间的静态方法。
+            </summary>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.#ctor">
+            <summary>
+            默认构造函数
+            </summary>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.ClearIBData(System.Windows.Forms.Form.ControlCollection)">
+            <summary>
+            清除窗体上的智能控件的值
+            </summary>
+            <param name="Controls">窗体控件集和</param>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.DoDataControls(System.Windows.Forms.Form.ControlCollection,PWMIS.DataForms.Adapter.UseDataControl)">
+            <summary>
+            使用自定义的方法处理控件集合中每一个智能窗体数据控件，使用户不必额外遍历控件集合。
+            </summary>
+            <param name="controls">窗体容器控件的控件集合</param>
+            <param name="useMethod">自定义的方法</param>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.GetIBControls(System.Windows.Forms.Control.ControlCollection)">
+            <summary>
+            从控件集合的每个元素及其子元素中寻找所有的智能数据控件并返回智能控件列表
+            </summary>
+            <param name="controls">控件集合，如页面容器对象</param>
+            <returns>智能控件列表</returns>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.ValidateIBControls(System.Windows.Forms.Control.ControlCollection)">
+            <summary>
+            验证智能窗体控件并执行验证逻辑，失败将用提示框提示错误信息。
+            注意对控件的检索不会遍历其子控件
+            </summary>
+            <param name="controls">窗体控件的子控件集合</param>
+            <returns>验证是否通过</returns>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.ValidateIBControls(System.Collections.Generic.IList{PWMIS.Common.IDataControl})">
+            <summary>
+            验证智能窗体控件并执行验证逻辑，失败将用提示框提示错误信息
+            </summary>
+            <param name="controls">智能控件列表</param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.findIBControls(System.Collections.Generic.List{PWMIS.Common.IDataControl},System.Windows.Forms.Control.ControlCollection)">
+            <summary>
+            寻找智能控件，将其放到数组列表中
+            </summary>
+            <param name="arrIBs">存放控件的数组</param>
+            <param name="controls">要寻找的原控件集合</param>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.GetSelectAndDeleteCommand(System.Windows.Forms.Form.ControlCollection)">
+            <summary>
+            获取选择和删除查询的SQL语句
+            </summary>
+            <param name="Controls">要收集的控件集合</param>
+            <returns> ArrayList 中的成员为 IBCommand 对象，包含具体的CRUD SQL</returns>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.GetIBFormData(System.Windows.Forms.Control.ControlCollection,PWMIS.DataProvider.Data.CommonDB)">
+             <summary>
+             收集窗体中的智能控件，组合成能够直接用于数据库插入和更新 查询的 SQL语句
+             一个窗体中可以同时处理多个表的数据操作
+             如果控件的数据属性设置为只读，那么该控件的值不会更新到数据库；如果该控件的数据属性设置为主键，那么更新语句将附带该条件
+             邓太华 2008.1.15
+             </summary>
+             <returns>
+             ArrayList 中的成员为 IBCommand 对象，包含具体的CRUD SQL
+            </returns>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.AutoUpdateIBFormData(System.Windows.Forms.Control.ControlCollection)">
+            <summary>
+            自动更新窗体数据，要求控件数据绑定到映射的表和字段
+            </summary>
+            <param name="Controls">控件集合</param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.AutoUpdateIBFormData(System.Windows.Forms.Control.ControlCollection,PWMIS.Common.IDataControl)">
+            <summary>
+            自动更新含有GUID主键或字符型主键的窗体数据，注该控件必须设置PrimaryKey属性
+            </summary>
+            <param name="Controls">控件集合</param>
+            <param name="guidControl">Gudi或字符型主键控件</param>
+            <returns>更新是否成功</returns>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.AutoSelectIBForm(System.Windows.Forms.Form.ControlCollection)">
+            <summary>
+            自动填充智能窗体控件的数据，要求控件数据绑定到映射的表和字段
+            </summary>
+            <param name="Controls">要填充的窗体控件集和</param>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.AutoSelectIBForm(System.Windows.Forms.Form.ControlCollection,System.Data.DataSet)">
+            <summary>
+            从数据集DataSet填充数据到数据控件上面，DataSet中的表名称必须和数据控件的LinkObject匹配（不区分大小写）
+            </summary>
+            <param name="Controls">要填充的窗体控件集和</param>
+            <param name="dsSource">提供属于源的数据集</param>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.AutoSelectIBForm(System.Windows.Forms.Form.ControlCollection,PWMIS.Common.IEntity)">
+            <summary>
+            从实体类填充数据到页面控件
+            </summary>
+            <param name="Controls"></param>
+            <param name="entity"></param>
+        </member>
+        <member name="M:PWMIS.DataForms.Adapter.MyWinForm.AutoDeleteIBForm(System.Windows.Forms.Form.ControlCollection)">
+            <summary>
+            自动删除智能窗体控件的持久化数据
+            </summary>
+            <param name="Controls">要处理的窗体控件集和</param>
+            <returns>操作受影响的记录行数</returns>
+        </member>
+        <member name="P:PWMIS.DataForms.Adapter.MyWinForm.Instance">
+            <summary>
+            智能Web窗体数据处理类 的静态实例
+            </summary>
+        </member>
+        <member name="P:PWMIS.DataForms.Adapter.MyWinForm.DataMap">
+            <summary>
+            窗体控件数据映射类
+            </summary>
+        </member>
+        <member name="T:PWMIS.DataMap.WinFormControlDataMap">
+            <summary>
+            WinForm     窗体控件数据映射类，提供从实体对象填充数据到窗体数据控件和收集数据到实体对象的功能。
+            </summary>
+        </member>
+        <member name="M:PWMIS.DataMap.WinFormControlDataMap.#ctor">
+            <summary>
+            默认构造函数
+            </summary>
+        </member>
+        <member name="M:PWMIS.DataMap.WinFormControlDataMap.FindControl(System.Windows.Forms.Control.ControlCollection,System.Collections.Generic.List{PWMIS.Common.IDataControl})">
+            <summary>
+            在控件集合中查找IDataControl,并放到一个IDataControl集合实例中
+            </summary>
+            <param name="controls">容器的控件集合</param>
+            <param name="dcList">IDataControl集合实例</param>
+            <returns>IDataControl集合实例</returns>
+        </member>
+        <member name="M:PWMIS.DataMap.WinFormControlDataMap.FindControls(System.Windows.Forms.Control,System.Collections.Generic.List{PWMIS.Common.IDataControl})">
+            <summary>
+            在控件中查找所有的IDataControl（深度查找）,并放到一个IDataControl集合实例中
+            </summary>
+            <param name="control">容器控件</param>
+            <param name="dcList">IDataControl集合实例</param>
+            <returns>IDataControl集合实例</returns>
+        </member>
+        <member name="M:PWMIS.DataMap.WinFormControlDataMap.FillDataFromEntityClass(System.Object,System.Collections.ICollection)">
+            <summary>
+            从实体类中填充数据
+            </summary>
+            <param name="objEntityClass">实体类</param>
+            <param name="controls">控件集合</param>
+        </member>
+        <member name="M:PWMIS.DataMap.WinFormControlDataMap.CollectDataToEntityClass(System.Object,System.Collections.ICollection)">
+            <summary>
+            从控件集合收集数据到实体类中
+            </summary>
+            <param name="objEntityClass">实体类</param>
+            <param name="controls">控件集合</param>
+        </member>
+        <member name="M:PWMIS.DataMap.WinFormControlDataMap.ClearData(System.Windows.Forms.Control.ControlCollection)">
+            <summary>
+            让容器中所有的BrainControl值设置为空(深度搜索) 
+            </summary>
+            <param name="conlObject">容器对象</param>
+        </member>
+        <member name="F:PWMIS.Windows.Controls.DataCalendar.components">
+            <summary>
+            必需的设计器变量。
+            </summary>
+        </member>
+        <member name="M:PWMIS.Windows.Controls.DataCalendar.Dispose(System.Boolean)">
+            <summary>
+            清理所有正在使用的资源。
+            </summary>
+            <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        </member>
+        <member name="M:PWMIS.Windows.Controls.DataCalendar.InitializeComponent">
+            <summary>
+            设计器支持所需的方法 - 不要
+            使用代码编辑器修改此方法的内容。
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataCalendar.LinkProperty">
+            <summary>
+            设定与数据库字段对应的数据名
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataCalendar.LinkObject">
+            <summary>
+            设定与数据库字段对应的数据表名
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataCalendar.ReadOnly">
+            <summary>
+            是否只读
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataCalendar.DataFormatString">
+            <summary>
+            数据呈现格式
+            </summary>
+        </member>
+        <member name="F:PWMIS.Windows.Controls.DataCheckBox.components">
+            <summary>
+            必需的设计器变量。
+            </summary>
+        </member>
+        <member name="M:PWMIS.Windows.Controls.DataCheckBox.Dispose(System.Boolean)">
+            <summary>
+            清理所有正在使用的资源。
+            </summary>
+            <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        </member>
+        <member name="M:PWMIS.Windows.Controls.DataCheckBox.InitializeComponent">
+            <summary>
+            设计器支持所需的方法 - 不要
+            使用代码编辑器修改此方法的内容。
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataCheckBox.LinkObject">
+            <summary>
+            设定与数据库字段对应的数据表名
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataCheckBox.ReadOnly">
+            <summary>
+            是否只读
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataCheckBox.PrimaryKey">
+            <summary>
+            设定对应的数据字段是否是主键
+            </summary>
+        </member>
+        <member name="F:PWMIS.Windows.Controls.DataDropDownList.components">
+            <summary>
+            必需的设计器变量。
+            </summary>
+        </member>
+        <member name="M:PWMIS.Windows.Controls.DataDropDownList.Dispose(System.Boolean)">
+            <summary>
+            清理所有正在使用的资源。
+            </summary>
+            <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        </member>
+        <member name="M:PWMIS.Windows.Controls.DataDropDownList.InitializeComponent">
+            <summary>
+            设计器支持所需的方法 - 不要
+            使用代码编辑器修改此方法的内容。
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataDropDownList.LinkProperty">
+            <summary>
+            设定与数据库字段对应的数据名
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataDropDownList.PrimaryKey">
+            <summary>
+            设定对应的数据字段是否是主键
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataDropDownList.ReadOnly">
+            <summary>
+            是否只读
+            </summary>
+        </member>
+        <member name="T:PWMIS.Windows.Controls.DataLabel">
+            <summary>
+            数据标签控件
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataLabel.LinkProperty">
+            <summary>
+            设定与数据库字段对应的数据名
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataLabel.LinkObject">
+            <summary>
+            设定与数据库字段对应的数据表名
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataLabel.SysTypeCode">
+            <summary>
+            数据类型，默认是String
+            </summary>
+        </member>
+        <member name="F:PWMIS.Windows.Controls.DataListBox.components">
+            <summary>
+            必需的设计器变量。
+            </summary>
+        </member>
+        <member name="M:PWMIS.Windows.Controls.DataListBox.Dispose(System.Boolean)">
+            <summary>
+            清理所有正在使用的资源。
+            </summary>
+            <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        </member>
+        <member name="M:PWMIS.Windows.Controls.DataListBox.InitializeComponent">
+            <summary>
+            设计器支持所需的方法 - 不要
+            使用代码编辑器修改此方法的内容。
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataListBox.LinkObject">
+            <summary>
+            设定与数据库字段对应的数据表名
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataListBox.PrimaryKey">
+            <summary>
+            设定对应的数据字段是否是主键
+            </summary>
+        </member>
+        <member name="F:PWMIS.Windows.Controls.DataRadioButton.components">
+            <summary>
+            必需的设计器变量。
+            </summary>
+        </member>
+        <member name="M:PWMIS.Windows.Controls.DataRadioButton.Dispose(System.Boolean)">
+            <summary>
+            清理所有正在使用的资源。
+            </summary>
+            <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        </member>
+        <member name="M:PWMIS.Windows.Controls.DataRadioButton.InitializeComponent">
+            <summary>
+            设计器支持所需的方法 - 不要
+            使用代码编辑器修改此方法的内容。
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataRadioButton.LinkObject">
+            <summary>
+            设定与数据库字段对应的数据表名
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataRadioButton.PrimaryKey">
+            <summary>
+            设定对应的数据字段是否是主键
+            </summary>
+        </member>
+        <member name="T:PWMIS.Windows.IValidationControl">
+            <summary>
+            验证控件接口
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.LinkProperty">
+            <summary>
+            设定与数据库字段对应的数据名
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.PrimaryKey">
+            <summary>
+            设定对应的数据字段是否是主键
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.DataFormatString">
+            <summary>
+            数据呈现格式
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.Type">
+            <summary>
+            执行服务器验证时的数据类型
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.IsValid">
+            <summary>
+            是否通过服务器验证默认为true
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.MessageType">
+            <summary>
+            提示信息的类型
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.OftenType">
+            <summary>
+            需要验证的常用数据类型，如果设定为“无”，将停止控件验证。
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.RegexString">
+            <summary>
+            设定控件验证的正则表达式
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.RegexName">
+            <summary>
+            验证的名称
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.OnClickShowInfo">
+            <summary>
+            设定是否点击控件提示信息
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.ErrorMessage">
+            <summary>
+            验证失败呈现的信息
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.ClientValidationFunctionString">
+            <summary>
+            设定自定义验证正则表达式
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.Controls.DataTextBox.IsClientValidation">
+            <summary>
+            设定控件是否采取自定义验证(停止控件验证)
+            </summary>
+        </member>
+        <member name="M:PWMIS.Windows.PropertySelectorForm.LoadClassNames(System.String)">
+            <summary>
+            加载程序集中的全部类型信息到字典中，FullClassName为Key，ClassName为Value
+            </summary>
+            <param name="fullName">程序集的名称</param>
+        </member>
+        <member name="F:PWMIS.Windows.PropertySelectorForm.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:PWMIS.Windows.PropertySelectorForm.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:PWMIS.Windows.PropertySelectorForm.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="P:PWMIS.Windows.PropertySelectorForm.PropertyName">
+            <summary>
+            数据控件选择的属性名称
+            </summary>
+        </member>
+        <member name="T:PWMIS.Windows.Validate.EnumRegexType">
+            <summary>
+            数据验证方式
+            </summary>
+        </member>
+        <member name="F:PWMIS.Windows.Validate.EnumRegexType.无">
+            <summary>
+            未定义
+            </summary>
+        </member>
+        <member name="T:PWMIS.Windows.Validate.EnumMessageType">
+            <summary>
+            BrainTextBox控件信息提示方式
+            </summary>
+        </member>
+        <member name="F:PWMIS.Windows.Validate.EnumMessageType.层">
+            <summary>
+            未定义
+            </summary>
+        </member>
+        <member name="T:PWMIS.Windows.Validate.EnumDisplayType">
+            <summary>
+            BrainLabel控件数据显示方式
+            </summary>
+        </member>
+        <member name="F:PWMIS.Windows.Validate.EnumDisplayType.无">
+            <summary>
+            未定义
+            </summary>
+        </member>
+        <member name="T:PWMIS.Windows.Validate.RegexStatic">
+            <summary>
+            RegexStatic 的摘要说明。
+            </summary>
+        </member>
+        <member name="T:PWMIS.Windows.Validate.StandardRegexListConvertor">
+            <summary>
+            StandardRegexListConvertor 的摘要说明。
+            </summary>
+        </member>
+        <member name="T:PWMIS.Windows.ValidationDataType">
+            <summary>
+            控件验证的类型
+            </summary>
+        </member>
+        <member name="F:PWMIS.Windows.ValidationDataType.String">
+            <summary>
+            字符串数据类型。该值被视为 System.String。
+            </summary>
+        </member>
+        <member name="F:PWMIS.Windows.ValidationDataType.Integer">
+            <summary>
+            32 位有符号整数数据类型。该值被视为 System.Int32。
+            </summary>
+        </member>
+        <member name="F:PWMIS.Windows.ValidationDataType.Double">
+            <summary>
+             双精度浮点数数据类型。该值被视为 System.Double。
+            </summary>
+        </member>
+        <member name="F:PWMIS.Windows.ValidationDataType.Date">
+            <summary>
+            日期数据类型。仅允许使用数字日期。不能指定时间部分。
+            </summary>
+        </member>
+        <member name="F:PWMIS.Windows.ValidationDataType.Currency">
+            <summary>
+            货币数据类型。该值被视为 System.Decimal。但仍允许使用货币和分组符号。
+            </summary>
+        </member>
+    </members>
+</doc>

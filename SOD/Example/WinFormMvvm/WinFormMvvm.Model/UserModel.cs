@@ -18,7 +18,10 @@ namespace WinFormMvvm.Model
 
         public List<UserEntity> GetAllUsers()
         {
-            return OQL.From<UserEntity>().ToList(context.CurrentDataBase);
+            var list= OQL.From<UserEntity>().ToList(context.CurrentDataBase);
+            int max = list.Max(p => p.ID);
+            index = ++max;
+            return list;
         }
         public void UpdateUser(UserEntity user)
         {

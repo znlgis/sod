@@ -10,6 +10,21 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormMvvm.Model", "WinFormMvvm.Model\WinFormMvvm.Model.csproj", "{A186142F-B3DF-461E-8016-5E1EFCEDB36A}"
 EndProject
 Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WinFormMvvm\\WinFormMvvm.csproj
+		SccProjectName1 = WinFormMvvm
+		SccLocalPath1 = WinFormMvvm
+		SccProjectUniqueName2 = WinFormMvvm.ViewModel\\WinFormMvvm.ViewModel.csproj
+		SccProjectName2 = WinFormMvvm.ViewModel
+		SccLocalPath2 = WinFormMvvm.ViewModel
+		SccProjectUniqueName3 = WinFormMvvm.Model\\WinFormMvvm.Model.csproj
+		SccProjectName3 = WinFormMvvm.Model
+		SccLocalPath3 = WinFormMvvm.Model
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
