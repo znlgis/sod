@@ -9,6 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormMvvm.ViewModel", "Wi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormMvvm.Model", "WinFormMvvm.Model\WinFormMvvm.Model.csproj", "{A186142F-B3DF-461E-8016-5E1EFCEDB36A}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{48996244-2BF7-48B9-83BB-B50999DB7039}"
+	ProjectSection(SolutionItems) = preProject
+		packages.rar = packages.rar
+		包说明.txt = 包说明.txt
+		老坛泡新菜：SOD MVVM，让WinForm焕发新春.docx = 老坛泡新菜：SOD MVVM，让WinForm焕发新春.docx
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 4

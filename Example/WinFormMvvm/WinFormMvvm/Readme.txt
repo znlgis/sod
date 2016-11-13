@@ -1,8 +1,9 @@
 ﻿===============================================================================
 ****                  SOD Framework MVVM Example (WinForm)               ******
 ===============================================================================
-about the SOD, more infomation:http://pwmis.codeplex.com
-about the SOD MVVM news :https://www.oschina.net/news/78949/pdf-net-5-6-0-1111
+about the SOD, more infomation :http://pwmis.codeplex.com
+about SOD MVVM news :https://www.oschina.net/news/78949/pdf-net-5-6-0-1111
+about SOD MVVM blog :http://www.cnblogs.com/bluedoctor/p/6060278.html
 
 powered by the SOD Framework Team, Blue Doctor.
 date: 2016.11.11 
