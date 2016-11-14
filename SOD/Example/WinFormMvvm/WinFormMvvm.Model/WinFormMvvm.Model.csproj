@@ -39,9 +39,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PWMIS.Core, Version=5.5.5.1019, Culture=neutral, PublicKeyToken=17ba13a12b9fd814, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\PDF.NET.SOD.Core.5.5.5.1020\lib\PWMIS.Core.dll</HintPath>
+    <Reference Include="PWMIS.Core, Version=5.6.0.1111, Culture=neutral, PublicKeyToken=17ba13a12b9fd814, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDF.NET.SOD.Core.5.6.0.1114\lib\PWMIS.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PWMIS.Core.Extensions">
       <HintPath>..\packages\PDF.NET.SOD.Core.Extensions.5.5.5.1020\lib\PWMIS.Core.Extensions.dll</HintPath>
@@ -61,6 +61,7 @@
     <Compile Include="UserModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
