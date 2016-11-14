@@ -17,6 +17,8 @@
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -38,16 +40,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Interop.ADOX, Version=2.8.0.0, Culture=neutral, PublicKeyToken=71ca73961f3a831f, processorArchitecture=MSIL">
-      <HintPath>..\packages\PDF.NET.SOD.Access.Provider.5.6.0.1114\lib\Interop.ADOX.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="PWMIS.Access.Extensions, Version=5.5.0.1210, Culture=neutral, PublicKeyToken=17ba13a12b9fd814, processorArchitecture=MSIL">
-      <HintPath>..\packages\PDF.NET.SOD.Access.Provider.5.6.0.1114\lib\PWMIS.Access.Extensions.dll</HintPath>
+      <HintPath>..\packages\PDF.NET.SOD.Access.Provider.5.6.0.1117\lib\PWMIS.Access.Extensions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="PWMIS.Core, Version=5.6.0.1111, Culture=neutral, PublicKeyToken=17ba13a12b9fd814, processorArchitecture=MSIL">
@@ -130,6 +128,13 @@
     <Content Include="Readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\PDF.NET.SOD.Access.Provider.5.6.0.1117\build\PDF.NET.SOD.Access.Provider.targets" Condition="Exists('..\packages\PDF.NET.SOD.Access.Provider.5.6.0.1117\build\PDF.NET.SOD.Access.Provider.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\PDF.NET.SOD.Access.Provider.5.6.0.1117\build\PDF.NET.SOD.Access.Provider.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\PDF.NET.SOD.Access.Provider.5.6.0.1117\build\PDF.NET.SOD.Access.Provider.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
