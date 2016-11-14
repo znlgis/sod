@@ -38,26 +38,28 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Interop.ADOX">
-      <HintPath>..\packages\PDF.NET.SOD.Access.Provider.5.5.5.1020\lib\Interop.ADOX.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+    <Reference Include="Interop.ADOX, Version=2.8.0.0, Culture=neutral, PublicKeyToken=71ca73961f3a831f, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDF.NET.SOD.Access.Provider.5.6.0.1114\lib\Interop.ADOX.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="PWMIS.Access.Extensions">
-      <HintPath>..\packages\PDF.NET.SOD.Access.Provider.5.5.5.1020\lib\PWMIS.Access.Extensions.dll</HintPath>
+    <Reference Include="PWMIS.Access.Extensions, Version=5.5.0.1210, Culture=neutral, PublicKeyToken=17ba13a12b9fd814, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDF.NET.SOD.Access.Provider.5.6.0.1114\lib\PWMIS.Access.Extensions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="PWMIS.Core">
-      <HintPath>..\packages\PDF.NET.SOD.Core.5.5.5.1020\lib\PWMIS.Core.dll</HintPath>
+    <Reference Include="PWMIS.Core, Version=5.6.0.1111, Culture=neutral, PublicKeyToken=17ba13a12b9fd814, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDF.NET.SOD.Core.5.6.0.1114\lib\PWMIS.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PWMIS.Core.Extensions">
       <HintPath>..\packages\PDF.NET.SOD.Core.Extensions.5.5.5.1020\lib\PWMIS.Core.Extensions.dll</HintPath>
     </Reference>
-    <Reference Include="PWMIS.Windows, Version=5.1.1.325, Culture=neutral, PublicKeyToken=17ba13a12b9fd814, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\PDF.NET.SOD.WinForm.Extensions.5.5.5.1020\lib\PWMIS.Windows.dll</HintPath>
+    <Reference Include="PWMIS.Windows, Version=5.6.0.1111, Culture=neutral, PublicKeyToken=17ba13a12b9fd814, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDF.NET.SOD.WinForm.Extensions.5.6.0.1114\lib\PWMIS.Windows.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
