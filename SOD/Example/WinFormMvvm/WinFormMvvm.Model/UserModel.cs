@@ -19,7 +19,7 @@ namespace WinFormMvvm.Model
         public List<UserEntity> GetAllUsers()
         {
             var list= OQL.From<UserEntity>().ToList(context.CurrentDataBase);
-            int max = list.Max(p => p.ID);
+            int max =list.Count==0?0: list.Max(p => p.ID);
             index = ++max;
             return list;
         }
