@@ -131,6 +131,12 @@ namespace PWMIS.DataMap.Entity
                 string insertKey = "select " + seqName + ".currval as id from dual";
                 return insertKey;
             }
+            else if (this.currDb.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL && !string.IsNullOrEmpty(currEntity.IdentityName))
+            {
+                //2016.11.20增加此处代码
+                string seqName = currEntity.GetTableName() + "_" + currEntity.IdentityName + "_" + "seq";
+                return string.Format("select currval('{0}')", seqName.ToLower());
+            }
             else
             {
                 return this.currDb.InsertKey;
@@ -229,7 +235,7 @@ CREATE TABLE @TABLENAME(
                     if (this.currDb.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL && !string.IsNullOrEmpty(currEntity.IdentityName))
                     {
                         string seq =
-                            "CREATE SEQUENCE " + currEntity.TableName + "_" + currEntity.IdentityName + "_" + "seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;";
+                            "CREATE SEQUENCE " + currEntity.GetTableName() + "_" + currEntity.IdentityName + "_" + "seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 START 1 CACHE 1;";
 
                         script = seq + script;
                     }
@@ -248,7 +254,7 @@ BEGIN
 END;
 ;--
 ";
-                        script = script + ";--\r\n" + seqTemp.Replace("@TableName", currEntity.TableName).Replace("@IDName", currEntity.IdentityName);
+                        script = script + ";--\r\n" + seqTemp.Replace("@TableName", currEntity.GetTableName()).Replace("@IDName", currEntity.IdentityName);
                     }
 
                     var entityFields = EntityFieldsCache.Item(this.currEntity.GetType());
