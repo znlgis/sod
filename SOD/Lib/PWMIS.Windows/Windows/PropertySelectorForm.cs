@@ -229,6 +229,7 @@ namespace PWMIS.Windows
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.Message);
+                        MessageBox.Show("请检查VS IDE 工具栏的Pwmis.Windows 数据控件的dll文件所在目录是否跟当前你选择的程序集所在目录的 Pwmis.Core.dll 版本兼容。");
                         return;
                     }
                     finally

@@ -42,13 +42,13 @@ namespace SampleORMTest
         public string Name
         {
             get { return getProperty<string>("Name"); }
-            set { setProperty("Name", value, 50); }
+            set { setProperty("Name", value, -50); }
         }
 
         public string Pwd
         {
             get { return getProperty<string>("Pwd"); }
-            set { setProperty("Pwd", value, 4000); }
+            set { setProperty("Pwd", value, -50); }
         }
 
         public DateTime RegistedDate

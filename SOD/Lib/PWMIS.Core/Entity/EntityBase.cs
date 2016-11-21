@@ -460,7 +460,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 获取表名称。如果实体类有分表策略，那么请重写该方法
+        /// 获取表名称。如果实体类有分表策略，那么请重写该方法。如果需要自动创建表且表名称中有空格字符，应重写该方法消除空格。
         /// </summary>
         /// <returns></returns>
         public virtual string GetTableName()
