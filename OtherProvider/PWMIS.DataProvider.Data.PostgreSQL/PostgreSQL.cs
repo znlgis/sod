@@ -136,7 +136,10 @@ namespace PWMIS.DataProvider.Data
             }
         }
         /// <summary>
-        /// 获取或者设置自增列对应的序列名称
+        /// 获取或者设置自增列对应的序列名称，如果是采用的code first技术，不必设置此属性
+        /// <remarks>
+        /// 有关详细内容请参考 http://www.cnblogs.com/bluedoctor/archive/2011/04/26/2029005.html
+        /// </remarks>
         /// </summary>
         public override string InsertKey
         {
@@ -152,7 +155,9 @@ namespace PWMIS.DataProvider.Data
 
         /// <summary>
         /// 定义获取PostgreSQL的函数参数的函数
-        /// <seealso cref="http://www.alberton.info/postgresql_meta_info.html"/>
+        /// <remarks>
+        /// 有关详细内容请参考 http://www.alberton.info/postgresql_meta_info.html
+        /// </remarks>
         /// </summary>
         private void createFunctionArgsInfo()
         {

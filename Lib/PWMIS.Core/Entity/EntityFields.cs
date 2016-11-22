@@ -386,7 +386,13 @@ namespace PWMIS.DataMap.Entity
                 }
                 else if (length > 0)
                 {
-                    temp = temp + "[" + field + "] nvarchar" + "(" + length + ")";
+                    //并不是所有数据库都支持nvarchar,有关数据库字符串类型的详细支持，请看 http://www.cnblogs.com/hantianwei/p/3152517.html
+                    string fieldType = "varchar";
+                    if (db.CurrentDBMSType == DBMSType.SqlServer ||
+                        db.CurrentDBMSType == DBMSType.Oracle ||
+                        db.CurrentDBMSType == DBMSType.SqlServerCe)
+                        fieldType = "nvarchar";
+                    temp = temp + "[" + field + "] " +fieldType + "(" + length + ")";
                 }
                 else if (length < 0)
                 {
