@@ -108,7 +108,7 @@ namespace SampleORMTest
             li_si.ID =userQuery.ExecuteInsrtOql(insertQ);
             for (int i = 0; i < 1000; i++)
             {
-                User zhang_yeye = new User() { Name = "zhang yeye" + i, Pwd = "pwd" + i };
+                User zhang_yeye = new User() { ID=1000+i, Name = "zhang yeye" + i, Pwd = "pwd" + i };
                 count += EntityQuery<User>.Instance.Insert(zhang_yeye);//采用泛型 EntityQuery 方式插入数据
             }
            

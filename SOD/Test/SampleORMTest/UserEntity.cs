@@ -10,8 +10,8 @@ namespace SampleORMTest
     {
         public User()
         {
-            TableName="Tb_User";
-            IdentityName = "UserID";
+            TableName="Tb_User2";
+            //IdentityName = "UserID";
             PrimaryKeys.Add("UserID");
         }
 
@@ -30,7 +30,7 @@ namespace SampleORMTest
         public override string GetGolbalEntityID()
         {
             //使用工具-》创建GUID 生成
-            return "F1344072-AB1E-4BCF-A28C-769C7C4AA06A";
+            return "F1344072-AB1E-4BCF-A28C-769C7C4AA06B";
         }
 
         public int ID
@@ -42,13 +42,13 @@ namespace SampleORMTest
         public string Name
         {
             get { return getProperty<string>("Name"); }
-            set { setProperty("Name", value, -50); }
+            set { setProperty("Name", value, 50); }
         }
 
         public string Pwd
         {
             get { return getProperty<string>("Pwd"); }
-            set { setProperty("Pwd", value, -50); }
+            set { setProperty("Pwd", value, 50); }
         }
 
         public DateTime RegistedDate
