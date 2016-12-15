@@ -682,7 +682,11 @@ namespace PWMIS.DataMap.Entity
                     }
                 }
 
-                //这里可能需要特别处理分页 --ToDo
+                //这里可能需要特别处理分页 --修改 @芜湖-大枕头 2016.12.15
+                if (oql.PageEnable && (!single || oql.PageWithAllRecordCount <= 0))
+                    sql = GetOQLPageSql(oql, db);
+                else
+                    sql = oql.ToString();
                 SqlInfo si = new SqlInfo(sql, Parameters);
                 si.CommandType = CommandType.Text ;
                 return si;
