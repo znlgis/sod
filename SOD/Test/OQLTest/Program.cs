@@ -30,7 +30,7 @@ namespace OQLTest
             p.TestOqlPage();
             Console.Read();
 
-            p.TestMapOql();
+            //p.TestMapOql();
             p.Test1();
             p.Test2();
             p.Test3();
@@ -619,7 +619,17 @@ namespace OQLTest
 
         void TestOqlPage()
         {
-            Users user = new Users() { NickName = "pdf.net", RoleID = RoleNames.Admin };
+            Users user = new Users() { NickName = "pdf.net", RoleID = RoleNames.Admin,Age =20 };
+            OQL q = OQL.From(user)
+                .Select(user.ID, user.UserName, user.Age)
+                .Where(cmp => cmp.Comparer(user.Age, ">", 20))
+                .OrderBy(user.Age)
+                .END;
+            q.Limit(4, 2);
+            Console.WriteLine("q:Page SQL is \r\n{0}", q);
+            Console.WriteLine(q.PrintParameterInfo());
+
+
             UserRoles roles = new UserRoles() { RoleName = "role1" };
             //测试字段直接比较
             OQL q00 = OQL.From(user)

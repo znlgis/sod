@@ -32,7 +32,7 @@ namespace OQLTest
 
         protected override void SetFieldNames()
         {
-            PropertyNames = new string[] { "ID", "UserName", "Password", "NickName", "RoleID", "Authority", "IsEnable", "LastLoginTime", "LastLoginIP", "Remarks", "AddTime" };
+            PropertyNames = new string[] { "ID", "UserName", "Password", "NickName", "RoleID", "Authority", "IsEnable", "LastLoginTime", "LastLoginIP", "Remarks", "AddTime","Age" };
         }
 
         public override string GetTableName()
@@ -155,6 +155,12 @@ namespace OQLTest
         {
             get { return getProperty<System.DateTime?>("AddTime"); }
             set { setProperty("AddTime", value); }
+        }
+
+        public int Age
+        {
+            get { return getProperty<int>("Age"); }
+            set { setProperty("Age", value); }
         }
 
     }
