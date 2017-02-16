@@ -36,7 +36,8 @@ namespace PWMIS.Core
        }
 
        /// <summary>
-       /// 根据指定的类型，从该类型所在的程序集中获取指定的资源内容文本
+       /// 根据指定的类型，从该类型所在的程序集中获取指定的资源内容文本。
+       /// 注意：resourceType的命名空间应该使用程序集默认命名空间，如果源文件在项目子目录下，还应该加所在目录名字为该类型的完整命名空间。
        /// </summary>
        /// <param name="resourceType">与指定的类型</param>
        /// <param name="resourceName"></param>
@@ -97,11 +98,15 @@ namespace PWMIS.Core
                 }
                 else
                 {
-                    appRootPath = "./";
+                    //解决类似SqlServer文件型数据库要求的绝对路径问题，
+                    //例如 Data Source=(LocalDB)\v11.0;AttachDbFilename=~/Database1.mdf;Integrated Security=True
+                    appRootPath = path+ System.IO.Path.DirectorySeparatorChar;
                 }
 
-                sourcePath = Regex.Replace(sourcePath, @"^\s*~[\\/]", appRootPath);
-                sourcePath = Regex.Replace(sourcePath, @"data source\s*=\s*~[\\/]", "Data Source=" + appRootPath, RegexOptions.IgnoreCase);
+                //判断 Data Source或者 AttachDbFilename 之后的 ~/ 符号并替换，这里先简单替换：
+                //sourcePath = Regex.Replace(sourcePath, @"^\s*~[\\/]", appRootPath);
+                //sourcePath = Regex.Replace(sourcePath, @"data source\s*=\s*~[\\/]", "Data Source=" + appRootPath, RegexOptions.IgnoreCase);
+                sourcePath = sourcePath.Replace("~/", appRootPath);
             }
         }
 
