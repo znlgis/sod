@@ -793,7 +793,10 @@ namespace PWMIS.DataMap.Entity
         {
             SqlInfo si = GetSqlInfoFromOQL(oql, db, factEntityType, single);
             oql.Dispose();
-            return ExecuteDataReader(si, db, single);
+            if (si.SQL == string.Empty) //可能是分页但是没有记录
+                return null;
+            else
+                return ExecuteDataReader(si, db, single);
         }
 
         //public static void CheckStringPara(string SQL,string tableName, IDataParameter[] paras,string parameterChar)
