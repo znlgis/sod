@@ -1035,7 +1035,12 @@ namespace PWMIS.DataMap.Entity
                         if (size !=0) //如果字段不是text等类型
                         {
                             int length = paras[index].Value.ToString().Length;
-                            if (length > size+2) //处理 like查询可能增加 %% 匹配的情况
+                            //if (length > size+2) //处理 like查询可能增加 %% 匹配的情况
+                            //特别注意：
+                            //如果size==Int.Max，那么 size+2 会得到负数，从而导致 length > size+2 表达式为false
+                            //所以，修改成下面的样子，理论上不会再出错了。
+                            //感谢网友 广州-银古 朋友发现此 bug ,2017.2.16
+                            if (length-2 > size && size >0)
                                 throw new NotSupportedException("当前实体类映射的字段" + paraName + " 长度没有定义或者长度小于了当前实际值的长度："
                                     + length + "，请在实体类定义里面使用 setProperty 的重载方法指定合适的字段长度。");
                             if (size > 0)

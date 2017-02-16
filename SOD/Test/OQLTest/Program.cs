@@ -8,6 +8,8 @@ using System.Threading;
 using PWMIS.Core;
 using PWMIS.Core.Extensions;
 using PWMIS.Common;
+using PWMIS.DataProvider.Data;
+using PWMIS.DataProvider.Adapter;
 
 namespace OQLTest
 {
@@ -619,17 +621,21 @@ namespace OQLTest
 
         void TestOqlPage()
         {
-            Users user = new Users() { NickName = "pdf.net", RoleID = RoleNames.Admin,Age =20 };
-            OQL q = OQL.From(user)
-                .Select(user.ID, user.UserName, user.Age)
-                .Where(cmp => cmp.Comparer(user.Age, ">", 20))
-                .OrderBy(user.Age)
+            UserEntity ue = new UserEntity();
+            OQL q = OQL.From(ue)
+                .Select(ue.ID, ue.Name , ue.Age)
+                .Where(cmp => cmp.Comparer(ue.Age, ">", 20))
+                .OrderBy(ue.Age)
                 .END;
-            q.Limit(4, 2);
+            q.Limit(4, 4,true);
             Console.WriteLine("q:Page SQL is \r\n{0}", q);
             Console.WriteLine(q.PrintParameterInfo());
 
+            AdoHelper db = MyDB.GetDBHelperByConnectionName("conn2");
+            var list = EntityQuery<UserEntity>.QueryList(q, db);
 
+
+            Users user = new Users() { NickName = "pdf.net", RoleID = RoleNames.Admin, Age = 20 };
             UserRoles roles = new UserRoles() { RoleName = "role1" };
             //测试字段直接比较
             OQL q00 = OQL.From(user)
