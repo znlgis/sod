@@ -726,6 +726,8 @@ namespace PWMIS.DataMap.Entity
         public static List<T> QueryList(System.Data.IDataReader reader,string tableName)
         {
             List<T> list = new List<T>();
+            if (reader == null)
+                return list;
             using (reader)
             {
                 if (reader.Read())

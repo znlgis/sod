@@ -382,6 +382,8 @@ ORDER BY {3}
  ORDER BY {1}
 ";
                 int recordCount = AllCount - PageSize * (PageNumber - 1);
+                if (recordCount<=0)
+                    return string.Empty;
                 string prepareSql = string.IsNullOrEmpty(strWhere) ?
                        sob.Build(-recordCount) :
                        sob.Build(-recordCount, strWhere);
