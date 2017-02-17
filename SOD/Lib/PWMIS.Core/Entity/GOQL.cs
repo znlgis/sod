@@ -5,11 +5,22 @@ using PWMIS.DataProvider.Adapter;
 
 namespace PWMIS.DataMap.Entity
 {
+    /// <summary>
+    /// 泛型OQL查询类，通常查询单表实体，如果是多表查询，请使用 EntityContainer
+    /// </summary>
+    /// <typeparam name="T">实体类类型或者POCO接口类型</typeparam>
     public class GOQL<T> where T:class
     {
         protected internal OQL currentOQL;
         private T currentEntity;
         public delegate object[] SelectFieldFunc(T s);
+
+        /// <summary>
+        /// 获取查询后的总记录数，该属性结合Limit方法使用
+        /// </summary>
+        public int AllCount { get {
+            return this.currentOQL.PageWithAllRecordCount;        
+        } }
 
         public GOQL(OQL oql,T entity)
         {
@@ -47,6 +58,21 @@ namespace PWMIS.DataMap.Entity
         {
             this.currentOQL.PageWithAllRecordCount = allCount;
             this.currentOQL.Limit(pageSize, pageNumber);
+            return this;
+        }
+
+        /// <summary>
+        /// 以每页不超过 pageSize 条记录，查询第 pageNumber 页的数据，并可以指定查询后获取本次查询的总记录数。
+        /// 可以通过 AllCount 属性获取此总记录数
+        /// </summary>
+        /// <param name="pageSize">每页显示的记录数量</param>
+        /// <param name="pageNumber">所在页页码，从1开始</param>
+        /// <param name="autoAllCount">是否自动查询总记录数</param>
+        /// <returns></returns>
+        public GOQL<T> Limit(int pageSize, int pageNumber, bool autoAllCount)
+        {
+            this.currentOQL.PageWithAllRecordCount = 0;
+            this.currentOQL.Limit(pageSize, pageNumber,true);
             return this;
         }
 
