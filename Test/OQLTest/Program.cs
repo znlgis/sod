@@ -627,10 +627,10 @@ namespace OQLTest
                 .Where(cmp => cmp.Comparer(ue.Age, ">", 20))
                 .OrderBy(ue.Age)
                 .END;
-            q.Limit(4, 4,true);
+            q.Limit(2, 3,true);
             Console.WriteLine("q:Page SQL is \r\n{0}", q);
             Console.WriteLine(q.PrintParameterInfo());
-
+            //当前测试总记录数5，查询后，OQL会得到总记录数
             AdoHelper db = MyDB.GetDBHelperByConnectionName("conn2");
             var list = EntityQuery<UserEntity>.QueryList(q, db);
 

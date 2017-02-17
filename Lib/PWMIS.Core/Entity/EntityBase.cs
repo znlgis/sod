@@ -599,9 +599,10 @@ namespace PWMIS.DataMap.Entity
 
         #region ICloneable 成员
         /// <summary>
-        /// 获取当前对象的浅表副本
+        /// 获取当前对象的副本
         /// </summary>
-        /// <returns>当前对象的浅表副本</returns>
+        /// <param name="isDeep">是否深度克隆</param>
+        /// <returns>当前对象的副本</returns>
         public object Clone(bool isDeep)
         {
             object result= this.MemberwiseClone();
@@ -617,7 +618,7 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 返回当前对象的副本
+        /// 返回当前实体对象的深度克隆副本
         /// </summary>
         /// <returns></returns>
         public object Clone()

@@ -318,12 +318,14 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 将数据从容器中映射到实体中
+        /// 将数据从查询结果容器中映射到实体中
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public IEnumerable<T> Map<T>() where T : EntityBase,new()
         {
+            #region 旧方法代码，注释
+            /*
             if (this.Values == null)
             {
                 int rowsCount = this.Execute();
@@ -392,6 +394,57 @@ namespace PWMIS.DataMap.Entity
                     yield return entity;
                     //创建一个新实例
                     entity = new T ();
+                }
+            }
+            else
+            {
+                throw new Exception("EntityContainer 错误，执行查询没有返回任何行。");
+            }
+             */
+            #endregion
+
+            if (this.Values == null)
+            {
+                int rowsCount = this.Execute();
+                if (rowsCount <= 0)
+                    yield break;
+
+            }
+            if (this.Values != null && this.fieldNames != null)
+            {
+                if (this.Values.Count == 0)
+                    yield break;
+
+                TableNameField[] fieldInfo = new TableNameField[this.OQL.selectedFieldInfo.Count];
+                //查找字段匹配情况
+                //entity.PropertyNames 存储的仅仅是查询出来的列名称
+                for (int i = 0; i < this.OQL.selectedFieldInfo.Count; i++)
+                {
+                    TableNameField tnf = this.OQL.selectedFieldInfo[i];
+                    tnf.Index = tnf.Entity.GetPropertyFieldNameIndex(tnf.Field);
+                    fieldInfo[i] = tnf;
+                }
+
+                foreach (object[] itemValues in this.Values)
+                {
+                    EntityBase itemEntity = null;
+                    Type entityType = typeof(T);
+
+                    for (int m = 0; m < fieldInfo.Length; m++)
+                    {
+                        //将容器的值赋值给实体的值元素
+                        EntityBase entity = fieldInfo[m].Entity;
+                        if (entity.GetType() == entityType)
+                        {
+                            itemEntity = entity;
+                            int index = fieldInfo[m].Index;
+                            entity.PropertyValues[index] = itemValues[m];
+                        }
+                    }
+                    if(itemEntity ==null)
+                        throw new Exception("EntityContainer 错误，查询没有包含当前指定的实体类类型，请检查OQL语句。");
+                    T resultEntity = (T)itemEntity.Clone();
+                    yield return resultEntity;
                 }
             }
             else
