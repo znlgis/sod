@@ -71,7 +71,6 @@ namespace PWMIS.DataMap.Entity
         /// <returns></returns>
         public GOQL<T> Limit(int pageSize, int pageNumber, bool autoAllCount)
         {
-            this.currentOQL.PageWithAllRecordCount = 0;
             this.currentOQL.Limit(pageSize, pageNumber, autoAllCount);
             return this;
         }
