@@ -16,7 +16,7 @@ namespace PWMIS.DataMap.Entity
         public delegate object[] SelectFieldFunc(T s);
 
         /// <summary>
-        /// 获取查询后的总记录数，该属性结合Limit方法使用
+        /// 获取查询后的总记录数，该属性结合Limit方法使用，并且在调用ToList等方法之后再调用才有效。
         /// </summary>
         public int AllCount { get {
             return this.currentOQL.PageWithAllRecordCount;        
@@ -72,7 +72,7 @@ namespace PWMIS.DataMap.Entity
         public GOQL<T> Limit(int pageSize, int pageNumber, bool autoAllCount)
         {
             this.currentOQL.PageWithAllRecordCount = 0;
-            this.currentOQL.Limit(pageSize, pageNumber,true);
+            this.currentOQL.Limit(pageSize, pageNumber, autoAllCount);
             return this;
         }
 
