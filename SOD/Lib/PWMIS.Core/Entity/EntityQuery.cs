@@ -649,8 +649,8 @@ namespace PWMIS.DataMap.Entity
                 {
                     if (!oql.haveOrderBy)
                         throw new Exception("如果要进行分页并且同时获得记录总数，OQL必须有排序操作，请调用OrderBy方法。");
-                    T t = QueryObject(oql, db);
-                    oql.PageWithAllRecordCount = CommonUtil.ChangeType<int>(t.PropertyValues[0]);
+                  
+                    oql.PageWithAllRecordCount = CommonUtil.ChangeType<int>(EntityQueryAnonymous.ExecuteOQLCount(oql, db));
                     //如果记录总数仍然是0，直接返回空集合。
                     //感谢网友 koumi 发现此问题。
                     if (oql.PageWithAllRecordCount == 0)
@@ -1621,6 +1621,8 @@ namespace PWMIS.DataMap.Entity
         {
             if (tableName == null) tableName = "";
             List<T> list = new List<T>();
+            if (reader == null)
+                return list;
             using (reader)
             {
                 if (reader.Read())
@@ -1713,16 +1715,21 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        /// 查询实体类集合。如果开启了分页且OQL设置的记录总数为0，直接返回空集合。
+        /// 查询实体类集合。如果开启了分页且OQL设置的记录总数为0，查询后会返回OQL的 PageWithAllRecordCount 的值。
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="oql"></param>
-        /// <param name="db"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">实体类或者接口类型</typeparam>
+        /// <param name="oql">OQL对象</param>
+        /// <param name="db">数据访问对象</param>
+        /// <returns>查询结果列表</returns>
         public static List<T> QueryList<T>(OQL oql, AdoHelper db) where T : class
         {
             if (oql.PageEnable && oql.PageWithAllRecordCount <= 0)
-                return new List<T>();
+            {
+                oql.PageWithAllRecordCount = CommonUtil.ChangeType<int>(EntityQueryAnonymous.ExecuteOQLCount(oql, db));
+                //如果仍然记录数是0，返回空集合
+                if(oql.PageWithAllRecordCount==0)
+                    return new List<T>();
+            }
             IDataReader reader = EntityQueryAnonymous.ExecuteDataReader(oql, db, typeof(T));
             return QueryList<T>(reader,oql.GetEntityTableName());
         }
