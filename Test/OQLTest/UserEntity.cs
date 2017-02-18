@@ -21,9 +21,9 @@ namespace OQLTest
             set { setProperty("Id", value); }
         }
 
-        public int Name
+        public string Name
         {
-            get { return getProperty<int>("User Name"); }
+            get { return getProperty<string>("User Name"); }
             set { setProperty("User Name", value,50); }
         }
 
