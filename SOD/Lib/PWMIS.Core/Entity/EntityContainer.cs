@@ -405,6 +405,20 @@ namespace PWMIS.DataMap.Entity
 
             if (this.Values == null)
             {
+                //可能执行本方法之前，并没有调用过 OQL的Select方法指定要查询的实体类属性，需要模拟调用一次。
+                if (this.OQL.selectedFieldInfo.Count == 0)
+                {
+                    int fieldCount = 0;
+                    foreach (EntityBase entity in this.OQL.GetAllUsedEntity())
+                    {
+                        for (int i = 0; i < entity.PropertyNames.Length; i++)
+                        {
+                            object value = entity[i];//模拟调用
+                            fieldCount++;
+                        }
+                    }
+                    this.OQL.Select(new object[fieldCount]);
+                }
                 int rowsCount = this.Execute();
                 if (rowsCount <= 0)
                     yield break;

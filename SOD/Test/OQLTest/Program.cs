@@ -30,6 +30,7 @@ namespace OQLTest
             Program p = new Program();
             p.TestSqlPage();
             p.TestOqlPage();
+            p.TestEntityContainer();
             Console.Read();
 
             //p.TestMapOql();
@@ -745,6 +746,20 @@ ORDER BY T0.[RoleName] ASC
             Console.WriteLine(pageSql);
 
             Console.WriteLine("----SQL 词法分析 自动分页语句构造测试 结束----");
+        }
+
+        void TestEntityContainer()
+        {
+            UserEntity user = new UserEntity() {  ID=1};
+            UserMessageEntity message = new UserMessageEntity();
+            OQL q = OQL.From(user)
+                .Join(message).On(user.ID, message.UserID)
+                .Select()
+                .Where(user.ID)
+                .END;
+            AdoHelper db = MyDB.GetDBHelperByConnectionName("conn2");
+            EntityContainer ec = new EntityContainer(q, db);
+            var messageList = ec.Map<UserMessageEntity>().ToList();
         }
 
         static void TestThread()
