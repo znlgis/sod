@@ -50,6 +50,13 @@ namespace PWMIS.Windows.Mvvm
                 {
                     ((ListBox)control).DataBindings.Add("SelectedValue", dataSource, control.LinkProperty, false, DataSourceUpdateMode.OnPropertyChanged);
                 }
+                if (control is DateTimePicker)
+                {
+                    //DateTimePicker dtp = new DateTimePicker();
+                    //dtp.Value
+                    ((DateTimePicker)control).DataBindings.Add("Value", dataSource, control.LinkProperty, false, DataSourceUpdateMode.OnPropertyChanged);
+                }
+                //考虑自定义处理控件类型
             }
         }
        
