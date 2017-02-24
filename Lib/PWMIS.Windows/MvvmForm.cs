@@ -15,8 +15,11 @@ namespace PWMIS.Windows.Mvvm
     /// </summary>
     public partial class MvvmForm : Form
     {
-        private Dictionary<object, CommandMethod> dictCommand;
         public delegate void CommandMethod();
+        public delegate void CommandMethod<T>(T para);
+
+        private Dictionary<object, Delegate> dictCommand; //CommandMethod
+       
 
         /// <summary>
         /// 默认构造函数
@@ -24,7 +27,7 @@ namespace PWMIS.Windows.Mvvm
         public MvvmForm()
         {
             InitializeComponent();
-            dictCommand = new Dictionary<object, CommandMethod>();
+            dictCommand = new Dictionary<object, Delegate>();
         }
 
         /// <summary>
@@ -71,10 +74,41 @@ namespace PWMIS.Windows.Mvvm
             {
                 dictCommand.Add(control, command);
                 ((Button)control).Click += (sender, e) => {
-                    dictCommand[sender](); 
+                    ((CommandMethod)dictCommand[sender])(); 
                 };
             }
         }
+
+
+        /// <summary>
+        /// 绑定一个命令控件到一个有参数的命令方法上
+        /// </summary>
+        /// <typeparam name="T">命令方法的参数类型</typeparam>
+        /// <param name="control">命令控件</param>
+        /// <param name="command">带参数的命令方法</param>
+        public void BindCommandControls<T>(ICommandControl control, CommandMethod<T> command)
+        {
+            //dictCommand.Add(control, command);
+            MyAction<object, EventArgs> cmdAction = new MyAction<object, EventArgs>(
+                (object sender, EventArgs e) => {
+                    CommandEventMethod<T>(sender, e,command);
+                });
+
+            Type ctrType = control.GetType();
+            ctrType.GetEvent(control.ControlEvent).AddEventHandler(control, cmdAction);
+           
+        }
+
+        private void CommandEventMethod<T>(object sender, EventArgs e, CommandMethod<T> command)
+        {
+            ICommandControl cmdCtr = sender as ICommandControl;
+            object dataSource = GetInstanceByMemberName(cmdCtr.ParameterObject);
+            T paraValue = GetCommandParameterValue<T>(dataSource, cmdCtr.ParameterProperty);
+            //CommandMethod<T> method = (CommandMethod<T>)dictCommand[sender];
+            //method(paraValue);
+            command(paraValue);
+        }
+
 
         /// <summary>
         /// 根据成员名称获取成员的实例
@@ -95,6 +129,11 @@ namespace PWMIS.Windows.Mvvm
 
            return obj;
             
+        }
+
+        private T GetCommandParameterValue<T>(object dataSource, string propertyName)
+        {
+            return default(T);
         }
     }
 }
