@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
 
-namespace PWMIS.Windows.Windows.Controls
+namespace PWMIS.Windows.Controls
 {
     public partial class CommandButon :System.Windows.Forms.Button,ICommandControl
     {

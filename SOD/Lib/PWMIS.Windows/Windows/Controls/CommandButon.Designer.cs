@@ -1,4 +1,4 @@
-﻿namespace PWMIS.Windows.Windows.Controls
+﻿namespace PWMIS.Windows.Controls
 {
     partial class CommandButon
     {

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
@@ -131,9 +132,58 @@ namespace PWMIS.Windows.Mvvm
             
         }
 
+        /// <summary>
+        /// 从源对象调用多层次属性对象，例如 user.Order.ID;
+        /// </summary>
+        /// <typeparam name="T">值的类型</typeparam>
+        /// <param name="dataSource">源对象</param>
+        /// <param name="propertyName">带层次的属性对象</param>
+        /// <returns></returns>
         private T GetCommandParameterValue<T>(object dataSource, string propertyName)
         {
-            return default(T);
+            string[] propNames = propertyName.Split('.');
+            object obj= GetPropertyValue(dataSource, propNames);
+            return (T)obj;
+        }
+
+        private object GetPropertyValue(object dataSource, string[] propNames)
+        {
+            Type t = dataSource.GetType();
+            if (propNames.Length > 1)
+            {
+                FieldInfo fi = t.GetField(propNames[0], BindingFlags.Public | BindingFlags.Instance);
+                if (fi != null)
+                {
+                    object fieldObj = fi.GetValue(dataSource);
+                    string[] newPropNames = new string[propNames.Length - 1];
+                    propNames.CopyTo(newPropNames, 1);
+                    return GetPropertyValue(fieldObj, newPropNames);
+                }
+                PropertyInfo pi = t.GetProperty(propNames[0], BindingFlags.Public | BindingFlags.Instance);
+                if (pi != null)
+                {
+                    object propObj = pi.GetValue(dataSource, null);
+                    string[] newPropNames = new string[propNames.Length - 1];
+                    propNames.CopyTo(newPropNames, 1);
+                    return GetPropertyValue(propObj, newPropNames);
+                }
+            }
+            else
+            {
+                FieldInfo fi = t.GetField(propNames[0], BindingFlags.Public | BindingFlags.Instance);
+                if (fi != null)
+                {
+                    object fieldObj = fi.GetValue(dataSource);
+                    return fieldObj;
+                }
+                 PropertyInfo pi = t.GetProperty(propNames[0], BindingFlags.Public | BindingFlags.Instance);
+                if (pi != null)
+                {
+                    object propObj = pi.GetValue(dataSource, null);
+                    return propObj;
+                }
+            }
+            throw new Exception("在对象" + t.Name + " 中没有找到名为 " + propNames[0] + " 的字段或者属性！");
         }
     }
 }
