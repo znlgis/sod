@@ -1,4 +1,5 @@
 ﻿using PWMIS.Common;
+using PWMIS.Core;
 using PWMIS.DataForms.Adapter;
 using System;
 using System.Collections.Generic;
@@ -19,7 +20,19 @@ namespace PWMIS.Windows.Mvvm
         public delegate void CommandMethod();
         public delegate void CommandMethod<T>(T para);
 
-        private Dictionary<object, Delegate> dictCommand; //CommandMethod
+        //private Dictionary<object, Delegate> dictCommand; //CommandMethod
+        /// <summary>
+        /// MVVM窗体绑定处理过程发生异常的事件
+        /// </summary>
+        public event EventHandler MvvmBinderErrorEvent;
+
+        private void RaiseBinderError(object sender, Exception ex)
+        {
+            if (MvvmBinderErrorEvent != null)
+                MvvmBinderErrorEvent(sender, new MvvmBinderErrorEventArgs(ex.Message ));
+            else
+                throw new NotSupportedException("MVVM Binder Exception,because not handler the MvvmBinderErrorEvent.see inner exception.", ex);
+        }
        
 
         /// <summary>
@@ -28,7 +41,18 @@ namespace PWMIS.Windows.Mvvm
         public MvvmForm()
         {
             InitializeComponent();
-            dictCommand = new Dictionary<object, Delegate>();
+            //dictCommand = new Dictionary<object, Delegate>();
+        }
+
+        /// <summary>
+        /// 绑定未处理的数据控件，如果有控件未处理这里将抛出异常
+        /// </summary>
+        /// <param name="control">数据控件</param>
+        /// <param name="dataSource">数据源对象</param>
+        /// <param name="dataMember">要绑定的成员名称</param>
+        protected virtual void BindDataControl(IDataControl control, object dataSource,string dataMember)
+        {
+            throw new NotImplementedException("请重写此方法处理当前控件。注意不要再调用此基类方法。");
         }
 
         /// <summary>
@@ -45,22 +69,24 @@ namespace PWMIS.Windows.Mvvm
                 if (control is TextBox)
                 {
                     ((TextBox)control).DataBindings.Add("Text", dataSource, control.LinkProperty);
-                }
-                if (control is Label)
+                }else  if (control is Label)
                 {
                     ((Label)control).DataBindings.Add("Text", dataSource, control.LinkProperty);
-                }
-                if (control is ListBox)
+                }else  if (control is ListBox)
                 {
                     ((ListBox)control).DataBindings.Add("SelectedValue", dataSource, control.LinkProperty, false, DataSourceUpdateMode.OnPropertyChanged);
                 }
-                if (control is DateTimePicker)
+                else if (control is DateTimePicker)
                 {
                     //DateTimePicker dtp = new DateTimePicker();
                     //dtp.Value
                     ((DateTimePicker)control).DataBindings.Add("Value", dataSource, control.LinkProperty, false, DataSourceUpdateMode.OnPropertyChanged);
                 }
-                //考虑自定义处理控件类型
+                else
+                {
+                    //自定义处理控件类型
+                    BindDataControl(control, dataSource, control.LinkProperty);
+                }
             }
         }
        
@@ -73,13 +99,22 @@ namespace PWMIS.Windows.Mvvm
         {
             if (control is Button)
             {
-                dictCommand.Add(control, command);
+                //dictCommand.Add(control, command);
                 ((Button)control).Click += (sender, e) => {
-                    ((CommandMethod)dictCommand[sender])(); 
+                    //((CommandMethod)dictCommand[sender])(); 
+                    CommandEventMethod(sender, e, command);
                 };
             }
         }
 
+        /// <summary>
+        /// (自动)绑定命令按钮以及它所关联的命令对象
+        /// </summary>
+        /// <param name="control"></param>
+        public void BindCommandControls(ICommandControl control)
+        {
+            throw new NotImplementedException();
+        }
 
         /// <summary>
         /// 绑定一个命令控件到一个有参数的命令方法上
@@ -90,24 +125,44 @@ namespace PWMIS.Windows.Mvvm
         public void BindCommandControls<T>(ICommandControl control, CommandMethod<T> command)
         {
             //dictCommand.Add(control, command);
-            MyAction<object, EventArgs> cmdAction = new MyAction<object, EventArgs>(
+            EventHandler hander = new EventHandler(
                 (object sender, EventArgs e) => {
                     CommandEventMethod<T>(sender, e,command);
                 });
 
             Type ctrType = control.GetType();
-            ctrType.GetEvent(control.ControlEvent).AddEventHandler(control, cmdAction);
+            ctrType.GetEvent(control.ControlEvent).AddEventHandler(control, hander);
            
         }
 
+        private void CommandEventMethod(object sender, EventArgs e, CommandMethod command)
+        {
+            try
+            {
+                command();
+            }
+            catch (Exception ex)
+            {
+                RaiseBinderError(sender, ex);
+            }
+        }
         private void CommandEventMethod<T>(object sender, EventArgs e, CommandMethod<T> command)
         {
             ICommandControl cmdCtr = sender as ICommandControl;
-            object dataSource = GetInstanceByMemberName(cmdCtr.ParameterObject);
-            T paraValue = GetCommandParameterValue<T>(dataSource, cmdCtr.ParameterProperty);
-            //CommandMethod<T> method = (CommandMethod<T>)dictCommand[sender];
-            //method(paraValue);
-            command(paraValue);
+            try
+            {
+                //这里不处理命令控件关联的命令对象
+                object dataSource = GetInstanceByMemberName(cmdCtr.ParameterObject);
+                T paraValue = GetCommandParameterValue<T>(dataSource, cmdCtr.ParameterProperty);
+                //CommandMethod<T> method = (CommandMethod<T>)dictCommand[sender];
+                //method(paraValue);
+                command(paraValue);
+            }
+            catch (Exception ex)
+            {
+                RaiseBinderError(sender, ex);
+            }
+           
         }
 
 
@@ -143,7 +198,8 @@ namespace PWMIS.Windows.Mvvm
         {
             string[] propNames = propertyName.Split('.');
             object obj= GetPropertyValue(dataSource, propNames);
-            return (T)obj;
+            //处理结果转换错误
+            return CommonUtil.ChangeType<T>(obj);
         }
 
         private object GetPropertyValue(object dataSource, string[] propNames)
@@ -183,6 +239,7 @@ namespace PWMIS.Windows.Mvvm
                     return propObj;
                 }
             }
+            //统一抛出错误事件
             throw new Exception("在对象" + t.Name + " 中没有找到名为 " + propNames[0] + " 的字段或者属性！");
         }
     }

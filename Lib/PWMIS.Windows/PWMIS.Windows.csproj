@@ -71,6 +71,8 @@
     <Compile Include="Adapter\MyWinForm.cs" />
     <Compile Include="ControlIcon.cs" />
     <Compile Include="DataMap\WinFormControlDataMap.cs" />
+    <Compile Include="IMvvmCommand.cs" />
+    <Compile Include="MvvmBinderErrorEventArgs.cs" />
     <Compile Include="MvvmForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -6,6 +6,9 @@ using System.Text;
 
 namespace PWMIS.Windows.Controls
 {
+    /// <summary>
+    /// 命令按钮控件
+    /// </summary>
     public partial class CommandButon :System.Windows.Forms.Button,ICommandControl
     {
         public CommandButon()
@@ -62,7 +65,18 @@ namespace PWMIS.Windows.Controls
                 base.Events.RemoveHandler(Event_RaiseCommand, value);
             }
         }
-         */ 
-      
+         */
+
+
+        public string CommandObject
+        {
+            get;
+            set;
+        }
+
+        public IMvvmCommand Command
+        {
+            get { throw new NotImplementedException(); }
+        }
     }
 }
