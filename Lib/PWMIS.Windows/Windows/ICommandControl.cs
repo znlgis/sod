@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PWMIS.Windows.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -30,6 +31,6 @@ namespace PWMIS.Windows
         /// </summary>
         string ControlEvent { get; set; }
 
-        IMvvmCommand Command { get; }
+        //IMvvmCommand Command { get; }
     }
 }
