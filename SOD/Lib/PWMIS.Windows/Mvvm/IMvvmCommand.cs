@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace PWMIS.Windows
+namespace PWMIS.Windows.Mvvm
 {
     /// <summary>
     /// MVVM 命令处理接口

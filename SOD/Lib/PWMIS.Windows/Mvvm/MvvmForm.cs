@@ -78,8 +78,6 @@ namespace PWMIS.Windows.Mvvm
                 }
                 else if (control is DateTimePicker)
                 {
-                    //DateTimePicker dtp = new DateTimePicker();
-                    //dtp.Value
                     ((DateTimePicker)control).DataBindings.Add("Value", dataSource, control.LinkProperty, false, DataSourceUpdateMode.OnPropertyChanged);
                 }
                 else
@@ -113,7 +111,33 @@ namespace PWMIS.Windows.Mvvm
         /// <param name="control"></param>
         public void BindCommandControls(ICommandControl control)
         {
-            throw new NotImplementedException();
+            object dataSource = GetInstanceByMemberName(control.CommandObject);
+            string[] propNames = control.CommandName.Split('.');
+            object obj = GetPropertyValue(dataSource, propNames);
+            IMvvmCommand command = obj as IMvvmCommand;
+
+            EventHandler hander = new EventHandler(
+                (object sender, EventArgs e) =>
+                {
+                    if (command.BeforExecute())
+                    {
+                        try
+                        {
+                            command.Execute();
+                        }
+                        catch (Exception ex)
+                        {
+                            RaiseBinderError(control, ex);
+                        }
+                        finally
+                        {
+                            command.AfterExecute();
+                        }
+                    }
+                });
+
+            Type ctrType = control.GetType();
+            ctrType.GetEvent(control.ControlEvent).AddEventHandler(control, hander);
         }
 
         /// <summary>

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PWMIS.Windows.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -25,24 +26,28 @@ namespace PWMIS.Windows.Controls
             this.ControlEvent = "Click";
         }
 
+        [Category("MVVM"), Description("命令接口对象名称")]
         public string CommandName
         {
             get;
             set;
         }
 
+         [Category("MVVM"), Description("关联的参数对象")]
         public string ParameterObject
         {
             get;
             set;
         }
 
+         [Category("MVVM"), Description("关联的参数对象的参数名")]
         public string ParameterProperty
         {
             get;
             set;
         }
 
+         [Category("MVVM"), Description("命令关联的控件事件名称")]
         public string ControlEvent
         {
             get;
@@ -67,16 +72,17 @@ namespace PWMIS.Windows.Controls
         }
          */
 
-
+         [Category("MVVM"), Description("命令接口对象所在的对象名称")]
         public string CommandObject
         {
             get;
             set;
         }
 
-        public IMvvmCommand Command
-        {
-            get { throw new NotImplementedException(); }
-        }
+        //[Browsable(false)]
+        //public IMvvmCommand Command
+        //{
+        //    get { throw new NotImplementedException(); }
+        //}
     }
 }
