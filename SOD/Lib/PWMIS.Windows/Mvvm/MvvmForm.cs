@@ -91,14 +91,15 @@ namespace PWMIS.Windows.Mvvm
         /// <summary>
         /// 绑定ViewModel的命令到窗体的按钮等控件上
         /// </summary>
-        /// <param name="control">按钮等执行命令调用的控件</param>
+        /// <param name="control">ButtonBase 按钮等执行命令调用的控件</param>
         /// <param name="command">要执行的命令委托方法</param>
         public void BindCommandControls(Control control,CommandMethod command)
         {
-            if (control is Button)
+            if (control is ButtonBase)
             {
                 //dictCommand.Add(control, command);
-                ((Button)control).Click += (sender, e) => {
+                ((ButtonBase)control).Click += (sender, e) =>
+                {
                     //((CommandMethod)dictCommand[sender])(); 
                     CommandEventMethod(sender, e, command);
                 };
@@ -106,7 +107,25 @@ namespace PWMIS.Windows.Mvvm
         }
 
         /// <summary>
-        /// (自动)绑定命令按钮以及它所关联的命令对象
+        /// 绑定ViewModel的命令到窗体的任意控件上
+        /// </summary>
+        /// <param name="control">窗体控件</param>
+        /// <param name="controlEvent">控件事件名称</param>
+        /// <param name="command">命令方法</param>
+        public void BindCommandControls(Control control,string controlEvent, CommandMethod command)
+        {
+            EventHandler hander = new EventHandler(
+                   (object sender, EventArgs e) =>
+                   {
+                       CommandEventMethod(sender, e, command);
+                   });
+
+            Type ctrType = control.GetType();
+            ctrType.GetEvent(controlEvent).AddEventHandler(control, hander);
+        }
+
+        /// <summary>
+        /// (自动)绑定命令按钮的ControlEvent 到关联的命令对象
         /// </summary>
         /// <param name="control"></param>
         public void BindCommandControls(ICommandControl control)
@@ -116,28 +135,49 @@ namespace PWMIS.Windows.Mvvm
             object obj = GetPropertyValue(dataSource, propNames);
             IMvvmCommand command = obj as IMvvmCommand;
 
+            BindCommandControls(control ,control.ControlEvent, command);
+        }
+
+        /// <summary>
+        /// 绑定控件的事件到命令接口对象
+        /// </summary>
+        /// <param name="control">窗体控件</param>
+        /// <param name="controlEvent">控件的事件</param>
+        /// <param name="command">要绑定的命令接口对象</param>
+        public void BindCommandControls(object control, string controlEvent, IMvvmCommand command)
+        {
             EventHandler hander = new EventHandler(
-                (object sender, EventArgs e) =>
-                {
-                    if (command.BeforExecute())
+                    (object sender, EventArgs e) =>
                     {
-                        try
+                        object paraValue = null;
+                        if (control is ICommandControl)
                         {
-                            command.Execute();
+                            //try
+                            ICommandControl cmdCtr = control as ICommandControl;
+                            object paraSource = GetInstanceByMemberName(cmdCtr.ParameterObject);
+                            string[] paraPropNames = cmdCtr.ParameterProperty.Split('.');
+                            paraValue = GetPropertyValue(paraSource, paraPropNames);
                         }
-                        catch (Exception ex)
+
+                        if (command.BeforExecute(paraValue))
                         {
-                            RaiseBinderError(control, ex);
+                            try
+                            {
+                                command.Execute(paraValue);
+                            }
+                            catch (Exception ex)
+                            {
+                                RaiseBinderError(control, ex);
+                            }
+                            finally
+                            {
+                                command.AfterExecute();
+                            }
                         }
-                        finally
-                        {
-                            command.AfterExecute();
-                        }
-                    }
-                });
+                    });
 
             Type ctrType = control.GetType();
-            ctrType.GetEvent(control.ControlEvent).AddEventHandler(control, hander);
+            ctrType.GetEvent(controlEvent).AddEventHandler(control, hander);
         }
 
         /// <summary>
