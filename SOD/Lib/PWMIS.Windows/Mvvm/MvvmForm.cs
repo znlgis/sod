@@ -152,11 +152,19 @@ namespace PWMIS.Windows.Mvvm
                         object paraValue = null;
                         if (control is ICommandControl)
                         {
-                            //try
-                            ICommandControl cmdCtr = control as ICommandControl;
-                            object paraSource = GetInstanceByMemberName(cmdCtr.ParameterObject);
-                            string[] paraPropNames = cmdCtr.ParameterProperty.Split('.');
-                            paraValue = GetPropertyValue(paraSource, paraPropNames);
+                            try
+                            {
+                                ICommandControl cmdCtr = control as ICommandControl;
+                                object paraSource = GetInstanceByMemberName(cmdCtr.ParameterObject);
+                                string[] paraPropNames = cmdCtr.ParameterProperty.Split('.');
+                                paraValue = GetPropertyValue(paraSource, paraPropNames);
+                            }
+                            catch (Exception ex)
+                            {
+                                RaiseBinderError(control, ex);
+                                return;
+                            }
+                           
                         }
 
                         if (command.BeforExecute(paraValue))
@@ -305,6 +313,12 @@ namespace PWMIS.Windows.Mvvm
             }
             //统一抛出错误事件
             throw new Exception("在对象" + t.Name + " 中没有找到名为 " + propNames[0] + " 的字段或者属性！");
+        }
+
+        private void MvvmForm_Load(object sender, EventArgs e)
+        {
+            var ibControls = MyWinForm.GetIBControls(this.Controls);
+            //BindDataControls(ibControls);
         }
     }
 }

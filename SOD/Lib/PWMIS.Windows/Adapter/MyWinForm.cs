@@ -210,6 +210,30 @@ namespace PWMIS.DataForms.Adapter
             return MyDataForm.GetIBFormDataInner(IBControls, DB);
         }
 
+        /// <summary>
+        /// 寻找窗体上所有的命令接口控件
+        /// </summary>
+        /// <param name="Controls">窗体控件集合</param>
+        /// <returns></returns>
+        public static List<ICommandControl> FindCommandControls(System.Windows.Forms.Control.ControlCollection Controls)
+        {
+            List<ICommandControl> list = new List<ICommandControl>();
+            foreach (Control control in Controls)
+            {
+                if (control is ICommandControl)
+                {
+                    list.Add(control as ICommandControl);
+                }
+                else
+                {
+                    var childList = FindCommandControls(control.Controls);
+                    if (childList.Count > 0)
+                        list.AddRange(childList);
+                }
+            }
+            return list;
+        }
+
         #endregion
 
         #region 数据填充以及持久化数据

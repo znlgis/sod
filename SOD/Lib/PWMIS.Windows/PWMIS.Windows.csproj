@@ -160,6 +160,9 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DataTextBox.bmp" />
+    <EmbeddedResource Include="Mvvm\MvvmForm.resx">
+      <DependentUpon>MvvmForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\Controls\CommandButon.resx">
       <DependentUpon>CommandButon.cs</DependentUpon>
     </EmbeddedResource>
