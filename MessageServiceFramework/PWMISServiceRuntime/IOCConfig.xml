@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<IOCConfig>
+  <!--
+  IOC 依赖注入容器配置 示例文件
+  ver 1.0 dth,2010.06.11
+  注：在生成项目的时候，请将实际项目使用的IOC配置文件复制到运行目录
+  -->
+  <GroupConfig>
+    <Group ID="1" ParentID="0" Name="Group1" >分组描述1</Group>
+    <Group ID="2" ParentID="0" Name="Group2" >分组描述2</Group>
+  </GroupConfig>
+  <SystemInterface>
+    <Add Name="用户接口" Interface="IBMP.BusinessBusInterface.IUser" Assembly="IBMPBBI"/>
+    <Add Name="AOP测试接口" Interface="AOPTestLib.BizObject" Assembly="AOPTestLib"/>
+  </SystemInterface>
+  <GroupSet>
+    <IOC Name="Group1">
+      <Add Key="用户实体类"  InterfaceName="用户接口"  FullClassName="MBModel.MB_User" Assembly="MBModel" />
+      <Add Key="TestAop1" InterfaceName="AOP测试接口" FullClassName="AOPTestLib.BizObject" Assembly="AOPTestLib" />
+    </IOC>
+    <IOC Name="AOP">
+      <!--AOP 专用，其它IOC节点请勿在此定义-->
+      <Add Key="AOPTestLib.IBizObject" InterfaceName="AOP测试接口" FullClassName="TEMP_DYNAMIC_ASSEMBLY__ProxyIBizObjectBizObject" Assembly="TEMP_DYNAMIC_ASSEMBLY__ProxyIBizObjectBizObject" />
+    </IOC>
+  </GroupSet>
+</IOCConfig>

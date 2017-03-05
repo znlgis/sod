@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6E9892E2-2B86-4406-AD2B-E047A66011FD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>PWMIS.EnterpriseFramework.Service.Runtime</RootNamespace>
+    <AssemblyName>PWMIS.EnterpriseFramework.Service.Runtime</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>True</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>False</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\PWMIS.EnterpriseFramework.Service.Runtime.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>True</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>PdfNetMsfKey.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cache\CacheProvider.cs" />
+    <Compile Include="Cache\CacheProviderFactory.cs" />
+    <Compile Include="Cache\CacheService.cs" />
+    <Compile Include="DynamicMethodExecutor.cs" />
+    <Compile Include="Cache\ICacheProvider.cs" />
+    <Compile Include="IService.cs" />
+    <Compile Include="Management\ManageService.cs" />
+    <Compile Include="Principal\ServiceAuthentication.cs" />
+    <Compile Include="Principal\ServiceIdentityContainer.cs" />
+    <Compile Include="Principal\ServicePrincipal.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceContext.cs" />
+    <Compile Include="ServiceErrorEventArgs.cs" />
+    <Compile Include="ServiceFactory.cs" />
+    <Compile Include="Session\IServiceSession.cs" />
+    <Compile Include="Session\ServiceSession.cs" />
+    <Compile Include="Session\SessionContainer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\PWMIS.EF\AOPIOC\IOC\IOC.csproj">
+      <Project>{EBD3FF59-DB9C-4F46-9C81-BBCE8210878D}</Project>
+      <Name>IOC</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MessageSubscriberLib\MessageSubscriberLib.csproj">
+      <Project>{F652D7CA-AF55-491C-9B1E-E159E9771A72}</Project>
+      <Name>MessageSubscriberLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSFCommon\EnterpriceFrameworkCommon.csproj">
+      <Project>{2A9A3A85-D2F6-44DE-B7E8-5CDCA17BCE23}</Project>
+      <Name>EnterpriceFrameworkCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PWMISServiceBasic\ServiceBasic.csproj">
+      <Project>{28BF9B80-4925-4D5E-AE6C-5748F753F197}</Project>
+      <Name>ServiceBasic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PWMISServiceClient\ServiceClient.csproj">
+      <Project>{A0D23B66-81B1-49CD-9A79-64509F6BB837}</Project>
+      <Name>ServiceClient</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="IOCConfig.xml">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="PdfNetMsfKey.pfx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>if /I "$(ConfigurationName)" == "Release" Eazfuscator.NET.exe "$(TargetPath)" --msbuild-project-path "$(ProjectPath)" --msbuild-project-configuration "$(ConfigurationName)" --msbuild-project-platform "$(PlatformName)" --msbuild-solution-path "$(SolutionPath)" -n --newline-flush -v 3.3</PostBuildEvent>
+  </PropertyGroup>
+</Project>

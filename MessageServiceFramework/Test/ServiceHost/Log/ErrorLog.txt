@@ -1,0 +1,263 @@
+
+[2016-12-9 14:08:31] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=10&System.Int32=2，
+127.0.0.1:16882,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 458
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 442
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 359
+
+[2016-12-9 14:33:28] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=10&System.Int32=2，
+127.0.0.1:17346,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 458
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 442
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 359
+
+[2016-12-9 15:21:05] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=10&System.Int32=2，
+127.0.0.1:18588,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 458
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 442
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 359
+
+[2016-12-9 15:29:36] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=10&System.Int32=2，
+127.0.0.1:18697,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 458
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 442
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 359
+
+[2016-12-9 18:29:13] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=10&System.Int32=2，
+127.0.0.1:20694,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 458
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 442
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 359
+
+[2016-12-9 18:29:56] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=10&System.Int32=2，
+127.0.0.1:20695,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 458
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 442
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 359
+
+[2016-12-9 18:30:12] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=10&System.Int32=2，
+127.0.0.1:20700,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 458
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 442
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 359
+
+[2016-12-9 18:30:56] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=10&System.Int32=2，
+127.0.0.1:20706,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 458
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 442
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 359
+
+[2016-12-9 18:31:10] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=10&System.Int32=2，
+127.0.0.1:20707,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 458
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 442
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 359
+
+[2016-12-9 18:31:30] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=10&System.Int32=2，
+127.0.0.1:20711,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 458
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 442
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 359
+
+[2016/12/17 20:29:50] 处理服务的时候发生异常：
+从注册的所有容器中没有找到符合当前类型的提供程序。
+System.InvalidOperationException: 从注册的所有容器中没有找到符合当前类型的提供程序。
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 338
+
+[2016/12/17 20:43:49] 处理服务的时候发生异常：
+从注册的所有容器中没有找到符合当前类型的提供程序。
+System.InvalidOperationException: 从注册的所有容器中没有找到符合当前类型的提供程序。
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 338
+
+[2016/12/17 20:48:20] 处理服务的时候发生异常：
+从注册的所有容器中没有找到符合当前类型的提供程序。
+System.InvalidOperationException: 从注册的所有容器中没有找到符合当前类型的提供程序。
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 338
+
+[2016/12/17 20:48:41] 处理服务的时候发生异常：
+从注册的所有容器中没有找到符合当前类型的提供程序。
+System.InvalidOperationException: 从注册的所有容器中没有找到符合当前类型的提供程序。
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 338
+
+[2016/12/17 20:50:59] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：从注册的所有容器中没有找到符合当前类型的提供程序。，
+请求的Uri:Service:///ServiceFiles/，
+127.0.0.1:49592,WMI3501599710
+
+System.InvalidOperationException: 从注册的所有容器中没有找到符合当前类型的提供程序。
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 338
+
+[2016/12/17 20:51:22] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：从注册的所有容器中没有找到符合当前类型的提供程序。，
+请求的Uri:Service:///ServiceFiles/，
+127.0.0.1:49762,WMI3501599710
+
+System.InvalidOperationException: 从注册的所有容器中没有找到符合当前类型的提供程序。
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 338
+
+[2016/12/17 20:51:57] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：从注册的所有容器中没有找到符合当前类型的提供程序。，
+请求的Uri:Service:///ServiceFiles/，
+127.0.0.1:50019,WMI3501599710
+
+System.InvalidOperationException: 从注册的所有容器中没有找到符合当前类型的提供程序。
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 338
+
+[2016/12/17 20:52:05] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：从注册的所有容器中没有找到符合当前类型的提供程序。，
+请求的Uri:Service:///ServiceFiles/，
+127.0.0.1:50119,WMI3501599710
+
+System.InvalidOperationException: 从注册的所有容器中没有找到符合当前类型的提供程序。
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 338
+
+[2016/12/17 20:55:31] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：从注册的所有服务提供程序中没有找到当前请求的类型，IService，
+请求的Uri:Service:///ServiceFiles/，
+127.0.0.1:51411,WMI3501599710
+
+System.InvalidOperationException: 从注册的所有服务提供程序中没有找到当前请求的类型，IService
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 338
+
+[2016/12/17 20:57:05] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：从注册的所有服务提供程序中没有找到当前请求的类型，IService，
+请求的Uri:Service:///ServiceFiles/，
+127.0.0.1:51619,WMI3501599710
+
+System.InvalidOperationException: 从注册的所有服务提供程序中没有找到当前请求的类型，IService
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 338
+
+[2016/12/17 20:58:46] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：请求的服务名称不能为空。，
+请求的Uri:Service:///ServiceFiles/，
+127.0.0.1:52457,WMI3501599710
+
+System.InvalidOperationException: 请求的服务名称不能为空。
+
+[2016/12/17 21:01:46] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：请求的服务名称不能为空。，
+请求的Uri:Service:///ServiceFiles/，
+127.0.0.1:53502,WMI3501599710
+
+System.InvalidOperationException: 请求的服务名称不能为空。
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 341
+
+[2016/12/17 21:07:25] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：从注册的所有服务提供程序中没有找到当前请求的类型，IService，
+请求的Uri:Service://FilesService/ServiceFiles/，
+127.0.0.1:55393,WMI3501599710
+
+System.InvalidOperationException: 从注册的所有服务提供程序中没有找到当前请求的类型，IService
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 341
+
+[2016/12/17 21:12:57] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：从注册的所有服务提供程序中没有找到当前请求的类型，IService，
+请求的Uri:Service://FilesService/ServiceFiles/，
+127.0.0.1:57386,WMI3501599710
+
+System.InvalidOperationException: 从注册的所有服务提供程序中没有找到当前请求的类型，IService
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 341
+
+[2016/12/17 21:14:08] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：从注册的所有服务提供程序中没有找到当前请求的类型:FilesService，
+请求的Uri:Service://FilesService/ServiceFiles/，
+127.0.0.1:57897,WMI3501599710
+
+System.InvalidOperationException: 从注册的所有服务提供程序中没有找到当前请求的类型:FilesService
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 341

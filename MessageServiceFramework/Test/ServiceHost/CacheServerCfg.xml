@@ -1,0 +1,15 @@
+﻿<?xml version="1.0"?>
+<ArrayOfServiceRegModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <!--<ServiceRegModel>
+    <RegServerIP>192.168.200.34</RegServerIP>
+    <RegServerPort>8889</RegServerPort>
+    <RegServerDesc>缓存服务1</RegServerDesc>
+    <IsActive>true</IsActive>
+  </ServiceRegModel>-->
+  <ServiceRegModel>
+    <RegServerIP>192.168.200.34</RegServerIP>
+    <RegServerPort>9001</RegServerPort>
+    <RegServerDesc>缓存服务2</RegServerDesc>
+    <IsActive>true</IsActive>
+  </ServiceRegModel>
+</ArrayOfServiceRegModel>
