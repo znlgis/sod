@@ -4,12 +4,6 @@
         <name>PWMIS.EnterpriseFramework.IOC</name>
     </assembly>
     <members>
-        <member name="M:PWMIS.EnterpriseFramework.IOC.IOCConfig.ReplaceWebRootPath(System.String@)">
-            <summary>
-            替换Web路径格式中的相对虚拟路径（~）为当前程序执行的绝对路径
-            </summary>
-            <param name="sourcePath"></param>
-        </member>
         <member name="M:PWMIS.EnterpriseFramework.IOC.IOCConfig.AddIocProvider(System.String,PWMIS.EnterpriseFramework.IOC.IocProvider)">
             <summary>
             增加一个Ioc提供程序的配置
