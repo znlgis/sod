@@ -60,7 +60,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOC", "..\AOPIOC\IOC\IOC.cs
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 16
+		SccNumberOfProjects = 20
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
 		SccProjectUniqueName0 = ..\\AOPIOC\\IOC\\IOC.csproj
@@ -124,6 +124,22 @@ Global
 		SccProjectTopLevelParentUniqueName15 = MessageServiceFramework.sln
 		SccProjectName15 = ../Test/WinClient
 		SccLocalPath15 = ..\\Test\\WinClient
+		SccProjectUniqueName16 = ..\\MonitorTerminal\\MonitorTerminal.csproj
+		SccProjectTopLevelParentUniqueName16 = MessageServiceFramework.sln
+		SccProjectName16 = ../MonitorTerminal
+		SccLocalPath16 = ..\\MonitorTerminal
+		SccProjectUniqueName17 = ..\\MonitorModel\\MonitorModel.csproj
+		SccProjectTopLevelParentUniqueName17 = MessageServiceFramework.sln
+		SccProjectName17 = ../MonitorModel
+		SccLocalPath17 = ..\\MonitorModel
+		SccProjectUniqueName18 = ..\\MonitorPresenters\\MonitorPresenters.csproj
+		SccProjectTopLevelParentUniqueName18 = MessageServiceFramework.sln
+		SccProjectName18 = ../MonitorPresenters
+		SccLocalPath18 = ..\\MonitorPresenters
+		SccProjectUniqueName19 = ..\\MonitorServiceRuntime\\MonitorServiceRuntime.csproj
+		SccProjectTopLevelParentUniqueName19 = MessageServiceFramework.sln
+		SccProjectName19 = ../MonitorServiceRuntime
+		SccLocalPath19 = ..\\MonitorServiceRuntime
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
