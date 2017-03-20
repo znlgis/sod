@@ -31,6 +31,10 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// 服务宿主地址
         /// </summary>
         public static ServiceHostInfo Host { get; private set; }
+        /// <summary>
+        /// 远程控制台监听器
+        /// </summary>
+        public static MessageListener RemoteConsoleListener;
 
         private static System.Threading.Timer CountTimer ;
         /// <summary>

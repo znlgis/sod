@@ -38,7 +38,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>PDF.NET.MSF.2017.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>PdfNetMsfKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,19 +48,15 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <OutputPath>bin\Release\</OutputPath>
   </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\MessageServiceFramework\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
+    <Reference Include="Newtonsoft.Json.Net20">
+      <HintPath>..\Solution\RefDll\Newtonsoft.Json.Net20.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connection.cs" />
@@ -84,8 +80,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
-    <None Include="packages.config" />
-    <None Include="PDF.NET.MSF.2017.pfx" />
     <None Include="PdfNetMsfKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

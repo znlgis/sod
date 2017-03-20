@@ -204,6 +204,15 @@
             <param name="para">参数</param>
             <returns>客户端返回的结果</returns>
         </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.PreCallBackFunction``2(``0)">
+            <summary>
+            预先回调客户端的函数
+            </summary>
+            <typeparam name="T">参数类型</typeparam>
+            <typeparam name="TResult">结果类型</typeparam>
+            <param name="para">参数</param>
+            <returns>客户端返回的结果</returns>
+        </member>
         <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.Request">
             <summary>
             请求服务
@@ -400,14 +409,18 @@
             <param name="input"></param>
             <returns></returns>
         </member>
-        <member name="F:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.GetMessageFun">
-            <summary>
-            获取（客户端）消息函数
-            </summary>
-        </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.CallBackFunction``2(``0)">
             <summary>
             回调客户端的函数
+            </summary>
+            <typeparam name="T">参数类型</typeparam>
+            <typeparam name="TResult">结果类型</typeparam>
+            <param name="para">参数</param>
+            <returns>结果</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PreCallBackFunction``2(``0)">
+            <summary>
+            预先回调客户端的函数
             </summary>
             <typeparam name="T">参数类型</typeparam>
             <typeparam name="TResult">结果类型</typeparam>
@@ -504,6 +517,16 @@
         <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.SendEmptyResult">
             <summary>
             是否向客户端发送空的结果，例如空的列表记录，或者结果为 NULL 的对象 
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.GetMessageFun">
+            <summary>
+            获取（客户端）消息函数
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PreGetMessageFun">
+            <summary>
+            预先获取（客户端）消息函数
             </summary>
         </member>
         <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.BatchIndex">

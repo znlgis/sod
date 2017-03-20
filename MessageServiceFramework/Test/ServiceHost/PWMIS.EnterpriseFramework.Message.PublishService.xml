@@ -51,6 +51,14 @@
             <param name="para">消息参数</param>
             <returns></returns>
         </member>
+        <member name="M:MessagePublishService.IMessageListenerCallBack.PreCallBackMessage(System.Int32,System.String)">
+            <summary>
+            服务回调客户端，预先获取客户端返回的消息
+            </summary>
+            <param name="id">消息处理器编号</param>
+            <param name="para">消息参数</param>
+            <returns></returns>
+        </member>
         <member name="T:MessagePublishService.IMessagePublishService">
             <summary>
             消息发布服务；

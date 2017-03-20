@@ -232,6 +232,30 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
             return CallService(context);
         }
+
+        protected Func<string, string> GetMessageFun(SubscriberInfo info)
+        {
+            return strPara =>
+            {
+                MessageListener currLst = MessageCenter.Instance.GetListener(info.FromIP, info.FromPort);
+                if (currLst != null)
+                    return currLst.CallBackFunction(info.MessageID, strPara);
+                else
+                    return "";
+            };
+        }
+
+        protected Func<string, string> PreGetMessageFun(SubscriberInfo info)
+        {
+            return strPara =>
+            {
+                MessageListener currLst = MessageCenter.Instance.GetListener(info.FromIP, info.FromPort);
+                if (currLst != null)
+                    return currLst.PreCallBackFunction(info.MessageID, strPara);
+                else
+                    return "";
+            };
+        }
     }
 
     /// <summary>
@@ -247,14 +271,8 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             ServiceContext context = new ServiceContext(info.Request);
             context.Host = this.Host;
             context.SessionRequired = true;
-            context.GetMessageFun = strPara =>
-            {
-                MessageListener currLst = MessageCenter.Instance.GetListener(info.FromIP, info.FromPort);
-                if (currLst != null)
-                    return currLst.CallBackFunction(info.MessageID, strPara);
-                else
-                    return "";
-            };
+            context.GetMessageFun = base.GetMessageFun(info);
+            context.PreGetMessageFun = base.PreGetMessageFun(info);
             //根据每个会话来计算服务结果
             publishResult = CallService(info.SessionID, context);
             tempMsg += string.Format("\r\nPub No.{0},have used {1}ms.\r\n", index++, sw.ElapsedMilliseconds);
@@ -344,14 +362,8 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 }
                 else
                 {
-                    context.GetMessageFun = strPara =>
-                    {
-                        MessageListener currLst = MessageCenter.Instance.GetListener(info.FromIP, info.FromPort);
-                        if (currLst != null)
-                            return currLst.CallBackFunction(info.MessageID, strPara);
-                        else
-                            return "";
-                    };
+                    context.GetMessageFun = base.GetMessageFun(info);
+                    context.PreGetMessageFun = base.PreGetMessageFun(info);
                     publishResult = CallService(context);
                     dictResult.Add(key, publishResult);
                 }

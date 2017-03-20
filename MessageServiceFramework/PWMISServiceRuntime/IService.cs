@@ -145,6 +145,16 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         /// <param name="para">参数</param>
         /// <returns>客户端返回的结果</returns>
         TResult CallBackFunction<T, TResult>(T para);
+
+        /// <summary>
+        /// 预先回调客户端的函数
+        /// </summary>
+        /// <typeparam name="T">参数类型</typeparam>
+        /// <typeparam name="TResult">结果类型</typeparam>
+        /// <param name="para">参数</param>
+        /// <returns>客户端返回的结果</returns>
+        TResult PreCallBackFunction<T, TResult>(T para);
+
         /// <summary>
         /// 是否向客户端发送空的结果，例如空的列表记录，或者结果为 NULL 的对象 
         /// </summary>

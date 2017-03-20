@@ -58,5 +58,14 @@ namespace MessagePublishService
         /// <returns></returns>
         [OperationContract()]
         string CallBackMessage(int id, string para);
+
+        /// <summary>
+        /// 服务回调客户端，预先获取客户端返回的消息
+        /// </summary>
+        /// <param name="id">消息处理器编号</param>
+        /// <param name="para">消息参数</param>
+        /// <returns></returns>
+        [OperationContract()]
+        string PreCallBackMessage(int id, string para);
     }
 }

@@ -189,7 +189,13 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         /// <summary>
         /// 获取（客户端）消息函数
         /// </summary>
-        public Func<string, string> GetMessageFun;
+        public Func<string, string> GetMessageFun { get; set; }
+
+        /// <summary>
+        /// 预先获取（客户端）消息函数
+        /// </summary>
+        public Func<string, string> PreGetMessageFun { get; set; }
+
         /// <summary>
         /// 回调客户端的函数
         /// </summary>
@@ -208,6 +214,24 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
             //else if (typeof(TResult) == typeof(string)) resultDataType = DataType.Text;
             //else if (typeof(TResult) == typeof(ValueType)) resultDataType = DataType.Text;
             //else resultDataType = DataType.Json;
+
+            MessageConverter<TResult> converter = new MessageConverter<TResult>(strResult);
+            return converter.Result;
+        }
+
+        /// <summary>
+        /// 预先回调客户端的函数
+        /// </summary>
+        /// <typeparam name="T">参数类型</typeparam>
+        /// <typeparam name="TResult">结果类型</typeparam>
+        /// <param name="para">参数</param>
+        /// <returns>结果</returns>
+        public TResult PreCallBackFunction<T, TResult>(T para)
+        {
+            MessageConverter<T> convertPara = new MessageConverter<T>();
+            string strPara = convertPara.Serialize(para);
+
+            string strResult = PreGetMessageFun(strPara);
 
             MessageConverter<TResult> converter = new MessageConverter<TResult>(strResult);
             return converter.Result;

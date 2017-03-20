@@ -210,7 +210,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
 
   
         /// <summary>
-        /// 请求一个服务，然后异步处理结果。注意如果处理过程中出现异常，不会引发当前类的 ErrorMessage 事件，请处理 Task的异常。
+        /// 请求一个服务，然后异步处理结果。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。
         /// </summary>
         /// <typeparam name="T">服务方法的结果类型</typeparam>
         /// <param name="reqSrvUrl">服务的地址</param>
@@ -222,9 +222,10 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
             conn.ErrorMessage += new EventHandler<MessageEventArgs>(
                 (object sender, MessageEventArgs e) => {
-                    //if (this.ErrorMessage != null)
-                    //    this.ErrorMessage(sender, e);
-                    tcs.SetException(new Exception(e.MessageText));
+                    if (this.ErrorMessage != null)
+                        this.ErrorMessage(sender, new MessageEventArgs(e.MessageText));
+                    else
+                        tcs.SetException(new Exception(e.MessageText));
                 }
                 );
           
@@ -236,8 +237,10 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                     string errMsg = ServiceConst.GetServiceErrorMessage(remoteMsg);
                     if (errMsg != string.Empty)
                     {
-                        //RaiseSubscriberError(this, new MessageEventArgs(errMsg));
-                        tcs.SetException(new Exception(errMsg));
+                        if (this.ErrorMessage != null)
+                            this.ErrorMessage(this, new MessageEventArgs(errMsg));
+                        else
+                            tcs.SetException(new Exception(errMsg));
                     }
                     else
                     {
@@ -257,7 +260,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         }
 
         /// <summary>
-        /// 请求一个服务，然后异步处理结果。注意如果处理过程中出现异常，不会引发当前类的 ErrorMessage 事件，请处理 Task的异常。
+        /// 请求一个服务，然后异步处理结果。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。
         /// </summary>
         /// <typeparam name="T">服务方法的结果类型</typeparam>
         /// <param name="request">"服务请求"对象</param>
@@ -273,12 +276,12 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         /// 请求远程服务并异步执行自定义的操作，在得到最终结果前，允许服务端回调客户端指定的函数，作为服务端计算需要的中间结果
         /// </summary>
         /// <typeparam name="T">最终执行的回调方法参数类型</typeparam>
-        /// <typeparam name="TFunPara">要执行服务中间调用的会掉函数的参数类型</typeparam>
-        /// <typeparam name="TFunResult">要执行服务中间调用的会掉函数的结果类型</typeparam>
+        /// <typeparam name="TFunPara">要执行服务中间调用的回调函数的参数类型</typeparam>
+        /// <typeparam name="TFunResult">要执行服务中间调用的回调函数的结果类型</typeparam>
         /// <param name="reqSrvUrl">服务地址</param>
         /// <param name="resultDataType">返回消息的数据类型</param>
         /// <param name="action">自定义的处理方法</param>
-        /// <param name="function">作为服务端计算需要的中间结果函数</param>
+        /// <param name="function">作为服务端计算需要回调客户端提供的中间结果函数</param>
         public void RequestService<T, TFunPara, TFunResult>(string reqSrvUrl, DataType resultDataType, Action<T> action, MyFunc<TFunPara, TFunResult> function)
         {
             Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
@@ -869,6 +872,16 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                 ServiceSubscriber.HeartBeatError += new EventHandler<MessageEventArgs>(ServiceSubscriber_HeartBeatError);
                 heartBeatTimer = new Timer(ServiceSubscriber.CheckHeartBeatCallBack(), null, 1000, 10000);
             }
+        }
+
+        /// <summary>
+        /// 设置服务访问代理的基地址（ServiceBaseUri属性）
+        /// </summary>
+        /// <param name="host">远程主机名，可以是一个IP地址</param>
+        /// <param name="port">连接远程主机的端口号</param>
+        public void CreateServiceBaseUri(string host, string port)
+        {
+            ServiceBaseUri = string.Format("net.tcp://{0}:{1}", host,port);
         }
         #endregion
 

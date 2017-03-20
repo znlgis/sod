@@ -261,3 +261,16 @@ System.InvalidOperationException: 从注册的所有服务提供程序中没有�
    在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 f:\old\PDF.NET.Enterprise\PWMIS.EF\AOPIOC\IOC\Unity.cs:行号 294
    在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
    在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 f:\old\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 341
+
+[2017-1-24 16:42:03] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:47411,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 497
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 481
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 393

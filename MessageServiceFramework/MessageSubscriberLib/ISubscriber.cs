@@ -41,5 +41,12 @@ namespace MessageSubscriber
         /// <param name="para">消息参数</param>
         /// <returns></returns>
         string CallBackMessage(int id, string para);
+        /// <summary>
+        /// 预回调客户端消息,可以在 CallBackMessage 执行之前进行预先的调用,以决定下面的操作
+        /// </summary>
+        /// <param name="id">消息编号</param>
+        /// <param name="para">消息参数</param>
+        /// <returns>客户端返回的消息</returns>
+        string PreCallBackMessage(int id, string para);
     }
 }

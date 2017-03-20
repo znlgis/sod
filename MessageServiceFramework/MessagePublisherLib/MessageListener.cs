@@ -95,6 +95,12 @@ namespace MessagePublisher
         {
             return _innerListener.CallBackMessage(msgId, para);
         }
+
+        public string PreCallBackFunction(int msgId, string para)
+        {
+            return _innerListener.PreCallBackMessage(msgId, para);
+        }
+
         /// <summary>
         /// 通知客户端关闭连接
         /// </summary>

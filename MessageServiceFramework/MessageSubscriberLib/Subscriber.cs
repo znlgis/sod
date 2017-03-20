@@ -118,8 +118,9 @@ namespace MessageSubscriber
             binding.ReceiveTimeout = TimeSpan.MaxValue;//设置连接自动断开的空闲时长；
 
             binding.SendTimeout = new TimeSpan(0, 10, 9);
-            //_serviceProxy = DuplexChannelFactory<IMessagePublishService>.CreateChannel(_listener, binding, new EndpointAddress(_serviceUri));
-            _serviceProxy = DuplexChannelFactory<IMessagePublishService>.CreateChannel(new InstanceContext(_listener), "defaultEndpoint");
+            _serviceProxy = DuplexChannelFactory<IMessagePublishService>.CreateChannel(_listener, binding, new EndpointAddress(_serviceUri));
+            //下面通过配置，仅供测试
+            //_serviceProxy = DuplexChannelFactory<IMessagePublishService>.CreateChannel(new InstanceContext(_listener), "defaultEndpoint");
             try
             {
                 string indentity = "PDF.NET;20111230;" + HardDiskSN.SerialNumber;
@@ -425,10 +426,11 @@ namespace MessageSubscriber
         /// <returns></returns>
         private int CreateMessageID()
         {
-            lock (_syncObject)
-            {
-                return ++_messageId;
-            }
+            //lock (_syncObject)
+            //{
+            //    return ++_messageId;
+            //}
+            return System.Threading.Interlocked.Increment(ref _messageId);
         }
 
         /// <summary>

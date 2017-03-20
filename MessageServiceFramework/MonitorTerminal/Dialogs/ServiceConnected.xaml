@@ -1,0 +1,13 @@
+﻿<Window x:Class="MonitorTerminal.Dialogs.ServiceConnected"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="连接到服务" Height="300" Width="492" ResizeMode="NoResize">
+    <Grid>
+    	<Label Content="服务地址" HorizontalAlignment="Left" Height="25" Margin="20,51,0,0" VerticalAlignment="Top" Width="64"/>
+    	<TextBox x:Name="txtServiceAddress" Height="25" Margin="97,51,173,0" VerticalAlignment="Top"/>
+    	<Button x:Name="btnConnected" Content="确定" HorizontalAlignment="Left" Margin="143,115,0,134" Width="67"/>
+    	<Label Content="端口号：" Margin="317,51,118,195"/>
+    	<TextBox x:Name="txtServicePort" HorizontalAlignment="Right" Height="25" Margin="0,51,53,0" VerticalAlignment="Top" Width="61"/>
+        
+    </Grid>
+</Window>

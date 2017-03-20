@@ -66,6 +66,17 @@ namespace MessageSubscriber
         }
 
         /// <summary>
+        /// 服务回调客户端，预先获取客户端返回的消息
+        /// </summary>
+        /// <param name="id">消息处理器编号</param>
+        /// <param name="para">消息参数</param>
+        /// <returns></returns>
+        public string PreCallBackMessage(int id, string para)
+        {
+            return this._source.PreCallBackMessage(id, para);
+        }
+
+        /// <summary>
         /// 服务器通知客户端关闭连接
         /// </summary>
         public void OnClose(int flag)

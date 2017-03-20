@@ -56,10 +56,10 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>PDF.NET.MSF.2017.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>PdfNetMsfKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -113,7 +113,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="PDF.NET.MSF.2017.pfx" />
     <None Include="PdfNetMsfKey.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

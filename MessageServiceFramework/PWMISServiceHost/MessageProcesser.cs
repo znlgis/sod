@@ -250,6 +250,13 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 MessageListener currLst = MessageCenter.Instance.GetListener(this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort);
                 return currLst.CallBackFunction(msgId, strPara);
             };
+
+            context.PreGetMessageFun = strPara =>
+            {
+                MessageListener currLst = MessageCenter.Instance.GetListener(this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort);
+                return currLst.PreCallBackFunction(msgId, strPara);
+            };
+
             Console.WriteLine("ProcessService begin...");
             context.ProcessService(this.SubscriberInfo.SessionID);
             Console.WriteLine("ProcessService ok...");
@@ -257,8 +264,11 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             string result = context.Response.AllText;
             bool noResult = context.NoResultRecord(result);
             processMesssage += string.Format("\r\n[{0}]请求处理完毕--To: {1}:{2},Identity:{3}\r\n>>[SMID:{4}]消息长度：{5} -------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort, identity, this.SubscriberInfo.MessageID, noResult ? "[Empty Result]" : result.Length.ToString("###,###") + "字节");
-            //
-            Console.WriteLine("result:{0}",result);
+            //此处内容可能很大，不能全程输出
+            if (context.Response.ResultType == typeof(byte[]))
+                Console.WriteLine("[byte Content]");
+            else
+                Console.WriteLine("result:{0}",result.Length>100? result.Substring(0,100)+" ...":result);
 
             MessageListener currLstn = MessageCenter.Instance.GetListener(this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort);
             if (currLstn == null)
@@ -381,6 +391,10 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                         Console.WriteLine("批处理程序启动成功，主程序即将退出。");
                         Console.Out.Flush();
                         System.Environment.Exit(0);
+                        break;
+                    case "RemoteConsoleOutput"://远程控制台输出
+                        MessageListener currLstn = MessageCenter.Instance.GetListener(this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort);
+                        Program.RemoteConsoleListener = currLstn;
                         break;
                 }
             }

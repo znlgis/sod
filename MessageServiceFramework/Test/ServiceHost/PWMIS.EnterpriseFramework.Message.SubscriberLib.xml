@@ -47,6 +47,14 @@
             <param name="para">消息参数</param>
             <returns></returns>
         </member>
+        <member name="M:MessageSubscriber.ISubscriber.PreCallBackMessage(System.Int32,System.String)">
+            <summary>
+            预回调客户端消息,可以在 CallBackMessage 执行之前进行预先的调用,以决定下面的操作
+            </summary>
+            <param name="id">消息编号</param>
+            <param name="para">消息参数</param>
+            <returns>客户端返回的消息</returns>
+        </member>
         <member name="T:MessageSubscriber.MessageListener">
             <summary>
             消息监听器；
@@ -59,6 +67,14 @@
         <member name="M:MessageSubscriber.MessageListener.CallBackMessage(System.Int32,System.String)">
             <summary>
             服务回调客户端，获取客户端返回的消息
+            </summary>
+            <param name="id">消息处理器编号</param>
+            <param name="para">消息参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:MessageSubscriber.MessageListener.PreCallBackMessage(System.Int32,System.String)">
+            <summary>
+            服务回调客户端，预先获取客户端返回的消息
             </summary>
             <param name="id">消息处理器编号</param>
             <param name="para">消息参数</param>
