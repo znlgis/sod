@@ -318,7 +318,10 @@ namespace PWMIS.Windows.Mvvm
         private void MvvmForm_Load(object sender, EventArgs e)
         {
             var ibControls = MyWinForm.GetIBControls(this.Controls);
-            //BindDataControls(ibControls);
+            ControlCollection coll = new ControlCollection(this);
+            foreach(IDataControl ctr in ibControls)
+                coll.Add(ctr as Control);
+            BindDataControls(coll);
         }
     }
 }

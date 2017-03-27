@@ -56,6 +56,26 @@ namespace PWMIS.Core.Extensions
                 }
         }
 
+        /// <summary>
+        /// 以一个数据访问对象初始化数据上下文
+        /// </summary>
+        /// <param name="db">数据访问对象</param>
+        public DbContext(AdoHelper db)
+        {
+            dictCheckedDb.TryGetValue(db.ConnectionString, out checkedDb);
+            if (!checkedDb)
+            {
+                lock (lock_obj)
+                {
+                    if (!checkedDb)
+                    {
+                        checkedDb = CheckDB();
+                        dictCheckedDb[db.ConnectionString] = checkedDb;
+                    }
+                }
+            }
+        }
+
         #region 接口实现
         /// <summary>
         /// 关联的当期数据库访问对象
@@ -65,12 +85,20 @@ namespace PWMIS.Core.Extensions
             get { return db; }
         }
 
+        /// <summary>
+        /// 在数据库中检查指定的实体类映射的数据表是否存在，如果不存在，将创建表
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
         public void CheckTableExists<T>() where T : EntityBase, new()
         {
             DbContextProvider.CheckTableExists<T>();
         }
         #endregion
 
+        /// <summary>
+        /// 在数据库中检查指定的接口类型映射的数据表是否存在，如果不存在，将创建表
+        /// </summary>
+        /// <typeparam name="T">实体类接口类型</typeparam>
         public void CheckTableExistsOf<T>() where T:class   
         {
             //DbContextProvider.CheckTableExists<T>();
