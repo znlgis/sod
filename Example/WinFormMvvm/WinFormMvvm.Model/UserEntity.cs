@@ -13,6 +13,7 @@ namespace WinFormMvvm.Model
        {
            TableName = "Tb_User";
            PrimaryKeys.Add("UserID");
+           
        }
         public int ID {
             get { return getProperty<int>("UserID"); }
@@ -22,7 +23,7 @@ namespace WinFormMvvm.Model
         public string Name
         {
             get { return getProperty<string>("UserName"); }
-            set { setProperty("UserName", value); }
+            set { setProperty("UserName", value,250); }
         }
 
     }
