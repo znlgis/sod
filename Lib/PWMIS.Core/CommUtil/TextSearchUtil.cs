@@ -20,7 +20,7 @@ namespace PWMIS.Core
         public static  Point SearchWordsIndex(string source, string words)
         {
             string[] matchWrodArray = words.Split(new char[] { ' ', '\r', '\n', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-            int firstMatchIndex = source.IndexOf(matchWrodArray[0], 0, StringComparison.OrdinalIgnoreCase);
+            int firstMatchIndex = source.IndexOf(matchWrodArray[0]+' ', 0, StringComparison.OrdinalIgnoreCase);
             if (matchWrodArray.Length == 1 && firstMatchIndex != -1)
                 return new Point(firstMatchIndex, firstMatchIndex + matchWrodArray[0].Length);
             return SearchWordsIndex(source, matchWrodArray, firstMatchIndex);

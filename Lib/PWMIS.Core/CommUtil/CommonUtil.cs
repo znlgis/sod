@@ -13,6 +13,8 @@ namespace PWMIS.Core
     /// </summary>
    public  class CommonUtil
     {
+       static readonly UniqueSequenceGUID UniqueId = new UniqueSequenceGUID();
+
        /// <summary>
        /// 缓存的SQLMAP实体类中映射的SQL，键为实体类的SQL查询名称
        /// </summary>
@@ -80,7 +82,7 @@ namespace PWMIS.Core
        }
 
         /// <summary>
-        /// 替换Web路径格式中的相对虚拟路径（~）为当前程序执行的绝对路径
+        /// 替换Web路径格式中的相对虚拟路径（~\ 或者 ~/）为当前程序执行的绝对路径
         /// </summary>
         /// <param name="sourcePath"></param>
         public static void ReplaceWebRootPath(ref string sourcePath)
@@ -107,6 +109,7 @@ namespace PWMIS.Core
                 //sourcePath = Regex.Replace(sourcePath, @"^\s*~[\\/]", appRootPath);
                 //sourcePath = Regex.Replace(sourcePath, @"data source\s*=\s*~[\\/]", "Data Source=" + appRootPath, RegexOptions.IgnoreCase);
                 sourcePath = sourcePath.Replace("~/", appRootPath);
+                sourcePath = sourcePath.Replace("~\\", appRootPath);
             }
         }
 
@@ -282,6 +285,24 @@ namespace PWMIS.Core
            }
 
            return toReturn;
+       }
+
+       /// <summary>
+       /// 生成一个新的有序的长整形“GUID”，在一秒内，重复概率低于 百万分之50
+       /// </summary>
+       /// <returns></returns>
+       public static long NewSequenceGUID()
+       {
+           return UniqueSequenceGUID.InnerNewSequenceGUID(DateTime.Now);
+       }
+
+       /// <summary>
+       /// 生成一个唯一的有序的GUID形式的长整数
+       /// </summary>
+       /// <returns></returns>
+       public static long NewUniqueSequenceGUID()
+       {
+           return UniqueId.NewID();
        }
 
     }

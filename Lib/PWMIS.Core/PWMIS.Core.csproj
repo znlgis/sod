@@ -83,6 +83,7 @@
     <Compile Include="CommUtil\RemoteLoaderFactory.cs" />
     <Compile Include="CommUtil\RuntimeHandle.cs" />
     <Compile Include="CommUtil\TextSearchUtil.cs" />
+    <Compile Include="CommUtil\UniqueSequenceGUID.cs" />
     <Compile Include="DataMap\ControlDataMap.cs" />
     <Compile Include="DataMap\DataCheckBoxValue.cs" />
     <Compile Include="DataMap\DataTextBoxValue.cs" />
