@@ -288,16 +288,17 @@ namespace PWMIS.Core
        }
 
        /// <summary>
-       /// 生成一个新的有序的长整形“GUID”，在一秒内，重复概率低于 百万分之50
+       /// 生成一个新的有序的长整形“GUID”，在一秒内，重复概率低于 万分之一，速度较快，线程安全，
+       /// 但不如NewUniqueSequenceGUID 方法结果更有序（不包含毫秒部分）
        /// </summary>
        /// <returns></returns>
        public static long NewSequenceGUID()
        {
-           return UniqueSequenceGUID.InnerNewSequenceGUID(DateTime.Now);
+           return UniqueSequenceGUID.InnerNewSequenceGUID(DateTime.Now,false);
        }
 
        /// <summary>
-       /// 生成一个唯一的有序的GUID形式的长整数
+       /// 生成一个唯一的有序的GUID形式的长整数，速度较NewSequenceGUID 稍慢，但线程不安全
        /// </summary>
        /// <returns></returns>
        public static long NewUniqueSequenceGUID()
