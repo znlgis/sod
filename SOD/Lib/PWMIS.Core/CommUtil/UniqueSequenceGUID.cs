@@ -14,7 +14,7 @@ namespace PWMIS.Core
          public long NewID()
          {
              DateTime dt = DateTime.Now;
-             long result = InnerNewSequenceGUID(dt);
+             long result = InnerNewSequenceGUID(dt,true);
              if (dt.Second == lastSecond)
              {
                  if (dictTong.ContainsKey(result))
