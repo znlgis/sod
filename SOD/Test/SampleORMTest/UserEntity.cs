@@ -10,8 +10,9 @@ namespace SampleORMTest
     {
         public User()
         {
-            TableName="Tb_User2";
-            //IdentityName = "UserID";
+            TableName="Tb_User";
+           
+            IdentityName = "UserID";
             PrimaryKeys.Add("UserID");
         }
 

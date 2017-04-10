@@ -120,7 +120,7 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
-        /// 获取数据库参数前缀资费
+        /// 获取数据库参数前缀
         /// </summary>
         public override string GetParameterChar
         {
@@ -130,14 +130,20 @@ namespace PWMIS.DataProvider.Data
             }
         }
 
+        /// <summary>
+        /// 连接所使用的用户ID
+        /// </summary>
         public override string ConnectionUserID
         {
-            get { throw new NotImplementedException(); }
+            get { return ((MySqlConnectionStringBuilder)this.ConnectionStringBuilder).UserID; }
         }
 
+        /// <summary>
+        /// 连接字符串生成器
+        /// </summary>
         public override System.Data.Common.DbConnectionStringBuilder ConnectionStringBuilder
         {
-            get { throw new NotImplementedException(); }
+            get { return new MySqlConnectionStringBuilder(this.ConnectionString); }
         }
 
         private string _insertKey;
