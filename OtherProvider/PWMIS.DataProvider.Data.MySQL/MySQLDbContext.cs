@@ -1,4 +1,5 @@
-﻿using PWMIS.Core.Interface;
+﻿using MySql.Data.MySqlClient;
+using PWMIS.Core.Interface;
 using PWMIS.DataMap.Entity;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,10 @@ namespace PWMIS.DataProvider.Data
             this.CurrentDataBase = db;
         }
 
+        /// <summary>
+        /// 检查表是否存在，如果不存在，则创建
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
         public void CheckTableExists<T>() where T : DataMap.Entity.EntityBase, new()
         {
             //创建表
@@ -39,10 +44,26 @@ namespace PWMIS.DataProvider.Data
             }
         }
 
-
+        /// <summary>
+        /// 检查MySQL数据库是否存在，如果不存在会自动创建
+        /// </summary>
+        /// <returns></returns>
         public bool CheckDB()
         {
-            //throw new NotImplementedException();
+            var connBuilder = CurrentDataBase.ConnectionStringBuilder as MySqlConnectionStringBuilder;
+            string database = connBuilder.Database;
+            if (!string.IsNullOrEmpty(database))
+            {
+                string sqlformat = "CREATE DATABASE IF NOT EXISTS {0}  DEFAULT CHARSET utf8 COLLATE utf8_general_ci";
+                string sql = string.Format(sqlformat, database);
+                //移除初始化的数据库名称，否则下面的执行打不开数据库
+                connBuilder.Database = "";
+                CurrentDataBase.ConnectionString = connBuilder.ConnectionString;
+                CurrentDataBase.ExecuteNonQuery(sql);
+                //恢复连接字符串
+                connBuilder.Database = database;
+                CurrentDataBase.ConnectionString = connBuilder.ConnectionString;
+            }
             return true;
         }
     }

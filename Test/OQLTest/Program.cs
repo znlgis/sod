@@ -22,12 +22,13 @@ namespace OQLTest
             //TestProperty();
             //TestCached();
 
-            TestSqlOrderBuilder();
+            //TestSqlOrderBuilder();
             
             Console.WriteLine("OQL 测试，按任意键开始");
            
 
             Program p = new Program();
+            p.TestLimit();
             p.TestSqlPage();
             p.TestOqlPage();
             p.TestEntityContainer();
@@ -40,7 +41,7 @@ namespace OQLTest
             p.Test4();
             p.Test5();
             p.Test6();
-            p.TestLimit();
+           
             p.TestIfCondition();
             p.TestIfCondition2();
             p.TestChild();
@@ -373,7 +374,14 @@ namespace OQLTest
                .END;
 
             q0.Limit(10, 2);
-
+            try
+            {
+                var list = EntityQuery<Users>.QueryList(q0);
+            }
+            catch (Exception ex)
+            { 
+            
+            }
             Console.WriteLine("one table and select page number 2,page size 10: \r\n{0}", q0);
             Console.WriteLine("因为OQL是抽象的SQL，而分页语法又是特定于数据库的，所以具体的分页SQL要到查询真正执行的时候才会生成。");
             Console.WriteLine(q0.PrintParameterInfo());
