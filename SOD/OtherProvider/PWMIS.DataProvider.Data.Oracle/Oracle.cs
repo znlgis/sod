@@ -103,9 +103,11 @@ namespace PWMIS.DataProvider.Data.OracleDataAccess
         {
             OracleParameter para = new OracleParameter();
             para.ParameterName = paraName;
-            if (size == 2147483647)
+            if (size > 2000)
             {
+                //长度大于2000，将引发clob类型错误的问题，详细请参考 http://blog.csdn.net/pojianbing/article/details/2789426
                 para.OracleDbType = OracleDbType.NClob;
+                para.Size = size;
             }
             else
             {
