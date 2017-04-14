@@ -155,6 +155,14 @@ namespace OQLTest
             Console.WriteLine("q5:having Test: \r\n{0}", q5);
             Console.WriteLine(q5.PrintParameterInfo());
 
+            q5 = OQL.From(user)
+                .Select(user.Age).Sum(user.Age,"sum_age")
+                .GroupBy(user.Age)
+                .OrderBy(user.Age)
+                .END;
+            Console.WriteLine("q5:having Test: \r\n{0}", q5);
+            Console.WriteLine(q5.PrintParameterInfo());
+
             OQL q6 = OQL.From(user).Select()
                 .Where(cmp =>
                      cmp.Comparer(user.RoleID, "is not", null) &
@@ -643,6 +651,13 @@ namespace OQLTest
             AdoHelper db = MyDB.GetDBHelperByConnectionName("conn2");
             var list = EntityQuery<UserEntity>.QueryList(q, db);
 
+            q = OQL.From(ue)
+               .Select(ue.Age).Sum(ue.Age,"sum_age")
+               .GroupBy(ue.Age)
+               .OrderBy(ue.Age)
+               .END;
+            q.Limit(2);
+            var list2 = EntityQuery<UserEntity>.QueryList(q, db);
 
             Users user = new Users() { NickName = "pdf.net", RoleID = RoleNames.Admin, Age = 20 };
             UserRoles roles = new UserRoles() { RoleName = "role1" };
