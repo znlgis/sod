@@ -61,13 +61,27 @@ namespace PWMIS.Common
                     string field = TextSearchUtil.FindNearWords(fieldItem, 0, 100,out targetIndex);
                     if (targetIndex >= 0)
                     {
-                        //寻找临近的单词，可能没有，可能是AS，也可能直接就是字段别名
-                        string fieldAsName = TextSearchUtil.FindNearWords(fieldItem, targetIndex + field.Length, 50, out targetIndex);
-                        if (fieldAsName.ToLower() == "as")
+                        //select 字段可能是函数调用，感谢网友 芜湖－大枕头 发现此Bug 2017.4.14
+                        string fieldUp = field.ToUpper();
+                        if (fieldUp == "SUM" || fieldUp == "AVG" || fieldUp == "MIN" || fieldUp == "MAX" || fieldUp == "COUNT" || fieldUp.IndexOf('(')>0 )
                         {
-                            fieldAsName = TextSearchUtil.FindNearWords(fieldItem, targetIndex + 2, 50, out targetIndex);
+                            int atas = fieldItem.ToUpper().IndexOf(" AS ");
+                            string fieldAsName = fieldItem.Substring(atas + 3);
+                            sqlFields.Add(new SqlField() { 
+                                Field = fieldItem.Substring(0,atas), 
+                                Alias = fieldAsName 
+                            });
                         }
-                        sqlFields.Add(new SqlField() { Field = field, Alias = fieldAsName });
+                        else
+                        {
+                            //寻找临近的单词，可能没有，可能是AS，也可能直接就是字段别名
+                            string fieldAsName = TextSearchUtil.FindNearWords(fieldItem, targetIndex + field.Length, 50, out targetIndex);
+                            if (fieldAsName.ToLower() == "as")
+                            {
+                                fieldAsName = TextSearchUtil.FindNearWords(fieldItem, targetIndex + 2, 50, out targetIndex);
+                            }
+                            sqlFields.Add(new SqlField() { Field = field, Alias = fieldAsName });
+                        }
                     }
                 }
             }
