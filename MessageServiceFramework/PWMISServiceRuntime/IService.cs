@@ -159,5 +159,9 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         /// 是否向客户端发送空的结果，例如空的列表记录，或者结果为 NULL 的对象 
         /// </summary>
         bool SendEmptyResult { get; set; }
+
+        void PublishData(object data);
+
+        ServiceEventSource PublishEventSource { get; }
     }
 }

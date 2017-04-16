@@ -323,7 +323,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             publisher.BatchInterval = context.BatchInterval;
 
             publisher.SubscriberInfoList.Add(this.SubscriberInfo);//监听器可能存在端口复用的情况，因此需要及时释放SubscriberInfoList 的元素
-            publisher.StartWork();
+            publisher.StartWork(context.Request.RequestModel== RequestModel.ServiceEvent);
         }
 
         void publisher_PublisherErrorEvent(object sender, ServiceErrorEventArgs e)

@@ -63,6 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceContext.cs" />
     <Compile Include="ServiceErrorEventArgs.cs" />
+    <Compile Include="ServiceEventSource.cs" />
     <Compile Include="ServiceFactory.cs" />
     <Compile Include="Session\IServiceSession.cs" />
     <Compile Include="Session\ServiceSession.cs" />

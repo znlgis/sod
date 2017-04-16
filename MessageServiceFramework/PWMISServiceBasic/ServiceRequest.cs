@@ -17,7 +17,11 @@ namespace PWMIS.EnterpriseFramework.Service.Basic
         /// <summary>
         /// 消息发布模式
         /// </summary>
-        Publish
+        Publish,
+        /// <summary>
+        /// 服务事件模式
+        /// </summary>
+        ServiceEvent
     }
 
     /// <summary>

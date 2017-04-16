@@ -391,35 +391,15 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
                     else
                     {
                         object result = this.ExecuteService(service);
-                        if (result != null)
+                        if (result is ServiceEventSource)
                         {
-                            Type tempType = result.GetType();
-
-                            if (tempType == typeof(string))
-                            {
-                                this.Response.Write((string)result);
-                            }
-                            else if (tempType == typeof(DateTime)) //由于服务器和客户端时间格式可能不相同，统一用Json方式序列化
-                            {
-                                this.Response.WriteJsonString(result);
-                            }
-                            else if (tempType == typeof(byte[]))
-                            {
-                                this.Response.Write((byte[])result);
-                            }
-                            else if (tempType.IsValueType)
-                            {
-                                this.Response.Write(result.ToString());
-                            }
-                            else
-                            {
-                                this.Response.WriteJsonString(result);
-                            }
-                            this.Response.ResultType = tempType;
+                            this.PublishEventSource = (ServiceEventSource)result;
+                            this.Request.RequestModel = RequestModel.ServiceEvent;
+                            this.Response.Write("");
                         }
                         else
                         {
-                            this.Response.Write("");
+                            PublishData(result);
                         }
                     }
 
@@ -469,6 +449,43 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
             IService service = ServiceFactory.GetService(this.Request.ServiceName);
             return ExecuteService(service);
         }
+
+       public  void PublishData(object data)
+        {
+            if (data != null)
+            {
+                Type tempType = data.GetType();
+
+                if (tempType == typeof(string))
+                {
+                    this.Response.Write((string)data);
+                }
+                else if (tempType == typeof(DateTime)) //由于服务器和客户端时间格式可能不相同，统一用Json方式序列化
+                {
+                    this.Response.WriteJsonString(data);
+                }
+                else if (tempType == typeof(byte[]))
+                {
+                    this.Response.Write((byte[])data);
+                }
+                else if (tempType.IsValueType)
+                {
+                    this.Response.Write(data.ToString());
+                }
+                else
+                {
+                    this.Response.WriteJsonString(data);
+                }
+                this.Response.ResultType = tempType;
+            }
+            else
+            {
+                this.Response.Write("");
+            }
+        }
+
+       public ServiceEventSource PublishEventSource { get; private set; }
+
         #endregion
 
         #region 动态方法执行

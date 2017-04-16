@@ -65,12 +65,15 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// <summary>
         /// 开始服务发布工作，如工作线程未启动，则新启动线程，否则加入当前工作队列。
         /// </summary>
-        public void StartWork()
+        public void StartWork(bool isEvent)
         {
             if (!isRunning)
             {
                 isRunning = true;
-                thread = new Thread(new ThreadStart(DoWork));
+                if (isEvent)
+                    thread = new Thread(new ThreadStart(DoEvent));
+                else
+                    thread = new Thread(new ThreadStart(DoWork));
                 thread.Name = this.TaskName;
                 thread.Start();
                 Console.WriteLine(">>已经开启发布线程！");
@@ -107,6 +110,9 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             return list.ToArray();
         }
 
+        /// <summary>
+        /// 轮询工作模式
+        /// </summary>
         void DoWork()
         {
             do
@@ -207,6 +213,14 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             }
             while (true);
             isRunning = false;
+        }
+
+        /// <summary>
+        /// 事件模式
+        /// </summary>
+        void DoEvent()
+        { 
+        
         }
 
         protected string CallService(ServiceContext context)
@@ -405,6 +419,11 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         }
     }
 
+    class EventServicePublisher : ServicePublisher
+    { 
+    
+    }
+
     /// <summary>
     /// 服务发布商工厂
     /// </summary>
@@ -435,10 +454,17 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     else
                     {
                         ServicePublisher pub = null;
-                        if (sessionRequired)
-                            pub = new SessionServicePublisher(key);
+                        if (request.RequestModel == RequestModel.ServiceEvent)
+                        {
+                            pub = new EventServicePublisher();
+                        }
                         else
-                            pub = new NoneSessionServicePublisher(key);
+                        {
+                            if (sessionRequired)
+                                pub = new SessionServicePublisher(key);
+                            else
+                                pub = new NoneSessionServicePublisher(key);
+                        }
 
                         dict[key] = pub;
                         return pub;
