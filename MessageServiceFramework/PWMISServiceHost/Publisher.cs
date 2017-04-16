@@ -257,6 +257,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     Console.WriteLine(strTemp + "\r\n" + workMessage);
                 }
             }
+            isRunning = false;
         }
 
         protected string CallService(ServiceContext context)
@@ -534,7 +535,12 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         {
             ServiceRequest request =context.Request;
             bool sessionRequired = context.SessionRequired;
-            string key = string.Format("Publish://{0}/{1}", request.ServiceName, request.MethodName);//   .ServiceUrl;
+            string key = "";
+            if (request.RequestModel == RequestModel.ServiceEvent)
+                key = request.ServiceUrl;
+            else
+                key = string.Format("Publish://{0}/{1}", request.ServiceName, request.MethodName);
+
             if (dict.ContainsKey(key))
             {
                 return dict[key];
@@ -552,7 +558,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                         ServicePublisher pub = null;
                         if (request.RequestModel == RequestModel.ServiceEvent)
                         {
-                            pub = new EventServicePublisher(request.ServiceUrl,context);
+                            pub = new EventServicePublisher(key,context);
                         }
                         else
                         {

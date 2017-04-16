@@ -466,6 +466,9 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
 
         public void WriteResponse(object data)
         {
+            if (this.Response.IsEndResponse)
+                this.Response = GetNewResponse();
+
             if (data != null)
             {
                 Type tempType = data.GetType();

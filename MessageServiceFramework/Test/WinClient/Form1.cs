@@ -236,11 +236,11 @@ namespace WinClient
 
         private void btnAlarmClock_Click(object sender, EventArgs e)
         {
-            if (this.dateTimePicker1.Value < DateTime.Now)
-            {
-                MessageBox.Show("请选择闹铃时间");
-                return;
-            }
+            //if (this.dateTimePicker1.Value < DateTime.Now)
+            //{
+            //    MessageBox.Show("请选择闹铃时间");
+            //    return;
+            //}
 
             ServiceRequest request = new ServiceRequest();
             request.ServiceName = "AlarmClockService";
@@ -257,7 +257,7 @@ namespace WinClient
                 {
                     MyInvoke(this, () =>
                     {
-                        this.lblResult.Text = converter.Result.ToString();
+                        this.lblResult.Text = converter.Result.ToString() + "/" + DateTime.Now.ToLongTimeString();
                         //this.txtA.Text = converter.Result.Count.ToString();
                         //if (converter.Result.Count > 100)
                         //{
