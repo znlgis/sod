@@ -286,8 +286,11 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 //订阅模式，仅在服务处理有结果的情况下，才给客户端发布数据。
                 if (!noResult)
                     MessageCenter.Instance.NotifyOneMessage(currLstn, msgId, result);
-                StartPublishWorker(context);//吧Host传递进去
-                processMesssage += string.Format("\r\n[{0}]当前监听器已经加入工作线程， {1}:{2},Identity:{3}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort, this.SubscriberInfo.Identity);
+                if (!context.HasError)
+                {
+                    StartPublishWorker(context);//吧Host传递进去
+                    processMesssage += string.Format("\r\n[{0}]当前监听器已经加入工作线程， {1}:{2},Identity:{3}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort, this.SubscriberInfo.Identity);
+                }
             }
             Console.WriteLine(processMesssage);
         }
@@ -316,7 +319,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             //request.ClientIdentity = this.SubscriberInfo.Identity;
             this.SubscriberInfo.Request = context.Request;
 
-            ServicePublisher publisher = PublisherFactory.Instance.GetPublisher(context.Request, context.SessionRequired);
+            ServicePublisher publisher = PublisherFactory.Instance.GetPublisher(context);
             publisher.PublisherErrorEvent += new EventHandler<ServiceErrorEventArgs>(publisher_PublisherErrorEvent);
             publisher.Host = context.Host;
             publisher.ParallelExecute = context.ParallelExecute;

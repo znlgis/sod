@@ -29,6 +29,10 @@ namespace PWMIS.EnterpriseFramework.Service.Basic
                 {
                     Value = arr[1].Replace("%Eqv;", "=").Replace("%And;", "&").Replace("%Psp;", "/");
                 }
+                else if (t == typeof(DateTime))
+                {
+                    Value = new DateTime(long.Parse(arr[1]));
+                }
                 else if (t.IsValueType)
                 {
                     Value = Convert.ChangeType(arr[1], t); ;
@@ -74,6 +78,10 @@ namespace PWMIS.EnterpriseFramework.Service.Basic
             if (type == typeof(string))
             {
                 strTemp = ((string)obj).Replace("=", "%Eqv;").Replace("&", "%And;").Replace("/", "%Psp;");
+            }
+            else if (type == typeof(DateTime))
+            {
+                strTemp = ((DateTime)obj).Ticks.ToString();
             }
             else if (obj is ValueType)
             {

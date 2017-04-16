@@ -233,5 +233,52 @@ namespace WinClient
             Environment.SetEnvironmentVariable("MONO_STRICT_MS_COMPLIANT", "yes");
           
         }
+
+        private void btnAlarmClock_Click(object sender, EventArgs e)
+        {
+            if (this.dateTimePicker1.Value < DateTime.Now)
+            {
+                MessageBox.Show("请选择闹铃时间");
+                return;
+            }
+
+            ServiceRequest request = new ServiceRequest();
+            request.ServiceName = "AlarmClockService";
+            request.MethodName = "SetAlarmTime";
+            request.Parameters = new object[] { this.dateTimePicker1.Value };
+
+            //异步方式测试
+            Proxy serviceProxy = new Proxy();
+            serviceProxy.ErrorMessage += new EventHandler<MessageSubscriber.MessageEventArgs>(serviceProxy_ErrorMessage);
+            serviceProxy.ServiceBaseUri = this.txtSerivceUri.Text;
+            int msgId = serviceProxy.Subscribe<DateTime>(request, DataType.Json, (converter) =>
+            {
+                if (converter.Succeed)
+                {
+                    MyInvoke(this, () =>
+                    {
+                        this.lblResult.Text = converter.Result.ToString();
+                        //this.txtA.Text = converter.Result.Count.ToString();
+                        //if (converter.Result.Count > 100)
+                        //{
+                        //    serviceProxy.Close();
+                        //    this.btnServerTime.Enabled = true;
+                        //}
+                    });
+                }
+                else
+                {
+                    MessageBox.Show(converter.ErrorMessage);
+                }
+            });
+            if (msgId < 1)
+            {
+                MessageBox.Show("订阅失败");
+            }
+            else
+            {
+                this.btnServerTime.Enabled = false;
+            }
+        }
     }
 }

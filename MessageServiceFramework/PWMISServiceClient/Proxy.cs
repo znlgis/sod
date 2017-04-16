@@ -669,10 +669,17 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             request.ResultType = typeof(T);
             return Subscribe(request, remoteMsg =>
             {
-                MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
-
-                if (action != null)
-                    action(convert);
+                string errMsg = ServiceConst.GetServiceErrorMessage(remoteMsg);
+                if (errMsg != string.Empty)
+                {
+                    RaiseSubscriberError(this, new MessageEventArgs(errMsg));
+                }
+                else
+                {
+                    MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
+                    if (action != null)
+                        action(convert);
+                }
             });
         }
 
@@ -690,10 +697,17 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             request.ResultType = typeof(T);
             return Subscribe(request, remoteMsg =>
             {
-                MessageConverter<T2> convert = new MessageConverter<T2>(remoteMsg, resultDataType);
-                if (action != null)
-                    action(convert);
-          
+                string errMsg = ServiceConst.GetServiceErrorMessage(remoteMsg);
+                if (errMsg != string.Empty)
+                {
+                    RaiseSubscriberError(this, new MessageEventArgs(errMsg));
+                }
+                else
+                {
+                    MessageConverter<T2> convert = new MessageConverter<T2>(remoteMsg, resultDataType);
+                    if (action != null)
+                        action(convert);
+                }
             });
         }
 

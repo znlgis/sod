@@ -53,6 +53,13 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         #endregion
 
         #region 公开的属性
+
+        public bool HasError
+        {
+            get {
+                return this.hasError;
+            }
+        }
         /// <summary>
         /// 没有结果记录
         /// </summary>
@@ -368,6 +375,7 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
             }
             catch (Exception ex)
             {
+                this.hasError = true;
                 ProcessServiceError(ex);
                 return;
             }
@@ -399,7 +407,7 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
                         }
                         else
                         {
-                            PublishData(result);
+                            this.WriteResponse(result);
                         }
                     }
 
@@ -407,8 +415,14 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
                     this.Response.End();
                 }
             }
+            catch (IndexOutOfRangeException ex1)
+            {
+                this.hasError = true;
+                ProcessServiceError(new Exception("服务方法执行错误，可能请求方法的参数数量错。",ex1));
+            }
             catch (Exception ex)
             {
+                this.hasError = true;
                 ProcessServiceError(ex);
             }
         }
@@ -450,7 +464,7 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
             return ExecuteService(service);
         }
 
-       public  void PublishData(object data)
+        public void WriteResponse(object data)
         {
             if (data != null)
             {
@@ -477,6 +491,7 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
                     this.Response.WriteJsonString(data);
                 }
                 this.Response.ResultType = tempType;
+
             }
             else
             {
@@ -484,12 +499,28 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
             }
         }
 
+        #region 发布数据相关
+        public void PublishData(object data)
+        {
+            if (OnPublishDataEvent != null)
+                OnPublishDataEvent(this.PublishEventSource, new ServiceEventArgs(data));
+        }
+
+       /// <summary>
+       /// 服务发布数据的事件（框架内部使用）
+       /// </summary>
+       public event EventHandler<ServiceEventArgs> OnPublishDataEvent;
+       /// <summary>
+       /// 获取发布事件源对象
+       /// </summary>
        public ServiceEventSource PublishEventSource { get; private set; }
 
         #endregion
 
-        #region 动态方法执行
-        /// <summary>
+        #endregion
+
+       #region 动态方法执行
+       /// <summary>
         /// 执行服务
         /// </summary>
         /// <returns></returns>
