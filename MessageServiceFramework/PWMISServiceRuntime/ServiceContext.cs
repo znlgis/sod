@@ -60,6 +60,13 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
                 return this.hasError;
             }
         }
+
+        public string ErrorMessage
+        {
+            get {
+                return this._errorMessage;
+            }
+        }
         /// <summary>
         /// 没有结果记录
         /// </summary>

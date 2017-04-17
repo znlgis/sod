@@ -257,19 +257,32 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 return currLst.PreCallBackFunction(msgId, strPara);
             };
 
-            Console.WriteLine("ProcessService begin...");
-            context.ProcessService(this.SubscriberInfo.SessionID);
-            Console.WriteLine("ProcessService ok...");
+            string result = string.Empty;
+            bool noResult = false;
+            if (!context.HasError)
+            {
+                Console.WriteLine("ProcessService begin...");
+                context.ProcessService(this.SubscriberInfo.SessionID);
+                Console.WriteLine("ProcessService ok...");
 
-            string result = context.Response.AllText;
-            bool noResult = context.NoResultRecord(result);
-            processMesssage += string.Format("\r\n[{0}]请求处理完毕--To: {1}:{2},Identity:{3}\r\n>>[SMID:{4}]消息长度：{5} -------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort, identity, this.SubscriberInfo.MessageID, noResult ? "[Empty Result]" : result.Length.ToString("###,###") + "字节");
-            //此处内容可能很大，不能全程输出
-            if (context.Response.ResultType == typeof(byte[]))
-                Console.WriteLine("[byte Content]");
+                result = context.Response.AllText;
+                noResult = context.NoResultRecord(result);
+                processMesssage += string.Format("\r\n[{0}]请求处理完毕--To: {1}:{2},Identity:{3}\r\n>>[SMID:{4}]消息长度：{5} -------", 
+                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), 
+                    this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort, identity, 
+                    this.SubscriberInfo.MessageID, noResult ? "[Empty Result]" : result.Length.ToString("###,###") + "字节");
+                //此处内容可能很大，不能全程输出
+                if (context.Response.ResultType == typeof(byte[]))
+                    Console.WriteLine("[byte Content]");
+                else
+                    Console.WriteLine("result:{0}", result.Length > 100 ? result.Substring(0, 100) + " ..." : result);
+
+            }
             else
-                Console.WriteLine("result:{0}",result.Length>100? result.Substring(0,100)+" ...":result);
-
+            {
+                result = ServiceConst.CreateServiceErrorMessage(context.ErrorMessage);
+            }
+            
             MessageListener currLstn = MessageCenter.Instance.GetListener(this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort);
             if (currLstn == null)
             {
@@ -284,6 +297,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             else
             {
                 //订阅模式，仅在服务处理有结果的情况下，才给客户端发布数据。
+                
                 if (!noResult)
                     MessageCenter.Instance.NotifyOneMessage(currLstn, msgId, result);
                 if (!context.HasError)
