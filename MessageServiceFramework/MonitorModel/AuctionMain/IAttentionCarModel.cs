@@ -1,5 +1,4 @@
 ﻿using System;
-using IBMP.AOP;
 using System.ComponentModel;
 
 namespace TranstarAuction.Model.AuctionMain

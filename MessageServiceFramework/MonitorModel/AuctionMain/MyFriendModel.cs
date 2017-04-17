@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-
-using IBMP.AOP;
 using PWMIS.EnterpriseFramework.Common;
+using IBMP.AOP;
 
 namespace TranstarAuction.Model.AuctionMain
 {
