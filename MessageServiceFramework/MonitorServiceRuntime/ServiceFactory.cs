@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PWMIS.EnterpriseFramework.IOC;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace TranstarAuction.Service.Runtime
     {
         public static IService GetService(string serviceName)
         {
-            return IBMP.IOC.Unity.Instance.GetInstance<IService>(serviceName);
+            return Unity.Instance.GetInstance<IService>(serviceName);
         }
     }
 

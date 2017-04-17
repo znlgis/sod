@@ -54,6 +54,8 @@ namespace PWMIS.EnterpriseFramework.Service.Client
 
         private void ProcessRemoteMessage<T>(string remoteMsg, DataType resultDataType, Connection conn, Action<T> action)
         {
+            if (conn != null)
+                conn.Close();
             string errMsg = ServiceConst.GetServiceErrorMessage(remoteMsg);
             if (errMsg != string.Empty)
             {
@@ -62,10 +64,15 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             else
             {
                 MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
-                if(conn!=null)
-                    conn.Close();
-                if (action != null)
-                    action(convert.Result);
+                if (convert.Succeed)
+                {
+                    if (action != null)
+                        action(convert.Result);
+                }
+                else
+                {
+                    RaiseSubscriberError(convert, new MessageEventArgs(convert.ErrorMessage));
+                }
             }
         }
 
@@ -234,6 +241,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             {
                 conn.RequestService(reqSrvUrl, null, (remoteMsg) =>
                 {
+                    conn.Close();
                     string errMsg = ServiceConst.GetServiceErrorMessage(remoteMsg);
                     if (errMsg != string.Empty)
                     {
@@ -245,8 +253,10 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                     else
                     {
                         MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
-                        conn.Close();
-                        tcs.SetResult(convert.Result);
+                        if (convert.Succeed)
+                            tcs.SetResult(convert.Result);
+                        else
+                            this.RaiseSubscriberError(convert, new MessageEventArgs("resultDataType 指定错误"));
                     }
 
                 });
@@ -264,12 +274,28 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         /// </summary>
         /// <typeparam name="T">服务方法的结果类型</typeparam>
         /// <param name="request">"服务请求"对象</param>
-        /// <returns></returns>
+        /// <returns>异步任务对象</returns>
         public Task<T> RequestServiceAsync<T>(ServiceRequest request)
         {
             string reqSrvUrl = request.ServiceUrl;
             DataType resultDataType = MessageConverter<T>.GetResponseDataType();
             return RequestServiceAsync<T>(reqSrvUrl, resultDataType);
+        }
+
+        /// <summary>
+        /// 请求一个服务，然后异步处理结果，并运行服务端处理过程中回调客户端的函数。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。
+        /// </summary>
+        /// <typeparam name="T">服务方法的结果类型</typeparam>
+        /// <typeparam name="TFunPara">要执行服务中间调用的回调函数的参数类型</typeparam>
+        /// <typeparam name="TFunResult">要执行服务中间调用的回调函数的结果类型</typeparam>
+        /// <param name="request">"服务请求"对象</param>
+        /// <param name="function">中间过程客户端回调函数</param>
+        /// <returns>异步任务对象</returns>
+        public Task<T> RequestServiceAsync<T, TFunPara, TFunResult>(ServiceRequest request, MyFunc<TFunPara, TFunResult> function)
+        {
+            string reqSrvUrl = request.ServiceUrl;
+            DataType resultDataType = MessageConverter<T>.GetResponseDataType();
+            return RequestServiceAsync<T, TFunPara, TFunResult>(reqSrvUrl, resultDataType, function);
         }
 
         /// <summary>
@@ -289,10 +315,18 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             {
                 conn.RequestService(reqSrvUrl, null, (remoteMsg) =>
                 {
-                    MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
                     conn.Close();
-                    if (action != null)
-                        action(convert.Result);
+                    MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
+                    if (convert.Succeed)
+                    {
+                        if (action != null)
+                            action(convert.Result);
+                    }
+                    else
+                    {
+                        string errMsg = "参数 resultDataType 类型跟方法的返回类型不匹配，内部错误信息：" + convert.ErrorMessage;
+                        RaiseSubscriberError(convert, new MessageEventArgs(errMsg));
+                    }
                 },
                 para =>
                 {
@@ -315,12 +349,82 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         }
 
         /// <summary>
+        /// 异步请求服务，并允许服务在执行过程中，回调客户端函数
+        /// </summary>
+        /// <typeparam name="T">服务的结果返回类型</typeparam>
+        /// <typeparam name="TFunPara">回调函数的参数类型</typeparam>
+        /// <typeparam name="TFunResult">回调函数的结果类型</typeparam>
+        /// <param name="reqSrvUrl">请求服务的URL地址</param>
+        /// <param name="resultDataType">结果数据类型</param>
+        /// <param name="function">回调函数</param>
+        /// <returns>异步任务对象</returns>
+        public Task<T> RequestServiceAsync<T, TFunPara, TFunResult>(string reqSrvUrl, DataType resultDataType, MyFunc<TFunPara, TFunResult> function)
+        {
+            var tcs = new TaskCompletionSource<T>();
+            Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
+            conn.ErrorMessage += new EventHandler<MessageEventArgs>(
+                (object sender, MessageEventArgs e) =>
+                {
+                    if (this.ErrorMessage != null)
+                        this.ErrorMessage(sender, new MessageEventArgs(e.MessageText));
+                    else
+                        tcs.SetException(new Exception(e.MessageText));
+                }
+                );
+
+
+            if (conn.Open())
+            {
+                conn.RequestService(reqSrvUrl, null, (remoteMsg) =>
+                {
+                    conn.Close();
+                    string errMsg = ServiceConst.GetServiceErrorMessage(remoteMsg);
+                    if (errMsg != string.Empty)
+                    {
+                        if (this.ErrorMessage != null)
+                            this.ErrorMessage(this, new MessageEventArgs(errMsg));
+                        else
+                            tcs.SetException(new Exception(errMsg));
+                    }
+                    else
+                    {
+                        MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
+
+                        tcs.SetResult(convert.Result);
+                    }
+
+                },
+                para =>
+                {
+                    MessageConverter<TFunPara> convert = new MessageConverter<TFunPara>(para);
+                    TFunResult result = function(convert.Result);
+
+                    MessageConverter<TFunResult> convertFunResult = new MessageConverter<TFunResult>();
+                    string strResult = convertFunResult.Serialize(result);
+                    //检查转换是否成功,convertFunResult.MessageText 可以获取结果的原始值
+                    return strResult;
+                }
+
+                );
+            }
+            else
+            {
+                conn.Close();
+                tcs.SetCanceled();
+            }
+            return tcs.Task;
+        }
+
+
+        /// <summary>
         /// 请求远程服务并异步执行自定义的操作，在进行服务方法的操作过程中，允许预先进行一部分计算，例如先返回一些客户端需要的结果，
         /// 然后执行过程中，服务端再回调回调客户端指定的函数，作为服务端计算需要的中间结果
         /// </summary>
         /// <typeparam name="T">最终执行的回调方法参数类型</typeparam>
         /// <typeparam name="TFunPara">要执行服务中间调用的会掉函数的参数类型</typepar，am>
         /// <typeparam name="TFunResult">要执行服务中间调用的会掉函数的结果类型</typeparam>
+        /// <typeparam name="TPreFunPara">作为服务端计算需前的结果函数的参数类型</typeparam>
+        /// <typeparam name="TPreFunResult">作为服务端计算需前的结果函数的类型</typeparam>
         /// <param name="reqSrvUrl">服务地址</param>
         /// <param name="resultDataType">返回消息的数据类型</param>
         /// <param name="action">自定义的处理方法</param>

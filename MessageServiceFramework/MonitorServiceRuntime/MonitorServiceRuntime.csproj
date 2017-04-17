@@ -36,9 +36,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Hisuntech.IBMP.IOC">
-      <HintPath>..\RefDll\Hisuntech.IBMP.IOC.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
@@ -71,6 +68,10 @@
     <Compile Include="Session\SessionContainer.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AOPIOC\IOC\IOC.csproj">
+      <Project>{ebd3ff59-db9c-4f46-9c81-bbce8210878d}</Project>
+      <Name>IOC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MessageSubscriberLib\MessageSubscriberLib.csproj">
       <Project>{f652d7ca-af55-491c-9b1e-e159e9771a72}</Project>
       <Name>MessageSubscriberLib</Name>

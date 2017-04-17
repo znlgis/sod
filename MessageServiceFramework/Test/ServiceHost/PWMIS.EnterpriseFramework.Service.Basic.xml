@@ -29,6 +29,11 @@
             消息发布模式
             </summary>
         </member>
+        <member name="F:PWMIS.EnterpriseFramework.Service.Basic.RequestModel.ServiceEvent">
+            <summary>
+            服务事件模式
+            </summary>
+        </member>
         <member name="T:PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest">
             <summary>
             服务调用请求

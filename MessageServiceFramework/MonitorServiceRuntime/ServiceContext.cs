@@ -4,8 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using PWMIS.EnterpriseFramework.Service.Basic;
-using IBMP.IOC;
-
 using TranstarAuction.Service.Runtime.Principal;
 
 using MessageSubscriber;
@@ -13,6 +11,7 @@ using PWMIS.EnterpriseFramework.Common.Encrypt;
 using PWMIS.EnterpriseFramework.Service.Runtime.Principal;
 using PWMIS.EnterpriseFramework.Service.Client.Model;
 using PWMIS.EnterpriseFramework.Service.Client;
+using PWMIS.EnterpriseFramework.IOC;
 
 
 

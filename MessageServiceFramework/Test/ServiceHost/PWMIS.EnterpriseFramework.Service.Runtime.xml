@@ -213,6 +213,12 @@
             <param name="para">参数</param>
             <returns>客户端返回的结果</returns>
         </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.PublishData(System.Object)">
+            <summary>
+            发布数据
+            </summary>
+            <param name="data"></param>
+        </member>
         <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.Request">
             <summary>
             请求服务
@@ -266,6 +272,16 @@
         <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.SendEmptyResult">
             <summary>
             是否向客户端发送空的结果，例如空的列表记录，或者结果为 NULL 的对象 
+            </summary>
+        </member>
+        <member name="E:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.OnPublishDataEvent">
+            <summary>
+            服务发布数据的事件（框架内部使用）
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.PublishEventSource">
+            <summary>
+            获取发布事件源对象
             </summary>
         </member>
         <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.ManageService">
@@ -532,6 +548,16 @@
         <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.BatchIndex">
             <summary>
             执行的批次号
+            </summary>
+        </member>
+        <member name="E:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.OnPublishDataEvent">
+            <summary>
+            服务发布数据的事件（框架内部使用）
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PublishEventSource">
+            <summary>
+            获取发布事件源对象
             </summary>
         </member>
         <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.IServiceSession">

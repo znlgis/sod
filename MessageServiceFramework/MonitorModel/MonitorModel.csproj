@@ -36,8 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Hisuntech.IBMP.AOP">
-      <HintPath>..\RefDll\Hisuntech.IBMP.AOP.dll</HintPath>
+    <Reference Include="Hisuntech.IBMP.AOP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\IBMP\Hisuntech.IBMP.AOP.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
