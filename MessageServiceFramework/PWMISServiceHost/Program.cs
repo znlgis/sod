@@ -160,7 +160,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             calculatorHost.AddServiceEndpoint(typeof(ICalculator), binding1, uri1);
             calculatorHost.Opened += delegate
             {
-                Console.WriteLine("The calculator service has begun to listen");
+                Console.WriteLine("The Test Service(calculator) has begun to listen");
             };
             calculatorHost.Open();
 
@@ -197,9 +197,9 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             ListAllBindingElements(binding);
            
             ServiceHost host = new ServiceHost(typeof(MessagePublishServiceImpl));
-            Console.WriteLine("begin ServiceHost ok.");
+            Console.WriteLine("service config check all ok.");
             host.AddServiceEndpoint(typeof(IMessagePublishService), binding, uri);
-
+            Console.WriteLine("=========PDF.NET.MSF (PWMIS Message Service) Ver 1.2.04.16 ==");
             Console.WriteLine("启动消息发布服务……接入地址：{0}", uri);
             Console.WriteLine();
 
@@ -374,7 +374,6 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
         static void Instance_ListenerAcceptMessage(object sender, MessageListenerEventArgs e)
         {
-            Console.WriteLine("Instance_ListenerAcceptMessage begin.1.");
             //ChangeConsoleOut();
 
 #if(PrivateUse)
@@ -393,9 +392,9 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             SubscriberInfo subInfo = new SubscriberInfo(e.Listener);
             MessageProcesser processer = new MessageProcesser(subInfo, e.Listener.FromMessage);
             processer.ServiceErrorEvent += new EventHandler<ServiceErrorEventArgs>(processer_ServiceErrorEvent);
-            Console.WriteLine("Instance_ListenerAcceptMessage begin.2.");
+            //Console.WriteLine("process message begin.");
             processer.Process();
-            Console.WriteLine("Instance_ListenerAcceptMessage ok");
+            //Console.WriteLine("process message end.");
         }
 
         static void Instance_ListenerRequestMessage(object sender, MessageRequestEventArgs e)
@@ -451,7 +450,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             ServiceContext context = new ServiceContext(serviceRequest);
             serviceRequest = context.Request;
             context.ProcessService();
-            return context.Response.GetAllText();
+            return context.Response.AllText;
         }
 
         

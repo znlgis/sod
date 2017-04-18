@@ -7,9 +7,17 @@ using MessagePublishService;
 
 namespace MessageSubscriber
 {
+    /// <summary>
+    /// 简易计算器客户端，仅供测试WCF通信
+    /// </summary>
     public class CalcClient
     {
         private string address;
+
+        public CalcClient(string serviceAddress)
+        {
+            this.address = serviceAddress;
+        }
         public CalcClient(string host,int port)
         {
             address = string.Format("net.tcp://{0}:{1}", host, port);

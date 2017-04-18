@@ -6,6 +6,9 @@ using MessagePublishService;
 
 namespace MessagePublisher
 {
+    /// <summary>
+    ///  简易计算器服务端，仅供测试WCF通信
+    /// </summary>
     public class CalculatorService : ICalculator
     {
 

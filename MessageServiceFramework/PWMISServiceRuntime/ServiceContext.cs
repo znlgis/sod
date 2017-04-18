@@ -525,6 +525,22 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
        /// </summary>
        public ServiceEventSource PublishEventSource { get; private set; }
 
+        /// <summary>
+        /// 释放资源
+        /// </summary>
+       public void Dispose()
+       {
+           this.Response.ResponseStream.Dispose();
+           this.Response = null;
+           if (this.PublishEventSource != null)
+           {
+               object obj = this.PublishEventSource.Source;
+               if (obj != null && obj is IDisposable)
+                    ((IDisposable)obj).Dispose();
+               this.PublishEventSource = null;
+           }
+       }
+
         #endregion
 
         #endregion

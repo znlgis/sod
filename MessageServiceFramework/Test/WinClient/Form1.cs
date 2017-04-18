@@ -75,7 +75,7 @@ namespace WinClient
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            CalcClient cc = new CalcClient("127.0.0.1", 8888);//192.168.200.34
+            CalcClient cc = new CalcClient(this.txtSerivceUri.Text); //"127.0.0.1", 8888
             double result = cc.GetAddResult(3, 2);
 
             //要请求的服务消息
@@ -257,7 +257,7 @@ namespace WinClient
                 {
                     MyInvoke(this, () =>
                     {
-                        this.lblResult.Text = converter.Result.ToString() + "/" + DateTime.Now.ToLongTimeString();
+                        this.lblResult.Text = converter.Result.ToString();// +"/" + DateTime.Now.ToLongTimeString();
                         //this.txtA.Text = converter.Result.Count.ToString();
                         //if (converter.Result.Count > 100)
                         //{

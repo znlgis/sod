@@ -8,12 +8,18 @@ using PWMIS.EnterpriseFramework.Common.Encrypt;
 namespace PWMIS.EnterpriseFramework.Service.Basic
 {
     /// <summary>
-    /// 服务响应
+    /// 服务输出响应
     /// </summary>
     public class ServiceResponse
     {
+        /// <summary>
+        /// 获取响应的数据流
+        /// </summary>
         public Stream ResponseStream { get; private set; }
 
+        /// <summary>
+        /// 是否结束输出响应
+        /// </summary>
         public bool IsEndResponse { get; private set; }
 
         private string _allText = null;
@@ -79,7 +85,7 @@ namespace PWMIS.EnterpriseFramework.Service.Basic
         /// 从当前流的起始位置，读取所有字符串文本。
         /// </summary>
         /// <returns></returns>
-        public string GetAllText()
+        private string GetAllText()
         {
             this.ResponseStream.Flush();
             this.ResponseStream.Position = 0;
@@ -87,7 +93,7 @@ namespace PWMIS.EnterpriseFramework.Service.Basic
             return reader.ReadToEnd();
         }
 
-        public byte[] GetAllBytes()
+        private byte[] GetAllBytes()
         {
             this.ResponseStream.Flush();
             this.ResponseStream.Position = 0;
@@ -101,6 +107,7 @@ namespace PWMIS.EnterpriseFramework.Service.Basic
         //    string result = _encoding.GetString(buffer);
         //    return result;
         //}
+
         /// <summary>
         /// 从流中读取所有内容，并关闭流。
         /// </summary>
@@ -111,9 +118,12 @@ namespace PWMIS.EnterpriseFramework.Service.Basic
             this.ResponseStream.Close();
         }
 
+        /// <summary>
+        /// 清除当前文本，以便需要时重新从流读取
+        /// </summary>
         public void Clear()
         {
-            _allText = "";
+            _allText = null;
         }
     }
 }

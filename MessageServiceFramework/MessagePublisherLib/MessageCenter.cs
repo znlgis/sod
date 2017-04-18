@@ -255,16 +255,18 @@ namespace MessagePublisher
             return false;
         }
 
-        public void ResponseMessage(MessageListener lstn, int id, string message)
+        public bool ResponseMessage(MessageListener lstn, int id, string message)
         {
             try
             {
                 lstn.Response(id, message);
+                return true;
             }
             catch (Exception ex)
             {
                 OnNotifyError(lstn, ex);
             }
+            return false;
         }
 
         public void AcceptMessage(MessageListener listener)

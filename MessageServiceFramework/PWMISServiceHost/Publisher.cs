@@ -231,31 +231,39 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// </summary>
         void DoEvent()
         {
+            EventServicePublisher self = (EventServicePublisher)this;
             while (true)
             {
+                //检查超期
+                if (!self.CheckActiveLife())
+                {
+                    self.Close();
+                    PublisherFactory.Instance.RemovePublisher(self.TaskName);
+                    Console.WriteLine("\r\n[{0}]当前任务已检验到事件源对象为非活动状态，工作线程退出--Task Name: {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this.TaskName);
+                    batchIndex = 0;
+                    break;
+                }
                 string workMessage = "\r\n----publisher DoEvent------------------\r\n";
-                string strTemp = "";
 
                 int count = GetListeners().Length;
                 if (count == 0)
                 {
-                    Console.WriteLine("\r\n[{0}]当前任务已经没有监听器，工作线程退出--Task Name: {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this.TaskName);
-                    batchIndex = 0;
-                    break;
+                    Console.WriteLine("[{0}]当前任务已经没有监听器，但事件源对象仍然活动，可接受再次订阅--Task Name: {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this.TaskName);
                 }
                 else
                 {
-                    strTemp = string.Format("\r\n[{0}]当前工作线程有{1}个相关的监听器，Task Name：{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, this.TaskName);
-                    if (DateTime.Now.Second % 30 == 0)
-                        Console.Write(strTemp);//显示正在运行中
+                    Console.WriteLine("[{0}]当前工作线程有{1}个相关的监听器，Task Name：{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, this.TaskName);
                 }
-                //等待服务对象触发事件
-                resetEvent.WaitOne();
-                this.Publish(ref workMessage);
-                if (workMessage.Length > 0)
+                //等待服务对象触发事件，等待30秒
+                if (resetEvent.WaitOne(30 * 1000))
                 {
-                    Console.WriteLine(strTemp + "\r\n" + workMessage);
+                    this.Publish(ref workMessage);
+                    if (workMessage.Length > 0)
+                    {
+                        Console.WriteLine( workMessage);
+                    }
                 }
+                
             }
             isRunning = false;
         }
@@ -460,6 +468,9 @@ namespace PWMIS.EnterpriseFramework.Service.Host
     {
         ServiceContext Context;
         string publishResult;
+        DateTime lastPublishTime;
+        bool published;
+
         public EventServicePublisher(string taskName, IServiceContext context):base(taskName)
         {
             this.Context = (ServiceContext)context;
@@ -471,11 +482,19 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             //在主线程接受服务事件
             Context.WriteResponse(e.EventData);
             this.publishResult = Context.Response.AllText;
+            Context.Response.End();
+           
+            published = false;
             base.SetEvent();
         }
 
         protected override void Publish(ref string workMessage)
         {
+            //避免监控线程超时，发布重复消息
+            if (published)
+                return;
+            published = true;
+
             //在子线程推送消息
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
@@ -501,6 +520,8 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                             DataConverter.DeEncrypt8bitString(publishResult.Length > 256 ? publishResult.Substring(0, 256) : publishResult)
                             );
                         workMessage += text;
+                        //真正发布给监听器才算一次发布
+                        lastPublishTime = DateTime.Now;
                     }
                     else
                     {
@@ -516,7 +537,26 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             sw.Stop();
             workMessage += string.Format("\r\nPub2 CallService All Usetime:{0}ms.\r\n", sw.ElapsedMilliseconds);
         }
+        /// <summary>
+        /// 检查事件源对象是否活动
+        /// </summary>
+        /// <returns></returns>
+        public bool CheckActiveLife()
+        {
+            //lastPublishTime 为默认值，表示从未收到过服务发布的事件数据，此时应该认为事件源为活动状态
+            return lastPublishTime==default(DateTime) ||
+                (int)DateTime.Now.Subtract(lastPublishTime).TotalMinutes < Context.PublishEventSource.ActiveLife;
+        }
 
+        /// <summary>
+        /// 关闭服务上下文对象，清理资源
+        /// </summary>
+        public void Close()
+        {
+            this.Context.Dispose();
+            this.Context.OnPublishDataEvent -= Context_OnPublishDataEvent;
+            this.Context = null;
+        }
     }
 
     /// <summary>
@@ -573,6 +613,11 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     }
                 }
             }
+        }
+
+        public void RemovePublisher(string key)
+        {
+            dict.Remove(key);
         }
 
         /// <summary>

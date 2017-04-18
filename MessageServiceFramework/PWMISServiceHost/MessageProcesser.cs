@@ -53,7 +53,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
 
         /// <summary>
-        /// 处理用户的消息请求
+        /// 处理用户的订阅消息
         /// </summary>
         public void Process()
         {
@@ -119,6 +119,10 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
         }//end sub
 
+        /// <summary>
+        /// 处理用户的请求消息
+        /// </summary>
+        /// <param name="e"></param>
         public void Execute(MessageRequestEventArgs e)
         {
             string message = e.MessageText;
@@ -127,12 +131,17 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 string identity = e.Listener.Identity;
 
                 string processMesssage = string.Empty;
-                processMesssage += string.Format("\r\n[{0}]正在处理服务请求--From: {1}:{2},Identity:{3}\r\n>>[CMID:{4}]{5}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), e.Listener.FromIP, e.Listener.FromPort, identity, e.Listener.MessageID, message.Length > 256 ? message.Substring(0, 256) : message);
+                DateTime beginTime = DateTime.Now;
+                processMesssage = string.Format("[{0}]正在处理服务请求--From: {1}:{2},Identity:{3}\r\n>>[RMID:{4}]{5}", 
+                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), 
+                    e.Listener.FromIP, e.Listener.FromPort, identity, e.Listener.MessageID, 
+                    message.Length > 256 ? message.Substring(0, 256) : message);
+                Console.WriteLine(processMesssage);
 
                 int msgId = e.Listener.MessageID;
                 //执行服务方法的时候，由服务方法指名是否需要维持会话状态
                 ServiceContext context = new ServiceContext(message);
-                //context.ServiceErrorEvent += new EventHandler<ServiceErrorEventArgs>(context_ServiceErrorEvent);
+                context.ServiceErrorEvent += new EventHandler<ServiceErrorEventArgs>(currentProcess_ServiceErrorEvent);
                 context.Request.ClientIP = e.Listener.FromIP;
                 context.Request.ClientPort = e.Listener.FromPort;
                 context.Request.ClientIdentity = identity;
@@ -141,11 +150,20 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
                 string result = context.Response.AllText;
                 bool noResult = context.NoResultRecord(result);
-                processMesssage += string.Format("\r\n[{0}]请求处理完毕--To: {1}:{2},Identity:{3}\r\n>>[SMID:{4}]消息长度：{5} -------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), e.Listener.FromIP, e.Listener.FromPort, identity, e.Listener.MessageID, noResult ? "[Empty Result]" : result.Length.ToString("###,###") + "字节");
+                DateTime endTime = DateTime.Now;
+                processMesssage = string.Format("[{0}]请求处理完毕({1}ms)--To: {2}:{3},Identity:{4}\r\n>>[RMID:{5}]消息长度：{6} -------", 
+                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), 
+                    endTime.Subtract(beginTime).TotalMilliseconds,
+                    e.Listener.FromIP, e.Listener.FromPort, identity, e.Listener.MessageID, 
+                    noResult ? "[Empty Result]" : result.Length.ToString("###,###") + "字节");
+                Console.WriteLine(processMesssage);
 
                 e.ResultText = result;
-                Console.WriteLine(processMesssage);
-                Console.WriteLine("result:{0}",result);
+                //此处内容可能很大，不能全程输出
+                if (context.Response.ResultType == typeof(byte[]))
+                    Console.WriteLine("[byte Content]");
+                else
+                    Console.WriteLine("result:{0}", result.Length > 100 ? result.Substring(0, 100) + " ..." : result);
             }
             else
             {
@@ -198,7 +216,6 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
             if (this.IsCurrentType())
             {
-                Console.WriteLine("Process begin...");
                 Process();
             }
             else
@@ -235,7 +252,13 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             string identity = this.SubscriberInfo.Identity;
 
             string processMesssage = string.Empty;
-            processMesssage += string.Format("\r\n[{0}]正在处理服务请求--From: {1}:{2},Identity:{3}\r\n>>[CMID:{4}]{5}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort, identity, this.SubscriberInfo.MessageID, this.Message.Length > 256 ? this.Message.Substring(0, 256) : this.Message);
+            DateTime beginTime = DateTime.Now;
+            processMesssage = string.Format("[{0}]正在处理服务请求--From: {1}:{2},Identity:{3}\r\n>>[PMID:{4}]{5}", 
+                beginTime.ToString("yyyy-MM-dd HH:mm:ss.fff"), 
+                this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort, identity, 
+                this.SubscriberInfo.MessageID, 
+                this.Message.Length > 256 ? this.Message.Substring(0, 256) : this.Message);
+            Console.WriteLine(processMesssage);
 
             int msgId = this.SubscriberInfo.MessageID;//执行完服务方法后，MessageID 可能被另外一个线程改变
             //执行服务方法的时候，由服务方法指名是否需要维持会话状态
@@ -261,52 +284,63 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             bool noResult = false;
             if (!context.HasError)
             {
-                Console.WriteLine("ProcessService begin...");
+                //Console.WriteLine("Process Service begin...");
                 context.ProcessService(this.SubscriberInfo.SessionID);
-                Console.WriteLine("ProcessService ok...");
-
+                //Console.WriteLine("Process Service ok...");
                 result = context.Response.AllText;
                 noResult = context.NoResultRecord(result);
-                processMesssage += string.Format("\r\n[{0}]请求处理完毕--To: {1}:{2},Identity:{3}\r\n>>[SMID:{4}]消息长度：{5} -------", 
-                    DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), 
-                    this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort, identity, 
-                    this.SubscriberInfo.MessageID, noResult ? "[Empty Result]" : result.Length.ToString("###,###") + "字节");
-                //此处内容可能很大，不能全程输出
-                if (context.Response.ResultType == typeof(byte[]))
-                    Console.WriteLine("[byte Content]");
-                else
-                    Console.WriteLine("result:{0}", result.Length > 100 ? result.Substring(0, 100) + " ..." : result);
-
             }
             else
             {
                 result = ServiceConst.CreateServiceErrorMessage(context.ErrorMessage);
             }
-            
+
+            DateTime endTime = DateTime.Now;
+            processMesssage = string.Format("[{0}]请求处理完毕({1}ms)--To: {2}:{3},Identity:{4}\r\n>>[PMID:{5}]消息长度：{6} -------",
+                   endTime.ToString("yyyy-MM-dd HH:mm:ss.fff"),
+                   endTime.Subtract(beginTime).TotalMilliseconds,
+                   this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort, identity,
+                   this.SubscriberInfo.MessageID, 
+                   noResult ? "[Empty Result]" : result.Length.ToString("###,###") + "字节");
+            Console.WriteLine(processMesssage);
+            //此处内容可能很大，不能全程输出
+            if (context.Response.ResultType == typeof(byte[]))
+                Console.WriteLine("[byte Content]");
+            else
+                Console.WriteLine("result:{0}", result.Length > 100 ? result.Substring(0, 100) + " ..." : result);
+
             MessageListener currLstn = MessageCenter.Instance.GetListener(this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort);
             if (currLstn == null)
             {
-                processMesssage += "\r\n Error:监听器未找到，已取消发送消息。请求源：" + this.SubscriberInfo.Message;
+                processMesssage = "Error:监听器未找到，已取消发送消息。请求源：" + this.SubscriberInfo.Message;
+                Console.WriteLine(processMesssage);
                 return;
             }
             if (context.Request.RequestModel == RequestModel.GetService)
             {
                 //对于请求-响应模式，处理完服务以后，始终会回调客户端的方法（如果提供的话）
-                MessageCenter.Instance.ResponseMessage(currLstn, msgId, result);
+                if (MessageCenter.Instance.ResponseMessage(currLstn, msgId, result))
+                    Console.WriteLine("Reponse Message OK.");
             }
             else
             {
                 //订阅模式，仅在服务处理有结果的情况下，才给客户端发布数据。
-                
+
                 if (!noResult)
-                    MessageCenter.Instance.NotifyOneMessage(currLstn, msgId, result);
+                {
+                    if (MessageCenter.Instance.NotifyOneMessage(currLstn, msgId, result))
+                        Console.WriteLine("Publish Message OK.");
+                    else
+                        Console.WriteLine("Publish no result.");
+                }
                 if (!context.HasError)
                 {
-                    StartPublishWorker(context);//吧Host传递进去
-                    processMesssage += string.Format("\r\n[{0}]当前监听器已经加入工作线程， {1}:{2},Identity:{3}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort, this.SubscriberInfo.Identity);
+                    StartPublishWorker(context);//把Host传递进去
+                    processMesssage = string.Format("\r\n[{0}]当前监听器已经加入工作线程， {1}:{2},Identity:{3}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort, this.SubscriberInfo.Identity);
+                    Console.WriteLine(processMesssage);
                 }
             }
-            Console.WriteLine(processMesssage);
+           
         }
 
         void context_ServiceErrorEvent(object sender, ServiceErrorEventArgs e)
@@ -334,7 +368,10 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             this.SubscriberInfo.Request = context.Request;
 
             ServicePublisher publisher = PublisherFactory.Instance.GetPublisher(context);
-            publisher.PublisherErrorEvent += new EventHandler<ServiceErrorEventArgs>(publisher_PublisherErrorEvent);
+            if (publisher.SubscriberInfoList.Count == 0)
+            {
+                publisher.PublisherErrorEvent += new EventHandler<ServiceErrorEventArgs>(publisher_PublisherErrorEvent);
+            }
             publisher.Host = context.Host;
             publisher.ParallelExecute = context.ParallelExecute;
             publisher.BatchInterval = context.BatchInterval;

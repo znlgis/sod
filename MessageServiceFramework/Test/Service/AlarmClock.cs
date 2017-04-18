@@ -17,7 +17,7 @@ namespace ServiceSample
         public AlarmClockService()
         {
             timer = new System.Timers.Timer();
-            timer.Interval = 1000;
+            timer.Interval = 10000;
             timer.Elapsed += timer_Elapsed;
         }
 
@@ -28,7 +28,7 @@ namespace ServiceSample
                 if (Alarming != null)
                     Alarming(this, new EventArgs());
 
-                context.PublishData(e.SignalTime);
+                context.PublishData(DateTime.Now); //e.SignalTime
             }
         }
 
@@ -37,7 +37,7 @@ namespace ServiceSample
         {
             this.AlarmTime = targetTime;
             timer.Start();
-            return new ServiceEventSource(timer);
+            return new ServiceEventSource(timer,1);
         }
 
 
