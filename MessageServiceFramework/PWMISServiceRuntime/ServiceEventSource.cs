@@ -43,5 +43,21 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
             else
                 this.ActiveLife = time;
         }
+
+        /// <summary>
+        /// 事件源以指定的存活周期初始化本对象，并指定引发事件的工作方法
+        /// </summary>
+        /// <param name="source">引发事件的源对象</param>
+        /// <param name="time">活动时间，单位分钟</param>
+        /// <param name="work">在服务中会引发事件的工作</param>
+        public ServiceEventSource(object source, int time,Action work):this(source,time)
+        {
+            this.EventWork = work;
+        }
+
+        /// <summary>
+        /// 获取在服务中会引发事件的工作
+        /// </summary>
+        public Action EventWork { get; private set; }
     }
 }

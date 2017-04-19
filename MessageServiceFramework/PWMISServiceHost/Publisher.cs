@@ -63,7 +63,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// <summary>
         /// 设置等待事件的状态为终止，允许线程继续执行
         /// </summary>
-        protected void SetEvent()
+        protected void SetPublishEvent()
         {
             resetEvent.Set();
             System.Threading.Thread.Sleep(0);
@@ -78,6 +78,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// </summary>
         public void StartWork(bool isEvent)
         {
+            //当前线程属于消息订阅线程，不可阻塞
             if (!isRunning)
             {
                 isRunning = true;
@@ -232,6 +233,8 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         void DoEvent()
         {
             EventServicePublisher self = (EventServicePublisher)this;
+            self.Ready();
+
             while (true)
             {
                 //检查超期
@@ -262,6 +265,8 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     {
                         Console.WriteLine( workMessage);
                     }
+                    //推送完成，触发业务线程状态，允许业务线程继续
+                    self.SetWorkEvent();
                 }
                 
             }
@@ -470,6 +475,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         string publishResult;
         DateTime lastPublishTime;
         bool published;
+        AutoResetEvent workEvent = new AutoResetEvent(false);
 
         public EventServicePublisher(string taskName, IServiceContext context):base(taskName)
         {
@@ -479,15 +485,42 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
         void Context_OnPublishDataEvent(object sender, ServiceEventArgs e)
         {
-            //在主线程接受服务事件
+            //当前方法工作在业务工作线程
+           
             Context.WriteResponse(e.EventData);
             this.publishResult = Context.Response.AllText;
             Context.Response.End();
            
             published = false;
-            base.SetEvent();
+            base.SetPublishEvent();
+            //事件推送线程收到信号，开始工作
+            //这里必须等待推送线程完成当前推送任务，业务工作线程进入等待状态
+            workEvent.WaitOne();
         }
 
+        /// <summary>
+        /// 消息发布线程准备就绪，开启业务工作线程
+        /// </summary>
+        protected internal void Ready()
+        {
+            if (this.Context.PublishEventSource.EventWork != null)
+            {
+                Task.Factory.StartNew(this.Context.PublishEventSource.EventWork);
+            }
+        }
+
+        /// <summary>
+        /// 使业务工作线程继续
+        /// </summary>
+        protected internal void SetWorkEvent()
+        {
+            this.workEvent.Set();
+        }
+
+        /// <summary>
+        /// 发布消息，注意当前方法工作在消息发布线程，不是业务线程
+        /// </summary>
+        /// <param name="workMessage"></param>
         protected override void Publish(ref string workMessage)
         {
             //避免监控线程超时，发布重复消息

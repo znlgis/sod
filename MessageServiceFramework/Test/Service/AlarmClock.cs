@@ -11,6 +11,7 @@ namespace ServiceSample
         System.Timers.Timer timer;
         DateTime AlarmTime;
         IServiceContext context;
+        int publishCount;
 
         public event EventHandler Alarming;
 
@@ -29,12 +30,20 @@ namespace ServiceSample
                     Alarming(this, new EventArgs());
 
                 context.PublishData(DateTime.Now); //e.SignalTime
+                publishCount++;
+                Console.WriteLine("AlarmClockService Publish Count:{0}",publishCount);
+            }
+            if (publishCount > 10)
+            {
+                timer.Stop();
+                Console.WriteLine("AlarmClockService Timer Stoped. ");
             }
         }
 
        
         public ServiceEventSource SetAlarmTime(DateTime targetTime)
         {
+            publishCount = 0;
             this.AlarmTime = targetTime;
             timer.Start();
             return new ServiceEventSource(timer,1);
