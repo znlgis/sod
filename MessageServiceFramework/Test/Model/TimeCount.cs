@@ -7,7 +7,7 @@ namespace Model
 {
     public class TimeCount
     {
-        private static int allCount=0;
+        private  int allCount=0;
 
         public DateTime Now { get; set; }
         public int Count { get; set; }

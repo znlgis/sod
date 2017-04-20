@@ -9,9 +9,15 @@ namespace ServiceSample
 {
     public class TestTimeService:IService
     {
+        TimeCount tc;
+        public TestTimeService()
+        {
+            tc = new TimeCount();
+        }
+
         public TimeCount ServerTime()
         {
-            TimeCount tc = new TimeCount();
+           
             tc.Execute();
             return tc;
         }

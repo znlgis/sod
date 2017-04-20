@@ -178,6 +178,7 @@ namespace WinClient
                     {
                         this.lblResult.Text = converter.Result.Now.ToString();
                         this.txtA.Text = converter.Result.Count.ToString();
+                        System.Diagnostics.Debug.WriteLine("time count:{0}",converter.Result.Count );
                         if (converter.Result.Count > 100)
                         {
                             serviceProxy.Close();
