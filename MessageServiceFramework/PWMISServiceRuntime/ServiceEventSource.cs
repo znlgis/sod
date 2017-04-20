@@ -50,7 +50,8 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         /// <param name="source">引发事件的源对象</param>
         /// <param name="time">活动时间，单位分钟</param>
         /// <param name="work">在服务中会引发事件的工作</param>
-        public ServiceEventSource(object source, int time,Action work):this(source,time)
+        public ServiceEventSource(object source, int time, Action work)
+            : this(source, time)
         {
             this.EventWork = work;
         }
@@ -59,5 +60,13 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         /// 获取在服务中会引发事件的工作
         /// </summary>
         public Action EventWork { get; private set; }
+
+        /// <summary>
+        /// 设置事件源为非活动状态
+        /// </summary>
+        public void DeActive()
+        {
+            this.ActiveLife = 0;
+        }
     }
 }

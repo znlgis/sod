@@ -510,6 +510,10 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         }
 
         #region 发布数据相关
+        /// <summary>
+        /// 以分布式事件的模式，向远程订阅端推送数据
+        /// </summary>
+        /// <param name="data">要推送的数据</param>
         public void PublishData(object data)
         {
             if (OnPublishDataEvent != null)

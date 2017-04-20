@@ -60,6 +60,12 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             this.BatchInterval = 1000;
         }
 
+        protected string GetShortTaskName(int length)
+        {
+            string name = this.TaskName;
+            return name.Length > length ? name.Substring(0, length)+"...(lenth:"+ name.Length+")" : name;
+        }
+
         /// <summary>
         /// 设置等待事件的状态为终止，允许线程继续执行
         /// </summary>
@@ -138,13 +144,13 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 int count = GetListeners().Length;
                 if (count == 0)
                 {
-                    Console.WriteLine("\r\n[{0}]当前任务已经没有监听器，工作线程退出--Task Name: {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this.TaskName);
+                    Console.WriteLine("\r\n[{0}]当前任务已经没有监听器，工作线程退出--Task Name: {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this.GetShortTaskName(255));
                     batchIndex = 0;
                     break;
                 }
                 else
                 {
-                    strTemp = string.Format("\r\n[{0}]当前工作线程有{1}个相关的监听器，Task Name：{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, this.TaskName);
+                    strTemp = string.Format("\r\n[{0}]当前工作线程有{1}个相关的监听器，Task Name：{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, this.GetShortTaskName(255));
                     if (DateTime.Now.Second % 30 == 0)
                         Console.Write(strTemp);//显示正在运行中
                 }
@@ -242,7 +248,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 {
                     self.Close();
                     PublisherFactory.Instance.RemovePublisher(self.TaskName);
-                    Console.WriteLine("\r\n[{0}]当前任务已检验到事件源对象为非活动状态，工作线程退出--Task Name: {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this.TaskName);
+                    Console.WriteLine("\r\n[{0}]当前任务已检验到事件源对象为非活动状态，工作线程退出--Task Name: {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this.GetShortTaskName(255));
                     batchIndex = 0;
                     break;
                 }
@@ -251,11 +257,11 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 int count = GetListeners().Length;
                 if (count == 0)
                 {
-                    Console.WriteLine("[{0}]当前任务已经没有监听器，但事件源对象仍然活动，可接受再次订阅--Task Name: {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this.TaskName);
+                    Console.WriteLine("[{0}]当前任务已经没有监听器，但事件源对象仍然活动，可接受再次订阅--Task Name: {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this.GetShortTaskName(255));
                 }
                 else
                 {
-                    Console.WriteLine("[{0}]当前工作线程有{1}个相关的监听器，Task Name：{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, this.TaskName);
+                    Console.WriteLine("[{0}]当前工作线程有{1}个相关的监听器，Task Name：{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, this.GetShortTaskName(255));
                 }
                 //等待服务对象触发事件，等待30秒
                 if (resetEvent.WaitOne(30 * 1000))
@@ -503,9 +509,10 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// </summary>
         protected internal void Ready()
         {
-            if (this.Context.PublishEventSource.EventWork != null)
+            ServiceEventSource ses = this.Context.PublishEventSource;
+            if (ses.EventWork != null)
             {
-                Task.Factory.StartNew(this.Context.PublishEventSource.EventWork);
+                Task.Factory.StartNew(ses.EventWork);
             }
         }
 
