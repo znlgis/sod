@@ -83,10 +83,31 @@ namespace PWMIS.DataProvider.Data
         {
             MySqlParameter mysqlPara = para as MySqlParameter;
             MySqlDbType dbType = mysqlPara.MySqlDbType;
-            if (dbType == MySqlDbType.Int32)
-                return "INT";
-            else
-                return dbType.ToString();
+            //类型和名字转换，请参考：http://stackoverflow.com/questions/1230203/how-can-i-determine-the-column-type-represented-by-a-mysql-net-connectors-mysq
+            switch (dbType)
+            {
+                case MySqlDbType.String: return "CHAR";
+                case MySqlDbType.NewDecimal: return "NUMERIC";
+                case MySqlDbType.Byte:
+                case MySqlDbType.UByte:
+                    return "TINYINT";
+                case MySqlDbType.Int16:
+                case MySqlDbType.UInt16:
+                    return "SMALLINT";
+                case MySqlDbType.Int24:
+                case MySqlDbType.UInt24:
+                    return "MEDIUMINT";
+                case MySqlDbType.Int32:
+                case MySqlDbType.UInt32:
+                    return "INT";
+                case MySqlDbType.Int64:
+                case MySqlDbType.UInt64:
+                    return "BIGINT";
+                case MySqlDbType.Float:
+                    return "REAL";
+                default:
+                    return dbType.ToString();
+            }
         }
 
         /// <summary>
