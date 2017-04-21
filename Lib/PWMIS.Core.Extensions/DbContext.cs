@@ -63,6 +63,7 @@ namespace PWMIS.Core.Extensions
         public DbContext(AdoHelper db)
         {
             dictCheckedDb.TryGetValue(db.ConnectionString, out checkedDb);
+            this.db = db;
             if (!checkedDb)
             {
                 lock (lock_obj)
