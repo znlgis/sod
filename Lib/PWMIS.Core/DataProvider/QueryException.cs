@@ -88,7 +88,7 @@ namespace PWMIS.DataProvider.Data
         /// <param name="parameters"></param>
         /// <param name="inTransaction"></param>
         /// <param name="connectionString"></param>
-        public QueryException(string message, string sql, CommandType cmdType, IDataParameter[] parameters,bool inTransaction,string connectionString):base(message)
+        public QueryException(string message, string sql, CommandType cmdType, IDataParameter[] parameters,bool inTransaction,string connectionString,Exception originalException):base(message,originalException)
         {
             //_message = message;
             this.Sql = sql;
@@ -115,9 +115,9 @@ namespace PWMIS.DataProvider.Data
                     }
                 }
                 if(!string.IsNullOrEmpty ( this.Sql) )
-                    return "PDF.NET AdoHelper 查询错误：\r\nDataBase ErrorMessage:" + base.Message+"\r\n"+string.Format ("SQL:{0}\r\nCommandType:{1}\r\nParameters:\r\n{2}",this.Sql ,this.CmdType ,paraString );// _message;
+                    return "PDF.NET AdoHelper Query Error：\r\nDataBase ErrorMessage:" + base.Message+"\r\n"+string.Format ("SQL:{0}\r\nCommandType:{1}\r\nParameters:\r\n{2}",this.Sql ,this.CmdType ,paraString );// _message;
                 else
-                    return "PDF.NET AdoHelper 查询错误：\r\nDataBase ErrorMessage:" + base.Message + "\r\n";// _message;
+                    return "PDF.NET AdoHelper Query Error：\r\nDataBase ErrorMessage:" + base.Message + "\r\n";// _message;
             }
         }
     }

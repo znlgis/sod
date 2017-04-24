@@ -814,7 +814,7 @@ namespace PWMIS.DataProvider.Data
                 OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
-                    throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
+                    throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString, ex);
                 }
             }
             finally
@@ -903,7 +903,7 @@ namespace PWMIS.DataProvider.Data
                 OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
-                    throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
+                    throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
                 }
 
             }
@@ -961,7 +961,7 @@ namespace PWMIS.DataProvider.Data
                 OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
-                    throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
+                    throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
                 }
             }
             finally
@@ -1023,7 +1023,7 @@ namespace PWMIS.DataProvider.Data
                 OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
-                    throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
+                    throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
                 }
             }
             finally
@@ -1066,7 +1066,7 @@ namespace PWMIS.DataProvider.Data
                 OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
-                    throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
+                    throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
                 }
             }
             finally
@@ -1107,7 +1107,7 @@ namespace PWMIS.DataProvider.Data
                 OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
-                    throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
+                    throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
                 }
             }
             finally
@@ -1252,7 +1252,7 @@ namespace PWMIS.DataProvider.Data
                 OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
-                    throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
+                    throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
                 }
             }
             //必须等到 Reader关闭后才能得到记录行数，这里返回-1

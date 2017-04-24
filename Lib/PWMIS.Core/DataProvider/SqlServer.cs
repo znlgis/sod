@@ -128,7 +128,7 @@ namespace PWMIS.DataProvider.Data
                 cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
                 if (OnErrorThrow)
                 {
-                    throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
+                    throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
                 }
             }
             finally
@@ -180,7 +180,7 @@ namespace PWMIS.DataProvider.Data
                 cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
                 if (OnErrorThrow)
                 {
-                    throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
+                    throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
                 }
             }
             finally
@@ -350,7 +350,7 @@ namespace PWMIS.DataProvider.Data
                 cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
                 if (OnErrorThrow)
                 {
-                    throw new QueryException(ex.Message, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString);
+                    throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
                 }
 
             }
