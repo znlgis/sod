@@ -6,34 +6,36 @@ namespace PWMIS.Core
 {
     class UniqueSequenceGUID
     {
-         int lastSecond = 0;
-         Dictionary<long, int> dictTong = new Dictionary<long, int>();
+         static int MachineID;
+         static int SeqNum;
+
          static readonly DateTime baseDate = new DateTime(2017, 3, 1);
 
+         static UniqueSequenceGUID()
+         {
+             MachineID = GetMachineRandom();
+         }
+
+         private static int GetMachineRandom()
+         {
+             int result = 100;
+             string host = System.Net.Dns.GetHostName();
+             foreach (System.Net.IPAddress ip in System.Net.Dns.GetHostEntry(host).AddressList)
+             {
+                 if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                 {
+                     var bytes = ip.GetAddressBytes();
+                     int intIp = (int)bytes[1] << 16 | (int)bytes[2] << 8 | (int)bytes[3];
+                     result = new Random(intIp).Next(100, 999);
+                     break;
+                 }
+             }
+             return result;
+         }
          
          public long NewID()
          {
-             DateTime dt = DateTime.Now;
-             long result = InnerNewSequenceGUID(dt,true);
-             if (dt.Second == lastSecond)
-             {
-                 if (dictTong.ContainsKey(result))
-                 {
-                     //Console.WriteLine("repeat.{0}", result);
-                     return NewID();
-                 }
-                 else
-                 {
-                     dictTong.Add(result, lastSecond);
-                 }
-             }
-             else
-             {
-                 dictTong.Clear();
-                 lastSecond = dt.Second;
-                 //Console.WriteLine("clear dict");
-             }
-             return result;
+             return InnerNewSequenceGUID(DateTime.Now, true);
          }
 
         /// <summary>
@@ -54,15 +56,27 @@ namespace PWMIS.Core
              //可用随机位数= 19-12=7
              long datePart = ((long)days + 1000) * 1000 * 1000 * 1000 * 100;
              long timePart = (long)times * 1000 * 1000;
-             long msPart = (long)123 * 1000;//dt.Millisecond
+             long msPart = (long)dt.Millisecond * 1000;
              long dateTiePart = (datePart + timePart + msPart) * 10000;
-             //获取GUID后8位数字,重复率会在万分之50一下
-             //如果GUID不取余数，重复率在万分之一以下
-             int guid = Math.Abs(Guid.NewGuid().GetHashCode());
-             if (haveMs)
-                 guid = guid % 10000000;
+
+             int mid = MachineID * 10000;
              //得到总数= 4（日期）+5（时间）+3（毫秒）+7(GUID)
-             long seq = dateTiePart + guid;
+             long seq = dateTiePart + mid;
+
+             //线程安全的自增并且不超过最大值10000
+             int startValue = System.Threading.Interlocked.Increment(ref SeqNum);
+             while (startValue >= 10000)
+             {
+                 SeqNum = 0;
+                 startValue = 0;
+                 //可能此时别的线程再次更改了 SeqNum
+                 while (startValue != SeqNum)
+                 {
+                     startValue = System.Threading.Interlocked.Increment(ref SeqNum);
+                 }
+             }
+
+             seq = seq + startValue;
              return seq;
          }
     }
