@@ -1988,6 +1988,7 @@ namespace PWMIS.DataMap.Entity
 
             string temp = CurrentOQL.haveOrderBy ? "," : "\r\n                 ORDER BY ";
             CurrentOQL.haveOrderBy = true;
+            EntityBase[] entitys = CurrentOQL.GetAllUsedEntity();
 
             foreach (string str in orderStr)
             {
@@ -1996,9 +1997,21 @@ namespace PWMIS.DataMap.Entity
 
                 string tempArr_0 = tempArr[0].Trim();
                 //访问属性名称对应的属性值，得到真正的排序字段
-                object Value = CurrentOQL.currEntity[tempArr_0];
+                //感谢网友 @大枕头 (2017.4.27)在OQL多实体类关联查询动态排序是，发现此问题并提供参考修改意见。
+                //有关联查询的排序，在当前所有用过的实体类中检索
+                string fieldName = null;
+                foreach (EntityBase entity in entitys)
+                {
+                    EntityFields ef = EntityFieldsCache.Item(entity.GetType());
+                    fieldName = ef.GetPropertyField(tempArr_0);
+                    if (fieldName != null)
+                        break;
+                }
                 //如果要排序的属性未包含在实体类的属性定义里面，下面将出现异常
-                string orderField = CurrentOQL.TakeOneStackFields().SqlFieldName;
+                if (fieldName == null)
+                    throw new Exception("OQL使用的实体类，不包含指定的属性名称。排序属性："+str);
+
+                string orderField = fieldName;
                 orderArr[0] = tempArr_0;
                 if (tempArr.Length == 1)
                 {
