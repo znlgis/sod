@@ -61,6 +61,10 @@
  * 
  * 修改者：         时间：2016-4-29                
  * 修改说明：修复Oracle插入数据的时候，Clob字段类型无法插入的问题，感谢网友 不抖机灵 发现此问题。
+ * 
+ * 修改者：         时间：2017-4-227                
+ * 修改说明：对于SqlServer,MySQL，QuickInsert 将采用合并数据并且事务插入方式，有关原理，请参考下面文章：
+ * 《MySQL批量SQL插入性能优化》： http://database.51cto.com/art/201309/411050.htm
  * ========================================================================
 */
 
@@ -1008,7 +1012,7 @@ namespace PWMIS.DataMap.Entity
 
         /// <summary>
         /// 快速插入实体类到数据库，注意，该方法假设要插入的实体类集合中每个实体修改的字段都是一样的。
-        /// 同时，插入完成后不会处理“自增”实体的属性，也不会重置实体类的修改状态。
+        /// 同时，插入完成后不会处理“自增”实体的属性，也不会重置实体类的修改状态。内部使用事务提交。
         /// 如果不符合这些要求，请直接调用Insert 方法。
         /// </summary>
         /// <param name="entityList"></param>
@@ -1032,50 +1036,100 @@ namespace PWMIS.DataMap.Entity
                 string fields = "";
                 string values = "";
                 int index = 0;
+                string sqlBatchTemp = "";
 
                 foreach (string field in objFields)
                 {
                     if (identityName != field)
                     {
                         fields += ",[" + field + "]";
-                        string paraName = db.GetParameterChar + "P" + index.ToString();
+                        string paraName = db.GetParameterChar + "QIP0" + index.ToString();
                         values += "," + paraName;
                         paras[index] = db.GetParameter(paraName, entity.PropertyList(field));
                         //为字符串类型的参数指定长度 edit at 2012.4.23
-                        //if (paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
-                        //{
-                        //    int size=entity.GetStringFieldSize(field);
-                        //    if(size>0) //==-1 可能是varcharmax 或者 text类型的字段
-                        //    {
-                        //        ((IDbDataParameter)paras[index]).Size = size;
-                        //    }
-                        //}
                         EntityQuery.SetParameterSize(ref paras[index], entity, field,db);
 
                         index++;
                     }
                 }
+                sqlBatchTemp = sql + "(" + fields.TrimStart(',') + ") ";
                 sql = sql + "(" + fields.TrimStart(',') + ") VALUES (" + values.TrimStart(',') + ")";
-
-
-                db.BeginTransaction();
-                try
+                
+                if (db.CurrentDBMSType == DBMSType.SqlServer || db.CurrentDBMSType == DBMSType.MySql)
                 {
-                    foreach (T item in entityList)
+                    List<IDataParameter> parasList = new List<IDataParameter>();
+                    int batchSize = 10;
+
+                    int num = 0;
+                    string valuesTemp = "";
+                    string sqlBatch = sqlBatchTemp;
+
+                    db.BeginTransaction();
+                    try
                     {
-                        for (int i = 0; i < paras.Length; i++)
+                        foreach (T item in entityList)
                         {
-                            paras[i].Value = item.PropertyList(objFields[i]);
-                        }
-                        count += db.ExecuteNonQuery(sql, CommandType.Text, paras);
+                            if (valuesTemp == "")
+                                valuesTemp = "(" + values.TrimStart(',').Replace("QIP0", "QIP" + num) + ")";
+                            else
+                                valuesTemp += ",(" + values.TrimStart(',').Replace("QIP0", "QIP" + num) + ")";
+                            //处理当前实体内参数
+                            for (int i = 0; i < paras.Length; i++)
+                            {
+                                string paraName = db.GetParameterChar + "QIP" + num + index.ToString();
+                                IDataParameter paraTemp = db.GetParameter(paraName, item.PropertyList(objFields[i]));
+                                EntityQuery.SetParameterSize(ref paraTemp, item, objFields[i], db);
+                                parasList.Add(paraTemp);
+                            }
+                            num++;
 
+                            if (num == batchSize)
+                            {
+                                //执行本批次
+                                sqlBatch += valuesTemp;
+                                count += db.ExecuteNonQuery(sqlBatch, CommandType.Text, parasList.ToArray());
+
+                                valuesTemp = "";
+                                parasList.Clear();
+                                num = 0;
+                                sqlBatch = sqlBatchTemp;
+                            }
+                        }
+                        //批次剩余的数据
+                        if (valuesTemp != "")
+                        {
+                            sqlBatch += valuesTemp;
+                            count += db.ExecuteNonQuery(sqlBatch, CommandType.Text, parasList.ToArray());
+                        }
+                        db.Commit();
                     }
-                    db.Commit();
+                    catch (Exception ex)
+                    {
+                        db.Rollback();
+                        throw ex;
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    db.Rollback();
-                    throw ex;
+                    db.BeginTransaction();
+                    try
+                    {
+                        foreach (T item in entityList)
+                        {
+                            for (int i = 0; i < paras.Length; i++)
+                            {
+                                paras[i].Value = item.PropertyList(objFields[i]);
+                            }
+                            count += db.ExecuteNonQuery(sql, CommandType.Text, paras);
+
+                        }
+                        db.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        db.Rollback();
+                        throw ex;
+                    }
                 }
             }
             return count;
