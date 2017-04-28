@@ -1802,7 +1802,8 @@ namespace PWMIS.DataMap.Entity
         {
             if (para.Value != null && para.Value.GetType() == typeof(string))
             {
-                int size = entity.GetStringFieldSize(field);
+                SimplyField sf= entity.GetStringFieldSize(field);
+                int size = sf.FieldLength;
                 if (size > 0) //==0 可能是varcharmax 或者 text类型的字段
                 {
                     //在Oracle等重新了参数处理的情况下，之前的代码可能有问题
@@ -1810,7 +1811,9 @@ namespace PWMIS.DataMap.Entity
                     //((IDbDataParameter)para).Size = size;
                     //((IDbDataParameter)para).DbType = DbType.String;
                     //需要为新参数赋值，感谢网友 @广州-银古 发现此问题
-                   var  paratemp = DB.GetParameter(para.ParameterName, DbType.String, size);
+
+                    //2017.4.28 修改成根据实体类指定的字符串字段类型来指定 DbType
+                   var  paratemp = DB.GetParameter(para.ParameterName, sf.FieldDbType, size);
                    paratemp.Value = para.Value;
                    para = paratemp;
                     

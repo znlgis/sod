@@ -35,6 +35,19 @@ using PWMIS.Common;
 namespace PWMIS.DataMap.Entity
 {
     /// <summary>
+    /// 简单字段信息结构
+    /// </summary>
+    public struct SimplyField
+    {
+        public SimplyField(int length,DbType dbType)
+        {
+            this.FieldDbType = dbType;
+            this.FieldLength = length;
+        }
+        public int FieldLength;
+        public DbType FieldDbType;
+    }
+    /// <summary>
     /// 存储实体类的全局字段信息，以一种更为方便的方式访问实体类属性和对应的表字段
     /// </summary>
     public class EntityFields
@@ -144,7 +157,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="fieldName">属性字段名称</param>
         /// <param name="entity">要访问的实体类对象</param>
         /// <returns></returns>
-        public int GetPropertyFieldSize(string fieldName, EntityBase entity)
+        public SimplyField GetPropertyFieldSize(string fieldName, EntityBase entity)
         {
             if(entity==null)
                 entity = Activator.CreateInstance(this.entityType) as EntityBase;
@@ -341,7 +354,7 @@ namespace PWMIS.DataMap.Entity
             typeNameList.Add(currPropertyInfo.PropertyType);
 
             EntityBase entity = sender as EntityBase;
-            entity.SetStringFieldSize(e.PropertyName, e.MaxValueLength);
+            entity.SetStringFieldSize(e.PropertyName, e.MaxValueLength,e.FieldDbType);
             e.IsCancel = true;
         }
 
@@ -374,7 +387,8 @@ namespace PWMIS.DataMap.Entity
             string temp = "";
             if (t == typeof(string))
             {
-                int length = entity.GetStringFieldSize(field);
+                SimplyField sf= entity.GetStringFieldSize(field);
+                int length = sf.FieldLength;
                 if (length == 0) //实体类未定义属性字段的长度
                 {
                     string fieldType = "text";
@@ -387,11 +401,22 @@ namespace PWMIS.DataMap.Entity
                 else if (length > 0)
                 {
                     //并不是所有数据库都支持nvarchar,有关数据库字符串类型的详细支持，请看 http://www.cnblogs.com/hantianwei/p/3152517.html
-                    string fieldType = "varchar";
-                    if (db.CurrentDBMSType == DBMSType.SqlServer ||
+                    string fieldType = string.Empty;
+                    if (sf.FieldDbType == DbType.String)
+                        fieldType = "nvarchar";
+                    else if (sf.FieldDbType == DbType.AnsiString)
+                        fieldType = "varchar";
+                    else if (sf.FieldDbType == DbType.AnsiStringFixedLength)
+                        fieldType = "char";
+                    else if (sf.FieldDbType == DbType.StringFixedLength)
+                        fieldType = "nchar";
+                    else if (db.CurrentDBMSType == DBMSType.SqlServer ||
                         db.CurrentDBMSType == DBMSType.Oracle ||
                         db.CurrentDBMSType == DBMSType.SqlServerCe)
                         fieldType = "nvarchar";
+                    else
+                        fieldType = "varchar";
+
                     temp = temp + "[" + field + "] " +fieldType + "(" + length + ")";
                 }
                 else if (length < 0)
@@ -401,7 +426,7 @@ namespace PWMIS.DataMap.Entity
             }
             else if (t == typeof(byte[])) //感谢CSDN网友 ccliushou 发现此问题，原贴：http://bbs.csdn.net/topics/391967495
             {
-                int length = entity.GetStringFieldSize(field);
+                int length = entity.GetStringFieldSize(field).FieldLength;
                 temp = temp + "[" + field + "] " + db.GetNativeDbTypeName(para);
                 if (length == 0)
                 {

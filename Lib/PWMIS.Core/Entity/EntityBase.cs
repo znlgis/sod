@@ -120,23 +120,25 @@ namespace PWMIS.DataMap.Entity
 
         #region 处理字符串属性与对应列的长度映射
         //为字符串字段指定长度，将有利于查询提高效率 edit at 2012.4.23
-        protected internal static Dictionary<string, int> StringFieldSize = new Dictionary<string, int>();
-        protected internal static Dictionary<string, string> PropertyDesciption = new Dictionary<string, string>();
+        protected internal static Dictionary<string, SimplyField> StringFieldSize = new Dictionary<string, SimplyField>();
+        //PropertyDesciption 暂不使用
+        //protected internal static Dictionary<string, string> PropertyDesciption = new Dictionary<string, string>();
+        
         /// <summary>
         /// 寻找字符串字段的长度，如果找不到，返回0，表示未指定
         /// </summary>
         /// <param name="ownerName">字段的所有者，是一个标识</param>
         /// <param name="fieldName">字段名</param>
         /// <returns>字段的长度</returns>
-        protected  static int GetStringFieldSize(string ownerName, string fieldName)
+        protected static SimplyField GetStringFieldSize(string ownerName, string fieldName)
         {
             string key = string.Format("{0}_{1}", ownerName,fieldName);
             if (StringFieldSize.ContainsKey(key))
                 return StringFieldSize[key];
             else
-                return 0;
+                return new SimplyField();
         }
-        protected internal int GetStringFieldSize(string fieldName)
+        protected internal SimplyField GetStringFieldSize(string fieldName)
         {
             //return GetStringFieldSize(TableName, fieldName);
             //TableName 在调用了 MapNewTableName 方法后，可能找不到属性字段的长度，故这里取消原来代码的使用方法
@@ -151,12 +153,13 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         /// <param name="fieldName">字段名称</param>
         /// <param name="length">字段长度</param>
-        protected internal void SetStringFieldSize(string fieldName, int length)
+        /// <param name="dbType">字符串字段的字段类型</param>
+        protected internal void SetStringFieldSize(string fieldName, int length,System.Data.DbType dbType)
         {
             if (length > 0)
             {
                 string key = string.Format("{0}_{1}", GetGolbalEntityID(), fieldName);
-                StringFieldSize[key] = length;
+                StringFieldSize[key] = new SimplyField( length,dbType);
             }
         }
 
@@ -754,7 +757,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="Value">要设置的值</param>
         protected internal void setProperty(string propertyFieldName, object Value)
         {
-            setPropertyValueAndLength(propertyFieldName,-1, Value, 0);
+            setPropertyValueAndLength(propertyFieldName,-1, Value, 0, System.Data.DbType.Object);
         }
 
         /// <summary>
@@ -765,7 +768,7 @@ namespace PWMIS.DataMap.Entity
         /// <param name="Value">要设置的值</param>
         protected internal void setProperty(string propertyFieldName,int propertyIndex, object Value)
         {
-            setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, 0);
+            setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, 0, System.Data.DbType.Object);
         }
 
         /// <summary>
@@ -780,6 +783,18 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
+        /// 设置字符串属性的值，如果值是字符类型且设置了最大长度大于0，那么不允许设置大于此长度的字符串
+        /// </summary>
+        /// <param name="propertyFieldName">属性字段名</param>
+        /// <param name="Value">要设置的值</param>
+        /// <param name="maxLength">字段最大长度，如果为负数，将生成varchar类型的参数</param>
+        /// <param name="dbType">字段类型，如果指定，将优先以此参数为准</param>
+        protected internal void setProperty(string propertyFieldName, string Value, int maxLength,System.Data.DbType dbType)
+        {
+            setProperty(propertyFieldName, -1, Value,Math.Abs( maxLength), dbType);
+        }
+
+        /// <summary>
         /// 设置byte[] 类型的属性字段的值
         /// </summary>
         /// <param name="propertyFieldName">属性字段名</param>
@@ -790,24 +805,54 @@ namespace PWMIS.DataMap.Entity
             if (Value != null && maxLength > 0 && Value.Length > maxLength)
                 throw new Exception("字段" + propertyFieldName + "的实际长度超出了最大长度" + maxLength);
             else
-                setPropertyValueAndLength(propertyFieldName, -1, Value, maxLength);
+                setPropertyValueAndLength(propertyFieldName, -1, Value, maxLength, System.Data.DbType.Byte);
         }
 
+        /// <summary>
+        /// 通过制定属性的索引号，设置属性值
+        /// </summary>
+        /// <param name="propertyFieldName">属性字段名</param>
+        /// <param name="propertyIndex">属性字段的索引位置</param>
+        /// <param name="Value">字符串值</param>
+        /// <param name="maxLength">字符长度</param>
         protected internal void setProperty(string propertyFieldName, int propertyIndex, string Value, int maxLength)
+        {
+            System.Data.DbType dbType = System.Data.DbType.String;
+            if (maxLength <= 0)
+                dbType = System.Data.DbType.AnsiString;
+
+            if (Value != null && maxLength > 0 && Value.Length > maxLength)
+                throw new Exception("字段" + propertyFieldName + "的实际长度超出了最大长度" + maxLength);
+            else
+                setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, maxLength,dbType);
+        }
+
+        /// <summary>
+        /// 通过制定属性的索引号，设置属性值
+        /// </summary>
+        /// <param name="propertyFieldName">属性字段名</param>
+        /// <param name="propertyIndex">属性字段的索引位置</param>
+        /// <param name="Value">字符串值</param>
+        /// <param name="maxLength">字符长度</param>
+        /// <param name="dbType">字段类型</param>
+        protected internal void setProperty(string propertyFieldName, int propertyIndex, string Value, int maxLength,System.Data.DbType dbType)
         {
             if (Value != null && maxLength > 0 && Value.Length > maxLength)
                 throw new Exception("字段" + propertyFieldName + "的实际长度超出了最大长度" + maxLength);
             else
-                setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, maxLength);
+                setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, maxLength,dbType);
         }
+
 
         /// <summary>
         /// 设置属性值和长度信息
         /// </summary>
         /// <param name="propertyFieldName">属性字段名称</param>
+        /// <param name="propertyIndex">属性字段索引位置</param>
         /// <param name="Value">属性值</param>
         /// <param name="length"></param>
-        private void setPropertyValueAndLength(string propertyFieldName,int propertyIndex, object Value,int length)
+        /// <param name="dbType">字段类型</param>
+        private void setPropertyValueAndLength(string propertyFieldName,int propertyIndex, object Value,int length,System.Data.DbType dbType)
         {
             //
             //if (_IsTestWriteProperty)
@@ -816,7 +861,7 @@ namespace PWMIS.DataMap.Entity
             if (this.PropertyChanging != null)
             {
                 setingFieldName = propertyFieldName;
-                PropertyChangingEventArgs changingArg = new PropertyChangingEventArgs(propertyFieldName, Value, length);
+                PropertyChangingEventArgs changingArg = new PropertyChangingEventArgs(propertyFieldName, Value, length, dbType);
                 this.PropertyChanging(this, changingArg);
                 if (changingArg.IsCancel)
                     return;

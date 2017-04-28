@@ -340,11 +340,12 @@ namespace PWMIS.DataMap.Entity
         /// <param name="propertyFieldName">属性字段名</param>
         /// <param name="value">当前属性要设置的值</param>
         /// <param name="length">当前属性字段的长度</param>
-        public PropertyChangingEventArgs(string propertyFieldName,object value,int length)
+        public PropertyChangingEventArgs(string propertyFieldName,object value,int length,System.Data.DbType dbType)
         {
             this.PropertyName = propertyFieldName;
             this.NewValue = value;
             this.MaxValueLength = length;
+            this.FieldDbType = dbType;
         }
 
         /// <summary>
@@ -359,6 +360,10 @@ namespace PWMIS.DataMap.Entity
         /// 新设置的属性值的最大长度，仅仅对string类型有效，其它类型，都是-1
         /// </summary>
         public int MaxValueLength { get; private set; }
+        /// <summary>
+        /// 字段类型
+        /// </summary>
+        public System.Data.DbType FieldDbType { get; private set; }
         /// <summary>
         /// 是否取消改变属性的值
         /// </summary>
