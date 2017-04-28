@@ -21,10 +21,11 @@ namespace EntityTest
             set { setProperty("User ID", value); }
         }
 
+        //指定 DbType.StringFixedLengt 类型，将对应 nchar 字段类型
         public string FirstName
         {
             get { return getProperty<string>("First Name"); }
-            set { setProperty("First Name", value,20); }
+            set { setProperty("First Name", value,20,System.Data.DbType.StringFixedLength); }
         }
 
         public string LasttName

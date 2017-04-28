@@ -1033,8 +1033,8 @@ namespace PWMIS.DataMap.Entity
                         //增加字符串长度的检查,如果值得长度大于定义的长度,抛出异常提示 2014.10.21
                         //int size = tnf.Entity.GetStringFieldSize(tnf.Field);
                         //采用下面的方法，避免没有实体类元数据缓存 edit at 2015-12-5
-                        int size =EntityFieldsCache.Item(tnf.Entity.GetType()).GetPropertyFieldSize(tnf.Field,tnf.Entity );
-
+                         SimplyField sf =EntityFieldsCache.Item(tnf.Entity.GetType()).GetPropertyFieldSize(tnf.Field,tnf.Entity );
+                        int size=sf.FieldLength;
                         if (size !=0) //如果字段不是text等类型
                         {
                             int length = paras[index].Value.ToString().Length;
@@ -1049,7 +1049,7 @@ namespace PWMIS.DataMap.Entity
                             if (size > 0)
                             {
                                 ((IDbDataParameter)paras[index]).Size = size;
-                                ((IDbDataParameter)paras[index]).DbType = DbType.String;
+                                ((IDbDataParameter)paras[index]).DbType = sf.FieldDbType; //由实体类指定字段类型
                             }
                             else
                             {
