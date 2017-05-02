@@ -106,12 +106,25 @@ namespace SampleORMTest
 
             //上面的代码注释，采用下面封装的代码：ExecuteInsrtOql
             li_si.ID =userQuery.ExecuteInsrtOql(insertQ);
+            List<User> batchList = new List<User>();
             for (int i = 0; i < 1000; i++)
             {
                 User zhang_yeye = new User() { ID=1000+i, Name = "zhang yeye" + i, Pwd = "pwd" + i };
-                count += EntityQuery<User>.Instance.Insert(zhang_yeye);//采用泛型 EntityQuery 方式插入数据
+                //count += EntityQuery<User>.Instance.Insert(zhang_yeye);//采用泛型 EntityQuery 方式插入数据
+                batchList.Add(zhang_yeye);
             }
-           
+            watch.Stop();
+            Console.WriteLine("耗时：(ms)" + watch.ElapsedMilliseconds);
+
+            watch.Restart();
+            count = EntityQuery<User>.Instance.QuickInsert(batchList);
+            watch.Stop();
+            Console.WriteLine("QuickInsert List 耗时：(ms)" + watch.ElapsedMilliseconds);
+
+            watch.Restart();
+            count = EntityQuery<User>.Instance.Insert(batchList);
+            watch.Stop();
+            Console.WriteLine("Insert List 耗时：(ms)" + watch.ElapsedMilliseconds);
 
             Console.WriteLine("--插入 {0}条数据--", count);
             //-----------------------------------------------------------------
