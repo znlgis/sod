@@ -666,6 +666,19 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
+        /// 查询一个可枚举的实体对象，在枚举期间内部维持一个打开的只读快进的数据阅读器对象，直到数据全部枚举完才关闭此阅读器对象。
+        /// 此方法用于大批量的且不需要分页的数据流式读取。
+        /// </summary>
+        /// <param name="oql"></param>
+        /// <param name="db"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> QueryEnumerable(OQL oql, AdoHelper db)
+        {
+            IDataReader reader = EntityQueryAnonymous.ExecuteDataReader(oql, db, typeof(T));
+            return QueryEnumerable(reader, oql.GetEntityTableName());
+        }
+
+        /// <summary>
         /// 缓存OQL的结果然后从数据库查询数据，使得不必每次处理OQL对象。
         /// </summary>
         /// <param name="cacheKey">要缓存的Ｋｅｙ</param>
@@ -794,6 +807,41 @@ namespace PWMIS.DataMap.Entity
             }
             return list;
         }
+
+        public static IEnumerable<T> QueryEnumerable(System.Data.IDataReader reader, string tableName)
+        {
+            using (reader)
+            {
+                if (reader.Read())
+                {
+                    int fcount = reader.FieldCount;
+                    string[] names = new string[fcount];
+
+                    for (int i = 0; i < fcount; i++)
+                        names[i] = reader.GetName(i);
+                    T t0 = new T();
+                    if (!string.IsNullOrEmpty(tableName))
+                        t0.MapNewTableName(tableName);
+                    t0.PropertyNames = names;
+                    do
+                    {
+                        object[] values = new object[fcount];
+                        reader.GetValues(values);
+
+                        T t = (T)t0.Clone(false);
+
+                        //t.PropertyNames = names;
+                        t.PropertyValues = values;
+                      
+                        yield return t;
+
+                    } while (reader.Read());
+
+                }
+            }
+           // return list;
+        }
+
 
         /// <summary>
         /// 查询实体类集合关联的子实体类
