@@ -1027,6 +1027,8 @@ namespace PWMIS.DataMap.Entity
                 //
                 EntityBase entity = entityList[0];
                 List<string> objFields = entity.PropertyChangedList;
+                if (objFields.Count == 0)
+                    throw new Exception("QuickInsert 要求集合的第一个实体类的属性值更改的数量不少于一个！");
 
                 IDataParameter[] paras = new IDataParameter[objFields.Count];
 
@@ -1046,6 +1048,7 @@ namespace PWMIS.DataMap.Entity
                         string paraName = db.GetParameterChar + "QIP0" + index.ToString();
                         values += "," + paraName;
                         paras[index] = db.GetParameter(paraName, entity.PropertyList(field));
+                        paras[index].SourceColumn = field;
                         //为字符串类型的参数指定长度 edit at 2012.4.23
                         EntityQuery.SetParameterSize(ref paras[index], entity, field,db);
 
@@ -1070,15 +1073,18 @@ namespace PWMIS.DataMap.Entity
                         foreach (T item in entityList)
                         {
                             if (valuesTemp == "")
-                                valuesTemp = "(" + values.TrimStart(',').Replace("QIP0", "QIP" + num) + ")";
+                                valuesTemp = "VALUES (" + values.TrimStart(',').Replace("QIP0", "QIP" + num) + ")";
                             else
                                 valuesTemp += ",(" + values.TrimStart(',').Replace("QIP0", "QIP" + num) + ")";
                             //处理当前实体内参数
                             for (int i = 0; i < paras.Length; i++)
                             {
-                                string paraName = db.GetParameterChar + "QIP" + num + index.ToString();
-                                IDataParameter paraTemp = db.GetParameter(paraName, item.PropertyList(objFields[i]));
-                                EntityQuery.SetParameterSize(ref paraTemp, item, objFields[i], db);
+                                if (paras[i] == null)
+                                    break;
+                                string paraName = db.GetParameterChar + "QIP" + num + i.ToString();
+                                string field = paras[i].SourceColumn;
+                                IDataParameter paraTemp = db.GetParameter(paraName, item.PropertyList(field));
+                                EntityQuery.SetParameterSize(ref paraTemp, item, field, db);
                                 parasList.Add(paraTemp);
                             }
                             num++;
@@ -1813,9 +1819,12 @@ namespace PWMIS.DataMap.Entity
                     //需要为新参数赋值，感谢网友 @广州-银古 发现此问题
 
                     //2017.4.28 修改成根据实体类指定的字符串字段类型来指定 DbType
-                   var  paratemp = DB.GetParameter(para.ParameterName, sf.FieldDbType, size);
-                   paratemp.Value = para.Value;
-                   para = paratemp;
+                   IDbDataParameter paratemp = (IDbDataParameter)para;
+                   paratemp.DbType = sf.FieldDbType;
+                   paratemp.Size = size;
+                   //var  paratemp = DB.GetParameter(para.ParameterName, sf.FieldDbType, size);
+                   //paratemp.Value = para.Value;
+                   //para = paratemp;
                     
                 }
                 else if (size < 0)
@@ -1824,9 +1833,12 @@ namespace PWMIS.DataMap.Entity
                     ////DbType.AnsiString 非Unicode字符可变长度流，范围为1-8000个字符
                     ////长度小于0，将生成 varchar的参数类型
                     //((IDbDataParameter)para).DbType = DbType.AnsiString;
-                    var paratemp = DB.GetParameter(para.ParameterName, DbType.AnsiString, Math.Abs(size));
-                    paratemp.Value = para.Value;
-                    para = paratemp;
+                    IDbDataParameter paratemp = (IDbDataParameter)para;
+                    paratemp.DbType = DbType.AnsiString;
+                    paratemp.Size = size;
+                    //var paratemp = DB.GetParameter(para.ParameterName, DbType.AnsiString, Math.Abs(size));
+                    //paratemp.Value = para.Value;
+                    //para = paratemp;
                 }
             }
         }
