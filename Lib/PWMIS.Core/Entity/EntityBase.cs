@@ -74,6 +74,9 @@
  *  
  *  * 修改者：         时间：2016-4-30  
  *  新增 属性字段描述功能，代码生成器可以将数据库表设计的字段说明信息生成到实体类上，方便运行时获取该信息。
+ *  
+ *  * 修改者：         时间：2016-5-5  
+ *  索引器设置数据增加类型相容转换处理，包括空字符串，可用于大批量文本数据导入情况
  * ========================================================================
 */
 using System;
@@ -1037,14 +1040,18 @@ namespace PWMIS.DataMap.Entity
                 if (fieldName != null)
                 {
                     //如果是实体类基础定义的字段，必须检查设置的值得类型
-                    if (value != null)
+                    //2017.5.5 增加类型相容转换处理，包括空字符串，可用于大批量文本数据导入情况
+                    Type fieldType = ef.GetPropertyType(fieldName);
+                    try
                     {
-                        Type fieldType = ef.GetPropertyType(fieldName);
-                        if (value.GetType() != fieldType)
-                            throw new ArgumentException("实体类的属性字段" + propertyName + " 需要"
-                                + fieldType.Name + " 类型的值，但准备赋予的值不是该类型！");
+                        object Value = CommonUtil.ChangeType(value, fieldType);
+                        this.setProperty(fieldName, Value);
                     }
-                    this.setProperty(fieldName, value);
+                    catch (Exception ex)
+                    {
+                        throw new ArgumentException("实体类的属性字段" + propertyName + " 需要"
+                            + fieldType.Name + " 类型的值，但准备赋予的值不是该类型！",ex);
+                    }
                 }
                 else
                 {

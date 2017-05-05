@@ -176,6 +176,28 @@ namespace PWMIS.Core
 
        }
 
+        public static object ChangeType(object Value, Type targetType)
+        {
+            if (Value == null || Value == DBNull.Value)
+            {
+                if (targetType == typeof(DateTime))
+                    return new DateTime(1900, 1, 1);
+                else
+                    return Value;
+            }
+            if (Value.ToString() == string.Empty )
+            {
+                if( targetType == typeof(string))
+
+                    return string.Empty;
+                else
+                    return null;
+            }
+            if (Value.GetType() == targetType)
+                return Value;
+            return Convert.ChangeType(Value, targetType);
+        }
+
 
        /// <summary>
        /// Type 转换成 DbType
