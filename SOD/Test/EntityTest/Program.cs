@@ -36,8 +36,16 @@ namespace EntityTest
 
             UserEntity user = EntityBuilder.CreateEntity<IUser>() as UserEntity;
             bool flag = (user["User ID"] == null);//true
-            Console.WriteLine("user[\"User ID\"] == null :{0}",flag);
-            Console.WriteLine("user.UserID:{0}", user.UserID);
+            Console.WriteLine("虚拟字段User ID: user[\"User ID\"] == null :{0}",flag);
+            Console.WriteLine("读取属性 user.UserID:{0}", user.UserID);
+
+            user["User ID"] = "123";
+            Console.WriteLine("虚拟字段赋值 user[\"User ID\"] = \"123\" :{0}", true);
+            Console.WriteLine("读取虚拟字段 user[\"User ID\"]:{0}", user["User ID"]);
+            user["Age"] = "";
+            Console.WriteLine("属性赋值 user[\"Age\"] = \"\" :{0}", true);
+            Console.WriteLine("读取属性 user.Age:{0}", user.Age);
+            Console.WriteLine("空值判断 user[\"Age\"]==null:{0}", user["Age"]==null);
 
             Console.WriteLine("第一次运行，将检查并创建数据表");
             LocalDbContext context = new LocalDbContext();//自动创建表
