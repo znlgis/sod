@@ -62,9 +62,12 @@
  * 修改者：         时间：2016-4-29                
  * 修改说明：修复Oracle插入数据的时候，Clob字段类型无法插入的问题，感谢网友 不抖机灵 发现此问题。
  * 
- * 修改者：         时间：2017-4-227                
+ * 修改者：         时间：2017-4-27                
  * 修改说明：对于SqlServer,MySQL，QuickInsert 将采用合并数据并且事务插入方式，有关原理，请参考下面文章：
  * 《MySQL批量SQL插入性能优化》： http://database.51cto.com/art/201309/411050.htm
+ * 
+ * 修改者：         时间：2017-5-6
+ * 为事务查询异常抛出详细错误信息
  * ========================================================================
 */
 
@@ -1047,6 +1050,11 @@ namespace PWMIS.DataMap.Entity
                     }
                     db.Commit();
                 }
+                catch (QueryException qex)
+                {
+                    db.Rollback();
+                    throw new Exception("执行事务查询出错，详细请查看内部异常", qex);
+                }
                 catch (Exception ex)
                 {
                     db.Rollback();
@@ -1157,6 +1165,11 @@ namespace PWMIS.DataMap.Entity
                         }
                         db.Commit();
                     }
+                    catch (QueryException qex)
+                    {
+                        db.Rollback();
+                        throw new Exception("执行事务查询出错，详细请查看内部异常", qex);
+                    }
                     catch (Exception ex)
                     {
                         db.Rollback();
@@ -1178,6 +1191,11 @@ namespace PWMIS.DataMap.Entity
 
                         }
                         db.Commit();
+                    }
+                    catch (QueryException qex)
+                    {
+                        db.Rollback();
+                        throw new Exception("执行事务查询出错，详细请查看内部异常", qex);
                     }
                     catch (Exception ex)
                     {
@@ -1218,6 +1236,11 @@ namespace PWMIS.DataMap.Entity
                     count += EntityQuery.UpdateInner(entity, entity.PropertyChangedList, db);
                 }
                 db.Commit();
+            }
+            catch (QueryException qex)
+            {
+                db.Rollback();
+                throw new Exception("执行事务查询出错，详细请查看内部异常", qex);
             }
             catch (Exception ex)
             {
@@ -2375,6 +2398,11 @@ namespace PWMIS.DataMap.Entity
                     }
                     db.Commit();
                 }
+                catch (QueryException qex)
+                {
+                    db.Rollback();
+                    throw new Exception("执行事务查询出错，详细请查看内部异常", qex);
+                }
                 catch (Exception ex)
                 {
                     db.Rollback();
@@ -2467,6 +2495,11 @@ namespace PWMIS.DataMap.Entity
                     count += UpdateInner(entity, entity.PropertyChangedList, db);
                 }
                 db.Commit();
+            }
+            catch (QueryException qex)
+            {
+                db.Rollback();
+                throw new Exception("执行事务查询出错，详细请查看内部异常", qex);
             }
             catch (Exception ex)
             {
