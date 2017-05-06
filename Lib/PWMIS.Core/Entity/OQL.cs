@@ -1997,7 +1997,7 @@ namespace PWMIS.DataMap.Entity
 
                 string tempArr_0 = tempArr[0].Trim();
                 //访问属性名称对应的属性值，得到真正的排序字段
-                //感谢网友 @大枕头 (2017.4.27)在OQL多实体类关联查询动态排序是，发现此问题并提供参考修改意见。
+                //感谢网友 @大枕头 (2017.4.27)在OQL多实体类关联查询动态排序时，发现此问题并提供参考修改意见。
                 //有关联查询的排序，在当前所有用过的实体类中检索
                 string fieldName = null;
                 foreach (EntityBase entity in entitys)
