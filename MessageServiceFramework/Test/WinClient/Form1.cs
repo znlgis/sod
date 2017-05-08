@@ -137,7 +137,14 @@ namespace WinClient
             }
             catch (AggregateException ex1)
             {
-                MessageBox.Show(ex1.Message);
+                //MessageBox.Show(ex1.Message);
+                foreach (var item in ex1.InnerExceptions)
+                {
+                    string errMsg= string.Format ("异常类型：{0}{1}来自：{2}{3}异常内容：{4}", item.GetType(), Environment.NewLine,
+         item.Source, Environment.NewLine, item.Message);
+                    MessageBox.Show(errMsg);
+                }  
+
             }
             catch (Exception ex)
             {
