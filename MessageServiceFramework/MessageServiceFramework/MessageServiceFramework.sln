@@ -58,15 +58,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonitorServiceRuntime", "..
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOC", "..\AOPIOC\IOC\IOC.csproj", "{EBD3FF59-DB9C-4F46-9C81-BBCE8210878D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ServiceHost", "ServiceHost", "{A79E9CD9-6C88-4E60-862B-40900D223B05}"
-	ProjectSection(SolutionItems) = preProject
-		..\Test\ServiceHost\IOCConfig.xml = ..\Test\ServiceHost\IOCConfig.xml
-		..\Test\ServiceHost\PdfNetEF.MessageServiceHost.exe.config = ..\Test\ServiceHost\PdfNetEF.MessageServiceHost.exe.config
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModuleRoute", "ModuleRoute\ModuleRoute.csproj", "{D34A99E9-B1A9-4477-A89F-7FBEC1E17E35}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 20
+		SccNumberOfProjects = 21
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
 		SccLocalPath0 = .
@@ -146,6 +142,10 @@ Global
 		SccProjectTopLevelParentUniqueName19 = MessageServiceFramework.sln
 		SccProjectName19 = ../MonitorServiceRuntime
 		SccLocalPath19 = ..\\MonitorServiceRuntime
+		SccProjectUniqueName20 = ModuleRoute\\ModuleRoute.csproj
+		SccProjectTopLevelParentUniqueName20 = MessageServiceFramework.sln
+		SccProjectName20 = ModuleRoute
+		SccLocalPath20 = ModuleRoute
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -350,6 +350,16 @@ Global
 		{EBD3FF59-DB9C-4F46-9C81-BBCE8210878D}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{EBD3FF59-DB9C-4F46-9C81-BBCE8210878D}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{EBD3FF59-DB9C-4F46-9C81-BBCE8210878D}.Release|x86.ActiveCfg = Release|Any CPU
+		{D34A99E9-B1A9-4477-A89F-7FBEC1E17E35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D34A99E9-B1A9-4477-A89F-7FBEC1E17E35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D34A99E9-B1A9-4477-A89F-7FBEC1E17E35}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{D34A99E9-B1A9-4477-A89F-7FBEC1E17E35}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{D34A99E9-B1A9-4477-A89F-7FBEC1E17E35}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D34A99E9-B1A9-4477-A89F-7FBEC1E17E35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D34A99E9-B1A9-4477-A89F-7FBEC1E17E35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D34A99E9-B1A9-4477-A89F-7FBEC1E17E35}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{D34A99E9-B1A9-4477-A89F-7FBEC1E17E35}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{D34A99E9-B1A9-4477-A89F-7FBEC1E17E35}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -367,10 +377,10 @@ Global
 		{4B3A5FAB-2120-47C9-8B72-329355CD48E9} = {34F3462F-2D79-4055-B2CF-4DA9971F602E}
 		{2A9A3A85-D2F6-44DE-B7E8-5CDCA17BCE23} = {A8E4A3EA-87F6-4B97-AC99-2C5089E98347}
 		{EBD3FF59-DB9C-4F46-9C81-BBCE8210878D} = {A8E4A3EA-87F6-4B97-AC99-2C5089E98347}
+		{D34A99E9-B1A9-4477-A89F-7FBEC1E17E35} = {A8E4A3EA-87F6-4B97-AC99-2C5089E98347}
 		{7A8AF609-14D8-49FF-9825-830803933703} = {15858149-F73D-4D98-94E8-A9A5955D3D04}
 		{4C3C2094-5CB0-4199-9C1E-BF7F6608782A} = {15858149-F73D-4D98-94E8-A9A5955D3D04}
 		{F13EE989-AA43-4E9D-A152-DEEA7B972EE6} = {15858149-F73D-4D98-94E8-A9A5955D3D04}
-		{A79E9CD9-6C88-4E60-862B-40900D223B05} = {15858149-F73D-4D98-94E8-A9A5955D3D04}
 		{E55F10B3-F8F4-4EB1-9E5E-DA44D506E796} = {9F667EEE-8461-44A4-8986-7FA3477558BD}
 		{3F671F88-58B6-40A6-91E9-BBCF2967E056} = {9F667EEE-8461-44A4-8986-7FA3477558BD}
 		{E8F2ED88-4730-4DB3-AF42-D42DC4C79E56} = {9F667EEE-8461-44A4-8986-7FA3477558BD}

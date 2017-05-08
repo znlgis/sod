@@ -56,7 +56,6 @@
     <Compile Include="Cache\CacheProvider.cs" />
     <Compile Include="Cache\CacheProviderFactory.cs" />
     <Compile Include="Cache\CacheService.cs" />
-    <Compile Include="DynamicMethodExecutor.cs" />
     <Compile Include="Cache\ICacheProvider.cs" />
     <Compile Include="IService.cs" />
     <Compile Include="Management\ManageService.cs" />

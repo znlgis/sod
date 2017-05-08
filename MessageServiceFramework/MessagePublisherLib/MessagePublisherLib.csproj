@@ -63,11 +63,10 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="PDF.NET.MSF.2017.pfx" />
-    <None Include="PdfNetMsfKey.pfx" />
+    <Content Include="说明.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="说明.txt" />
+    <None Include="PDF.NET.MSF.2017.pfx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

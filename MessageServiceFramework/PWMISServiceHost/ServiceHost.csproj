@@ -90,6 +90,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Publisher.cs" />
+    <Compile Include="ServiceModuleApplication.cs" />
     <Compile Include="SubscriberInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -100,6 +101,10 @@
     <ProjectReference Include="..\MessagePublishService\MessagePublishService.csproj">
       <Project>{143215C2-0C3B-402D-9F2D-04C8A7881FE1}</Project>
       <Name>MessagePublishService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MessageServiceFramework\ModuleRoute\ModuleRoute.csproj">
+      <Project>{d34a99e9-b1a9-4477-a89f-7fbec1e17e35}</Project>
+      <Name>ModuleRoute</Name>
     </ProjectReference>
     <ProjectReference Include="..\MSFCommon\EnterpriceFrameworkCommon.csproj">
       <Project>{2A9A3A85-D2F6-44DE-B7E8-5CDCA17BCE23}</Project>
