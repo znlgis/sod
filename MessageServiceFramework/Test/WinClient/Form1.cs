@@ -131,12 +131,13 @@ namespace WinClient
 
             try
             {
-                int result = await serviceProxy.RequestServiceAsync<int>(request);
+                //int result = await serviceProxy.RequestServiceAsync<int>(request);
+                int result = serviceProxy.RequestServiceAsync<int>(request).Result;
                 this.lblResult.Text = "Result=" + result;
             }
             catch (AggregateException ex1)
-            { 
-            
+            {
+                MessageBox.Show(ex1.Message);
             }
             catch (Exception ex)
             {

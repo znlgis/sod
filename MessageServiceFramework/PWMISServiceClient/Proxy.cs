@@ -230,7 +230,10 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             conn.ErrorMessage += new EventHandler<MessageEventArgs>(
                 (object sender, MessageEventArgs e) => {
                     if (this.ErrorMessage != null)
+                    {
                         this.ErrorMessage(sender, new MessageEventArgs(e.MessageText));
+                        tcs.SetCanceled();
+                    }
                     else
                         tcs.SetException(new Exception(e.MessageText));
                 }
@@ -246,9 +249,15 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                     if (errMsg != string.Empty)
                     {
                         if (this.ErrorMessage != null)
+                        {
                             this.ErrorMessage(this, new MessageEventArgs(errMsg));
+                            tcs.SetCanceled();
+                        }
                         else
+                        {
+                            //即使抛出了异常，也必须设置任务线程的异常，否则异步方法没法返回
                             tcs.SetException(new Exception(errMsg));
+                        }
                     }
                     else
                     {
@@ -366,7 +375,10 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                 (object sender, MessageEventArgs e) =>
                 {
                     if (this.ErrorMessage != null)
+                    {
                         this.ErrorMessage(sender, new MessageEventArgs(e.MessageText));
+                        tcs.SetCanceled();
+                    }
                     else
                         tcs.SetException(new Exception(e.MessageText));
                 }
@@ -382,9 +394,15 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                     if (errMsg != string.Empty)
                     {
                         if (this.ErrorMessage != null)
+                        {
                             this.ErrorMessage(this, new MessageEventArgs(errMsg));
+                            tcs.SetCanceled();
+                        }
                         else
+                        {
+                            //即使抛出了异常，也必须设置任务线程的异常，否则异步方法没法返回
                             tcs.SetException(new Exception(errMsg));
+                        }
                     }
                     else
                     {
