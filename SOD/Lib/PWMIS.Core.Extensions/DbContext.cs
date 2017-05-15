@@ -19,6 +19,8 @@ namespace PWMIS.Core.Extensions
         private static object lock_obj = new object();
         private bool checkedDb = false;//数据库文件是否已经创建
         private static Dictionary<string, bool> dictCheckedDb = new Dictionary<string, bool>();
+        //存储已经校验过的实体类的字典，Key为当前DbContext的类型的 RuntimeTypeHandle
+        private static Dictionary<RuntimeTypeHandle, List<RuntimeTypeHandle>> dictCheckedEntitys = new Dictionary<RuntimeTypeHandle, List<RuntimeTypeHandle>>();
         /// <summary>
         /// 数据库文件，对于文件型数据库需要设置该字段，并且在CheckDB 实现类里面做适当的处理
         /// </summary>
@@ -93,8 +95,42 @@ namespace PWMIS.Core.Extensions
         public void CheckTableExists<T>() where T : EntityBase, new()
         {
             DbContextProvider.CheckTableExists<T>();
+            //这里记录下所有检查的表，供需要的时候使用
+            RuntimeTypeHandle thisHandle = GetType().TypeHandle;
+            RuntimeTypeHandle entityHandle = typeof(T).TypeHandle;
+            List<RuntimeTypeHandle> list = null;
+            if (!dictCheckedEntitys.ContainsKey(thisHandle))
+            {
+                list = new List<RuntimeTypeHandle>();
+                list.Add(entityHandle);
+                dictCheckedEntitys.Add(thisHandle, list);
+            }
+            else
+            {
+                list = dictCheckedEntitys[thisHandle];
+                if(!list.Contains(entityHandle))
+                    list.Add(entityHandle);
+            }
+            
         }
         #endregion
+
+        /// <summary>
+        /// 解析出所有检验过表存在的实体类（当前类注册的实体类）
+        /// </summary>
+        /// <returns></returns>
+        public List<EntityBase> ResolveAllEntitys()
+        {
+            List<EntityBase> listEntity = new List<EntityBase>();
+            RuntimeTypeHandle thisHandle = GetType().TypeHandle;
+            foreach (RuntimeTypeHandle handle in dictCheckedEntitys[thisHandle])
+            {
+                Type entityType = Type.GetTypeFromHandle(handle);
+                EntityBase entity = (EntityBase)Activator.CreateInstance(entityType);
+                listEntity.Add(entity);
+            }
+            return listEntity;
+        }
 
         /// <summary>
         /// 在数据库中检查指定的接口类型映射的数据表是否存在，如果不存在，将创建表
@@ -166,6 +202,17 @@ namespace PWMIS.Core.Extensions
             db.Logger.WriteLog("记录条数：" + list.Count, "DbContext");
             return list;
         }
+
+        /// <summary>
+        /// 查询指定实体类类型的全部数据
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <returns>实体类列表</returns>
+        public List<T> QueryAllList<T>() where T : EntityBase, new()
+        {
+            return OQL.From<T>().ToList(this.CurrentDataBase);
+        }
+
         /// <summary>
         /// 开启事务执行上下文，程序会自动提交或者回滚事务。
         /// </summary>
@@ -297,16 +344,27 @@ namespace PWMIS.Core.Extensions
         public int AddList<T>(IEnumerable<T> list) where T : class
         {
             List<EntityBase> objList = new List<EntityBase>();
-            foreach (T data in list)
+            if (typeof(T).BaseType == typeof(EntityBase))
             {
-                //根据接口创建实际的实体类对象
-                T obj = EntityBuilder.CreateEntity<T>();
-                EntityBase entity = obj as EntityBase;
-                //为实体类属性赋值
-                entity.MapFrom(data,true);//使用该重载，不用调用下面一行代码了
-                //entity.ResetChanges(true);
+                foreach (T data in list)
+                {
+                    EntityBase entity = data as EntityBase;
+                    objList.Add(entity);
+                }
+            }
+            else
+            {
+                foreach (T data in list)
+                {
+                    //根据接口创建实际的实体类对象
+                    T obj = EntityBuilder.CreateEntity<T>();
+                    EntityBase entity = obj as EntityBase;
+                    //为实体类属性赋值
+                    entity.MapFrom(data, true);//使用该重载，不用调用下面一行代码了
+                    //entity.ResetChanges(true);
 
-                objList.Add(entity);
+                    objList.Add(entity);
+                }
             }
 
             EntityQuery eq = new EntityQuery(CurrentDataBase);
