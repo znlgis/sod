@@ -77,6 +77,9 @@
  *  
  *  * 修改者：         时间：2016-5-5  
  *  索引器设置数据增加类型相容转换处理，包括空字符串，可用于大批量文本数据导入情况
+ *  
+ *  *  修改者：         时间：2016-5-5  
+ *  索引器设置数据增加类型相容转换处理，包括空字符串，可用于大批量文本数据导入情况
  * ========================================================================
 */
 using System;
@@ -1114,7 +1117,7 @@ namespace PWMIS.DataMap.Entity
         #region 实体类跟POCO类的相互映射
 
       /// <summary>
-        /// 从POCO实体类获取跟当前实体类的属性名称相同的属性的值，拷贝到当前实体类中，完成数据的映射。
+        /// 从POCO实体类获取跟当前实体类的属性名称相同的属性的值，拷贝到当前实体类中，完成数据的映射，并且会比较和设置属性值的改变状态
         /// 要求拷贝的同名属性是读写属性且类型相同。
         /// </summary>
         /// <param name="pocoClass">POCO实体类，提供源数据</param>
@@ -1141,9 +1144,14 @@ namespace PWMIS.DataMap.Entity
           {
               if (accessors[i] != null)
               {
-                  this.PropertyValues[i] = accessors[i].GetValue(pocoClass);
-                  if (isChange) //设置属性修改状态
+                  object pocoPropValue = accessors[i].GetValue(pocoClass);
+                  //设置属性修改状态，需要比较值是否改变
+                  if (isChange && object.Equals( this.PropertyValues[i] ,pocoPropValue)) 
+                  {
                       this.changedlist[i] = true; 
+                  }
+                  this.PropertyValues[i] = pocoPropValue;
+                 
                   count++;              
               }
           }
