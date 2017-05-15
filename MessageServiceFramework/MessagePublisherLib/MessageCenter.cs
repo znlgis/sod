@@ -281,8 +281,8 @@ namespace MessagePublisher
                     {
                         currLsn.FromMessage = listener.FromMessage;
                         currLsn.MessageID = listener.MessageID;
-                        string showMsg = currLsn.FromMessage.Length > 1000 ? currLsn.FromMessage.Substring(0, 1000) : currLsn.FromMessage;
-                        Console.WriteLine("MessageListener FromMessage:{0},MessageID:{1}", showMsg, currLsn.MessageID);
+                        //string showMsg = currLsn.FromMessage.Length > 1000 ? currLsn.FromMessage.Substring(0, 1000) : currLsn.FromMessage;
+                        //Console.WriteLine("MessageListener FromMessage:{0},MessageID:{1}", showMsg, currLsn.MessageID);
                         this.ListenerAcceptMessage(this, new MessageListenerEventArgs(currLsn));
                     }
                 }

@@ -405,9 +405,12 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
         static void processer_ServiceErrorEvent(object sender, ServiceErrorEventArgs e)
         {
-            string text = string.Format("[{0}]处理服务的时候发生异常：{1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),e.ErrorMessageText);
+            string text = string.Format("[{0}]处理服务的时候发生异常：{1}\r\n错误发生时的异常对象调用堆栈：\r\n{2}", 
+                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), 
+                e.ErrorMessageText,
+                e.ErrorSource == null ? "NULL" : e.ErrorSource.ToString());
             ConsoleWriteSubText(text, 1000);
-            WriteLogFile("./ErrorLog.txt", "处理服务的时候发生异常：\r\n" + e.ErrorMessageText + "\r\n" + e.ErrorSource.ToString());
+            WriteLogFile("./ErrorLog.txt", text);
         }
 
         static void Instance_ListenerEventMessage(object sender, MessageListenerEventArgs e)
@@ -464,7 +467,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         {
             try
             {
-                string text = string.Format("\r\n[{0}] {1}\r\n", DateTime.Now.ToString(), logMsg);
+                string text = string.Format("\r\n------------------------------\r\n{0}",  logMsg);
                 System.IO.File.AppendAllText(LogDirectory + fileName, text);
             }
             catch

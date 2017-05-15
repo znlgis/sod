@@ -94,7 +94,17 @@ namespace PWMIS.EnterpriseFramework.IOC
             {
                 string configFileName = System.Configuration.ConfigurationManager.AppSettings["IOCConfigFile"];//ConfigurationManager.AppSettings [""] ;
                 if (string.IsNullOrEmpty(configFileName))
-                    throw new Exception("未指定IOC配置文件的地址，请在应用程序配置节中配置 IOCConfigFile 项。");
+                {
+                    // 如果是以别的进程插件（加载项）方式调用的， Assembly.GetEntryAssembly() 为空
+                    //string exePath = System.Reflection.Assembly.GetEntryAssembly().Location;
+                    string dllPath = System.Reflection.Assembly.GetExecutingAssembly().Location;
+                    string dir = System.IO.Path.GetDirectoryName(dllPath);
+                    string configFile = System.IO.Path.Combine(dir, "IOCConfig.xml");
+                    if (System.IO.File.Exists(configFile))
+                        return configFile;
+                    else
+                        throw new Exception("未指定IOC配置文件的地址，请在应用程序配置节中配置 IOCConfigFile 项；程序集所在目录：" + dir);
+                }
                 return configFileName;
             }
         }

@@ -23,6 +23,7 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         private IServiceSession _session;
         private string _errorMessage = "";
         private bool hasError;
+        private bool initedReqParas;//是否初始化过参数
 
         private static readonly string NoneData1 = DataConverter.Encrypt8bitString("[]");
         private static readonly string NoneData2 = DataConverter.Encrypt8bitString("null");
@@ -56,7 +57,9 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
 
         public bool HasError
         {
-            get {
+            get 
+            {
+                InitRequestParameters();
                 return this.hasError;
             }
         }
@@ -265,6 +268,7 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         public ServiceContext(ServiceRequest request)
         {
             this.Request = request;
+            //initedReqParas = true;
         }
 
         /// <summary>
@@ -274,84 +278,107 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         public ServiceContext(string serviceUrl)
         {
             ServiceRequest request = new ServiceRequest();
-            //这里需要对复杂参数进行预处理
+            
             request.ServiceUrl = serviceUrl;
-            if (request.MethodParameters != null)
-            {
-                this.hasError = !InitRequestParameters(request, out _errorMessage);
-            }
-            else
-            {
-                request.Parameters = new object[] { };
-            }
+            //这里如果对复杂参数进行预处理，无法捕获参数的异常
+           
             this.Request = request;
+        }
+
+        /// <summary>
+        /// 初始化请求的参数
+        /// </summary>
+        public void InitRequestParameters()
+        {
+            if (!initedReqParas)
+            {
+                if (this.Request.MethodParameters != null)
+                {
+                    this.hasError = !InitRequestParameters(this.Request, out _errorMessage);
+                }
+                else
+                {
+                    this.Request.Parameters = new object[] { };
+                }
+            }
+            initedReqParas = true;
         }
 
         private bool InitRequestParameters(ServiceRequest request, out string errorMessage)
         {
             List<IocProvider> providers = null;
-
-            foreach (var item in request.MethodParameters)
+            try
             {
-                if (item.ParameterType == null)
+                foreach (var item in request.MethodParameters)
                 {
-                    if (providers == null)
+                    if (item.ParameterType == null)
                     {
-                        providers = Unity.Instance.GetProviders("ServiceModel");
                         if (providers == null)
                         {
-                            //throw new InvalidOperationException("IOC配置文件中IOC节点没有指定的名称ServiceModel");
-                            errorMessage = "IOC配置文件中IOC节点没有指定的名称ServiceModel";
-                            return false;
-                        }
-
-                    }
-
-                    IocProvider provider = providers.FirstOrDefault(i => i.FullClassName == item.ParameterTypeName);
-                    if (provider != null)
-                    {
-                        item.ParameterType = Unity.Instance.GetProviderType(provider);
-                        item.ParameterValue = ParameterParse.GetObject(item);
-                    }
-                    else
-                    {
-                        //处理泛型列表
-                        if (item.ParameterTypeName.StartsWith("System.Collections.Generic.List`1[["))
-                        {
-                            string tempTypeName = item.ParameterTypeName.Replace("System.Collections.Generic.List`1[[", "");
-                            tempTypeName = tempTypeName.Substring(0, tempTypeName.IndexOf(','));
-                            provider = providers.FirstOrDefault(i => i.FullClassName == tempTypeName);
-                            if (provider == null)
+                            providers = Unity.Instance.GetProviders("ServiceModel");
+                            if (providers == null)
                             {
-                                //throw new InvalidOperationException("IOC配置文件的名称ServiceModel下面没有定义当前类型：" + tempTypeName);
-                                errorMessage = "IOC配置文件的名称ServiceModel下面没有定义当前类型：" + tempTypeName;
+                                //throw new InvalidOperationException("IOC配置文件中IOC节点没有指定的名称ServiceModel");
+                                errorMessage = "IOC配置文件中IOC节点没有指定的名称ServiceModel";
+                                ProcessServiceError(new ArgumentException(errorMessage));
                                 return false;
                             }
 
+                        }
 
-                            //生成基本类型
-                            Type tempType = Unity.Instance.GetProviderType(provider);
-                            Type generic = typeof(List<>);
-                            Type[] typeArgs = { tempType };
-                            Type constructed = generic.MakeGenericType(typeArgs);
-
-                            item.ParameterType = constructed;
+                        IocProvider provider = providers.FirstOrDefault(i => i.FullClassName == item.ParameterTypeName);
+                        if (provider != null)
+                        {
+                            item.ParameterType = Unity.Instance.GetProviderType(provider);
                             item.ParameterValue = ParameterParse.GetObject(item);
                         }
                         else
                         {
-                            //throw new InvalidOperationException("系统不能处理当前类型的参数：" + item.ParameterTypeName);
-                            errorMessage = "系统不能处理当前类型的参数：" + item.ParameterTypeName;
-                            return false;
+                            //处理泛型列表
+                            if (item.ParameterTypeName.StartsWith("System.Collections.Generic.List`1[["))
+                            {
+                                string tempTypeName = item.ParameterTypeName.Replace("System.Collections.Generic.List`1[[", "");
+                                tempTypeName = tempTypeName.Substring(0, tempTypeName.IndexOf(','));
+                                provider = providers.FirstOrDefault(i => i.FullClassName == tempTypeName);
+                                if (provider == null)
+                                {
+                                    //throw new InvalidOperationException("IOC配置文件的名称ServiceModel下面没有定义当前类型：" + tempTypeName);
+                                    errorMessage = "IOC配置文件的名称ServiceModel下面没有定义当前类型：" + tempTypeName;
+                                    ProcessServiceError(new ArgumentException(errorMessage));
+                                    return false;
+                                }
+
+
+                                //生成基本类型
+                                Type tempType = Unity.Instance.GetProviderType(provider);
+                                Type generic = typeof(List<>);
+                                Type[] typeArgs = { tempType };
+                                Type constructed = generic.MakeGenericType(typeArgs);
+
+                                item.ParameterType = constructed;
+                                item.ParameterValue = ParameterParse.GetObject(item);
+                            }
+                            else
+                            {
+                                //throw new InvalidOperationException("系统不能处理当前类型的参数：" + item.ParameterTypeName);
+                                errorMessage = "系统不能处理当前类型的参数：" + item.ParameterTypeName;
+                                ProcessServiceError(new ArgumentException(errorMessage));
+                                return false;
+                            }
                         }
+
                     }
-
-                }
-            }//end for
-
-            request.Parameters = request.MethodParameters.Select(o => o.ParameterValue).ToArray();
-            errorMessage = "";
-            return true;
+                }//end for
+                request.Parameters = request.MethodParameters.Select(o => o.ParameterValue).ToArray();
+                errorMessage = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errorMessage ="参数处理异常："+ ex.Message;
+                ProcessServiceError(ex,errorMessage);
+                return false;
+            }
         }
 
         #endregion
@@ -434,13 +461,14 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
             }
         }
 
-        private void ProcessServiceError(Exception ex)
+        private void ProcessServiceError(Exception ex,string errMessage="")
         {
             //Console.WriteLine("执行服务方法错误:{0}", ex.Message);
             this.Response.Write(ServiceConst.CreateServiceErrorMessage(ex.Message));
             this.Response.End();
             this.OnServiceError(ex, string.Format(
-                "执行服务方法错误，源错误信息：{0}，\r\n请求的Uri:{1}，\r\n{2}:{3},{4}\r\n",
+                "执行服务方法错误：{0}\r\n源错误信息：{1}，\r\n请求的Uri:\r\n{2}，\r\n{3}:{4},{5}\r\n",
+                errMessage,
                 ex.Message,
                 this.Request.ServiceUrl,
                 this.Request.ClientIP,

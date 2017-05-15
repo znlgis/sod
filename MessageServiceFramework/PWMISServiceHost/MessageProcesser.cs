@@ -282,6 +282,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
             string result = string.Empty;
             bool noResult = false;
+            context.InitRequestParameters();
             if (!context.HasError)
             {
                 //Console.WriteLine("Process Service begin...");
@@ -293,6 +294,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             else
             {
                 result = ServiceConst.CreateServiceErrorMessage(context.ErrorMessage);
+                //base.OnServiceError(context, new ServiceErrorEventArgs(context.ErrorMessage));
             }
 
             DateTime endTime = DateTime.Now;
