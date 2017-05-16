@@ -189,6 +189,16 @@ namespace PWMIS.Core.Extensions
         {
             return new EntityQuery<T>(db);
         }
+        /// <summary>
+        /// 查询一个实体类对象
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="q">查询表达式</param>
+        /// <returns>实体类</returns>
+        public T QueryObject<T>(OQL q) where T : EntityBase, new()
+        {
+            return EntityQuery<T>.QueryObject(q, this.CurrentDataBase);
+        }
 
         /// <summary>
         /// 查询实体类列表

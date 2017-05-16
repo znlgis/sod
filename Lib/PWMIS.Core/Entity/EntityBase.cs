@@ -1146,13 +1146,19 @@ namespace PWMIS.DataMap.Entity
               {
                   object pocoPropValue = accessors[i].GetValue(pocoClass);
                   //设置属性修改状态，需要比较值是否改变
-                  if (isChange && object.Equals( this.PropertyValues[i] ,pocoPropValue)) 
+                  if (isChange && !object.Equals(this.PropertyValues[i], pocoPropValue))
                   {
-                      this.changedlist[i] = true; 
+                      this.changedlist[i] = true;
+                      this.PropertyValues[i] = pocoPropValue;
+
+                      count++;
                   }
-                  this.PropertyValues[i] = pocoPropValue;
-                 
-                  count++;              
+                  else
+                  {
+                      this.PropertyValues[i] = pocoPropValue;
+
+                      count++;
+                  }
               }
           }
           return count;
