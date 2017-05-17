@@ -81,6 +81,12 @@ namespace PWMIS.EnterpriseFramework.Service.Basic
             this.Write(jsonString);
         }
 
+        public void WriteDateTime(DateTime data)
+        {
+             string strTemp = data.Ticks.ToString();
+             this.Write(strTemp);
+        }
+
         /// <summary>
         /// 从当前流的起始位置，读取所有字符串文本。
         /// </summary>

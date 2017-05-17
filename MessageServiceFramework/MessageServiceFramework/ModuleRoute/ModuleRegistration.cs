@@ -32,11 +32,13 @@ namespace PWMIS.EnterpriseFramework.ModuleRoute
         public static void RegisterAllModules()
         {
             //反射查找当前引用的所有模块提供者程序集 ModuleRegistration
-            string path = Assembly.GetEntryAssembly().Location;
+            string path = Assembly.GetCallingAssembly().Location;
             string folder = System.IO.Path.GetDirectoryName(path);
+            System.Environment.CurrentDirectory = folder;
             foreach (string file in System.IO.Directory.GetFiles(folder,"*.dll"))
             {
-                Assembly ass = Assembly.LoadFile(file);
+                string shortFile = System.IO.Path.GetFileNameWithoutExtension(file);
+                Assembly ass = Assembly.Load(shortFile);
                 Type registerType = ass.GetTypes().FirstOrDefault(t => t.BaseType == typeof(ModuleRegistration));
                 if (registerType != null)
                 {

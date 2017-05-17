@@ -514,7 +514,7 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
                 }
                 else if (tempType == typeof(DateTime)) //由于服务器和客户端时间格式可能不相同，统一用Json方式序列化
                 {
-                    this.Response.WriteJsonString(data);
+                    this.Response.WriteDateTime((DateTime)data);
                 }
                 else if (tempType == typeof(byte[]))
                 {

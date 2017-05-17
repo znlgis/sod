@@ -97,7 +97,8 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                     this.MessageText = messageText;
                     //.IsValueType 如果是值类型，强制进行文本转换，避免调用本程序的外部程序使用不合理的数据类型 DataType
                     if (resultDataType == DataType.DateTime || typeof(T) == typeof(DateTime))
-                        result = (T)Newtonsoft.Json.JsonConvert.DeserializeObject<T>(messageText);
+                        //result = (T)Newtonsoft.Json.JsonConvert.DeserializeObject<T>(messageText);
+                        result = (T)Convert.ChangeType(new DateTime(long.Parse(messageText)), typeof(T));
                     else if (resultDataType == DataType.Text || typeof(T) == typeof(string))
                         result = (T)Convert.ChangeType(messageText, typeof(T));
                     else if (resultDataType == DataType.Json)
@@ -146,7 +147,8 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                     if (tempType == typeof(string))
                         this.MessageText = result as string;
                     else if (tempType == typeof(DateTime))
-                        this.MessageText = Newtonsoft.Json.JsonConvert.SerializeObject(result);
+                        //this.MessageText = Newtonsoft.Json.JsonConvert.SerializeObject(result); 
+                        this.MessageText = Convert.ToDateTime(result).Ticks.ToString();
                     else if (tempType.IsValueType)
                         this.MessageText = result.ToString();
                     else
