@@ -47,8 +47,7 @@ namespace PWMIS.MemoryStorage
                      RemovedCallback = args =>
                      {
                          MemDB db = (MemDB)args.CacheItem.Value;
-                         db.Flush();
-                         db.Close();
+                         db.TurnOff();
                      }
                  }
                  );

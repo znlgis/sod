@@ -30,7 +30,7 @@ namespace PWMIS.MemoryStorage
     /// <summary>
     /// PDF.NET内存数据库
     /// </summary>
-    public class MemDB
+    public class MemDB:IDisposable
     {
         public MemDB(string dbPath)
         {
@@ -45,6 +45,7 @@ namespace PWMIS.MemoryStorage
         private List<Func<bool>> methodList;
         private string _path = "";
         private bool running = false;
+        private bool isDisposed = false;
 
 
         /// <summary>
@@ -322,12 +323,30 @@ namespace PWMIS.MemoryStorage
             this.WriteLog("数据库已关闭！");
         }
 
+        /// <summary>
+        /// 关闭引擎（保存数据并且关闭数据库）
+        /// </summary>
+        public void TurnOff()
+        {
+            Flush();
+            Close();
+            isDisposed = true;
+        }
+
         private void WriteLog(string text)
         {
             string fileName = this.LogPath + "\\pmdbLog_" + DateTime.Now.ToString("yyyy-MM-dd") + ".txt";
             File.AppendAllText(fileName, DateTime.Now.ToLongTimeString() + " " + text + "\r\n");
         }
 
+        /// <summary>
+        /// 关闭引擎
+        /// </summary>
+        public void Dispose()
+        {
+            if (!isDisposed)
+                TurnOff();
+        }
     }
 
     /*  使用示例：

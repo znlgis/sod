@@ -111,16 +111,18 @@ namespace DataSync
                     currBatch.BatchNumber = 1;
                     currBatch.ExportTableName = exportTableName;
                     currBatch.LastExportDate = DateTime.Now;
-                    batchList.Add(currBatch);
+                   // batchList.Add(currBatch);
+                    MemDB.Add(currBatch);
                 }
                 else
                 {
                     currBatch.BatchNumber += 1;
                     currBatch.LastExportDate = DateTime.Now;
                 }
+              
                 MemDB.Save<ExportBatchInfo>();
                 //导出数据
-                List<T> entityList = q == null ? CurrDbContext.QueryList<T>(q) : CurrDbContext.QueryAllList<T>();
+                List<T> entityList = q != null ? CurrDbContext.QueryList<T>(q) : CurrDbContext.QueryAllList<T>();
                 ExportEntityEventArgs args = new ExportEntityEventArgs(entityList, entityType, exportTableName);
                 args.Succeed = true;
                 args.OperationExcepiton = null;
