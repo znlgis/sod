@@ -245,9 +245,12 @@ namespace PWMIS.EnterpriseFramework.ModuleRoute
             get
             {
                 //在入口应用程序，查找 ModuleApplication 的实现类类型
+                //如果没有入口程序集，那么应该在继承 ModuleApplication 的子类的程序集，在应用程序初始化的时候，调用下本属性
                 if (CurrentAppType == null)
                 {
                     Assembly entry = Assembly.GetEntryAssembly();
+                    if (entry == null)
+                        entry = Assembly.GetCallingAssembly();
                     CurrentAppType = entry.GetTypes().FirstOrDefault(p => p.BaseType == typeof(ModuleApplication));
                     if (CurrentAppType != null)
                     {
@@ -260,7 +263,7 @@ namespace PWMIS.EnterpriseFramework.ModuleRoute
                         start();
                     }
                     else
-                        throw new Exception("当前应用程序没有实现 ModuleApplication 类，必须要求实现一个。");
+                        throw new Exception("当前应用程序的入口程序集没有实现 ModuleApplication 类，必须要求实现一个。（入口程序集对可执行的.NET程序而言就是此exe程序集，如果是Office插件类程序集，它是最先执行的程序集。）");
                 }
 
                 return ModuleRegistration.Context.ModuleRuntime;
