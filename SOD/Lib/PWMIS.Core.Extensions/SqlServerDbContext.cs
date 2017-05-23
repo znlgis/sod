@@ -42,7 +42,7 @@ namespace PWMIS.Core.Extensions
         /// <summary>
         /// 检查实体类对应的数据表是否在数据库中存在
         /// </summary>
-        public void CheckTableExists<T>() where T : EntityBase, new()
+        public bool CheckTableExists<T>() where T : EntityBase, new()
         {
             //创建表
             var entity = new T();
@@ -53,6 +53,21 @@ namespace PWMIS.Core.Extensions
                 EntityCommand ecmd = new EntityCommand(entity, CurrentDataBase);
                 string sql = ecmd.CreateTableCommand;
                 CurrentDataBase.ExecuteNonQuery(sql);
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// 检查实体类对应的表是否存在，如果不存在则创建表并执行可选的SQL语句，比如为表增加索引等。
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="initSql">要初始化执行的SQL语句</param>
+        public void InitializeTable<T>(string initSql) where T : EntityBase, new()
+        {
+            if (!CheckTableExists<T>())
+            {
+                CurrentDataBase.ExecuteNonQuery(initSql);
             }
         }
 

@@ -2012,6 +2012,14 @@ namespace PWMIS.DataMap.Entity
                     throw new Exception("OQL使用的实体类，不包含指定的属性名称。排序属性："+str);
 
                 string orderField = fieldName;
+                //防止传进来的数组排序字段没有带 [ ] ，这可能在其它数据库造成问题
+                //感谢网友 上海-暗夜 提供解决方案
+                if (orderField[0] != '[')
+                    orderField = orderField.Insert(0, "[");
+                if (orderField[orderField.Length - 1] != ']')
+                    orderField = orderField + "]";
+
+
                 orderArr[0] = tempArr_0;
                 if (tempArr.Length == 1)
                 {

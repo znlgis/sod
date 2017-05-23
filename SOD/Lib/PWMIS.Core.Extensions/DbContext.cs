@@ -92,9 +92,9 @@ namespace PWMIS.Core.Extensions
         /// 在数据库中检查指定的实体类映射的数据表是否存在，如果不存在，将创建表
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
-        public void CheckTableExists<T>() where T : EntityBase, new()
+        public bool CheckTableExists<T>() where T : EntityBase, new()
         {
-            DbContextProvider.CheckTableExists<T>();
+            bool flag=  DbContextProvider.CheckTableExists<T>();
             //这里记录下所有检查的表，供需要的时候使用
             RuntimeTypeHandle thisHandle = GetType().TypeHandle;
             RuntimeTypeHandle entityHandle = typeof(T).TypeHandle;
@@ -111,7 +111,21 @@ namespace PWMIS.Core.Extensions
                 if(!list.Contains(entityHandle))
                     list.Add(entityHandle);
             }
-            
+            return flag;
+        }
+
+        /// <summary>
+        /// 检查实体类对应的表是否存在，如果不存在则创建表并执行可选的SQL语句，比如为表增加索引等。
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="initSql">要初始化执行的SQL语句，为空则忽略</param>
+        public void InitializeTable<T>(string initSql) where T : EntityBase, new()
+        {
+            if (!CheckTableExists<T>())
+            {
+                if (!string.IsNullOrEmpty(initSql))
+                    CurrentDataBase.ExecuteNonQuery(initSql);
+            }
         }
         #endregion
 
