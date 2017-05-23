@@ -25,7 +25,7 @@ namespace PWMIS.PostgreSQLClient
         /// <summary>
         /// 检查实体类对应的数据表是否在数据库中存在
         /// </summary>
-        public void CheckTableExists<T>() where T : EntityBase, new()
+        public bool CheckTableExists<T>() where T : EntityBase, new()
         {
             //创建表
             if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL)
@@ -38,8 +38,11 @@ namespace PWMIS.PostgreSQLClient
                     EntityCommand ecmd = new EntityCommand(entity, CurrentDataBase);
                     string sql = ecmd.CreateTableCommand;
                     CurrentDataBase.ExecuteNonQuery(sql);
+                    return false;
                 }
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace PWMIS.PostgreSQLClient
         /// </summary>
         /// <param name="tableName">表名</param>
         /// <typeparam name="T">实体类</typeparam>
-        public void CheckTableExists<T>(string tableName) where T : EntityBase, new()
+        public bool CheckTableExists<T>(string tableName) where T : EntityBase, new()
         {
             //创建表
             if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL)
@@ -61,7 +64,23 @@ namespace PWMIS.PostgreSQLClient
                     EntityCommand ecmd = new EntityCommand(entity, CurrentDataBase);
                     string sql = ecmd.CreateTableCommand;
                     CurrentDataBase.ExecuteNonQuery(sql);
+                    return false;
                 }
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 检查实体类对应的表是否存在，如果不存在则创建表并执行可选的SQL语句，比如为表增加索引等。
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="initSql">要初始化执行的SQL语句</param>
+        public void InitializeTable<T>(string initSql) where T : EntityBase, new()
+        {
+            if (!CheckTableExists<T>())
+            {
+                CurrentDataBase.ExecuteNonQuery(initSql);
             }
         }
 

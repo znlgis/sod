@@ -26,6 +26,14 @@ namespace PWMIS.Core.Interface
         /// 检查实体类对应的数据表是否在数据库中存在，需要在子类中实现
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        void CheckTableExists<T>() where T : EntityBase, new();
+        /// <returns>返回检查的时候，表是否存在</returns>
+        bool CheckTableExists<T>() where T : EntityBase, new();
+        /// <summary>
+        /// 检查实体类对应的表是否存在，如果不存在则创建表并执行可选的SQL语句，比如为表增加索引等。
+        /// </summary>
+        /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="initSql">要初始化执行的SQL语句</param>
+        void InitializeTable<T>(string initSql) where T : EntityBase, new();
+
     }
 }
