@@ -36,7 +36,8 @@ namespace ServiceSample
             if (publishCount > 10)
             {
                 timer.Stop();
-                Console.WriteLine("AlarmClockService Timer Stoped. ");
+                Console.WriteLine("[{0}] AlarmClockService Timer Stoped. ",DateTime.Now);
+                CurrentContext.PublishEventSource.DeActive();
             }
         }
 
@@ -54,10 +55,16 @@ namespace ServiceSample
                 //注意：调用DeActive 方法后将会停止事件推送，所以请注意此方法调用的时机。
 
                 //下面代码仅做测试，查看服务事件源对象的活动生命周期
+                //在 ActiveLife 时间之后，一直没有事件推送，则事件源对象被视为非活动状态，发布工作线程会被回收。
+                //在本例中，ActiveLife 为ServiceEventSource 构造函数的第二个参数，值为 2分钟，可以通过下面一行代码证实：
                 int life = CurrentContext.PublishEventSource.ActiveLife;
 
                 //如果上面执行的是一个执行时间比较长的方法，并且有返回值，想将返回值也推送给订阅端，可以再次执行CurrentContext.PublishData
-                CurrentContext.PublishData(DateTime.Now);
+                //CurrentContext.PublishData(DateTime.Now);
+
+                //如果事件推送结束，需要设置事件源为非活动状态，否则，需要等待 ActiveLife 时间之后自然过期成为非活动状态。
+                //如果你无法确定事件推送何时结束，请不要调用下面的方法
+                //CurrentContext.PublishEventSource.DeActive();
             });
         }
 

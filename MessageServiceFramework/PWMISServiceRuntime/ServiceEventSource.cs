@@ -21,6 +21,10 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         /// </summary>
         public int ActiveLife { get; private set; }
         /// <summary>
+        /// 当前所在的服务上下文
+        /// </summary>
+        public IServiceContext CurrentContext { get; protected internal set; }
+        /// <summary>
         /// 以默认的事件源对象存活周期初始化本对象
         /// </summary>
         /// <param name="source">引发事件的源对象</param>
@@ -67,6 +71,8 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         public void DeActive()
         {
             this.ActiveLife = 0;
+            //发布一次空数据，促使尽快结束发布线程
+            this.CurrentContext.PublishData(null);
         }
     }
 }

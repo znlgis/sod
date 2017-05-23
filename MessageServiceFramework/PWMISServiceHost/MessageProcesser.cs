@@ -145,6 +145,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 context.Request.ClientIP = e.Listener.FromIP;
                 context.Request.ClientPort = e.Listener.FromPort;
                 context.Request.ClientIdentity = identity;
+                context.InitRequestParameters();
 
                 context.ProcessService(e.Listener.SessionID);
 

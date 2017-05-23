@@ -436,6 +436,7 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
                         if (result is ServiceEventSource)
                         {
                             this.PublishEventSource = (ServiceEventSource)result;
+                            this.PublishEventSource.CurrentContext = this;
                             this.Request.RequestModel = RequestModel.ServiceEvent;
                             this.Response.Write("");
                         }
@@ -584,6 +585,7 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         /// <returns></returns>
         private object ExecuteService(IService service)
         {
+            this.InitRequestParameters();
             return DynamicServiceCall(service, this.Request.MethodName, this.Request.Parameters);
         }
 
