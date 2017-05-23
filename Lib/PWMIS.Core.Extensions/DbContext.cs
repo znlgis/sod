@@ -118,13 +118,18 @@ namespace PWMIS.Core.Extensions
         /// 检查实体类对应的表是否存在，如果不存在则创建表并执行可选的SQL语句，比如为表增加索引等。
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
-        /// <param name="initSql">要初始化执行的SQL语句，为空则忽略</param>
+        /// <param name="initSql">要初始化执行的SQL语句，为空则忽略，支持{0} 占位符，者将会用表名称替换。</param>
         public void InitializeTable<T>(string initSql) where T : EntityBase, new()
         {
             if (!CheckTableExists<T>())
             {
                 if (!string.IsNullOrEmpty(initSql))
-                    CurrentDataBase.ExecuteNonQuery(initSql);
+                {
+                    T entity = new T();
+                    string tableName = entity.GetTableName();
+                    string sql = string.Format(initSql, tableName);
+                    CurrentDataBase.ExecuteNonQuery(sql);
+                }
             }
         }
         #endregion
