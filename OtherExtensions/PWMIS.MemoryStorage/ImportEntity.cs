@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataSync
+namespace PWMIS.MemoryStorage
 {
 
     /// <summary>
@@ -39,6 +39,53 @@ namespace DataSync
         UserDefined
     }
 
+    public enum ImportResultFlag
+    {
+        /// <summary>
+        /// 没有导入批次信息，不能导入
+        /// </summary>
+        NoBatchInfo,
+        /// <summary>
+        /// 数据是旧的，不需要导入，可能已经导入过
+        /// </summary>
+        IsOldData,
+        /// <summary>
+        /// 用户取消的导入
+        /// </summary>
+        UserCanceled,
+        /// <summary>
+        /// 成功
+        /// </summary>
+        Succeed
+    }
+
+    /// <summary>
+    /// 数据导入结果信息
+    /// </summary>
+    public class ImportResult
+    {
+        /// <summary>
+        /// 导入的记录数量
+        /// </summary>
+        public int ImportCount { get; protected internal set; }
+        /// <summary>
+        /// 导入的表名称
+        /// </summary>
+        public string ImportTable { get; protected internal set; }
+        /// <summary>
+        /// 导入的批次号
+        /// </summary>
+        public int BatchNumber { get; protected internal set; }
+        /// <summary>
+        /// 是否取消了导入
+        /// </summary>
+        public bool IsCancel { get; protected internal set; }
+        /// <summary>
+        /// 导入结果枚举
+        /// </summary>
+        public ImportResultFlag Flag { get; protected internal set; }
+    }
+
     /// <summary>
     /// 实体数据导入参数类
     /// </summary>
@@ -57,15 +104,26 @@ namespace DataSync
         /// </summary>
         public string ImportTable { get; private set; }
         /// <summary>
+        /// 导入的批次号
+        /// </summary>
+        public int BatchNumber { get; private set; }
+        /// <summary>
         /// 是否撤销导入
         /// </summary>
         public bool Cancel { get; set; }
-
-        public ImportEntityEventArgs(System.Collections.IList list, Type entityType, string table)
+        /// <summary>
+        /// 使用一个数据集合和其它信息初始化本类
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="entityType"></param>
+        /// <param name="table"></param>
+        /// <param name="batchNumber"></param>
+        public ImportEntityEventArgs(System.Collections.IList list, Type entityType, string table,int batchNumber)
         {
             this.DataList = list;
             this.EntityType = entityType;
             this.ImportTable = table;
+            this.BatchNumber = batchNumber;
         }
     }
 
@@ -105,16 +163,21 @@ namespace DataSync
         /// <param name="mode">导入模式</param>
         /// <param name="isNew">导入模式为更新模式的时候，进行实体类数据新旧比较的自定义方法，第一个参数为源实体，第二个参数为数据库的目标实体，返回源是否比目标新</param>
         /// <returns>导入的数据数量</returns>
-        public int Import<T>(ImportMode mode,Func<T,T,bool> isNew) where T : EntityBase, new()
+        public ImportResult Import<T>(ImportMode mode, Func<T, T, bool> isNew) where T : EntityBase, new()
         {
             Type entityType = typeof(T);
             string importTableName = EntityFieldsCache.Item(entityType).TableName;
+            ImportResult result = new ImportResult();
+            result.ImportTable = importTableName;
+            result.IsCancel = true;
+
             //导出批次管理
             List<ExportBatchInfo> batchList = MemDB.Get<ExportBatchInfo>();
             ExportBatchInfo currBatch = batchList.FirstOrDefault(p => p.ExportTableName == importTableName);
             if (currBatch == null)
             {
-                return -2;//没有导入批次信息，不能导入
+                result.Flag = ImportResultFlag.NoBatchInfo;
+                return result;//没有导入批次信息，不能导入
             }
             //只有比数据库的导入批次数据新，才可以导入
             OQL q = OQL.From(currBatch)
@@ -126,39 +189,56 @@ namespace DataSync
             {
                 currBatch.SetDefaultChanges();
                 this.CurrDbContext.Add<ExportBatchInfo>(currBatch);
+                result.BatchNumber = currBatch.BatchNumber;
             }
             else
             {
+                result.BatchNumber = currBatch.BatchNumber;
                 if (currBatch.BatchNumber <= dbBatch.BatchNumber)
-                    return -3;//没有新数据需要导入
+                {
+                    result.Flag = ImportResultFlag.IsOldData;
+                    return result;//没有新数据需要导入
+                }
+                currBatch.ID = dbBatch.ID;
             }
-            
 
             //导入数据
             int count = 0;// 
             List<T> list = this.MemDB.Get<T>();
             if (list.Count > 0)
             {
-                ImportEntityEventArgs args = new ImportEntityEventArgs(list, entityType, importTableName);
+                ImportEntityEventArgs args = new ImportEntityEventArgs(list, entityType, importTableName, currBatch.BatchNumber);
                 if (BeforeImport != null)
                 {
                     BeforeImport(this,args);
                     if (args.Cancel)
-                        return -1;
+                    {
+                        result.Flag = ImportResultFlag.UserCanceled;
+                        return result;
+                    }
                 }
                
                 if (mode == ImportMode.Append)
                 {
+                    list.ForEach(item => {
+                        item.SetDefaultChanges();
+                    });
                     count = this.CurrDbContext.AddList(list);
                 }
                 else if (mode == ImportMode.TruncateAndInsert)
                 {
                     string sql = "TRUNCATE TABLE [" + importTableName + "]";
                     this.CurrDbContext.CurrentDataBase.ExecuteNonQuery(sql);
+                    list.ForEach(item =>
+                    {
+                        item.SetDefaultChanges();
+                    });
                     count = this.CurrDbContext.AddList(list);
                 }
                 else if (mode == ImportMode.Update)
                 {
+                    if (isNew == null)
+                        throw new ArgumentNullException("当 ImportMode 为Update 模式的时候，参数 isNew 不能为空。");
                     foreach (T item in list)
                     {
                         T dbEntity = (T)item.Clone();
@@ -191,7 +271,7 @@ namespace DataSync
                         {
                             //没有Fill成功实体，说明数据库没有此数据，则添加数据到数据库
                             item.SetDefaultChanges();
-                            count+= eq.Insert(dbEntity);
+                            count+= eq.Insert(item);
                         }
                     }
                 }
@@ -208,11 +288,14 @@ namespace DataSync
               
             }//end if
             //更新导入批次信息
-            currBatch.BatchNumber += 1;
+            currBatch.BatchNumber = result.BatchNumber;
             currBatch.LastExportDate = DateTime.Now;
             this.CurrDbContext.Update<ExportBatchInfo>(currBatch);
 
-            return count;
+            result.IsCancel = false;
+            result.Flag = ImportResultFlag.Succeed;
+            result.ImportCount = count;
+            return result;
         }
 
         /*
