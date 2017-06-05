@@ -80,11 +80,11 @@ namespace PWMIS.Core.Extensions
         /// <summary>
         /// 执行增删改操作前的事件
         /// </summary>
-        public EventHandler<EntityQueryExecuteEventArgs> OnBeforeExecute;
+        public event EventHandler<EntityQueryExecuteEventArgs> OnBeforeExecute;
         /// <summary>
         /// 执行增删改操作之后的事件
         /// </summary>
-        public EventHandler<EntityQueryExecuteEventArgs> OnAfterExecute;
+        public event EventHandler<EntityQueryExecuteEventArgs> OnAfterExecute;
         
         
         /// <summary>
