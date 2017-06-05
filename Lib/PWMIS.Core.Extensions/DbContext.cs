@@ -10,6 +10,58 @@ using PWMIS.Core.Interface;
 namespace PWMIS.Core.Extensions
 {
     /// <summary>
+    /// 实体查询增删改执行事件参数类
+    /// </summary>
+    public class EntityQueryExecuteEventArgs : EventArgs
+    {
+        /// <summary>
+        /// 操作的实体类
+        /// </summary>
+        public EntityBase Entity { get; private set; }
+        /// <summary>
+        /// 执行类型
+        /// </summary>
+        public EntityQueryExecuteType ExecuteType { get; private set; }
+        /// <summary>
+        /// 执行是否成功
+        /// </summary>
+        public bool Success { get; set; }
+        /// <summary>
+        /// 使用实体类和查询类型初始化本类
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="executeType"></param>
+        public EntityQueryExecuteEventArgs(EntityBase entity,EntityQueryExecuteType executeType)
+        {
+            this.Entity = entity;
+            this.ExecuteType = executeType;
+        }
+    }
+
+    /// <summary>
+    /// 实体查询类型
+    /// </summary>
+    public enum EntityQueryExecuteType
+    { 
+        /// <summary>
+        /// 仅查询
+        /// </summary>
+        Select,
+        /// <summary>
+        /// 插入
+        /// </summary>
+        Insert,
+        /// <summary>
+        /// 更新
+        /// </summary>
+        Update,
+        /// <summary>
+        /// 删除
+        /// </summary>
+        Delete
+    }
+
+    /// <summary>
     /// 数据上下文，可以实现自动检查数据库，创建表，获取EntityQuery 泛型实例对象等功能，封装了AdoHelper的使用。
     /// </summary>
     public abstract class DbContext:IDbContextProvider
@@ -25,6 +77,16 @@ namespace PWMIS.Core.Extensions
         /// 数据库文件，对于文件型数据库需要设置该字段，并且在CheckDB 实现类里面做适当的处理
         /// </summary>
         public string DBFilePath = string.Empty;
+        /// <summary>
+        /// 执行增删改操作前的事件
+        /// </summary>
+        public EventHandler<EntityQueryExecuteEventArgs> OnBeforeExecute;
+        /// <summary>
+        /// 执行增删改操作之后的事件
+        /// </summary>
+        public EventHandler<EntityQueryExecuteEventArgs> OnAfterExecute;
+        
+        
         /// <summary>
         /// 初始化数据访问上下文,程序会自动寻找合适的数据上下文提供程序
         /// </summary>
@@ -294,7 +356,7 @@ namespace PWMIS.Core.Extensions
         }
 
         #region 增，删，改公共方法
-        private int ExecuteQuery<T>(T data, Func<EntityQuery, EntityBase, int> fun) where T : class
+        private int ExecuteQuery<T>(T data, Func<EntityQuery, EntityBase, int> fun ,EntityQueryExecuteType executeType) where T : class
         {
             EntityBase entity = data as EntityBase;
             if (entity == null) //T 是接口类型，data 是一个实现了该接口的DTO
@@ -306,9 +368,17 @@ namespace PWMIS.Core.Extensions
                 //entity.ResetChanges(true);
             }
 
+            EntityQueryExecuteEventArgs args = new EntityQueryExecuteEventArgs(entity, executeType);
+            if (this.OnBeforeExecute != null)
+                this.OnBeforeExecute(this, args);
+
             EntityQuery eq = new EntityQuery(CurrentDataBase);
            
             int accept = fun(eq, entity);
+            args.Success = accept > 0;
+
+            if (this.OnAfterExecute != null)
+                this.OnAfterExecute(this, args);
             return accept;
         }
 
@@ -337,7 +407,7 @@ namespace PWMIS.Core.Extensions
             //}
             //else
             //{
-                return ExecuteQuery<T>(data, (q, e) => q.Insert(e));
+                return ExecuteQuery<T>(data, (q, e) => q.Insert(e), EntityQueryExecuteType.Insert);
             //}
 
         }
@@ -350,7 +420,7 @@ namespace PWMIS.Core.Extensions
         /// <returns>操作受影响的行数</returns>
         public int Update<T>(T data) where T : class
         {
-            return ExecuteQuery<T>(data, (q, e) => q.Update(e));
+            return ExecuteQuery<T>(data, (q, e) => q.Update(e), EntityQueryExecuteType.Update);
         }
 
         /// <summary>
@@ -361,7 +431,7 @@ namespace PWMIS.Core.Extensions
         /// <returns>操作受影响的行数</returns>
         public int Remove<T>(T data) where T : class
         {
-            return ExecuteQuery<T>(data, (q, e) => q.Delete(e));
+            return ExecuteQuery<T>(data, (q, e) => q.Delete(e), EntityQueryExecuteType.Delete);
         }
 
         /// <summary>
