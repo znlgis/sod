@@ -149,6 +149,17 @@ namespace PWMIS.MemoryStorage
             return false;
         }
 
+        /// <summary>
+        /// 清除内存数据库的实体类数据文件
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        public void DropEntity<T>() where T : EntityBase, new()
+        {
+            Type t = typeof(T);
+            string fileName = this.FilePath + "\\" + t.FullName + ".pmdb";
+            File.Delete(fileName);
+            this.WriteLog("【删除】数据 " + fileName + " 成功！");
+        }
 
 
         /// <summary>
