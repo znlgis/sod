@@ -86,9 +86,15 @@ namespace PWMIS.MemoryStorage
             if (entitys.Length > 0)
             {
                 args.Succeed = MemDB.SaveEntity<T>(entitys);
-                if (OnSaved != null)
-                    OnSaved(this, args);
             }
+            else
+            {
+                MemDB.DropEntity<T>();
+                args.Succeed = true;
+            }
+
+            if (OnSaved != null)
+                OnSaved(this, args);
         }
 
         /// <summary>
