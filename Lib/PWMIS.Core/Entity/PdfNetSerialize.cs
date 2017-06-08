@@ -58,7 +58,7 @@ namespace PWMIS.DataMap.Entity
                             bw.Write(Convert.ToString(obj));
                             break;
                         case "DateTime":
-                            bw.Write(((DateTime)obj).ToBinary());
+                            bw.Write(Convert.ToDateTime(obj).ToBinary());
                             break;
                         case "Int16": bw.Write(Convert.ToInt16(obj)); break;
                         case "Int64": bw.Write(Convert.ToInt64(obj)); break;
