@@ -9,6 +9,7 @@ using PWMIS.Windows.Controls;
 using PWMIS.Windows;
 using PWMIS.DataForms.Adapter;
 using PWMIS.DataMap;
+using System.Collections;
 
 namespace PWMIS.DataForms.Adapter
 {
@@ -61,7 +62,7 @@ namespace PWMIS.DataForms.Adapter
         /// 清除窗体上的智能控件的值
         /// </summary>
         /// <param name="Controls">窗体控件集和</param>
-        public static void ClearIBData(System.Windows.Forms.Form.ControlCollection Controls)
+        public static void ClearIBData(System.Windows.Forms.Control.ControlCollection Controls)
         {
             //使用匿名委托
             UseDataControl clearData = delegate(IDataControl dataControl)
@@ -77,7 +78,7 @@ namespace PWMIS.DataForms.Adapter
         /// </summary>
         /// <param name="controls">窗体容器控件的控件集合</param>
         /// <param name="useMethod">自定义的方法</param>
-        public static void DoDataControls(System.Windows.Forms.Form.ControlCollection controls, UseDataControl useMethod)
+        public static void DoDataControls(ICollection controls, UseDataControl useMethod)
         {
             foreach (IDataControl item in GetIBControls(controls))
                 useMethod(item);
@@ -88,7 +89,7 @@ namespace PWMIS.DataForms.Adapter
         /// </summary>
         /// <param name="controls">控件集合，如页面容器对象</param>
         /// <returns>智能控件列表</returns>
-        public static List<IDataControl> GetIBControls(System.Windows.Forms.Control.ControlCollection controls)
+        public static List<IDataControl> GetIBControls(ICollection controls)
         {
             List<IDataControl> IBControls = new List<IDataControl>();
             findIBControls(IBControls, controls);
@@ -162,7 +163,7 @@ namespace PWMIS.DataForms.Adapter
         /// </summary>
         /// <param name="arrIBs">存放控件的数组</param>
         /// <param name="controls">要寻找的原控件集合</param>
-        private static void findIBControls(List<IDataControl> arrIBs, System.Windows.Forms.Control.ControlCollection controls)
+        private static void findIBControls(List<IDataControl> arrIBs, ICollection controls)
         {
             foreach (Control ctr in controls)
             {
@@ -186,7 +187,7 @@ namespace PWMIS.DataForms.Adapter
         /// </summary>
         /// <param name="Controls">要收集的控件集合</param>
         /// <returns> ArrayList 中的成员为 IBCommand 对象，包含具体的CRUD SQL</returns>
-        public static List<IBCommand> GetSelectAndDeleteCommand(System.Windows.Forms.Form.ControlCollection Controls)
+        public static List<IBCommand> GetSelectAndDeleteCommand(System.Windows.Forms.Control.ControlCollection Controls)
         {
             List<IDataControl> IBControls = new List<IDataControl>();
             findIBControls(IBControls, Controls);
@@ -267,7 +268,7 @@ namespace PWMIS.DataForms.Adapter
         /// 自动填充智能窗体控件的数据，要求控件数据绑定到映射的表和字段
         /// </summary>
         /// <param name="Controls">要填充的窗体控件集和</param>
-        public void AutoSelectIBForm(System.Windows.Forms.Form.ControlCollection Controls)
+        public void AutoSelectIBForm(System.Windows.Forms.Control.ControlCollection Controls)
         {
             List<IDataControl> IBControls = new List<IDataControl>();
             findIBControls(IBControls, Controls);
@@ -280,7 +281,7 @@ namespace PWMIS.DataForms.Adapter
         /// </summary>
         /// <param name="Controls">要填充的窗体控件集和</param>
         /// <param name="dsSource">提供属于源的数据集</param>
-        public void AutoSelectIBForm(System.Windows.Forms.Form.ControlCollection Controls, DataSet dsSource)
+        public void AutoSelectIBForm(System.Windows.Forms.Control.ControlCollection Controls, DataSet dsSource)
         {
             List<IDataControl> IBControls = new List<IDataControl>();
             findIBControls(IBControls, Controls);
@@ -293,7 +294,7 @@ namespace PWMIS.DataForms.Adapter
         /// </summary>
         /// <param name="Controls"></param>
         /// <param name="entity"></param>
-        public void AutoSelectIBForm(System.Windows.Forms.Form.ControlCollection Controls, IEntity entity)
+        public void AutoSelectIBForm(System.Windows.Forms.Control.ControlCollection Controls, IEntity entity)
         {
             List<IDataControl> IBControls = new List<IDataControl>();
             findIBControls(IBControls, Controls);
@@ -307,7 +308,7 @@ namespace PWMIS.DataForms.Adapter
         /// </summary>
         /// <param name="Controls">要处理的窗体控件集和</param>
         /// <returns>操作受影响的记录行数</returns>
-        public int AutoDeleteIBForm(System.Windows.Forms.Form.ControlCollection Controls)
+        public int AutoDeleteIBForm(System.Windows.Forms.Control.ControlCollection Controls)
         {
             List<IDataControl> IBControls = new List<IDataControl>();
             findIBControls(IBControls, Controls);
