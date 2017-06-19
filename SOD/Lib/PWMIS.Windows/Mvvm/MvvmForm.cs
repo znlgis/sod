@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
+
 namespace PWMIS.Windows.Mvvm
 {
     /// <summary>
@@ -59,10 +60,9 @@ namespace PWMIS.Windows.Mvvm
         /// 对数据控件实现双向绑定
         /// </summary>
         /// <param name="controls">要搜索数据控件的窗体控件集合</param>
-        public void BindDataControls(Control.ControlCollection controls)
+        public void BindDataControls(List<IDataControl> controls)
         {
-            var dataControls = MyWinForm.GetIBControls(controls);
-            foreach (IDataControl control in dataControls)
+            foreach (IDataControl control in controls)
             {
                 //control.LinkObject 这里都是 "DataContext"
                 object dataSource = GetInstanceByMemberName(control.LinkObject);
@@ -155,9 +155,12 @@ namespace PWMIS.Windows.Mvvm
                             try
                             {
                                 ICommandControl cmdCtr = control as ICommandControl;
-                                object paraSource = GetInstanceByMemberName(cmdCtr.ParameterObject);
-                                string[] paraPropNames = cmdCtr.ParameterProperty.Split('.');
-                                paraValue = GetPropertyValue(paraSource, paraPropNames);
+                                if (cmdCtr.ParameterObject != null && cmdCtr.ParameterProperty != null)
+                                {
+                                    object paraSource = GetInstanceByMemberName(cmdCtr.ParameterObject);
+                                    string[] paraPropNames = cmdCtr.ParameterProperty.Split('.');
+                                    paraValue = GetPropertyValue(paraSource, paraPropNames);
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -318,10 +321,7 @@ namespace PWMIS.Windows.Mvvm
         private void MvvmForm_Load(object sender, EventArgs e)
         {
             var ibControls = MyWinForm.GetIBControls(this.Controls);
-            ControlCollection coll = new ControlCollection(this);
-            foreach(IDataControl ctr in ibControls)
-                coll.Add(ctr as Control);
-            BindDataControls(coll);
+            BindDataControls(ibControls);
         }
     }
 }

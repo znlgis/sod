@@ -33,14 +33,14 @@ namespace PWMIS.Windows.Controls
             set;
         }
 
-         [Category("MVVM"), Description("关联的参数对象")]
+         [Category("MVVM"), Description("当前窗体上提供给命令按钮执行命令的参数关联的参数对象")]
         public string ParameterObject
         {
             get;
             set;
         }
 
-         [Category("MVVM"), Description("关联的参数对象的参数名")]
+         [Category("MVVM"), Description("关联的参数对象的属性名，执行命令方法的时候将使用它的值作为参数值")]
         public string ParameterProperty
         {
             get;

@@ -23,7 +23,7 @@ namespace PWMIS.Windows
         /// </summary>
         string ParameterObject{get;set;}
         /// <summary>
-        /// 关联的参数对象的参数名
+        /// 关联的参数对象的属性名
         /// </summary>
         string ParameterProperty { get; set; }
         /// <summary>
