@@ -759,11 +759,9 @@ namespace PWMIS.DataMap.Entity
                 case PWMIS.Common.DBMSType.SqlServer: //可以在这里判断版本，以支持SQLSERVER 2012的分页
                 case PWMIS.Common.DBMSType.SqlServerCe:
                     //如果含有Order By 子句，则不能使用主键分页
-                    if (oql.haveJoinOpt || sql.IndexOf("order by", StringComparison.OrdinalIgnoreCase) > 0)
-                    {
-                        page_sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.SqlServer, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
-                    }
-                    else
+                    if (!oql.haveJoinOpt && (
+                       !oql.haveOrderBy || (oql.haveOrderBy && oql.OrderByPK)
+                                             ))
                     {
                         //如果是字符串类型的主键，下面的分页可能不准确
                         if (oql.PageOrderDesc)
@@ -771,6 +769,11 @@ namespace PWMIS.DataMap.Entity
                         else
                             page_sql = PWMIS.Common.SQLPage.GetAscPageSQLbyPrimaryKey(oql.PageNumber, oql.PageSize, oql.sql_fields, oql.sql_table, oql.PageField, oql.sql_condition);
                     }
+                    else
+                    {
+                        page_sql = PWMIS.Common.SQLPage.MakeSQLStringByPage(PWMIS.Common.DBMSType.SqlServer, sql, "", oql.PageSize, oql.PageNumber, oql.PageWithAllRecordCount);
+                    }
+                   
                     break;
 
                 default:

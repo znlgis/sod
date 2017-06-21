@@ -242,6 +242,11 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         public bool PageOrderDesc = true;
         /// <summary>
+        /// 是否按照主键分页
+        /// </summary>
+        public bool OrderByPK = false;
+
+        /// <summary>
         /// 分页的时候，记录的总数量，如未设置虚拟为999条。如需准确分页，应设置该值。
         /// </summary>
         public int PageWithAllRecordCount = 999;
@@ -1335,11 +1340,13 @@ namespace PWMIS.DataMap.Entity
 
             if (this.PageEnable)
             {
-                if (this.PageField == "" && sql.IndexOf(" order by ", StringComparison.OrdinalIgnoreCase) <= 0)
+                //如果需要分页，那么需要测试是否指定了排序子句
+                //    如果未指定排序子句，那么必须指定主键排序
+                if (this.OrderByPK || sql.IndexOf(" order by ", StringComparison.OrdinalIgnoreCase) <= 0)
                 {
                     if (this.currEntity.PrimaryKeys == null || this.currEntity.PrimaryKeys.Count == 0)
                         throw new Exception("OQL 分页错误，没有指明分页标识字段，也未给当前实体类设置主键。");
-                    this.PageField = this.currEntity.PrimaryKeys[0];
+                    this.PageField = string.Format("[{0}]", this.currEntity.PrimaryKeys[0]);
                 }
             }
             return sql;
@@ -1935,7 +1942,11 @@ namespace PWMIS.DataMap.Entity
         {
             string temp = CurrentOQL.haveOrderBy ? "," : "\r\n                 ORDER BY ";
             CurrentOQL.haveOrderBy = true;
-            CurrentOQL.oqlString += temp + CurrentOQL.TakeOneStackFields().SqlFieldName;
+            CurrentOQL.PageOrderDesc = false;
+
+            string sqlFieldName= CurrentOQL.TakeOneStackFields().SqlFieldName;
+            CurrentOQL.OrderByPK = CurrentOQL.currEntity.PrimaryKeys.Contains(sqlFieldName.Trim().TrimStart('[').TrimEnd(']'));
+            CurrentOQL.oqlString += temp + sqlFieldName;
             return new OQLOrderType(this);
         }
 
@@ -1944,9 +1955,13 @@ namespace PWMIS.DataMap.Entity
             string strTemp = orderType.ToLower();
             if (strTemp != "asc" && strTemp != "desc")
                 throw new FormatException("排序类型错误！");
-            string temp = CurrentOQL.haveOrderBy ? "," : "\r\n                 ORDER BY ";
+            CurrentOQL.PageOrderDesc = strTemp == "desc";
             CurrentOQL.haveOrderBy = true;
-            CurrentOQL.oqlString += temp + CurrentOQL.TakeOneStackFields().SqlFieldName + " " + orderType;
+
+            string temp = CurrentOQL.haveOrderBy ? "," : "\r\n                 ORDER BY ";
+            string sqlFieldName = CurrentOQL.TakeOneStackFields().SqlFieldName;
+            CurrentOQL.OrderByPK = CurrentOQL.currEntity.PrimaryKeys.Contains(sqlFieldName.Trim().TrimStart('[').TrimEnd(']'));
+            CurrentOQL.oqlString += temp + sqlFieldName + " " + orderType;
 
             return this;
         }
