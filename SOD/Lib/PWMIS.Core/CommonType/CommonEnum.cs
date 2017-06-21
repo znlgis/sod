@@ -51,9 +51,13 @@ namespace PWMIS.Common
         XML
     }
 
+    //下面的委托定义，用于.NET 2.0 没有的，替代.NET 3.5之后的委托方法
+
     public delegate TResult MyFunc<T, TResult>(T arg);
 
     public delegate TResult MyFunc<T1,T2, TResult>(T1 arg1,T2 arg2);
+
+    public delegate void MyAction();
 
     public delegate void MyAction<T1, T2>(T1 arg1, T2 arg2);
 

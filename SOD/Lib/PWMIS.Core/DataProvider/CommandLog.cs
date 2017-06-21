@@ -318,7 +318,7 @@ namespace PWMIS.DataProvider.Data
         /// <summary>
         /// 将日志全部写入
         /// </summary>
-        public void Dispose()
+        public void Flush()
         {
             this.LogWriter.Dispose();
         }
@@ -388,8 +388,15 @@ namespace PWMIS.DataProvider.Data
 
         public void Dispose()
         {
-            _lastWrite = DateTime.Now.AddMinutes(-10);
+            Flush();
         }
+
+        public void Flush()
+        {
+            _lastWrite = DateTime.Now.AddMinutes(-10);
+            WriteLog("-----");
+        }
+
     }
 
 

@@ -70,6 +70,7 @@ namespace PWMIS.DataProvider.Data
         public void OnExecuteError(IDbCommand cmd, string errorMessage)
         {
             CurrCommandLog.WriteErrLog(cmd, "AdoHelper:" + errorMessage);
+            CurrCommandLog.Flush();
         }
 
         public long OnExecuted(IDbCommand cmd, int recordAffected)
@@ -77,6 +78,7 @@ namespace PWMIS.DataProvider.Data
             long elapsedMilliseconds;
             CurrCommandLog.WriteLog(cmd, "AdoHelper", out elapsedMilliseconds);
             CurrCommandLog.WriteLog("RecordAffected:"+recordAffected , "AdoHelper");
+            CurrCommandLog.Flush();
             return elapsedMilliseconds;
         }
 

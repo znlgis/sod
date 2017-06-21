@@ -155,13 +155,13 @@ namespace OQLTest
             Console.WriteLine("q5:having Test: \r\n{0}", q5);
             Console.WriteLine(q5.PrintParameterInfo());
 
-            q5 = OQL.From(user)
-                .Select(user.Age).Sum(user.Age,"sum_age")
-                .GroupBy(user.Age)
-                .OrderBy(user.Age)
-                .END;
-            Console.WriteLine("q5:having Test: \r\n{0}", q5);
-            Console.WriteLine(q5.PrintParameterInfo());
+            //q5 = OQL.From(user)
+            //    .Select(user.Age).Sum(user.Age,"sum_age")
+            //    .GroupBy(user.Age)
+            //    .OrderBy(user.Age)
+            //    .END;
+            //Console.WriteLine("q5:having Test: \r\n{0}", q5);
+            //Console.WriteLine(q5.PrintParameterInfo());
 
             OQL q6 = OQL.From(user).Select()
                 .Where(cmp =>
@@ -380,15 +380,15 @@ namespace OQLTest
                .Where(user.NickName)
                .OrderBy(user.ID)
                .END;
-
-            q0.Limit(10, 2);
+            q0.Distinct = true;
+            q0.Limit(10,2);
             try
             {
                 var list = EntityQuery<Users>.QueryList(q0);
             }
             catch (Exception ex)
-            { 
-            
+            {
+                Console.WriteLine("查询错误：{0}",ex.Message);
             }
             Console.WriteLine("one table and select page number 2,page size 10: \r\n{0}", q0);
             Console.WriteLine("因为OQL是抽象的SQL，而分页语法又是特定于数据库的，所以具体的分页SQL要到查询真正执行的时候才会生成。");
@@ -659,7 +659,7 @@ namespace OQLTest
             q.Limit(2);
             var list2 = EntityQuery<UserEntity>.QueryList(q, db);
 
-            Users user = new Users() { NickName = "pdf.net", RoleID = RoleNames.Admin, Age = 20 };
+            Users user = new Users() { NickName = "pdf.net", RoleID = RoleNames.Admin };
             UserRoles roles = new UserRoles() { RoleName = "role1" };
             //测试字段直接比较
             OQL q00 = OQL.From(user)

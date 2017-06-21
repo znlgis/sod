@@ -17,5 +17,9 @@ namespace PWMIS.Common
         /// </summary>
         /// <param name="log">日志内容</param>
         void WriteLog(string log);
+        /// <summary>
+        /// 将缓存的日志内容刷新到日志文件
+        /// </summary>
+        void  Flush();
     }
 }

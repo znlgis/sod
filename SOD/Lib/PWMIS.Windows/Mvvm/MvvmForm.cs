@@ -16,9 +16,17 @@ namespace PWMIS.Windows.Mvvm
     /// <summary>
     /// MVVM 窗体基类，如果需要在SOD Windows数据窗体上实现MVVM效果，请继承本类。
     /// </summary>
-    public partial class MvvmForm : Form
+    public partial class MvvmForm : Form, IMvvmForm
     {
+        /// <summary>
+        /// 命令方法
+        /// </summary>
         public delegate void CommandMethod();
+        /// <summary>
+        /// 带参数的命令方法
+        /// </summary>
+        /// <typeparam name="T">参数类型</typeparam>
+        /// <param name="para">参数</param>
         public delegate void CommandMethod<T>(T para);
 
         //private Dictionary<object, Delegate> dictCommand; //CommandMethod
@@ -316,6 +324,32 @@ namespace PWMIS.Windows.Mvvm
             }
             //统一抛出错误事件
             throw new Exception("在对象" + t.Name + " 中没有找到名为 " + propNames[0] + " 的字段或者属性！");
+        }
+
+        /// <summary>
+        /// 用于解决【线程间操作无效】的问题
+        /// </summary>
+        /// <typeparam name="T">控件或者其它对象类型</typeparam>
+        /// <param name="ctl">对象实例</param>
+        /// <param name="action">要对控件或者对象执行的方法，在此方法内对控件或者绑定的数据对象进行修改</param>
+        public void FormInvoke<T>(T ctl, Action<T> action)
+        {
+            if (InvokeRequired)
+                Invoke(new MyAction(() => action(ctl)));
+            else
+                action(ctl);
+        }
+
+        /// <summary>
+        /// 用于解决【线程间操作无效】的问题
+        /// </summary>
+        /// <param name="action">自定义的方法，在此方法内对控件或者绑定的数据对象进行修改</param>
+        public void FormInvoke(MyAction action)
+        {
+            if (InvokeRequired)
+                Invoke(new MyAction(() => action()));
+            else
+                action();
         }
 
         private void MvvmForm_Load(object sender, EventArgs e)
