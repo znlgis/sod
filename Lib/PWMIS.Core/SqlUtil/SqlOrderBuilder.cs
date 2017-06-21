@@ -40,6 +40,10 @@ namespace PWMIS.Common
             Point ps = TextSearchUtil.SearchWordsIndex(sql, "select");
             if (ps.A == -1)
                 throw new ArgumentException("未找到期望的谓词select ,不是合法的SQL:\r\n"+sql);
+            Point pd = TextSearchUtil.SearchWordsIndex(sql, "DISTINCT");
+            if (pd.A != -1)
+                ps.B = pd.B;
+
             Point pf = TextSearchUtil.SearchWordsIndex(sql, "from");
             if (pf.A < ps.A)
                 throw new ArgumentException("在select谓词之后未找到期望的from谓词，不支持此种类型的SQL分页：\r\n"+sql);
@@ -208,12 +212,19 @@ namespace PWMIS.Common
             this.SelectFields = sqlFields;
             //重新构造Select语句块
             System.Text.StringBuilder sb = new StringBuilder();
-            if (topCount > 0)
-                sb.Append("SELECT Top "+ topCount +"\r\n");
-            else if (topCount < 0)
-                sb.Append("SELECT Top " + (-topCount) + "\r\n");
+            //DISTINCT 查询问题，感谢网友 @深圳-光头佬 发现此问题 2017.6.21
+            Point psd = TextSearchUtil.SearchWordsIndex(sourceSql, "select DISTINCT");
+            if (psd.A != -1)
+                sb.Append("SELECT DISTINCT ");
             else
-                sb.Append("SELECT \r\n");
+                sb.Append("SELECT ");
+
+            if (topCount > 0)
+                sb.Append("Top "+ topCount +"\r\n");
+            else if (topCount < 0)
+                sb.Append("Top " + (-topCount) + "\r\n");
+            else
+                sb.Append(" \r\n");
             if (isSelectStart)
             {
                 sb.Append(" * \r\n");
