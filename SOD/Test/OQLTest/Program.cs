@@ -378,7 +378,7 @@ namespace OQLTest
             OQL q0 = OQL.From(user)
                .Select()
                .Where(user.NickName)
-               .OrderBy(user.ID)
+               .OrderBy(user.ID,"asc")
                .END;
             q0.Distinct = true;
             q0.Limit(10,2);

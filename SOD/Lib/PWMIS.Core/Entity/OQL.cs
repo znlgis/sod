@@ -1941,12 +1941,12 @@ namespace PWMIS.DataMap.Entity
         public OQLOrderType OrderBy(object field)
         {
             string temp = CurrentOQL.haveOrderBy ? "," : "\r\n                 ORDER BY ";
-            CurrentOQL.haveOrderBy = true;
             CurrentOQL.PageOrderDesc = false;
 
             string sqlFieldName= CurrentOQL.TakeOneStackFields().SqlFieldName;
             CurrentOQL.OrderByPK = CurrentOQL.currEntity.PrimaryKeys.Contains(sqlFieldName.Trim().TrimStart('[').TrimEnd(']'));
             CurrentOQL.oqlString += temp + sqlFieldName;
+            CurrentOQL.haveOrderBy = true;
             return new OQLOrderType(this);
         }
 
@@ -1956,13 +1956,12 @@ namespace PWMIS.DataMap.Entity
             if (strTemp != "asc" && strTemp != "desc")
                 throw new FormatException("排序类型错误！");
             CurrentOQL.PageOrderDesc = strTemp == "desc";
-            CurrentOQL.haveOrderBy = true;
 
             string temp = CurrentOQL.haveOrderBy ? "," : "\r\n                 ORDER BY ";
             string sqlFieldName = CurrentOQL.TakeOneStackFields().SqlFieldName;
             CurrentOQL.OrderByPK = CurrentOQL.currEntity.PrimaryKeys.Contains(sqlFieldName.Trim().TrimStart('[').TrimEnd(']'));
             CurrentOQL.oqlString += temp + sqlFieldName + " " + orderType;
-
+            CurrentOQL.haveOrderBy = true;
             return this;
         }
 
@@ -1971,7 +1970,6 @@ namespace PWMIS.DataMap.Entity
             string temp = CurrentOQL.haveOrderBy ? "," : "\r\n                 ORDER BY ";
             CurrentOQL.haveOrderBy = true;
             CurrentOQL.oqlString += temp + order.ToString();
-
             return this;
         }
 
