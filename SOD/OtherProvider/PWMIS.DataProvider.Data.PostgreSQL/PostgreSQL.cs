@@ -92,27 +92,45 @@ namespace PWMIS.DataProvider.Data
         /// <returns>数据库架构信息表</returns>
         public override DataTable GetSchema(string collectionName, string[] restrictionValues)
         {
-            using (NpgsqlConnection conn = (NpgsqlConnection)this.GetConnection())
+            NpgsqlConnection conn = (NpgsqlConnection)this.GetConnection();
+            bool inTransaction = this.TransactionCount > 0;
+            DataTable result = null;
+            try
             {
-                conn.Open();
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
                 if (restrictionValues == null && string.IsNullOrEmpty(collectionName))
-                    return conn.GetSchema();
+                    result = conn.GetSchema();
                 else if (restrictionValues == null && !string.IsNullOrEmpty(collectionName))
                 {
                     if (collectionName == "Procedures")
-                        return this.getProcedures();
+                        result = this.getProcedures();
                     else
-                        return conn.GetSchema(collectionName); //Procedures
+                        result = conn.GetSchema(collectionName); //Procedures
 
                 }
                 else
-                { 
+                {
                     if (collectionName == "ProcedureParameters")
-                        return getFunctionArgsInfo(restrictionValues[2]);
+                        result = getFunctionArgsInfo(restrictionValues[2]);
                     else
-                        return conn.GetSchema(collectionName, restrictionValues);
+                        result = conn.GetSchema(collectionName, restrictionValues);
                 }
             }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                if (OnErrorThrow)
+                {
+                    throw new QueryException(ErrorMessage, "GetSchema ", CommandType.Text, null, inTransaction, conn.ConnectionString, ex);
+                }
+            }
+            finally
+            {
+                if (!inTransaction && conn.State == ConnectionState.Open)
+                    conn.Close();
+            }
+            return result;
         }
 
         /// <summary>

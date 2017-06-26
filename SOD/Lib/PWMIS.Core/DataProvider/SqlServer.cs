@@ -191,26 +191,6 @@ namespace PWMIS.DataProvider.Data
             return schemaDataSet;
         }
 
-        /// <summary>
-        /// 返回此 SqlConnection 的数据源的架构信息。
-        /// </summary>
-        /// <param name="collectionName">集合名称</param>
-        /// <param name="restrictionValues">请求的架构的一组限制值</param>
-        /// <returns>数据库架构信息表</returns>
-        public override DataTable GetSchema(string collectionName, string[] restrictionValues)
-        {
-            using (SqlConnection conn = (SqlConnection)this.GetConnection())
-            {
-                conn.Open();
-                if (restrictionValues == null && string.IsNullOrEmpty(collectionName))
-                    return conn.GetSchema();
-                else if (restrictionValues == null && !string.IsNullOrEmpty(collectionName))
-                    return conn.GetSchema(collectionName);
-                else
-                    return conn.GetSchema(collectionName, restrictionValues);
-            }
-            
-        }
 
         /// <summary>
         /// 获取存储过程的定义内容
