@@ -111,25 +111,6 @@ namespace PWMIS.DataProvider.Data
             }
         }
 
-        /// <summary>
-        /// 返回此 MySqlConnection 的数据源的架构信息。
-        /// </summary>
-        /// <param name="collectionName">集合名称</param>
-        /// <param name="restrictionValues">请求的架构的一组限制值</param>
-        /// <returns>数据库架构信息表</returns>
-        public override DataTable GetSchema(string collectionName, string[] restrictionValues)
-        {
-            using (MySqlConnection conn = (MySqlConnection)this.GetConnection())
-            {
-                conn.Open();
-                if (restrictionValues == null && string.IsNullOrEmpty(collectionName))
-                    return conn.GetSchema();
-                else if (restrictionValues == null && !string.IsNullOrEmpty(collectionName))
-                    return conn.GetSchema(collectionName);
-                else
-                    return conn.GetSchema(collectionName, restrictionValues);
-            }
-        }
 
         /// <summary>
         /// 预处理SQL语句，语句中不能包含"`"(反引号，tab键上面的那个符号)号，如果需要，请使用参数化查询。

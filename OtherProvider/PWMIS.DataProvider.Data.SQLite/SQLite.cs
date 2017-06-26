@@ -213,20 +213,6 @@ namespace PWMIS.DataProvider.Data
             }
         }
 
-        public override DataTable GetSchema(string collectionName, string[] restrictionValues)
-        {
-            using (SQLiteConnection conn = (SQLiteConnection)this.GetConnection())
-            {
-                conn.Open();
-                if (restrictionValues == null && string.IsNullOrEmpty(collectionName))
-                    return conn.GetSchema();
-                else if (restrictionValues == null && !string.IsNullOrEmpty(collectionName))
-                    return conn.GetSchema(collectionName);
-                else
-                    return conn.GetSchema(collectionName, restrictionValues);
-            }
-        }
-
         public override string InsertKey
         {
             get

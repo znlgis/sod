@@ -80,6 +80,9 @@
  * 
  * 修改者：         时间：2016-2-20
  * 增加 AllowTransaction 属性，用于在某些情况下跨线程使用的安全，可以禁止开启事务，比如 MyDB.Instance
+ * 
+ * 修改者：         时间：2017-6-26
+ * 开放事务计数器属性访问并改进事务计数器的线程安全，改进数据架构查询对事务过程的支持。
  * ========================================================================
 */
 
@@ -119,6 +122,14 @@ namespace PWMIS.DataProvider.Data
         private int transCount;//事务计数器
         private IDbConnection sessionConnection = null;//会话使用的连接
         private bool disposed;
+
+        /// <summary>
+        /// 事务计数器，如果大于0，表示当前查询在事务过程中
+        /// </summary>
+        public int TransactionCount
+        {
+            get { return transCount; }
+        }
 
        /// <summary>
        /// 初始化通用数据访问对象，如果配置了日志记录，将同时初始化命令执行日志处理器到【命令处理管道】中。
@@ -519,12 +530,42 @@ namespace PWMIS.DataProvider.Data
         /// <returns></returns>
         public abstract string GetNativeDbTypeName(IDataParameter para);
         /// <summary>
-        /// 返回此 SqlConnection 的数据源的架构信息。
+        /// 返回此 SqlConnection 的数据源的架构信息。某些数据库访问类型可能需要重写此方法
         /// </summary>
         /// <param name="collectionName">集合名称，可以为空</param>
         /// <param name="restrictionValues">请求的架构的一组限制值，可以为空</param>
         /// <returns>数据库架构信息表</returns>
-        public abstract DataTable GetSchema(string collectionName, string[] restrictionValues);
+        public virtual DataTable GetSchema(string collectionName, string[] restrictionValues)
+        {
+            DbConnection conn = (DbConnection)GetConnection();
+            bool inTransaction = this.TransactionCount > 0;
+            DataTable result = null;
+            try
+            {
+                if (conn.State != ConnectionState.Open)
+                    conn.Open();
+                if (restrictionValues == null && string.IsNullOrEmpty(collectionName))
+                    result = conn.GetSchema();
+                else if (restrictionValues == null && !string.IsNullOrEmpty(collectionName))
+                    result = conn.GetSchema(collectionName);
+                else
+                    result = conn.GetSchema(collectionName, restrictionValues);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                if (OnErrorThrow)
+                {
+                    throw new QueryException(ErrorMessage, "GetSchema ", CommandType.Text, null, inTransaction, conn.ConnectionString, ex);
+                }
+            }
+            finally
+            {
+                if (!inTransaction && conn.State == ConnectionState.Open)
+                    conn.Close();
+            }
+            return result;
+        }
 
         /// <summary>
         /// 获取存储过程、函数的定义内容，如果子类支持，需要在子类中重写
@@ -562,7 +603,7 @@ namespace PWMIS.DataProvider.Data
         /// <param name="ilevel"></param>
         public void BeginTransaction(IsolationLevel ilevel)
         {
-            transCount++;
+            System.Threading.Interlocked.Increment(ref transCount);
             this.ErrorMessage = "";
             _connection = GetConnection();//在子类中将会获取连接对象实例
             if (_connection.State != ConnectionState.Open)
@@ -577,7 +618,7 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         public void Commit()
         {
-            transCount--;
+            System.Threading.Interlocked.Decrement(ref transCount);
             if (_transation != null && _transation.Connection != null && transCount == 0)
                 _transation.Commit();
 
@@ -594,7 +635,7 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         public void Rollback()
         {
-            transCount--;
+            System.Threading.Interlocked.Decrement(ref transCount);
             if (_transation != null && _transation.Connection != null)
                 _transation.Rollback();
            
