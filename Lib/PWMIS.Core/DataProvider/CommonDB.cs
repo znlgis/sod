@@ -1138,8 +1138,11 @@ namespace PWMIS.DataProvider.Data
 
             try
             {
-                //使用MyDB.Intance 连接不能及时关闭？待测试
-                ada.Fill(schemaDataSet);//FillSchema(ds,SchemaType.Mapped )
+                string tableName = "Table1";
+                if (schemaDataSet.Tables.Count > 0)
+                    tableName = schemaDataSet.Tables[0].TableName;
+                ada.Fill(schemaDataSet);
+                schemaDataSet.Tables[0].TableName = tableName;
             }
             catch (Exception ex)
             {

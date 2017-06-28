@@ -97,6 +97,7 @@ namespace PWMIS.DataProvider.Data
             return ((SqlParameter)para).SqlDbType.ToString();
         }
 
+        /*
         /// <summary>
         /// 执行查询,并以指定的(具有数据架构的)数据集来填充数据
         /// </summary>
@@ -138,6 +139,7 @@ namespace PWMIS.DataProvider.Data
             }
             return schemaDataSet;
         }
+         */ 
 
         /// <summary>
         /// 执行强类型的数据集查询
