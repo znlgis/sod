@@ -982,7 +982,6 @@ namespace PWMIS.DataProvider.Data
             IDbCommand cmd = conn.CreateCommand();
             CompleteCommand(cmd,  SQL,  commandType,  parameters);
 
-            CommandLog cmdLog = new CommandLog(true);
             int count = 0;
             object result = null;
             try
@@ -1091,7 +1090,6 @@ namespace PWMIS.DataProvider.Data
             CompleteCommand(cmd,  SQL,  commandType,  parameters);
             IDataAdapter ada = GetDataAdapter(cmd);
 
-            CommandLog cmdLog = new CommandLog(true);
             DataSet ds = new DataSet();
             int count = 0;
             try
