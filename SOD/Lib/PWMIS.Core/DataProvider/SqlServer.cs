@@ -169,17 +169,17 @@ namespace PWMIS.DataProvider.Data
             CompleteCommand(cmd,  SQL,  commandType,  parameters);
             SqlDataAdapter ada = new SqlDataAdapter((SqlCommand)cmd);
 
-            CommandLog cmdLog = new CommandLog(true);
+            int count = 0;
 
             try
             {
-                ada.Fill(schemaDataSet, tableName);
+                count=ada.Fill(schemaDataSet, tableName);
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
                 bool inTransaction = cmd.Transaction == null ? false : true;
-                cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
+                OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
                     throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
@@ -187,7 +187,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
+                OnCommandExected(cmd, count);
                 CloseConnection(conn, cmd);
             }
             return schemaDataSet;
@@ -296,8 +296,6 @@ namespace PWMIS.DataProvider.Data
             IDbCommand cmd = conn.CreateCommand();
             CompleteCommand(cmd,  SQL,  commandType,  parameters);
 
-            CommandLog cmdLog = new CommandLog(true);
-
             bool inner = false;
             int result = -1;
             ID = 0;
@@ -329,7 +327,7 @@ namespace PWMIS.DataProvider.Data
                 if (inner)
                     cmd.Transaction = null;
 
-                cmdLog.WriteErrLog(cmd, "AdoHelper:" + ErrorMessage);
+                OnCommandExecuteError(cmd, ErrorMessage);
                 if (OnErrorThrow)
                 {
                     throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
@@ -338,13 +336,10 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                if (cmd.Transaction == null && conn.State == ConnectionState.Open)
-                    conn.Close();
+                OnCommandExected(cmd, result);
+                CloseConnection(conn, cmd);
             }
-
-            long _elapsedMilliseconds;
-            cmdLog.WriteLog(cmd, "AdoHelper", out _elapsedMilliseconds);
-            base.ElapsedMilliseconds = _elapsedMilliseconds;
+          
             return result;
         }
 
