@@ -769,7 +769,7 @@ namespace PWMIS.DataProvider.Data
             }
         }
 
-        private bool OnCommandExecuting(ref string sql, CommandType commandType, IDataParameter[] parameters)
+        protected bool OnCommandExecuting(ref string sql, CommandType commandType, IDataParameter[] parameters)
         {
             if (commandHandles != null)
             {
@@ -786,7 +786,7 @@ namespace PWMIS.DataProvider.Data
             return true;
         }
 
-        private void OnCommandExecuteError(IDbCommand cmd, string errorMessage)
+        protected void OnCommandExecuteError(IDbCommand cmd, string errorMessage)
         {
             if (commandHandles != null)
             {
@@ -798,7 +798,7 @@ namespace PWMIS.DataProvider.Data
             }
         }
 
-        private void OnCommandExected(IDbCommand cmd, int recordAffected)
+        protected void OnCommandExected(IDbCommand cmd, int recordAffected)
         {
             if (commandHandles != null)
             {
