@@ -10,6 +10,7 @@ using PWMIS.EnterpriseFramework.Service.Runtime.Principal;
 using PWMIS.EnterpriseFramework.IOC;
 using PWMIS.EnterpriseFramework.Service.Client.Model;
 using PWMIS.EnterpriseFramework.Service.Client;
+using System.Threading.Tasks;
 
 namespace PWMIS.EnterpriseFramework.Service.Runtime
 {
@@ -439,6 +440,19 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
                             this.PublishEventSource.CurrentContext = this;
                             this.Request.RequestModel = RequestModel.ServiceEvent;
                             this.Response.Write("");
+                        }
+                        else if (result is Task)
+                        {
+                            try
+                            {
+                                var value = ((dynamic)result).Result;
+                                this.WriteResponse(value);
+                            }
+                            catch (Exception ex)
+                            {
+                                this.Response.Write("");
+                            }
+                            
                         }
                         else
                         {

@@ -263,9 +263,47 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                     {
                         MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
                         if (convert.Succeed)
+                        {
                             tcs.SetResult(convert.Result);
+                        }
                         else
-                            this.RaiseSubscriberError(convert, new MessageEventArgs("resultDataType 指定错误"));
+                        {
+                            ////尝试转换Task<T>
+                            ////类似：{"Result":3,"Id":6,"Exception":null,"Status":5,"IsCanceled":false,"IsCompleted":true,"CreationOptions":0,"AsyncState":null,"IsFaulted":false}
+                            //string[] keyvalues= remoteMsg.TrimStart('{').TrimEnd('}').Split(',');
+                            //if (keyvalues.Length > 5 && keyvalues[0].StartsWith("\"Result\":"))
+                            //{
+                            //    string msgData = keyvalues[0].Split(':')[1];
+
+                            //}
+                            //else
+                            //{ 
+                            
+                            //}
+                            //MessageConverter<Task<T>> convert2 = new MessageConverter<Task<T>>(remoteMsg, DataType.Json);
+                            //if (convert2.Succeed)
+                            //{
+                            //    T value = convert2.Result.Result;
+                            //    tcs.SetResult(value);
+                            //}
+                            //else
+                            //{
+                                
+                            //}
+
+                            //
+                            errMsg = "resultDataType 指定错误:" + convert.ErrorMessage;
+                            if (this.ErrorMessage != null)
+                            {
+                                this.ErrorMessage(this, new MessageEventArgs(errMsg));
+                                tcs.SetCanceled();
+                            }
+                            else
+                            {
+                                //即使抛出了异常，也必须设置任务线程的异常，否则异步方法没法返回
+                                tcs.SetException(new Exception(errMsg));
+                            }
+                        }
                     }
 
                 });

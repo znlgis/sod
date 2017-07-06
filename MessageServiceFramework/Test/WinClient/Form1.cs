@@ -289,5 +289,19 @@ namespace WinClient
                 this.btnServerTime.Enabled = false;
             }
         }
+
+        private void btnServerText_Click(object sender, EventArgs e)
+        {
+            Proxy serviceProxy = new Proxy();
+            serviceProxy.ErrorMessage += new EventHandler<MessageSubscriber.MessageEventArgs>(serviceProxy_ErrorMessage);
+            serviceProxy.ServiceBaseUri = this.txtSerivceUri.Text;
+            serviceProxy.SubscribeTextMessage("你好，MSF", serverText => {
+                MyInvoke(this, () =>
+                {
+                    this.lblResult.Text = serverText;
+                   
+                });
+            });
+        }
     }
 }

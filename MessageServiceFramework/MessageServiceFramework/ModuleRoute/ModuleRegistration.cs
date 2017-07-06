@@ -38,16 +38,33 @@ namespace PWMIS.EnterpriseFramework.ModuleRoute
             foreach (string file in System.IO.Directory.GetFiles(folder,"*.dll"))
             {
                 string shortFile = System.IO.Path.GetFileNameWithoutExtension(file);
-                Assembly ass = Assembly.Load(shortFile);
-                Type registerType = ass.GetTypes().FirstOrDefault(t => t.BaseType == typeof(ModuleRegistration));
-                if (registerType != null)
+                try
                 {
-                    ModuleRegistration register = (ModuleRegistration)Activator.CreateInstance(registerType);
-                    IModuleContext moduleContext = new ModuleContext(register.ModuleName);
-                    Context.ModuleRegister(moduleContext);
-                    register.RegisterModule(Context);
-                    Console.WriteLine("已加载[{0}]模块！", register.ModuleName);
+                    Assembly ass = Assembly.Load(shortFile);
+                    Type registerType = ass.GetTypes().FirstOrDefault(t => t.BaseType == typeof(ModuleRegistration));
+                    if (registerType != null)
+                    {
+                        ModuleRegistration register = (ModuleRegistration)Activator.CreateInstance(registerType);
+                        IModuleContext moduleContext = new ModuleContext(register.ModuleName);
+                        Context.ModuleRegister(moduleContext);
+                        register.RegisterModule(Context);
+                        Console.WriteLine("已加载[{0}]模块！", register.ModuleName);
+                    }
                 }
+                catch (System.Reflection.ReflectionTypeLoadException ex1)
+                {
+                    Console.WriteLine("ModuleRegistration 加载程序集出错，当前程序集：{0}", shortFile);
+                    foreach (Exception ex in ex1.LoaderExceptions)
+                    {
+                        Console.WriteLine("加载器错误信息：{0}",ex.Message);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("ModuleRegistration 加载程序集出错，已跳过此程序集：{0}", shortFile);
+                    Console.WriteLine("其它错误信息：{0}", ex.Message);
+                }
+               
             }
 
           

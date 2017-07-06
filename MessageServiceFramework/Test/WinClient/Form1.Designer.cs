@@ -43,6 +43,7 @@
             this.btnStartServer = new System.Windows.Forms.Button();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.btnAlarmClock = new System.Windows.Forms.Button();
+            this.btnServerText = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtA
@@ -183,11 +184,22 @@
             this.btnAlarmClock.UseVisualStyleBackColor = true;
             this.btnAlarmClock.Click += new System.EventHandler(this.btnAlarmClock_Click);
             // 
+            // btnServerText
+            // 
+            this.btnServerText.Location = new System.Drawing.Point(313, 127);
+            this.btnServerText.Name = "btnServerText";
+            this.btnServerText.Size = new System.Drawing.Size(152, 23);
+            this.btnServerText.TabIndex = 15;
+            this.btnServerText.Text = "订阅服务器文本";
+            this.btnServerText.UseVisualStyleBackColor = true;
+            this.btnServerText.Click += new System.EventHandler(this.btnServerText_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(600, 262);
+            this.ClientSize = new System.Drawing.Size(534, 271);
+            this.Controls.Add(this.btnServerText);
             this.Controls.Add(this.btnAlarmClock);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.btnStartServer);
@@ -228,6 +240,7 @@
         private System.Windows.Forms.Button btnStartServer;
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button btnAlarmClock;
+        private System.Windows.Forms.Button btnServerText;
     }
 }
 
