@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>PDF.NET.SOD.SqlServerCe.Provider</id>
+        <version>5.6.1.0626</version>
+        <title>PDF.NET SOD SqlServerCe Provider</title>
+        <authors>深蓝医生</authors>
+        <licenseUrl>http://pwmis.codeplex.com/license</licenseUrl>
+        <projectUrl>http://www.pwmis.com/SqlMap/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>PDF.NET SOD SqlServerCe扩展库</description>
+        <dependencies>
+            <dependency id="Microsoft.SqlServer.Compact" version="4.0.8876.1" />
+            <dependency id="PDF.NET.SOD" version="5.6.1.0626" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\OtherProvider\发布目录\PWMIS.SqlServerCeClient.dll" target="lib\PWMIS.SqlServerCeClient.dll" />
+        <file src="..\OtherProvider\发布目录\PWMIS.SqlServerCeClient.pdb" target="lib\PWMIS.SqlServerCeClient.pdb" />
+        <file src="..\OtherProvider\发布目录\PWMIS.SqlServerCeClient.XML" target="lib\PWMIS.SqlServerCeClient.XML" />
+    </files>
+</package>
