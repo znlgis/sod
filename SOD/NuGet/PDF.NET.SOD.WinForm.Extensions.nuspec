@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>PDF.NET.SOD.WinForm.Extensions</id>
+        <version>5.6.1.0626</version>
+        <title>PDF.NET SOD WinForm Extensions</title>
+        <authors>深蓝医生</authors>
+        <licenseUrl>http://pwmis.codeplex.com/license</licenseUrl>
+        <projectUrl>http://www.pwmis.com/SqlMap/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>PDF.NET SOD WinForm开发扩展库</description>
+        <dependencies>
+            <dependency id="PDF.NET.SOD" version="5.6.1.0626" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\Lib\发布目录\PWMIS.Windows.dll" target="lib\PWMIS.Windows.dll" />
+        <file src="..\Lib\发布目录\PWMIS.Windows.dll.config" target="lib\PWMIS.Windows.dll.config" />
+        <file src="..\Lib\发布目录\PWMIS.Windows.pdb" target="lib\PWMIS.Windows.pdb" />
+        <file src="..\Lib\发布目录\PWMIS.Windows.XML" target="lib\PWMIS.Windows.XML" />
+    </files>
+</package>
