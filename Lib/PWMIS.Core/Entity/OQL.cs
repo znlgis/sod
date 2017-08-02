@@ -1837,6 +1837,32 @@ namespace PWMIS.DataMap.Entity
 
         #endregion
 
+        /// <summary>
+        /// 计算指定的多个字段组合的运算结果，例如对多个字段进行算术运算等
+        /// <remarks>感谢网友“芜湖-大枕头”提供此方法，2017.8.2</remarks>
+        /// <example>
+        /// <code>
+        /// OQL oqlSelect = OQL.From(black)
+        ///   .Select()
+        ///   .Computer("{0}+{1}*{2}","test",black.ID,black.idCardName,black.idCardNo)
+        ///   .OrderBy(black.ID).Desc
+        ///   .END;
+        /// </code>
+        /// </example>
+        /// </summary>
+        /// <param name="operatorString">格式化字符串，e.g.({0}*{1})*10、{0}+{1}等</param>
+        /// <param name="asFieldName">别名，不能为空</param>
+        /// <param name="field">参与运算的字段</param>
+        /// <returns></returns>
+        public OQL1 Computer(string operatorString, string asFieldName, params object[] field)
+        {
+            string[] currFieldName = CurrentOQL.TakeStackFields().Split(new char[] { ',' }, StringSplitOptions.None);
+            string formatstring = string.Format(operatorString, currFieldName);
+            CurrentOQL.sqlFunctionString += string.Format("({0}) as {1}", formatstring, asFieldName);
+            return this;
+        }
+
+
     }
 
     public class OQL2 : OQL4, IOQL2
