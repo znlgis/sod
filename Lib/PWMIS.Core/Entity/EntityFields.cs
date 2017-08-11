@@ -442,7 +442,7 @@ namespace PWMIS.DataMap.Entity
                 //增加 decimal支持 时间：2017.6.28
                 //decimal(n,m)
                 int n = 30;
-                int m = 4;
+                int m = 8;
                 temp = temp + "[" + field + "] decimal(" + n + "," + m + ")";
             }
             else
