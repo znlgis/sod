@@ -1,6 +1,7 @@
 ﻿
 using PWMIS.Core.Extensions;
 using PWMIS.DataMap.Entity;
+using PWMIS.DataProvider.Data;
 using PWMIS.MemoryStorage;
 using System;
 using System.Collections.Generic;
@@ -56,7 +57,9 @@ namespace PWMIS.MemoryStorage
         /// <summary>
         /// 成功
         /// </summary>
-        Succeed
+        Succeed,
+        //导入过程发生了错误
+        Error
     }
 
     /// <summary>
@@ -77,13 +80,21 @@ namespace PWMIS.MemoryStorage
         /// </summary>
         public int BatchNumber { get; protected internal set; }
         /// <summary>
-        /// 是否取消了导入
+        /// 是否取消了导入。如果出错，会导致取消导入状态。
         /// </summary>
         public bool IsCancel { get; protected internal set; }
         /// <summary>
         /// 导入结果枚举
         /// </summary>
         public ImportResultFlag Flag { get; protected internal set; }
+        /// <summary>
+        /// 导入过程发生错误的错误消息
+        /// </summary>
+        public string ErrorMessage { get; protected internal set; }
+        /// <summary>
+        /// 用时，单位秒
+        /// </summary>
+        public long Duration { get; protected internal set; }
     }
 
     /// <summary>
@@ -205,6 +216,8 @@ namespace PWMIS.MemoryStorage
             //导入数据
             int count = 0;// 
             List<T> list = this.MemDB.Get<T>();
+            System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
             if (list.Count > 0)
             {
                 ImportEntityEventArgs args = new ImportEntityEventArgs(list, entityType, importTableName, currBatch.BatchNumber);
@@ -217,7 +230,7 @@ namespace PWMIS.MemoryStorage
                         return result;
                     }
                 }
-               
+                //处理不同的导入模式
                 if (mode == ImportMode.Append)
                 {
                     list.ForEach(item => {
@@ -229,11 +242,14 @@ namespace PWMIS.MemoryStorage
                 {
                     string sql = "TRUNCATE TABLE [" + importTableName + "]";
                     this.CurrDbContext.CurrentDataBase.ExecuteNonQuery(sql);
-                    list.ForEach(item =>
-                    {
-                        item.SetDefaultChanges();
-                    });
-                    count = this.CurrDbContext.AddList(list);
+                    //list.ForEach(item =>
+                    //{
+                    //    item.SetDefaultChanges();
+                    //});
+                    //count = this.CurrDbContext.AddList(list);
+                    list[0].SetDefaultChanges();
+                    EntityQuery<T> eq = new EntityQuery<T>(this.CurrDbContext.CurrentDataBase);
+                    count= eq.QuickInsert(list);
                 }
                 else if (mode == ImportMode.Update)
                 {
@@ -255,6 +271,8 @@ namespace PWMIS.MemoryStorage
                 }
                 else if (mode == ImportMode.Merge)
                 {
+                    /*
+                    //下面的方式比较缓慢，改用先删除数据包对应的数据再快速插入的方式
                     foreach (T item in list)
                     {
                         T dbEntity = (T)item.Clone();
@@ -274,6 +292,52 @@ namespace PWMIS.MemoryStorage
                             count+= eq.Insert(item);
                         }
                     }
+                    //
+                    */
+                   var idList= list.Select(s => s[s.PrimaryKeys[0]]).ToList();
+                   //每页大小   
+                   const int pageSize = 500;
+                   //页码   
+                   int pageNum = 0;
+                   T entity = new T();
+                   list[0].SetDefaultChanges();
+                   EntityQuery<T> eq = new EntityQuery<T>(this.CurrDbContext.CurrentDataBase);
+                   this.CurrDbContext.CurrentDataBase.BeginTransaction();
+                   try
+                   {
+                       while (pageNum * pageSize < idList.Count)
+                       {
+                           var currIdList = idList.Skip(pageSize * pageNum).Take(pageSize);
+                           var deleteQ = OQL.From(entity)
+                               .Delete()
+                               .Where(cmp => cmp.Comparer(entity[entity.PrimaryKeys[0]], "in", currIdList.ToArray()))
+                               .END;
+                           int deleteCount = eq.ExecuteOql(deleteQ);
+                           pageNum++;
+                       }
+                       count = eq.QuickInsert(list);
+                       this.CurrDbContext.CurrentDataBase.Commit();
+                   }
+                   catch (Exception ex)
+                   {
+                       count = 0;
+                       this.CurrDbContext.CurrentDataBase.Rollback();
+
+                       result.IsCancel = true;
+                       result.Flag = ImportResultFlag.Error;
+                       result.ImportCount = count;
+                       result.ErrorMessage = ex.Message;
+                        if (ex.InnerException != null)
+                        {
+                            QueryException qe = ex.InnerException as QueryException;
+                            if (qe != null)
+                                result.ErrorMessage += ":QueryException :" + qe.Message;
+                            else
+                                result.ErrorMessage += ":Error :" + ex.InnerException.Message;
+                        }
+                       return result;
+                   }
+                  
                 }
                 else
                 {
@@ -292,6 +356,8 @@ namespace PWMIS.MemoryStorage
             currBatch.LastExportDate = DateTime.Now;
             this.CurrDbContext.Update<ExportBatchInfo>(currBatch);
 
+            watch.Stop();
+            result.Duration = Convert.ToInt64( watch.Elapsed.TotalSeconds);
             result.IsCancel = false;
             result.Flag = ImportResultFlag.Succeed;
             result.ImportCount = count;
