@@ -27,6 +27,9 @@
  * 增加 IsEmptyCompare 比较空条件的方法
  * 增加 NewCompare 方法用于动态构造条件方法的时候，调用了实体类属性进行条件比较的情况
  * 
+ * 修改者：         时间：2017-8-29   
+ * 增加 Not Like 比较条件
+ * 
  * ========================================================================
 */
 using System;
@@ -172,7 +175,11 @@ namespace PWMIS.DataMap.Entity
             /// <summary>
             /// BETWEEN 在某两个值之间
             /// </summary>
-            Between
+            Between,
+            /// <summary>
+            /// 不类似于
+            /// </summary>
+            NotLike
 
         }
 
@@ -322,6 +329,7 @@ namespace PWMIS.DataMap.Entity
                 case CompareType.Equal: typeStr = "="; break;
                 case CompareType.Greater: typeStr = ">"; break;
                 case CompareType.Like: typeStr = " LIKE "; break;
+                case CompareType.NotLike: typeStr = " NOT LIKE "; break;
                 case CompareType.LessThanOrEqual: typeStr = "<="; break;
                 case CompareType.GreaterThanOrEqual: typeStr = ">="; break;
                 case CompareType.NotEqual: typeStr = "<>"; break;
@@ -783,6 +791,9 @@ namespace PWMIS.DataMap.Entity
                     break;
                 case "like":
                     ct = CompareType.Like;
+                    break;
+                case "not like":
+                    ct = CompareType.NotLike;
                     break;
                 case "is":
                     ct = CompareType.IS;
