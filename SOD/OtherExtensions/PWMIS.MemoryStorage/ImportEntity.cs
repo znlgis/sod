@@ -234,7 +234,7 @@ namespace PWMIS.MemoryStorage
                 if (mode == ImportMode.Append)
                 {
                     list.ForEach(item => {
-                        item.SetDefaultChanges();
+                        item.ResetChanges(true);
                     });
                     count = this.CurrDbContext.AddList(list);
                 }
@@ -247,7 +247,7 @@ namespace PWMIS.MemoryStorage
                     //    item.SetDefaultChanges();
                     //});
                     //count = this.CurrDbContext.AddList(list);
-                    list[0].SetDefaultChanges();
+                    list[0].ResetChanges(true);
                     EntityQuery<T> eq = new EntityQuery<T>(this.CurrDbContext.CurrentDataBase);
                     count= eq.QuickInsert(list);
                 }
@@ -263,7 +263,7 @@ namespace PWMIS.MemoryStorage
                         {
                             if (isNew(item, dbEntity))
                             {
-                                item.SetDefaultChanges();//设置了更改状态，才可以更新到数据库
+                                item.ResetChanges(true); ;//设置了更改状态，才可以更新到数据库
                                 count += eq.Update(item);
                             }
                         }
@@ -300,7 +300,7 @@ namespace PWMIS.MemoryStorage
                    //页码   
                    int pageNum = 0;
                    T entity = new T();
-                   list[0].SetDefaultChanges();
+                   list[0].ResetChanges(true);
                    EntityQuery<T> eq = new EntityQuery<T>(this.CurrDbContext.CurrentDataBase);
                    this.CurrDbContext.CurrentDataBase.BeginTransaction();
                    try

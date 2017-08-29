@@ -126,7 +126,8 @@ namespace PWMIS.Core.Extensions
         /// <param name="db">数据访问对象</param>
         public DbContext(AdoHelper db)
         {
-            dictCheckedDb.TryGetValue(db.ConnectionString, out checkedDb);
+            string key=db.ConnectionString;
+            dictCheckedDb.TryGetValue(key, out checkedDb);
             this.db = db;
             if (!checkedDb)
             {
@@ -134,8 +135,8 @@ namespace PWMIS.Core.Extensions
                 {
                     if (!checkedDb)
                     {
-                        checkedDb = CheckDB();
-                        dictCheckedDb[db.ConnectionString] = checkedDb;
+                        checkedDb = CheckDB();//可能会改变连接字符串
+                        dictCheckedDb[key] = checkedDb;
                     }
                 }
             }
