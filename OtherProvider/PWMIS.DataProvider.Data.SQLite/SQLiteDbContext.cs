@@ -1,24 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using PWMIS.DataMap.Entity;
-using PWMIS.DataProvider.Data;
 using PWMIS.Core.Interface;
+using PWMIS.DataMap.Entity;
 
-namespace PWMIS.PostgreSQLClient
+namespace PWMIS.DataProvider.Data
 {
     /// <summary>
-    /// PostgreSQL数据库上下文，可以实现自动检查数据库，创建表，获取EntityQuery 泛型实例对象等功能，封装了AdoHelper的使用。
+    /// SQLite数据库上下文，可以实现自动检查数据库，创建表，获取EntityQuery 泛型实例对象等功能，封装了AdoHelper的使用。
     /// </summary>
-    public sealed class PostgreSQLDbContext : IDbContextProvider
+    public class SQLiteDbContext: IDbContextProvider
     {
         public AdoHelper CurrentDataBase { get; private set; }
+
         /// <summary>
         /// 用连接字符串名字初始化本类
         /// </summary>
-        /// <param name="connName"></param>
-        public PostgreSQLDbContext(AdoHelper db)
+        public SQLiteDbContext(AdoHelper db)
         {
             this.CurrentDataBase = db;
         }
@@ -28,7 +26,7 @@ namespace PWMIS.PostgreSQLClient
         public bool CheckTableExists<T>() where T : EntityBase, new()
         {
             //创建表
-            if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL)
+            if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.SQLite)
             {
                 var entity = new T();
                 var dsScheme = CurrentDataBase.GetSchema("Tables", null);
@@ -53,7 +51,7 @@ namespace PWMIS.PostgreSQLClient
         public bool CheckTableExists<T>(string tableName) where T : EntityBase, new()
         {
             //创建表
-            if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL)
+            if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.SQLite)
             {
                 var entity = new T();
                 entity.MapNewTableName(tableName);
