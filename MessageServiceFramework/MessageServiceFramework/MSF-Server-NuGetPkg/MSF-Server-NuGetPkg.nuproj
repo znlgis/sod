@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>bcaedc32-0978-4fea-9c3d-88f546b26924</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+  <PropertyGroup Label="Configuration">
+    <Id>PDFNet.MSF.Service</Id>
+    <Version>1.0.0</Version>
+    <Title>PDF.NET MSF(Server RunTime)</Title>
+    <Authors>bluedoctor</Authors>
+    <Owners>PDF.NET</Owners>
+    <Summary>MSF(Server RunTime)</Summary>
+    <Description>PDF.NET Message Service Framework</Description>
+    <ReleaseNotes>
+    </ReleaseNotes>
+    <ProjectUrl>
+    </ProjectUrl>
+    <LicenseUrl>
+    </LicenseUrl>
+    <Copyright>Copyright © PDF.NET</Copyright>
+    <Tags>WCF,Message</Tags>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Content\IOCConfig.xml" />
+    <Content Include="Content\PreCompile.bat" />
+    <Content Include="Content\SucessCompiled.vbs" />
+    <Content Include="lib\PWMIS.EnterpriseFramework.Service.Runtime.dll" />
+    <Content Include="lib\PWMIS.EnterpriseFramework.Service.Runtime.pdb" />
+    <Content Include="lib\PWMIS.EnterpriseFramework.Service.Runtime.xml" />
+    <Content Include="Readme.txt" />
+    <Content Include="Tools\install.ps1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MSF-Client-NuGetPkg\MSF-Client-NuGetPkg.nuproj" />
+    <ProjectReference Include="..\PWMIS.EnterpriseFramework-NugetPkg\PWMIS.EnterpriseFramework-NugetPkg.nuproj" />
+  </ItemGroup>
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+</Project>
