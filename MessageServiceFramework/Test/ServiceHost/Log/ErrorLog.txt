@@ -274,3 +274,413 @@ System.Exception: sub error.
    在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 497
    在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 481
    在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\消息服务框架\PDF.NET.Enterprise\PDF.NET.Enterprise\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 393
+
+[2017-4-18 11:14:19] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:36481,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 555
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 539
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-4-18 11:15:32] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:36507,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 555
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 539
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-4-18 13:17:42] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:39138,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 555
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 539
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-4-18 13:22:05] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:39249,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 555
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 539
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-4-18 14:20:56] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:40844,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 555
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 539
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-4-18 14:21:21] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:40845,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 555
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 539
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-4-18 14:28:11] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:41025,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 555
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 539
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-4-18 14:28:47] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:41036,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 555
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 539
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-4-18 15:17:43] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:42241,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 555
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 539
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-4-19 14:11:15] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:59357,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Runtime.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 571
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 555
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 18:03:02] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：未能加载文件或程序集“PWMIS.EnterpriseFramework.Service.Runtime, Version=1.2.4.16, Culture=neutral, PublicKeyToken=null”或它的某一个依赖项。找到的程序集清单定义与程序集引用不匹配。 (异常来自 HRESULT:0x80131040)，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:55011,WMI2114256838
+
+System.IO.FileLoadException: 未能加载文件或程序集“PWMIS.EnterpriseFramework.Service.Runtime, Version=1.2.4.16, Culture=neutral, PublicKeyToken=null”或它的某一个依赖项。找到的程序集清单定义与程序集引用不匹配。 (异常来自 HRESULT:0x80131040)
+文件名:“PWMIS.EnterpriseFramework.Service.Runtime, Version=1.2.4.16, Culture=neutral, PublicKeyToken=null”
+   在 System.Reflection.RuntimeAssembly.GetType(RuntimeAssembly assembly, String name, Boolean throwOnError, Boolean ignoreCase, ObjectHandleOnStack type)
+   在 System.Reflection.RuntimeAssembly.GetType(String name, Boolean throwOnError, Boolean ignoreCase)
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetProviderType(IocProvider provider) 位置 e:\研究\SOD\MessageServiceFramework\AOPIOC\IOC\Unity.cs:行号 144
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetProviderInstance(IocProvider provider) 位置 e:\研究\SOD\MessageServiceFramework\AOPIOC\IOC\Unity.cs:行号 118
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 e:\研究\SOD\MessageServiceFramework\AOPIOC\IOC\Unity.cs:行号 291
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 379
+
+警告: 程序集绑定日志记录被关闭。
+要启用程序集绑定失败日志记录，请将注册表值 [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD)设置为 1。
+注意: 会有一些与程序集绑定失败日志记录关联的性能损失。
+要关闭此功能，请移除注册表值 [HKLM\Software\Microsoft\Fusion!EnableLog]。
+
+
+[2017-5-8 18:04:02] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:55057,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 18:05:19] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:55092,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 18:05:51] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:55100,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 18:06:16] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:55110,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 18:06:49] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:55124,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 18:07:29] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:55142,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 18:08:16] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:55169,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 19:03:40] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:55906,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 19:05:25] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:55975,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 19:08:38] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:56041,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 19:09:34] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:56063,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 19:10:55] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:56113,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 19:16:33] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:56265,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 19:17:26] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:56300,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 19:18:01] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:56324,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 19:19:20] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:56353,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+[2017-5-8 19:24:51] 处理服务的时候发生异常：
+执行服务方法错误，源错误信息：sub error.，
+请求的Uri:Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:56476,WMI2114256838
+
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 575
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 559
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 408
+
+------------------------------
+[2017-05-23 11:10:24]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:54116,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 e:\研究\SOD\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 33
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 605
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 589
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 435
+------------------------------
+[2017-06-15 17:17:40]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：未能加载文件或程序集“PWMIS.EnterpriseFramework.Service.Runtime, Version=1.2.5.23, Culture=neutral, PublicKeyToken=82fad09ee75ff39d”或它的某一个依赖项。找到的程序集清单定义与程序集引用不匹配。 (异常来自 HRESULT:0x80131040)，
+请求的Uri:
+Publish://TestTimeService/ServerTime/，
+127.0.0.1:65511,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.IO.FileLoadException: 未能加载文件或程序集“PWMIS.EnterpriseFramework.Service.Runtime, Version=1.2.5.23, Culture=neutral, PublicKeyToken=82fad09ee75ff39d”或它的某一个依赖项。找到的程序集清单定义与程序集引用不匹配。 (异常来自 HRESULT:0x80131040)
+文件名:“PWMIS.EnterpriseFramework.Service.Runtime, Version=1.2.5.23, Culture=neutral, PublicKeyToken=82fad09ee75ff39d”
+   在 System.Reflection.RuntimeAssembly.GetType(RuntimeAssembly assembly, String name, Boolean throwOnError, Boolean ignoreCase, ObjectHandleOnStack type)
+   在 System.Reflection.RuntimeAssembly.GetType(String name, Boolean throwOnError, Boolean ignoreCase)
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetProviderType(IocProvider provider) 位置 e:\研究\SOD\MessageServiceFramework\AOPIOC\IOC\Unity.cs:行号 144
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetProviderInstance(IocProvider provider) 位置 e:\研究\SOD\MessageServiceFramework\AOPIOC\IOC\Unity.cs:行号 118
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 e:\研究\SOD\MessageServiceFramework\AOPIOC\IOC\Unity.cs:行号 291
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(String serviceName) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 14
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 406
+
+警告: 程序集绑定日志记录被关闭。
+要启用程序集绑定失败日志记录，请将注册表值 [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD)设置为 1。
+注意: 会有一些与程序集绑定失败日志记录关联的性能损失。
+要关闭此功能，请移除注册表值 [HKLM\Software\Microsoft\Fusion!EnableLog]。

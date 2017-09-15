@@ -109,7 +109,7 @@
         </member>
         <member name="T:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse">
             <summary>
-            服务响应
+            服务输出响应
             </summary>
         </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.Write(System.String)">
@@ -133,6 +133,21 @@
         <member name="M:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.End">
             <summary>
             从流中读取所有内容，并关闭流。
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.Clear">
+            <summary>
+            清除当前文本，以便需要时重新从流读取
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.ResponseStream">
+            <summary>
+            获取响应的数据流
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.IsEndResponse">
+            <summary>
+            是否结束输出响应
             </summary>
         </member>
         <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.AllText">

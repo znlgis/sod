@@ -4,6 +4,11 @@
         <name>PWMIS.EnterpriseFramework.Message.SubscriberLib</name>
     </assembly>
     <members>
+        <member name="T:MessageSubscriber.CalcClient">
+            <summary>
+            简易计算器客户端，仅供测试WCF通信
+            </summary>
+        </member>
         <member name="T:MessageSubscriber.ISubscriber">
             <summary>
             订阅者接口
