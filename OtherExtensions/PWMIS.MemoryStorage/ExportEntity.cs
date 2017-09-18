@@ -100,9 +100,9 @@ namespace PWMIS.MemoryStorage
         /// <summary>
         /// 导出实体数据到内存数据库。如果当前实体操作失败，请检查导出事件的异常参数对象。
         /// </summary>
-        /// <param name="q">到出前要查询的条件，如果为空，导出实体全部数据</param>
+        /// <param name="funQ">获取导出数据的查询表达式委托方法，委托方法的参数为导出批次号；如果结果为空，导出实体全部数据</param>
         /// <typeparam name="T">实体类类型</typeparam>
-        public void Export<T>(OQL q) where T : EntityBase, new()
+        public void Export<T>(Func<int,T,OQL> funQ) where T : EntityBase, new()
         {
             Type entityType = typeof(T);
             try
@@ -128,6 +128,7 @@ namespace PWMIS.MemoryStorage
               
                 MemDB.Save<ExportBatchInfo>();
                 //导出数据
+                OQL q = funQ(currBatch.BatchNumber, new T());
                 List<T> entityList = q != null ? CurrDbContext.QueryList<T>(q) : CurrDbContext.QueryAllList<T>();
                 ExportEntityEventArgs args = new ExportEntityEventArgs(entityList, entityType, exportTableName);
                 args.Succeed = true;
