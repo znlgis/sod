@@ -38,15 +38,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Content\IOCConfig.xml" />
-    <Content Include="Content\PdfNetEF.MessageServiceHost.exe" />
     <Content Include="Content\PdfNetEF.MessageServiceHost.exe.config" />
-    <Content Include="Content\PdfNetEF.MessageServiceHost.pdb" />
-    <Content Include="Content\UpdateService.bat" />
     <Content Include="lib\PWMIS.EnterpriseFramework.Message.PublisherLib.dll" />
     <Content Include="lib\PWMIS.EnterpriseFramework.Message.PublisherLib.pdb" />
     <Content Include="lib\PWMIS.EnterpriseFramework.Message.PublisherLib.xml" />
     <Content Include="Readme.txt" />
     <Content Include="Tools\install.ps1" />
+    <Content Include="Tools\PdfNetEF.MessageServiceHost.exe" />
+    <Content Include="Tools\PdfNetEF.MessageServiceHost.pdb" />
+    <Content Include="Tools\UpdateService.bat" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MSF-Server-Group\MSF-Server-Group-NuGetPkg.nuproj" />
