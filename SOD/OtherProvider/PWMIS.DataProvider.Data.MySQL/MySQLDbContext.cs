@@ -67,6 +67,7 @@ namespace PWMIS.DataProvider.Data
         /// <returns></returns>
         public bool CheckDB()
         {
+            string originalConnStr = CurrentDataBase.ConnectionString;
             var connBuilder = CurrentDataBase.ConnectionStringBuilder as MySqlConnectionStringBuilder;
             string database = connBuilder.Database;
             if (!string.IsNullOrEmpty(database))
@@ -80,7 +81,7 @@ namespace PWMIS.DataProvider.Data
                 CurrentDataBase.ExecuteNonQuery(sql);
                 //恢复连接字符串
                 connBuilder.Database = database;
-                CurrentDataBase.ConnectionString = connBuilder.ConnectionString;
+                CurrentDataBase.ConnectionString = originalConnStr;
             }
             return true;
         }
