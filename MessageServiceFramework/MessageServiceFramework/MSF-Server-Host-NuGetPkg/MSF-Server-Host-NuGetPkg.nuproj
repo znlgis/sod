@@ -18,20 +18,20 @@
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>PDFNet.MSF.Service.Host</Id>
+    <Id>PDF.Net.MSF.Service.Host</Id>
     <Version>1.0.0</Version>
-    <Title>PDF.NET MSF(Server )</Title>
+    <Title>PDF.NET MSF(Server Host)</Title>
     <Authors>bluedoctor</Authors>
     <Owners>pwmis.com</Owners>
-    <Summary>PDF.NET MSF(Server Host)</Summary>
-    <Description>PDF.NET Message Service Framework Server Host</Description>
+    <Summary>PDF.NET MSF(Message Service Framework) Server Host</Summary>
+    <Description>PDF.NET (PWMIS Develope Framework for .net) Message Service Framework Server Host,Build Message Service Runtime    Host.</Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>
     </ProjectUrl>
     <LicenseUrl>
     </LicenseUrl>
-    <Copyright>Copyright © pwmis</Copyright>
+    <Copyright>Copyright © pwmis.com</Copyright>
     <Tags>WCF,Message</Tags>
     <DevelopmentDependency>
     </DevelopmentDependency>

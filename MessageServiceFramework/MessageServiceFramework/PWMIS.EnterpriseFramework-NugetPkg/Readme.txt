@@ -1,1 +1,2 @@
-﻿This is your NuGet package.
+﻿PDF.NET Enterprise Framework  NuGet package.
+http://www.pwmis.com/sqlmap

@@ -18,31 +18,30 @@
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>PDFNet.MSF.Service</Id>
+    <Id>PDF.Net.MSF.Service</Id>
     <Version>1.0.0</Version>
     <Title>PDF.NET MSF(Server RunTime)</Title>
-    <Authors>bluedoctor</Authors>
-    <Owners>PDF.NET</Owners>
-    <Summary>MSF(Server RunTime)</Summary>
-    <Description>PDF.NET Message Service Framework</Description>
+   <Authors>bluedoctor</Authors>
+    <Owners>pwmis.com</Owners>
+    <Summary>PDF.NET MSF(Message Service Framework) Server RunTime</Summary>
+    <Description>PDF.NET (PWMIS Develope Framework for .net)  Message Service Framework Server Runtime.</Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>
     </ProjectUrl>
     <LicenseUrl>
     </LicenseUrl>
-    <Copyright>Copyright © PDF.NET</Copyright>
+    <Copyright>Copyright © pwmis.com</Copyright>
     <Tags>WCF,Message</Tags>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="Content\IOCConfig.xml" />
-    <Content Include="Content\PreCompile.bat" />
-    <Content Include="Content\SucessCompiled.vbs" />
     <Content Include="lib\PWMIS.EnterpriseFramework.Service.Runtime.dll" />
     <Content Include="lib\PWMIS.EnterpriseFramework.Service.Runtime.pdb" />
     <Content Include="lib\PWMIS.EnterpriseFramework.Service.Runtime.xml" />
     <Content Include="Readme.txt" />
     <Content Include="Tools\install.ps1" />
+    <Content Include="Tools\PreCompile.bat" />
+    <Content Include="Tools\SucessCompiled.vbs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MSF-Client-NuGetPkg\MSF-Client-NuGetPkg.nuproj" />

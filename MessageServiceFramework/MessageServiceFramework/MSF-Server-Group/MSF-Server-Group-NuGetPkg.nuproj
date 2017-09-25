@@ -18,21 +18,21 @@
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>MSF_Server_Group</Id>
+    <Id>PDF.Net.MSF.Server.Group</Id>
     <Version>1.0.0</Version>
-    <Title>MSF-Server-Group</Title>
-    <Authors>dxn</Authors>
-    <Owners>dxn</Owners>
-    <Summary>MSF-Server-Group</Summary>
-    <Description>MSF-Server-Group</Description>
+    <Title>PDF.NET MSF(Server Group RunTime)</Title>
+    <Authors>bluedoctor</Authors>
+    <Owners>pwmis.com</Owners>
+    <Summary>PDF.NET MSF(Message Service Framework) Server Group RunTime</Summary>
+    <Description>PDF.NET (PWMIS Develope Framework for .net) to Build Message Service for Server Group</Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>
     </ProjectUrl>
     <LicenseUrl>
     </LicenseUrl>
-    <Copyright>Copyright © dxn</Copyright>
-    <Tags>MSF_Server_Group</Tags>
+    <Copyright>Copyright © pwmis.com</Copyright>
+    <Tags>WCF,Message</Tags>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="lib\PWMIS.EnterpriseFramework.Service.Group.dll" />

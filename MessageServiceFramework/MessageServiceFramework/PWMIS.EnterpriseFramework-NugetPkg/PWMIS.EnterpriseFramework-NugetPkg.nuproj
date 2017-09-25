@@ -18,13 +18,13 @@
   </PropertyGroup>
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
-    <Id>PWMIS.EnterpriseFramework</Id>
+    <Id>PDF.NET.EnterpriseFramework</Id>
     <Version>1.0.0</Version>
     <Title>PWMIS EnterpriseFramework</Title>
     <Authors>bluedoctor</Authors>
     <Owners>PWMIS.com</Owners>
-    <Summary>PWMIS EnterpriseFramework</Summary>
-    <Description>PWMIS EnterpriseFramework</Description>
+    <Summary>PDF.NET  (PWMIS Develope Framework for .net) EnterpriseFramework</Summary>
+    <Description>PDF.NET (PWMIS Develope Framework for .net) base Enterprise Framework.</Description>
     <ReleaseNotes>
     </ReleaseNotes>
     <ProjectUrl>
@@ -32,7 +32,7 @@
     <LicenseUrl>
     </LicenseUrl>
     <Copyright>Copyright © PWMIS.com</Copyright>
-    <Tags>PDF.NET</Tags>
+    <Tags>WCF,Message</Tags>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="Readme.txt" />
