@@ -30,6 +30,20 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:MessagePublisher.MessageCenter.GetListener(MessagePublisher.MessageListener)">
+            <summary>
+            获取一个监听器，如果不存在，则使用参数传入的监听器
+            </summary>
+            <param name="newListener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MessagePublisher.MessageCenter.GetExistsListener(MessagePublisher.MessageListener)">
+            <summary>
+            线程安全的获取当前监听器对应的原有监听器，如果没有，返回空
+            </summary>
+            <param name="newListener"></param>
+            <returns></returns>
+        </member>
         <member name="M:MessagePublisher.MessageCenter.NotifyMessage(System.String)">
             <summary>
             向所有注册为String类型的监听器发布消息
@@ -94,6 +108,16 @@
         <member name="M:MessagePublisher.MessageListener.Close(System.Int32)">
             <summary>
             通知客户端关闭连接
+            </summary>
+        </member>
+        <member name="P:MessagePublisher.MessageListener.FromMessage">
+            <summary>
+            当前消息，注意此消息可能会变
+            </summary>
+        </member>
+        <member name="P:MessagePublisher.MessageListener.MessageID">
+            <summary>
+            当前消息编号，注意此ID可能会改变
             </summary>
         </member>
         <member name="P:MessagePublisher.MessageListener.Removed">

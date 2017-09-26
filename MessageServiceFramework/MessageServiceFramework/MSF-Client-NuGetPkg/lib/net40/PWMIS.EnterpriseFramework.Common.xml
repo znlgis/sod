@@ -1,0 +1,547 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PWMIS.EnterpriseFramework.Common</name>
+    </assembly>
+    <members>
+        <member name="M:PWMIS.EnterpriseFramework.Common.AdHelper.IsExistUser(System.String,System.String,System.String,System.String@)">
+            <summary>
+            域组内是否存在当前登录windows用户
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.AdHelper.UserisGroupMember(System.String,System.String,System.String)">
+            <summary>
+            判断用户是否为域组成员
+            </summary>
+            <param name="UserLogin">用户名</param>
+            <param name="RoleName">域组名</param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.AdHelper.IsDomainUser(System.String,System.String,System.String)">
+            <summary>
+            是否为指定域下面的用户账号
+            </summary>
+            <param name="usrId"></param>
+            <param name="pwd"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.BaseObject">
+            <summary>
+            BaseObject类是一个用来继承的抽象类。 
+            每一个由此类继承而来的类将自动支持克隆方法。
+            该类实现了Icloneable接口，并且每个从该对象继承而来的对象都将同样地
+            支持Icloneable接口。 
+            </summary> 
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.BaseObject.Clone">
+            <summary>    
+            克隆对象，并返回一个已克隆对象的引用    
+            </summary>    
+            <returns>引用新的克隆对象</returns>     
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.Byte2String(System.Byte[])">
+            <summary>
+            将字节数组以8位字符编码的格式，转换成字符串
+            </summary>
+            <param name="buffer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.String2Byte(System.String)">
+            <summary>
+            将8位字符编码的字符串转换成字节数组，不能是UTF-8格式的字符串
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.Encrypt8bitString(System.String,System.Int32[])">
+            <summary>
+            将UTF8格式的字符串，编码成8位编码格式的新字符串
+            </summary>
+            <param name="input">UTF8格式的字符串</param>
+            <param name="EnMap">编码表</param>
+            <returns>8位编码格式的字符串</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.Encrypt8bitString(System.String)">
+            <summary>
+            将UTF8格式的字符串，编码成8位编码格式的新字符串
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.DeEncrypt8bitString(System.String,System.Int32[])">
+            <summary>
+            8位编码格式的字符串，解码成UTF8格式的新字符串
+            </summary>
+            <param name="encryptString">8位编码格式的字符串</param>
+            <param name="DeMap">解码表</param>
+            <returns>UTF8格式的新字符串</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.DeEncrypt8bitString(System.String)">
+            <summary>
+            8位编码格式的字符串，解码成UTF8格式的新字符串
+            </summary>
+            <param name="encryptString"></param>
+            <returns></returns>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.DeMapNumber">
+            <summary>
+            获取反向的数字对照表
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.MapNumber">
+            <summary>
+            获取数字对照表
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.DosCommandOutput">
+            <summary>
+            DOS命令输出类
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.DosCommandOutput.Execute(System.String)">
+            <summary>
+            执行DOS命令，返回DOS命令的输出
+            </summary>
+            <param name="dosCommand">dos命令</param>
+            <returns>返回输出，如果发生异常，返回空字符串</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.DosCommandOutput.Execute(System.String,System.Int32)">
+            <summary>
+            执行DOS命令，返回DOS命令的输出
+            </summary>
+            <param name="dosCommand">dos命令</param>
+            <param name="milliseconds">等待命令执行的时间（单位：毫秒），如果设定为0，则无限等待</param>
+            <returns>返回输出，如果发生异常，返回空字符串</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.DosCommandOutput.ExecuteProcess(System.String,System.String,System.Int32)">
+            <summary>
+            执行指定的进程命令（不使用命令外壳程序）并附件命令的参数
+            </summary>
+            <param name="command"></param>
+            <param name="parameters"></param>
+            <param name="milliseconds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.DosCommandOutput.CopyNewFile(System.String,System.String,System.String,System.DateTime,System.Int32)">
+            <summary>
+            使用XCopy命令复制新文件，包括所有文件夹和子文件，如果目标文件存在将自动覆盖。
+            </summary>
+            <param name="sourceFolder">原目录</param>
+            <param name="descFolder">目标目录，如果没有，将创建一个</param>
+            <param name="excludeFile">要排除的文件信息说明文件，详细参见XCopy说明</param>
+            <param name="afterData">要复制的新文件的日期，包括以及之后的文件都将被复制</param>
+            <param name="waiteMilliseconds">执行本命令等待的时间，毫秒</param>
+            <returns>执行是否成功</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.DosCommandOutput.ProcessXCopy(System.String,System.Int32)">
+            <summary>
+            执行XCopy，如果命令执行包含任何错误，返回真，但也应该在命令执行完成后，检查目标目录是否存在。
+            </summary>
+            <param name="XCopyArguments">命令参数</param>
+            <param name="milliseconds">等待时间，毫秒</param>
+            <returns>是否成功</returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptionUtil">
+            <summary>
+            加密，解密功能函数
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptionUtil.EncryptData(System.String,System.String)">
+            <summary>
+            加密函数
+            </summary>
+            <param name="strKey"></param>
+            <param name="strData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptionUtil.DecryptData(System.String,System.String)">
+            <summary>
+            解密函数
+            </summary>
+            <param name="strKey"></param>
+            <param name="strData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptionUtil.InitKey(System.String)">
+            <summary>
+            生成key的函数
+            </summary>
+            <param name="strKey"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.FileCut">
+            <summary>
+            文件分割
+            </summary>
+        </member>
+        <member name="F:PWMIS.EnterpriseFramework.Common.FileCut.DeleteFileArterLink">
+            <summary>
+            连接文件成功之后是否删除原始文件
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.#ctor">
+            <summary>
+            默认构造函数
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.#ctor(System.String)">
+            <summary>
+            使用要切分的文件名初始化本类
+            </summary>
+            <param name="sourceFile">要切分的文件名</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.Cut">
+            <summary>
+            切分文件
+            </summary>
+            <returns>切分的结果文件列表，如果元素数量为0则表示切分失败</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.Cut(System.Int32)">
+            <summary>
+            根据切分的文件数量自动切分文件
+            </summary>
+            <param name="count">切分的文件数量</param>
+            <returns>切分的结果文件列表，如果元素数量为0则表示切分失败</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.MakeFileHeadBytes(System.Int32,System.Int32,System.String)">
+            <summary>
+            构建文件头字节信息数组
+            </summary>
+            <param name="cutFileNumber">文件序号，从1开始</param>
+            <param name="cutFileCount">分卷文件的数量</param>
+            <param name="sourceFileName">文件名</param>
+            <returns>文件头字节</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.GetCutedFileHead(System.IO.FileStream)">
+            <summary>
+            获取分卷文件的文件头结构
+            </summary>
+            <param name="fs">文件流，调用此方法文件指针将会重置到文件起始位置</param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.GetCutedFileHead(System.String)">
+            <summary>
+            根据指定的分卷文件名，获取分卷头信息
+            </summary>
+            <param name="fileName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.Cut(System.String,System.String,System.Int32,System.Int32,System.String)">
+             <summary>
+             切分文件。程序将在每个切分后的文件头上添加一定的附件信息指示源文件名和当前顺序。
+             </summary>
+             <remarks>
+            分卷文件头结构定义：
+            分卷文件标识 + 正文位置偏移量 + 分卷序号 + 分卷总数 + 源文件名
+            每一部分按照顺序指定，其中，
+            int 分卷文件标识 = 101020 ,取今天这段代码的日期 2010.10.20
+            short 分卷序号     = 1,2,3...等文件顺序号
+            short 分卷总数     = 2,3...等源文件分卷后的分卷文件数量
+            string 源文件名  = 分卷前的原始文件名，带扩展名
+            int 正文位置偏移量= sizeof(分卷文件标识)+sizeof(分卷序号)
+                                +sizeof(分卷总数)+byte[](源文件名).Length
+            
+            程序运行首先检查分卷文件标识，然后检查分卷序号是否连续，检查分卷的总数量是否正确，
+            然后检查分卷文件名称是否一致，最后取得每个分卷文件的正文位置偏移量，开始读取文件。
+             </remarks>
+             <param name="sourceFile">源文件</param>
+             <param name="descFolder">要存放文件的目录，如果为空，则使用源文件所在的目录</param>
+             <param name="size">单个切分文件的大小，如果指定了此参数，将忽略count参数。</param>
+             <param name="count">将文件切分成指定的个数，如果指定了size参数，将忽略此参数。</param>
+             <param name="extName">切分后文件的扩展名，默认为 “part”</param>
+             <returns>切分的结果文件列表，如果元素数量为0则表示切分失败</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.Link(System.String)">
+            <summary>
+            链接文件
+            </summary>
+            <param name="sourceFolder">要链接的文件所在的目录</param>
+            <returns>链接后的文件名，如果操作不成功返回空</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.Link(System.String[])">
+            <summary>
+            链接文件
+            </summary>
+            <param name="cutedFiles">切分的文件名数组</param>
+            <returns>链接后的文件名，如果操作不成功返回空</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.VerifyCutedFiles(System.String[],PWMIS.EnterpriseFramework.Common.FileCut.CutedFileHead[]@)">
+            <summary>
+            校验一组文件是否是有效的分组文件
+            </summary>
+            <param name="cutedFiles">要检查的源分卷文件数组</param>
+            <param name="heads">符合目标的文件头数组</param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.Link(System.String[],System.String,System.String)">
+            <summary>
+            链接文件。
+            </summary>
+            <param name="cutedFiles">切分的文件名数组</param>
+            <param name="descFolder">链接文件保存的目录，如果为空则采用第一个分卷文件所在的目录</param>
+            <param name="descFileName">链接文件的名称，不带路径。如果为空，则采用链接文件中记录的原始文件名</param>
+            <returns>链接后的文件名，如果操作不成功返回空</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.FileCut.Link(System.String,System.String,System.IO.SearchOption,System.String,System.String)">
+            <summary>
+            链接文件。
+            </summary>
+            <param name="sourceFolder">切分后的文件所在的目录</param>
+            <param name="searchPattern">要搜索的文件的扩展名，例如 *.*,*.part</param>
+            <param name="searchOption">是搜索当前目录，还是当前目录和它所有的子目录</param>
+            <param name="descFolder">要存放链接后的文件所在的目录</param>
+            <param name="descFileName">链接后的文件新的文件名，不要带路径</param>
+            <returns>链接后的文件名，如果操作不成功返回空</returns>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.SourceFile">
+            <summary>
+            要切分的源文件
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.DescFolder">
+            <summary>
+            操作的目标目录
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.CutSize">
+            <summary>
+            切分文件的大小，默认1M大小
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ErrorMessage">
+            <summary>
+            操作中的错误信息，如果操作失败请即时检查该属性
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgresFileNumber">
+            <summary>
+            当前文件数量处理进度
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgressFileSize">
+            <summary>
+            当前处理进度的文件大小
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgressFileRead">
+            <summary>
+            当前处理进度的文件已经处理的字节数
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgressFileName">
+            <summary>
+            当前正在处理的文件名称
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgressWorking">
+            <summary>
+            进度是否处于工作中
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.FileCut.CutedFileHead">
+            <summary>
+            分卷文件头结构
+            </summary>
+        </member>
+        <member name="F:PWMIS.EnterpriseFramework.Common.FileCut.CutedFileHead.MapFileName">
+            <summary>
+            合并分卷的时候，隐射的物理文件名
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.IpUtility">
+            <summary>
+            IP信息类，判断IP是否为内网IP
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.IpUtility.GetIpNum(System.String)">
+            把IP地址转换为Long型数字
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.ObjFileStore.SaveObj(System.String,System.Object)">
+            <summary>
+            将对象保存为文件
+            </summary>
+            <param name="uFilename">文件名及地址</param>
+            <param name="uTarget">保存对象，需[Serializable]</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.ObjFileStore.LoadObj(System.String)">
+            <summary>
+            从文件读取对象
+            </summary>
+            <param name="uFilename">文件名及地址</param>
+            <returns>反序列化后的对象，类型为object</returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.MyFunc`2">
+            <summary>
+            执行自定义方法的委托
+            </summary>
+            <typeparam name="T"></typeparam>
+            <typeparam name="TResult"></typeparam>
+            <param name="arg"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.DataType">
+            <summary>
+            服务端消息的数据类型
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper">
+            <summary>
+            对字符串进行加密的功能类
+            </summary>
+        </member>
+        <member name="F:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.ENCRYPTKEY">
+            <summary>
+            DES加密密钥
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.DesEncrypt(System.String)">
+            <summary>
+            DES方式加密字符串的方法
+            </summary>
+            <param name="s">要进行加密的字符串</param>
+            <returns>加密后的字符串</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.DesDecrypt(System.String)">
+            <summary>
+            DES方式解密字符串的方法
+            </summary>
+            <param name="s">要进行解密的字符串</param>
+            <returns>解密后的字符串</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.MD5Encrypt(System.String)">
+            <summary>
+            MD5方式加密字符串的方法
+            </summary>
+            <param name="s">要进行加密的字符串</param>
+            <returns>加密后的字符串</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.SHA1Encrypt(System.String)">
+            <summary>
+            SHA1方式加密字符串的方法
+            </summary>
+            <param name="s">要进行加密的字符串</param>
+            <returns>加密后的字符串</returns>
+        </member>
+        <member name="F:PWMIS.EnterpriseFramework.Common.Hardware.HardDiskInfo.ModuleNumber">
+            <summary>
+            型号
+            </summary>
+        </member>
+        <member name="F:PWMIS.EnterpriseFramework.Common.Hardware.HardDiskInfo.Firmware">
+            <summary>
+            固件版本
+            </summary>
+        </member>
+        <member name="F:PWMIS.EnterpriseFramework.Common.Hardware.HardDiskInfo.SerialNumber">
+            <summary>
+            序列号
+            </summary>
+        </member>
+        <member name="F:PWMIS.EnterpriseFramework.Common.Hardware.HardDiskInfo.Capacity">
+            <summary>
+            容量，以M为单位
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.Hardware.AtapiDevice">
+            <summary>
+            ATAPI驱动器相关
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Hardware.AtapiDevice.GetHddInfo(System.Byte)">
+            <summary>
+            获得硬盘信息
+            </summary>
+            <param name="driveIndex">硬盘序号</param>
+            <returns>硬盘信息</returns>
+            <remarks>
+            参考lu0的文章：http://lu0s1.3322.org/App/2k1103.html
+            by sunmast for everyone
+            thanks lu0 for his great works
+            在Windows 98/ME中，S.M.A.R.T并不缺省安装，请将SMARTVSD.VXD拷贝到%SYSTEM%\IOSUBSYS目录下。
+            在Windows 2000/2003下，需要Administrators组的权限。
+            </remarks>
+            <example>
+            AtapiDevice.GetHddInfo()
+            </example>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.Hardware.WMI_HD">
+            <summary>
+            使用ＷＭＩ方式获取硬盘信息
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Hardware.WMI_HD.GetHdId">
+            <summary>
+            获取硬盘唯一序列号（不是卷标号），可能需要以管理员身份运行程序
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.Hardware.HardDiskSN.SerialNumber">
+            <summary>
+            获取硬盘号
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.ZIP.GZip">
+            <summary>
+            .NET 2.0自带的压缩、解压缩类扩展，用于针对整个目录的操作
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.ZIP.GZip.Compress(System.String,System.String,System.String)">
+            <summary>
+            Compress
+            </summary>
+            <param name="lpSourceFolder">The location of the files to include in the zip file, all files including files in subfolders will be included.</param>
+            <param name="lpDestFolder">Folder to write the zip file into</param>
+            <param name="zipFileName">Name of the zip file to write</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.ZIP.GZip.Compress(System.String,System.String,System.IO.SearchOption,System.String,System.String,System.Boolean)">
+            <summary>
+            Compress
+            </summary>
+            <param name="lpSourceFolder">The location of the files to include in the zip file</param>
+            <param name="searchPattern">Search pattern (ie "*.*" or "*.txt" or "*.gif") to idendify what files in lpSourceFolder to include in the zip file</param>
+            <param name="searchOption">Only files in lpSourceFolder or include files in subfolders also</param>
+            <param name="lpDestFolder">Folder to write the zip file into</param>
+            <param name="zipFileName">Name of the zip file to write</param>
+            <param name="deleteTempFile">Boolean, true deleted the intermediate temp file, false leaves the temp file in lpDestFolder (for debugging)</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.ZIP.GZip.Compress(System.IO.FileInfo[],System.String[],System.String,System.String,System.String)">
+            <summary>
+            Compress
+            </summary>
+            <param name="files">Array of FileInfo objects to be included in the zip file</param>
+            <param name="folders">Array of Folder string</param>
+            <param name="lpBaseFolder">Base folder to use when creating relative paths for the files 
+            stored in the zip file. For example, if lpBaseFolder is 'C:\zipTest\Files\', and there is a file 
+            'C:\zipTest\Files\folder1\sample.txt' in the 'files' array, the relative path for sample.txt 
+            will be 'folder1/sample.txt'</param>
+            <param name="lpDestFolder">Folder to write the zip file into</param>
+            <param name="zipFileName">Name of the zip file to write</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.ZIP.GZip.Compress(System.IO.FileInfo[],System.String,System.String,System.String)">
+            <summary>
+            Compress
+            </summary>
+            <param name="files">Array of FileInfo objects to be included in the zip file</param>
+            <param name="lpBaseFolder">Base folder to use when creating relative paths for the files 
+            stored in the zip file. For example, if lpBaseFolder is 'C:\zipTest\Files\', and there is a file 
+            'C:\zipTest\Files\folder1\sample.txt' in the 'files' array, the relative path for sample.txt 
+            will be 'folder1/sample.txt'</param>
+            <param name="lpDestFolder">Folder to write the zip file into</param>
+            <param name="zipFileName">Name of the zip file to write</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.ZIP.GZip.Compress(System.IO.FileInfo[],System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Compress
+            </summary>
+            <param name="files">Array of FileInfo objects to be included in the zip file</param>
+            <param name="lpBaseFolder">Base folder to use when creating relative paths for the files 
+            stored in the zip file. For example, if lpBaseFolder is 'C:\zipTest\Files\', and there is a file 
+            'C:\zipTest\Files\folder1\sample.txt' in the 'files' array, the relative path for sample.txt 
+            will be 'folder1/sample.txt'</param>
+            <param name="lpDestFolder">Folder to write the zip file into</param>
+            <param name="zipFileName">Name of the zip file to write</param>
+            <param name="deleteTempFile">Boolean, true deleted the intermediate temp file, false leaves the temp file in lpDestFolder (for debugging)</param>
+        </member>
+    </members>
+</doc>

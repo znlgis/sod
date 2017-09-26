@@ -19,7 +19,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>PDF.Net.MSF.Service</Id>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Title>PDF.NET MSF(Server RunTime)</Title>
    <Authors>bluedoctor</Authors>
     <Owners>pwmis.com</Owners>

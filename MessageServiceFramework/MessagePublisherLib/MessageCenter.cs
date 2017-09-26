@@ -113,12 +113,36 @@ namespace MessagePublisher
             return lsn;
         }
 
+        /// <summary>
+        /// 获取一个监听器，如果不存在，则使用参数传入的监听器
+        /// </summary>
+        /// <param name="newListener"></param>
+        /// <returns></returns>
         public MessageListener GetListener(MessageListener newListener)
         {
             lock (_syncLock)
             {
                 MessageListener lsn = _listeners.FirstOrDefault(p => p.FromIP == newListener.FromIP && p.FromPort == newListener.FromPort);
                 return lsn ?? newListener;
+            }
+        }
+
+        /// <summary>
+        /// 线程安全的获取当前监听器对应的原有监听器，如果没有，返回空
+        /// </summary>
+        /// <param name="newListener"></param>
+        /// <returns></returns>
+        private MessageListener GetExistsListener(MessageListener newListener)
+        {
+            lock (_syncLock)
+            {
+                if (_listeners.Count > 0)
+                {
+                    int index = _listeners.IndexOf(newListener);
+                    if (index >= 0)
+                        return _listeners[index];
+                }
+                return null;                     
             }
         }
 
@@ -217,7 +241,12 @@ namespace MessagePublisher
         /// <param name="message"></param>
         public int NotifyMessage(string message)
         {
-            MessageListener[] listeners = _listeners.Where(p => p.RequestMessageType() == "System.String").ToArray();
+            MessageListener[] listeners = _listeners.Where(p => 
+                {
+                    string type = p.RequestMessageType();
+                    return  string.IsNullOrEmpty(type) || type == "System.String";
+                }
+                ).ToArray();
             if (listeners.Length > 0)
                 NotifyMessage(message, listeners);
             return listeners.Length;
@@ -271,25 +300,58 @@ namespace MessagePublisher
 
         public void AcceptMessage(MessageListener listener)
         {
-            if (_listeners.Contains(listener))
+            /*
+               if (_listeners.Contains(listener))
+               {
+                   if (ListenerAcceptMessage != null)
+                   {
+                       //由于此方法相关的服务接口特性为 IsOneWay = true ,listener 将很快过期
+                       //MessageListener currLsn = this.GetListener(listener.FromIP, listener.FromPort);
+                       MessageListener currLsn = this.GetExistsListener(listener);
+                       if (currLsn != null)
+                       {
+                           currLsn.FromMessage = listener.FromMessage;
+                           currLsn.MessageID = listener.MessageID;
+                           //string showMsg = currLsn.FromMessage.Length > 1000 ? currLsn.FromMessage.Substring(0, 1000) : currLsn.FromMessage;
+                           //Console.WriteLine("MessageListener FromMessage:{0},MessageID:{1}", showMsg, currLsn.MessageID);
+                           this.ListenerAcceptMessage(this, new MessageListenerEventArgs(currLsn));
+                       }
+                       else
+                       {
+                           OnNotifyError(listener, new Exception("未知的监听器：IP:"+listener.FromIP+",Port:"+listener.FromPort));
+                       }
+                   }
+               }
+               else
+               {
+                   OnNotifyError(listener, new Exception("监听器未被注册。"));
+               }
+           */
+
+          
+            //MessageListener 类型已经重构了相等比较，下面方法直接可用
+            MessageListener currLsn = this.GetExistsListener(listener);
+            if (currLsn == null)
             {
-                if (ListenerAcceptMessage != null)
-                {
-                    //由于此方法相关的服务接口特性为 IsOneWay = true ,listener 将很快过期
-                    MessageListener currLsn = this.GetListener(listener.FromIP, listener.FromPort);
-                    if (currLsn != null)
-                    {
-                        currLsn.FromMessage = listener.FromMessage;
-                        currLsn.MessageID = listener.MessageID;
-                        //string showMsg = currLsn.FromMessage.Length > 1000 ? currLsn.FromMessage.Substring(0, 1000) : currLsn.FromMessage;
-                        //Console.WriteLine("MessageListener FromMessage:{0},MessageID:{1}", showMsg, currLsn.MessageID);
-                        this.ListenerAcceptMessage(this, new MessageListenerEventArgs(currLsn));
-                    }
-                }
+                OnNotifyError(listener, new Exception("监听器未被注册,IP:" + listener.FromIP + ",Port:" + listener.FromPort));
             }
             else
             {
-                OnNotifyError(listener, new Exception("监听器未被注册。"));
+                if (currLsn.FromIP != listener.FromIP || currLsn.FromPort != listener.FromPort)
+                {
+                    OnNotifyError(listener, new Exception("程序异常，所请求的监听器端口和IP地址与现有的监听器不一致。"));
+                    return;
+                }
+
+                if (ListenerAcceptMessage != null)
+                {
+                    //由于此方法相关的服务接口特性为 IsOneWay = true ,listener 将很快过期
+                    currLsn.FromMessage = listener.FromMessage;
+                    currLsn.MessageID = listener.MessageID;
+                    //string showMsg = currLsn.FromMessage.Length > 1000 ? currLsn.FromMessage.Substring(0, 1000) : currLsn.FromMessage;
+                    //Console.WriteLine("MessageListener FromMessage:{0},MessageID:{1}", showMsg, currLsn.MessageID);
+                    this.ListenerAcceptMessage(this, new MessageListenerEventArgs(currLsn));
+                }
             }
         }
 

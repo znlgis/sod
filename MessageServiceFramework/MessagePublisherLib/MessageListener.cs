@@ -10,9 +10,13 @@ namespace MessagePublisher
         public string FromIP { get; private set; }
 
         public int FromPort { get; private set; }
-
+        /// <summary>
+        /// 当前消息，注意此消息可能会变
+        /// </summary>
         public string FromMessage { get; set; }
-
+        /// <summary>
+        /// 当前消息编号，注意此ID可能会改变
+        /// </summary>
         public int MessageID { get; set; }
 
         public MessageUser User { get; set; }

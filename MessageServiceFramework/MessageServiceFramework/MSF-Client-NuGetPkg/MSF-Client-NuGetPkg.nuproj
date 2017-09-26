@@ -19,7 +19,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>PDF.Net.MSF.Client</Id>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Title>PDF.NET MSF(Client )</Title>
     <Authors>bluedoctor</Authors>
     <Owners>PWMIS.com</Owners>
@@ -35,6 +35,11 @@
     <Tags>WCF,Message</Tags>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="lib\net40\PWMIS.EnterpriseFramework.Common.xml" />
+     <Content Include="lib\net40\PWMIS.EnterpriseFramework.Message.PublishService.xml" />
+      <Content Include="lib\net40\PWMIS.EnterpriseFramework.Message.SubscriberLib.xml" />
+       <Content Include="lib\net40\PWMIS.EnterpriseFramework.Service.Basic.xml" />
+         <Content Include="lib\net40\PWMIS.EnterpriseFramework.Service.Client.xml" />
     <Content Include="Readme.txt" />
   </ItemGroup>
   <ItemGroup>

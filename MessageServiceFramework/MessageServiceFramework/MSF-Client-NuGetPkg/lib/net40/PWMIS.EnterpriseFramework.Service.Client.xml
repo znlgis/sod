@@ -1,0 +1,577 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PWMIS.EnterpriseFramework.Service.Client</name>
+    </assembly>
+    <members>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Client.Connection">
+            <summary>
+            服务连接对象
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Connection.#ctor(System.String)">
+            <summary>
+            以一个服务基地址初始化本类
+            </summary>
+            <param name="serviceUri"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Connection.#ctor(System.String,System.Boolean)">
+            <summary>
+            指定服务的基地址和是否使用连接池
+            </summary>
+            <param name="serviceUri"></param>
+            <param name="pool"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Connection.Open">
+            <summary>
+            打开服务连接。在执行请求服务的方法之前，必须先调用本方法。
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Connection.RequestService(System.String,System.Type,System.Action{System.String})">
+            <summary>
+            向服务器发送消息，当服务器处理完后，会回调当前提供的回调方法
+            </summary>
+            <param name="message">发给服务器的消息</param>
+            <param name="ResultType">结果的对象类型</param>
+            <param name="action">客户端的回调方法</param>
+            <returns>消息标识</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Connection.RequestService(System.String,System.Type,System.Action{System.String},PWMIS.EnterpriseFramework.Common.MyFunc{System.String,System.String})">
+            <summary>
+            向服务器发送消息，当服务器处理完后，会回调当前提供的回调方法
+            </summary>
+            <param name="message">发给服务器的消息</param>
+            <param name="ResultType">结果的对象类型</param>
+            <param name="action">客户端的回调方法</param>
+            <param name="function">在执行过程中的回调函数</param>
+            <returns>消息标识</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Connection.RequestService(System.String,System.Type,System.Action{System.String},PWMIS.EnterpriseFramework.Common.MyFunc{System.String,System.String},PWMIS.EnterpriseFramework.Common.MyFunc{System.String,System.String})">
+            <summary>
+            向服务器发送消息，当服务器处理完后，会回调当前提供的回调方法
+            </summary>
+            <param name="message">发给服务器的消息</param>
+            <param name="ResultType">结果的对象类型</param>
+            <param name="action">客户端的回调方法</param>
+            <param name="function">在执行过程中的回调函数</param>
+            <param name="preFunction">在执行过程前的回调函数</param>
+            <returns>消息标识</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Connection.Close">
+            <summary>
+            取消订阅，关闭连接
+            </summary>
+        </member>
+        <member name="E:PWMIS.EnterpriseFramework.Service.Client.Connection.ErrorMessage">
+            <summary>
+            处理服务的异常信息
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.ServiceUri">
+            <summary>
+            服务的基地址
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.ServiceSubscriber">
+            <summary>
+            获取服务订阅者
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.UseConnectionPool">
+            <summary>
+            是否使用连接池，在订阅模式下，不必设置该属性
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1">
+            <summary>
+            消息转换器
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.GetResponseDataType">
+            <summary>
+            获取服务器响应的数据类型
+            </summary>
+            <typeparam name="T">最终要转换结果的类型</typeparam>
+            <returns>服务端消息的类型</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.#ctor(System.String)">
+            <summary>
+            转换当前类型的消息数据并处理转换过程中的异常
+            </summary>
+            <param name="messageText">消息的原始文本</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.#ctor(System.String,PWMIS.EnterpriseFramework.Common.DataType)">
+            <summary>
+            转换指定类型的消息数据并处理转换过程中的异常
+            </summary>
+            <param name="messageText">消息的原始文本</param>
+            <param name="resultDataType">消息的数据类型</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.Serialize(`0)">
+            <summary>
+            将一个结果值进行序列化
+            </summary>
+            <param name="result"></param>
+            <returns></returns>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.Result">
+            <summary>
+            转换结果
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.Succeed">
+            <summary>
+            转换是否成功，强烈建议使用前检查该属性
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.MessageText">
+            <summary>
+            消息的原始文本
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.ErrorMessage">
+            <summary>
+            错误信息
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceHostInfo">
+            <summary>
+            服务宿主信息
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel">
+            <summary>
+            服务注册信息
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.GetUri">
+            <summary>
+            获取服务地址的Uri形势
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.RegServerIP">
+            <summary>
+            服务IP:订阅者
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.RegServerPort">
+            <summary>
+            服务端口:订阅者
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.RegServerDesc">
+            <summary>
+            服务描述:订阅者
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.IsActive">
+            <summary>
+            是否当前使用
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.ServerMappingIP">
+            <summary>
+            映射的服务服务IP，用于防火墙或路由器映射的公网IP
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceHostInfo.ActiveConnectCount">
+            <summary>
+            服务宿主上活动的连接数量（长连接）
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceHostInfo.ListenerCount">
+            <summary>
+            当前监听器数量（快照）
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceHostInfo.ListenerMaxCount">
+            <summary>
+            监听器最大值
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceHostInfo.ListenerMaxDateTime">
+            <summary>
+            监听器最大值发生时间
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceHostInfo.LogDirectory">
+            <summary>
+            日志目录
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity">
+            <summary>
+            服务相关的用户标识
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.CreateTime">
+            <summary>
+            获取凭据的创建时间
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Id">
+            <summary>
+            标识编号
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Name">
+            <summary>
+            标识名
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Expire">
+            <summary>
+            过期时间，默认时间 3分钟
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.IsAuthenticated">
+            <summary>
+            标识是否已经验证
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Key">
+            <summary>
+            标识对应的缓存的键，通过它判断是否是同一个缓存中的对象
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Uri">
+            <summary>
+            标识所在的服务基地址（可用于检查集群负载情况）
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Client.Proxy">
+            <summary>
+            服务代理类 2012.5.3 整理
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.CheckConnect">
+            <summary>
+            检查连接是否可用，如果不可用，则重新打开连接
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.GetServiceMessage``1(System.String,PWMIS.EnterpriseFramework.Common.DataType)">
+            <summary>
+            以同步的方式（阻塞），获取服务执行的结果消息
+            </summary>
+            <typeparam name="T">消息类型</typeparam>
+            <param name="reqSrvUrl">服务地址</param>
+            <param name="resultDataType">消息的数据类型</param>
+            <returns>消息转换器对象，如果不成功，返回空值</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.GetServiceMessage``1(System.String)">
+            <summary>
+            以同步的方式（阻塞），获取服务执行的结果消息
+            </summary>
+            <typeparam name="T">消息类型</typeparam>
+            <param name="reqSrvUrl">服务地址</param>
+            <returns>消息转换器对象，如果不成功，返回空值</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.GetServiceMessage``1(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,PWMIS.EnterpriseFramework.Common.DataType)">
+            <summary>
+            以同步的方式（阻塞），获取服务执行的结果消息。如果连接未打开，会尝试自动打开。
+            </summary>
+            <typeparam name="T">消息类型</typeparam>
+            <param name="request">消息请求对象</param>
+            <param name="resultDataType">消息的数据类型</param>
+            <returns>消息转换器对象</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestService``1(System.String,PWMIS.EnterpriseFramework.Common.DataType,System.Action{``0})">
+            <summary>
+            请求远程服务并异步执行自定义的操作
+            </summary>
+            <typeparam name="T">要处理的对象类型</typeparam>
+            <param name="reqSrvUrl">服务地址</param>
+            <param name="resultDataType">返回消息的数据类型</param>
+            <param name="action">自定义的处理方法</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestServiceAsync``1(System.String,PWMIS.EnterpriseFramework.Common.DataType)">
+            <summary>
+            请求一个服务，然后异步处理结果。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。
+            </summary>
+            <typeparam name="T">服务方法的结果类型</typeparam>
+            <param name="reqSrvUrl">服务的地址</param>
+            <param name="resultDataType">服务返回的数据类型</param>
+            <returns>服务结果</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestServiceAsync``1(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest)">
+            <summary>
+            请求一个服务，然后异步处理结果。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。
+            </summary>
+            <typeparam name="T">服务方法的结果类型</typeparam>
+            <param name="request">"服务请求"对象</param>
+            <returns>异步任务对象</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestServiceAsync``3(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,PWMIS.EnterpriseFramework.Common.MyFunc{``1,``2})">
+            <summary>
+            请求一个服务，然后异步处理结果，并运行服务端处理过程中回调客户端的函数。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。
+            </summary>
+            <typeparam name="T">服务方法的结果类型</typeparam>
+            <typeparam name="TFunPara">要执行服务中间调用的回调函数的参数类型</typeparam>
+            <typeparam name="TFunResult">要执行服务中间调用的回调函数的结果类型</typeparam>
+            <param name="request">"服务请求"对象</param>
+            <param name="function">中间过程客户端回调函数</param>
+            <returns>异步任务对象</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestService``3(System.String,PWMIS.EnterpriseFramework.Common.DataType,System.Action{``0},PWMIS.EnterpriseFramework.Common.MyFunc{``1,``2})">
+            <summary>
+            请求远程服务并异步执行自定义的操作，在得到最终结果前，允许服务端回调客户端指定的函数，作为服务端计算需要的中间结果
+            </summary>
+            <typeparam name="T">最终执行的回调方法参数类型</typeparam>
+            <typeparam name="TFunPara">要执行服务中间调用的回调函数的参数类型</typeparam>
+            <typeparam name="TFunResult">要执行服务中间调用的回调函数的结果类型</typeparam>
+            <param name="reqSrvUrl">服务地址</param>
+            <param name="resultDataType">返回消息的数据类型</param>
+            <param name="action">自定义的处理方法</param>
+            <param name="function">作为服务端计算需要回调客户端提供的中间结果函数</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestServiceAsync``3(System.String,PWMIS.EnterpriseFramework.Common.DataType,PWMIS.EnterpriseFramework.Common.MyFunc{``1,``2})">
+            <summary>
+            异步请求服务，并允许服务在执行过程中，回调客户端函数
+            </summary>
+            <typeparam name="T">服务的结果返回类型</typeparam>
+            <typeparam name="TFunPara">回调函数的参数类型</typeparam>
+            <typeparam name="TFunResult">回调函数的结果类型</typeparam>
+            <param name="reqSrvUrl">请求服务的URL地址</param>
+            <param name="resultDataType">结果数据类型</param>
+            <param name="function">回调函数</param>
+            <returns>异步任务对象</returns>
+        </member>
+        <!-- 对于成员“M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestService``5(System.String,PWMIS.EnterpriseFramework.Common.DataType,System.Action{``0},PWMIS.EnterpriseFramework.Common.MyFunc{``1,``2},PWMIS.EnterpriseFramework.Common.MyFunc{``3,``4})”忽略有格式错误的 XML 注释 -->
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestService``1(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,PWMIS.EnterpriseFramework.Common.DataType,System.Action{``0})">
+            <summary>
+            请求远程服务并且处理返回消息
+            </summary>
+            <typeparam name="T">要处理的对象类型</typeparam>
+            <param name="request">"服务请求"对象</param>
+            <param name="resultDataType">返回消息的数据类型</param>
+            <param name="action">自定义的处理的回调方法</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestService``1(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,System.Action{``0})">
+            <summary>
+            请求远程服务并且处理返回消息
+            </summary>
+            <typeparam name="T">要处理的对象类型</typeparam>
+            <param name="request">"服务请求"对象</param>
+            <param name="action">自定义的处理方法</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestService``1(MessageSubscriber.Subscriber,System.String,PWMIS.EnterpriseFramework.Common.DataType,System.Action{``0})">
+            <summary>
+            在发布订阅模式下，以同一个连接，请求服务并执行指定的处理方法
+            </summary>
+            <typeparam name="T">要处理的对象类型</typeparam>
+            <param name="sub">正在使用的订阅对象</param>
+            <param name="reqSrvUrl">服务地址</param>
+            <param name="resultDataType">返回消息的数据类型</param>
+            <param name="action">自定义的处理方法</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestService``1(MessageSubscriber.Subscriber,PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,PWMIS.EnterpriseFramework.Common.DataType,System.Action{``0})">
+            <summary>
+            在发布订阅模式下，以同一个连接，请求服务并执行指定的处理方法
+            </summary>
+            <typeparam name="T">要处理的对象类型</typeparam>
+            <param name="sub">正在使用的订阅对象</param>
+            <param name="request">服务请求对象</param>
+            <param name="resultDataType">返回消息的数据类型</param>
+            <param name="action">自定义的处理方法</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestService``2(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,PWMIS.EnterpriseFramework.Common.DataType,System.Action{``1})">
+            <summary>
+            在发布订阅模式下，以同一个连接，请求远程服务并异步执行自定义的操作
+            </summary>
+            <typeparam name="T">父类对象</typeparam>
+            <typeparam name="T2">结果要转换的兼容类对象</typeparam>
+            <param name="request"></param>
+            <param name="resultDataType"></param>
+            <param name="action"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestService``2(MessageSubscriber.Subscriber,PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,PWMIS.EnterpriseFramework.Common.DataType,System.Action{``1})">
+            <summary>
+            请求远程服务并异步执行自定义的操作
+            </summary>
+            <typeparam name="T">父类对象</typeparam>
+            <typeparam name="T2">结果要转换的兼容类对象</typeparam>
+            <param name="sub">正在使用的订阅对象</param>
+            <param name="request"></param>
+            <param name="resultDataType"></param>
+            <param name="action"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestServiceCurrentSubscribe``1(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,PWMIS.EnterpriseFramework.Common.DataType,System.Action{``0})">
+            <summary>
+            以当前连接（如未打开则打开），异步请求并处理数据
+            </summary>
+            <typeparam name="T">请求的数据类型</typeparam>
+            <param name="request">服务请求对象</param>
+            <param name="resultDataType">数据类型</param>
+            <param name="action">要异步执行的委托方法</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.Subscribe(System.String,System.Type,System.Action{System.String})">
+             <summary>
+             发起消息订阅
+             </summary>
+            <param name="reqSrvUrl">服务的地址，必须是Publish模式</param>
+            <param name="resultType">服务返回的对象类型</param>
+            <param name="action">自定义的消息处理方法</param>
+            <returns>消息标识</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.Subscribe(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,System.Action{System.String})">
+            <summary>
+            发起消息订阅
+            </summary>
+            <param name="request">服务请求对象</param>
+            <param name="action">自定义的消息处理方法</param>
+            <returns>消息标识,如果为0，则订阅未成功</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.Subscribe``1(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,PWMIS.EnterpriseFramework.Common.DataType,System.Action{PWMIS.EnterpriseFramework.Service.Client.MessageConverter{``0}})">
+            <summary>
+            发起订阅，并处理来自服务器的消息（订阅的数据类型）
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="request">服务请求对象</param>
+            <param name="resultDataType">结果的数据类型</param>
+            <param name="action">自定义的处理方法</param>
+            <returns>消息标识,如果为0，则订阅未成功</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.Subscribe``2(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,PWMIS.EnterpriseFramework.Common.DataType,System.Action{PWMIS.EnterpriseFramework.Service.Client.MessageConverter{``1}})">
+            <summary>
+            发起订阅，并处理来自服务器的消息（订阅的数据类型）
+            </summary>
+            <typeparam name="T">服务返回的结果对象类型，仅供服务器端使用</typeparam>
+            <typeparam name="T2">服务结果真正要转换成最终使用的对象类型</typeparam>
+            <param name="request">服务请求对象</param>
+            <param name="resultDataType">消息的数据类型</param>
+            <param name="action">自定义的处理方法</param>
+            <returns>消息标识,如果为0，则订阅未成功</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.SubscribeTextMessage(System.String,System.Action{System.String})">
+            <summary>
+            订阅文本消息
+            </summary>
+            <param name="message">给服务器的初始消息</param>
+            <param name="action">对服务器发布的消息的自定义处理</param>
+            <returns>订阅是否成功，大于0，成功，其它为消息标识，表示成功</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.SendTextMessage(System.String)">
+            <summary>
+            在发布-订阅模式下，向发布端发送文本消息
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.SendCommandMessage(System.String)">
+            <summary>
+            发送命令消息
+            </summary>
+            <param name="cmdString">命令字符串</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.SubscribeCommandMessage(System.String,System.Action{System.String})">
+            <summary>
+            发送命令信息，并订阅命令的执行结果
+            </summary>
+            <param name="cmdString">命令字符串</param>
+            <param name="action">要处理的回调方法</param>
+            <returns>消息编号</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.DeSubscribe(System.Int32)">
+            <summary>
+            根据消息编号，取消当前连接订阅的服务方法，但不会关闭当前连接
+            </summary>
+            <param name="messageId"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.Connect(System.String)">
+            <summary>
+            连接服务
+            </summary>
+            <param name="serviceUri">服务的基础地址</param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.Connect">
+            <summary>
+            连接服务
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.Close">
+            <summary>
+            取消订阅，关闭连接
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.StartCheckHeartBeat">
+            <summary>
+            (在打开连接后)开启心跳监测，如果发现服务器与客户端网络异常，会触发异常事件
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.CreateServiceBaseUri(System.String,System.Int32)">
+            <summary>
+            设置服务访问代理的基地址（ServiceBaseUri属性）
+            </summary>
+            <param name="host">远程主机名，可以是一个IP地址</param>
+            <param name="port">连接远程主机的端口号</param>
+        </member>
+        <member name="E:PWMIS.EnterpriseFramework.Service.Client.Proxy.ErrorMessage">
+            <summary>
+            处理服务的异常信息
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.ServiceSubscriber">
+            <summary>
+            获取服务订阅者
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.ServiceBaseUri">
+            <summary>
+            服务的基础地址
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.UseConnectionPool">
+            <summary>
+            是否使用连接池，在订阅模式下，不必设置该属性
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Client.PublishServicePool">
+            <summary>
+            服务连接池
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.PublishServicePool.GetServiceChannel(System.String)">
+            <summary>
+            从池中获取一个服务通道
+            </summary>
+            <param name="serviceUri">服务的基地址</param>
+            <returns>服务通道对象（消息订阅者对象）</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.PublishServicePool.BackPool(MessageSubscriber.Subscriber)">
+            <summary>
+            如果订阅者在连接池中，则放回池中
+            </summary>
+            <param name="channel"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.PublishServicePool.CheckPoolConnect">
+            <summary>
+            检查连接池，清除无效的连接
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.PublishServicePool.Instance">
+            <summary>
+            返回 MessageCenter 的唯一实例；
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Client.Properties.Resources">
+            <summary>
+              一个强类型的资源类，用于查找本地化的字符串等。
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Properties.Resources.ResourceManager">
+            <summary>
+              返回此类使用的缓存的 ResourceManager 实例。
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Properties.Resources.Culture">
+            <summary>
+              使用此强类型资源类，为所有资源查找
+              重写当前线程的 CurrentUICulture 属性。
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -893,10 +893,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         /// <param name="message"></param>
         public void SendTextMessage(string message)
         {
-            //if (sub == null || sub.Closed)
-            //    throw new InvalidOperationException("未打开连接或者连接已经关闭，请先调用Connect 方法");
-            CheckConnect();
-            ServiceSubscriber.SendTextMessage(message);
+            SendTextMessageInner("[SROK]"+message);
         }
 
         /// <summary>
@@ -908,7 +905,15 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             if (string.IsNullOrEmpty(cmdString))
                 return;
             string strTemp = "[CMD]" + cmdString;
-            SendTextMessage(strTemp);
+            SendTextMessageInner(strTemp);
+        }
+
+        private void SendTextMessageInner(string message)
+        {
+            //if (sub == null || sub.Closed)
+            //    throw new InvalidOperationException("未打开连接或者连接已经关闭，请先调用Connect 方法");
+            CheckConnect();
+            ServiceSubscriber.SendTextMessage(message);
         }
 
         /// <summary>
@@ -1053,7 +1058,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         /// </summary>
         /// <param name="host">远程主机名，可以是一个IP地址</param>
         /// <param name="port">连接远程主机的端口号</param>
-        public void CreateServiceBaseUri(string host, string port)
+        public void CreateServiceBaseUri(string host, int port)
         {
             ServiceBaseUri = string.Format("net.tcp://{0}:{1}", host,port);
         }
