@@ -684,3 +684,44 @@ System.IO.FileLoadException: 未能加载文件或程序集“PWMIS.EnterpriseFr
 要启用程序集绑定失败日志记录，请将注册表值 [HKLM\Software\Microsoft\Fusion!EnableLog] (DWORD)设置为 1。
 注意: 会有一些与程序集绑定失败日志记录关联的性能损失。
 要关闭此功能，请移除注册表值 [HKLM\Software\Microsoft\Fusion!EnableLog]。
+
+------------------------------
+程序发生未处理的异常：
+System.ServiceModel.AddressAlreadyInUseException: 已有针对 IP 终结点 127.0.0.1:8888 的侦听器。如果有其他应用程序已在侦听此终结点，或者，如果在服务主机中具有多个服务终结点，这些终结点具有相同的 IP 终结点但绑定配置不兼容，则可能会发生这种情况。 ---> System.Net.Sockets.SocketException: 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。
+   在 System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   在 System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   在 System.ServiceModel.Channels.SocketConnectionListener.Listen()
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 System.ServiceModel.Channels.SocketConnectionListener.Listen()
+   在 System.ServiceModel.Channels.ExclusiveTcpTransportManager.OnOpen()
+   在 System.ServiceModel.Channels.TransportManager.Open(TransportChannelListener channelListener)
+   在 System.ServiceModel.Channels.TransportManagerContainer.Open(SelectTransportManagersCallback selectTransportManagerCallback)
+   在 System.ServiceModel.Channels.TransportChannelListener.OnOpen(TimeSpan timeout)
+   在 System.ServiceModel.Channels.ConnectionOrientedTransportChannelListener.OnOpen(TimeSpan timeout)
+   在 System.ServiceModel.Channels.TcpChannelListener`2.OnOpen(TimeSpan timeout)
+   在 System.ServiceModel.Channels.CommunicationObject.Open(TimeSpan timeout)
+   在 System.ServiceModel.Dispatcher.ChannelDispatcher.OnOpen(TimeSpan timeout)
+   在 System.ServiceModel.Channels.CommunicationObject.Open(TimeSpan timeout)
+   在 System.ServiceModel.ServiceHostBase.OnOpen(TimeSpan timeout)
+   在 System.ServiceModel.Channels.CommunicationObject.Open(TimeSpan timeout)
+   在 PWMIS.EnterpriseFramework.Service.Host.Program.Main(String[] args) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceHost\Program.cs:行号 264
+------------------------------
+程序发生未处理的异常：
+System.ServiceModel.AddressAlreadyInUseException: 已有针对 IP 终结点 127.0.0.1:8888 的侦听器。如果有其他应用程序已在侦听此终结点，或者，如果在服务主机中具有多个服务终结点，这些终结点具有相同的 IP 终结点但绑定配置不兼容，则可能会发生这种情况。 ---> System.Net.Sockets.SocketException: 通常每个套接字地址(协议/网络地址/端口)只允许使用一次。
+   在 System.Net.Sockets.Socket.DoBind(EndPoint endPointSnapshot, SocketAddress socketAddress)
+   在 System.Net.Sockets.Socket.Bind(EndPoint localEP)
+   在 System.ServiceModel.Channels.SocketConnectionListener.Listen()
+   --- 内部异常堆栈跟踪的结尾 ---
+   在 System.ServiceModel.Channels.SocketConnectionListener.Listen()
+   在 System.ServiceModel.Channels.ExclusiveTcpTransportManager.OnOpen()
+   在 System.ServiceModel.Channels.TransportManager.Open(TransportChannelListener channelListener)
+   在 System.ServiceModel.Channels.TransportManagerContainer.Open(SelectTransportManagersCallback selectTransportManagerCallback)
+   在 System.ServiceModel.Channels.TransportChannelListener.OnOpen(TimeSpan timeout)
+   在 System.ServiceModel.Channels.ConnectionOrientedTransportChannelListener.OnOpen(TimeSpan timeout)
+   在 System.ServiceModel.Channels.TcpChannelListener`2.OnOpen(TimeSpan timeout)
+   在 System.ServiceModel.Channels.CommunicationObject.Open(TimeSpan timeout)
+   在 System.ServiceModel.Dispatcher.ChannelDispatcher.OnOpen(TimeSpan timeout)
+   在 System.ServiceModel.Channels.CommunicationObject.Open(TimeSpan timeout)
+   在 System.ServiceModel.ServiceHostBase.OnOpen(TimeSpan timeout)
+   在 System.ServiceModel.Channels.CommunicationObject.Open(TimeSpan timeout)
+   在 PWMIS.EnterpriseFramework.Service.Host.Program.Main(String[] args) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceHost\Program.cs:行号 264
