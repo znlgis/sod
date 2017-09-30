@@ -140,9 +140,19 @@ namespace PWMIS.EnterpriseFramework.IOC
             else
             {
                 //缓存可以大大提高效率
-                Assembly assembly = Assembly.Load(provider.Assembly);
-                t = assembly.GetType(provider.FullClassName, true);
-                dictTypeCache.Add(provider.FullClassName, t);
+                lock (lock_obj)
+                {
+                    if (dictTypeCache.ContainsKey(provider.FullClassName))
+                    {
+                        t = dictTypeCache[provider.FullClassName];
+                    }
+                    else
+                    {
+                        Assembly assembly = Assembly.Load(provider.Assembly);
+                        t = assembly.GetType(provider.FullClassName, true);
+                        dictTypeCache.Add(provider.FullClassName, t);
+                    }
+                }
             }
             return t;
         }

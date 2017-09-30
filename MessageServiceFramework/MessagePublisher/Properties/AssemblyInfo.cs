@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MessagePublisher")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("spring.hi.com")]
-[assembly: AssemblyProduct("MessagePublisher")]
-[assembly: AssemblyCopyright("Copyright © spring.hi.com 2010")]
+[assembly: AssemblyCompany("PWMIS")]
+[assembly: AssemblyProduct("PDF.NET.MSF")]
+[assembly: AssemblyCopyright("Copyright © Pwmis.com 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
