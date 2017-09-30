@@ -33,6 +33,20 @@ namespace ConsoleTest
             if (read.ToUpper() == "Q")
                 return;
 
+            //写入10000条日志，有缓存，可能不会写完
+            Console.WriteLine("测试日志写入10000 条信息...");
+            CommandLog loger = new CommandLog();
+            for (int t = 0; t <= 100; t++)
+            {
+                System.Threading.Thread thread = new System.Threading.Thread(new System.Threading.ParameterizedThreadStart(WriteLog));
+                thread.Name = "thread"+t;
+                thread.Start(loger);
+            }
+         
+            loger.Flush();
+            Console.WriteLine("按任意键继续");
+            Console.ReadLine();
+
             EntityUser etu = new EntityUser();
             ITable_User itu = etu.AsEntity();
             DateTime dtt = itu.Birthday;
@@ -210,6 +224,18 @@ namespace ConsoleTest
             Console.WriteLine("-------PDF.NET SOD 测试全部完成-------");
 
             Console.ReadLine();
+        }
+
+        private static void WriteLog(object obj)
+        {
+            CommandLog loger = obj as CommandLog;
+            for (int i = 0; i < 100; i++)
+            {
+                string text = System.Threading.Thread.CurrentThread.Name + " write text " + i;
+                loger.LogWriter.WriteLog("test", text);
+                //Console.WriteLine(text);
+
+            }
         }
 
         private static void TestTransaction()
