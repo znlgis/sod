@@ -70,7 +70,7 @@ Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "PWMIS.EnterpriseFramework-N
 EndProject
 Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "MSF-Client-NuGetPkg", "MSF-Client-NuGetPkg\MSF-Client-NuGetPkg.nuproj", "{8D7371F7-279E-42F4-B094-8AE79E92E1C7}"
 EndProject
-Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "MSF-Server-Group-NuGetPkg", "MSF-Server-Group\MSF-Server-Group-NuGetPkg.nuproj", "{25D29003-143C-4AD6-AE1D-84F72B2EB6E5}"
+Project("{FF286327-C783-4F7A-AB73-9BCBAD0D4460}") = "MSF-Server-Group-NuGetPkg", "MSF-Server-Group-NuGetPkg\MSF-Server-Group-NuGetPkg.nuproj", "{25D29003-143C-4AD6-AE1D-84F72B2EB6E5}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution

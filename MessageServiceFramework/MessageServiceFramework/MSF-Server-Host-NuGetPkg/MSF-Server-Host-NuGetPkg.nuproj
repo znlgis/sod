@@ -49,7 +49,7 @@
     <Content Include="Tools\UpdateService.bat" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MSF-Server-Group\MSF-Server-Group-NuGetPkg.nuproj" />
+    <ProjectReference Include="..\MSF-Server-Group-NuGetPkg\MSF-Server-Group-NuGetPkg.nuproj" />
   </ItemGroup>
   <Import Project="$(NuProjPath)\NuProj.targets" />
 </Project>

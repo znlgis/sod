@@ -19,7 +19,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>PDF.Net.MSF.Service</Id>
-    <Version>1.0.2</Version>
+    <Version>1.0.3</Version>
     <Title>PDF.NET MSF(Server RunTime)</Title>
    <Authors>bluedoctor</Authors>
     <Owners>pwmis.com</Owners>
@@ -44,6 +44,7 @@
     <Content Include="Tools\SucessCompiled.vbs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\AOPIOC\IOC\IOC.csproj" />
     <ProjectReference Include="..\MSF-Client-NuGetPkg\MSF-Client-NuGetPkg.nuproj" />
     <ProjectReference Include="..\PWMIS.EnterpriseFramework-NugetPkg\PWMIS.EnterpriseFramework-NugetPkg.nuproj" />
   </ItemGroup>
