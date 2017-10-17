@@ -33,9 +33,13 @@ namespace PWMIS.EnterpriseFramework.Service.Basic
                 {
                     Value = new DateTime(long.Parse(arr[1]));
                 }
+                else if (t == typeof(Guid))
+                {
+                    Value = Guid.Parse(arr[1]);
+                }
                 else if (t.IsValueType)
                 {
-                    Value = Convert.ChangeType(arr[1], t); ;
+                    Value = Convert.ChangeType(arr[1], t);
                 }
                 else
                 {

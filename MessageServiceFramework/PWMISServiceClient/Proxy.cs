@@ -805,6 +805,27 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         }
 
         /// <summary>
+        /// 发起消息订阅并且指定服务器端的回调函数
+        /// </summary>
+        ///<param name="reqSrvUrl">服务的地址，必须是Publish模式</param>
+        ///<param name="resultType">服务返回的对象类型</param>
+        ///<param name="action">自定义的消息处理方法</param>
+        /// <param name="function">服务器的回调函数</param>
+        /// <returns></returns>
+        private int Subscribe(string reqSrvUrl, Type resultType, Action<string> action,MyFunc<string,string> function)
+        {
+            if (this.Connect())
+            {
+                //subServiceList.Add(new SubscribeArgs() { ReqSrvUrl = reqSrvUrl, ResultType = resultType, CallBackAction = action });
+                return ServiceSubscriber.SendMessage(reqSrvUrl, resultType, action,function,null);
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
         /// 发起消息订阅
         /// </summary>
         /// <param name="request">服务请求对象</param>
@@ -869,6 +890,49 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                         action(convert);
                 }
             });
+        }
+
+        /// <summary>
+        /// 订阅服务，并且指定服务端回调客户端函数
+        /// </summary>
+        /// <typeparam name="T">服务器端推送的消息的结果类型</typeparam>
+        /// <typeparam name="TCallbackPara">服务器端回调客户端的方法的参数类型</typeparam>
+        /// <typeparam name="TCallbackResult">服务器端回调客户端的方法的结果类型</typeparam>
+        /// <param name="request">服务请求对象</param>
+        /// <param name="action">用于处理服务器推送的消息的方法</param>
+        /// <param name="serverCallback">用于处理服务器回调结果的函数</param>
+        /// <returns>消息编号</returns>
+        public int Subscribe<T, TCallbackPara,TCallbackResult>(ServiceRequest request, Action<MessageConverter<T>> action,MyFunc<TCallbackPara,TCallbackResult> serverCallback)
+        {
+            request.ResultType = typeof(T);
+            request.RequestModel = RequestModel.Publish;
+            DataType resultDataType = MessageConverter<T>.GetResponseDataType();
+            return Subscribe(request.ServiceUrl, request.ResultType, 
+                remoteMsg =>
+                {
+                    string errMsg = ServiceConst.GetServiceErrorMessage(remoteMsg);
+                    if (errMsg != string.Empty)
+                    {
+                        RaiseSubscriberError(this, new MessageEventArgs(errMsg));
+                    }
+                    else
+                    {
+                        MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
+                        if (action != null)
+                            action(convert);
+                    }
+                },
+             para =>
+             {
+                 MessageConverter<TCallbackPara> convert = new MessageConverter<TCallbackPara>(para);
+                 TCallbackResult result = serverCallback(convert.Result);
+
+                 MessageConverter<TCallbackResult> convertFunResult = new MessageConverter<TCallbackResult>();
+                 string strResult = convertFunResult.Serialize(result);
+                 //检查转换是否成功,convertFunResult.MessageText 可以获取结果的原始值
+                 return strResult;
+             }
+            );
         }
 
         /// <summary>

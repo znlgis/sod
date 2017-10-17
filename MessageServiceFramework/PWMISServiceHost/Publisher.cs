@@ -7,7 +7,7 @@
  * 
  * 本功能采用“享元模式”设计。
  * 
- * 
+ * 注意：以后需要修改程序，ServicePublisher应该记录所有的 ServiceContext 对象
  */ 
 using System;
 using System.Collections.Generic;
