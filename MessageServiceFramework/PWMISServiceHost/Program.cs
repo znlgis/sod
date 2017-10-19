@@ -108,6 +108,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         static void Main(string[] args)
         {
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            
             Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
 
             if (!System.IO.Directory.Exists(LogDirectory))
@@ -199,7 +200,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             ServiceHost host = new ServiceHost(typeof(MessagePublishServiceImpl));
             Console.WriteLine("service config check all ok.");
             host.AddServiceEndpoint(typeof(IMessagePublishService), binding, uri);
-            Console.WriteLine("=========PDF.NET.MSF (PWMIS Message Service) Ver 1.2.04.16 ==");
+            Console.WriteLine("=========PDF.NET.MSF (PWMIS Message Service) Ver {0} ==", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
             Console.WriteLine("启动消息发布服务……接入地址：{0}", uri);
             Console.WriteLine();
 
@@ -393,7 +394,14 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             MessageProcesser processer = new MessageProcesser(subInfo, e.Listener.FromMessage);
             processer.ServiceErrorEvent += new EventHandler<ServiceErrorEventArgs>(processer_ServiceErrorEvent);
             //Console.WriteLine("process message begin.");
-            processer.Process();
+            try
+            {
+                processer.Process();
+            }
+            catch (Exception ex)
+            {
+                processer_ServiceErrorEvent(processer, new ServiceErrorEventArgs(ex));
+            }
             //Console.WriteLine("process message end.");
         }
 
@@ -410,14 +418,14 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 e.ErrorMessageText,
                 e.ErrorSource == null ? "NULL" : e.ErrorSource.ToString());
             ConsoleWriteSubText(text, 1000);
-            WriteLogFile("./ErrorLog.txt", text);
+            WriteLogFile("ErrorLog.txt", text);
         }
 
         static void Instance_ListenerEventMessage(object sender, MessageListenerEventArgs e)
         {
             string text = string.Format("[{0}]监听器事件--From: {1}:{2}\r\n[{3}]", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), e.Listener.FromIP, e.Listener.FromPort, e.MessageText);
             ConsoleWriteSubText(text,1000);
-            WriteLogFile("./ListenerEvent.txt", text);
+            WriteLogFile("ListenerEvent.txt", text);
         }
 
         static void ListAllBindingElements(Binding binding)
@@ -460,7 +468,9 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            WriteLogFile("./ErrorLog.txt","程序发生未处理的异常：\r\n" + e.ExceptionObject.ToString());
+            string errMsg = "程序发生未处理的异常：\r\n" + e.ExceptionObject.ToString();
+            Console.WriteLine(errMsg);
+            WriteLogFile("ErrorLog.txt",errMsg);
         }
 
         static void WriteLogFile(string fileName,string logMsg)

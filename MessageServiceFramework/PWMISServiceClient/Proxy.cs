@@ -358,6 +358,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         public void RequestService<T, TFunPara, TFunResult>(string reqSrvUrl, DataType resultDataType, Action<T> action, MyFunc<TFunPara, TFunResult> function)
         {
             Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
+            conn.ErrorMessage += RaiseSubscriberError;
             if (conn.Open())
             {
                 conn.RequestService(reqSrvUrl, null, (remoteMsg) =>
@@ -494,6 +495,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             MyFunc<TPreFunPara, TPreFunResult> preFunction)
         {
             Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
+            conn.ErrorMessage += RaiseSubscriberError;
             if (conn.Open())
             {
                 conn.RequestService(reqSrvUrl, null, (remoteMsg) =>
@@ -503,6 +505,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                     //if (action != null)
                     //    action(convert.Result);
                     ProcessRemoteMessage<T>(remoteMsg, resultDataType, conn, action);
+                    conn.ErrorMessage -= RaiseSubscriberError;
                 },
                 para =>
                 {
@@ -719,6 +722,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                     //}
                     // 上面代码已经优化
                     ProcessRemoteMessage<T2>(remoteMsg, resultDataType, conn, action);
+                    conn.ErrorMessage -= new EventHandler<MessageEventArgs>(RaiseSubscriberError);
                 });
             }
             else

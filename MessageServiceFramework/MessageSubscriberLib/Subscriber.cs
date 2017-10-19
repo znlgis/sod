@@ -121,6 +121,7 @@ namespace MessageSubscriber
             _serviceProxy = DuplexChannelFactory<IMessagePublishService>.CreateChannel(_listener, binding, new EndpointAddress(_serviceUri));
             //下面通过配置，仅供测试
             //_serviceProxy = DuplexChannelFactory<IMessagePublishService>.CreateChannel(new InstanceContext(_listener), "defaultEndpoint");
+            ((ICommunicationObject)_serviceProxy).Faulted += Subscriber_Faulted;
             try
             {
                 string indentity = "PDF.NET;20111230;" + HardDiskSN.SerialNumber;
@@ -132,6 +133,11 @@ namespace MessageSubscriber
             {
                 OnErrorMessage(string.Format("Subscribe Error,ErrorMessage:{0}", ex.Message));
             }
+        }
+
+        void Subscriber_Faulted(object sender, EventArgs e)
+        {
+            OnErrorMessage(string.Format("Subscribe Communication Faulted ."));
         }
 
         /// <summary>

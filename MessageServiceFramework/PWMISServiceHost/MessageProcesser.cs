@@ -272,12 +272,16 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             context.GetMessageFun = strPara =>
             {
                 MessageListener currLst = MessageCenter.Instance.GetListener(this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort);
+                if (currLst == null)
+                    throw new NullReferenceException("监听器不存在！");
                 return currLst.CallBackFunction(msgId, strPara);
             };
 
             context.PreGetMessageFun = strPara =>
             {
                 MessageListener currLst = MessageCenter.Instance.GetListener(this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort);
+                if (currLst == null)
+                    throw new NullReferenceException("监听器不存在！");
                 return currLst.PreCallBackFunction(msgId, strPara);
             };
 
