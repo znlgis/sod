@@ -44,4 +44,31 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         void Clear();
 
     }
+
+    /// <summary>
+    /// 会话模式
+    /// </summary>
+    public enum SessionModel
+    { 
+        /// <summary>
+        /// 默认，使用连接信息、客户端硬件信息和连接时间综合构成
+        /// </summary>
+        Default,
+        /// <summary>
+        /// 每连接一个会话，包括客户端的IP和端口号
+        /// </summary>
+        PerConnection,
+        /// <summary>
+        /// 每用户一个会话
+        /// </summary>
+        UserName,
+        /// <summary>
+        /// 以客户端硬件标识一个会话
+        /// </summary>
+        HardwareIdentity,
+        /// <summary>
+        /// 以注册连接时候的数据标识一个会话
+        /// </summary>
+        RegisterData
+    }
 }

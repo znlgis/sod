@@ -25,7 +25,7 @@ namespace MessageSubscriber
                 using (Subscriber sub = new Subscriber(serviceUri))
                 {
                     sub.PublishingMessage += new EventHandler<MessageEventArgs>(sub_ReceivingMessage);
-                    sub.Subscribe();
+                    sub.Subscribe("","");
                     if (!sub.Closed)
                     {
                         Console.WriteLine("[{0}]连接成功！", DateTime.Now.ToString("yy-MM-dd HH:mm:ss"));

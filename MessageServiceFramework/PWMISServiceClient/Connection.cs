@@ -30,6 +30,18 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         /// </summary>
         public bool UseConnectionPool { get; set; }
 
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        /// <summary>
+        /// 两次请求直接是否保持长连接
+        /// </summary>
+        public bool KeepAlive { get; set; }
+        /// <summary>
+        /// 向服务器注册连接的附加数据
+        /// </summary>
+        public string RegisterData { get; set; }
+
+
         private void ServiceSubscriber_ErrorMessage(object sender, MessageEventArgs e)
         {
             e.MessageText = "Connection Error:" + e.MessageText;
@@ -71,7 +83,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                     if (!ServiceSubscriber.Registed)
                     {
                         ServiceSubscriber.ErrorMessage += new EventHandler<MessageEventArgs>(ServiceSubscriber_ErrorMessage);
-                        ServiceSubscriber.Subscribe();
+                        ServiceSubscriber.Subscribe(this.UserName,this.Password);
                     }
                     else
                     {
@@ -83,7 +95,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                 {
                     ServiceSubscriber = new Subscriber(this.ServiceUri);
                     ServiceSubscriber.ErrorMessage += new EventHandler<MessageEventArgs>(ServiceSubscriber_ErrorMessage);
-                    ServiceSubscriber.Subscribe();
+                    ServiceSubscriber.Subscribe(this.UserName, this.Password);
                 }
             }
             return !ServiceSubscriber.Closed;

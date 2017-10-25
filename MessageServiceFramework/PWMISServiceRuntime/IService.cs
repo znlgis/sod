@@ -120,7 +120,7 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         /// <summary>
         /// 服务关联的用户对象
         /// </summary>
-        ServiceIdentity User { get; }
+        ServiceIdentity User { get; set; }
         /// <summary>
         /// 服务所在的宿主
         /// </summary>
@@ -172,5 +172,9 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         /// 获取发布事件源对象
         /// </summary>
         ServiceEventSource PublishEventSource { get; }
+        /// <summary>
+        /// 获取或者设置服务的会话模式
+        /// </summary>
+        SessionModel SessionModel { get; set; }
     }
 }

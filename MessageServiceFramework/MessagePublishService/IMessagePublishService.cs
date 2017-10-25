@@ -20,7 +20,7 @@ namespace MessagePublishService
         /// <summary>
         /// 快速注册
         /// </summary>
-        /// <param name="indentity">客户端标识</param>
+        /// <param name="indentity">客户端标识，可能附带自定义的调用端应用程序标识</param>
         [OperationContract]
         void QuikRegist(string indentity);
 

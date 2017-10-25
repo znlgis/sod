@@ -36,7 +36,19 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             RaiseSubscriberError(sender, e);
         }
 
-        
+        /// <summary>
+        /// 连接使用的用户名，如果做了设置，那么在服务端必须做相应的配置
+        /// </summary>
+        public string ConnectionUserName { get; set; }
+        /// <summary>
+        /// 连接使用的用户密码，如果做了设置，那么在服务端必须做相应的配置
+        /// </summary>
+        public string ConnectionPassword { get; set; }
+
+        /// <summary>
+        /// 两次请求直接是否保持长连接
+        /// </summary>
+        public bool KeepAlive { get; set; }
 
         /// <summary>
         /// 检查连接是否可用，如果不可用，则重新打开连接
@@ -199,6 +211,8 @@ namespace PWMIS.EnterpriseFramework.Service.Client
 
             //新的使用连接池的方式
             Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
+            conn.UserName = this.ConnectionUserName;
+            conn.Password = this.ConnectionPassword;
             conn.ErrorMessage += new EventHandler<MessageEventArgs>(RaiseSubscriberError);
             if (conn.Open())
             {
@@ -227,6 +241,8 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         {
             var tcs = new TaskCompletionSource<T>();
             Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
+            conn.UserName = this.ConnectionUserName;
+            conn.Password = this.ConnectionPassword;
             conn.ErrorMessage += new EventHandler<MessageEventArgs>(
                 (object sender, MessageEventArgs e) => {
                     if (this.ErrorMessage != null)
@@ -358,6 +374,8 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         public void RequestService<T, TFunPara, TFunResult>(string reqSrvUrl, DataType resultDataType, Action<T> action, MyFunc<TFunPara, TFunResult> function)
         {
             Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
+            conn.UserName = this.ConnectionUserName;
+            conn.Password = this.ConnectionPassword;
             conn.ErrorMessage += RaiseSubscriberError;
             if (conn.Open())
             {
@@ -410,6 +428,8 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         {
             var tcs = new TaskCompletionSource<T>();
             Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
+            conn.UserName = this.ConnectionUserName;
+            conn.Password = this.ConnectionPassword;
             conn.ErrorMessage += new EventHandler<MessageEventArgs>(
                 (object sender, MessageEventArgs e) =>
                 {
@@ -495,6 +515,8 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             MyFunc<TPreFunPara, TPreFunResult> preFunction)
         {
             Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
+            conn.UserName = this.ConnectionUserName;
+            conn.Password = this.ConnectionPassword;
             conn.ErrorMessage += RaiseSubscriberError;
             if (conn.Open())
             {
@@ -702,6 +724,8 @@ namespace PWMIS.EnterpriseFramework.Service.Client
 
             //新的使用连接池的方式
             Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
+            conn.UserName = this.ConnectionUserName;
+            conn.Password = this.ConnectionPassword;
             conn.ErrorMessage += new EventHandler<MessageEventArgs>(RaiseSubscriberError);
             if (conn.Open())
             {
@@ -1060,6 +1084,8 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             if (ServiceSubscriber == null || ServiceSubscriber.Closed)
             {
                 Connection conn = new Connection(serviceUri, this.UseConnectionPool);
+                conn.UserName = this.ConnectionUserName;
+                conn.Password = this.ConnectionPassword;
                 conn.ErrorMessage += new EventHandler<MessageEventArgs>(RaiseSubscriberError);
                 if (conn.Open())
                 {

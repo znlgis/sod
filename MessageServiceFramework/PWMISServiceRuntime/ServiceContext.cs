@@ -121,7 +121,8 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
                 {
                     if (string.IsNullOrEmpty(this.SessionID))
                         throw new InvalidOperationException("会话标示不能为空！");
-                    _session = SessionContainer.Instance.GetSession(this.SessionID);
+                    //根据会话模式，决定使用会话的具体方式
+                    _session = SessionContainer.Instance.GetSession(GetUsedSessionID());
                 }
                 return _session;
             }
@@ -135,6 +136,38 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         /// 当前服务上下文运行时的会话标示
         /// </summary>
         public string SessionID { get; set; }
+        /// <summary>
+        /// 会话模式
+        /// </summary>
+        public  SessionModel SessionModel{get;set;}
+        /// <summary>
+        /// 获取内部使用的会话标识
+        /// </summary>
+        /// <returns></returns>
+        public string GetUsedSessionID()
+        {
+            string sessionId = string.Empty;
+            switch (this.SessionModel)
+            {
+                case Runtime.SessionModel.HardwareIdentity:
+                    sessionId = this.User.HardwareIdentity;
+                    break;
+                case Runtime.SessionModel.PerConnection:
+                case Runtime.SessionModel.Default:
+                    sessionId = this.SessionID;
+                    break;
+                case Runtime.SessionModel.RegisterData:
+                    sessionId = this.User.UserData;
+                    break;
+                case Runtime.SessionModel.UserName:
+                    sessionId = this.User.Name;
+                    break;
+                default:
+                    sessionId = this.SessionID;
+                    break;
+            }
+            return sessionId;
+        }
 
         /// <summary>
         /// 系统缓存
@@ -152,15 +185,17 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         /// </summary>
         public bool SessionRequired { get; set; }
         /// <summary>
-        /// 获取服务关联的用户对象（该对象在应用程序中，用户登录成功以后，调用ServiceAuthentication 对象设置 ）
+        /// 获取或者设置服务关联的用户对象（该对象在应用程序中，用户登录成功以后，调用ServiceAuthentication 对象设置 ）
         /// </summary>
         public ServiceIdentity User
         {
-            get
-            {
-                ServiceAuthentication auth = new ServiceAuthentication(this);
-                return auth.GetIdentity();
-            }
+            //get
+            //{
+            //    ServiceAuthentication auth = new ServiceAuthentication(this);
+            //    return auth.GetIdentity();
+            //}
+            get;
+            set;
         }
         /// <summary>
         /// 服务所在的宿主

@@ -29,7 +29,8 @@ namespace MessageSubscriber
             this._source = source;
         }
 
-        //public Type ResultType { get; set; }
+        public string UserName { get; set; }
+        public string Password { get; set; }
 
         #region IMessageListener 成员
 
@@ -43,10 +44,14 @@ namespace MessageSubscriber
             this._source.OnReceivingMessage(id, message);
         }
 
+        /// <summary>
+        /// 获取客户标识，由3部分组成：用户名，密码，客户端硬件标识，用冒号分割
+        /// </summary>
+        /// <returns></returns>
         public string GetIdentity()
         {
-            //待改进
-            return "YXP;20111230;" + HardDiskSN.SerialNumber;
+            //编写时间：20111230
+            return string.Format("{0}:{1}:{2}", this.UserName,this.Password,HardDiskSN.SerialNumber);
         }
 
         public string RequestMessageType(int id)

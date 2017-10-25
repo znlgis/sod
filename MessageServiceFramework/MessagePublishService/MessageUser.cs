@@ -19,6 +19,10 @@ namespace MessagePublishService
         /// 是否已经验证
         /// </summary>
         public bool Validated { get; set; }
+        /// <summary>
+        /// 注册连接的时候的自定义数据
+        /// </summary>
+        public string RegisterData { get; set; }
 
         /// <summary>
         /// 根据协议的消息字符串，获取用户信息。
@@ -27,9 +31,9 @@ namespace MessagePublishService
         /// <returns></returns>
         public static MessageUser GetUserFromMessageString(string message)
         {
-            string[] arr=message.Split(';');
-            if (arr.Length >= 3)
-                return new MessageUser() { Name = arr[0], Password = arr[1], HID=arr[2] };
+            string[] arr=message.Split(':');
+            if (arr.Length >= 4)
+                return new MessageUser() { Name = arr[0], Password = arr[1], HID=arr[2], RegisterData= arr[3] };
             else
                 return null;
 

@@ -44,15 +44,6 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime.Principal
             set { _userName = value; }
         }
 
-        //DateTime _expire;
-        ///// <summary>
-        ///// 过期时间
-        ///// </summary>
-        //public DateTime Expire
-        //{
-        //    get { return _expire; }
-        //    set { _expire = value; }
-        //}
 
         /// <summary>
         /// 过期时间，默认时间 3分钟
@@ -71,5 +62,16 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime.Principal
         /// 标识所在的服务基地址（可用于检查集群负载情况）
         /// </summary>
         public string Uri { get; set; }
+
+        /// <summary>
+        /// 客户的硬件标识
+        /// </summary>
+        public string HardwareIdentity { get; set; }
+
+        /// <summary>
+        /// 注册连接的时候的自定义数据
+        /// </summary>
+        public string UserData { get; set; }
+
     }
 }

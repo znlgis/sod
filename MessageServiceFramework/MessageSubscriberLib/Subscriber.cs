@@ -62,6 +62,11 @@ namespace MessageSubscriber
             }
         }
 
+        /// <summary>
+        /// 向服务器注册连接的附加数据
+        /// </summary>
+        public string RegisterData { get; set; }
+
         ///// <summary>
         ///// 订阅服务方法的时候的结果类型
         ///// </summary>
@@ -80,6 +85,15 @@ namespace MessageSubscriber
                 return _dictFunction;
             }
         }
+        /// <summary>
+        /// 订阅使用的用户名
+        /// </summary>
+        public string UserName { get; private set; }
+        /// <summary>
+        /// 订阅使用的用户密码
+        /// </summary>
+        public string Password { get; private set; }
+
         /// <summary>
         /// 以一个服务订阅地址初始化本类
         /// </summary>
@@ -101,13 +115,15 @@ namespace MessageSubscriber
         {
             _listener = new MessageListener(this);
             //Closed = true;
-            Subscribe();
+            Subscribe(this.UserName,this.Password);
         }
 
         /// <summary>
         /// 发起订阅并注册身份
         /// </summary>
-        public void Subscribe()
+        /// <param name="userName">订阅的用户名</param>
+        /// <param name="password">订阅的用户密码</param>
+        public void Subscribe(string userName,string password)
         {
             NetTcpBinding binding = new NetTcpBinding(SecurityMode.None);
             binding.MaxBufferSize = int.MaxValue;
@@ -124,10 +140,20 @@ namespace MessageSubscriber
             ((ICommunicationObject)_serviceProxy).Faulted += Subscriber_Faulted;
             try
             {
-                string indentity = "PDF.NET;20111230;" + HardDiskSN.SerialNumber;
+                if (string.IsNullOrEmpty(userName))
+                    userName = "PDF.NET.MSF";
+                if (string.IsNullOrEmpty(password))
+                    password = "20111230";
+                _listener.UserName = userName;
+                _listener.Password = password;
+                if (string.IsNullOrEmpty(this.RegisterData))
+                    this.RegisterData = "REGDATA";
+                string indentity = _listener.GetIdentity()+":"+this.RegisterData;  
                 _serviceProxy.QuikRegist(indentity);
                 _registed = true;
                 Closed = false;
+                this.UserName = userName;
+                this.Password = password;
             }
             catch (Exception ex)
             {

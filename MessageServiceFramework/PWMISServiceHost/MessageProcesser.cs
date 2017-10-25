@@ -146,6 +146,8 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 context.Request.ClientPort = e.Listener.FromPort;
                 context.Request.ClientIdentity = identity;
                 context.InitRequestParameters();
+                context.User = currentProcess.GetServiceIdentity(e.Listener);
+
 
                 context.ProcessService(e.Listener.SessionID);
 
@@ -235,6 +237,17 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 this.ServiceErrorEvent(sender, args);
         }
 
+        public Runtime.Principal.ServiceIdentity GetServiceIdentity(MessageListener listener)
+        {
+                Runtime.Principal.ServiceIdentity user = new Runtime.Principal.ServiceIdentity();
+                user.HardwareIdentity = listener.User.HID;
+                user.IsAuthenticated = true;
+                user.Name = listener.User.Name;
+                user.Uri = string.Format("net.tcp://{0}:{1}", listener.FromIP, listener.FromPort);
+                user.UserData = listener.User.RegisterData;
+                return user;
+        }
+
     }
 
     /// <summary>
@@ -269,6 +282,9 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             context.Request.ClientIP = this.SubscriberInfo.FromIP;
             context.Request.ClientPort = this.SubscriberInfo.FromPort;
             context.Request.ClientIdentity = this.SubscriberInfo.Identity;
+
+            context.User = base.GetServiceIdentity(this.SubscriberInfo._innerListener);
+
             context.GetMessageFun = strPara =>
             {
                 MessageListener currLst = MessageCenter.Instance.GetListener(this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort);

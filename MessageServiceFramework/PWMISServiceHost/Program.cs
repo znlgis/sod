@@ -306,22 +306,23 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                                 File.Move(fileName, backFileName);
                             }
 
-                            StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput(), Encoding.Default);
-                            standardOutput.AutoFlush = true;
-                            Console.SetOut(standardOutput);
+                            //StreamWriter standardOutput = new StreamWriter(Console.OpenStandardOutput(), Encoding.Default);
+                            //standardOutput.AutoFlush = true;
+                            //Console.SetOut(standardOutput);
                             Console.WriteLine("已经将控制台输出转向到文件：{0}", fileName);
 
                             ConsoleOut = File.CreateText(fileName);
-
+                            
                             Console.SetOut(ConsoleOut);
+                            ((StreamWriter)ConsoleOut).AutoFlush = true;
                             Console.WriteLine("----服务控制台 日志文件输出------");
                             ConsoleOut.Flush();
                         }
                     }
                 }
                 //每10秒输出一次缓冲区
-                if (DateTime.Now.Second % 10 == 0)
-                    ConsoleOut.Flush();
+                //if (DateTime.Now.Second % 10 == 0)
+                //    ConsoleOut.Flush();
             }
 
         }
@@ -375,7 +376,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
         static void Instance_ListenerAcceptMessage(object sender, MessageListenerEventArgs e)
         {
-            //ChangeConsoleOut();
+            ChangeConsoleOut();
 
 #if(PrivateUse)
             string ip= e.Listener.FromIP;

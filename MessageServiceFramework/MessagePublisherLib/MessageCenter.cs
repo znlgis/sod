@@ -39,7 +39,10 @@ namespace MessagePublisher
         /// <summary>
         /// 保证单例的私有构造函数；
         /// </summary>
-        private MessageCenter() { }
+        private MessageCenter() {
+            this.UserName = "PDF.NET.MSF";
+            this.Password = "20111230";
+        }
 
         #endregion
 
@@ -61,6 +64,14 @@ namespace MessagePublisher
         /// 用户凭据字典，Ｋｅｙ＝凭据，Ｖａｌｕｅ＝用户消息对象
         /// </summary>
         private Dictionary<string, MessageUser> _userIdentity = new Dictionary<string, MessageUser>();
+        /// <summary>
+        /// 使用消息中心的用户名
+        /// </summary>
+        public string UserName { get; set; }
+        /// <summary>
+        /// 使用消息中心的用户密码
+        /// </summary>
+        public string Password { get; set; }
 
         /// <summary>
         /// 获取当前监听器数量
@@ -170,10 +181,6 @@ namespace MessagePublisher
                 if (string.IsNullOrEmpty(identity))
                     identity = listener.GetIdentity();
 
-                string key = listener.FromIP + ":" + listener.FromPort + ":" + identity;
-                if (_userIdentity.ContainsKey(key))
-                    throw new InvalidOperationException("重复注册相同的客户端标识：" + key);
-
                 MessageUser user = MessageUser.GetUserFromMessageString(identity);
                 if (user == null)
                 {
@@ -194,10 +201,18 @@ namespace MessagePublisher
                     listener.Close(0);
                     return;
                 }
+                //取出注册数据
+                string splitChar = "&";
+                string key = listener.FromIP + splitChar + listener.FromPort + splitChar + user.HID ;
+                if (_userIdentity.ContainsKey(key))
+                    throw new InvalidOperationException("重复注册相同的客户端标识：" + key);
+
                 listener.Identity = user.HID;
                 _userIdentity.Add(key, user);
                 _listeners.Add(listener);
-                listener.SessionID = key + ":" + DateTime.Now.ToString("HHmmssfff");
+                listener.SessionID = key + splitChar + DateTime.Now.ToString("HHmmssfff");
+                listener.User = user;
+               
             }
 
             if (this.ListenerAdded != null)
@@ -405,7 +420,7 @@ namespace MessagePublisher
         /// <param name="user"></param>
         private void ValidateUser(MessageUser user)
         {
-            if (user.Name == "PDF.NET" && user.Password == "20111230")
+            if (user.Name == this.UserName && user.Password == this.Password)
             {
                 user.Validated = true;
             }

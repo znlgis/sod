@@ -12,7 +12,7 @@ namespace MessageSubscriber
         /// <summary>
         /// 发起订阅并注册身份
         /// </summary>
-        void Subscribe();
+        void Subscribe(string userName,string password);
         /// <summary>
         /// 向发布服务器发送消息
         /// </summary>

@@ -298,7 +298,11 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         protected string CallService(string sessionId, ServiceContext context)
         {
             if (context.SessionRequired)
-                context.Session = SessionContainer.Instance.GetSession(sessionId);
+            {
+                //不通过直接设置 ServiceContext对象的会话对象的方式，而是先设置会话标识，由Session属性来决定如何生成会话对象
+                //context.Session = SessionContainer.Instance.GetSession(sessionId);
+                context.SessionID = sessionId;
+            }
 
             return CallService(context);
         }
