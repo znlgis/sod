@@ -163,6 +163,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
 
         #endregion
 
+        
         #region 异步 请求-响应 的方法
         /// <summary>
         /// 请求远程服务并异步执行自定义的操作

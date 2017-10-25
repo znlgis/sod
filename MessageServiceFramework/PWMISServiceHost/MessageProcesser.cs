@@ -146,7 +146,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 context.Request.ClientPort = e.Listener.FromPort;
                 context.Request.ClientIdentity = identity;
                 context.InitRequestParameters();
-                context.User = currentProcess.GetServiceIdentity(e.Listener);
+                context.User = MessageProcessBase.GetServiceIdentity(e.Listener);
 
 
                 context.ProcessService(e.Listener.SessionID);
@@ -237,7 +237,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 this.ServiceErrorEvent(sender, args);
         }
 
-        public Runtime.Principal.ServiceIdentity GetServiceIdentity(MessageListener listener)
+        public static Runtime.Principal.ServiceIdentity GetServiceIdentity(MessageListener listener)
         {
                 Runtime.Principal.ServiceIdentity user = new Runtime.Principal.ServiceIdentity();
                 user.HardwareIdentity = listener.User.HID;
@@ -283,7 +283,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             context.Request.ClientPort = this.SubscriberInfo.FromPort;
             context.Request.ClientIdentity = this.SubscriberInfo.Identity;
 
-            context.User = base.GetServiceIdentity(this.SubscriberInfo._innerListener);
+            context.User = MessageProcessBase.GetServiceIdentity(this.SubscriberInfo._innerListener);
 
             context.GetMessageFun = strPara =>
             {

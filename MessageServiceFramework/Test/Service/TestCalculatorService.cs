@@ -43,7 +43,7 @@ namespace ServiceSample
         public override bool ProcessRequest(IServiceContext context)
         {
             context.SessionRequired = true;
-            context.SessionModel = SessionModel.PerConnection;
+            context.SessionModel = SessionModel.HardwareIdentity;
             return base.ProcessRequest(context); //请保留此行，否则在具体的方法里面可能无法获取 CurrentContext 属性
         }
 
