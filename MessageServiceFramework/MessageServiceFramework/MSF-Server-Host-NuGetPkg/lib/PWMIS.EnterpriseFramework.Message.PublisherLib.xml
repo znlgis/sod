@@ -82,9 +82,29 @@
             返回 MessageCenter 的唯一实例；
             </summary>
         </member>
+        <member name="P:MessagePublisher.MessageCenter.UserName">
+            <summary>
+            使用消息中心的用户名
+            </summary>
+        </member>
+        <member name="P:MessagePublisher.MessageCenter.Password">
+            <summary>
+            使用消息中心的用户密码
+            </summary>
+        </member>
         <member name="P:MessagePublisher.MessageCenter.ListenerCount">
             <summary>
             获取当前监听器数量
+            </summary>
+        </member>
+        <member name="T:MessagePublisher.MessageListener">
+            <summary>
+            服务端消息监听器
+            </summary>
+        </member>
+        <member name="F:MessagePublisher.MessageListener.Identity">
+            <summary>
+            客户端硬件标识
             </summary>
         </member>
         <member name="M:MessagePublisher.MessageListener.Notify(System.Int32,System.String)">
@@ -118,6 +138,16 @@
         <member name="P:MessagePublisher.MessageListener.MessageID">
             <summary>
             当前消息编号，注意此ID可能会改变
+            </summary>
+        </member>
+        <member name="P:MessagePublisher.MessageListener.SessionID">
+            <summary>
+            消息订阅者的会话标识，由客户端的IP，端口号，客户端的标识和时间格式字符串（HHmmssfff）四部分组成
+            </summary>
+        </member>
+        <member name="P:MessagePublisher.MessageListener.AtTime">
+            <summary>
+            接收到消息的时间
             </summary>
         </member>
         <member name="P:MessagePublisher.MessageListener.Removed">

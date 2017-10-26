@@ -149,12 +149,15 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
             string sessionId = string.Empty;
             switch (this.SessionModel)
             {
+                case Runtime.SessionModel.Default:
+                case Runtime.SessionModel.PerRequest:
+                    sessionId = this.SessionID;
+                    break;
                 case Runtime.SessionModel.HardwareIdentity:
                     sessionId = this.User.HardwareIdentity;
                     break;
                 case Runtime.SessionModel.PerConnection:
-                case Runtime.SessionModel.Default:
-                    sessionId = this.SessionID;
+                    sessionId = this.Request.ClientIP+":"+this.Request.ClientPort;
                     break;
                 case Runtime.SessionModel.RegisterData:
                     sessionId = this.User.UserData;

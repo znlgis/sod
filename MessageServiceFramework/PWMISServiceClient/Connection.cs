@@ -65,6 +65,8 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         /// <param name="pool"></param>
         public Connection(string serviceUri, bool pool)
         {
+            if (string.IsNullOrEmpty(serviceUri))
+                throw new ArgumentNullException("服务基地址参数 serviceUri 不能为空！");
             this.ServiceUri = serviceUri;
             this.UseConnectionPool = pool;
         }
@@ -80,6 +82,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                 if (UseConnectionPool)
                 {
                     ServiceSubscriber = PublishServicePool.Instance.GetServiceChannel(this.ServiceUri);
+                    ServiceSubscriber.RegisterData = this.RegisterData;
                     if (!ServiceSubscriber.Registed)
                     {
                         ServiceSubscriber.ErrorMessage += new EventHandler<MessageEventArgs>(ServiceSubscriber_ErrorMessage);
@@ -94,6 +97,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                 else
                 {
                     ServiceSubscriber = new Subscriber(this.ServiceUri);
+                    ServiceSubscriber.RegisterData = this.RegisterData;
                     ServiceSubscriber.ErrorMessage += new EventHandler<MessageEventArgs>(ServiceSubscriber_ErrorMessage);
                     ServiceSubscriber.Subscribe(this.UserName, this.Password);
                 }

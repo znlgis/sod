@@ -73,7 +73,7 @@
             <summary>
             快速注册
             </summary>
-            <param name="indentity">客户端标识</param>
+            <param name="indentity">客户端标识，可能附带自定义的调用端应用程序标识</param>
         </member>
         <member name="M:MessagePublishService.IMessagePublishService.Unregist">
             <summary>
@@ -114,6 +114,11 @@
         <member name="P:MessagePublishService.MessageUser.Validated">
             <summary>
             是否已经验证
+            </summary>
+        </member>
+        <member name="P:MessagePublishService.MessageUser.RegisterData">
+            <summary>
+            注册连接的时候的自定义数据
             </summary>
         </member>
     </members>

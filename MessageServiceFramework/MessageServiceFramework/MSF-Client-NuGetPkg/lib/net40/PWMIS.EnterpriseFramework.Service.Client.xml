@@ -83,6 +83,16 @@
             是否使用连接池，在订阅模式下，不必设置该属性
             </summary>
         </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.KeepAlive">
+            <summary>
+            两次请求直接是否保持长连接
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.RegisterData">
+            <summary>
+            向服务器注册连接的附加数据
+            </summary>
+        </member>
         <member name="T:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1">
             <summary>
             消息转换器
@@ -242,6 +252,16 @@
             标识所在的服务基地址（可用于检查集群负载情况）
             </summary>
         </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.HardwareIdentity">
+            <summary>
+            客户的硬件标识
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.UserData">
+            <summary>
+            注册连接的时候的自定义数据
+            </summary>
+        </member>
         <member name="T:PWMIS.EnterpriseFramework.Service.Client.Proxy">
             <summary>
             服务代理类 2012.5.3 整理
@@ -298,7 +318,7 @@
         </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestServiceAsync``1(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest)">
             <summary>
-            请求一个服务，然后异步处理结果。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。
+            请求一个服务，然后异步处理结果。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。不支持 KeepAlive 指定使用长连接。
             </summary>
             <typeparam name="T">服务方法的结果类型</typeparam>
             <param name="request">"服务请求"对象</param>
@@ -306,7 +326,7 @@
         </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestServiceAsync``3(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,PWMIS.EnterpriseFramework.Common.MyFunc{``1,``2})">
             <summary>
-            请求一个服务，然后异步处理结果，并运行服务端处理过程中回调客户端的函数。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。
+            请求一个服务，然后异步处理结果，并运行服务端处理过程中回调客户端的函数。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。不支持 KeepAlive 指定使用长连接。
             </summary>
             <typeparam name="T">服务方法的结果类型</typeparam>
             <typeparam name="TFunPara">要执行服务中间调用的回调函数的参数类型</typeparam>
@@ -329,7 +349,7 @@
         </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestServiceAsync``3(System.String,PWMIS.EnterpriseFramework.Common.DataType,PWMIS.EnterpriseFramework.Common.MyFunc{``1,``2})">
             <summary>
-            异步请求服务，并允许服务在执行过程中，回调客户端函数
+            异步请求服务，并允许服务在执行过程中，回调客户端函数。不支持 KeepAlive 指定使用长连接。
             </summary>
             <typeparam name="T">服务的结果返回类型</typeparam>
             <typeparam name="TFunPara">回调函数的参数类型</typeparam>
@@ -530,6 +550,26 @@
             </summary>
             <param name="host">远程主机名，可以是一个IP地址</param>
             <param name="port">连接远程主机的端口号</param>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.ConnectionUserName">
+            <summary>
+            连接使用的用户名，如果做了设置，那么在服务端必须做相应的配置
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.ConnectionPassword">
+            <summary>
+            连接使用的用户密码，如果做了设置，那么在服务端必须做相应的配置
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.KeepAlive">
+            <summary>
+            两次请求之间是否保持长连接。指定该属性，将设置使用连接池。
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.RegisterData">
+            <summary>
+            向服务器注册连接的附加数据
+            </summary>
         </member>
         <member name="E:PWMIS.EnterpriseFramework.Service.Client.Proxy.ErrorMessage">
             <summary>

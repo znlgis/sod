@@ -19,6 +19,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
     {
         #region 私有对象和方法
         private System.Threading.Timer heartBeatTimer = null;
+        private Connection KeepAliveConnection=null;
 
         private void RaiseSubscriberError(object sender, MessageEventArgs e)
         {
@@ -46,9 +47,14 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         public string ConnectionPassword { get; set; }
 
         /// <summary>
-        /// 两次请求直接是否保持长连接
+        /// 两次请求之间是否保持长连接。指定该属性，将设置使用连接池。
         /// </summary>
         public bool KeepAlive { get; set; }
+
+        /// <summary>
+        /// 向服务器注册连接的附加数据
+        /// </summary>
+        public string RegisterData { get; set; }
 
         /// <summary>
         /// 检查连接是否可用，如果不可用，则重新打开连接
@@ -77,6 +83,11 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             {
                 MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
                 if (convert.Succeed)
+                {
+                    if (action != null)
+                        action(convert.Result);
+                }
+                else if (remoteMsg == "") //处理无返回值
                 {
                     if (action != null)
                         action(convert.Result);
@@ -165,6 +176,29 @@ namespace PWMIS.EnterpriseFramework.Service.Client
 
         
         #region 异步 请求-响应 的方法
+
+        private Connection GetConnection()
+        {
+            Connection conn = null;
+            if (this.KeepAlive)
+            {
+                this.UseConnectionPool = true;
+                if(this.KeepAliveConnection==null)
+                    this.KeepAliveConnection = new Connection(this.ServiceBaseUri, true);
+                conn = this.KeepAliveConnection;
+            }
+            else
+            {
+                conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
+            }
+            
+            conn.UserName = this.ConnectionUserName;
+            conn.Password = this.ConnectionPassword;
+            conn.RegisterData = this.RegisterData;
+            conn.ErrorMessage += RaiseSubscriberError;
+            return conn;
+        }
+
         /// <summary>
         /// 请求远程服务并异步执行自定义的操作
         /// </summary>
@@ -211,10 +245,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             //}
 
             //新的使用连接池的方式
-            Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
-            conn.UserName = this.ConnectionUserName;
-            conn.Password = this.ConnectionPassword;
-            conn.ErrorMessage += new EventHandler<MessageEventArgs>(RaiseSubscriberError);
+            Connection conn = this.GetConnection();
             if (conn.Open())
             {
                 conn.RequestService(reqSrvUrl, null, (remoteMsg) =>
@@ -224,7 +255,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             }
             else
             {
-                conn.Close();
+                this.Close(conn);
             }
         }
 
@@ -244,6 +275,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
             conn.UserName = this.ConnectionUserName;
             conn.Password = this.ConnectionPassword;
+            conn.RegisterData = this.RegisterData;
             conn.ErrorMessage += new EventHandler<MessageEventArgs>(
                 (object sender, MessageEventArgs e) => {
                     if (this.ErrorMessage != null)
@@ -285,29 +317,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                         }
                         else
                         {
-                            ////尝试转换Task<T>
-                            ////类似：{"Result":3,"Id":6,"Exception":null,"Status":5,"IsCanceled":false,"IsCompleted":true,"CreationOptions":0,"AsyncState":null,"IsFaulted":false}
-                            //string[] keyvalues= remoteMsg.TrimStart('{').TrimEnd('}').Split(',');
-                            //if (keyvalues.Length > 5 && keyvalues[0].StartsWith("\"Result\":"))
-                            //{
-                            //    string msgData = keyvalues[0].Split(':')[1];
-
-                            //}
-                            //else
-                            //{ 
-                            
-                            //}
-                            //MessageConverter<Task<T>> convert2 = new MessageConverter<Task<T>>(remoteMsg, DataType.Json);
-                            //if (convert2.Succeed)
-                            //{
-                            //    T value = convert2.Result.Result;
-                            //    tcs.SetResult(value);
-                            //}
-                            //else
-                            //{
-                                
-                            //}
-
+                            ////服务端Task<T> 返回类型，应该在服务端处理完结果
                             //
                             errMsg = "resultDataType 指定错误:" + convert.ErrorMessage;
                             if (this.ErrorMessage != null)
@@ -334,7 +344,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         }
 
         /// <summary>
-        /// 请求一个服务，然后异步处理结果。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。
+        /// 请求一个服务，然后异步处理结果。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。不支持 KeepAlive 指定使用长连接。
         /// </summary>
         /// <typeparam name="T">服务方法的结果类型</typeparam>
         /// <param name="request">"服务请求"对象</param>
@@ -347,7 +357,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         }
 
         /// <summary>
-        /// 请求一个服务，然后异步处理结果，并运行服务端处理过程中回调客户端的函数。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。
+        /// 请求一个服务，然后异步处理结果，并运行服务端处理过程中回调客户端的函数。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。不支持 KeepAlive 指定使用长连接。
         /// </summary>
         /// <typeparam name="T">服务方法的结果类型</typeparam>
         /// <typeparam name="TFunPara">要执行服务中间调用的回调函数的参数类型</typeparam>
@@ -374,10 +384,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         /// <param name="function">作为服务端计算需要回调客户端提供的中间结果函数</param>
         public void RequestService<T, TFunPara, TFunResult>(string reqSrvUrl, DataType resultDataType, Action<T> action, MyFunc<TFunPara, TFunResult> function)
         {
-            Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
-            conn.UserName = this.ConnectionUserName;
-            conn.Password = this.ConnectionPassword;
-            conn.ErrorMessage += RaiseSubscriberError;
+            Connection conn = this.GetConnection();
             if (conn.Open())
             {
                 conn.RequestService(reqSrvUrl, null, (remoteMsg) =>
@@ -410,13 +417,13 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             }
             else
             {
-                conn.Close();
+                this.Close(conn);
             }
 
         }
 
         /// <summary>
-        /// 异步请求服务，并允许服务在执行过程中，回调客户端函数
+        /// 异步请求服务，并允许服务在执行过程中，回调客户端函数。不支持 KeepAlive 指定使用长连接。
         /// </summary>
         /// <typeparam name="T">服务的结果返回类型</typeparam>
         /// <typeparam name="TFunPara">回调函数的参数类型</typeparam>
@@ -431,6 +438,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
             conn.UserName = this.ConnectionUserName;
             conn.Password = this.ConnectionPassword;
+            conn.RegisterData = this.RegisterData;
             conn.ErrorMessage += new EventHandler<MessageEventArgs>(
                 (object sender, MessageEventArgs e) =>
                 {
@@ -515,10 +523,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             MyFunc<TFunPara, TFunResult> function,
             MyFunc<TPreFunPara, TPreFunResult> preFunction)
         {
-            Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
-            conn.UserName = this.ConnectionUserName;
-            conn.Password = this.ConnectionPassword;
-            conn.ErrorMessage += RaiseSubscriberError;
+            Connection conn = this.GetConnection();
             if (conn.Open())
             {
                 conn.RequestService(reqSrvUrl, null, (remoteMsg) =>
@@ -724,10 +729,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             //}
 
             //新的使用连接池的方式
-            Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
-            conn.UserName = this.ConnectionUserName;
-            conn.Password = this.ConnectionPassword;
-            conn.ErrorMessage += new EventHandler<MessageEventArgs>(RaiseSubscriberError);
+            Connection conn = this.GetConnection();
             if (conn.Open())
             {
                 conn.RequestService(request.ServiceUrl, typeof(T), (remoteMsg) =>
@@ -1084,14 +1086,12 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             //新代码
             if (ServiceSubscriber == null || ServiceSubscriber.Closed)
             {
-                Connection conn = new Connection(serviceUri, this.UseConnectionPool);
-                conn.UserName = this.ConnectionUserName;
-                conn.Password = this.ConnectionPassword;
-                conn.ErrorMessage += new EventHandler<MessageEventArgs>(RaiseSubscriberError);
+                this.ServiceBaseUri = serviceUri;
+                Connection conn = this.GetConnection();
                 if (conn.Open())
                 {
                     ServiceSubscriber = conn.ServiceSubscriber;
-                    this.ServiceBaseUri = serviceUri;
+                   
                     return true;
                 }
                 else
@@ -1130,6 +1130,17 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                         ServiceSubscriber.Close(1);
                 }
             }
+            if (this.KeepAlive && this.KeepAliveConnection != null)
+            {
+                this.KeepAliveConnection.Close();
+            }
+        }
+
+        private void Close(Connection conn)
+        {
+            //if (!this.KeepAlive)
+            //如果连接已经放入连接池了，那么过一段时间后，连接会自动关闭，所以不需要判断KeepAlive 属性
+                conn.Close();
         }
 
         #endregion

@@ -51,11 +51,15 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
     public enum SessionModel
     { 
         /// <summary>
-        /// 默认，使用连接信息、客户端硬件信息和连接时间综合构成
+        /// 默认，使用每请求会话模式
         /// </summary>
         Default,
         /// <summary>
-        /// 每连接一个会话，包括客户端的IP和端口号
+        /// 每请求一个会话，请求的会话标识信息连接信息、客户端硬件信息和连接时间综合构成
+        /// </summary>
+        PerRequest,
+        /// <summary>
+        /// 每连接一个会话，包括客户端的IP和端口号。注意多次请求可能会使用一个连接。
         /// </summary>
         PerConnection,
         /// <summary>

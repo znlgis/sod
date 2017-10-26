@@ -12,9 +12,9 @@ $host_exe_src= Join-Path $toolsPath PdfNetEF.MessageServiceHost.exe
 $host_pdb_src= Join-Path $toolsPath PdfNetEF.MessageServiceHost.pdb
 $updateSrv_src =  Join-Path $toolsPath UpdateService.bat
 
-if(! (Test-Path $host_exe_target)) { Copy-Item $host_exe_src $hostDir }
-if(! (Test-Path $host_pdb_target)) { Copy-Item $host_pdb_src $hostDir }
-if(! (Test-Path $updateSrv_target)) { Copy-Item $updateSrv_src $hostDir }
+if( (Test-Path $host_exe_src)) { Copy-Item $host_exe_src $hostDir }
+if( (Test-Path $host_pdb_src)) { Copy-Item $host_pdb_src $hostDir }
+if( (Test-Path $updateSrv_src)) { Copy-Item $updateSrv_src $hostDir }
 
 # 修改项目文件的输出方式
 $project.ProjectItems.Item("IOCConfig.xml").Properties.Item("CopyToOutputDirectory").Value=2

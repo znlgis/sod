@@ -171,12 +171,6 @@ namespace MessagePublisher
         {
             lock (_syncLock)
             {
-                if (_listeners.Contains(listener))
-                {
-                    throw new InvalidOperationException("重复注册相同的监听器！");
-                }
-                //_listeners.Add(listener); 
-
                 //立即验证凭据
                 if (string.IsNullOrEmpty(identity))
                     identity = listener.GetIdentity();
@@ -204,14 +198,25 @@ namespace MessagePublisher
                 //取出注册数据
                 string splitChar = "&";
                 string key = listener.FromIP + splitChar + listener.FromPort + splitChar + user.HID ;
-                if (_userIdentity.ContainsKey(key))
-                    throw new InvalidOperationException("重复注册相同的客户端标识：" + key);
+                if (!_userIdentity.ContainsKey(key))
+                {
+                    //客户端标识策略代码已经修改，下面一行代码注释
+                    //throw new InvalidOperationException("重复注册相同的客户端标识：" + key);
+                    _userIdentity.Add(key, user);
+                }
 
                 listener.Identity = user.HID;
-                _userIdentity.Add(key, user);
-                _listeners.Add(listener);
                 listener.SessionID = key + splitChar + DateTime.Now.ToString("HHmmssfff");
                 listener.User = user;
+
+                if (_listeners.Contains(listener))
+                {
+                    //throw new InvalidOperationException("重复注册相同的监听器！");
+                }
+                else
+                {
+                    _listeners.Add(listener);
+                }
                
             }
 

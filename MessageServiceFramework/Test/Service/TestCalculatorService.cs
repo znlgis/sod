@@ -12,6 +12,7 @@ namespace ServiceSample
         
         public int Add(int a, int b)
         {
+            Console.WriteLine("-----Session ID:{0}------", base.CurrentContext.Session.SessionID);
             //模拟服务器延时
             //System.Threading.Thread.Sleep(300);
             //测试会话和缓存
@@ -43,7 +44,7 @@ namespace ServiceSample
         public override bool ProcessRequest(IServiceContext context)
         {
             context.SessionRequired = true;
-            context.SessionModel = SessionModel.HardwareIdentity;
+            context.SessionModel = SessionModel.RegisterData;
             return base.ProcessRequest(context); //请保留此行，否则在具体的方法里面可能无法获取 CurrentContext 属性
         }
 

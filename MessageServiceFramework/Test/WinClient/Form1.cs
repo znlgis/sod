@@ -86,6 +86,7 @@ namespace WinClient
             System.Diagnostics.Stopwatch sw = new Stopwatch();
             sw.Start();
             //同步方式必须显示的打开和关闭连接
+            sessionProxy.RegisterData = "1234567890";
             if (sessionProxy.Connect(this.txtSerivceUri.Text))
             {
                 int x = sessionProxy.GetServiceMessage<int>(requestMessage, DataType.Text).Result;
@@ -161,11 +162,17 @@ namespace WinClient
             request.Parameters = new object[] {"Message Service Framework" };
             //异步方式测试
             Proxy serviceProxy = new Proxy();
+            serviceProxy.KeepAlive = true;
             serviceProxy.ServiceBaseUri = this.txtSerivceUri.Text;
             serviceProxy.RequestService<int>(request, (x) =>
             {
                 MessageBox.Show("[异步]执行无返回值方法完成");
             });
+            serviceProxy.RequestService<int>(request, (x) =>
+            {
+                MessageBox.Show("[异步]执行无返回值方法完成");
+            });
+
         }
 
         private void btnServerTime_Click(object sender, EventArgs e)

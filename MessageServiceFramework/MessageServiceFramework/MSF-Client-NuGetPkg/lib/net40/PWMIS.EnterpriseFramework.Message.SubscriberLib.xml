@@ -14,7 +14,7 @@
             订阅者接口
             </summary>
         </member>
-        <member name="M:MessageSubscriber.ISubscriber.Subscribe">
+        <member name="M:MessageSubscriber.ISubscriber.Subscribe(System.String,System.String)">
             <summary>
             发起订阅并注册身份
             </summary>
@@ -69,6 +69,12 @@
             </remarks>
             </summary>
         </member>
+        <member name="M:MessageSubscriber.MessageListener.GetIdentity">
+            <summary>
+            获取客户标识，由3部分组成：用户名，密码，客户端硬件标识，用冒号分割
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:MessageSubscriber.MessageListener.CallBackMessage(System.Int32,System.String)">
             <summary>
             服务回调客户端，获取客户端返回的消息
@@ -106,10 +112,12 @@
             重新初始化监听器，并发起订阅
             </summary>
         </member>
-        <member name="M:MessageSubscriber.Subscriber.Subscribe">
+        <member name="M:MessageSubscriber.Subscriber.Subscribe(System.String,System.String)">
             <summary>
             发起订阅并注册身份
             </summary>
+            <param name="userName">订阅的用户名</param>
+            <param name="password">订阅的用户密码</param>
         </member>
         <member name="M:MessageSubscriber.Subscriber.SendMessage(System.String)">
             <summary>
@@ -242,6 +250,21 @@
         <member name="P:MessageSubscriber.Subscriber.Registed">
             <summary>
             监听器是否已经注册
+            </summary>
+        </member>
+        <member name="P:MessageSubscriber.Subscriber.RegisterData">
+            <summary>
+            向服务器注册连接的附加数据
+            </summary>
+        </member>
+        <member name="P:MessageSubscriber.Subscriber.UserName">
+            <summary>
+            订阅使用的用户名
+            </summary>
+        </member>
+        <member name="P:MessageSubscriber.Subscriber.Password">
+            <summary>
+            订阅使用的用户密码
             </summary>
         </member>
     </members>
