@@ -6,6 +6,7 @@
   
   注：PDF.NET MSF Servic Host 使用
   PWMIS 消息服务框架,2011.12.7 创建
+  注意：用户自定义的MSF服务类的方法上，使用的自定义类型，必须在 ServiceModel 节点下面配置，例如 TimeCount
   -->
   <GroupConfig>
     <Group ID="1" ParentID="0" Name="ServiceRuntime" >分布式服务运行时</Group>
@@ -14,13 +15,16 @@
   </GroupConfig>
   <SystemInterface>
     <Add Name="IService" Interface="PWMIS.EnterpriseFramework.Service.IService" Assembly="PWMIS.EnterpriseFramework.Service.Runtime"/>
-  </SystemInterface>
+    <Add Name="IValidateUser" Interface="PWMIS.EnterpriseFramework.Message.PublishService.IValidateUser" Assembly="PWMIS.EnterpriseFramework.Message.PublishService"/>
+</SystemInterface>
   <GroupSet>
     <IOC Name="ServiceRuntime">
       <Add Key="CacheServer"  InterfaceName="IService"  FullClassName="PWMIS.EnterpriseFramework.Service.Runtime.CacheService" Assembly="PWMIS.EnterpriseFramework.Service.Runtime" />
       <Add Key="RegService"  InterfaceName="IService"  FullClassName="PWMIS.EnterpriseFramework.Service.Group.RegService" Assembly="PWMIS.EnterpriseFramework.Service.Group" />
       <Add Key="ManageService"  InterfaceName="IService"  FullClassName="TranstarAuction.Service.Runtime.ManageService" Assembly="TranstarAuctionServiceRuntime" />
-    </IOC>
+      <!--SimpleMessageUserValidater 简单用户验证类，如果需要自定义的消息服务用户访问验证，类型必须继承自 IValidateUser，请修改下面一行的内容-->
+      <Add Key="MessageUserValidater"  InterfaceName="IValidateUser"  FullClassName="PWMIS.EnterpriseFramework.Message.PublishService.SimpleMessageUserValidater" Assembly="PWMIS.EnterpriseFramework.Message.PublishService" />   
+ </IOC>
     <IOC Name="TestService">
       <Add Key="Calculator" InterfaceName="IService" FullClassName="ServiceSample.TestCalculatorService" Assembly="ServiceSample" />
       <Add Key="TestTimeService" InterfaceName="IService" FullClassName="ServiceSample.TestTimeService" Assembly="ServiceSample" />

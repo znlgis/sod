@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using MessagePublishService;
 using System.Threading;
+using PWMIS.EnterpriseFramework.Message.PublishService;
+using PWMIS.EnterpriseFramework.IOC;
 
 namespace MessagePublisher
 {
@@ -40,8 +42,15 @@ namespace MessagePublisher
         /// 保证单例的私有构造函数；
         /// </summary>
         private MessageCenter() {
-            this.UserName = "PDF.NET.MSF";
-            this.Password = "20111230";
+          
+            try
+            {
+                MessageUserValidater = Unity.Instance.GetInstance<IValidateUser>();
+            }
+            catch
+            {
+                MessageUserValidater = new SimpleMessageUserValidater();
+            }
         }
 
         #endregion
@@ -64,14 +73,16 @@ namespace MessagePublisher
         /// 用户凭据字典，Ｋｅｙ＝凭据，Ｖａｌｕｅ＝用户消息对象
         /// </summary>
         private Dictionary<string, MessageUser> _userIdentity = new Dictionary<string, MessageUser>();
-        /// <summary>
-        /// 使用消息中心的用户名
-        /// </summary>
-        public string UserName { get; set; }
-        /// <summary>
-        /// 使用消息中心的用户密码
-        /// </summary>
-        public string Password { get; set; }
+
+        private IValidateUser MessageUserValidater = null;
+        ///// <summary>
+        ///// 使用消息中心的用户名
+        ///// </summary>
+        //public string UserName { get; set; }
+        ///// <summary>
+        ///// 使用消息中心的用户密码
+        ///// </summary>
+        //public string Password { get; set; }
 
         /// <summary>
         /// 获取当前监听器数量
@@ -425,14 +436,8 @@ namespace MessagePublisher
         /// <param name="user"></param>
         private void ValidateUser(MessageUser user)
         {
-            if (user.Name == this.UserName && user.Password == this.Password)
-            {
-                user.Validated = true;
-            }
-            else
-            {
-                user.Validated = false;
-            }
+            bool result= MessageUserValidater.Validate(user);
+            user.Validated = result;
         }
 
         /// <summary>

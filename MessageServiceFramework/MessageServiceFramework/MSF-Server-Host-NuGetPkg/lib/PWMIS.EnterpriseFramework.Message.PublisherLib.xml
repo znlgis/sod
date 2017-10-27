@@ -82,16 +82,6 @@
             返回 MessageCenter 的唯一实例；
             </summary>
         </member>
-        <member name="P:MessagePublisher.MessageCenter.UserName">
-            <summary>
-            使用消息中心的用户名
-            </summary>
-        </member>
-        <member name="P:MessagePublisher.MessageCenter.Password">
-            <summary>
-            使用消息中心的用户密码
-            </summary>
-        </member>
         <member name="P:MessagePublisher.MessageCenter.ListenerCount">
             <summary>
             获取当前监听器数量

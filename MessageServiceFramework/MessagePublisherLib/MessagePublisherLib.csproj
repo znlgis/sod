@@ -57,6 +57,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AOPIOC\IOC\IOC.csproj">
+      <Project>{ebd3ff59-db9c-4f46-9c81-bbce8210878d}</Project>
+      <Name>IOC</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MessagePublishService\MessagePublishService.csproj">
       <Project>{143215C2-0C3B-402D-9F2D-04C8A7881FE1}</Project>
       <Name>MessagePublishService</Name>

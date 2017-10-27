@@ -19,7 +19,7 @@
   <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
   <PropertyGroup Label="Configuration">
     <Id>PDF.NET.EnterpriseFramework</Id>
-    <Version>1.0.5</Version>
+    <Version>1.1.1</Version>
     <Title>PWMIS EnterpriseFramework</Title>
     <Authors>bluedoctor</Authors>
     <Owners>PWMIS.com</Owners>

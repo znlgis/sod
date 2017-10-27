@@ -94,6 +94,23 @@
             <param name="message"></param>
             <returns></returns>
         </member>
+        <member name="T:PWMIS.EnterpriseFramework.Message.PublishService.IValidateUser">
+            <summary>
+            访问消息服务框架的用户验证接口
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Message.PublishService.IValidateUser.Validate(MessagePublishService.MessageUser)">
+            <summary>
+            验证用户。如果验证不通过，将拒绝此用户访问服务。
+            </summary>
+            <param name="user">访问消息服务框架的用户信息，这些信息在服务代理类上可以设置</param>
+            <returns>验证是否通过</returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Message.PublishService.SimpleMessageUserValidater">
+            <summary>
+            示例的简单用户验证类
+            </summary>
+        </member>
         <member name="T:MessagePublishService.MessageUser">
             <summary>
             消息相关的系统用户信息
