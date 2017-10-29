@@ -88,7 +88,12 @@ namespace PWMIS.DataProvider.Data
         }
         public override string GetNativeDbTypeName(IDataParameter para)
         {
-            return ((SQLiteParameter)para).DbType.ToString();
+            SQLiteParameter mysqlPara = para as SQLiteParameter;
+            DbType dbType = mysqlPara.DbType;
+            if (dbType == DbType.Int32)
+                return "INTEGER";
+            else
+                return dbType.ToString();
         }
         /// <summary>
         /// 更新数据（为SQLite重写的支持多线程并发写入功能）

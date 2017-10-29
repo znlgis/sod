@@ -73,10 +73,22 @@
       <Project>{71dff3ca-9558-4b6d-893c-7e3f590b7a56}</Project>
       <Name>PWMIS.DataProvider.Data.Oracle</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\OtherProvider\PWMIS.DataProvider.Data.SQLite\PWMIS.DataProvider.Data.SQLite.csproj">
+      <Project>{ea876b64-cff0-4985-b59c-1602b3486d3d}</Project>
+      <Name>PWMIS.DataProvider.Data.SQLite</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\OtherProvider\PWMIS.DataProvider.Data.SqlServerCe\PWMIS.DataProvider.Data.SqlServerCe.csproj">
       <Project>{a964c53b-1764-42fe-b004-d28fb800396f}</Project>
       <Name>PWMIS.DataProvider.Data.SqlServerCe</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="x64\SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="x86\SQLite.Interop.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

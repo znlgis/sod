@@ -478,10 +478,19 @@ namespace PWMIS.DataMap.Entity
                 }
             }
             //identity(1,1) primary key
-            //Access 要求主键申明必须在自增之后，否则语法错误
+           
             if (entity.PrimaryKeys.Contains(field))
             {
-                temp = temp + " PRIMARY KEY";
+                if (db.CurrentDBMSType == PWMIS.Common.DBMSType.SQLite)
+                {
+                    //SQLite 要求主键申明必须在自增之前，否则语法错误
+                    temp = temp.Replace(" autoincrement", " PRIMARY KEY autoincrement");
+                }
+                else
+                {
+                    //Access 要求主键申明必须在自增之后，否则语法错误
+                    temp = temp + " PRIMARY KEY";
+                }
             }
             return db.GetPreparedSQL(temp);
         }
