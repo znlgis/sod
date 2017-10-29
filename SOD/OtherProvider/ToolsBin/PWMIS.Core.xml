@@ -506,7 +506,8 @@
         </member>
         <member name="M:PWMIS.Core.CommonUtil.GetAssemblyResource(System.Type,System.String)">
             <summary>
-            根据指定的类型，从该类型所在的程序集中获取指定的资源内容文本
+            根据指定的类型，从该类型所在的程序集中获取指定的资源内容文本。
+            注意：resourceType的命名空间应该使用程序集默认命名空间，如果源文件在项目子目录下，还应该加所在目录名字为该类型的完整命名空间。
             </summary>
             <param name="resourceType">与指定的类型</param>
             <param name="resourceName"></param>
@@ -529,7 +530,7 @@
         </member>
         <member name="M:PWMIS.Core.CommonUtil.ReplaceWebRootPath(System.String@)">
             <summary>
-            替换Web路径格式中的相对虚拟路径（~）为当前程序执行的绝对路径
+            替换Web路径格式中的相对虚拟路径（~\ 或者 ~/）为当前程序执行的绝对路径
             </summary>
             <param name="sourcePath"></param>
         </member>
@@ -569,6 +570,19 @@
             <param name="dbType"></param>
             <returns></returns>
             <remarks>参考 http://www.cnblogs.com/davinci/archive/2010/01/22/1654139.html</remarks>
+        </member>
+        <member name="M:PWMIS.Core.CommonUtil.NewSequenceGUID">
+            <summary>
+            生成一个新的有序的长整形“GUID”，在一秒内，重复概率低于 万分之一，速度较快，线程安全，
+            但不如NewUniqueSequenceGUID 方法结果更有序（不包含毫秒部分）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.Core.CommonUtil.NewUniqueSequenceGUID">
+            <summary>
+            生成一个唯一的有序的GUID形式的长整数，速度较NewSequenceGUID 稍慢，但线程不安全
+            </summary>
+            <returns></returns>
         </member>
         <member name="P:PWMIS.Core.CommonUtil.CacheEntityMapSql">
             <summary>
@@ -860,6 +874,14 @@
             <param name="targetChar">目标字符</param>
             <returns>目标字符的在源字符串的位置索引，如果没有找到，返回-1</returns>
         </member>
+        <member name="M:PWMIS.Core.UniqueSequenceGUID.InnerNewSequenceGUID(System.DateTime,System.Boolean)">
+            <summary>
+            获取一个新的有序GUID整数
+            </summary>
+            <param name="dt">当前时间</param>
+            <param name="haveMs">是否包含毫秒，生成更加有序的数字，但这会增加重复率</param>
+            <returns></returns>
+        </member>
         <member name="T:PWMIS.DataMap.ControlDataMap">
             <summary>
             BrainControl 的摘要说明。
@@ -1058,7 +1080,7 @@
         </member>
         <member name="M:PWMIS.DataProvider.Data.CommonDB.GetSchema(System.String,System.String[])">
             <summary>
-            返回此 SqlConnection 的数据源的架构信息。
+            返回此 SqlConnection 的数据源的架构信息。某些数据库访问类型可能需要重写此方法
             </summary>
             <param name="collectionName">集合名称，可以为空</param>
             <param name="restrictionValues">请求的架构的一组限制值，可以为空</param>
@@ -1300,6 +1322,11 @@
             </summary>
             <param name="conn">连接对象</param>
             <param name="cmd">命令对象</param>
+        </member>
+        <member name="P:PWMIS.DataProvider.Data.CommonDB.TransactionCount">
+            <summary>
+            事务计数器，如果大于0，表示当前查询在事务过程中
+            </summary>
         </member>
         <member name="P:PWMIS.DataProvider.Data.CommonDB.CommandTimeOut">
             <summary>
@@ -1761,7 +1788,7 @@
             <param name="command">命令对象</param>
             <param name="who">执行人</param>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.CommandLog.Dispose">
+        <member name="M:PWMIS.DataProvider.Data.CommandLog.Flush">
             <summary>
             将日志全部写入
             </summary>
@@ -1801,6 +1828,11 @@
             获取当前执行的实际SQL语句
             </summary>
         </member>
+        <member name="T:PWMIS.DataProvider.Data.InnerLogWriter">
+            <summary>
+            日志写入器，每20秒或者每满20条写入一次
+            </summary>
+        </member>
         <member name="T:PWMIS.Common.ICommonLog">
             <summary>
             通用日志接口
@@ -1819,6 +1851,11 @@
             </summary>
             <param name="log">日志内容</param>
         </member>
+        <member name="M:PWMIS.Common.ICommonLog.Flush">
+            <summary>
+            将缓存的日志内容刷新到日志文件
+            </summary>
+        </member>
         <member name="M:PWMIS.DataProvider.Data.InnerLogWriter.WriteLog(System.String,System.String)">
              <summary>
             写入日志消息
@@ -1831,6 +1868,11 @@
             批量写入日志
             </summary>
             <param name="log"></param>
+        </member>
+        <member name="P:PWMIS.DataProvider.Data.InnerLogWriter.LogBufferCount">
+            <summary>
+            默认每满20条写入
+            </summary>
         </member>
         <member name="T:PWMIS.DataProvider.Data.ConnectionSession">
             <summary>
@@ -1935,14 +1977,6 @@
             <param name="size">参数大小</param>
             <returns>特定于数据源的参数对象</returns>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.Oracle.GetSchema(System.String,System.String[])">
-            <summary>
-            返回此 OracleConnection 的数据源的架构信息。
-            </summary>
-            <param name="collectionName">集合名称</param>
-            <param name="restrictionValues">请求的架构的一组限制值</param>
-            <returns>数据库架构信息表</returns>
-        </member>
         <member name="M:PWMIS.DataProvider.Data.Oracle.PrepareSQL(System.String)">
             <summary>
             预处理SQL语句，语句中不能包含"["，"]"左右中括号，如果需要，请使用参数化查询。
@@ -1976,7 +2010,7 @@
             默认构造函数
             </summary>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.QueryException.#ctor(System.String,System.String,System.Data.CommandType,System.Data.IDataParameter[],System.Boolean,System.String)">
+        <member name="M:PWMIS.DataProvider.Data.QueryException.#ctor(System.String,System.String,System.Data.CommandType,System.Data.IDataParameter[],System.Boolean,System.String,System.Exception)">
             <summary>
             使用命令信息初始化构造函数
             </summary>
@@ -2054,16 +2088,6 @@
             <param name="size">参数大小</param>
             <returns>特定于数据源的参数对象</returns>
         </member>
-        <member name="M:PWMIS.DataProvider.Data.SqlServer.ExecuteDataSetWithSchema(System.String,System.Data.CommandType,System.Data.IDataParameter[],System.Data.DataSet)">
-            <summary>
-            执行查询,并以指定的(具有数据架构的)数据集来填充数据
-            </summary>
-            <param name="SQL">查询语句</param>
-            <param name="commandType">命令类型</param>
-            <param name="parameters">查询参数</param>
-            <param name="schemaDataSet">指定的(具有数据架构的)数据集</param>
-            <returns>具有数据的数据集</returns>
-        </member>
         <member name="M:PWMIS.DataProvider.Data.SqlServer.ExecuteTypedDataSet(System.String,System.Data.CommandType,System.Data.IDataParameter[],System.Data.DataSet,System.String)">
             <summary>
             执行强类型的数据集查询
@@ -2074,14 +2098,6 @@
             <param name="schemaDataSet">强类型的数据集</param>
             <param name="tableName">要填充的表名称</param>
             <returns></returns>
-        </member>
-        <member name="M:PWMIS.DataProvider.Data.SqlServer.GetSchema(System.String,System.String[])">
-            <summary>
-            返回此 SqlConnection 的数据源的架构信息。
-            </summary>
-            <param name="collectionName">集合名称</param>
-            <param name="restrictionValues">请求的架构的一组限制值</param>
-            <returns>数据库架构信息表</returns>
         </member>
         <member name="M:PWMIS.DataProvider.Data.SqlServer.GetSPDetail(System.String)">
             <summary>
@@ -2240,7 +2256,7 @@
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityContainer.Map``1">
             <summary>
-            将数据从容器中映射到实体中
+            将数据从查询结果容器中映射到实体中
             </summary>
             <typeparam name="T"></typeparam>
             <returns></returns>
@@ -2475,7 +2491,7 @@
             属性改变前事件
             </summary>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.PropertyChangingEventArgs.#ctor(System.String,System.Object,System.Int32)">
+        <member name="M:PWMIS.DataMap.Entity.PropertyChangingEventArgs.#ctor(System.String,System.Object,System.Int32,System.Data.DbType)">
             <summary>
             初始化属性改变前事件
             </summary>
@@ -2496,6 +2512,11 @@
         <member name="P:PWMIS.DataMap.Entity.PropertyChangingEventArgs.MaxValueLength">
             <summary>
             新设置的属性值的最大长度，仅仅对string类型有效，其它类型，都是-1
+            </summary>
+        </member>
+        <member name="P:PWMIS.DataMap.Entity.PropertyChangingEventArgs.FieldDbType">
+            <summary>
+            字段类型
             </summary>
         </member>
         <member name="P:PWMIS.DataMap.Entity.PropertyChangingEventArgs.IsCancel">
@@ -2565,13 +2586,14 @@
             <param name="fieldName">字段名</param>
             <returns>字段的长度</returns>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.EntityBase.SetStringFieldSize(System.String,System.Int32)">
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.SetStringFieldSize(System.String,System.Int32,System.Data.DbType)">
             <summary>
             设置字符串类型的属性字段在数据库读写的时候使用的字段长度。
             注意这这个设置将一直有效且只对字符串类型的字段有效，除非再次重新设置。
             </summary>
             <param name="fieldName">字段名称</param>
             <param name="length">字段长度</param>
+            <param name="dbType">字符串字段的字段类型</param>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.SetFieldNames">
             <summary>
@@ -2683,13 +2705,14 @@
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.Clone(System.Boolean)">
             <summary>
-            获取当前对象的浅表副本
+            获取当前对象的副本
             </summary>
-            <returns>当前对象的浅表副本</returns>
+            <param name="isDeep">是否深度克隆</param>
+            <returns>当前对象的副本</returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.Clone">
             <summary>
-            返回当前对象的副本
+            返回当前实体对象的深度克隆副本
             </summary>
             <returns></returns>
         </member>
@@ -2759,6 +2782,15 @@
             <param name="Value">要设置的值</param>
             <param name="maxLength">字段最大长度，如果为负数，将生成varchar类型的参数</param>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.setProperty(System.String,System.String,System.Int32,System.Data.DbType)">
+            <summary>
+            设置字符串属性的值，如果值是字符类型且设置了最大长度大于0，那么不允许设置大于此长度的字符串
+            </summary>
+            <param name="propertyFieldName">属性字段名</param>
+            <param name="Value">要设置的值</param>
+            <param name="maxLength">字段最大长度，如果为负数，将生成varchar类型的参数</param>
+            <param name="dbType">字段类型，如果指定，将优先以此参数为准</param>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.setProperty(System.String,System.Byte[],System.Int32)">
             <summary>
             设置byte[] 类型的属性字段的值
@@ -2767,13 +2799,34 @@
             <param name="Value">要设置的值</param>
             <param name="maxLength">字段最大长度，如果为负数，将生成varchar类型的参数</param>
         </member>
-        <member name="M:PWMIS.DataMap.Entity.EntityBase.setPropertyValueAndLength(System.String,System.Int32,System.Object,System.Int32)">
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.setProperty(System.String,System.Int32,System.String,System.Int32)">
+            <summary>
+            通过制定属性的索引号，设置属性值
+            </summary>
+            <param name="propertyFieldName">属性字段名</param>
+            <param name="propertyIndex">属性字段的索引位置</param>
+            <param name="Value">字符串值</param>
+            <param name="maxLength">字符长度</param>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.setProperty(System.String,System.Int32,System.String,System.Int32,System.Data.DbType)">
+            <summary>
+            通过制定属性的索引号，设置属性值
+            </summary>
+            <param name="propertyFieldName">属性字段名</param>
+            <param name="propertyIndex">属性字段的索引位置</param>
+            <param name="Value">字符串值</param>
+            <param name="maxLength">字符长度</param>
+            <param name="dbType">字段类型</param>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityBase.setPropertyValueAndLength(System.String,System.Int32,System.Object,System.Int32,System.Data.DbType)">
             <summary>
             设置属性值和长度信息
             </summary>
             <param name="propertyFieldName">属性字段名称</param>
+            <param name="propertyIndex">属性字段索引位置</param>
             <param name="Value">属性值</param>
             <param name="length"></param>
+            <param name="dbType">字段类型</param>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.GetNameValues">
             <summary>
@@ -2809,7 +2862,7 @@
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityBase.MapFrom(System.Object,System.Boolean)">
             <summary>
-            从POCO实体类获取跟当前实体类的属性名称相同的属性的值，拷贝到当前实体类中，完成数据的映射。
+            从POCO实体类获取跟当前实体类的属性名称相同的属性的值，拷贝到当前实体类中，完成数据的映射，并且会比较和设置属性值的改变状态
             要求拷贝的同名属性是读写属性且类型相同。
             </summary>
             <param name="pocoClass">POCO实体类，提供源数据</param>
@@ -2927,6 +2980,11 @@
         <member name="P:PWMIS.DataMap.Entity.EntityCommand.CreateTableCommand">
             <summary>
             获取创建表的命令脚本
+            </summary>
+        </member>
+        <member name="T:PWMIS.DataMap.Entity.SimplyField">
+            <summary>
+            简单字段信息结构
             </summary>
         </member>
         <member name="T:PWMIS.DataMap.Entity.EntityFields">
@@ -3148,6 +3206,15 @@
             <param name="db">数据库操作对象</param>
             <returns>实体对象集合</returns>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.EntityQuery`1.QueryEnumerable(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper)">
+            <summary>
+            查询一个可枚举的实体对象，在枚举期间内部维持一个打开的只读快进的数据阅读器对象，直到数据全部枚举完才关闭此阅读器对象。
+            此方法用于大批量的且不需要分页的数据流式读取。
+            </summary>
+            <param name="oql"></param>
+            <param name="db"></param>
+            <returns></returns>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.EntityQuery`1.QueryListByCache(System.String,PWMIS.DataMap.Entity.OQLCacheFunc,PWMIS.DataMap.Entity.SqlInfoAction,System.Object,PWMIS.DataProvider.Data.AdoHelper)">
             <summary>
             缓存OQL的结果然后从数据库查询数据，使得不必每次处理OQL对象。
@@ -3222,7 +3289,7 @@
         <member name="M:PWMIS.DataMap.Entity.EntityQuery`1.QuickInsert(System.Collections.Generic.List{`0})">
             <summary>
             快速插入实体类到数据库，注意，该方法假设要插入的实体类集合中每个实体修改的字段都是一样的。
-            同时，插入完成后不会处理“自增”实体的属性，也不会重置实体类的修改状态。
+            同时，插入完成后不会处理“自增”实体的属性，也不会重置实体类的修改状态。内部使用事务提交。
             如果不符合这些要求，请直接调用Insert 方法。
             </summary>
             <param name="entityList"></param>
@@ -3420,12 +3487,12 @@
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityQuery.QueryList``1(PWMIS.DataMap.Entity.OQL,PWMIS.DataProvider.Data.AdoHelper)">
             <summary>
-            查询实体类集合。如果开启了分页且OQL设置的记录总数为0，直接返回空集合。
+            查询实体类集合。如果开启了分页且OQL设置的记录总数为0，查询后会返回OQL的 PageWithAllRecordCount 的值。
             </summary>
-            <typeparam name="T"></typeparam>
-            <param name="oql"></param>
-            <param name="db"></param>
-            <returns></returns>
+            <typeparam name="T">实体类或者接口类型</typeparam>
+            <param name="oql">OQL对象</param>
+            <param name="db">数据访问对象</param>
+            <returns>查询结果列表</returns>
         </member>
         <member name="M:PWMIS.DataMap.Entity.EntityQuery.Delete(PWMIS.DataMap.Entity.EntityBase)">
             <summary>
@@ -3768,6 +3835,12 @@
             <param name="Value">值</param>
             <param name="maxLength">最大长度</param>
         </member>
+        <member name="T:PWMIS.DataMap.Entity.GOQL`1">
+            <summary>
+            泛型OQL查询类，通常查询单表实体，如果是多表查询，请使用 EntityContainer
+            </summary>
+            <typeparam name="T">实体类类型或者POCO接口类型</typeparam>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.GOQL`1.Limit(System.Int32,System.Int32)">
             <summary>
             以每页不超过 pageSize 条记录，查询第 pageNumber 页的数据
@@ -3786,6 +3859,16 @@
             <param name="allCount">记录总数</param>
             <returns></returns>
         </member>
+        <member name="M:PWMIS.DataMap.Entity.GOQL`1.Limit(System.Int32,System.Int32,System.Boolean)">
+            <summary>
+            以每页不超过 pageSize 条记录，查询第 pageNumber 页的数据，并可以指定查询后获取本次查询的总记录数。
+            可以通过 AllCount 属性获取此总记录数
+            </summary>
+            <param name="pageSize">每页显示的记录数量</param>
+            <param name="pageNumber">所在页页码，从1开始</param>
+            <param name="autoAllCount">是否自动查询总记录数</param>
+            <returns></returns>
+        </member>
         <member name="M:PWMIS.DataMap.Entity.GOQL`1.With(PWMIS.DataMap.Entity.OQL.SqlServerLock)">
             <summary>
             提供查询的锁限定(注意:只支持SQLSERVER)(注:本方法由网友 唔 提供)
@@ -3800,6 +3883,11 @@
             <typeparam name="T1">DTO对象的类型</typeparam>
             <param name="db">AdoHelper</param>
             <returns>DTO对象列表</returns>
+        </member>
+        <member name="P:PWMIS.DataMap.Entity.GOQL`1.AllCount">
+            <summary>
+            获取查询后的总记录数，该属性结合Limit方法使用，并且在调用ToList等方法之后再调用才有效。
+            </summary>
         </member>
         <member name="T:PWMIS.DataMap.Entity.OQLCacheFunc">
             <summary>
@@ -3882,6 +3970,11 @@
         <member name="F:PWMIS.DataMap.Entity.OQL.PageOrderDesc">
             <summary>
             分页的时候记录按照倒序排序（对Oracle数据库不起效）
+            </summary>
+        </member>
+        <member name="F:PWMIS.DataMap.Entity.OQL.OrderByPK">
+            <summary>
+            是否按照主键分页
             </summary>
         </member>
         <member name="F:PWMIS.DataMap.Entity.OQL.PageWithAllRecordCount">
@@ -4336,6 +4429,25 @@
             <param name="field">属性字段</param>
             <param name="asFieldName">字段别名，如果不指定，则使用字段名称</param>
             <returns>OQL1</returns>
+        </member>
+        <member name="M:PWMIS.DataMap.Entity.OQL1.Computer(System.String,System.String,System.Object[])">
+            <summary>
+            计算指定的多个字段组合的运算结果，例如对多个字段进行算术运算等
+            <remarks>感谢网友“芜湖-大枕头”提供此方法，2017.8.2</remarks>
+            <example>
+            <code>
+            OQL oqlSelect = OQL.From(black)
+              .Select()
+              .Computer("{0}+{1}*{2}","test",black.ID,black.idCardName,black.idCardNo)
+              .OrderBy(black.ID).Desc
+              .END;
+            </code>
+            </example>
+            </summary>
+            <param name="operatorString">格式化字符串，e.g.({0}*{1})*10、{0}+{1}等</param>
+            <param name="asFieldName">别名，不能为空</param>
+            <param name="field">参与运算的字段</param>
+            <returns></returns>
         </member>
         <member name="T:PWMIS.DataMap.Entity.JoinEntity">
             <summary>
@@ -4861,6 +4973,11 @@
             BETWEEN 在某两个值之间
             </summary>
         </member>
+        <member name="F:PWMIS.DataMap.Entity.OQLCompare.CompareType.NotLike">
+            <summary>
+            不类似于
+            </summary>
+        </member>
         <member name="T:PWMIS.DataMap.Entity.OQLCompare.CompareLogic">
             <summary>
             条件表达式逻辑符号
@@ -5180,6 +5297,14 @@
             检查实体类对应的数据表是否在数据库中存在，需要在子类中实现
             </summary>
             <typeparam name="T"></typeparam>
+            <returns>返回检查的时候，表是否存在</returns>
+        </member>
+        <member name="M:PWMIS.Core.Interface.IDbContextProvider.InitializeTable``1(System.String)">
+            <summary>
+            检查实体类对应的表是否存在，如果不存在则创建表并执行可选的SQL语句，比如为表增加索引等。
+            </summary>
+            <typeparam name="T">实体类类型</typeparam>
+            <param name="initSql">要初始化执行的SQL语句</param>
         </member>
         <member name="P:PWMIS.Core.Interface.IDbContextProvider.CurrentDataBase">
             <summary>
