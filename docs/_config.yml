@@ -1,0 +1,48 @@
+# Blog specific settings
+paginate_path: "news/page/:num/"
+paginate: 5
+
+# General settings
+name: PDF.NET
+permalink: pretty
+markdown: kramdown
+kramdown:
+  input: GFM
+  hard_wrap: false
+  syntax_highlighter_opts:
+    disable : true
+feed:
+  path: atom.xml
+defaults:
+  -
+    scope:
+      path: "archived"
+    values:
+      layout: "obsolete"
+  -
+    scope:
+      path: "community"
+    values:
+      layout: "docpage"
+      navgroup: "community"
+  -
+    scope:
+      path: "docs"
+    values:
+      layout: "docpage"
+      navgroup: "docs"
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      categories: [news]  # this is a slight hack so Jekyll generates the blog posts in /news
+gems:
+  - jekyll-redirect-from
+  - jekyll-feed
+  - jekyll-paginate
+exclude:
+  - CNAME
+  - README.md
+  - CONTRIBUTING.md
+  - Gemfile*

@@ -1,0 +1,353 @@
+/* ### GLOBAL STYLES ### */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.6rem;
+}
+
+h3 {
+  font-size: 1.25rem;
+}
+
+h4 {
+  font-size: 1.1rem;
+}
+
+h5 {
+  font-size: 1.05rem;
+}
+
+h6 {
+  font-size: 1.0rem;
+}
+
+code {
+  font-weight: normal;
+  font-size: 0.95em;
+  line-height: 1.5;
+  margin-bottom: 10px;
+  border: 1px solid #bbb;
+  background-color: #eee;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#main-wrapper {
+  min-height: 100%;
+  margin: 0 auto -100px;
+}
+
+.panel.info {
+  background: #F2FAFC;
+  border-left-color: #258FAF;
+  border-left-width: 5px;  
+}
+
+.panel.success {
+  background: #E0FFE6;
+  border-left-color: #43AC6A;
+  border-left-width: 5px;  
+}
+
+.panel.alert {
+  background: #F0D6C4;
+  border-left-color: #F04124;
+  border-left-width: 5px;
+}
+
+.mfp-figure > figure {
+  margin: 0px;
+}
+
+#push {
+  height: 140px;
+}
+
+footer {
+  background-color: #EBEBEB;
+  color: #707070;
+  border-top: 1px solid #D9D8D7;
+  height: 100px;
+  padding: 25px 0;
+}
+
+#footer-notes {
+  margin-top: 5px;
+  font-size: 15px;
+}
+
+#footer-notes a {
+  color: #969696;
+}
+
+footer ul {
+  font-size: 0.85em;
+}
+
+footer h6 a {
+  color: #000;
+}
+
+/* ### ### */
+
+/* ### HEADER STYLES ### */
+#header-logo {
+  width: 50px;
+  height: 50px;
+  margin-top: -6px;
+  margin-right: 10px;
+}
+
+#header-nav {
+  margin-bottom: 5px;
+  webkit-box-shadow: 0 1px 6px rgba(34, 25, 25, 0.6);
+  moz-box-shadow: 0 1px 6px rgba(34, 25, 25, 0.6);
+  box-shadow: 0 1px 6px rgba(34, 25, 25, 0.6);
+}
+
+.top-bar {
+  height: 60px;
+  line-height: 60px;
+}
+
+.top-bar .name {
+  height: 60px;
+}
+
+.top-bar .name h1 {
+  line-height: 60px;
+  font-size: 1.8em;
+}
+
+.top-bar .name h1 a {
+  width: 100%;
+}
+
+.top-bar-section > ul { 
+  margin-top: 8px;
+}
+
+.top-bar .toggle-topbar {
+  margin-top: 8px;
+}
+
+.top-bar #header-searchform {
+  margin-top: -3px;
+}
+
+@media only screen and (max-width: 56.875em) and (min-width: 40.063em) {
+  .top-bar-section li:not(.has-form) a:not(.button),
+  .top-bar-section li.active:not(.has-form) a:not(.button) {
+    padding: 0 5px;
+  }
+
+  .top-bar-section li.has-form {
+    max-width: 100px;
+    padding: 0 5px;
+  }
+  
+  .top-bar .name h1 a  {
+    padding: 0 5px;
+  }
+  
+  #mono-download.tabs dd > a {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+}
+/* ### ### */
+
+/* ### PAGE-SPECIFIC STYLES ### */
+
+/* --- Index page --- */
+#index-hero {
+  background: #5C7280;
+  color: #E2E8EB;
+  text-align: center;
+  margin-top: -5px;
+  padding-top: 15px;
+}
+
+#index-hero h1 {
+  color: #E2E8EB;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+#index-teaser {
+  background: #EBEBEB;
+  color: #222;
+  margin-top: 10px;
+  padding-top: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #D9D8D7;
+}
+/* --- --- */
+
+/* --- Download page --- */
+#mono-download.tabs dd > a {
+  font-size: 1.5em;
+  white-space: nowrap;
+}
+
+#mono-download.tabs dd.active a {
+  background-color: #333;
+  color: #fff;
+}
+
+#mono-download.tabs dd {
+  line-height: 0.9em;
+}
+
+#download-mac, #download-lin, #download-win {
+  padding-top: 10px;
+}
+
+/* --- --- */
+
+/* ### ### */
+
+/* ### SECTION-SPECIFIC STYLES ### */
+
+/* --- Blog post --- */
+.meta {
+  margin-left: 2px;
+  color: #999;
+  margin-bottom: 20px;
+}
+
+.meta span {
+  margin-right: 10px;
+}
+
+.meta .author:before { 
+  font: 1.0em FontAwesome;
+  content: "\f007"
+}
+
+.meta .date:before { 
+  font: 1.0em FontAwesome;
+  content: "\f073"
+}
+
+.meta .tags:before { 
+  font: 1.0em FontAwesome;
+  content: "\f02c"
+}
+
+.meta a {
+  color: #999
+}
+/* --- --- */
+
+/* --- Doc page --- */
+.heading-anchor-link {
+  display: none;
+  color: #666;
+  font-size: 0.7em;
+  padding-left: 1%;
+}
+
+.heading-anchor-link:hover {
+  color: #222;
+}
+
+h1:hover .heading-anchor-link,
+h2:hover .heading-anchor-link,
+h3:hover .heading-anchor-link,
+h4:hover .heading-anchor-link,
+h5:hover .heading-anchor-link,
+h6:hover .heading-anchor-link {
+  display: inline;
+}
+
+ul.doc-breadcrumbs-nav {
+  margin-top: 5px;
+  margin-bottom: 0px;
+  padding-top: 0px;
+  padding-bottom: 5px;
+}
+
+ul.doc-breadcrumbs-nav > *:before {
+  margin-right: 0.4rem;
+  margin-left: 0.4rem;
+}
+
+ul.doc-breadcrumbs-nav li {
+  margin-top: 12px;
+  margin-bottom: 5px;
+}
+
+ul.doc-breadcrumbs-nav li.toc {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+ul.doc-breadcrumbs-nav li.toc:before{
+  display: none;
+}
+
+ul.doc-breadcrumbs-nav li.toc a:hover {
+  text-decoration: none;
+}
+
+ul.doc-breadcrumbs-nav .here-note {
+  text-transform: none;
+  color: #000;
+}
+
+#toc-dropdown-button-inline {
+  padding: 5px 20px 5px 5px;
+  margin-top: 5px;
+  margin-bottom: 0px;
+}
+
+#toc-dropdown-button-inline:after {
+  right: 5px;
+}
+
+#toc-dropdown-button-separate {
+  margin-top: 10px;
+  margin-bottom: 0px;
+  text-transform: uppercase;
+}
+
+#toc-dropdown li.toc-indent-h2 {
+  text-indent: 10px;
+}
+
+#toc-dropdown li.toc-indent-h3 {
+  line-height: 10px;
+  font-size: 12px;
+  text-indent: 20px;
+}
+
+#toc-dropdown li.toc-indent-h4 {
+  line-height: 8px;
+  font-size: 11px;
+  text-indent: 30px;
+}
+
+/* trick to make anchor links not jump to the very top of screen */
+.doc-content h1:not(#page-title):before,
+.doc-content h2:before,
+.doc-content h3:before,
+.doc-content h4:before { 
+  display: block; 
+  content: " "; 
+  margin-top: -15px; 
+  height: 15px; 
+  visibility: hidden;
+}
+
+/* --- --- */
+
+/* ### ### */

@@ -1,0 +1,84 @@
+---
+layout: docpage
+title: 功能
+navgroup: funs
+redirect_from:
+  - /Funs/
+---
+<dl class="accordion" data-accordion>
+  <dd class="accordion-navigation">
+    <a class="panel" href="#getting-started"><h2>数据控件</h2></a>
+    <div id="getting-started" class="content panel active">
+      <ul class="disc">
+        <li>支持WinForm / WebForm，使用上无差别</li>
+        <li>智能表单数据控件,只需要一行代码实现页面数据的增,删,改,查</li>
+        <li>表单数据的自动收集和填充,自动生成查询条件</li>
+        <li>无需任何后台代码即可分页的增强数据分页控件</li>
+      </ul>
+    </div>
+  </dd>
+
+  <dd class="accordion-navigation">
+    <a class="panel" href="#about-mono"><h2>ORM</h2></a>
+    <div id="about-mono" class="content panel ">
+      <ul class="disc">
+        <li>无反射:整个框架没有使用 反射 来实现ORM和界面数据绑定,可以保证数据操作的高效率</li>
+        <li>ORM 查询语言--OQL:类似LINQ的支持ORM实体类查询的OQL表达式,OQL支持"多实体类连接查询"突破普通的ORM只能查询单个实体的限制</li>
+        <li>集成开发工具，支持从表、视图、存储过程、自定义查询生成实体类</li>
+      </ul>
+    </div>
+  </dd>
+
+  <dd class="accordion-navigation">
+    <a class="panel" href="#tools-and-libraries"><h2>SQL-MAP</h2></a>
+    <div id="tools-and-libraries" class="content panel ">
+      <ul class="disc">
+        <li>集中管理SQL语句,可以生成实体类和根据SQL配置文件自动生成 DAL 代码的代码生成器以及SQL配置文件管理程序</li>
+        <li>通过切换SQL-MAP配置文件,支持SQL查询的本地化特征(多数据切换)</li>
+        <li>提供SQL-MAP配置管理工具,并且支持VS进行配置文件编辑的时候的智能提示</li>
+        <li>与iBatis比较,开发使用几乎"零"配置</li>
+      </ul>
+    </div>
+  </dd>
+
+  <dd class="accordion-navigation">
+    <a class="panel" href="#advanced-topics"><h2>自动分页</h2></a>
+    <div id="advanced-topics" class="content panel ">
+      <ul class="disc">
+        <li>多种分页功能,支持分页类,控件分页,OQL分页,SQL-MAP分页</li>
+        <li>基于SQL词法分析的支持多种数据库的高效分页类,你只需要设置SQL语句和分页属性它便能够为你生成特定数据库平台的当前页数据的SQL语句</li>
+      </ul>
+    </div>
+  </dd>
+  <dd class="accordion-navigation">
+    <a class="panel" href="#advanced-topics2"><h2>多模式支持</h2></a>
+    <div id="advanced-topics2" class="content panel ">
+      <ul class="disc">
+        <li>控件开发模式--内置数据控件支持</li>
+        <li>OO开发模式--ORM框架和独特的ORM查询语言支持(OQL)</li>
+        <li>SQL开发模式--(SQL-MAP）自动生成DAL层代码</li>
+      </ul>
+    </div>
+  </dd>
+  <dd class="accordion-navigation">
+    <a class="panel" href="#advanced-topics3"><h2>跨平台支持</h2></a>
+    <div id="advanced-topics3" class="content panel ">
+      <ul class="disc">
+        <li>已经验证,框架在Mono 框架的支持下,可以运行在Linux 系统上</li>
+        <li>最低可以支持 .NET 框架2.0，同时支持.NET 3.0.3.5,4.0,4.5,4.6 等后续版本</li>
+        <li>支持各大主流数据库平台:SqlServer，Oracle,MySQL,PostgreSQL,SQLite,Access,SQL CE等,只要有Ado.net驱动即可支持</li>
+      </ul>
+    </div>
+  </dd>
+  <dd class="accordion-navigation">
+    <a class="panel" href="#advanced-topics4"><h2>与其它数据处理框架的关系</h2></a>
+    <div id="advanced-topics4" class="content panel ">
+      <ul class="disc">
+        <li>本框架是总结多种数据处理框架的优点,去除其复杂性后的轻量级的数据处理框,所以可能没有你熟知的下列重量级框架强大的功能.本框架的设计目标是 轻量,快速,通用,易学!</li>
+        <li>Hibernate:借鉴了它的ORM原理和HQL语言,使用了类似的简单的ORM功能</li>
+        <li>iBatis:借鉴了其SQL-MAP功能,对其复杂性进行了大力精简</li>
+        <li>LINQ/Entity Framework:提供类似LINQ的OQL语法</li>
+      </ul>
+    </div>
+  </dd>
+</dl>
