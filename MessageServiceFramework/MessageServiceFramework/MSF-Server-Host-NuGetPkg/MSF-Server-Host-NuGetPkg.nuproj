@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|AnyCPU">
+      <Configuration>Debug</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|AnyCPU">
+      <Configuration>Release</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>8e5f485c-7ce2-45dc-9098-6956f31482c9</ProjectGuid>
+  </PropertyGroup>
+  <PropertyGroup>
+    <NuProjPath Condition=" '$(NuProjPath)' == '' ">$(MSBuildExtensionsPath)\NuProj\</NuProjPath>
+  </PropertyGroup>
+  <Import Project="$(NuProjPath)\NuProj.props" Condition="Exists('$(NuProjPath)\NuProj.props')" />
+  <PropertyGroup Label="Configuration">
+    <Id>PDF.Net.MSF.Service.Host</Id>
+    <Version>1.1.1</Version>
+    <Title>PDF.NET MSF(Server Host)</Title>
+    <Authors>bluedoctor</Authors>
+    <Owners>pwmis.com</Owners>
+    <Summary>PDF.NET MSF(Message Service Framework) Server Host</Summary>
+    <Description>PDF.NET (PWMIS Develope Framework for .net) Message Service Framework Server Host,Build Message Service Runtime    Host.</Description>
+    <ReleaseNotes>
+    </ReleaseNotes>
+    <ProjectUrl>
+    </ProjectUrl>
+    <LicenseUrl>
+    </LicenseUrl>
+    <Copyright>Copyright © pwmis.com</Copyright>
+    <Tags>WCF,Message</Tags>
+    <DevelopmentDependency>
+    </DevelopmentDependency>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="Content\IOCConfig.xml" />
+    <Content Include="Content\PdfNetEF.MessageServiceHost.exe.config" />
+    <Content Include="lib\PWMIS.EnterpriseFramework.Message.PublisherLib.dll" />
+    <Content Include="lib\PWMIS.EnterpriseFramework.Message.PublisherLib.pdb" />
+    <Content Include="lib\PWMIS.EnterpriseFramework.Message.PublisherLib.xml" />
+    <Content Include="Readme.txt" />
+    <Content Include="Tools\install.ps1" />
+    <Content Include="Tools\PdfNetEF.MessageServiceHost.exe" />
+    <Content Include="Tools\PdfNetEF.MessageServiceHost.pdb" />
+    <Content Include="Tools\UpdateService.bat" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MSF-Server-Group-NuGetPkg\MSF-Server-Group-NuGetPkg.nuproj" />
+  </ItemGroup>
+  <Import Project="$(NuProjPath)\NuProj.targets" />
+</Project>

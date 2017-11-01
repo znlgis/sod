@@ -1,0 +1,747 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PWMIS.EnterpriseFramework.Service.Runtime</name>
+    </assembly>
+    <members>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.MemoryCacheProvider">
+            <summary>
+            内存缓存提供者类
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.ICacheProvider">
+            <summary>
+            .Net 4.0 缓存提供者接口，采用ObjectCache，不依赖于System.Web.Cache
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ICacheProvider.Insert``1(System.String,``0)">
+            <summary>
+            Saves the specified key.
+            </summary>
+            <typeparam name="T">缓存对象的类型，如果是值类型必须使用对应的“可空类型”</typeparam>
+            <param name="key">The key.</param>
+            <param name="data">The data.</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ICacheProvider.Insert``1(System.String,``0,System.Runtime.Caching.CacheItemPolicy)">
+            <summary>
+            Saves the specified key.
+            </summary>
+            <typeparam name="T">缓存对象的类型，如果是值类型必须使用对应的“可空类型”</typeparam>
+            <param name="key">The key.</param>
+            <param name="date">The date.</param>
+            <param name="settings">The settings.</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ICacheProvider.Get``1(System.String)">
+            <summary>
+            Gets the specified key.
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key">The key.</param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ICacheProvider.Get``1(System.String,System.Func{``0})">
+            <summary>
+            Gets the specified cache key.
+            </summary>
+            <typeparam name="T">缓存对象的类型，如果是值类型必须使用对应的“可空类型”</typeparam>
+            <param name="cacheKey">The cache key.</param>
+            <param name="getData">The get data.</param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ICacheProvider.Remove(System.String)">
+            <summary>
+            Removes the specified key.
+            </summary>
+            <param name="key">The key.</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ICacheProvider.Clear">
+            <summary>
+            Clears this instance.
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ICacheProvider.Get``1(System.String,System.Func{``0},System.Runtime.Caching.CacheItemPolicy)">
+            <summary>
+            获取指定的缓存对象
+            </summary>
+            <typeparam name="T">缓存对象的类型，如果是值类型必须使用对应的“可空类型”</typeparam>
+            <param name="cacheKey">键名称</param>
+            <param name="setInitData">如果没有缓存对象，设置一个得到缓存对象的委托方法</param>
+            <param name="settings">缓存依赖</param>
+            <returns>缓存对象</returns>
+            <example>
+            例如获取缓存两小时的基金主表对象：
+            <code>
+            ICacheProvider cache = CacheProviderFactory.GetCacheProvider();
+            List《JJZB》 allJJZB = cache.Get《List《JJZB》》("allJJZB", () =>
+            {
+               JJZB jjzb = new JJZB();
+               OQL q = new OQL(jjzb);
+               q.Select();
+               return EntityQuery《JJZB》.QueryList(q);
+            }
+            , new CacheItemPolicy() { AbsoluteExpiration = DateTimeOffset.Now.AddHours(2) }
+            );
+            </code>
+            </example>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.CacheServerProvider">
+            <summary>
+            缓存服务器提供者,注意单个实例在多线程下可能会引起问题
+            注：当缓存中不存在该对象时，要返回null值并交由使用者处理
+                   不要抛出异常，异常情况应该是说服务本身出了问题，例如：虚拟机宕机时
+                   请注意处理下该情况。
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.IReadCacheStrategy">
+            <summary>
+            读取缓存策略
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.FirstActiveStrategy">
+            <summary>
+            主缓存策略，效率相对较高，但可能不稳定，且无法解决相对过期的问题
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.EffectiveStrategy">
+            <summary>
+            随机有效缓存策略，采用相对过期的缓存方式，可能导致命中率越来越低
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.CacheProviderFactory">
+            <summary>
+            缓存工厂类
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.CacheProviderFactory.GetCacheProvider">
+            <summary>
+            获取缓存提供者
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.CacheProviderFactory.GetGlobalCacheProvider">
+            <summary>
+            （根据配置）获取全局的缓存服务提供者，比如单独的缓存服务器
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.CacheService">
+            <summary>
+            缓存服务，获取或者设置缓存，如果插入缓存且原先的存在，则会移除旧缓存，插入新缓存
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.IService">
+            <summary>
+            基础服务接口
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.IService.ProcessRequest(PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext)">
+            <summary>
+            是否继续处理请求，如果不需要服务自动调用服务方法，请在当前方法中做处理，并返回False
+            </summary>
+            <param name="context">当前服务上下文</param>
+            <returns>是否需要继续处理服务请求</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.IService.CompleteRequest(PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext)">
+            <summary>
+            请求的服务方法执行完成以后的操作
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IService.IsUnSubscribe">
+            <summary>
+            (发布-订阅模式中)是否已经注销订阅服务
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.ServiceBase">
+            <summary>
+            服务抽象类
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceBase.UnSubscribeService">
+            <summary>
+            注销订阅的服务，并执行其它清理资源的操作
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceBase.ProcessRequest(PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext)">
+            <summary>
+            是否继续处理请求，如果不需要服务自动调用服务方法，请在当前方法中做处理，并返回False，如果需要自定义的处理，请重写该方法
+            </summary>
+            <param name="context">当前服务上下文</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceBase.CompleteRequest(PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext)">
+            <summary>
+            请求的服务方法执行完成以后的操作
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceBase.CurrentContext">
+            <summary>
+            当前服务上下文
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceBase.IsUnSubscribe">
+            <summary>
+            (发布-订阅模式中)是否已经注销订阅服务
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceBase.GlobalCache">
+            <summary>
+            获取全局缓存，根据配置，可以支持分布式的缓存服务器
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext">
+            <summary>
+            服务上下文接口
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.CallBackFunction``2(``0)">
+            <summary>
+            回调客户端的函数
+            </summary>
+            <typeparam name="T">参数类型</typeparam>
+            <typeparam name="TResult">结果类型</typeparam>
+            <param name="para">参数</param>
+            <returns>客户端返回的结果</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.PreCallBackFunction``2(``0)">
+            <summary>
+            预先回调客户端的函数
+            </summary>
+            <typeparam name="T">参数类型</typeparam>
+            <typeparam name="TResult">结果类型</typeparam>
+            <param name="para">参数</param>
+            <returns>客户端返回的结果</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.PublishData(System.Object)">
+            <summary>
+            发布数据
+            </summary>
+            <param name="data"></param>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.Request">
+            <summary>
+            请求服务
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.Response">
+            <summary>
+            响应服务
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.Session">
+            <summary>
+            服务关联的会话
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.Cache">
+            <summary>
+            系统缓存
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.SessionRequired">
+            <summary>
+            服务是否必须要求依赖于会话状态
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.User">
+            <summary>
+            服务关联的用户对象
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.Host">
+            <summary>
+            服务所在的宿主
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.ParallelExecute">
+            <summary>
+            指定服务是否可以并发执行,默认为并行
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.BatchInterval">
+            <summary>
+            每一批次的执行间隔时间，单位是毫秒，如果小于等于零，则不执行等待。默认为1秒
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.BatchIndex">
+            <summary>
+            执行的批次号
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.SendEmptyResult">
+            <summary>
+            是否向客户端发送空的结果，例如空的列表记录，或者结果为 NULL 的对象 
+            </summary>
+        </member>
+        <member name="E:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.OnPublishDataEvent">
+            <summary>
+            服务发布数据的事件（框架内部使用）
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext.PublishEventSource">
+            <summary>
+            获取发布事件源对象
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.ManageService">
+            <summary>
+            管理端服务类
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ManageService.Connect(System.String)">
+            <summary>
+            连接服务,仅允许内网IP连接本服务
+            </summary>
+            <param name="identityName">标识名称，例如用户的域登陆名称</param>
+            <returns>是否允许连接管理服务</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ManageService.IsManager(System.String)">
+            <summary>
+            是否是管理员，只有管理密码正确，才是管理员
+            </summary>
+            <param name="password">管理密码，默认为空密码</param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ManageService.ChangePassword(System.String,System.String)">
+            <summary>
+            修改管理密码，只有旧密码正确，且新密码不为空，则可修改成功
+            </summary>
+            <param name="oldPwd">旧密码</param>
+            <param name="newPwd">新密码</param>
+            <returns></returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceAuthentication">
+            <summary>
+            服务身份验证类
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceAuthentication.#ctor(PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext)">
+            <summary>
+            以一个服务上下文初始化本类
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceAuthentication.Authenticate(System.Int32,System.String,System.TimeSpan)">
+            <summary>
+            （在当前会后中）设置用户凭据。（凭据保存到系统缓存中，供相同的客户机各个连接使用）
+            </summary>
+            <param name="userId">用户标识</param>
+            <param name="userName">用户名</param>
+            <param name="expire">凭据要过期的绝对时间</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceAuthentication.Authenticate(PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity)">
+            <summary>
+            （在当前会后中）设置用户凭据。（凭据保存到系统缓存中，供相同的客户机各个连接使用）
+            </summary>
+            <param name="user"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceAuthentication.GetIdentity">
+            <summary>
+            获取标识
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceAuthentication.FindIdentity(PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity)">
+            <summary>
+            根据指定的标识，查找服务标识容器是否存在对应的标识对象，如果存在，则返回容器中的标识对象
+            </summary>
+            <param name="identity"></param>
+            <returns>如果未找到，返回空</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceAuthentication.SignOut">
+            <summary>
+            取消当前凭据
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceAuthentication.SignOut(PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity)">
+            <summary>
+            取消指定的凭据
+            </summary>
+            <param name="identity"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentityContainer">
+            <summary>
+            服务标识容器，存储所有只跟客户机器相关（不与连接相关）的凭据信息。凭据存储在全局缓存服务器中
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentityContainer.Find(PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity)">
+            <summary>
+            根据已有的标识，寻找容器中对应的标识对象
+            </summary>
+            <param name="identity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentityContainer.GetAllIdentitys">
+            <summary>
+            获取系统中的所有服务凭据
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentityContainer.Remove(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest)">
+            <summary>
+            从容器中移除请求对应的标识
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentityContainer.Remove(PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity)">
+            <summary>
+            移除指定的标识
+            </summary>
+            <param name="identity"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentityContainer.#ctor">
+            <summary>
+            保证单例的私有构造函数；
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentityContainer.Cache">
+            <summary>
+            获取一个新的缓存实例
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentityContainer.Instance">
+            <summary>
+            返回 MessageCenter 的唯一实例；
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServicePrincipal">
+            <summary>
+            服务权限类
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext">
+            <summary>
+            服务上下文
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.NoResultRecord(System.String)">
+            <summary>
+            没有结果记录
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.CallBackFunction``2(``0)">
+            <summary>
+            回调客户端的函数
+            </summary>
+            <typeparam name="T">参数类型</typeparam>
+            <typeparam name="TResult">结果类型</typeparam>
+            <param name="para">参数</param>
+            <returns>结果</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PreCallBackFunction``2(``0)">
+            <summary>
+            预先回调客户端的函数
+            </summary>
+            <typeparam name="T">参数类型</typeparam>
+            <typeparam name="TResult">结果类型</typeparam>
+            <param name="para">参数</param>
+            <returns>结果</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.#ctor(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest)">
+            <summary>
+            以一个服务请求对象初始化本类
+            </summary>
+            <param name="request"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.#ctor(System.String)">
+            <summary>
+             以一个服务地址初始化本类，该操作将得到服务请求对象
+            </summary>
+            <param name="serviceUrl"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.InitRequestParameters">
+            <summary>
+            初始化请求的参数
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService">
+            <summary>
+            处理服务请求，并将服务执行结果写入基础流，供远程调用方使用
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService(System.String)">
+            <summary>
+            
+            
+            处理服务请求，并将服务执行结果写入基础流，供远程调用放使用。如果服务需要会话，将创建会话状态对象
+            </summary>
+            <param name="sessionId">会话标示</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService">
+            <summary>
+            直接执行服务请求的方法
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PublishData(System.Object)">
+            <summary>
+            以分布式事件的模式，向远程订阅端推送数据
+            </summary>
+            <param name="data">要推送的数据</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.Dispose">
+            <summary>
+            释放资源
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(PWMIS.EnterpriseFramework.Service.Runtime.IService)">
+            <summary>
+            执行服务
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.Request">
+            <summary>
+            获取服务请求对象
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.Response">
+            <summary>
+            获取或者设置服务响应对象
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.Session">
+            <summary>
+            获取或者设置会话状态。如果服务方法指定了需要使用会话状态，则会自动调用该属性。
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.SessionID">
+            <summary>
+            当前服务上下文运行时的会话标示
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.Cache">
+            <summary>
+            系统缓存
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.SessionRequired">
+            <summary>
+            服务是否必须要求依赖于会话状态，该属性需要在IService接口方法里面指定
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.User">
+            <summary>
+            获取服务关联的用户对象（该对象在应用程序中，用户登录成功以后，调用ServiceAuthentication 对象设置 ）
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.Host">
+            <summary>
+            服务所在的宿主
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ParallelExecute">
+            <summary>
+            指定服务是否可以并发执行,默认为并行
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.BatchInterval">
+            <summary>
+            每一批次的执行间隔时间，单位是毫秒，如果小于等于零，则不执行等待。默认为1秒
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.SendEmptyResult">
+            <summary>
+            是否向客户端发送空的结果，例如空的列表记录，或者结果为 NULL 的对象 
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.GetMessageFun">
+            <summary>
+            获取（客户端）消息函数
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PreGetMessageFun">
+            <summary>
+            预先获取（客户端）消息函数
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.BatchIndex">
+            <summary>
+            执行的批次号
+            </summary>
+        </member>
+        <member name="E:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.OnPublishDataEvent">
+            <summary>
+            服务发布数据的事件（框架内部使用）
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PublishEventSource">
+            <summary>
+            获取发布事件源对象
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource">
+            <summary>
+            服务事件源对象，如果距离末次发布数据的时间超过指定时间，源对象被视为未活动（发布数据）状态,源对象会被回收；
+            如果源对象从未发布过数据，被视为活动状态
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.#ctor(System.Object)">
+            <summary>
+            以默认的事件源对象存活周期初始化本对象
+            </summary>
+            <param name="source">引发事件的源对象</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.#ctor(System.Object,System.Int32)">
+            <summary>
+            事件源以指定的存活周期初始化本对象
+            </summary>
+            <param name="source">引发事件的源对象</param>
+            <param name="time">活动时间，单位分钟</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.#ctor(System.Object,System.Int32,System.Action)">
+            <summary>
+            事件源以指定的存活周期初始化本对象，并指定引发事件的工作方法
+            </summary>
+            <param name="source">引发事件的源对象</param>
+            <param name="time">活动时间，单位分钟</param>
+            <param name="work">在服务中会引发事件的工作</param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.DeActive">
+            <summary>
+            设置事件源为非活动状态
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.Source">
+            <summary>
+            引发事件的源对象
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.ActiveLife">
+            <summary>
+            活动时间，单位：分钟，默认20分钟，最大不可以超过24小时
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.CurrentContext">
+            <summary>
+            当前所在的服务上下文
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.EventWork">
+            <summary>
+            获取在服务中会引发事件的工作
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.IServiceSession">
+            <summary>
+            服务会话接口
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.IServiceSession.Get``1(System.String)">
+            <summary>
+            获取指定的会话对象
+            </summary>
+            <typeparam name="T">结果类型</typeparam>
+            <param name="key">存储会话对象的键</param>
+            <returns>会话对象</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.IServiceSession.Get``1(System.String,``0)">
+            <summary>
+            获取指定的会话对象，如果没有，则使用当前提供的对象作为会话对象的值。会话对象将在距上次调用10分钟后过期。
+            </summary>
+            <typeparam name="T">结果类型</typeparam>
+            <param name="key">存储会话对象的键</param>
+            <param name="Value">要存储的会话对象</param>
+            <returns>返回原有的会话对象值</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.IServiceSession.Set``1(System.String,``0)">
+            <summary>
+            增加或者修改一个会话对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="Value"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.IServiceSession.Remove(System.String)">
+            <summary>
+            清除指定键的会话对象
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.IServiceSession.Clear">
+            <summary>
+            清除当前的会话数据
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.IServiceSession.SessionID">
+            <summary>
+            获取会话标示
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.ServiceSession">
+            <summary>
+            服务会话
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceSession.#ctor(System.String)">
+            <summary>
+            以一个会话标示，初始化本类
+            </summary>
+            <param name="sessionId"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceSession.Get``1(System.String)">
+            <summary>
+            获取指定的会话对象
+            </summary>
+            <typeparam name="T">结果类型</typeparam>
+            <param name="key">存储会话对象的键</param>
+            <returns>会话对象</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceSession.Get``1(System.String,``0)">
+            <summary>
+            获取指定的会话对象，如果没有，则使用当前提供的对象作为会话对象的值。会话对象将在距上次调用10分钟后过期。
+            </summary>
+            <typeparam name="T">结果类型</typeparam>
+            <param name="key">存储会话对象的键</param>
+            <param name="Value">要存储的会话对象</param>
+            <returns>返回原有的会话对象值</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceSession.Set``1(System.String,``0)">
+            <summary>
+            增加会话对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="key"></param>
+            <param name="Value"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceSession.Remove(System.String)">
+            <summary>
+            清除当前的会话数据
+            </summary>
+            <param name="key"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceSession.Clear">
+            <summary>
+            清除所有的会话对象
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceSession.SessionID">
+            <summary>
+            会话标示
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.SessionContainer">
+            <summary>
+            会话容器
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.SessionContainer.GetSession(System.String)">
+            <summary>
+            获取会话对象
+            </summary>
+            <param name="sessionId">会话标示</param>
+            <returns></returns>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.SessionContainer.Instance">
+            <summary>
+            返回 SessionContainer 的唯一实例；
+            </summary>
+        </member>
+    </members>
+</doc>

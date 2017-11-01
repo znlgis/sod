@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<IOCConfig>
+  <!--
+  IOC 依赖注入容器配置 
+  ver 1.0 
+  
+  注：PDF.NET MSF Servic Host 使用
+  PWMIS 消息服务框架,2011.12.7 创建
+  -->
+  <GroupConfig>
+    <Group ID="1" ParentID="0" Name="ServiceRuntime" >分布式服务运行时</Group>
+    <Group ID="2" ParentID="0" Name="ServiceModel" >服务模型</Group>
+    <Group ID="3" ParentID="0" Name="TestService" >示例服务</Group>
+  </GroupConfig>
+  <SystemInterface>
+    <Add Name="IService" Interface="PWMIS.EnterpriseFramework.Service.IService" Assembly="PWMIS.EnterpriseFramework.Service.Runtime"/>
+  </SystemInterface>
+  <GroupSet>
+    <IOC Name="ServiceRuntime">
+      <Add Key="CacheServer"  InterfaceName="IService"  FullClassName="PWMIS.EnterpriseFramework.Service.Runtime.CacheService" Assembly="PWMIS.EnterpriseFramework.Service.Runtime" />
+      <Add Key="RegService"  InterfaceName="IService"  FullClassName="PWMIS.EnterpriseFramework.Service.Group.RegService" Assembly="PWMIS.EnterpriseFramework.Service.Group" />
+      <Add Key="ManageService"  InterfaceName="IService"  FullClassName="TranstarAuction.Service.Runtime.ManageService" Assembly="TranstarAuctionServiceRuntime" />
+    </IOC>
+    <IOC Name="TestService">
+      <Add Key="Calculator" InterfaceName="IService" FullClassName="ServiceSample.TestCalculatorService" Assembly="ServiceSample" />
+      <Add Key="TestTimeService" InterfaceName="IService" FullClassName="ServiceSample.TestTimeService" Assembly="ServiceSample" />
+      <Add Key="AlarmClockService" InterfaceName="IService" FullClassName="ServiceSample.AlarmClockService" Assembly="ServiceSample" />
+    </IOC>
+    <IOC Name="ServiceModel">
+      <Add Key="TimeCount"  InterfaceName=""  FullClassName="Model.TimeCount" Assembly="Model" />
+      <!-- 下面4个是消息服务框架必须的ServiceModel -->
+      <Add Key="ServiceIdentity"  InterfaceName=""  FullClassName="PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity" Assembly="PWMIS.EnterpriseFramework.Service.Runtime" />
+      <Add Key="CacheItemPolicy"  InterfaceName=""  FullClassName="System.Runtime.Caching.CacheItemPolicy" Assembly="System.Runtime.Caching, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+      <Add Key="ServiceRegModel"  InterfaceName=""  FullClassName="PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel" Assembly="PWMIS.EnterpriseFramework.Service.Client" />
+      <Add Key="ServiceHostInfo"  InterfaceName=""  FullClassName="PWMIS.EnterpriseFramework.Service.Client.Model.ServiceHostInfo" Assembly="PWMIS.EnterpriseFramework.Service.Client" />
+    </IOC>
+  </GroupSet>
+</IOCConfig>

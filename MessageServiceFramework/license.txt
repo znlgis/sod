@@ -1,0 +1,6 @@
+PDF.NET MessageService Framework
+license:
+use LGPL license.
+
+PDF.NET 消息服务框架，采用LGPL开源协议，其中，服务监控程序，采用GPL协议或者商业授权许可协议。
+有关协议的具体信息和联系方式，请看框架官网 http://www.pwmis.com/sqlmap

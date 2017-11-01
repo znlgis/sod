@@ -1,0 +1,16 @@
+PDF.NET SOD框架 SQL-MAP 演示程序
+
+* 详细使用过程，请参考 http://www.cnblogs.com/bluedoctor/p/4498066.html
+* 使用前，请先按照 http://www.cnblogs.com/tianxue/p/4493260.html 准备数据
+
+演示程序已经包含了编译好的DLL文件,如果需要 Pwmis.Core的源码，请下载其它相关内容，地址：
+http://pwmis.codeplex.com
+
+深蓝医生
+2015.5.12
+
+===================================================================
+纪念 2008.5.12 四川汶川大地震，同时对今天尼泊尔 7.5级大地震表示同情，
+你可以通过捐助本开源项目来转达你对灾区人民的支持，
+
+详细信息请看PDF.NET SOD框架官网：http://www.pwmis.com/sqlmap

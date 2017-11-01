@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>PDF.NET.SOD.Core</id>
+        <version>5.6.1.0831</version>
+        <title>PDF.NET SOD Core</title>
+        <authors>深蓝医生</authors>
+        <licenseUrl>http://pwmis.codeplex.com/license</licenseUrl>
+        <projectUrl>http://www.pwmis.com/SqlMap/</projectUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>PDF.NET SOD核心库</description>
+    </metadata>
+    <files>
+        <file src="..\Lib\发布目录\PWMIS.Core.dll" target="lib\PWMIS.Core.dll" />
+        <file src="..\Lib\发布目录\PWMIS.Core.dll.config" target="lib\PWMIS.Core.dll.config" />
+        <file src="..\Lib\发布目录\PWMIS.Core.pdb" target="lib\PWMIS.Core.pdb" />
+        <file src="..\Lib\发布目录\PWMIS.Core.XML" target="lib\PWMIS.Core.XML" />
+    </files>
+</package>

@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:simpleType name="enumCmdType" >
+        <xs:restriction base ="xs:string">
+            <xs:enumeration value ="Text"></xs:enumeration>
+            <xs:enumeration value ="StoredProcedure"></xs:enumeration>
+            <xs:enumeration value ="Table"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="enumResultClass" >
+        <xs:restriction base ="xs:string">
+            <xs:enumeration value ="ValueType"></xs:enumeration>
+            <xs:enumeration value ="DataSet"></xs:enumeration>
+            <xs:enumeration value ="EntityObject"></xs:enumeration>
+            <xs:enumeration value ="EntityList"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="enumScriptType" >
+        <xs:restriction base ="xs:string">
+            <xs:enumeration value ="Access"></xs:enumeration>
+            <xs:enumeration value ="SqlServer"></xs:enumeration>
+            <xs:enumeration value ="SqlServerCe"></xs:enumeration>
+            <xs:enumeration value ="Oracle"></xs:enumeration>
+            <xs:enumeration value ="DB2"></xs:enumeration>
+            <xs:enumeration value ="Sysbase"></xs:enumeration>
+            <xs:enumeration value ="MySql"></xs:enumeration>
+            <xs:enumeration value ="SQLite"></xs:enumeration>
+            <xs:enumeration value ="PostgreSQL"></xs:enumeration>
+            <xs:enumeration value ="UNKNOWN"></xs:enumeration>
+        </xs:restriction>
+    </xs:simpleType>
+	<xs:element name="SqlMap">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element maxOccurs="unbounded" name="Script">
+					<xs:complexType>
+					     <xs:sequence>
+							<xs:element maxOccurs="unbounded" name="CommandClass">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:choice maxOccurs="unbounded">
+											<xs:element maxOccurs="unbounded" name="Select">
+												<xs:complexType>
+													<xs:simpleContent>
+														<xs:extension base="xs:string">
+															<xs:attribute name="CommandName" type="xs:string" use="required" />
+															<xs:attribute name="CommandType" type="enumCmdType" use="required" />
+															<xs:attribute name="Method" type="xs:string" use="required" />
+															<xs:attribute name="Description" type="xs:string" use="required" />
+															<xs:attribute name="ResultClass" type="enumResultClass" use="optional"  default="DataSet"/>
+															<xs:attribute name="ResultMap" type="xs:string" use="optional" />
+															<xs:attribute name="SqlPage" type="xs:string" use="optional" default="False"/>
+														</xs:extension>
+													</xs:simpleContent>
+												</xs:complexType>
+											</xs:element>
+											<xs:element name="Insert">
+												<xs:complexType>
+													<xs:simpleContent>
+														<xs:extension base="xs:string">
+															<xs:attribute name="CommandName" type="xs:string" use="required" />
+															<xs:attribute name="CommandType" type="enumCmdType" use="required" />
+															<xs:attribute name="Method" type="xs:string" use="required" />
+															<xs:attribute name="Description" type="xs:string" use="required" />
+														</xs:extension>
+													</xs:simpleContent>
+												</xs:complexType>
+											</xs:element>
+                                            <xs:element name="Update">
+                                                <xs:complexType>
+                                                    <xs:simpleContent>
+                                                        <xs:extension base="xs:string">
+                                                            <xs:attribute name="CommandName" type="xs:string" use="required" />
+                                                            <xs:attribute name="CommandType" type="enumCmdType" use="required" />
+                                                            <xs:attribute name="Method" type="xs:string" use="required" />
+                                                            <xs:attribute name="Description" type="xs:string" use="required" />
+                                                        </xs:extension>
+                                                    </xs:simpleContent>
+                                                </xs:complexType>
+                                            </xs:element>
+                                            <xs:element name="Delete">
+                                                <xs:complexType>
+                                                    <xs:simpleContent>
+                                                        <xs:extension base="xs:string">
+                                                            <xs:attribute name="CommandName" type="xs:string" use="required" />
+                                                            <xs:attribute name="CommandType" type="enumCmdType" use="required" />
+                                                            <xs:attribute name="Method" type="xs:string" use="required" />
+                                                            <xs:attribute name="Description" type="xs:string" use="required" />
+                                                        </xs:extension>
+                                                    </xs:simpleContent>
+                                                </xs:complexType>
+                                            </xs:element>
+										</xs:choice>
+									</xs:sequence>
+									<xs:attribute name="Name" type="xs:string" use="required" />
+									<xs:attribute name="Class" type="xs:string" use="required" />
+									<xs:attribute name="Interface" type="xs:string" use="optional" />
+									<xs:attribute name="Description" type="xs:string" use="required" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+						<xs:attribute name="Type" type="enumScriptType" use="required"  />
+						<xs:attribute name="Version" type="xs:string" use="optional" />
+						<xs:attribute name="ConnectionString" type="xs:string" use="optional" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="EmbedAssemblySource" type="xs:string" use="optional" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PWMIS.EnterpriseFramework.Message.PublisherLib</name>
+    </assembly>
+    <members>
+        <member name="T:MessagePublisher.CalculatorService">
+            <summary>
+             简易计算器服务端，仅供测试WCF通信
+            </summary>
+        </member>
+        <member name="T:MessagePublisher.MessageCenter">
+            <summary>
+            消息中心；
+            </summary>
+        </member>
+        <member name="M:MessagePublisher.MessageCenter.#ctor">
+            <summary>
+            保证单例的私有构造函数；
+            </summary>
+        </member>
+        <member name="F:MessagePublisher.MessageCenter._userIdentity">
+            <summary>
+            用户凭据字典，Ｋｅｙ＝凭据，Ｖａｌｕｅ＝用户消息对象
+            </summary>
+        </member>
+        <member name="M:MessagePublisher.MessageCenter.CheckListeners">
+            <summary>
+            检查当前监听器，返回有效地数量(注：监听器可能存在没有正确移除的情况，比如客户端非正常断开，需要在此处离)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MessagePublisher.MessageCenter.GetListener(MessagePublisher.MessageListener)">
+            <summary>
+            获取一个监听器，如果不存在，则使用参数传入的监听器
+            </summary>
+            <param name="newListener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MessagePublisher.MessageCenter.GetExistsListener(MessagePublisher.MessageListener)">
+            <summary>
+            线程安全的获取当前监听器对应的原有监听器，如果没有，返回空
+            </summary>
+            <param name="newListener"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MessagePublisher.MessageCenter.NotifyMessage(System.String)">
+            <summary>
+            向所有注册为String类型的监听器发布消息
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:MessagePublisher.MessageCenter.NotifyMessage(System.String,MessagePublisher.MessageListener[])">
+            <summary>
+            向指定的监听器集合发布消息
+            </summary>
+            <param name="message"></param>
+            <param name="listeners"></param>
+        </member>
+        <member name="M:MessagePublisher.MessageCenter.NotifyOneMessage(MessagePublisher.MessageListener,System.Int32,System.String)">
+            <summary>
+            以安全的方式，给一个监听器发送消息
+            </summary>
+            <param name="lstn"></param>
+            <param name="message"></param>
+        </member>
+        <member name="M:MessagePublisher.MessageCenter.ValidateUser(MessagePublishService.MessageUser)">
+            <summary>
+            验证消息的用户是否合法
+            </summary>
+            <param name="user"></param>
+        </member>
+        <member name="M:MessagePublisher.MessageCenter.Channel_Closing(System.Object,System.EventArgs)">
+            <summary>
+            通道关闭事件处理程序
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="P:MessagePublisher.MessageCenter.Instance">
+            <summary>
+            返回 MessageCenter 的唯一实例；
+            </summary>
+        </member>
+        <member name="P:MessagePublisher.MessageCenter.ListenerCount">
+            <summary>
+            获取当前监听器数量
+            </summary>
+        </member>
+        <member name="M:MessagePublisher.MessageListener.Notify(System.Int32,System.String)">
+            <summary>
+            通知消息；
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:MessagePublisher.MessageListener.Response(System.Int32,System.String)">
+            <summary>
+            响应请求，回复消息
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:MessagePublisher.MessageListener.GetIdentity">
+            <summary>
+            获取客户端的标识
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MessagePublisher.MessageListener.Close(System.Int32)">
+            <summary>
+            通知客户端关闭连接
+            </summary>
+        </member>
+        <member name="P:MessagePublisher.MessageListener.FromMessage">
+            <summary>
+            当前消息，注意此消息可能会变
+            </summary>
+        </member>
+        <member name="P:MessagePublisher.MessageListener.MessageID">
+            <summary>
+            当前消息编号，注意此ID可能会改变
+            </summary>
+        </member>
+        <member name="P:MessagePublisher.MessageListener.Removed">
+            <summary>
+            是否移除不再使用
+            </summary>
+        </member>
+        <member name="P:MessagePublisher.MessageRequestEventArgs.ResultText">
+            <summary>
+            消息的处理结果
+            </summary>
+        </member>
+        <member name="T:MessagePublisher.MessagePublishServiceImpl">
+            <summary>
+            实现消息发布服务；
+            </summary>
+        </member>
+        <member name="M:MessagePublisher.MessagePublishServiceImpl.Regist">
+            <summary>
+            注册；
+            </summary>
+        </member>
+        <member name="M:MessagePublisher.MessagePublishServiceImpl.Unregist">
+            <summary>
+            注销；
+            </summary>
+        </member>
+        <member name="M:MessagePublisher.MessagePublishServiceImpl.OnAccept(System.Int32,System.String)">
+            <summary>
+            接受消息
+            </summary>
+            <param name="id">消息编号</param>
+            <param name="message">消息内容</param>
+        </member>
+        <member name="M:MessagePublisher.MessagePublishServiceImpl.QuikRegist(System.String)">
+            <summary>
+            快速注册
+            </summary>
+            <param name="indentity">客户端标识</param>
+        </member>
+    </members>
+</doc>

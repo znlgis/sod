@@ -1,0 +1,248 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PWMIS.EnterpriseFramework.Message.SubscriberLib</name>
+    </assembly>
+    <members>
+        <member name="T:MessageSubscriber.CalcClient">
+            <summary>
+            简易计算器客户端，仅供测试WCF通信
+            </summary>
+        </member>
+        <member name="T:MessageSubscriber.ISubscriber">
+            <summary>
+            订阅者接口
+            </summary>
+        </member>
+        <member name="M:MessageSubscriber.ISubscriber.Subscribe">
+            <summary>
+            发起订阅并注册身份
+            </summary>
+        </member>
+        <member name="M:MessageSubscriber.ISubscriber.SendMessage(System.String)">
+            <summary>
+            向发布服务器发送消息
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:MessageSubscriber.ISubscriber.OnReceivingMessage(System.Int32,System.String)">
+            <summary>
+            接收来自发布服务器的消息
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:MessageSubscriber.ISubscriber.OnPublishMessage(System.Int32,System.String)">
+            <summary>
+            处理服务器发布的消息
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:MessageSubscriber.ISubscriber.RequestMessageType(System.Int32)">
+            <summary>
+            请求的消息类型（FullClassName）
+            </summary>
+            <param name="id">消息编号</param>
+            <returns></returns>
+        </member>
+        <member name="M:MessageSubscriber.ISubscriber.CallBackMessage(System.Int32,System.String)">
+            <summary>
+            服务回调客户端，获取客户端返回的消息
+            </summary>
+            <param name="id">消息编号</param>
+            <param name="para">消息参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:MessageSubscriber.ISubscriber.PreCallBackMessage(System.Int32,System.String)">
+            <summary>
+            预回调客户端消息,可以在 CallBackMessage 执行之前进行预先的调用,以决定下面的操作
+            </summary>
+            <param name="id">消息编号</param>
+            <param name="para">消息参数</param>
+            <returns>客户端返回的消息</returns>
+        </member>
+        <member name="T:MessageSubscriber.MessageListener">
+            <summary>
+            消息监听器；
+            <remarks>
+            CallbackBehavior 特性值为 False 可解决WinForm回调客户端线程死锁的问题,详情请参考
+            http://www.cnblogs.com/artech/archive/2007/03/29/692032.html
+            </remarks>
+            </summary>
+        </member>
+        <member name="M:MessageSubscriber.MessageListener.CallBackMessage(System.Int32,System.String)">
+            <summary>
+            服务回调客户端，获取客户端返回的消息
+            </summary>
+            <param name="id">消息处理器编号</param>
+            <param name="para">消息参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:MessageSubscriber.MessageListener.PreCallBackMessage(System.Int32,System.String)">
+            <summary>
+            服务回调客户端，预先获取客户端返回的消息
+            </summary>
+            <param name="id">消息处理器编号</param>
+            <param name="para">消息参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:MessageSubscriber.MessageListener.OnClose(System.Int32)">
+            <summary>
+            服务器通知客户端关闭连接
+            </summary>
+        </member>
+        <member name="T:MessageSubscriber.Subscriber">
+            <summary>
+            订阅者；
+            </summary>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.#ctor(System.String)">
+            <summary>
+            以一个服务订阅地址初始化本类
+            </summary>
+            <param name="serviceUri"></param>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.ReOpen">
+            <summary>
+            重新初始化监听器，并发起订阅
+            </summary>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.Subscribe">
+            <summary>
+            发起订阅并注册身份
+            </summary>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.SendMessage(System.String)">
+            <summary>
+            向发布服务器发送消息（本地不等待服务器回调）。注意，调用本方法将清除原有的接收消息的自定义处理方法
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.RequestMessage(System.String)">
+            <summary>
+            （请求-响应模式）请求返回服务器的消息
+            </summary>
+            <param name="msg">发送给服务器的消息</param>
+            <returns></returns>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.SendTextMessage(System.String)">
+            <summary>
+            在订阅模式下，向发布端发送文本消息
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.SendTextMessage(System.Int32,System.String)">
+            <summary>
+            发送文本消息
+            </summary>
+            <param name="messageId">消息编号</param>
+            <param name="msg">给服务器的消息</param>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.SendMessage(System.String,System.Type,System.Action{System.String})">
+            <summary>
+            向服务器发送消息，当服务器处理完后，会回调当前提供的回调方法
+            </summary>
+            <param name="message">发给服务器的消息</param>
+            <param name="ResultType">结果的对象类型</param>
+            <param name="action">客户端的回调方法</param>
+            <returns>消息标识</returns>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.SendMessage(System.String,System.Type,System.Action{System.String},PWMIS.EnterpriseFramework.Common.MyFunc{System.String,System.String},PWMIS.EnterpriseFramework.Common.MyFunc{System.String,System.String})">
+            <summary>
+            向服务器发送消息，当服务器处理完后，会回调当前提供的回调方法
+            </summary>
+            <param name="message">发给服务器的消息</param>
+            <param name="ResultType">结果的对象类型</param>
+            <param name="action">客户端的回调方法</param>
+            <param name="function">在执行过程中回调的客户端函数</param>
+            <param name="previewFunction">在执行过程前预先回调的客户端函数</param>
+            <returns>消息标识</returns>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.RemoveMessage(System.Int32)">
+            <summary>
+            移除消息，不在处理来自服务的消息，主要用于取消订阅
+            </summary>
+            <param name="messageId"></param>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.OnReceivingMessage(System.Int32,System.String)">
+            <summary>
+            接收来自发布服务器的响应的消息，并调用在发送消息的时候提供的客户端回调方法。
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.OnPublishMessage(System.Int32,System.String)">
+            <summary>
+            接收发布服务器发布的消息,如果消息送达,则触发消息发布事件
+            </summary>
+            <param name="msg"></param>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.Wait(System.Action{System.String})">
+            <summary>
+            等待服务器器响应消息，然后执行自定义的消息处理方法。本操作用于同步模式
+            </summary>
+            <param name="action">自定义的消息处理方法</param>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.CallBackMessage(System.Int32,System.String)">
+            <summary>
+            服务回调客户端，获取客户端返回的消息
+            </summary>
+            <param name="id">消息编号</param>
+            <param name="para">消息参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.PreCallBackMessage(System.Int32,System.String)">
+            <summary>
+            预先回调客户端，获取客户端返回的消息。可以在 CallBackMessage 执行之前进行预先的调用,以决定下面的操作
+            </summary>
+            <param name="id">消息编号</param>
+            <param name="para">消息参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.CreateMessageID">
+            <summary>
+            创建一个当前会话内的新消息编号
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.Close(System.Int32)">
+            <summary>
+            服务端通知客户端关闭监听器
+            </summary>
+            <param name="flag"></param>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.checkHeartBeat(System.Int32,System.String)">
+            <summary>
+            是否是在检查心跳情况，该方法由服务器触发
+            </summary>
+            <param name="id">消息编号</param>
+            <param name="msg">心跳标记</param>
+            <returns> 是否是在检查心跳情况</returns>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.CheckHeartBeat">
+            <summary>
+            检查心跳情况，如果超过一定时间还没有收到心跳相应，可能服务器已经发生异常，并抛出异常通知客户端。该方法由客户端主动调用
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MessageSubscriber.Subscriber.CheckHeartBeatCallBack">
+            <summary>
+            检查心跳情况的线程计时器回调对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="E:MessageSubscriber.Subscriber.PublishingMessage">
+            <summary>
+            服务器正在出版消息
+            </summary>
+        </member>
+        <member name="P:MessageSubscriber.Subscriber.TimeOut">
+            <summary>
+            (同步模式下面的)请求响应的超时时间
+            </summary>
+        </member>
+        <member name="P:MessageSubscriber.Subscriber.Registed">
+            <summary>
+            监听器是否已经注册
+            </summary>
+        </member>
+    </members>
+</doc>

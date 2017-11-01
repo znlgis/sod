@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E55F10B3-F8F4-4EB1-9E5E-DA44D506E796}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TranstarAuction.Model</RootNamespace>
+    <AssemblyName>TranstarAuctionModel</AssemblyName>
+    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Hisuntech.IBMP.AOP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\IBMP\Hisuntech.IBMP.AOP.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AttentionInfo.cs" />
+    <Compile Include="AuctionHallDataModel.cs" />
+    <Compile Include="AuctionMain\AddPriceRangeModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\AttentionCarBaseInfoModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\AttentionCarModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\AuctionCarModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\AuctionConfirmModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\AuctionCustomerInfoModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\AuctionEndTimeModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\AuctionPriceHistoryModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\AuctionTitleModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\AuctionTstConditionModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\BidRebotModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\BuyCarModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\DataChangeEntitys.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\HallModelToAuctionModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\IAttentionCarModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\IBuyCarModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\IDataChange.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\IMyFriendModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\MyFriendModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\PublishInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\ShowDelayEntity.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="AuctionMain\VendorModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CarSearchResultModel.cs" />
+    <Compile Include="CommonMethods.cs" />
+    <Compile Include="FileInfosModel.cs" />
+    <Compile Include="IAuctionHallDataModel.cs" />
+    <Compile Include="NotifyMessageModel.cs" />
+    <Compile Include="enum.cs" />
+    <Compile Include="LocationStoreUserInfoModel.cs" />
+    <Compile Include="SearchConditionModel.cs" />
+    <Compile Include="UserLoginInfoModel.cs" />
+    <Compile Include="UserModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserSettingModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MSFCommon\EnterpriceFrameworkCommon.csproj">
+      <Project>{2a9a3a85-d2f6-44de-b7e8-5cdca17bce23}</Project>
+      <Name>EnterpriceFrameworkCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

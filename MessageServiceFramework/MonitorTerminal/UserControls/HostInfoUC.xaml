@@ -1,0 +1,20 @@
+﻿<cc:BaseUserControl
+             xmlns:cc="clr-namespace:MonitorTerminal.UserControls"
+    x:Class="MonitorTerminal.UserControls.HostInfoUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             mc:Ignorable="d" 
+             d:DesignHeight="297" d:DesignWidth="463">
+    <Grid>
+        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Margin="28,10,34,22" Name="dgMainData">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding ActiveConnectCount}" Header="活动连接数" />
+                <DataGridTextColumn Binding="{Binding ListenerCount}" Header="监听器数量" />
+                <DataGridTextColumn Binding="{Binding ListenerMaxCount}" Header="监听器最大值" />
+                <DataGridTextColumn Binding="{Binding ListenerMaxDateTime,StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" Header="最大值发生时间" />
+            </DataGrid.Columns>
+        </DataGrid>        
+    </Grid>
+</cc:BaseUserControl>

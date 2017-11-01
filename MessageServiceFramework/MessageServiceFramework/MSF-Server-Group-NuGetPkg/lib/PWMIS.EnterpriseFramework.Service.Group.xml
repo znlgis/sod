@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PWMIS.EnterpriseFramework.Service.Group</name>
+    </assembly>
+    <members>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Group.DispatchService">
+            <summary>
+            （集群）调度服务
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Group.DispatchService.DoDispatch">
+            <summary>
+            执行调度
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Group.DispatchService.ActiveConnected">
+            <summary>
+            获取服务集群中所有的服务宿主信息（供诊断使用）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Group.RegService">
+            <summary>
+            注册服务
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Group.RegService.Register(PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel)">
+            <summary>
+            服务注册
+            </summary>
+            <param name="curModel"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Group.RegService.GetActiveServerList">
+            <summary>
+            获取当前可用的服务器列表
+            </summary>
+            <returns>结果肯定不为空</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Group.RegService.GetCurrentHostInfo">
+            <summary>
+            获取当前的服务器状态信息（建议使用订阅模式）
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Group.RegServiceContainer.RegService(PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel)">
+            <summary>
+            注册集群服务节点
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Group.RegServiceContainer.GetActiveServerList">
+            <summary>
+            获取当前可用的服务器列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Group.RegServiceContainer.Instance">
+            <summary>
+            返回注册实例
+            </summary>
+        </member>
+    </members>
+</doc>

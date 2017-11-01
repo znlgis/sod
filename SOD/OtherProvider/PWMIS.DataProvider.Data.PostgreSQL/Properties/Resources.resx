@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="sql_function_args" xml:space="preserve">
+    <value>CREATE OR REPLACE FUNCTION public.function_args(
+  IN funcname character varying,
+  IN schema character varying,
+  OUT pos integer,
+  OUT direction character,
+  OUT argname character varying,
+  OUT datatype character varying)
+RETURNS SETOF RECORD AS $$DECLARE
+  rettype character varying;
+  argtypes oidvector;
+  allargtypes oid[];
+  argmodes "char"[];
+  argnames text[];
+  mini integer;
+  maxi integer;
+BEGIN
+  /* get object ID of function */
+  SELECT INTO rettype, argtypes, allargtypes, argmodes, argnames
+         CASE
+         WHEN pg_proc.proretset
+         THEN 'setof ' || pg_catalog.format_type(pg_proc.prorettype, NULL)
+         ELSE pg_catalog.format_type(pg_proc.prorettype, NULL) END,
+         pg_proc.proargtypes,
+         pg_proc.proallargtypes,
+         pg_proc.proargmodes,
+         pg_proc.proargnames
+    FROM pg_catalog.pg_proc
+         JOIN pg_catalog.pg_namespace
+         ON (pg_proc.pronamespace = pg_namespace.oid)
+   WHERE pg_proc.prorettype &lt;&gt; 'pg_catalog.cstring'::pg_catalog.regtype
+     AND (pg_proc.proargtypes[0] IS NULL
+      OR pg_proc.proargtypes[0] &lt;&gt; 'pg_catalog.cstring'::pg_catalog.regtype)
+     AND NOT pg_proc.proisagg
+     AND pg_proc.proname = funcname
+     AND pg_namespace.nspname = schema
+     AND pg_catalog.pg_function_is_visible(pg_proc.oid);
+ 
+  /* bail out if not found */
+  IF NOT FOUND THEN
+    RETURN;
+  END IF;
+ 
+  /* return a row for the return value */
+  pos = 0;
+  direction = 'o'::char;
+  argname = 'RETURN VALUE';
+  datatype = rettype;
+  RETURN NEXT;
+ 
+  /* unfortunately allargtypes is NULL if there are no OUT parameters */
+  IF allargtypes IS NULL THEN
+    mini = array_lower(argtypes, 1); maxi = array_upper(argtypes, 1);
+  ELSE
+    mini = array_lower(allargtypes, 1); maxi = array_upper(allargtypes, 1);
+  END IF;
+  IF maxi &lt; mini THEN RETURN; END IF;
+ 
+  /* loop all the arguments */
+  FOR i IN mini .. maxi LOOP
+    pos = i - mini + 1;
+    IF argnames IS NULL THEN
+      argname = NULL;
+    ELSE
+      argname = argnames[pos];
+    END IF;
+    IF allargtypes IS NULL THEN
+      direction = 'i'::char;
+      datatype = pg_catalog.format_type(argtypes[i], NULL);
+    ELSE
+      direction = argmodes[i];
+      datatype = pg_catalog.format_type(allargtypes[i], NULL);
+    END IF;
+    RETURN NEXT;
+  END LOOP;
+ 
+  RETURN;
+END;$$ LANGUAGE plpgsql STABLE STRICT SECURITY INVOKER;
+COMMENT ON FUNCTION public.function_args(character varying, character
+varying)
+IS $$For a function name and schema, this procedure selects for each
+argument the following data:
+- position in the argument list (0 for the return value)
+- direction 'i', 'o', or 'b'
+- name (NULL if not defined)
+- data type$$;</value>
+  </data>
+</root>

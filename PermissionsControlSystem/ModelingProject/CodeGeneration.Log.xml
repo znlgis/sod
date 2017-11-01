@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="file:///D:/Program Files/Microsoft Visual Studio 10.0/Common7/IDE/Extensions/Microsoft/Visualization and Modeling Feature Pack/2.0/Logging/CodeGenLog.xslt"?>
+<Log xmlns="http://schemas.microsoft.com/VisualStudio/2010/CodeGen.RE.Log">
+  <Message Timestamp="2013-01-26T19:13:07" Importance="High" Text="Code generation or text transformation started." />
+  <Message Timestamp="2013-01-26T19:13:07" Importance="Diagnostic" Text="Name = ClassTemplate" />
+  <Message Timestamp="2013-01-26T19:13:07" Importance="Diagnostic" Text="Overwrite = True" />
+  <Message Timestamp="2013-01-26T19:13:07" Importance="Diagnostic" Text="ProjectPath = ..\ModelingProjectLib\ModelingProjectLib.csproj" />
+  <Message Timestamp="2013-01-26T19:13:07" Importance="Diagnostic" Text="TargetDirectory = GeneratedCode\{PackageStructure}" />
+  <Message Timestamp="2013-01-26T19:13:07" Importance="Diagnostic" Text="TargetName = {Name}" />
+  <Message Timestamp="2013-01-26T19:13:07" Importance="Diagnostic" Text="TemplateFilePath = D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\ClassTemplate.t4" />
+  <Message Timestamp="2013-01-26T19:13:07" Importance="Diagnostic" Text="ResolvedTemplateFilePath = D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\ClassTemplate.t4" />
+  <Message Timestamp="2013-01-26T19:13:07" Importance="Medium" Text="ModelingProject's Text Template Binding: 'ClassTemplate' will apply ClassTemplate.t4 to: 'ModelingProject::FileSystem::File' -  (Class), 'ModelingProject::FileSystem::Directory' -  (Class) " />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Medium" Text="'ModelingProject::FileSystem::File' -  (Class) : success (file replaced) - C:\Users\dengtaihua\Documents\Visual Studio 2010\Projects\PermissionsControlSystem\ModelingProjectLib\GeneratedCode\FileSystem\File.cs" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Medium" Text="'ModelingProject::FileSystem::Directory' -  (Class) : success (file replaced) - C:\Users\dengtaihua\Documents\Visual Studio 2010\Projects\PermissionsControlSystem\ModelingProjectLib\GeneratedCode\FileSystem\Directory.cs" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="Name = InterfaceTemplate" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="Overwrite = True" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="ProjectPath = ..\ModelingProjectLib\ModelingProjectLib.csproj" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="TargetDirectory = GeneratedCode\{PackageStructure}" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="TargetName = {Name}" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="TemplateFilePath = D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\InterfaceTemplate.t4" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="ResolvedTemplateFilePath = D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\InterfaceTemplate.t4" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Medium" Text="ModelingProject's Text Template Binding: 'InterfaceTemplate' will apply InterfaceTemplate.t4 to: 'ModelingProject::FileSystem::IFileSystem' -  (Interface) " />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Medium" Text="'ModelingProject::FileSystem::IFileSystem' -  (Interface) : success (file replaced) - C:\Users\dengtaihua\Documents\Visual Studio 2010\Projects\PermissionsControlSystem\ModelingProjectLib\GeneratedCode\FileSystem\IFileSystem.cs" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="Name = StructTemplate" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="Overwrite = True" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="ProjectPath = ..\ModelingProjectLib\ModelingProjectLib.csproj" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="TargetDirectory = GeneratedCode\{PackageStructure}" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="TargetName = {Name}" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="TemplateFilePath = D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\StructTemplate.t4" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="ResolvedTemplateFilePath = D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\StructTemplate.t4" />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Medium" Text="ModelingProject's Text Template Binding: 'StructTemplate' will apply StructTemplate.t4 to: 'ModelingProject::FileSystem::File' -  (Class), 'ModelingProject::FileSystem::Directory' -  (Class) " />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="'ModelingProject::FileSystem::File' -  (Class): no file generated because the 'AppliesToElement' method of the template 'StructTemplate.t4' evaluated to false." />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="'ModelingProject::FileSystem::Directory' -  (Class): no file generated because the 'AppliesToElement' method of the template 'StructTemplate.t4' evaluated to false." />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="The selection included 1 elements which were not bound to a template." />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="Diagnostic" Text="'ModelingProject::FileSystem' -  (Package): no bound template." />
+  <Message Timestamp="2013-01-26T19:13:08" Importance="High" Text="Code generation complete. Errors: 0. Warnings: 0." />
+</Log>

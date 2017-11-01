@@ -1,0 +1,28 @@
+﻿<cc:BaseUserControl
+             xmlns:cc="clr-namespace:MonitorTerminal.UserControls"
+    x:Class="MonitorTerminal.UserControls.MonitorUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:MonitorTerminal_ValueConverter="clr-namespace:MonitorTerminal.ValueConverter"
+             mc:Ignorable="d" 
+             d:DesignHeight="297" d:DesignWidth="463">
+    <UserControl.Resources>
+        <MonitorTerminal_ValueConverter:IsAuthenticatedConverter x:Key="IsAuthenticatedConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <DataGrid AutoGenerateColumns="False" IsReadOnly="True" Margin="28,10,25,54" Name="dgMainData">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Id}" Header="标识编号" />
+                <DataGridTextColumn Binding="{Binding Name}" Header="标识名" />
+                <DataGridTextColumn Binding="{Binding Expire}" Header="过期时间" />
+                <DataGridTextColumn Binding="{Binding IsAuthenticated, Converter={StaticResource IsAuthenticatedConverter}}" Header="是否验证" />
+                <DataGridTextColumn Binding="{Binding Key}" Header="缓存的键" />
+                <DataGridTextColumn Binding="{Binding CreateTime}" Header="创建时间" />
+                <DataGridTextColumn Binding="{Binding Uri}" Header="地址" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="绑定数据" Height="21" HorizontalAlignment="Left" Margin="10,0,0,13" Name="btnBind" VerticalAlignment="Bottom" Width="88" />
+    </Grid>
+</cc:BaseUserControl>

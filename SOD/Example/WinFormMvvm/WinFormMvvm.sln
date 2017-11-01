@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormMvvm", "WinFormMvvm\WinFormMvvm.csproj", "{5D44282B-D58D-4ED4-BE47-9186C3C9A2B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormMvvm.ViewModel", "WinFormMvvm.ViewModel\WinFormMvvm.ViewModel.csproj", "{A2041FA0-C879-4D94-A7D8-EF3050361952}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormMvvm.Model", "WinFormMvvm.Model\WinFormMvvm.Model.csproj", "{A186142F-B3DF-461E-8016-5E1EFCEDB36A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{48996244-2BF7-48B9-83BB-B50999DB7039}"
+	ProjectSection(SolutionItems) = preProject
+		老坛泡新菜：SOD MVVM，让WinForm焕发新春.docx = 老坛泡新菜：SOD MVVM，让WinForm焕发新春.docx
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5D44282B-D58D-4ED4-BE47-9186C3C9A2B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D44282B-D58D-4ED4-BE47-9186C3C9A2B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D44282B-D58D-4ED4-BE47-9186C3C9A2B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D44282B-D58D-4ED4-BE47-9186C3C9A2B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A2041FA0-C879-4D94-A7D8-EF3050361952}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A2041FA0-C879-4D94-A7D8-EF3050361952}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A2041FA0-C879-4D94-A7D8-EF3050361952}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A2041FA0-C879-4D94-A7D8-EF3050361952}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A186142F-B3DF-461E-8016-5E1EFCEDB36A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A186142F-B3DF-461E-8016-5E1EFCEDB36A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A186142F-B3DF-461E-8016-5E1EFCEDB36A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A186142F-B3DF-461E-8016-5E1EFCEDB36A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs23
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = WinFormMvvm\\WinFormMvvm.csproj
+		SccProjectName1 = WinFormMvvm
+		SccLocalPath1 = WinFormMvvm
+		SccProjectUniqueName2 = WinFormMvvm.ViewModel\\WinFormMvvm.ViewModel.csproj
+		SccProjectName2 = WinFormMvvm.ViewModel
+		SccLocalPath2 = WinFormMvvm.ViewModel
+		SccProjectUniqueName3 = WinFormMvvm.Model\\WinFormMvvm.Model.csproj
+		SccProjectName3 = WinFormMvvm.Model
+		SccLocalPath3 = WinFormMvvm.Model
+	EndGlobalSection
+EndGlobal

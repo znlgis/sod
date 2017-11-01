@@ -1,0 +1,209 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PWMIS.EnterpriseFramework.ModuleRoute</name>
+    </assembly>
+    <members>
+        <member name="T:PWMIS.EnterpriseFramework.ModuleRoute.IActionResult">
+            <summary>
+            跨模块调用结果接口，只有实现了该接口的方法，才可以跨模块调用
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.IActionResult.Succeed">
+            <summary>
+            调用是否成功
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.IActionResult.ObjectResult">
+            <summary>
+            方法调用的结果
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.ModuleRoute.ActionResult">
+            <summary>
+            将结果作为对象返回，然后转换结果再使用，例如作为动态对象使用
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ActionResult.ObjectResult">
+            <summary>
+            方法调用的结果
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ActionResult.Succeed">
+            <summary>
+            结果是否是成功的，如果失败，当前类型是ErrorAction
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.ModuleRoute.ActionResult`1">
+            <summary>
+            将结果作为强类型返回，并直接使用它。注意，Error属性为空才表示调用成功
+            </summary>
+            <typeparam name="T">跨模块调用的方法结果类型</typeparam>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ActionResult`1.Result">
+            <summary>
+            方法调用的结果
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ActionResult`1.Error">
+            <summary>
+            错误方法调用对象
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ActionResult`1.Succeed">
+            <summary>
+            结果是否是成功的，如果失败，当前类型是ErrorAction
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.ModuleRoute.EmptyAction">
+            <summary>
+            没有返回值调用的结果
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.ModuleRoute.ErrorAction">
+            <summary>
+            方法调用结果错误的对象
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ErrorAction.ErrorMessage">
+            <summary>
+            错误消息
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ErrorAction.InnerException">
+            <summary>
+            详细的内部错误对象
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.ModuleRoute.ModuleProviderBase">
+            <summary>
+            模块提供程序抽象类
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleProviderBase.Init(PWMIS.EnterpriseFramework.ModuleRoute.ModuleApplication)">
+            <summary>
+            初始化模块应用程序
+            </summary>
+            <param name="application"></param>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ModuleProviderBase.PrividerName">
+            <summary>
+            模块名称
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ModuleProviderBase.Application">
+            <summary>
+            获取模块应用程序
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.ModuleRoute.IModuleRuntime">
+            <summary>
+            模块运行时
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.IModuleRuntime.ResolveProvider``1">
+            <summary>
+            获取在模块中注册的模块提供程序
+            </summary>
+            <typeparam name="T">模块提供程序类型</typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.IModuleRuntime.ExecuteAction(System.String,System.String,System.String,System.Object[])">
+            <summary>
+            跨模块调用一个方法，并将结果作为对象返回，通常用于目标模块方法的返回值类型在当前模块无法使用的情况。注意内部已经处理异常。
+            </summary>
+            <param name="moduleName">要调用的模块名称</param>
+            <param name="providerName">提供程序名称</param>
+            <param name="actionName">方法名称</param>
+            <param name="paramters">参数数组对象</param>
+            <returns>如果出错，将返回ErrorAction </returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.IModuleRuntime.ExecuteAction``1(System.String,System.String,System.String,System.Object,System.Action{System.Object,System.Object})">
+            <summary>
+            执行模块方法调用，并将结果类型转换成指定的类型
+            </summary>
+            <typeparam name="TResult">结果类型转换指定的类型</typeparam>
+            <param name="moduleName">模块名称</param>
+            <param name="providerName">模块提供程序名称</param>
+            <param name="actionName">模块提供程序的方法</param>
+            <param name="parameter">模块的方法</param>
+            <param name="resultMapper">将模块方法调用的结果转换成当前指定类型的委托函数</param>
+            <returns>如果出错，请检查Error属性 </returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.IModuleRuntime.ExecuteAction``2(System.String,System.String,System.String,``0)">
+            <summary>
+            跨模块调用一个方法并直接使用它的结果，推荐使用此方式，它有较高的效率。注意内部已经处理异常。
+            </summary>
+            <typeparam name="T">要调用的方法的参数类型</typeparam>
+            <typeparam name="TResult">方法返回的结果类型</typeparam>
+            <param name="moduleName">要调用的模块名称</param>
+            <param name="providerName">提供程序名称</param>
+            <param name="actionName">方法名称</param>
+            <param name="paramter">参数对象</param>
+            <returns>如果出错，请检查Error属性 </returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistration">
+            <summary>
+            模块注册基类，需要在各个子模块重写该类
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistration.RegisterModule(PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistrationContext)">
+            <summary>
+            需要重写的模块注册方法
+            </summary>
+            <param name="context">参数 context 将注入当前类的静态Context </param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistration.RegisterAllModules">
+            <summary>
+            注册所有的模块和它的提供者程序，该方法必须被首先调用
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistration.ModuleName">
+            <summary>
+            需要重写的模块名称
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistrationContext.ModuleRegister(PWMIS.EnterpriseFramework.ModuleRoute.IModuleContext)">
+            <summary>
+            将模块上下文注册到模块注册器
+            </summary>
+            <param name="moduleContext"></param>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistrationContext.GetAllModules">
+            <summary>
+            获取所有的模块上下文对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistrationContext.ProviderRegister(PWMIS.EnterpriseFramework.ModuleRoute.IModuleProvider)">
+            <summary>
+            将模块提供程序注册到模块上下文
+            </summary>
+            <param name="provider"></param>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.ModuleRoute.ModuleApplication">
+            <summary>
+            模块应用程序
+            <remarks>子类必须实现Application_Start 方法</remarks>
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRuntime.ExecuteAction``1(System.String,System.String,System.String,System.Object,System.Action{System.Object,System.Object})">
+            <summary>
+            执行模块方法调用，并将结果类型转换成指定的类型。要求目标方法的参数数量不能多于一个。
+            </summary>
+            <typeparam name="TResult">结果类型转换指定的类型</typeparam>
+            <param name="moduleName">模块名称</param>
+            <param name="providerName">模块提供程序名称</param>
+            <param name="actionName">模块提供程序的方法</param>
+            <param name="parameter">模块的方法的参数类，如果与目标方法的参数类型不一致，框架会尝试将此参数对象的值拷贝到目标参数对象上</param>
+            <param name="objectMapper">两个对象之间进行属性值映射拷贝的方法，第一个参数为源对象，第二个参数为目标对象</param>
+            <returns></returns>
+        </member>
+        <!-- 对于成员“M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRuntime.ResolveProvider``1”忽略有格式错误的 XML 注释 -->
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRuntime.Current">
+            <summary>
+            获取当前的模块运行时对象
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -1,0 +1,388 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<useCaseModelRoot xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" xmlns:dm9="http://schemas.microsoft.com/dsltools/SimpleShapesModel" xmlns:dm10="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" dslVersion="1.0.0.0" Id="808399ee-ac8a-4c86-ae7d-ecc0671abf43" name="UMLUseCaseDiagram1" linkedPackageId="5980fb6a-47b5-45cd-9d6f-b0b4602fa008" xmlns="http://schemas.microsoft.com/dsltools/UseCaseModel">
+  <ownedCommentsInternal>
+    <comment Id="3c861f1f-19b1-4f9e-a0d4-01b93e7382aa">
+      <elementDefinition Id="a81200ca-cf30-481d-bf68-bddad4a331a0" />
+      <body>访问者可以/不可以访问某个资源的操作的行为，就是权限</body>
+    </comment>
+  </ownedCommentsInternal>
+  <appliedStereotypesInternal>
+    <stereotypeInstance Id="a91b391f-f810-4141-91df-5d5c1d7ad21f" name="namespace" profile="CSharpProfile">
+      <elementDefinition Id="e7ea9907-44ca-4b4d-a088-8ed9cfc0a843" />
+      <propertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="b874a07b-1c94-4d1e-aff2-cbb8c21bef67">
+          <propertyInstance Id="9dde1ce0-a2cd-4811-b65a-b7c4b7e4e0f7" name="BaseName">
+            <elementDefinition Id="fd273941-d940-4cab-ab98-897422e1c98e" />
+          </propertyInstance>
+          <elementDefinition Id="89022399-036f-4fcc-9804-0b39c42f478e" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="9ca3c786-1393-4495-9ae3-e2680d747c4e">
+          <propertyInstance Id="3fc2f244-4f77-432e-a211-02f767ea920b" name="ClrAttributes">
+            <elementDefinition Id="e63cf4ae-6fb4-4870-ba0a-4e6e8d825bc1" />
+          </propertyInstance>
+          <elementDefinition Id="57cb2858-21be-4d56-809f-b8d70f78e72e" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="e117d3a5-e9cf-4647-9d04-76a89e930ab2">
+          <propertyInstance Id="991d0025-782d-4b34-a3af-40cc351a8096" name="Usings">
+            <elementDefinition Id="6bba8ae3-a930-40f4-bbbe-be94d5e8ce9b" />
+          </propertyInstance>
+          <elementDefinition Id="b8bfeb0b-2ac7-405c-9bc1-3a4429740cb2" />
+        </stereotypeInstanceHasPropertyInstances>
+      </propertyInstances>
+    </stereotypeInstance>
+    <stereotypeInstance Id="c8881b9b-e9fb-433d-8148-1566eaa1a6b6" name="TextTemplateBindings" profile="TextTemplateBindings">
+      <elementDefinition Id="a371c2c8-c003-428a-b9b4-c3dfe22ecbcc" />
+      <propertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="343967e2-a4c6-42e5-a8fa-cc70ce35d854">
+          <propertyInstance Id="5e3e3f53-a4a7-454d-8489-4d867491d19c" name="Alias" value="ClassTemplate|EnumTemplate|InterfaceTemplate|StructTemplate">
+            <elementDefinition Id="b4f366aa-b742-4ea1-9b3e-10d2ccdbe5c2" />
+          </propertyInstance>
+          <elementDefinition Id="07045091-5b43-446c-bc82-2a66b1e017f9" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="6a21e268-a89e-4081-9917-d2b97702ebc2">
+          <propertyInstance Id="8bf18ea0-6966-45b5-9d06-84f94d4c14d7" name="TemplateFilePath" value="ClassTemplate=D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\ClassTemplate.t4|EnumTemplate=D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\EnumTemplate.t4|InterfaceTemplate=D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\InterfaceTemplate.t4|StructTemplate=D:\Program Files\Microsoft Visual Studio 10.0\Common7\IDE\Extensions\Microsoft\Visualization and Modeling Feature Pack\2.0\Templates\Text\StructTemplate.t4">
+            <elementDefinition Id="807b49ca-5778-4206-b682-85cf404a5d43" />
+          </propertyInstance>
+          <elementDefinition Id="e353b989-4457-4d33-a1e2-e4e24aecb674" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="77725edf-8b4e-4d79-a129-7b8bb615cda7">
+          <propertyInstance Id="81532813-8756-466c-a1c5-976ff3f7a2df" name="ProjectPath" value="ClassTemplate=..\ModelingProjectLib\ModelingProjectLib.csproj|EnumTemplate=..\ModelingProjectLib\ModelingProjectLib.csproj|InterfaceTemplate=..\ModelingProjectLib\ModelingProjectLib.csproj|StructTemplate=..\ModelingProjectLib\ModelingProjectLib.csproj">
+            <elementDefinition Id="fd42118e-1f6e-4fbb-9ffc-29e76b5c776b" />
+          </propertyInstance>
+          <elementDefinition Id="b2b49a68-5cbd-428c-a0e3-2d18e512c068" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="16952020-4da4-466a-aba6-2dae471c5331">
+          <propertyInstance Id="6c970944-ed13-443f-a0b2-36fdd928ae83" name="TargetDirectory" value="ClassTemplate=GeneratedCode\{PackageStructure}|EnumTemplate=GeneratedCode\{PackageStructure}|InterfaceTemplate=GeneratedCode\{PackageStructure}|StructTemplate=GeneratedCode\{PackageStructure}">
+            <elementDefinition Id="780d7e7c-59b9-407c-83dc-b35bb10f8cf3" />
+          </propertyInstance>
+          <elementDefinition Id="9bd8f404-0bb1-436d-bc7a-d018e0bbe0f2" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="19ba3b7c-111a-4926-b10e-462d51a33381">
+          <propertyInstance Id="8a8b10e7-359b-4a4a-8140-2b75fb9fbcce" name="TargetName" value="ClassTemplate={Name}|EnumTemplate={Name}|InterfaceTemplate={Name}|StructTemplate={Name}">
+            <elementDefinition Id="038f0b35-0d25-4a53-888f-f47e72d72971" />
+          </propertyInstance>
+          <elementDefinition Id="48468a88-171d-4db2-afaf-2e6d5b2a7f54" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="0daa326d-6320-4154-b5c6-84c2eedbc66d">
+          <propertyInstance Id="bec0996f-f2af-43eb-8e1d-e1dea126a3fd" name="Overwrite" value="ClassTemplate=True|EnumTemplate=True|InterfaceTemplate=True|StructTemplate=True">
+            <elementDefinition Id="d26f7e2a-2bfd-4f01-8e58-6d1473178a85" />
+          </propertyInstance>
+          <elementDefinition Id="c2146124-7aa6-4dac-a3d1-0ead2d785f26" />
+        </stereotypeInstanceHasPropertyInstances>
+        <stereotypeInstanceHasPropertyInstances Id="b4d26752-8d0f-465d-a046-2973dcdcee67">
+          <propertyInstance Id="ada524c1-43c5-4603-aaa7-65c3d65b8e29" name="Parameters">
+            <elementDefinition Id="f699355a-484f-4cb4-939e-f6a2e3661beb" />
+          </propertyInstance>
+          <elementDefinition Id="3adbd455-1d6d-4c94-9ec6-01efc9b846b8" />
+        </stereotypeInstanceHasPropertyInstances>
+      </propertyInstances>
+    </stereotypeInstance>
+  </appliedStereotypesInternal>
+  <profileInstances>
+    <packageHasProfileInstances Id="b79c2ba3-8209-45f1-a6d8-b9aaed477160">
+      <profileInstance Id="75eb4a56-6ad2-4301-ad61-969dcd18ab31" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="2af6af8b-7c8b-4a35-b27f-cc542b6028a1">
+      <profileInstance Id="0d2999a7-cc81-488e-af54-507a4515c4b2" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="bf9d3849-7247-4db6-901d-8aa93c5e8d85">
+      <profileInstance Id="41bc61bb-4770-4c68-ad49-9342b9d4e2c7" name="CSharpProfile">
+        <elementDefinition Id="f646fbc0-1533-4aeb-85ba-7ee4fbade0ea" />
+      </profileInstance>
+      <elementDefinition Id="2cfaaf75-e4cd-41c1-ac3d-88de08b69e39" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="1352c83d-24db-4684-a8e6-9149d2783fd2">
+      <profileInstance Id="c80a71bd-2614-4e26-8194-17650b5480f0" name="TextTemplateBindings">
+        <elementDefinition Id="d9c9a27d-17c3-49a5-9a86-47fe6e01ee32" />
+      </profileInstance>
+      <elementDefinition Id="27f3c88d-a59a-41cd-9a9b-eb2649ede23a" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <useCaseModelRootHasTypes>
+      <actor Id="29642101-5463-4411-86d3-da356c96a295" name="用户" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="1910ae14-f49b-40ee-99b5-15bdfaeb1a75" />
+        <generalsInternal>
+          <generalization Id="008a879e-5926-4afe-94c8-89d0f6481691" isSubstitutable="false">
+            <actorMoniker Id="89dd9ce7-101c-4ea9-8be9-9bed6dd9ab8a" LastKnownName="访问者" />
+            <elementDefinition Id="4f131957-bd2f-4ed7-a6be-4498fd066ed2" />
+          </generalization>
+        </generalsInternal>
+        <targetEnds>
+          <association Id="d8205fe4-52a8-433c-a086-f1116156a8ed" isDerived="false" sourceEndRoleName="用户" targetEndRoleName="访问文件系统" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="115dd448-c6bd-410c-a82c-46a8d31e1e76" LastKnownName="访问文件系统" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="f062d28a-bdf4-4e9a-84eb-83892625892a" name="用户" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="5e4e7f9d-d17a-49f4-972f-437faa4e788d" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="31099ff9-6b17-4e1d-8cac-73c087a651ba" name="访问文件系统" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="88a70bfd-0d3d-441b-8d01-31b6ae03b4f4" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="1bb1215f-cd79-4145-b2cc-02fb64eb7985" />
+          </association>
+          <association Id="ba779bfd-b2a4-45c4-a481-82e581167891" isDerived="false" sourceEndRoleName="用户" targetEndRoleName="访问数据库系统" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="1b40fc33-71bb-42b3-89ce-9c21e7da1dfa" LastKnownName="访问数据库系统" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="4d17c4a0-3200-4bba-8a73-ecd49fab1474" name="用户" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="e414874d-d71f-4728-affe-e7616dc286d8" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="084afab1-dc2f-4311-bef7-11e72067fc42" name="访问数据库系统" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="e050a2cf-66c1-4937-96e0-1e58294ed724" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="d99c2d9d-63ff-469f-93b7-b95dd87e3e31" />
+          </association>
+          <association Id="15706a47-eadf-4f26-b14c-d7c2e83c66ec" isDerived="false" sourceEndRoleName="用户" targetEndRoleName="访问网络系统" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="541cc59c-1431-4980-aac0-e6011bd40c22" LastKnownName="访问网络系统" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="40ea579a-5796-4145-9dbe-608b71ee916e" name="用户" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="9ef5509f-fc3e-46c8-b20d-854eea64d344" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="56a94086-3dc5-464a-8f64-3450818c607b" name="访问网络系统" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="e076c116-d3c8-4ad5-b7e2-78ff599d2fbf" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="1f694aad-dc7c-4dab-9550-af9704971c2a" />
+          </association>
+          <association Id="b20502b7-099b-490a-a78a-2351ea7e8767" isDerived="false" sourceEndRoleName="用户" targetEndRoleName="XXX产品" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="798687d4-eec5-4886-b5a8-718be380647f" LastKnownName="XXX产品" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="94301b58-2ea0-46c1-93ad-26b0cb965e2e" name="用户" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="2fd452c2-214a-4813-8fa1-a749eaf4a4d7" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="ae3775fc-bf9f-4823-8a6b-616710c5704f" name="XXX产品" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="1a7e20bb-4ec4-4154-9126-5d435699f0f0" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="5ab91599-9935-4dbe-b26d-c0e9308f53eb" />
+          </association>
+        </targetEnds>
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <useCase Id="115dd448-c6bd-410c-a82c-46a8d31e1e76" name="访问文件系统" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="7c62b7e4-db29-4392-8cf5-be6ea77ae328" />
+        <targetEnds>
+          <association Id="49964940-dfcc-4d9c-9e77-5495d795e681" isDerived="false" sourceEndRoleName="访问文件系统" targetEndRoleName="当前计算机" isLeaf="false" isAbstract="false">
+            <actorMoniker Id="237fe8b0-92cf-490a-ab69-40232da1b20c" LastKnownName="当前计算机" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="bfd3f356-ed3c-47b8-b767-972743e05f64" name="访问文件系统" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="869f5ee0-0911-49b4-a61d-df203b997049" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="216ae7a2-a8ec-4bfe-8792-a11a091e8344" name="当前计算机" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="2a729fe1-1925-4ae9-9852-81ba6e972c49" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="2844b763-7ffa-4139-b503-be7ed21e9e93" />
+          </association>
+        </targetEnds>
+        <subjects>
+          <subsystemMoniker Id="2229fd38-e4fd-4ae6-b225-aa8168b5db09" LastKnownName="计算机访问控制系统（UAC）" />
+        </subjects>
+      </useCase>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <useCase Id="1b40fc33-71bb-42b3-89ce-9c21e7da1dfa" name="访问数据库系统" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="3382a98e-283e-47e0-bf61-d8c7ba95092c" />
+        <targetEnds>
+          <association Id="84fb0282-615b-4da0-9312-fc9ca8c12896" isDerived="false" sourceEndRoleName="访问数据库系统" targetEndRoleName="当前计算机" isLeaf="false" isAbstract="false">
+            <actorMoniker Id="237fe8b0-92cf-490a-ab69-40232da1b20c" LastKnownName="当前计算机" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="dc4fe718-781a-4c9d-a168-b59426deb50d" name="访问数据库系统" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="2ea8175b-a96f-4357-a1e2-97f70852e6c8" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="79f4994d-fa75-49e2-aa7c-0dbe43bdaab1" name="当前计算机" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="884a7107-beba-4387-adcc-1d6f8f329c31" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="8a2f8c8e-00f1-4e8f-be43-f0a05722dd43" />
+          </association>
+        </targetEnds>
+        <subjects>
+          <subsystemMoniker Id="2229fd38-e4fd-4ae6-b225-aa8168b5db09" LastKnownName="计算机访问控制系统（UAC）" />
+        </subjects>
+      </useCase>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <useCase Id="541cc59c-1431-4980-aac0-e6011bd40c22" name="访问网络系统" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="ac0bad26-4c8b-4cea-a7f8-04f0b07b280f" />
+        <targetEnds>
+          <association Id="f01acb91-282d-4f5c-b47e-dc606fc1b001" isDerived="false" sourceEndRoleName="访问网络系统" targetEndRoleName="当前计算机" isLeaf="false" isAbstract="false">
+            <actorMoniker Id="237fe8b0-92cf-490a-ab69-40232da1b20c" LastKnownName="当前计算机" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="6668ffd7-af03-41b3-8c5b-656d7dd2bdc4" name="访问网络系统" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="51f5be77-be61-473b-a371-3f245116308e" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="58e2dbca-d16c-408a-af21-cfaac142bdce" name="当前计算机" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="770d379a-ee07-4a22-aba4-18d89419d179" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="92aa9a0b-e29a-4215-8b07-f8cb179e8d2c" />
+          </association>
+        </targetEnds>
+        <subjects>
+          <subsystemMoniker Id="2229fd38-e4fd-4ae6-b225-aa8168b5db09" LastKnownName="计算机访问控制系统（UAC）" />
+        </subjects>
+      </useCase>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <actor Id="d5f2dc1f-0716-4816-bfc7-ff128d82babe" name="外部计算机" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="ae4c7308-2296-4e43-8715-b3f026003ae1" />
+        <generalsInternal>
+          <generalization Id="dcc0fc58-2df2-48c2-921f-d4bd140f2023" isSubstitutable="false">
+            <actorMoniker Id="89dd9ce7-101c-4ea9-8be9-9bed6dd9ab8a" LastKnownName="访问者" />
+            <elementDefinition Id="6fa47cff-1a56-4873-830b-873ff9850336" />
+          </generalization>
+        </generalsInternal>
+        <targetEnds>
+          <association Id="dbe67c91-27e2-445c-98c7-d30efaa2f808" isDerived="false" sourceEndRoleName="外部计算机" targetEndRoleName="访问文件系统" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="115dd448-c6bd-410c-a82c-46a8d31e1e76" LastKnownName="访问文件系统" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="9e3ce671-2f69-43c3-8515-0cb05c4f8483" name="外部计算机" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="cc8d86c3-bff7-42d8-896f-c2844011c2aa" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="e21bf9da-9652-420d-b155-c53f57b6dbe3" name="访问文件系统" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="9e2ade6c-a13f-4655-b532-6f097101dfb6" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="c388756b-969a-4274-9e9e-8e800bdd8f7b" />
+          </association>
+          <association Id="249299ab-ad77-4905-910c-d98ac7c8ef07" isDerived="false" sourceEndRoleName="外部计算机" targetEndRoleName="访问数据库系统" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="1b40fc33-71bb-42b3-89ce-9c21e7da1dfa" LastKnownName="访问数据库系统" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="e3f4cf9e-1281-420d-b366-b42e82b9e228" name="外部计算机" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="486cbcf6-2912-4a20-a00b-047bad4cc164" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="55738b08-9cbd-409f-bda6-4c0314d62c54" name="访问数据库系统" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="23fc0ed1-f640-487f-a764-4e89734bf06a" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="55968d22-c4fb-4730-9fc5-e455da823d84" />
+          </association>
+          <association Id="fccca187-2b1b-41b0-aff1-d3ef98d6345a" isDerived="false" sourceEndRoleName="外部计算机" targetEndRoleName="访问网络系统" isLeaf="false" isAbstract="false">
+            <useCaseMoniker Id="541cc59c-1431-4980-aac0-e6011bd40c22" LastKnownName="访问网络系统" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="75e8e23e-9441-4a46-b1e7-b99ef9eef768" name="外部计算机" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="b08f0061-9c0c-494b-8947-4b55e58cd318" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="55eac849-6a7d-4fff-aa7b-e71d8a1ebdec" name="访问网络系统" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="77ca4af9-7daf-48bb-be54-7e3bccd66a11" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="ac77ca33-c53b-4e0b-ab50-0bdd77d4d454" />
+          </association>
+        </targetEnds>
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <actor Id="237fe8b0-92cf-490a-ab69-40232da1b20c" name="当前计算机" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="0a7d471d-acff-4663-80b4-fda9896ab2d6" />
+        <generalsInternal>
+          <generalization Id="a21f753e-4e5a-470e-937c-171f771703be" isSubstitutable="false">
+            <actorMoniker Id="b983a75f-d506-490a-91d0-c126d9460e5b" LastKnownName="资源" />
+            <elementDefinition Id="e3201c4f-20e5-4a6f-99ec-9acc411b39ea" />
+          </generalization>
+        </generalsInternal>
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <actor Id="89dd9ce7-101c-4ea9-8be9-9bed6dd9ab8a" name="访问者" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="ad67f4b4-e639-4ba5-8324-c7b964fe22ae" />
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <actor Id="b983a75f-d506-490a-91d0-c126d9460e5b" name="资源" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="f04a7654-eba5-4990-915c-c35da74dd308" />
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <useCase Id="798687d4-eec5-4886-b5a8-718be380647f" name="XXX产品" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="8f7e9ef2-4d5b-4090-86ea-7b733195f842" />
+        <targetEnds>
+          <association Id="1196e83e-bc03-471c-ae94-879aa39a8102" isDerived="false" sourceEndRoleName="XXX产品" targetEndRoleName="生产商" isLeaf="false" isAbstract="false">
+            <actorMoniker Id="27abd9fe-b3cf-4376-92bb-f68943c538bb" LastKnownName="生产商" />
+            <relationshipOwnedElementsInternal>
+              <associationHasOwnedEnds>
+                <memberEnd Id="e73e8ea7-a2f4-40c7-ad40-7ec1fab127f9" name="XXX产品" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false" isNavigableOwned="false">
+                  <elementDefinition Id="580f5ac4-62ef-480d-8a6d-827078bbd767" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+              <associationHasOwnedEnds>
+                <memberEnd Id="f3b676fc-609a-4922-a2fa-a4086f76d451" name="生产商" isLeaf="false" isStatic="false" isReadOnly="false" isDerived="false" isDerivedUnion="false" aggregation="None" isComposite="false">
+                  <elementDefinition Id="189dfadd-e0a2-4a6d-a413-1ece7fb75eac" />
+                </memberEnd>
+              </associationHasOwnedEnds>
+            </relationshipOwnedElementsInternal>
+            <elementDefinition Id="9a75cb2c-6d66-4fb9-96ef-399661c64ece" />
+          </association>
+        </targetEnds>
+      </useCase>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <actor Id="27abd9fe-b3cf-4376-92bb-f68943c538bb" name="生产商" isAbstract="false" isLeaf="false">
+        <elementDefinition Id="42ecaab6-8e10-4570-8aed-982fb7967e25" />
+        <generalsInternal>
+          <generalization Id="da6e3cf3-118d-4c56-917e-a1c6071feb76" isSubstitutable="false">
+            <actorMoniker Id="b983a75f-d506-490a-91d0-c126d9460e5b" LastKnownName="资源" />
+            <elementDefinition Id="ac8694f5-e38c-48ae-877b-599c78d5bf14" />
+          </generalization>
+        </generalsInternal>
+      </actor>
+    </useCaseModelRootHasTypes>
+    <useCaseModelRootHasTypes>
+      <subsystem Id="2229fd38-e4fd-4ae6-b225-aa8168b5db09" name="计算机访问控制系统（UAC）" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="705efa79-22df-417e-97f2-4132dfd2cebe" />
+      </subsystem>
+    </useCaseModelRootHasTypes>
+  </packagedElements>
+  <package Id="5980fb6a-47b5-45cd-9d6f-b0b4602fa008" name="ModelingProject">
+    <elementDefinition Id="610a5d4c-1b69-4087-a250-93ca67f282ae" />
+  </package>
+</useCaseModelRoot>

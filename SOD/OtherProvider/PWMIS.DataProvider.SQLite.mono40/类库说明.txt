@@ -1,0 +1,2 @@
+﻿当前项目使用的是64位Linux（CentOS）下面的Mono.Data.Sqlite.dll
+在其它系统可能需要使用对应的SQLite文件来替换。

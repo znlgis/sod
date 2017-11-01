@@ -1,0 +1,2 @@
+﻿此例子的数据库是LocalDB，使用VS2010以及之前版本VS的同学请参考这篇博文
+http://blogs.msdn.com/b/sqlexpress/archive/2011/11/28/using-localdb-in-visual-studio-2010.aspx

@@ -1,0 +1,119 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3F671F88-58B6-40A6-91E9-BBCF2967E056}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>TranstarAuction.Presenters</RootNamespace>
+    <AssemblyName>TranstarAuctionPresenters</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Hisuntech.IBMP.AOP, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\IBMP\Hisuntech.IBMP.AOP.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IPresenter.cs" />
+    <Compile Include="PresenterBase.cs" />
+    <Compile Include="Presenter\AuctionFormPresenter.cs" />
+    <Compile Include="Presenter\AuctionHallPresenter.cs" />
+    <Compile Include="Presenter\AuctionMainFormPresenter.cs" />
+    <Compile Include="Presenter\CityFormPresenter.cs" />
+    <Compile Include="Presenter\CommonPresenter.cs" />
+    <Compile Include="IGlobalPresenter.cs" />
+    <Compile Include="Presenter\LoginPresenter.cs" />
+    <Compile Include="Presenter\MainFormPresenter.cs" />
+    <Compile Include="Presenter\MainUcPresenter.cs" />
+    <Compile Include="Presenter\ManagePresenter.cs" />
+    <Compile Include="Presenter\MonitorTerminalPresenter.cs" />
+    <Compile Include="Presenter\MyAttentionCarPresenter.cs" />
+    <Compile Include="Presenter\MyAttentionCarUcPresenter.cs" />
+    <Compile Include="Presenter\MyBuyCarPresenter.cs" />
+    <Compile Include="Presenter\MyFriendPresenter.cs" />
+    <Compile Include="Presenter\NotifyPresenter.cs" />
+    <Compile Include="Presenter\RightConfirmPassPresenter.cs" />
+    <Compile Include="Presenter\RightConfirPresenter.cs" />
+    <Compile Include="Presenter\SelectTransferLocationPresenter.cs" />
+    <Compile Include="Presenter\ShowPicturePresenter.cs" />
+    <Compile Include="Presenter\SysConfigPresenter.cs" />
+    <Compile Include="Presenter\UpdateFilePresenter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewInterface\IAuctionForm.cs" />
+    <Compile Include="ViewInterface\IAuctionHallView.cs" />
+    <Compile Include="ViewInterface\IAuctionMainForm.cs" />
+    <Compile Include="ViewInterface\IAuctionMainFormView.cs" />
+    <Compile Include="ViewInterface\IBaseView.cs" />
+    <Compile Include="ViewInterface\ICityForm.cs" />
+    <Compile Include="ViewInterface\IMainUcView.cs" />
+    <Compile Include="ViewInterface\IMyAttentionCarUcView.cs" />
+    <Compile Include="ViewInterface\IMyAttentionCarView.cs" />
+    <Compile Include="ViewInterface\IMyBuyCarView.cs" />
+    <Compile Include="ViewInterface\IMyFriendView.cs" />
+    <Compile Include="ViewInterface\IRightConfirmPassView.cs" />
+    <Compile Include="ViewInterface\IRightConfirView.cs" />
+    <Compile Include="ViewInterface\IUserLoginView.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MessageSubscriberLib\MessageSubscriberLib.csproj">
+      <Project>{f652d7ca-af55-491c-9b1e-e159e9771a72}</Project>
+      <Name>MessageSubscriberLib</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MonitorModel\MonitorModel.csproj">
+      <Project>{e55f10b3-f8f4-4eb1-9e5e-da44d506e796}</Project>
+      <Name>MonitorModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MSFCommon\EnterpriceFrameworkCommon.csproj">
+      <Project>{2a9a3a85-d2f6-44de-b7e8-5cdca17bce23}</Project>
+      <Name>EnterpriceFrameworkCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PWMISServiceBasic\ServiceBasic.csproj">
+      <Project>{28bf9b80-4925-4d5e-ae6c-5748f753f197}</Project>
+      <Name>ServiceBasic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PWMISServiceClient\ServiceClient.csproj">
+      <Project>{a0d23b66-81b1-49cd-9a79-64509f6bb837}</Project>
+      <Name>ServiceClient</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
