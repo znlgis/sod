@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Pwmis.Com")]
 [assembly: AssemblyProduct("PWMIS.Core")]
-[assembly: AssemblyCopyright("Copyright © Pwmis.Com 2006-2014")]
+[assembly: AssemblyCopyright("Copyright © Pwmis.Com 2006-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -33,4 +33,4 @@ using System.Runtime.InteropServices;
 // 方法是按如下所示使用“*”:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("5.6.1.0930")]
-[assembly: AssemblyFileVersion("5.6.1.1029")]
+[assembly: AssemblyFileVersion("5.6.1.1109")]

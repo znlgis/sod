@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("SkyUN.Org")]
 [assembly: AssemblyProduct("PWMIS.DataProvider.Data.MySQL")]
-[assembly: AssemblyCopyright("Copyright © SkyUN.Org 2011")]
+[assembly: AssemblyCopyright("Copyright © SkyUN.Org 2011-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // 可以指定所有这些值，也可以使用“内部版本号”和“修订号”的默认值，
 // 方法是按如下所示使用“*”:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("5.6.1.0922")]
-[assembly: AssemblyFileVersion("5.6.1.0922")]
+[assembly: AssemblyVersion("5.6.1.1108")]
+[assembly: AssemblyFileVersion("5.6.1.1108")]

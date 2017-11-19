@@ -13,7 +13,7 @@ namespace PWMIS.MemoryStorage
     {
         public ExportBatchInfo()
         {
-            TableName = "ExportBatchInfo";
+            TableName = "ExportBatchInfoV2";
             IdentityName = "ID";
             PrimaryKeys.Add("ID");
         }
@@ -43,6 +43,15 @@ namespace PWMIS.MemoryStorage
         {
             get { return getProperty<int>("BatchNumber"); }
             set { setProperty("BatchNumber", value); }
+        }
+
+        /// <summary>
+        /// 导入本批次数据的数据包的文件路径
+        /// </summary>
+        public string PackagePath
+        {
+            get { return getProperty<string>("PackagePath"); }
+            set { setProperty("PackagePath", value, 255); }
         }
 
         /// <summary>

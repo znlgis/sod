@@ -46,6 +46,7 @@ namespace PWMIS.DataProvider.Data
         private static CommandLog _Instance;
         private static object lockObj = new object();
         private System.Diagnostics.Stopwatch watch = null;
+        private bool needLog = true;
 
         private PWMIS.Common.ICommonLog _logWriter;
         /// <summary>
@@ -255,8 +256,13 @@ namespace PWMIS.DataProvider.Data
                 {
                     if ((LogExecutedTime > 0 && elapsedMilliseconds > LogExecutedTime) || LogExecutedTime == 0)
                     {
+                        this.needLog = true;
                         RecordCommandLog(command, who);
                         this.LogWriter.WriteLog("Execueted Time(ms):" + elapsedMilliseconds + "\r\n", who);
+                    }
+                    else
+                    {
+                        this.needLog = false;
                     }
                 }
                 watch.Stop();
@@ -270,7 +276,8 @@ namespace PWMIS.DataProvider.Data
 
         public void WriteLog(string msg, string who)
         {
-            this.LogWriter.WriteLog(msg, who);
+            if (SaveCommandLog && this.needLog)
+                this.LogWriter.WriteLog(msg, who);
         }
 
         /// <summary>
@@ -339,7 +346,7 @@ namespace PWMIS.DataProvider.Data
         public InnerLogWriter()
         {
             this.LogBufferCount = 20;
-            this._logBuffer.Add("-----SQLLog (Thread ID "+System.Threading.Thread.CurrentThread.ManagedThreadId + ") Init----");
+            this._logBuffer.Add("--SQLLog (Thread ID " + System.Threading.Thread.CurrentThread.ManagedThreadId + ") Init----");
         }
         public string DataLogFile { get; set; }
         public bool SaveCommandLog { get; set; }
@@ -351,7 +358,7 @@ namespace PWMIS.DataProvider.Data
         private List<string> _logBuffer = new List<string>();
         private DateTime _lastWrite = DateTime.Now;
         private const int WriteTime = 20;//20秒写入一次
-        private object sync_obj = new object();
+        private static object sync_obj = new object();
 
         /// <summary>
         ///写入日志消息
@@ -361,7 +368,7 @@ namespace PWMIS.DataProvider.Data
         public void WriteLog(string msg, string who)
         {
             if (SaveCommandLog)
-                WriteLog("//" + DateTime.Now.ToString() + " @" + who + " ：" + msg );
+                WriteLog("//" + DateTime.Now.ToString() + " @" + who + " ：" + msg);
         }
 
         /// <summary>
@@ -378,46 +385,77 @@ namespace PWMIS.DataProvider.Data
             {
                 _logBuffer.Add(log);
 
-
                 if (_logBuffer.Count > 0 && (DateTime.Now.Subtract(_lastWrite).TotalSeconds > WriteTime || _logBuffer.Count > LogBufferCount))
                 {
                     System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                    sb.AppendLine("-----SQLLog (Thread ID " + System.Threading.Thread.CurrentThread.ManagedThreadId + ") Write Buffer:");
+                    sb.AppendLine("--SQLLog (Thread ID " + System.Threading.Thread.CurrentThread.ManagedThreadId + ") Write Buffer:----");
+                    bool flag = false;
                     foreach (string item in _logBuffer)
                     {
+                        if (!item.StartsWith("--SQLLog"))
+                            flag = true;
                         sb.AppendLine(item);
                     }
                     _logBuffer.Clear();
-
+                    if (!flag)
+                    {
+                        return;//没有实质性的日志，不写入日志文件
+                    }
                     string writeText = sb.ToString();
                     try
                     {
-                        //edit at 2012.10.17 改成无锁异步写如日志文件，2017.9.30日修改，增加说明
-                        using (FileStream fs = new FileStream(DataLogFile, FileMode.Append, FileAccess.Write, 
-                            FileShare.Write, 2048, FileOptions.Asynchronous))
+                        //日志文件超过5M，备份日志文件
+                        var fileInfo = new FileInfo(DataLogFile);
+                        if (fileInfo.Length > 5 * 1024 * 1024)
                         {
-                            byte[] buffer = System.Text.Encoding.UTF8.GetBytes(writeText);
-                            IAsyncResult writeResult = fs.BeginWrite(buffer, 0, buffer.Length,
-                                (asyncResult) =>
-                                {
-                                    //FileStream fStream = (FileStream)asyncResult.AsyncState;
-                                    //fStream.EndWrite(asyncResult);
-                                    fs.EndWrite(asyncResult);
-                                    //fs.Flush();//这里加了可能发生文件已经关闭的错误
-                                    //fs.Close();//这里加了会报错
-                                },
-                                null);
-                            //fs.EndWrite(writeResult);//这种方法异步起不到效果
-                            //fs.Flush();//异步写入时，此时可能还没有写入，刷新缓存没有用
-                            //fs.Close();//还不能加，可能异步方法还没有执行完
+                            string bakFile = string.Format("{0}_{1}.{2}",
+                               System.IO.Path.GetFileNameWithoutExtension(DataLogFile),
+                               DateTime.Now.ToString("yyyyMMddHHmmss"),
+                               System.IO.Path.GetExtension(DataLogFile));
+                            string bakFilePath = System.IO.Path.Combine( System.IO.Path.GetDirectoryName(DataLogFile),bakFile);
+                            System.IO.File.Move(DataLogFile, bakFilePath);
                         }
+                       
+                        //edit at 2012.10.17 改成无锁异步写如日志文件，2017.9.30日修改，增加说明
+                        //不能将fs 放到Using下面，会导致句柄无效
+                        FileStream fs = new FileStream(DataLogFile, FileMode.Append, FileAccess.Write,
+                            FileShare.Write, 2048, FileOptions.Asynchronous);
+
+                        byte[] buffer = System.Text.Encoding.UTF8.GetBytes(writeText);
+                        IAsyncResult writeResult = fs.BeginWrite(buffer, 0, buffer.Length,
+                            (asyncResult) =>
+                            {
+                                bool isOK = false;
+                                FileStream fStream = (FileStream)asyncResult.AsyncState;
+                                try
+                                {
+                                    fStream.EndWrite(asyncResult);
+                                    fStream.Flush();
+                                    isOK = true;
+                                }
+                                catch (Exception ex2)
+                                {
+                                    writeText = "*** 异步结束 写日志文件异常，错误原因：" + ex2.Message + "\r\n 原始日志信息：" + writeText + " \r\n***\r\n";
+                                }
+                                finally
+                                {
+                                    fStream.Close();
+                                }
+                                if(!isOK)
+                                    File.AppendAllText(DataLogFile, writeText);
+                            },
+                            fs);
+                        //fs.EndWrite(writeResult);//在这里调用异步起不到效果
+                        //fs.Flush();//异步写入时，刷新缓存可能会导致写入两条数据到文件
+
+
                     }
                     catch (Exception ex)
                     {
-                        writeText = "*** 写日志文件异常，错误原因："+ ex.Message +"\r\n 原始日志信息：" + writeText +" \r\n***\r\n";
+                        writeText = "*** 异步开始写日志文件异常，错误原因：" + ex.Message + "\r\n 原始日志信息：" + writeText + " \r\n***\r\n";
                         File.AppendAllText(DataLogFile, writeText);
                     }
-                    
+
                     _lastWrite = DateTime.Now;
                 }
             }
@@ -431,7 +469,7 @@ namespace PWMIS.DataProvider.Data
         public void Flush()
         {
             _lastWrite = DateTime.Now.AddMinutes(-10);
-            WriteLog("-----SQLLog (Thread ID " + System.Threading.Thread.CurrentThread.ManagedThreadId + ") Flush----");
+            WriteLog("--SQLLog (Thread ID " + System.Threading.Thread.CurrentThread.ManagedThreadId + ") Flush----\r\n");
         }
 
     }

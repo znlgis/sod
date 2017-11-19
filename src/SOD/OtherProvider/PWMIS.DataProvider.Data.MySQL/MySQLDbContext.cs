@@ -48,6 +48,7 @@ namespace PWMIS.DataProvider.Data
             return false;
         }
 
+        /* 一般情况下将会调用基类的InitializeTable 方法，此处仅供示例 */
         /// <summary>
         /// 检查实体类对应的表是否存在，如果不存在则创建表并执行可选的SQL语句，比如为表增加索引等。
         /// </summary>
@@ -55,11 +56,26 @@ namespace PWMIS.DataProvider.Data
         /// <param name="initSql">要初始化执行的SQL语句</param>
         public void InitializeTable<T>(string initSql) where T : EntityBase, new()
         {
-            if (!CheckTableExists<T>())
+            //创建表
+            if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.MySql)
             {
-                CurrentDataBase.ExecuteNonQuery(initSql);
+                var entity = new T();
+                var dsScheme = CurrentDataBase.GetSchema("Tables", new string[] { null, null, null, "BASE TABLE" });
+                var rows = dsScheme.Select("table_name='" + entity.GetTableName() + "'");
+                if (rows.Length == 0)
+                {
+                    EntityCommand ecmd = new EntityCommand(entity, CurrentDataBase);
+                    string sql = ecmd.CreateTableCommand;
+                    if (!string.IsNullOrEmpty(initSql))
+                    {
+                        sql = sql + ";\r\n" + initSql + ";\r\n";
+                    }
+                    CurrentDataBase.ExecuteNonQuery(sql);
+                }
             }
+           
         }
+        
 
         /// <summary>
         /// 检查MySQL数据库是否存在，如果不存在会自动创建

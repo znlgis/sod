@@ -1,4 +1,12 @@
-﻿
+﻿/*
+ * ========================================================================
+ * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
+ * Welcom use the PDF.NET (PWMIS Data Process Framework) Memory Storage.
+ * See more information,Please goto http://www.pwmis.com/sqlmap 
+ * ========================================================================
+ * 该类的作用:
+ * 内存数据库 数据从内存数据库导入到关系数据库，支持多个数据包源导入同一张表。
+ */ 
 using PWMIS.Core.Extensions;
 using PWMIS.DataMap.Entity;
 using PWMIS.DataProvider.Data;
@@ -31,9 +39,13 @@ namespace PWMIS.MemoryStorage
         /// </summary>
         Update,
         /// <summary>
-        /// 合并，如果数据在目标表存在则读出然后合并不同的数据，不会理会数据的新旧标识；如果目标数据不存在，则插入此数据
+        /// 合并，如果数据在目标表存在则先删除原来的数据再插入新数据，不会理会数据的新旧标识；如果目标数据不存在，则插入此数据
         /// </summary>
         Merge,
+        /// <summary>
+        /// 如果目标表没有该数据则插入，如果有，则先读出目标数据然后逐行逐字段进行对比，如果有更新则更新到数据库
+        /// </summary>
+        Compare,
         /// <summary>
         /// 用户自定义的其它数据导入处理方式
         /// </summary>
@@ -183,17 +195,21 @@ namespace PWMIS.MemoryStorage
             result.IsCancel = true;
 
             //导出批次管理
+            string memDbPath = this.MemDB.Path;
+            string pkgPath = memDbPath.Length > 255 ? memDbPath.Substring(memDbPath.Length - 255) : memDbPath;
             List<ExportBatchInfo> batchList = MemDB.Get<ExportBatchInfo>();
-            ExportBatchInfo currBatch = batchList.FirstOrDefault(p => p.ExportTableName == importTableName);
+            ExportBatchInfo currBatch = batchList.FirstOrDefault(p => p.ExportTableName == importTableName );
             if (currBatch == null)
             {
                 result.Flag = ImportResultFlag.NoBatchInfo;
                 return result;//没有导入批次信息，不能导入
             }
             //只有比数据库的导入批次数据新，才可以导入
+
+            currBatch.PackagePath = pkgPath;
             OQL q = OQL.From(currBatch)
                 .Select()
-                .Where(currBatch.ExportTableName)
+                .Where(currBatch.ExportTableName,currBatch.PackagePath)
                 .END;
             ExportBatchInfo dbBatch=  this.CurrDbContext.QueryObject<ExportBatchInfo>(q);
             if (dbBatch == null)
@@ -294,7 +310,7 @@ namespace PWMIS.MemoryStorage
                     }
                     //
                     */
-                   var idList= list.Select(s => s[s.PrimaryKeys[0]]).ToList();
+var idList = list.Select(s => s[s.PrimaryKeys[0]]).ToList();
                    //每页大小   
                    const int pageSize = 500;
                    //页码   

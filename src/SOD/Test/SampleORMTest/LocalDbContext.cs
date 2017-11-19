@@ -26,7 +26,9 @@ namespace SampleORMTest
         protected override bool CheckAllTableExists()
         {
             //创建用户表
-            CheckTableExists<User>();
+            //CheckTableExists<User>();
+            //用下面的方式可以做些表创建后的初始化
+            InitializeTable<User>("select * from {0} ");
             return true;
         }
 
