@@ -52,6 +52,9 @@ namespace PWMIS.MemoryStorage
         UserDefined
     }
 
+    /// <summary>
+    /// 导入结果类型
+    /// </summary>
     public enum ImportResultFlag
     {
         /// <summary>
@@ -70,7 +73,9 @@ namespace PWMIS.MemoryStorage
         /// 成功
         /// </summary>
         Succeed,
-        //导入过程发生了错误
+        /// <summary>
+        /// 导入过程发生了错误
+        /// </summary>
         Error
     }
 
@@ -112,12 +117,12 @@ namespace PWMIS.MemoryStorage
     /// <summary>
     /// 实体数据导入参数类
     /// </summary>
-    public class ImportEntityEventArgs : EventArgs
+    public class ImportEntityEventArgs<T> : EventArgs where T:EntityBase
     {
         /// <summary>
         /// 要导入的列表数据
         /// </summary>
-        public System.Collections.IList DataList { get; private set; }
+        public List<T> DataList { get; private set; }
         /// <summary>
         /// 实体类类型
         /// </summary>
@@ -141,7 +146,7 @@ namespace PWMIS.MemoryStorage
         /// <param name="entityType"></param>
         /// <param name="table"></param>
         /// <param name="batchNumber"></param>
-        public ImportEntityEventArgs(System.Collections.IList list, Type entityType, string table,int batchNumber)
+        public ImportEntityEventArgs(List<T> list, Type entityType, string table,int batchNumber)
         {
             this.DataList = list;
             this.EntityType = entityType;
@@ -153,7 +158,7 @@ namespace PWMIS.MemoryStorage
     /// <summary>
     /// 从内存数据库导入数据到关系数据库
     /// </summary>
-    public class ImportEntity
+    public class ImportEntity<T> where T : EntityBase, new()
     {
         MemDB MemDB;
         DbContext CurrDbContext;
@@ -161,11 +166,11 @@ namespace PWMIS.MemoryStorage
         /// <summary>
         /// 导入前事件
         /// </summary>
-        public event EventHandler<ImportEntityEventArgs> BeforeImport;
+        public event EventHandler<ImportEntityEventArgs<T>> BeforeImport;
         /// <summary>
         /// 导入后事件
         /// </summary>
-        public event EventHandler<ImportEntityEventArgs> AfterImport;
+        public event EventHandler<ImportEntityEventArgs<T>> AfterImport;
 
         /// <summary>
         /// 以一个内存数据库对象和数据上下文对象初始化本类
@@ -182,11 +187,10 @@ namespace PWMIS.MemoryStorage
         /// <summary>
         /// 导入数据到关系数据库
         /// </summary>
-        /// <typeparam name="T">实体类类型</typeparam>
         /// <param name="mode">导入模式</param>
         /// <param name="isNew">导入模式为更新模式的时候，进行实体类数据新旧比较的自定义方法，第一个参数为源实体，第二个参数为数据库的目标实体，返回源是否比目标新</param>
         /// <returns>导入的数据数量</returns>
-        public ImportResult Import<T>(ImportMode mode, Func<T, T, bool> isNew) where T : EntityBase, new()
+        public ImportResult Import(ImportMode mode, Func<T, T, bool> isNew) 
         {
             Type entityType = typeof(T);
             string importTableName = EntityFieldsCache.Item(entityType).TableName;
@@ -236,7 +240,7 @@ namespace PWMIS.MemoryStorage
             watch.Start();
             if (list.Count > 0)
             {
-                ImportEntityEventArgs args = new ImportEntityEventArgs(list, entityType, importTableName, currBatch.BatchNumber);
+                ImportEntityEventArgs<T> args = new ImportEntityEventArgs<T>(list, entityType, importTableName, currBatch.BatchNumber);
                 if (BeforeImport != null)
                 {
                     BeforeImport(this,args);
@@ -310,7 +314,7 @@ namespace PWMIS.MemoryStorage
                     }
                     //
                     */
-var idList = list.Select(s => s[s.PrimaryKeys[0]]).ToList();
+                    var idList = list.Select(s => s[s.PrimaryKeys[0]]).ToList();
                    //每页大小   
                    const int pageSize = 500;
                    //页码   

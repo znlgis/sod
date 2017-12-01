@@ -14,12 +14,13 @@ namespace PWMIS.MemoryStorage
     /// <summary>
     /// 导出实体事件参数对象
     /// </summary>
-    public class ExportEntityEventArgs : EventArgs
+    public class ExportEntityEventArgs<T> : EventArgs where T:EntityBase
     {
         /// <summary>
         /// 导出的数据列表
         /// </summary>
-        public System.Collections.IList ExportedDataList { get; private set; }
+        //public System.Collections.IList ExportedDataList { get; private set; }
+        public List<T> ExportedDataList { get; private set; }
         /// <summary>
         /// 实体类类型
         /// </summary>
@@ -45,7 +46,7 @@ namespace PWMIS.MemoryStorage
         /// </summary>
         public bool Cancel { get; set; }
 
-        public ExportEntityEventArgs(System.Collections.IList list, Type entityType, string table)
+        public ExportEntityEventArgs(List<T> list, Type entityType, string table)
         {
             this.ExportedDataList = list;
             this.EntityType = entityType;
@@ -56,7 +57,7 @@ namespace PWMIS.MemoryStorage
     /// <summary>
     /// 从关系数据库导出实体类到内存数据库
     /// </summary>
-    public class ExportEntity
+    public class ExportEntity<T> where T:EntityBase, new()
     {
         MemDB MemDB;
         DbContext CurrDbContext;
@@ -64,11 +65,11 @@ namespace PWMIS.MemoryStorage
         /// <summary>
         /// 数据库表已经导出的时候
         /// </summary>
-        public event EventHandler<ExportEntityEventArgs> OnExported;
+        public event EventHandler<ExportEntityEventArgs<T>> OnExported;
         /// <summary>
         /// 导出的数据已经保存的时候
         /// </summary>
-        public event EventHandler<ExportEntityEventArgs> OnSaved;
+        public event EventHandler<ExportEntityEventArgs<T>> OnSaved;
 
         /// <summary>
         /// 以一个内存数据库对象和数据上下文对象初始化本类
@@ -81,7 +82,7 @@ namespace PWMIS.MemoryStorage
             this.CurrDbContext = dbContext;
         }
 
-        private void SaveEntity<T>(T[] entitys, ExportEntityEventArgs args) where T : EntityBase, new()
+        private void SaveEntity(T[] entitys, ExportEntityEventArgs<T> args) 
         {
             if (entitys.Length > 0)
             {
@@ -101,8 +102,7 @@ namespace PWMIS.MemoryStorage
         /// 导出实体数据到内存数据库。如果当前实体操作失败，请检查导出事件的异常参数对象。
         /// </summary>
         /// <param name="funQ">获取导出数据的查询表达式委托方法，委托方法的参数为导出批次号；如果结果为空，导出实体全部数据</param>
-        /// <typeparam name="T">实体类类型</typeparam>
-        public void Export<T>(Func<int,T,OQL> funQ) where T : EntityBase, new()
+        public void Export(Func<int,T,OQL> funQ) 
         {
             Type entityType = typeof(T);
             try
@@ -130,7 +130,7 @@ namespace PWMIS.MemoryStorage
                 //导出数据
                 OQL q = funQ(currBatch.BatchNumber, new T());
                 List<T> entityList = q != null ? CurrDbContext.QueryList<T>(q) : CurrDbContext.QueryAllList<T>();
-                ExportEntityEventArgs args = new ExportEntityEventArgs(entityList, entityType, exportTableName);
+                ExportEntityEventArgs<T> args = new ExportEntityEventArgs<T>(entityList, entityType, exportTableName);
                 args.Succeed = true;
                 args.OperationExcepiton = null;
                 args.BatchNumber = currBatch.BatchNumber;
@@ -138,11 +138,11 @@ namespace PWMIS.MemoryStorage
                 if (OnExported != null)
                     OnExported(this, args);
                 if(!args.Cancel)
-                    SaveEntity<T>(entityList.ToArray(), args);
+                    SaveEntity(entityList.ToArray(), args);
             }
             catch (Exception ex)
             {
-                ExportEntityEventArgs args = new ExportEntityEventArgs(null, entityType, EntityFieldsCache.Item(entityType).TableName);
+                ExportEntityEventArgs<T> args = new ExportEntityEventArgs<T>(null, entityType, EntityFieldsCache.Item(entityType).TableName);
                 args.Succeed = false;
                 args.OperationExcepiton = ex;
 
