@@ -116,7 +116,7 @@ namespace WinClient
             request.Parameters = new object[] { int.Parse(this.txtA.Text), int.Parse(this.txtB.Text) };
             //异步方式测试
             Proxy serviceProxy = new Proxy();
-            serviceProxy.ErrorMessage += new EventHandler<MessageSubscriber.MessageEventArgs>(sessionProxy_ErrorMessage);
+            //serviceProxy.ErrorMessage += new EventHandler<MessageSubscriber.MessageEventArgs>(sessionProxy_ErrorMessage);
             serviceProxy.ServiceBaseUri = this.txtSerivceUri.Text;
             //serviceProxy.RequestService<int>(request, DataType.Text, (x) =>
             //{
@@ -127,8 +127,9 @@ namespace WinClient
             //    });
             //});
             //改用异步方法，达到相同效果
-           //var task= serviceProxy.RequestServiceAsync<int>(request);
-           //this.lblResult.Text = "Result=" + task.Result;
+            //var task= serviceProxy.RequestServiceAsync<int>(request);
+            //this.lblResult.Text = "Result=" + task.Result;
+
 
             try
             {
@@ -141,17 +142,17 @@ namespace WinClient
                 //MessageBox.Show(ex1.Message);
                 foreach (var item in ex1.InnerExceptions)
                 {
-                    string errMsg= string.Format ("异常类型：{0}{1}来自：{2}{3}异常内容：{4}", item.GetType(), Environment.NewLine,
+                    string errMsg = string.Format("异常类型：{0}{1}来自：{2}{3}异常内容：{4}", item.GetType(), Environment.NewLine,
          item.Source, Environment.NewLine, item.Message);
                     MessageBox.Show(errMsg);
-                }  
+                }
 
             }
             catch (Exception ex)
             {
                 MessageBox.Show("异步调用服务异常：" + ex.Message);
             }
-         
+
         }
 
         private void btnVoid_Click(object sender, EventArgs e)

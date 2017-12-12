@@ -6,3 +6,4 @@ obj
 发布目录
 packages
 ToolsBin
+/src/MessageServiceFramework/Test/ServiceHost

@@ -148,12 +148,22 @@ namespace MessageSubscriber
                 _listener.Password = password;
                 if (string.IsNullOrEmpty(this.RegisterData))
                     this.RegisterData = "REGDATA";
-                string indentity = _listener.GetIdentity()+":"+this.RegisterData;  
+                string indentity = _listener.GetIdentity() + ":" + this.RegisterData;
                 _serviceProxy.QuikRegist(indentity);
                 _registed = true;
                 Closed = false;
                 this.UserName = userName;
                 this.Password = password;
+            }
+            catch (System.ServiceModel.EndpointNotFoundException ex1)
+            {
+                //服务地址错误，服务不可用
+                //已经触发基类 Faulted 事件
+            }
+            catch (System.ServiceModel.ProtocolException ex2)
+            {
+                //服务协议错误
+                //已经触发基类 Faulted 事件
             }
             catch (Exception ex)
             {

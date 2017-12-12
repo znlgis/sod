@@ -271,76 +271,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         /// <returns>服务结果</returns>
         public Task<T> RequestServiceAsync<T>(string reqSrvUrl, DataType resultDataType) 
         {
-            var tcs = new TaskCompletionSource<T>();
-            Connection conn = new Connection(this.ServiceBaseUri, this.UseConnectionPool);
-            conn.UserName = this.ConnectionUserName;
-            conn.Password = this.ConnectionPassword;
-            conn.RegisterData = this.RegisterData;
-            conn.ErrorMessage += new EventHandler<MessageEventArgs>(
-                (object sender, MessageEventArgs e) => {
-                    if (this.ErrorMessage != null)
-                    {
-                        this.ErrorMessage(sender, new MessageEventArgs(e.MessageText));
-                        tcs.SetCanceled();
-                    }
-                    else
-                        tcs.SetException(new Exception(e.MessageText));
-                }
-                );
-          
-
-            if (conn.Open())
-            {
-                conn.RequestService(reqSrvUrl, null, (remoteMsg) =>
-                {
-                    conn.Close();
-                    string errMsg = ServiceConst.GetServiceErrorMessage(remoteMsg);
-                    if (errMsg != string.Empty)
-                    {
-                        if (this.ErrorMessage != null)
-                        {
-                            this.ErrorMessage(this, new MessageEventArgs(errMsg));
-                            tcs.SetCanceled();
-                        }
-                        else
-                        {
-                            //即使抛出了异常，也必须设置任务线程的异常，否则异步方法没法返回
-                            tcs.SetException(new Exception(errMsg));
-                        }
-                    }
-                    else
-                    {
-                        MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
-                        if (convert.Succeed)
-                        {
-                            tcs.SetResult(convert.Result);
-                        }
-                        else
-                        {
-                            ////服务端Task<T> 返回类型，应该在服务端处理完结果
-                            //
-                            errMsg = "resultDataType 指定错误:" + convert.ErrorMessage;
-                            if (this.ErrorMessage != null)
-                            {
-                                this.ErrorMessage(this, new MessageEventArgs(errMsg));
-                                tcs.SetCanceled();
-                            }
-                            else
-                            {
-                                //即使抛出了异常，也必须设置任务线程的异常，否则异步方法没法返回
-                                tcs.SetException(new Exception(errMsg));
-                            }
-                        }
-                    }
-
-                });
-            }
-            else
-            {
-                conn.Close();
-                tcs.SetCanceled();
-            }
-            return tcs.Task;
+            return RequestServiceAsync<T, string, string>(reqSrvUrl, resultDataType, null);
         }
 
         /// <summary>
@@ -440,65 +371,100 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             conn.Password = this.ConnectionPassword;
             conn.RegisterData = this.RegisterData;
             conn.ErrorMessage += new EventHandler<MessageEventArgs>(
-                (object sender, MessageEventArgs e) =>
-                {
-                    if (this.ErrorMessage != null)
+                (object sender, MessageEventArgs e) => {
+                    if (!tcs.Task.IsFaulted && !tcs.Task.IsCompleted)
                     {
-                        this.ErrorMessage(sender, new MessageEventArgs(e.MessageText));
-                        tcs.SetCanceled();
-                    }
-                    else
                         tcs.SetException(new Exception(e.MessageText));
+                        if (this.ErrorMessage != null)
+                            this.ErrorMessage(sender, new MessageEventArgs(e.MessageText));
+                    }
                 }
                 );
 
 
             if (conn.Open())
             {
-                conn.RequestService(reqSrvUrl, null, (remoteMsg) =>
+                if (function != null)
                 {
-                    conn.Close();
-                    string errMsg = ServiceConst.GetServiceErrorMessage(remoteMsg);
-                    if (errMsg != string.Empty)
+                    conn.RequestService(reqSrvUrl, null, (remoteMsg) =>
                     {
-                        if (this.ErrorMessage != null)
-                        {
-                            this.ErrorMessage(this, new MessageEventArgs(errMsg));
-                            tcs.SetCanceled();
-                        }
-                        else
-                        {
-                            //即使抛出了异常，也必须设置任务线程的异常，否则异步方法没法返回
-                            tcs.SetException(new Exception(errMsg));
-                        }
-                    }
-                    else
+                        conn.Close();
+                        ProcessRemoteMsgInTask(resultDataType, remoteMsg, tcs);
+
+                    },
+                    para =>
                     {
-                        MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
+                        MessageConverter<TFunPara> convert = new MessageConverter<TFunPara>(para);
+                        TFunResult result = function(convert.Result);
 
-                        tcs.SetResult(convert.Result);
+                        MessageConverter<TFunResult> convertFunResult = new MessageConverter<TFunResult>();
+                        string strResult = convertFunResult.Serialize(result);
+                        //检查转换是否成功,convertFunResult.MessageText 可以获取结果的原始值
+                        return strResult;
                     }
-
-                },
-                para =>
-                {
-                    MessageConverter<TFunPara> convert = new MessageConverter<TFunPara>(para);
-                    TFunResult result = function(convert.Result);
-
-                    MessageConverter<TFunResult> convertFunResult = new MessageConverter<TFunResult>();
-                    string strResult = convertFunResult.Serialize(result);
-                    //检查转换是否成功,convertFunResult.MessageText 可以获取结果的原始值
-                    return strResult;
-                }
 
                 );
+                }
+                else
+                {
+                    conn.RequestService(reqSrvUrl, null, (remoteMsg) =>
+                    {
+                        conn.Close();
+                        ProcessRemoteMsgInTask(resultDataType, remoteMsg, tcs);
+
+                    });
+                }
+                
             }
             else
             {
                 conn.Close();
-                tcs.SetCanceled();
+                if (!tcs.Task.IsCanceled && !tcs.Task.IsCompleted)
+                    tcs.SetCanceled();
             }
             return tcs.Task;
+        }
+
+        private void ProcessRemoteMsgInTask<T>(DataType resultDataType, string remoteMsg, TaskCompletionSource<T> tcs)
+        {
+            string errMsg = ServiceConst.GetServiceErrorMessage(remoteMsg);
+            if (errMsg != string.Empty)
+            {
+                if (this.ErrorMessage != null)
+                {
+                    this.ErrorMessage(this, new MessageEventArgs(errMsg));
+                    tcs.SetCanceled();
+                }
+                else
+                {
+                    //即使抛出了异常，也必须设置任务线程的异常，否则异步方法没法返回
+                    tcs.SetException(new Exception(errMsg));
+                }
+            }
+            else
+            {
+                MessageConverter<T> convert = new MessageConverter<T>(remoteMsg, resultDataType);
+                if (convert.Succeed)
+                {
+                    tcs.SetResult(convert.Result);
+                }
+                else
+                {
+                    ////服务端Task<T> 返回类型，应该在服务端处理完结果
+                    //
+                    errMsg = "resultDataType 指定错误:" + convert.ErrorMessage;
+                    if (this.ErrorMessage != null)
+                    {
+                        this.ErrorMessage(this, new MessageEventArgs(errMsg));
+                        tcs.SetCanceled();
+                    }
+                    else
+                    {
+                        //即使抛出了异常，也必须设置任务线程的异常，否则异步方法没法返回
+                        tcs.SetException(new Exception(errMsg));
+                    }
+                }
+            }
         }
 
 
