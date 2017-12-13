@@ -39,24 +39,6 @@
             服务调用请求
             </summary>
         </member>
-        <member name="M:PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest.ResetServiceUrl">
-            <summary>
-            重新初始化服务地址，比如对请求对象重新设置参数后，应该调用此方法。
-            </summary>
-        </member>
-        <member name="M:PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest.CreateServiceUrl">
-            <summary>
-            根据当前请求对象，创建服务地址
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest.IsServiceUrl(System.String)">
-            <summary>
-            输入的是否是服务请求地址
-            </summary>
-            <param name="input"></param>
-            <returns></returns>
-        </member>
         <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest.RequestModel">
             <summary>
             获取或设置服务请求的模式
@@ -87,6 +69,11 @@
             获取或者设置当前服务请求的地址
             </summary>
         </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest.ResetServiceUrl">
+            <summary>
+            重新初始化服务地址，比如对请求对象重新设置参数后，应该调用此方法。
+            </summary>
+        </member>
         <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest.ResultType">
             <summary>
             用于指示订阅数据的时候，服务方法的结果类型
@@ -107,9 +94,42 @@
             客户端的唯一标识，此属性仅供服务器设置
             </summary>
         </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest.CreateServiceUrl">
+            <summary>
+            根据当前请求对象，创建服务地址
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest.IsServiceUrl(System.String)">
+            <summary>
+            输入的是否是服务请求地址
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
         <member name="T:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse">
             <summary>
             服务输出响应
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.ResponseStream">
+            <summary>
+            获取响应的数据流
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.IsEndResponse">
+            <summary>
+            是否结束输出响应
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.AllText">
+            <summary>
+            获取流中所有的文本，如果流是字节数组，那么文本将是8位二进制形式的字符串，在接收端需要做相应的处理
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.ResultType">
+            <summary>
+            写入流中的结果类型
             </summary>
         </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.Write(System.String)">
@@ -138,26 +158,6 @@
         <member name="M:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.Clear">
             <summary>
             清除当前文本，以便需要时重新从流读取
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.ResponseStream">
-            <summary>
-            获取响应的数据流
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.IsEndResponse">
-            <summary>
-            是否结束输出响应
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.AllText">
-            <summary>
-            获取流中所有的文本，如果流是字节数组，那么文本将是8位二进制形式的字符串，在接收端需要做相应的处理
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.ResultType">
-            <summary>
-            写入流中的结果类型
             </summary>
         </member>
     </members>

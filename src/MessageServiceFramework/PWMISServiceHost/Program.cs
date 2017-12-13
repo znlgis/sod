@@ -393,7 +393,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             //下面整个处理过程应该放到一个动态实例对象的方法中,否则,多线程问题难以避免
             SubscriberInfo subInfo = new SubscriberInfo(e.Listener);
             MessageProcesser processer = new MessageProcesser(subInfo, e.Listener.FromMessage);
-            processer.ServiceErrorEvent += new EventHandler<ServiceErrorEventArgs>(processer_ServiceErrorEvent);
+            processer.ServiceErrorEvent += new EventHandler<ServiceErrorEventArgs>(Processer_ServiceErrorEvent);
             //Console.WriteLine("process message begin.");
             try
             {
@@ -401,7 +401,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             }
             catch (Exception ex)
             {
-                processer_ServiceErrorEvent(processer, new ServiceErrorEventArgs(ex));
+                Processer_ServiceErrorEvent(processer, new ServiceErrorEventArgs(ex));
             }
             //Console.WriteLine("process message end.");
         }
@@ -409,10 +409,17 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         static void Instance_ListenerRequestMessage(object sender, MessageRequestEventArgs e)
         {
             MessageProcesser processer = new MessageProcesser();
-            processer.Execute(e);
+            try
+            {
+                processer.Execute(e);
+            }
+            catch (Exception ex)
+            {
+                Processer_ServiceErrorEvent(processer, new ServiceErrorEventArgs(ex));
+            }
         }
 
-        static void processer_ServiceErrorEvent(object sender, ServiceErrorEventArgs e)
+        public static void Processer_ServiceErrorEvent(object sender, ServiceErrorEventArgs e)
         {
             string text = string.Format("[{0}]处理服务的时候发生异常：{1}\r\n错误发生时的异常对象调用堆栈：\r\n{2}", 
                 DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), 

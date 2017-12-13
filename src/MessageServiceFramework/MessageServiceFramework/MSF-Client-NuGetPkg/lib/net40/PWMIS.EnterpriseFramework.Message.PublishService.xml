@@ -94,6 +94,33 @@
             <param name="message"></param>
             <returns></returns>
         </member>
+        <member name="T:MessagePublishService.MessageUser">
+            <summary>
+            消息相关的系统用户信息
+            </summary>
+        </member>
+        <member name="P:MessagePublishService.MessageUser.HID">
+            <summary>
+            客户的硬盘号
+            </summary>
+        </member>
+        <member name="P:MessagePublishService.MessageUser.Validated">
+            <summary>
+            是否已经验证
+            </summary>
+        </member>
+        <member name="P:MessagePublishService.MessageUser.RegisterData">
+            <summary>
+            注册连接的时候的自定义数据
+            </summary>
+        </member>
+        <member name="M:MessagePublishService.MessageUser.GetUserFromMessageString(System.String)">
+            <summary>
+            根据协议的消息字符串，获取用户信息。
+            </summary>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
         <member name="T:PWMIS.EnterpriseFramework.Message.PublishService.IValidateUser">
             <summary>
             访问消息服务框架的用户验证接口
@@ -109,33 +136,6 @@
         <member name="T:PWMIS.EnterpriseFramework.Message.PublishService.SimpleMessageUserValidater">
             <summary>
             示例的简单用户验证类
-            </summary>
-        </member>
-        <member name="T:MessagePublishService.MessageUser">
-            <summary>
-            消息相关的系统用户信息
-            </summary>
-        </member>
-        <member name="M:MessagePublishService.MessageUser.GetUserFromMessageString(System.String)">
-            <summary>
-            根据协议的消息字符串，获取用户信息。
-            </summary>
-            <param name="message"></param>
-            <returns></returns>
-        </member>
-        <member name="P:MessagePublishService.MessageUser.HID">
-            <summary>
-            客户的硬盘号
-            </summary>
-        </member>
-        <member name="P:MessagePublishService.MessageUser.Validated">
-            <summary>
-            是否已经验证
-            </summary>
-        </member>
-        <member name="P:MessagePublishService.MessageUser.RegisterData">
-            <summary>
-            注册连接的时候的自定义数据
             </summary>
         </member>
     </members>

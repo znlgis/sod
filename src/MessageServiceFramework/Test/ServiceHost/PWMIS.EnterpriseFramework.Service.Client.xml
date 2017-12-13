@@ -9,6 +9,36 @@
             服务连接对象
             </summary>
         </member>
+        <member name="E:PWMIS.EnterpriseFramework.Service.Client.Connection.ErrorMessage">
+            <summary>
+            处理服务的异常信息
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.ServiceUri">
+            <summary>
+            服务的基地址
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.ServiceSubscriber">
+            <summary>
+            获取服务订阅者
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.UseConnectionPool">
+            <summary>
+            是否使用连接池，在订阅模式下，不必设置该属性
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.KeepAlive">
+            <summary>
+            两次请求直接是否保持长连接
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.RegisterData">
+            <summary>
+            向服务器注册连接的附加数据
+            </summary>
+        </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.Connection.#ctor(System.String)">
             <summary>
             以一个服务基地址初始化本类
@@ -63,31 +93,31 @@
             取消订阅，关闭连接
             </summary>
         </member>
-        <member name="E:PWMIS.EnterpriseFramework.Service.Client.Connection.ErrorMessage">
-            <summary>
-            处理服务的异常信息
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.ServiceUri">
-            <summary>
-            服务的基地址
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.ServiceSubscriber">
-            <summary>
-            获取服务订阅者
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Connection.UseConnectionPool">
-            <summary>
-            是否使用连接池，在订阅模式下，不必设置该属性
-            </summary>
-        </member>
         <member name="T:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1">
             <summary>
             消息转换器
             </summary>
             <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.Result">
+            <summary>
+            转换结果
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.Succeed">
+            <summary>
+            转换是否成功，强烈建议使用前检查该属性
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.MessageText">
+            <summary>
+            消息的原始文本
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.ErrorMessage">
+            <summary>
+            错误信息
+            </summary>
         </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.GetResponseDataType">
             <summary>
@@ -116,65 +146,9 @@
             <param name="result"></param>
             <returns></returns>
         </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.Result">
-            <summary>
-            转换结果
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.Succeed">
-            <summary>
-            转换是否成功，强烈建议使用前检查该属性
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.MessageText">
-            <summary>
-            消息的原始文本
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.MessageConverter`1.ErrorMessage">
-            <summary>
-            错误信息
-            </summary>
-        </member>
         <member name="T:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceHostInfo">
             <summary>
             服务宿主信息
-            </summary>
-        </member>
-        <member name="T:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel">
-            <summary>
-            服务注册信息
-            </summary>
-        </member>
-        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.GetUri">
-            <summary>
-            获取服务地址的Uri形势
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.RegServerIP">
-            <summary>
-            服务IP:订阅者
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.RegServerPort">
-            <summary>
-            服务端口:订阅者
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.RegServerDesc">
-            <summary>
-            服务描述:订阅者
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.IsActive">
-            <summary>
-            是否当前使用
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.ServerMappingIP">
-            <summary>
-            映射的服务服务IP，用于防火墙或路由器映射的公网IP
             </summary>
         </member>
         <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceHostInfo.ActiveConnectCount">
@@ -202,54 +176,85 @@
             日志目录
             </summary>
         </member>
-        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity">
+        <member name="T:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel">
             <summary>
-            服务相关的用户标识
+            服务注册信息
             </summary>
         </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.CreateTime">
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.RegServerIP">
             <summary>
-            获取凭据的创建时间
+            服务IP:订阅者
             </summary>
         </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Id">
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.RegServerPort">
             <summary>
-            标识编号
+            服务端口:订阅者
             </summary>
         </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Name">
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.RegServerDesc">
             <summary>
-            标识名
+            服务描述:订阅者
             </summary>
         </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Expire">
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.IsActive">
             <summary>
-            过期时间，默认时间 3分钟
+            是否当前使用
             </summary>
         </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.IsAuthenticated">
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.ServerMappingIP">
             <summary>
-            标识是否已经验证
+            映射的服务服务IP，用于防火墙或路由器映射的公网IP
             </summary>
         </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Key">
+        <member name="M:PWMIS.EnterpriseFramework.Service.Client.Model.ServiceRegModel.GetUri">
             <summary>
-            标识对应的缓存的键，通过它判断是否是同一个缓存中的对象
+            获取服务地址的Uri形势
             </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Uri">
-            <summary>
-            标识所在的服务基地址（可用于检查集群负载情况）
-            </summary>
+            <returns></returns>
         </member>
         <member name="T:PWMIS.EnterpriseFramework.Service.Client.Proxy">
             <summary>
             服务代理类 2012.5.3 整理
             </summary>
         </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.ConnectionUserName">
+            <summary>
+            连接使用的用户名，如果做了设置，那么在服务端必须做相应的配置
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.ConnectionPassword">
+            <summary>
+            连接使用的用户密码，如果做了设置，那么在服务端必须做相应的配置
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.KeepAlive">
+            <summary>
+            两次请求之间是否保持长连接。指定该属性，将设置使用连接池。
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.RegisterData">
+            <summary>
+            向服务器注册连接的附加数据
+            </summary>
+        </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.CheckConnect">
             <summary>
             检查连接是否可用，如果不可用，则重新打开连接
+            </summary>
+        </member>
+        <member name="E:PWMIS.EnterpriseFramework.Service.Client.Proxy.ErrorMessage">
+            <summary>
+            处理服务的异常信息
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.ServiceSubscriber">
+            <summary>
+            获取服务订阅者
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.ServiceBaseUri">
+            <summary>
+            服务的基础地址
             </summary>
         </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.GetServiceMessage``1(System.String,PWMIS.EnterpriseFramework.Common.DataType)">
@@ -298,7 +303,7 @@
         </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestServiceAsync``1(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest)">
             <summary>
-            请求一个服务，然后异步处理结果。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。
+            请求一个服务，然后异步处理结果。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。不支持 KeepAlive 指定使用长连接。
             </summary>
             <typeparam name="T">服务方法的结果类型</typeparam>
             <param name="request">"服务请求"对象</param>
@@ -306,7 +311,7 @@
         </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestServiceAsync``3(PWMIS.EnterpriseFramework.Service.Basic.ServiceRequest,PWMIS.EnterpriseFramework.Common.MyFunc{``1,``2})">
             <summary>
-            请求一个服务，然后异步处理结果，并运行服务端处理过程中回调客户端的函数。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。
+            请求一个服务，然后异步处理结果，并运行服务端处理过程中回调客户端的函数。注意如果没有订阅异常处理事件（ErrorMessage），将在Task 上抛出异常。不支持 KeepAlive 指定使用长连接。
             </summary>
             <typeparam name="T">服务方法的结果类型</typeparam>
             <typeparam name="TFunPara">要执行服务中间调用的回调函数的参数类型</typeparam>
@@ -329,7 +334,7 @@
         </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.RequestServiceAsync``3(System.String,PWMIS.EnterpriseFramework.Common.DataType,PWMIS.EnterpriseFramework.Common.MyFunc{``1,``2})">
             <summary>
-            异步请求服务，并允许服务在执行过程中，回调客户端函数
+            异步请求服务，并允许服务在执行过程中，回调客户端函数。不支持 KeepAlive 指定使用长连接。
             </summary>
             <typeparam name="T">服务的结果返回类型</typeparam>
             <typeparam name="TFunPara">回调函数的参数类型</typeparam>
@@ -501,6 +506,11 @@
             </summary>
             <param name="messageId"></param>
         </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.UseConnectionPool">
+            <summary>
+            是否使用连接池，在订阅模式下，不必设置该属性
+            </summary>
+        </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.Connect(System.String)">
             <summary>
             连接服务
@@ -530,26 +540,6 @@
             </summary>
             <param name="host">远程主机名，可以是一个IP地址</param>
             <param name="port">连接远程主机的端口号</param>
-        </member>
-        <member name="E:PWMIS.EnterpriseFramework.Service.Client.Proxy.ErrorMessage">
-            <summary>
-            处理服务的异常信息
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.ServiceSubscriber">
-            <summary>
-            获取服务订阅者
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.ServiceBaseUri">
-            <summary>
-            服务的基础地址
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Service.Client.Proxy.UseConnectionPool">
-            <summary>
-            是否使用连接池，在订阅模式下，不必设置该属性
-            </summary>
         </member>
         <member name="T:PWMIS.EnterpriseFramework.Service.Client.PublishServicePool">
             <summary>
@@ -593,6 +583,56 @@
             <summary>
               使用此强类型资源类，为所有资源查找
               重写当前线程的 CurrentUICulture 属性。
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity">
+            <summary>
+            服务相关的用户标识
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.CreateTime">
+            <summary>
+            获取凭据的创建时间
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Id">
+            <summary>
+            标识编号
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Name">
+            <summary>
+            标识名
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Expire">
+            <summary>
+            过期时间，默认时间 3分钟
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.IsAuthenticated">
+            <summary>
+            标识是否已经验证
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Key">
+            <summary>
+            标识对应的缓存的键，通过它判断是否是同一个缓存中的对象
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.Uri">
+            <summary>
+            标识所在的服务基地址（可用于检查集群负载情况）
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.HardwareIdentity">
+            <summary>
+            客户的硬件标识
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.Principal.ServiceIdentity.UserData">
+            <summary>
+            注册连接的时候的自定义数据
             </summary>
         </member>
     </members>

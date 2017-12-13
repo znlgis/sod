@@ -54,6 +54,16 @@
             <param name="input"></param>
             <returns></returns>
         </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.DeMapNumber">
+            <summary>
+            获取反向的数字对照表
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.MapNumber">
+            <summary>
+            获取数字对照表
+            </summary>
+        </member>
         <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.Encrypt8bitString(System.String,System.Int32[])">
             <summary>
             将UTF8格式的字符串，编码成8位编码格式的新字符串
@@ -84,15 +94,71 @@
             <param name="encryptString"></param>
             <returns></returns>
         </member>
-        <member name="P:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.DeMapNumber">
+        <member name="T:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptionUtil">
             <summary>
-            获取反向的数字对照表
+            加密，解密功能函数
             </summary>
         </member>
-        <member name="P:PWMIS.EnterpriseFramework.Common.Encrypt.DataConverter.MapNumber">
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptionUtil.EncryptData(System.String,System.String)">
             <summary>
-            获取数字对照表
+            加密函数
             </summary>
+            <param name="strKey"></param>
+            <param name="strData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptionUtil.DecryptData(System.String,System.String)">
+            <summary>
+            解密函数
+            </summary>
+            <param name="strKey"></param>
+            <param name="strData"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptionUtil.InitKey(System.String)">
+            <summary>
+            生成key的函数
+            </summary>
+            <param name="strKey"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper">
+            <summary>
+            对字符串进行加密的功能类
+            </summary>
+        </member>
+        <member name="F:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.ENCRYPTKEY">
+            <summary>
+            DES加密密钥
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.DesEncrypt(System.String)">
+            <summary>
+            DES方式加密字符串的方法
+            </summary>
+            <param name="s">要进行加密的字符串</param>
+            <returns>加密后的字符串</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.DesDecrypt(System.String)">
+            <summary>
+            DES方式解密字符串的方法
+            </summary>
+            <param name="s">要进行解密的字符串</param>
+            <returns>解密后的字符串</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.MD5Encrypt(System.String)">
+            <summary>
+            MD5方式加密字符串的方法
+            </summary>
+            <param name="s">要进行加密的字符串</param>
+            <returns>加密后的字符串</returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.SHA1Encrypt(System.String)">
+            <summary>
+            SHA1方式加密字符串的方法
+            </summary>
+            <param name="s">要进行加密的字符串</param>
+            <returns>加密后的字符串</returns>
         </member>
         <member name="T:PWMIS.EnterpriseFramework.Common.DosCommandOutput">
             <summary>
@@ -142,37 +208,64 @@
             <param name="milliseconds">等待时间，毫秒</param>
             <returns>是否成功</returns>
         </member>
-        <member name="T:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptionUtil">
-            <summary>
-            加密，解密功能函数
-            </summary>
-        </member>
-        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptionUtil.EncryptData(System.String,System.String)">
-            <summary>
-            加密函数
-            </summary>
-            <param name="strKey"></param>
-            <param name="strData"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptionUtil.DecryptData(System.String,System.String)">
-            <summary>
-            解密函数
-            </summary>
-            <param name="strKey"></param>
-            <param name="strData"></param>
-            <returns></returns>
-        </member>
-        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptionUtil.InitKey(System.String)">
-            <summary>
-            生成key的函数
-            </summary>
-            <param name="strKey"></param>
-            <returns></returns>
-        </member>
         <member name="T:PWMIS.EnterpriseFramework.Common.FileCut">
             <summary>
             文件分割
+            </summary>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Common.FileCut.CutedFileHead">
+            <summary>
+            分卷文件头结构
+            </summary>
+        </member>
+        <member name="F:PWMIS.EnterpriseFramework.Common.FileCut.CutedFileHead.MapFileName">
+            <summary>
+            合并分卷的时候，隐射的物理文件名
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.SourceFile">
+            <summary>
+            要切分的源文件
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.DescFolder">
+            <summary>
+            操作的目标目录
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.CutSize">
+            <summary>
+            切分文件的大小，默认1M大小
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ErrorMessage">
+            <summary>
+            操作中的错误信息，如果操作失败请即时检查该属性
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgresFileNumber">
+            <summary>
+            当前文件数量处理进度
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgressFileSize">
+            <summary>
+            当前处理进度的文件大小
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgressFileRead">
+            <summary>
+            当前处理进度的文件已经处理的字节数
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgressFileName">
+            <summary>
+            当前正在处理的文件名称
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgressWorking">
+            <summary>
+            进度是否处于工作中
             </summary>
         </member>
         <member name="F:PWMIS.EnterpriseFramework.Common.FileCut.DeleteFileArterLink">
@@ -294,61 +387,6 @@
             <param name="descFileName">链接后的文件新的文件名，不要带路径</param>
             <returns>链接后的文件名，如果操作不成功返回空</returns>
         </member>
-        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.SourceFile">
-            <summary>
-            要切分的源文件
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.DescFolder">
-            <summary>
-            操作的目标目录
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.CutSize">
-            <summary>
-            切分文件的大小，默认1M大小
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ErrorMessage">
-            <summary>
-            操作中的错误信息，如果操作失败请即时检查该属性
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgresFileNumber">
-            <summary>
-            当前文件数量处理进度
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgressFileSize">
-            <summary>
-            当前处理进度的文件大小
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgressFileRead">
-            <summary>
-            当前处理进度的文件已经处理的字节数
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgressFileName">
-            <summary>
-            当前正在处理的文件名称
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.Common.FileCut.ProgressWorking">
-            <summary>
-            进度是否处于工作中
-            </summary>
-        </member>
-        <member name="T:PWMIS.EnterpriseFramework.Common.FileCut.CutedFileHead">
-            <summary>
-            分卷文件头结构
-            </summary>
-        </member>
-        <member name="F:PWMIS.EnterpriseFramework.Common.FileCut.CutedFileHead.MapFileName">
-            <summary>
-            合并分卷的时候，隐射的物理文件名
-            </summary>
-        </member>
         <member name="T:PWMIS.EnterpriseFramework.Common.IpUtility">
             <summary>
             IP信息类，判断IP是否为内网IP
@@ -384,44 +422,6 @@
             <summary>
             服务端消息的数据类型
             </summary>
-        </member>
-        <member name="T:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper">
-            <summary>
-            对字符串进行加密的功能类
-            </summary>
-        </member>
-        <member name="F:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.ENCRYPTKEY">
-            <summary>
-            DES加密密钥
-            </summary>
-        </member>
-        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.DesEncrypt(System.String)">
-            <summary>
-            DES方式加密字符串的方法
-            </summary>
-            <param name="s">要进行加密的字符串</param>
-            <returns>加密后的字符串</returns>
-        </member>
-        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.DesDecrypt(System.String)">
-            <summary>
-            DES方式解密字符串的方法
-            </summary>
-            <param name="s">要进行解密的字符串</param>
-            <returns>解密后的字符串</returns>
-        </member>
-        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.MD5Encrypt(System.String)">
-            <summary>
-            MD5方式加密字符串的方法
-            </summary>
-            <param name="s">要进行加密的字符串</param>
-            <returns>加密后的字符串</returns>
-        </member>
-        <member name="M:PWMIS.EnterpriseFramework.Common.Encrypt.EncryptHelper.SHA1Encrypt(System.String)">
-            <summary>
-            SHA1方式加密字符串的方法
-            </summary>
-            <param name="s">要进行加密的字符串</param>
-            <returns>加密后的字符串</returns>
         </member>
         <member name="F:PWMIS.EnterpriseFramework.Common.Hardware.HardDiskInfo.ModuleNumber">
             <summary>

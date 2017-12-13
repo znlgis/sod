@@ -73,7 +73,7 @@
             <summary>
             快速注册
             </summary>
-            <param name="indentity">客户端标识</param>
+            <param name="indentity">客户端标识，可能附带自定义的调用端应用程序标识</param>
         </member>
         <member name="M:MessagePublishService.IMessagePublishService.Unregist">
             <summary>
@@ -99,13 +99,6 @@
             消息相关的系统用户信息
             </summary>
         </member>
-        <member name="M:MessagePublishService.MessageUser.GetUserFromMessageString(System.String)">
-            <summary>
-            根据协议的消息字符串，获取用户信息。
-            </summary>
-            <param name="message"></param>
-            <returns></returns>
-        </member>
         <member name="P:MessagePublishService.MessageUser.HID">
             <summary>
             客户的硬盘号
@@ -114,6 +107,35 @@
         <member name="P:MessagePublishService.MessageUser.Validated">
             <summary>
             是否已经验证
+            </summary>
+        </member>
+        <member name="P:MessagePublishService.MessageUser.RegisterData">
+            <summary>
+            注册连接的时候的自定义数据
+            </summary>
+        </member>
+        <member name="M:MessagePublishService.MessageUser.GetUserFromMessageString(System.String)">
+            <summary>
+            根据协议的消息字符串，获取用户信息。
+            </summary>
+            <param name="message"></param>
+            <returns></returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Message.PublishService.IValidateUser">
+            <summary>
+            访问消息服务框架的用户验证接口
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Message.PublishService.IValidateUser.Validate(MessagePublishService.MessageUser)">
+            <summary>
+            验证用户。如果验证不通过，将拒绝此用户访问服务。
+            </summary>
+            <param name="user">访问消息服务框架的用户信息，这些信息在服务代理类上可以设置</param>
+            <returns>验证是否通过</returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.Message.PublishService.SimpleMessageUserValidater">
+            <summary>
+            示例的简单用户验证类
             </summary>
         </member>
     </members>

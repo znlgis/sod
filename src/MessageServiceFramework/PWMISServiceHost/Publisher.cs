@@ -114,6 +114,26 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
         protected abstract void Publish(ref string workMessage);
 
+        /// <summary>
+        /// 停止发布订阅，通知所有订阅的客户端关闭连接
+        /// </summary>
+        public void StopPublish()
+        {
+            foreach (SubscriberInfo info in this.SubscriberInfoList.ToArray())
+            {
+                try
+                {
+                    info._innerListener.Close(1);
+                }
+                catch
+                {
+                    Console.WriteLine("监听器（{0}:{1}）已经断开！",info.FromIP,info.FromPort);
+                }
+                this.SubscriberInfoList.Remove(info);
+            }
+            Console.WriteLine("当前发布服务已经停止");
+        }
+
         MessageListener[] GetListeners()
         {
             List<MessageListener> list = new List<MessageListener>();
@@ -250,6 +270,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     PublisherFactory.Instance.RemovePublisher(self.TaskName);
                     Console.WriteLine("\r\n[{0}]当前任务已检验到事件源对象为非活动状态，工作线程退出--Task Name: {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this.GetShortTaskName(255));
                     batchIndex = 0;
+                    StopPublish();
                     break;
                 }
                 string workMessage = "\r\n----publisher DoEvent------------------\r\n";
@@ -516,7 +537,19 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             ServiceEventSource ses = this.Context.PublishEventSource;
             if (ses.EventWork != null)
             {
-                Task.Factory.StartNew(ses.EventWork);
+                Task.Factory.StartNew(()=> {
+                    try
+                    {
+                        ses.EventWork();
+                    }
+                    catch (Exception ex)
+                    {
+                        ses.DeActive();
+                        lastPublishTime = DateTime.Now;
+                        Program.Processer_ServiceErrorEvent(this, new ServiceErrorEventArgs(ex, "事件源对象执行事件操作错误"));
+                    }
+
+                });
             }
         }
 

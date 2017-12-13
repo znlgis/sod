@@ -4,6 +4,11 @@
         <name>PWMIS.EnterpriseFramework.IOC</name>
     </assembly>
     <members>
+        <member name="P:PWMIS.EnterpriseFramework.IOC.IOCConfig.IOCConfigEntity">
+            <summary>
+            获取IOC配置信息类
+            </summary>
+        </member>
         <member name="M:PWMIS.EnterpriseFramework.IOC.IOCConfig.AddIocProvider(System.String,PWMIS.EnterpriseFramework.IOC.IocProvider)">
             <summary>
             增加一个Ioc提供程序的配置
@@ -12,14 +17,14 @@
             <param name="provider">提供程序信息</param>
             <returns>添加是否成功</returns>
         </member>
-        <member name="P:PWMIS.EnterpriseFramework.IOC.IOCConfig.IOCConfigEntity">
-            <summary>
-            获取IOC配置信息类
-            </summary>
-        </member>
         <member name="T:PWMIS.EnterpriseFramework.IOC.Unity">
             <summary>
             依赖注入容器管理类
+            </summary>
+        </member>
+        <member name="P:PWMIS.EnterpriseFramework.IOC.Unity.Instance">
+            <summary>
+            获取容器管理类的实例
             </summary>
         </member>
         <member name="M:PWMIS.EnterpriseFramework.IOC.Unity.GetCacheType(System.String,System.String)">
@@ -67,6 +72,13 @@
             <param name="providerAssembly">提供程序的程序集名称</param>
             <param name="providerType">类型的完整名称</param>
             <returns></returns>
+        </member>
+        <member name="T:PWMIS.EnterpriseFramework.IOC.Unity.ProviderCompare">
+            <summary>
+            提供程序比较委托
+            </summary>
+            <param name="provider">提供程序</param>
+            <returns>是否符合比较条件</returns>
         </member>
         <member name="M:PWMIS.EnterpriseFramework.IOC.Unity.findProvider(PWMIS.EnterpriseFramework.IOC.Unity.ProviderCompare)">
             <summary>
@@ -155,18 +167,6 @@
             </summary>
             <param name="interfaceTypeName">接口类型名称</param>
             <returns>接口名称</returns>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.IOC.Unity.Instance">
-            <summary>
-            获取容器管理类的实例
-            </summary>
-        </member>
-        <member name="T:PWMIS.EnterpriseFramework.IOC.Unity.ProviderCompare">
-            <summary>
-            提供程序比较委托
-            </summary>
-            <param name="provider">提供程序</param>
-            <returns>是否符合比较条件</returns>
         </member>
     </members>
 </doc>

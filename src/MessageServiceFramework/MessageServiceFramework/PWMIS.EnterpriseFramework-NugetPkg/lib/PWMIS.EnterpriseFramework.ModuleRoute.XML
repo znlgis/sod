@@ -80,12 +80,6 @@
             模块提供程序抽象类
             </summary>
         </member>
-        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleProviderBase.Init(PWMIS.EnterpriseFramework.ModuleRoute.ModuleApplication)">
-            <summary>
-            初始化模块应用程序
-            </summary>
-            <param name="application"></param>
-        </member>
         <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ModuleProviderBase.PrividerName">
             <summary>
             模块名称
@@ -95,6 +89,12 @@
             <summary>
             获取模块应用程序
             </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleProviderBase.Init(PWMIS.EnterpriseFramework.ModuleRoute.ModuleApplication)">
+            <summary>
+            初始化模块应用程序
+            </summary>
+            <param name="application"></param>
         </member>
         <member name="T:PWMIS.EnterpriseFramework.ModuleRoute.IModuleRuntime">
             <summary>
@@ -147,6 +147,11 @@
             模块注册基类，需要在各个子模块重写该类
             </summary>
         </member>
+        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistration.ModuleName">
+            <summary>
+            需要重写的模块名称
+            </summary>
+        </member>
         <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistration.RegisterModule(PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistrationContext)">
             <summary>
             需要重写的模块注册方法
@@ -156,11 +161,6 @@
         <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistration.RegisterAllModules">
             <summary>
             注册所有的模块和它的提供者程序，该方法必须被首先调用
-            </summary>
-        </member>
-        <member name="P:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistration.ModuleName">
-            <summary>
-            需要重写的模块名称
             </summary>
         </member>
         <member name="M:PWMIS.EnterpriseFramework.ModuleRoute.ModuleRegistrationContext.ModuleRegister(PWMIS.EnterpriseFramework.ModuleRoute.IModuleContext)">

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>PDF.Net.MSF.Service.Host</id>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
     <title>PDF.NET MSF(Server Host)</title>
     <authors>bluedoctor</authors>
     <owners>pwmis.com</owners>
@@ -16,15 +16,15 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\lib\PWMIS.EnterpriseFramework.Message.PublisherLib.dll" target="lib\PWMIS.EnterpriseFramework.Message.PublisherLib.dll" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\lib\PWMIS.EnterpriseFramework.Message.PublisherLib.pdb" target="lib\PWMIS.EnterpriseFramework.Message.PublisherLib.pdb" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\lib\PWMIS.EnterpriseFramework.Message.PublisherLib.xml" target="lib\PWMIS.EnterpriseFramework.Message.PublisherLib.xml" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Content\IOCConfig.xml" target="Content\IOCConfig.xml" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Content\PdfNetEF.MessageServiceHost.exe.config" target="Content\PdfNetEF.MessageServiceHost.exe.config" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Readme.txt" target="Readme.txt" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Tools\install.ps1" target="Tools\install.ps1" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Tools\PdfNetEF.MessageServiceHost.exe" target="Tools\PdfNetEF.MessageServiceHost.exe" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Tools\PdfNetEF.MessageServiceHost.pdb" target="Tools\PdfNetEF.MessageServiceHost.pdb" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Tools\UpdateService.bat" target="Tools\UpdateService.bat" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\lib\PWMIS.EnterpriseFramework.Message.PublisherLib.dll" target="lib\PWMIS.EnterpriseFramework.Message.PublisherLib.dll" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\lib\PWMIS.EnterpriseFramework.Message.PublisherLib.pdb" target="lib\PWMIS.EnterpriseFramework.Message.PublisherLib.pdb" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\lib\PWMIS.EnterpriseFramework.Message.PublisherLib.xml" target="lib\PWMIS.EnterpriseFramework.Message.PublisherLib.xml" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Content\IOCConfig.xml" target="Content\IOCConfig.xml" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Content\PdfNetEF.MessageServiceHost.exe.config" target="Content\PdfNetEF.MessageServiceHost.exe.config" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Readme.txt" target="Readme.txt" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Tools\install.ps1" target="Tools\install.ps1" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Tools\PdfNetEF.MessageServiceHost.exe" target="Tools\PdfNetEF.MessageServiceHost.exe" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Tools\PdfNetEF.MessageServiceHost.pdb" target="Tools\PdfNetEF.MessageServiceHost.pdb" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Host-NuGetPkg\Tools\UpdateService.bat" target="Tools\UpdateService.bat" exclude="" />
   </files>
 </package>

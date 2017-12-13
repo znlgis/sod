@@ -101,6 +101,36 @@
             订阅者；
             </summary>
         </member>
+        <member name="E:MessageSubscriber.Subscriber.PublishingMessage">
+            <summary>
+            服务器正在出版消息
+            </summary>
+        </member>
+        <member name="P:MessageSubscriber.Subscriber.TimeOut">
+            <summary>
+            (同步模式下面的)请求响应的超时时间
+            </summary>
+        </member>
+        <member name="P:MessageSubscriber.Subscriber.Registed">
+            <summary>
+            监听器是否已经注册
+            </summary>
+        </member>
+        <member name="P:MessageSubscriber.Subscriber.RegisterData">
+            <summary>
+            向服务器注册连接的附加数据
+            </summary>
+        </member>
+        <member name="P:MessageSubscriber.Subscriber.UserName">
+            <summary>
+            订阅使用的用户名
+            </summary>
+        </member>
+        <member name="P:MessageSubscriber.Subscriber.Password">
+            <summary>
+            订阅使用的用户密码
+            </summary>
+        </member>
         <member name="M:MessageSubscriber.Subscriber.#ctor(System.String)">
             <summary>
             以一个服务订阅地址初始化本类
@@ -236,36 +266,6 @@
             检查心跳情况的线程计时器回调对象
             </summary>
             <returns></returns>
-        </member>
-        <member name="E:MessageSubscriber.Subscriber.PublishingMessage">
-            <summary>
-            服务器正在出版消息
-            </summary>
-        </member>
-        <member name="P:MessageSubscriber.Subscriber.TimeOut">
-            <summary>
-            (同步模式下面的)请求响应的超时时间
-            </summary>
-        </member>
-        <member name="P:MessageSubscriber.Subscriber.Registed">
-            <summary>
-            监听器是否已经注册
-            </summary>
-        </member>
-        <member name="P:MessageSubscriber.Subscriber.RegisterData">
-            <summary>
-            向服务器注册连接的附加数据
-            </summary>
-        </member>
-        <member name="P:MessageSubscriber.Subscriber.UserName">
-            <summary>
-            订阅使用的用户名
-            </summary>
-        </member>
-        <member name="P:MessageSubscriber.Subscriber.Password">
-            <summary>
-            订阅使用的用户密码
-            </summary>
         </member>
     </members>
 </doc>
