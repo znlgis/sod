@@ -72,6 +72,13 @@ namespace OQLTest
             Console.WriteLine("q00:one table and select all fields \r\n{0}", q00);
             Console.WriteLine(q00.PrintParameterInfo());
 
+            OQL q09 = OQL.From(user)
+               .Select().Count(user.ID,"")
+               .Where(cmp => cmp.Comparer(user.AddTime, "=", user.LastLoginTime))
+           .END;
+            Console.WriteLine("q09:one table and select all fields \r\n{0}", q09);
+            Console.WriteLine(q09.PrintParameterInfo());
+
             OQL q0 = OQL.From(user)
                .Select()
                .Where(user.NickName, user.RoleID)

@@ -20,6 +20,7 @@ using PWMIS.EnterpriseFramework.Service.Runtime;
 using PWMIS.EnterpriseFramework.Common.Encrypt;
 using PWMIS.EnterpriseFramework.Service.Client.Model;
 using System.Threading.Tasks;
+using System.Collections.Concurrent;
 
 namespace PWMIS.EnterpriseFramework.Service.Host
 {
@@ -78,7 +79,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// <summary>
         /// 订阅者信息列表
         /// </summary>
-        public List<SubscriberInfo> SubscriberInfoList = new List<SubscriberInfo>();
+        public ConcurrentBag<SubscriberInfo> SubscriberInfoList = new ConcurrentBag<SubscriberInfo>();
         /// <summary>
         /// 开始服务发布工作，如工作线程未启动，则新启动线程，否则加入当前工作队列。
         /// </summary>
@@ -108,8 +109,20 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// <param name="subInfo"></param>
         public void DeSubscribe(SubscriberInfo subInfo)
         {
-            if (SubscriberInfoList.Contains(subInfo))
-                SubscriberInfoList.Remove(subInfo);
+            List<SubscriberInfo> list = new List<SubscriberInfo>();
+            SubscriberInfo item;
+            while (!SubscriberInfoList.IsEmpty)
+            {
+                if (SubscriberInfoList.TryTake(out item))
+                {
+                    if (item != subInfo)
+                        list.Add(item);
+                }
+            }
+            foreach (SubscriberInfo sub in list)
+            {
+                SubscriberInfoList.Add(sub);
+            }
         }
 
         protected abstract void Publish(ref string workMessage);
@@ -119,17 +132,20 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// </summary>
         public void StopPublish()
         {
-            foreach (SubscriberInfo info in this.SubscriberInfoList.ToArray())
+            SubscriberInfo item;
+            while (!SubscriberInfoList.IsEmpty)
             {
-                try
+                if (SubscriberInfoList.TryTake(out item))
                 {
-                    info._innerListener.Close(1);
+                    try
+                    {
+                        item._innerListener.Close(1);
+                    }
+                    catch
+                    {
+                        Console.WriteLine("监听器（{0}:{1}）已经断开！", item.FromIP, item.FromPort);
+                    }
                 }
-                catch
-                {
-                    Console.WriteLine("监听器（{0}:{1}）已经断开！",info.FromIP,info.FromPort);
-                }
-                this.SubscriberInfoList.Remove(info);
             }
             Console.WriteLine("当前发布服务已经停止");
         }
@@ -143,7 +159,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 if (currLst != null)
                     list.Add(currLst);
                 else
-                    this.SubscriberInfoList.Remove(info);
+                    DeSubscribe(info);
             }
             return list.ToArray();
         }
@@ -394,7 +410,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                         DataConverter.DeEncrypt8bitString(publishResult.Length > 256 ? publishResult.Substring(0, 256) : publishResult));
                     tempMsg += text;
                     //System.Diagnostics.Debug.WriteLine(text);
-                    this.SubscriberInfoList.Remove(info);
+                    DeSubscribe(info);
                 }
             }
         }
@@ -490,7 +506,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                             publishResult.Length > 256 ? publishResult.Substring(0, 256) : publishResult);
                         workMessage += text;
                         //System.Diagnostics.Debug.WriteLine(text);
-                        this.SubscriberInfoList.Remove(info);
+                        DeSubscribe(info);
                     }
                     workMessage += string.Format("\r\n[{0}]请求处理完毕--Pub2 Count: {1} ,All usetime:{2}ms-------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, sw.ElapsedMilliseconds);
                 }
@@ -606,7 +622,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                             DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), info.SessionID, info.MessageID, publishResult.Length.ToString("###,###"),
                             publishResult.Length > 256 ? publishResult.Substring(0, 256) : publishResult);
                         workMessage += text;
-                        this.SubscriberInfoList.Remove(info);
+                        DeSubscribe(info);
                     }
                     workMessage += string.Format("\r\n[{0}]请求处理完毕--Pub2 Count: {1} ,All usetime:{2}ms-------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, sw.ElapsedMilliseconds);
                 }
