@@ -102,7 +102,8 @@ namespace PWMIS.MemoryStorage
         /// 导出实体数据到内存数据库。如果当前实体操作失败，请检查导出事件的异常参数对象。
         /// </summary>
         /// <param name="funQ">获取导出数据的查询表达式委托方法，委托方法的参数为导出批次号；如果结果为空，导出实体全部数据</param>
-        public void Export(Func<int,T,OQL> funQ) 
+        /// <param name="initBatchNumber">要初始化导出批次号的函数</param>
+        public void Export(Func<int,T,OQL> funQ,Func<T,int> initBatchNumber) 
         {
             Type entityType = typeof(T);
             try
@@ -114,7 +115,7 @@ namespace PWMIS.MemoryStorage
                 if (currBatch == null)
                 {
                     currBatch = new ExportBatchInfo();
-                    currBatch.BatchNumber = 1;
+                    currBatch.BatchNumber = initBatchNumber==null?1: initBatchNumber(new T());
                     currBatch.ExportTableName = exportTableName;
                     currBatch.LastExportDate = DateTime.Now;
                    // batchList.Add(currBatch);
