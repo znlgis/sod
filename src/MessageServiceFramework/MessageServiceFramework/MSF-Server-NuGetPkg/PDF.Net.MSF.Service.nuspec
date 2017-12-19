@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>PDF.Net.MSF.Service</id>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
     <title>PDF.NET MSF(Server RunTime)</title>
     <authors>bluedoctor</authors>
     <owners>pwmis.com</owners>
@@ -13,18 +13,18 @@
     <tags>WCF,Message</tags>
     <dependencies>
       <group targetFramework="net40">
-        <dependency id="PDF.Net.MSF.Client" version="1.1.1" />
+        <dependency id="PDF.Net.MSF.Client" version="1.2.0" />
         <dependency id="PDF.NET.EnterpriseFramework" version="1.1.1" />
       </group>
     </dependencies>
   </metadata>
   <files>
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\lib\PWMIS.EnterpriseFramework.Service.Runtime.dll" target="lib\PWMIS.EnterpriseFramework.Service.Runtime.dll" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\lib\PWMIS.EnterpriseFramework.Service.Runtime.pdb" target="lib\PWMIS.EnterpriseFramework.Service.Runtime.pdb" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\lib\PWMIS.EnterpriseFramework.Service.Runtime.xml" target="lib\PWMIS.EnterpriseFramework.Service.Runtime.xml" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\Readme.txt" target="Readme.txt" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\Tools\install.ps1" target="Tools\install.ps1" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\Tools\PreCompile.bat" target="Tools\PreCompile.bat" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\Tools\SucessCompiled.vbs" target="Tools\SucessCompiled.vbs" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\lib\PWMIS.EnterpriseFramework.Service.Runtime.dll" target="lib\PWMIS.EnterpriseFramework.Service.Runtime.dll" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\lib\PWMIS.EnterpriseFramework.Service.Runtime.pdb" target="lib\PWMIS.EnterpriseFramework.Service.Runtime.pdb" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\lib\PWMIS.EnterpriseFramework.Service.Runtime.xml" target="lib\PWMIS.EnterpriseFramework.Service.Runtime.xml" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\Readme.txt" target="Readme.txt" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\Tools\install.ps1" target="Tools\install.ps1" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\Tools\PreCompile.bat" target="Tools\PreCompile.bat" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-NuGetPkg\Tools\SucessCompiled.vbs" target="Tools\SucessCompiled.vbs" exclude="" />
   </files>
 </package>

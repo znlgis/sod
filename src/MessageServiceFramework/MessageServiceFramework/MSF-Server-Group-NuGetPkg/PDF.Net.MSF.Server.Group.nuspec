@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>PDF.Net.MSF.Server.Group</id>
-    <version>1.1.1</version>
+    <version>1.2.0</version>
     <title>PDF.NET MSF(Server Group RunTime)</title>
     <authors>bluedoctor</authors>
     <owners>pwmis.com</owners>
@@ -12,14 +12,14 @@
     <copyright>Copyright © pwmis.com</copyright>
     <tags>WCF,Message</tags>
     <dependencies>
-      <dependency id="PDF.Net.MSF.Client" version="1.1.1" />
-      <dependency id="PDF.Net.MSF.Service" version="1.1.1" />
+      <dependency id="PDF.Net.MSF.Client" version="1.2.0" />
+      <dependency id="PDF.Net.MSF.Service" version="1.2.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Group-NuGetPkg\lib\PWMIS.EnterpriseFramework.Service.Group.dll" target="lib\PWMIS.EnterpriseFramework.Service.Group.dll" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Group-NuGetPkg\lib\PWMIS.EnterpriseFramework.Service.Group.pdb" target="lib\PWMIS.EnterpriseFramework.Service.Group.pdb" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Group-NuGetPkg\lib\PWMIS.EnterpriseFramework.Service.Group.xml" target="lib\PWMIS.EnterpriseFramework.Service.Group.xml" exclude="" />
-    <file src="E:\研究\SOD\MessageServiceFramework\MessageServiceFramework\MSF-Server-Group-NuGetPkg\Readme.txt" target="Readme.txt" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Group-NuGetPkg\lib\PWMIS.EnterpriseFramework.Service.Group.dll" target="lib\PWMIS.EnterpriseFramework.Service.Group.dll" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Group-NuGetPkg\lib\PWMIS.EnterpriseFramework.Service.Group.pdb" target="lib\PWMIS.EnterpriseFramework.Service.Group.pdb" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Group-NuGetPkg\lib\PWMIS.EnterpriseFramework.Service.Group.xml" target="lib\PWMIS.EnterpriseFramework.Service.Group.xml" exclude="" />
+    <file src="E:\Git\sod\src\MessageServiceFramework\MessageServiceFramework\MSF-Server-Group-NuGetPkg\Readme.txt" target="Readme.txt" exclude="" />
   </files>
 </package>

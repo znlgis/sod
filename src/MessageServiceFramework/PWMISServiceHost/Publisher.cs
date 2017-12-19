@@ -8,7 +8,7 @@
  * 本功能采用“享元模式”设计。
  * 
  * 注意：以后需要修改程序，ServicePublisher应该记录所有的 ServiceContext 对象
- */ 
+ */
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +29,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         private bool isRunning;
         private Thread thread;
         private int batchIndex = 0;//执行的批次顺序号
+        private ConcurrentBag<string> ProcessedRequestsUrl = new ConcurrentBag<string>();
 
         AutoResetEvent resetEvent = new AutoResetEvent(false);
         /// <summary>
@@ -47,6 +48,8 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// 每一批次的执行间隔时间，单位是毫秒，如果小于等于零，则不执行等待。默认为1秒
         /// </summary>
         public int BatchInterval { get; set; }
+
+
         /// <summary>
         /// 发布操作时候的错误事件
         /// </summary>
@@ -61,10 +64,34 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             this.BatchInterval = 1000;
         }
 
+        /// <summary>
+        /// 添加要处理的请求消息
+        /// </summary>
+        /// <param name="request"></param>
+        public void AddProcessedRequest(ServiceRequest request)
+        {
+            string url = request.ServiceUrl;
+            if (!ProcessedRequestsUrl.Contains(url))
+                ProcessedRequestsUrl.Add(url);
+        }
+
+        private void ClearServiceObjectCache()
+        {
+            string req = null;
+            while (!ProcessedRequestsUrl.IsEmpty)
+            {
+                if (ProcessedRequestsUrl.TryTake(out req))
+                {
+                    ServiceContext context = new ServiceContext(req);
+                    ServiceFactory.RemoveServiceObject(context);
+                }
+            }
+        }
+
         protected string GetShortTaskName(int length)
         {
             string name = this.TaskName;
-            return name.Length > length ? name.Substring(0, length)+"...(lenth:"+ name.Length+")" : name;
+            return name.Length > length ? name.Substring(0, length) + "...(lenth:" + name.Length + ")" : name;
         }
 
         /// <summary>
@@ -267,6 +294,8 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             }
             while (true);
             isRunning = false;
+            //清理服务对象
+            ClearServiceObjectCache();
         }
 
         /// <summary>
@@ -289,31 +318,36 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     StopPublish();
                     break;
                 }
-                string workMessage = "\r\n----publisher DoEvent------------------\r\n";
 
-                int count = GetListeners().Length;
-                if (count == 0)
-                {
-                    Console.WriteLine("[{0}]当前任务已经没有监听器，但事件源对象仍然活动，可接受再次订阅--Task Name: {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this.GetShortTaskName(255));
-                }
-                else
-                {
-                    Console.WriteLine("[{0}]当前工作线程有{1}个相关的监听器，Task Name：{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, this.GetShortTaskName(255));
-                }
+                string workMessage = "\r\n----publisher DoEvent------------------\r\n";
                 //等待服务对象触发事件，等待30秒
                 if (resetEvent.WaitOne(30 * 1000))
                 {
                     this.Publish(ref workMessage);
                     if (workMessage.Length > 0)
                     {
-                        Console.WriteLine( workMessage);
+                        Console.WriteLine(workMessage);
                     }
                     //推送完成，触发业务线程状态，允许业务线程继续
                     self.SetWorkEvent();
                 }
-                
+                else
+                {
+                    int count = GetListeners().Length;
+                    if (count == 0)
+                    {
+                        Console.WriteLine("[{0}]当前任务已经没有监听器，但事件源对象仍然活动，可接受再次订阅--Task Name: {1}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), this.GetShortTaskName(255));
+                    }
+                    else
+                    {
+                        Console.WriteLine("[{0}]当前工作线程有{1}个相关的监听器，Task Name：{2}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, this.GetShortTaskName(255));
+                    }
+                }
+
             }
             isRunning = false;
+            //清理服务对象
+            ClearServiceObjectCache();
         }
 
         protected string CallService(ServiceContext context)
@@ -386,7 +420,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             context.PreGetMessageFun = base.PreGetMessageFun(info);
             //根据每个会话来计算服务结果
             publishResult = CallService(info.SessionID, context);
-            tempMsg += string.Format("\r\nPub No.{0},have used {1}ms.\r\n", index++, sw.ElapsedMilliseconds);
+            tempMsg += string.Format("\r\nPub2 No.{0},have used {1}ms.\r\n", index++, sw.ElapsedMilliseconds);
             if (context.SendEmptyResult || (!context.SendEmptyResult && !context.NoResultRecord(publishResult)))
             {
                 //可能执行完服务后，监听器又断开了，因此需要再次获取
@@ -421,7 +455,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
             int index = 0;
-            string tempMsg = "";
+            string tempMsg = string.Format("\r\nPub2 CallService Begin:{0}.\r\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
             if (ParallelExecute)//是否启用并行执行
             {
                 Parallel.ForEach(this.SubscriberInfoList.ToArray(), info =>
@@ -439,7 +473,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
             sw.Stop();
             workMessage += tempMsg;
-            workMessage += string.Format("\r\nPub All count={0},All have used {1}ms.\r\n", index, sw.ElapsedMilliseconds); ;
+            workMessage += string.Format("\r\nPub2 CallService End, All count={0},All have used {1}ms.\r\n", index, sw.ElapsedMilliseconds); ;
         }
 
     }
@@ -489,9 +523,9 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     {
                         count++;
                         MessageCenter.Instance.NotifyOneMessage(currLst, info.MessageID, publishResult);
-                        string text = string.Format("\r\n[{0}]Pub2 To,SessionID: {1} \r\n>>[ID:{2}]消息长度：{3} 字节 ,消息内容摘要：\r\n{4}",
+                        string text = string.Format("\r\n[{0}]Pub2 To Client({1}) \r\n>>[ID:{2}]消息长度：{3} 字节 ,消息内容摘要：\r\n{4}",
                             DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
-                            info.SessionID,
+                            info.FromIP + ":" + info.FromPort,
                             info.MessageID,
                             publishResult.Length.ToString("###,###"),
                             DataConverter.DeEncrypt8bitString(publishResult.Length > 256 ? publishResult.Substring(0, 256) : publishResult)
@@ -501,18 +535,20 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     }
                     else
                     {
-                        string text = string.Format("\r\n[{0}]Pub2 未找到监听器， Session,ID: {1} \r\n>>[ID:{2}]消息长度：{3} 字节 ,消息内容摘要：\r\n{4}",
-                            DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), info.SessionID, info.MessageID, publishResult.Length.ToString("###,###"),
+                        string text = string.Format("\r\n[{0}]Pub2 未找到监听器，Client({1}) \r\n>>[ID:{2}]消息长度：{3} 字节 ,消息内容摘要：\r\n{4}",
+                            DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
+                            info.FromIP + ":" + info.FromPort,
+                            info.MessageID, publishResult.Length.ToString("###,###"),
                             publishResult.Length > 256 ? publishResult.Substring(0, 256) : publishResult);
                         workMessage += text;
                         //System.Diagnostics.Debug.WriteLine(text);
                         DeSubscribe(info);
                     }
-                    workMessage += string.Format("\r\n[{0}]请求处理完毕--Pub2 Count: {1} ,All usetime:{2}ms-------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, sw.ElapsedMilliseconds);
+                    workMessage += string.Format("\r\n[{0}]请求处理完毕--Pub Count: {1} ,All usetime:{2}ms-------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, sw.ElapsedMilliseconds);
                 }
             }
             sw.Stop();
-            workMessage += string.Format("\r\nPub2 CallService All Usetime:{0}ms.\r\n", sw.ElapsedMilliseconds);
+            workMessage += string.Format("\r\nPub2 CallService End,All Usetime:{0}ms.\r\n", sw.ElapsedMilliseconds);
         }
     }
 
@@ -522,9 +558,9 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         string publishResult;
         DateTime lastPublishTime;
         bool published;
-        AutoResetEvent workEvent = new AutoResetEvent(false);
+        AutoResetEvent workEvent = new AutoResetEvent(true);
 
-        public EventServicePublisher(string taskName, IServiceContext context):base(taskName)
+        public EventServicePublisher(string taskName, IServiceContext context) : base(taskName)
         {
             this.Context = (ServiceContext)context;
             this.Context.OnPublishDataEvent += Context_OnPublishDataEvent;
@@ -533,16 +569,15 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         void Context_OnPublishDataEvent(object sender, ServiceEventArgs e)
         {
             //当前方法工作在业务工作线程
-           
+            //这里必须等待推送线程完成当前推送任务，业务工作线程进入等待状态
+            workEvent.WaitOne();
             Context.WriteResponse(e.EventData);
             this.publishResult = Context.Response.AllText;
             Context.Response.End();
-           
+
             published = false;
-            base.SetPublishEvent();
             //事件推送线程收到信号，开始工作
-            //这里必须等待推送线程完成当前推送任务，业务工作线程进入等待状态
-            workEvent.WaitOne();
+            base.SetPublishEvent();
         }
 
         /// <summary>
@@ -553,13 +588,20 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             ServiceEventSource ses = this.Context.PublishEventSource;
             if (ses.EventWork != null)
             {
-                Task.Factory.StartNew(()=> {
+                Task.Factory.StartNew(() =>
+                {
                     try
                     {
                         ses.EventWork();
                     }
                     catch (Exception ex)
                     {
+                        this.publishResult = ServiceConst.CreateServiceErrorMessage(ex.Message);
+                        published = false;
+                        //事件推送线程收到信号，开始工作
+                        base.SetPublishEvent();
+                        Console.WriteLine("事件源对象执行事件操作错误,即将停止事件处理。");
+                        System.Threading.Thread.Sleep(1000);
                         ses.DeActive();
                         lastPublishTime = DateTime.Now;
                         Program.Processer_ServiceErrorEvent(this, new ServiceErrorEventArgs(ex, "事件源对象执行事件操作错误"));
@@ -592,12 +634,18 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             System.Diagnostics.Stopwatch sw = new System.Diagnostics.Stopwatch();
             sw.Start();
 
-            workMessage += string.Format("\r\nPub2 CallService Begin:{0}.\r\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
+            workMessage += string.Format("\r\nPublish Message Begin:{0}.\r\n", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"));
             int count = 0;
 
-            foreach (SubscriberInfo info in this.SubscriberInfoList.ToArray())
+            if (!Context.NoResultRecord(publishResult))
             {
-                if (!Context.NoResultRecord(publishResult))
+                string text = string.Format("\r\n[{0}]Pub3 消息长度：{1} 字节 ,消息内容摘要：\r\n{2}",
+                           DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
+                           publishResult.Length.ToString("###,###"),
+                           DataConverter.DeEncrypt8bitString(publishResult.Length > 256 ? publishResult.Substring(0, 256) : publishResult)
+                           );
+                workMessage += text;
+                foreach (SubscriberInfo info in this.SubscriberInfoList.ToArray())
                 {
                     //可能执行完服务后，监听器又断开了，因此需要再次获取
                     MessageListener currLst = MessageCenter.Instance.GetListener(info.FromIP, info.FromPort);
@@ -605,12 +653,10 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     {
                         count++;
                         MessageCenter.Instance.NotifyOneMessage(currLst, info.MessageID, publishResult);
-                        string text = string.Format("\r\n[{0}]Pub2 To,SessionID: {1} \r\n>>[ID:{2}]消息长度：{3} 字节 ,消息内容摘要：\r\n{4}",
+                        text = string.Format("\r\n[{0}]Pub3 To Client({1}:{2}) ,[MSGID:{3}]",
                             DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
-                            info.SessionID,
-                            info.MessageID,
-                            publishResult.Length.ToString("###,###"),
-                            DataConverter.DeEncrypt8bitString(publishResult.Length > 256 ? publishResult.Substring(0, 256) : publishResult)
+                            info.FromIP, info.FromPort,
+                            info.MessageID                          
                             );
                         workMessage += text;
                         //真正发布给监听器才算一次发布
@@ -618,17 +664,18 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     }
                     else
                     {
-                        string text = string.Format("\r\n[{0}]Pub2 未找到监听器， Session,ID: {1} \r\n>>[ID:{2}]消息长度：{3} 字节 ,消息内容摘要：\r\n{4}",
-                            DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), info.SessionID, info.MessageID, publishResult.Length.ToString("###,###"),
-                            publishResult.Length > 256 ? publishResult.Substring(0, 256) : publishResult);
+                        text = string.Format("\r\n[{0}]Pub3 未找到监听器， Client({1}) ,[MSGID:{2}]",
+                            DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
+                            info.FromIP + ":" + info.FromPort
+                          );
                         workMessage += text;
                         DeSubscribe(info);
                     }
-                    workMessage += string.Format("\r\n[{0}]请求处理完毕--Pub2 Count: {1} ,All usetime:{2}ms-------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, sw.ElapsedMilliseconds);
+                    workMessage += string.Format("\r\n[{0}]请求处理完毕--Pub3 Count: {1} ------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count);
                 }
             }
             sw.Stop();
-            workMessage += string.Format("\r\nPub2 CallService All Usetime:{0}ms.\r\n", sw.ElapsedMilliseconds);
+            workMessage += string.Format("\r\nPublish Message End,All Usetime:{0}ms.\r\n", sw.ElapsedMilliseconds);
         }
         /// <summary>
         /// 检查事件源对象是否活动
@@ -637,7 +684,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         public bool CheckActiveLife()
         {
             //lastPublishTime 为默认值，表示从未收到过服务发布的事件数据，此时应该认为事件源为活动状态
-            return lastPublishTime==default(DateTime) ||
+            return lastPublishTime == default(DateTime) ||
                 (int)DateTime.Now.Subtract(lastPublishTime).TotalMinutes < Context.PublishEventSource.ActiveLife;
         }
 
@@ -646,8 +693,8 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// </summary>
         public void Close()
         {
-            this.Context.Dispose();
             this.Context.OnPublishDataEvent -= Context_OnPublishDataEvent;
+            this.Context.Dispose();
             this.Context = null;
         }
     }
@@ -666,8 +713,9 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// <returns>出版商</returns>
         public ServicePublisher GetPublisher(IServiceContext context)
         {
-            ServiceRequest request =context.Request;
+            ServiceRequest request = context.Request;
             bool sessionRequired = context.SessionRequired;
+            ServicePublisher pub = null;
             string key = "";
             if (request.RequestModel == RequestModel.ServiceEvent)
                 key = request.ServiceUrl;
@@ -676,7 +724,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
             if (dict.ContainsKey(key))
             {
-                return dict[key];
+                pub = dict[key];
             }
             else
             {
@@ -684,14 +732,13 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 {
                     if (dict.ContainsKey(key))
                     {
-                        return dict[key];
+                        pub = dict[key];
                     }
                     else
                     {
-                        ServicePublisher pub = null;
                         if (request.RequestModel == RequestModel.ServiceEvent)
                         {
-                            pub = new EventServicePublisher(key,context);
+                            pub = new EventServicePublisher(key, context);
                         }
                         else
                         {
@@ -700,12 +747,12 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                             else
                                 pub = new NoneSessionServicePublisher(key);
                         }
-
                         dict[key] = pub;
-                        return pub;
                     }
                 }
             }
+            pub.AddProcessedRequest(request);
+            return pub;
         }
 
         public void RemovePublisher(string key)

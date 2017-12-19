@@ -70,9 +70,9 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         /// </summary>
         public void DeActive()
         {
+            //推送一次空消息，尽快结束订阅
+            this.CurrentContext.PublishData("");
             this.ActiveLife = 0;
-            //发布一次空数据，促使尽快结束发布线程
-            this.CurrentContext.PublishData(null);
         }
     }
 }

@@ -44,6 +44,7 @@
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.btnAlarmClock = new System.Windows.Forms.Button();
             this.btnServerText = new System.Windows.Forms.Button();
+            this.btnParallel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtA
@@ -130,7 +131,7 @@
             // 
             // btnServerTime
             // 
-            this.btnServerTime.Location = new System.Drawing.Point(314, 171);
+            this.btnServerTime.Location = new System.Drawing.Point(314, 156);
             this.btnServerTime.Name = "btnServerTime";
             this.btnServerTime.Size = new System.Drawing.Size(152, 23);
             this.btnServerTime.TabIndex = 9;
@@ -176,7 +177,7 @@
             // 
             // btnAlarmClock
             // 
-            this.btnAlarmClock.Location = new System.Drawing.Point(311, 224);
+            this.btnAlarmClock.Location = new System.Drawing.Point(314, 185);
             this.btnAlarmClock.Name = "btnAlarmClock";
             this.btnAlarmClock.Size = new System.Drawing.Size(154, 26);
             this.btnAlarmClock.TabIndex = 14;
@@ -194,11 +195,22 @@
             this.btnServerText.UseVisualStyleBackColor = true;
             this.btnServerText.Click += new System.EventHandler(this.btnServerText_Click);
             // 
+            // btnParallel
+            // 
+            this.btnParallel.Location = new System.Drawing.Point(311, 218);
+            this.btnParallel.Name = "btnParallel";
+            this.btnParallel.Size = new System.Drawing.Size(154, 26);
+            this.btnParallel.TabIndex = 16;
+            this.btnParallel.Text = "并发推送";
+            this.btnParallel.UseVisualStyleBackColor = true;
+            this.btnParallel.Click += new System.EventHandler(this.btnParallel_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(534, 271);
+            this.Controls.Add(this.btnParallel);
             this.Controls.Add(this.btnServerText);
             this.Controls.Add(this.btnAlarmClock);
             this.Controls.Add(this.dateTimePicker1);
@@ -241,6 +253,7 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker1;
         private System.Windows.Forms.Button btnAlarmClock;
         private System.Windows.Forms.Button btnServerText;
+        private System.Windows.Forms.Button btnParallel;
     }
 }
 

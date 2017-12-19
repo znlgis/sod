@@ -118,7 +118,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             {
                 result = default(T);
                 this.Succeed = false;
-                this.ErrorMessage = string.Format("消息转换错误，具体错误信息：{0}。 请尝试检查系统时间设定是否准确。", ex.Message);
+                this.ErrorMessage = string.Format("消息转换错误，具体错误信息：{0}。 ", ex.Message);
             }
             this.Result = result;
         }

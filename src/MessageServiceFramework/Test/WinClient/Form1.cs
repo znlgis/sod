@@ -22,7 +22,7 @@ namespace WinClient
 
     public partial class Form1 : Form
     {
-        
+        private int debugCount = 0;
         public Form1()
         {
             InitializeComponent();
@@ -195,7 +195,7 @@ namespace WinClient
                         this.lblResult.Text = converter.Result.Now.ToString();
                         this.txtA.Text = converter.Result.Count.ToString();
                         System.Diagnostics.Debug.WriteLine("time count:{0}",converter.Result.Count );
-                        if (converter.Result.Count > 100)
+                        if (converter.Result.Count > 50)
                         {
                             serviceProxy.Close();
                             this.btnServerTime.Enabled = true;
@@ -220,6 +220,10 @@ namespace WinClient
         void serviceProxy_ErrorMessage(object sender, MessageSubscriber.MessageEventArgs e)
         {
             MessageBox.Show(e.MessageText);
+            MyInvoke(btnParallel, () => {
+                btnParallel.Enabled = true;
+            });
+            
         }
 
         private void btnStartServer_Click(object sender, EventArgs e)
@@ -310,6 +314,43 @@ namespace WinClient
                    
                 });
             });
+        }
+
+        private void btnParallel_Click(object sender, EventArgs e)
+        {
+            ServiceRequest request = new ServiceRequest();
+            request.ServiceName = "TestTimeService";
+            request.MethodName = "ParallelTime";
+            request.Parameters = new object[] { 50 };
+
+            //异步方式测试
+            Proxy serviceProxy = new Proxy();
+            serviceProxy.ErrorMessage += new EventHandler<MessageSubscriber.MessageEventArgs>(serviceProxy_ErrorMessage);
+            serviceProxy.ServiceBaseUri = this.txtSerivceUri.Text;
+            int msgId = serviceProxy.Subscribe<DateTime>(request, DataType.DateTime, (converter) =>
+            {
+                if (converter.Succeed)
+                {
+                    MyInvoke(this, () =>
+                    {
+                        this.lblResult.Text = converter.Result.ToString();
+                        if (converter.Result == new DateTime(2018, 1, 1))
+                        {
+                            btnParallel.Enabled = true;
+                        }
+                        else
+                        {
+                            int count= System.Threading.Interlocked.Increment(ref this.debugCount);
+                            System.Diagnostics.Debug.WriteLine("count="+count+",Data="+converter.Result);
+                        }
+                    });
+                }
+                else
+                {
+                    MessageBox.Show(converter.ErrorMessage);
+                }
+            });
+            btnParallel.Enabled = false;
         }
     }
 }

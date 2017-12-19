@@ -442,7 +442,7 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
                 if (string.IsNullOrEmpty(this.Request.ServiceName))
                     throw new InvalidOperationException("请求的服务名称不能为空。");
 
-                service = ServiceFactory.GetService(this.Request.ServiceName);
+                service = ServiceFactory.GetService(this);
                 if (service == null)
                     throw new InvalidOperationException("服务名称未注册，请检查服务配置。服务名：" + this.Request.ServiceName);
             }

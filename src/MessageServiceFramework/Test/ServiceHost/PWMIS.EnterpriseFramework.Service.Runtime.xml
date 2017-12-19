@@ -644,6 +644,31 @@
             设置事件源为非活动状态
             </summary>
         </member>
+        <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory">
+            <summary>
+            服务工厂
+            </summary>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(System.String)">
+            <summary>
+            根据服务名称获取服务对象实例
+            </summary>
+            <param name="serviceName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext)">
+            <summary>
+            根据服务上下文创建服务对象实例。如果是推送模式，则从缓存获取服务对象。
+            </summary>
+            <param name="context">当前服务上下文</param>
+            <returns></returns>
+        </member>
+        <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.RemoveServiceObject(PWMIS.EnterpriseFramework.Service.Runtime.IServiceContext)">
+            <summary>
+            移除缓存的服务对象实例
+            </summary>
+            <param name="context">当前服务上下文</param>
+        </member>
         <member name="T:PWMIS.EnterpriseFramework.Service.Runtime.IServiceSession">
             <summary>
             服务会话接口

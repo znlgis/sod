@@ -725,3 +725,274 @@ System.ServiceModel.AddressAlreadyInUseException: 已有针对 IP 终结点 127.
    在 System.ServiceModel.ServiceHostBase.OnOpen(TimeSpan timeout)
    在 System.ServiceModel.Channels.CommunicationObject.Open(TimeSpan timeout)
    在 PWMIS.EnterpriseFramework.Service.Host.Program.Main(String[] args) 位置 e:\研究\SOD\MessageServiceFramework\PWMISServiceHost\Program.cs:行号 264
+------------------------------
+[2017-12-18 14:12:03]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:50500,APIW4Y4VTB7
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2017-12-18 15:17:58]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:50687,APIW4Y4VTB7
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2017-12-18 16:07:28]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：从注册的所有容器中没有找到符合当前类型的提供程序。，
+请求的Uri:
+Publish://TestTimeService/ServerTime/，
+127.0.0.1:50913,APIW4Y4VTB7
+
+错误发生时的异常对象调用堆栈：
+System.InvalidOperationException: 从注册的所有容器中没有找到符合当前类型的提供程序。
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 E:\Git\sod\src\MessageServiceFramework\AOPIOC\IOC\Unity.cs:行号 304
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.<>c__DisplayClass1_0.<GetService>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 40
+   在 PWMIS.EnterpriseFramework.Service.Runtime.MemoryCacheProvider.Get[T](String cacheKey, Func`1 getData) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\Cache\CacheProvider.cs:行号 58
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(IServiceContext context) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 39
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 445
+------------------------------
+[2017-12-18 16:09:57]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：从注册的所有容器中没有找到符合当前类型的提供程序。，
+请求的Uri:
+Publish://TestTimeService/ServerTime/，
+127.0.0.1:50935,APIW4Y4VTB7
+
+错误发生时的异常对象调用堆栈：
+System.InvalidOperationException: 从注册的所有容器中没有找到符合当前类型的提供程序。
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 E:\Git\sod\src\MessageServiceFramework\AOPIOC\IOC\Unity.cs:行号 304
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.<>c__DisplayClass1_0.<GetService>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 40
+   在 PWMIS.EnterpriseFramework.Service.Runtime.MemoryCacheProvider.Get[T](String cacheKey, Func`1 getData) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\Cache\CacheProvider.cs:行号 58
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(IServiceContext context) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 39
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 445
+------------------------------
+[2017-12-18 16:14:10]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：从注册的所有容器中没有找到符合当前类型的提供程序。，
+请求的Uri:
+Publish://TestTimeService/ServerTime/，
+127.0.0.1:50953,APIW4Y4VTB7
+
+错误发生时的异常对象调用堆栈：
+System.InvalidOperationException: 从注册的所有容器中没有找到符合当前类型的提供程序。
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 E:\Git\sod\src\MessageServiceFramework\AOPIOC\IOC\Unity.cs:行号 304
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.<>c__DisplayClass1_0.<GetService>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 40
+   在 PWMIS.EnterpriseFramework.Service.Runtime.MemoryCacheProvider.Get[T](String cacheKey, Func`1 getData) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\Cache\CacheProvider.cs:行号 58
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(IServiceContext context) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 39
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 445
+------------------------------
+[2017-12-18 16:15:04]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：从注册的所有容器中没有找到符合当前类型的提供程序。，
+请求的Uri:
+Publish://TestTimeService/ServerTime/，
+127.0.0.1:50955,APIW4Y4VTB7
+
+错误发生时的异常对象调用堆栈：
+System.InvalidOperationException: 从注册的所有容器中没有找到符合当前类型的提供程序。
+   在 PWMIS.EnterpriseFramework.IOC.Unity.GetInstance[T](String iocItemKey) 位置 E:\Git\sod\src\MessageServiceFramework\AOPIOC\IOC\Unity.cs:行号 304
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.<>c__DisplayClass1_0.<GetService>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 40
+   在 PWMIS.EnterpriseFramework.Service.Runtime.MemoryCacheProvider.Get[T](String cacheKey, Func`1 getData) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\Cache\CacheProvider.cs:行号 58
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceFactory.GetService(IServiceContext context) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceFactory.cs:行号 39
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 445
+------------------------------
+[2017-12-18 18:17:16]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.ArgumentException: 流不可读。
+   在 System.IO.StreamReader..ctor(Stream stream, Encoding encoding, Boolean detectEncodingFromByteOrderMarks, Int32 bufferSize, Boolean leaveOpen)
+   在 System.IO.StreamReader..ctor(Stream stream)
+   在 PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.GetAllText() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\ServiceResponse.cs:行号 98
+   在 PWMIS.EnterpriseFramework.Service.Basic.ServiceResponse.get_AllText() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\ServiceResponse.cs:行号 41
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.Context_OnPublishDataEvent(Object sender, ServiceEventArgs e) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 570
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PublishData(Object data) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 601
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.DeActive() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceEventSource.cs:行号 75
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 33
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 589
+------------------------------
+[2017-12-18 18:18:41]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.Context_OnPublishDataEvent(Object sender, ServiceEventArgs e) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 569
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PublishData(Object data) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 601
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.DeActive() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceEventSource.cs:行号 75
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 33
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 589
+------------------------------
+[2017-12-18 18:21:23]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.Context_OnPublishDataEvent(Object sender, ServiceEventArgs e) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 571
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PublishData(Object data) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 601
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.DeActive() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceEventSource.cs:行号 75
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 33
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 589
+------------------------------
+[2017-12-18 18:21:48]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.Context_OnPublishDataEvent(Object sender, ServiceEventArgs e) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 569
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PublishData(Object data) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 601
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.DeActive() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceEventSource.cs:行号 75
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 33
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 589
+------------------------------
+[2017-12-18 18:22:22]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.Context_OnPublishDataEvent(Object sender, ServiceEventArgs e) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 571
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PublishData(Object data) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 601
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.DeActive() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceEventSource.cs:行号 75
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 33
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 589
+------------------------------
+[2017-12-18 18:26:18]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.Context_OnPublishDataEvent(Object sender, ServiceEventArgs e) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 570
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.PublishData(Object data) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 601
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.DeActive() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceEventSource.cs:行号 75
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 33
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 589
+------------------------------
+[2017-12-19 11:12:57]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 11:22:03]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 11:22:58]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 11:50:15]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 11:53:51]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 12:05:32]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 12:06:29]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 12:06:51]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 12:07:31]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 12:08:11]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 12:09:12]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 12:12:25]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 12:13:58]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 12:14:30]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 12:14:34]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+[2017-12-19 13:21:55]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:53570,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2017-12-19 13:29:51]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595

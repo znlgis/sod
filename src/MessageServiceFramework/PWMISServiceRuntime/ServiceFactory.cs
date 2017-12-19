@@ -7,11 +7,48 @@ using PWMIS.EnterpriseFramework.IOC;
 
 namespace PWMIS.EnterpriseFramework.Service.Runtime
 {
+    /// <summary>
+    /// 服务工厂
+    /// </summary>
     public class ServiceFactory
     {
+        /// <summary>
+        /// 根据服务名称获取服务对象实例
+        /// </summary>
+        /// <param name="serviceName"></param>
+        /// <returns></returns>
         public static IService GetService(string serviceName)
         {
             return Unity.Instance.GetInstance<IService>(serviceName);
+        }
+
+        /// <summary>
+        /// 根据服务上下文创建服务对象实例。如果是推送模式，则从缓存获取服务对象。
+        /// </summary>
+        /// <param name="context">当前服务上下文</param>
+        /// <returns></returns>
+        public static IService GetService(IServiceContext context)
+        {
+            ServiceRequest request = context.Request;
+            if (request.RequestModel == RequestModel.GetService)
+            {
+                return Unity.Instance.GetInstance<IService>(request.ServiceName);
+            }
+            else
+            {
+                return context.Cache.Get<IService>(request.ServiceUrl, () => {
+                    return Unity.Instance.GetInstance<IService>(request.ServiceName);
+                });
+            }
+        }
+
+        /// <summary>
+        /// 移除缓存的服务对象实例
+        /// </summary>
+        /// <param name="context">当前服务上下文</param>
+        public static void RemoveServiceObject(IServiceContext context)
+        {
+            context.Cache.Remove(context.Request.ServiceUrl);
         }
     }
 
