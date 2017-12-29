@@ -114,6 +114,10 @@ namespace PWMIS.EnterpriseFramework.Service.Client
         /// 服务的基础地址
         /// </summary>
         public string ServiceBaseUri { get; set; }
+        /// <summary>
+        /// 服务关闭事件
+        /// </summary>
+        public event EventHandler ServiceClosed;
 
         #endregion
 
@@ -1057,7 +1061,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                 if (conn.Open())
                 {
                     ServiceSubscriber = conn.ServiceSubscriber;
-                   
+                    ServiceSubscriber.OnClose += ServiceSubscriber_OnClose;
                     return true;
                 }
                 else
@@ -1067,6 +1071,12 @@ namespace PWMIS.EnterpriseFramework.Service.Client
                 }
             }
             return !ServiceSubscriber.Closed;
+        }
+
+        private void ServiceSubscriber_OnClose(object sender, EventArgs e)
+        {
+            if (this.ServiceClosed != null)
+                this.ServiceClosed(sender, e);
         }
 
         /// <summary>

@@ -277,6 +277,22 @@ namespace PWMIS.EnterpriseFramework.Service.Host
             int msgId = this.SubscriberInfo.MessageID;//执行完服务方法后，MessageID 可能被另外一个线程改变
             //执行服务方法的时候，由服务方法指名是否需要维持会话状态
             ServiceContext context = new ServiceContext(message);
+            //如果当前请求是 发布-订阅模式，多个订阅端使用一个发布对象实例
+            if (context.Request.RequestModel == RequestModel.Publish || context.Request.RequestModel == RequestModel.ServiceEvent)
+            {
+                if (PublisherFactory.Instance.Contains( context)) //已经订阅过
+                {
+                    ServicePublisher publisher = PublisherFactory.Instance.GetPublisher(context);
+                    if (publisher.TaskIsRunning)
+                    {
+                        publisher.SubscriberInfoList.Add(this.SubscriberInfo);
+                        processMesssage = string.Format("\r\n[{0}]当前监听器已经加入消息发布线程， {1}:{2},Identity:{3}", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"), this.SubscriberInfo.FromIP, this.SubscriberInfo.FromPort, this.SubscriberInfo.Identity);
+                        Console.WriteLine(processMesssage);
+                        return;
+                    }
+                }
+            }
+          
             context.Host = Program.Host;
             context.ServiceErrorEvent += new EventHandler<ServiceErrorEventArgs>(context_ServiceErrorEvent);
             context.Request.ClientIP = this.SubscriberInfo.FromIP;

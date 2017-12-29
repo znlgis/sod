@@ -257,6 +257,11 @@
             服务的基础地址
             </summary>
         </member>
+        <member name="E:PWMIS.EnterpriseFramework.Service.Client.Proxy.ServiceClosed">
+            <summary>
+            服务关闭事件
+            </summary>
+        </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Client.Proxy.GetServiceMessage``1(System.String,PWMIS.EnterpriseFramework.Common.DataType)">
             <summary>
             以同步的方式（阻塞），获取服务执行的结果消息

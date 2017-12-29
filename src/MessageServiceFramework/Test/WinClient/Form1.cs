@@ -272,6 +272,7 @@ namespace WinClient
             Proxy serviceProxy = new Proxy();
             serviceProxy.ErrorMessage += new EventHandler<MessageSubscriber.MessageEventArgs>(serviceProxy_ErrorMessage);
             serviceProxy.ServiceBaseUri = this.txtSerivceUri.Text;
+            serviceProxy.ServiceClosed += ServiceSubscriber_OnClose;
             int msgId = serviceProxy.Subscribe<DateTime>(request, DataType.Json, (converter) =>
             {
                 if (converter.Succeed)
@@ -279,12 +280,7 @@ namespace WinClient
                     MyInvoke(this, () =>
                     {
                         this.lblResult.Text = converter.Result.ToString();// +"/" + DateTime.Now.ToLongTimeString();
-                        //this.txtA.Text = converter.Result.Count.ToString();
-                        //if (converter.Result.Count > 100)
-                        //{
-                        //    serviceProxy.Close();
-                        //    this.btnServerTime.Enabled = true;
-                        //}
+                     
                     });
                 }
                 else
@@ -298,8 +294,16 @@ namespace WinClient
             }
             else
             {
-                this.btnServerTime.Enabled = false;
+                this.btnAlarmClock.Enabled = false;
             }
+        }
+
+        private void ServiceSubscriber_OnClose(object sender, EventArgs e)
+        {
+            MyInvoke(this, () => {
+                this.btnAlarmClock.Enabled = true;
+            });
+            
         }
 
         private void btnServerText_Click(object sender, EventArgs e)

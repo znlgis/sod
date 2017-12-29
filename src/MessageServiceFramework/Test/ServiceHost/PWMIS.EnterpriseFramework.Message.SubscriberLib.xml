@@ -106,6 +106,11 @@
             服务器正在出版消息
             </summary>
         </member>
+        <member name="E:MessageSubscriber.Subscriber.OnClose">
+            <summary>
+            服务器关闭连接
+            </summary>
+        </member>
         <member name="P:MessageSubscriber.Subscriber.TimeOut">
             <summary>
             (同步模式下面的)请求响应的超时时间

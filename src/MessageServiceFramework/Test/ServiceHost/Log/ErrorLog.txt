@@ -996,3 +996,126 @@ System.Exception: test error...............
    在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
    在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
    在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass7_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 595
+------------------------------
+程序发生未处理的异常：
+System.FormatException: 索引(从零开始)必须大于或等于零，且小于参数列表的大小。
+   在 System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   在 System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   在 System.String.Format(String format, Object arg0, Object arg1)
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.Publish(String& workMessage) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 667
+   在 PWMIS.EnterpriseFramework.Service.Host.ServicePublisher.DoEvent() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 326
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Threading.ThreadHelper.ThreadStart()
+------------------------------
+程序发生未处理的异常：
+System.InvalidCastException: 无法将类型为“PWMIS.EnterpriseFramework.Service.Host.NoneSessionServicePublisher”的对象强制转换为类型“PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher”。
+   在 PWMIS.EnterpriseFramework.Service.Host.ServicePublisher.DoEvent() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 308
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Threading.ThreadHelper.ThreadStart()
+------------------------------
+程序发生未处理的异常：
+System.InvalidCastException: 无法将类型为“PWMIS.EnterpriseFramework.Service.Host.NoneSessionServicePublisher”的对象强制转换为类型“PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher”。
+   在 PWMIS.EnterpriseFramework.Service.Host.ServicePublisher.DoEvent() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 308
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Threading.ThreadHelper.ThreadStart()
+------------------------------
+程序发生未处理的异常：
+System.InvalidCastException: 无法将类型为“PWMIS.EnterpriseFramework.Service.Host.NoneSessionServicePublisher”的对象强制转换为类型“PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher”。
+   在 PWMIS.EnterpriseFramework.Service.Host.ServicePublisher.DoEvent() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 308
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Threading.ThreadHelper.ThreadStart()
+------------------------------
+程序发生未处理的异常：
+System.InvalidCastException: 无法将类型为“PWMIS.EnterpriseFramework.Service.Host.NoneSessionServicePublisher”的对象强制转换为类型“PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher”。
+   在 PWMIS.EnterpriseFramework.Service.Host.ServicePublisher.DoEvent() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 308
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Threading.ThreadHelper.ThreadStart()
+------------------------------
+程序发生未处理的异常：
+System.InvalidCastException: 无法将类型为“PWMIS.EnterpriseFramework.Service.Host.NoneSessionServicePublisher”的对象强制转换为类型“PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher”。
+   在 PWMIS.EnterpriseFramework.Service.Host.ServicePublisher.DoEvent() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 308
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Threading.ThreadHelper.ThreadStart()
+------------------------------
+程序发生未处理的异常：
+System.FormatException: 索引(从零开始)必须大于或等于零，且小于参数列表的大小。
+   在 System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   在 System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   在 System.String.Format(String format, Object arg0, Object arg1)
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.Publish(String& workMessage) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 669
+   在 PWMIS.EnterpriseFramework.Service.Host.ServicePublisher.DoEvent() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 328
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Threading.ThreadHelper.ThreadStart()
+------------------------------
+程序发生未处理的异常：
+System.FormatException: 索引(从零开始)必须大于或等于零，且小于参数列表的大小。
+   在 System.Text.StringBuilder.AppendFormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   在 System.String.FormatHelper(IFormatProvider provider, String format, ParamsArray args)
+   在 System.String.Format(String format, Object arg0, Object arg1)
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.Publish(String& workMessage) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 669
+   在 PWMIS.EnterpriseFramework.Service.Host.ServicePublisher.DoEvent() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 328
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Threading.ThreadHelper.ThreadStart()
+------------------------------
+程序发生未处理的异常：
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 PWMIS.EnterpriseFramework.Service.Host.NoneSessionServicePublisher.Publish(String& workMessage) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 505
+   在 PWMIS.EnterpriseFramework.Service.Host.ServicePublisher.DoWork() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 289
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Threading.ThreadHelper.ThreadStart()
+------------------------------
+程序发生未处理的异常：
+System.NullReferenceException: 未将对象引用设置到对象的实例。
+   在 PWMIS.EnterpriseFramework.Service.Host.NoneSessionServicePublisher.Publish(String& workMessage) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 505
+   在 PWMIS.EnterpriseFramework.Service.Host.ServicePublisher.DoWork() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 289
+   在 System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state, Boolean preserveSyncCtx)
+   在 System.Threading.ExecutionContext.Run(ExecutionContext executionContext, ContextCallback callback, Object state)
+   在 System.Threading.ThreadHelper.ThreadStart()
+------------------------------
+[2017-12-26 14:03:00]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=51&System.Int32=2，
+127.0.0.1:59857,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2017-12-26 14:20:45]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass6_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 604
+------------------------------
+[2017-12-26 15:19:57]处理服务的时候发生异常：事件源对象执行事件操作错误
+错误发生时的异常对象调用堆栈：
+System.Exception: test error...............
+   在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
+   在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
+   在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass6_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 604

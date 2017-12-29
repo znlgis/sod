@@ -48,8 +48,17 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         /// 每一批次的执行间隔时间，单位是毫秒，如果小于等于零，则不执行等待。默认为1秒
         /// </summary>
         public int BatchInterval { get; set; }
-
-
+        /// <summary>
+        /// 获取或者设置服务上下文
+        /// </summary>
+        public ServiceContext Context { get; set; }
+        /// <summary>
+        /// 任务是否正在运行
+        /// </summary>
+        public bool TaskIsRunning
+        {
+            get { return isRunning; }
+        }
         /// <summary>
         /// 发布操作时候的错误事件
         /// </summary>
@@ -496,19 +505,19 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
             foreach (SubscriberInfo info in this.SubscriberInfoList.ToArray())
             {
-                ServiceContext context = new ServiceContext(info.Request);
+                ServiceContext context = this.Context;// new ServiceContext(info.Request);
                 context.Host = this.Host;
                 //参数一样的话，仅计算一次
                 string publishResult = null;
-                string key = info.Request.ServiceUrl;
+                string key = context.Request.ServiceUrl;
                 if (dictResult.ContainsKey(key))
                 {
                     publishResult = dictResult[key];
                 }
                 else
                 {
-                    context.GetMessageFun = base.GetMessageFun(info);
-                    context.PreGetMessageFun = base.PreGetMessageFun(info);
+                    //context.GetMessageFun = base.GetMessageFun(info);
+                    //context.PreGetMessageFun = base.PreGetMessageFun(info);
                     publishResult = CallService(context);
                     dictResult.Add(key, publishResult);
                 }
@@ -544,7 +553,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                         //System.Diagnostics.Debug.WriteLine(text);
                         DeSubscribe(info);
                     }
-                    workMessage += string.Format("\r\n[{0}]请求处理完毕--Pub Count: {1} ,All usetime:{2}ms-------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, sw.ElapsedMilliseconds);
+                    workMessage += string.Format("\r\n[{0}]请求处理完毕--Pub No.: {1} ,All usetime:{2}ms-------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count, sw.ElapsedMilliseconds);
                 }
             }
             sw.Stop();
@@ -554,15 +563,15 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
     class EventServicePublisher : ServicePublisher
     {
-        ServiceContext Context;
+        
         string publishResult;
         DateTime lastPublishTime;
         bool published;
         AutoResetEvent workEvent = new AutoResetEvent(true);
 
-        public EventServicePublisher(string taskName, IServiceContext context) : base(taskName)
+        public EventServicePublisher(string taskName, ServiceContext context) : base(taskName)
         {
-            this.Context = (ServiceContext)context;
+            this.Context = context;
             this.Context.OnPublishDataEvent += Context_OnPublishDataEvent;
         }
 
@@ -666,12 +675,13 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     {
                         text = string.Format("\r\n[{0}]Pub3 未找到监听器， Client({1}) ,[MSGID:{2}]",
                             DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff"),
-                            info.FromIP + ":" + info.FromPort
+                            info.FromIP + ":" + info.FromPort,
+                            info.MessageID
                           );
                         workMessage += text;
                         DeSubscribe(info);
                     }
-                    workMessage += string.Format("\r\n[{0}]请求处理完毕--Pub3 Count: {1} ------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count);
+                    workMessage += string.Format("\r\n[{0}]请求处理完毕--Pub3 No.: {1} ------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count);
                 }
             }
             sw.Stop();
@@ -705,22 +715,35 @@ namespace PWMIS.EnterpriseFramework.Service.Host
     class PublisherFactory
     {
         Dictionary<string, ServicePublisher> dict = new Dictionary<string, ServicePublisher>();
+        /// <summary>
+        /// 是否包含服务上下文对应的消息发布对象
+        /// </summary>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public bool Contains(ServiceContext context)
+        {
+            ServiceRequest request = context.Request;
+            bool sessionRequired = context.SessionRequired;
+            ServicePublisher pub = null;
+            string key = request.ServiceUrl;
+            return dict.ContainsKey(key);
+        }
 
         /// <summary>
         /// 获取出版商，如果没有，则创建一个（享元模式）
         /// </summary>
         /// <param name="request">服务请求对象</param>
         /// <returns>出版商</returns>
-        public ServicePublisher GetPublisher(IServiceContext context)
+        public ServicePublisher GetPublisher(ServiceContext context)
         {
             ServiceRequest request = context.Request;
             bool sessionRequired = context.SessionRequired;
             ServicePublisher pub = null;
-            string key = "";
-            if (request.RequestModel == RequestModel.ServiceEvent)
-                key = request.ServiceUrl;
-            else
-                key = string.Format("Publish://{0}/{1}", request.ServiceName, request.MethodName);
+            string key = request.ServiceUrl;
+            //if (request.RequestModel == RequestModel.ServiceEvent)
+            //    key = request.ServiceUrl;
+            //else
+            //    key = string.Format("Publish://{0}/{1}", request.ServiceName, request.MethodName);
 
             if (dict.ContainsKey(key))
             {
@@ -746,6 +769,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                                 pub = new SessionServicePublisher(key);
                             else
                                 pub = new NoneSessionServicePublisher(key);
+                            pub.Context = context;
                         }
                         dict[key] = pub;
                     }

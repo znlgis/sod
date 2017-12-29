@@ -41,6 +41,10 @@ namespace MessageSubscriber
         public event EventHandler<MessageEventArgs> ErrorMessage;
 
         public event EventHandler<MessageEventArgs> HeartBeatError;
+        /// <summary>
+        /// 服务器关闭连接
+        /// </summary>
+        public event EventHandler OnClose;
 
         public bool Closed { get; private set; }
         /// <summary>
@@ -488,6 +492,8 @@ namespace MessageSubscriber
                 innerDispose();
             }
             this.Closed = true;
+            if (this.OnClose != null)
+                this.OnClose(this, new EventArgs());
         }
 
         /// <summary>
