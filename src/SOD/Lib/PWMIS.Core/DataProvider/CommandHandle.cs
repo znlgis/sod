@@ -54,8 +54,8 @@ namespace PWMIS.DataProvider.Data
             this.CurrCommandLog = new CommandLog(true);
             //这里需要进行一些初始化检查，设置日志路径等
             if (CommandLog.DataLogFile == null)
-                CommandLog.DataLogFile = "~/sql.log";
-            CommandLog.SaveCommandLog = true;
+                CommandLog.DataLogFile = "~/SOD_sql.log";
+            
         }
 
         public CommandLog CurrCommandLog { get; private set; }

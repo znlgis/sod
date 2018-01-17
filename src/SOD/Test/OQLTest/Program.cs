@@ -486,11 +486,11 @@ namespace OQLTest
             //OQLOrderAction<Users> action = this.OQLOrder;
             OQL q = OQL.From(user)
                 .Select(user.UserName, user.ID)
+                //4种OQLOrder 对象的使用方法
                 //.OrderBy(p => p.Desc(user.UserName).Asc(user.ID))
-                //.OrderBy(action,user)
-                //.OrderBy<Users>(OQLOrder,user) //4种OQLOrder 对象的使用方法
-                .OrderBy(new string[] { "UserName desc", "ID asc" })
-                //.OrderBy<Users>((o, u) => { o.Desc(u.UserName); })
+                //.OrderBy<Users>(OQLOrder) 
+                //.OrderBy(new string[] { "UserName desc", "ID asc" })
+                .OrderBy<Users>((o, u) => { o.Desc(u.UserName); })
                 .END;
 
 

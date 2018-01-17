@@ -83,6 +83,9 @@
  * 
  * 修改者：         时间：2017-6-26
  * 开放事务计数器属性访问并改进事务计数器的线程安全，改进数据架构查询对事务过程的支持。
+ * 
+ * 修改者：         时间：2011-1-17
+ * 修改日志记录行为，只要执行查询出错，就会记录日志文件。
  * ========================================================================
 */
 
@@ -138,15 +141,18 @@ namespace PWMIS.DataProvider.Data
         {
             //CommandLog.SaveCommandLog 取决于应用程序配置文件的配置名称 "SaveCommandLog"，
             //如果是"true"，则 CommandLog.SaveCommandLog ==true;
-            //开启记录SQL日志后，如果没有指定日志文件路径，日志文件将在应用程序的根目录下，文件名为 sql.log
+            //开启记录SQL日志后，如果没有指定日志文件路径，日志文件将在应用程序的根目录下，文件名为 SOD_sql.log
             //加入配置了日志文件路径但是没有配置需要记录日志，当应用程序查询出错的时候，会在日志文件中记录错误信息。
             //
             //除了通过配置文件配置日志处理行为，也可以通过 RegisterCommandHandle 方法注册你的日志处理程序
-            if (CommandLog.SaveCommandLog)
-            {
-                commandHandles = new List<ICommandHandle>();
+            //参考博客文章《图解“管道过滤器模式”应用实例：SOD框架的命令执行管道》（http://www.cnblogs.com/bluedoctor/p/5278995.html）
+            //
+            //if (CommandLog.SaveCommandLog)
+            //{
+            //  必须取消上面的注释，否则发生错误且没有配置记录错误，将无法记录错误信息
+            commandHandles = new List<ICommandHandle>();
                 commandHandles.Add(new CommandExecuteLogHandle());
-            }
+            //}
             this.AllowTransaction = true; ;
         }
 
@@ -333,8 +339,8 @@ namespace PWMIS.DataProvider.Data
             get {
                 if (_logger == null)
                 {
-                    if (commandHandles != null)
-                    {
+                    //if (commandHandles != null)
+                    //{
                         foreach (ICommandHandle handle in this.commandHandles)
                         {
                             if (handle is CommandExecuteLogHandle)
@@ -343,7 +349,7 @@ namespace PWMIS.DataProvider.Data
                                 break;
                             }
                         }
-                    }
+                    //}
                 }
                 //感谢网友 “芜湖－大枕头” 发现_logger==null 的问题。2016.9.23
                 if (_logger == null)
@@ -353,24 +359,24 @@ namespace PWMIS.DataProvider.Data
             set {
                 _logger = value;
 
-                if (commandHandles == null)
+                //if (commandHandles == null)
+                //{
+                //    CommandExecuteLogHandle handle = new CommandExecuteLogHandle();
+                //    handle.CurrCommandLog.LogWriter = _logger;
+                //    commandHandles = new List<ICommandHandle>();
+                //    commandHandles.Add(handle);
+                //}
+                //else
+                //{
+                foreach (ICommandHandle handle in this.commandHandles)
                 {
-                    CommandExecuteLogHandle handle = new CommandExecuteLogHandle();
-                    handle.CurrCommandLog.LogWriter = _logger;
-                    commandHandles = new List<ICommandHandle>();
-                    commandHandles.Add(handle);
-                }
-                else
-                {
-                    foreach (ICommandHandle handle in this.commandHandles)
+                    if (handle is CommandExecuteLogHandle)
                     {
-                        if (handle is CommandExecuteLogHandle)
-                        {
-                            ((CommandExecuteLogHandle)handle).CurrCommandLog.LogWriter = _logger;
-                            break;
-                        }
+                        ((CommandExecuteLogHandle)handle).CurrCommandLog.LogWriter = _logger;
+                        break;
                     }
                 }
+                //}
             }
         }
 
@@ -628,6 +634,7 @@ namespace PWMIS.DataProvider.Data
                 transCount = 0;            
             }
             Logger.WriteLog("提交事务并关闭连接", "AdoHelper Transaction");
+            Logger.Flush();
         }
 
         /// <summary>
@@ -637,7 +644,24 @@ namespace PWMIS.DataProvider.Data
         {
             System.Threading.Interlocked.Decrement(ref transCount);
             if (_transation != null && _transation.Connection != null)
-                _transation.Rollback();
+            {
+                if (_transation.Connection.State != ConnectionState.Open)
+                {
+                    Logger.WriteLog("**试图回滚事务但发现事务的连接已经意外关闭");
+                }
+                else
+                {
+                    try
+                    {
+                        _transation.Rollback();
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.WriteLog("**试图回滚事务但遇到ADO.NET提供程序内部错误："+ex.Message);
+                    }
+                }
+            }
+             
            
             if (transCount <= 0)
             {
@@ -645,6 +669,7 @@ namespace PWMIS.DataProvider.Data
                 transCount = 0;
             }
             Logger.WriteLog("回滚事务并关闭连接", "AdoHelper Transaction");
+            Logger.Flush();
         }
 
         /// <summary>
@@ -763,55 +788,55 @@ namespace PWMIS.DataProvider.Data
         {
             if (handle != null)
             {
-                if (this.commandHandles == null)
-                    this.commandHandles = new List<ICommandHandle>();
+                //if (this.commandHandles == null)
+                //    this.commandHandles = new List<ICommandHandle>();
                 this.commandHandles.Add(handle);
             }
         }
 
         protected bool OnCommandExecuting(ref string sql, CommandType commandType, IDataParameter[] parameters)
         {
-            if (commandHandles != null)
+            //if (commandHandles != null)
+            //{
+            foreach (ICommandHandle handle in this.commandHandles)
             {
-                foreach (ICommandHandle handle in this.commandHandles)
+                if (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
                 {
-                    if (handle.ApplayDBMSType== DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
-                    {
-                        bool flag = handle.OnExecuting(this,ref sql, commandType, parameters);
-                        if (!flag)
-                            return false;
-                    }
+                    bool flag = handle.OnExecuting(this, ref sql, commandType, parameters);
+                    if (!flag)
+                        return false;
                 }
             }
+            //}
             return true;
         }
 
         protected void OnCommandExecuteError(IDbCommand cmd, string errorMessage)
         {
-            if (commandHandles != null)
+            //if (commandHandles != null)
+            //{
+            foreach (ICommandHandle handle in this.commandHandles)
             {
-                foreach (ICommandHandle handle in this.commandHandles)
-                {
-                    if (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
-                        handle.OnExecuteError(cmd, errorMessage);
-                }
+                if (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
+                    handle.OnExecuteError(cmd, errorMessage);
             }
+            //}
         }
 
         protected void OnCommandExected(IDbCommand cmd, int recordAffected)
         {
-            if (commandHandles != null)
+            //if (commandHandles != null)
+            //{
+            foreach (ICommandHandle handle in this.commandHandles)
             {
-                foreach (ICommandHandle handle in this.commandHandles)
+                if (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
                 {
-                    if (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
-                    {
-                        long result = handle.OnExecuted(cmd,recordAffected );
-                        if (handle is CommandExecuteLogHandle)
-                            this._elapsedMilliseconds = result;
-                    }
+                    long result = handle.OnExecuted(cmd, recordAffected);
+                    if (handle is CommandExecuteLogHandle)
+                        this._elapsedMilliseconds = result;
                 }
             }
+            //}
         }
 
         #endregion

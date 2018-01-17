@@ -377,10 +377,10 @@ namespace PWMIS.DataProvider.Data
         /// <param name="log"></param>
         public void WriteLog(string log)
         {
-            if (string.IsNullOrEmpty(log))
-            {
+            if (string.IsNullOrEmpty(DataLogFile))
                 return;
-            }
+            if (string.IsNullOrEmpty(log))
+                return;
             lock (sync_obj)
             {
                 _logBuffer.Add(log);
@@ -405,6 +405,8 @@ namespace PWMIS.DataProvider.Data
                     try
                     {
                         //日志文件超过5M，备份日志文件
+                        if (!System.IO.File.Exists(DataLogFile))
+                            File.AppendAllText(DataLogFile, "--SOD Log Ver 5.6--\r\n",System.Text.Encoding.UTF8);
                         var fileInfo = new FileInfo(DataLogFile);
                         if (fileInfo.Length > 5 * 1024 * 1024)
                         {
