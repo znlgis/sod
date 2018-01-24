@@ -54,8 +54,17 @@ namespace PWMIS.DataProvider.Data
             this.CurrCommandLog = new CommandLog(true);
             //这里需要进行一些初始化检查，设置日志路径等
             if (CommandLog.DataLogFile == null)
-                CommandLog.DataLogFile = "~/SOD_sql.log";
-            
+            {
+                //直接记录在当前目录，可能没有写入权限
+                //CommandLog.DataLogFile = "~/SOD_sql.log";
+                //记录在公共程序目录
+                string logFolder = System.IO.Path.Combine(
+                    Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), "SODLog");
+                if (!System.IO.Directory.Exists(logFolder))
+                    System.IO.Directory.CreateDirectory(logFolder);
+                CommandLog.DataLogFile = System.IO.Path.Combine(logFolder, "sqllog_"+DateTime.Now.ToString("yyyyMMdd")+".txt");
+            }
+
         }
 
         public CommandLog CurrCommandLog { get; private set; }
