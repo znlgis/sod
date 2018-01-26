@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>PDF.Net.MSF.Service.Host</id>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <title>PDF.NET MSF(Server Host)</title>
     <authors>bluedoctor</authors>
     <owners>pwmis.com</owners>

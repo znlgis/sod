@@ -636,7 +636,7 @@
         </member>
         <member name="P:PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.EventWork">
             <summary>
-            获取在服务中会引发事件的工作
+            获取在服务中会引发事件的工作，如果它执行完，将结束推送事件。
             </summary>
         </member>
         <member name="M:PWMIS.EnterpriseFramework.Service.Runtime.ServiceEventSource.DeActive">

@@ -61,7 +61,7 @@ namespace PWMIS.EnterpriseFramework.Service.Runtime
         }
 
         /// <summary>
-        /// 获取在服务中会引发事件的工作
+        /// 获取在服务中会引发事件的工作，如果它执行完，将结束推送事件。
         /// </summary>
         public Action EventWork { get; private set; }
 

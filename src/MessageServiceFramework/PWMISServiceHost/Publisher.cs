@@ -602,20 +602,21 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     try
                     {
                         ses.EventWork();
+                        Console.WriteLine("事件源对象的工作任务处理完成，即将停止事件处理。");
                     }
                     catch (Exception ex)
                     {
                         this.publishResult = ServiceConst.CreateServiceErrorMessage(ex.Message);
-                        published = false;
-                        //事件推送线程收到信号，开始工作
-                        base.SetPublishEvent();
-                        Console.WriteLine("事件源对象执行事件操作错误,即将停止事件处理。");
-                        System.Threading.Thread.Sleep(1000);
-                        ses.DeActive();
-                        lastPublishTime = DateTime.Now;
+                        Console.WriteLine("事件源对象执行事件操作错误，即将停止事件处理！");
                         Program.Processer_ServiceErrorEvent(this, new ServiceErrorEventArgs(ex, "事件源对象执行事件操作错误"));
                     }
 
+                    published = false;
+                    //事件推送线程收到信号，开始工作
+                    base.SetPublishEvent();
+                    System.Threading.Thread.Sleep(1000);
+                    ses.DeActive();
+                    lastPublishTime = DateTime.Now;
                 });
             }
         }
