@@ -22,16 +22,139 @@ Partial Class frmWelcom
     '不要使用代码编辑器修改它。
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.panHead = New System.Windows.Forms.Panel()
+        Me.panBody = New System.Windows.Forms.Panel()
+        Me.txtUrl = New System.Windows.Forms.TextBox()
+        Me.picGoback = New System.Windows.Forms.PictureBox()
+        Me.btnGo = New System.Windows.Forms.Button()
+        Me.picGofawerd = New System.Windows.Forms.PictureBox()
+        Me.picRefersh = New System.Windows.Forms.PictureBox()
+        Me.picGoHome = New System.Windows.Forms.PictureBox()
+        Me.panHead.SuspendLayout()
+        CType(Me.picGoback, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.picGofawerd, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.picRefersh, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.picGoHome, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
+        '
+        'panHead
+        '
+        Me.panHead.BackColor = System.Drawing.Color.White
+        Me.panHead.Controls.Add(Me.picGoHome)
+        Me.panHead.Controls.Add(Me.picRefersh)
+        Me.panHead.Controls.Add(Me.picGofawerd)
+        Me.panHead.Controls.Add(Me.picGoback)
+        Me.panHead.Controls.Add(Me.btnGo)
+        Me.panHead.Controls.Add(Me.txtUrl)
+        Me.panHead.Dock = System.Windows.Forms.DockStyle.Top
+        Me.panHead.Location = New System.Drawing.Point(0, 0)
+        Me.panHead.Name = "panHead"
+        Me.panHead.Size = New System.Drawing.Size(856, 52)
+        Me.panHead.TabIndex = 0
+        '
+        'panBody
+        '
+        Me.panBody.Dock = System.Windows.Forms.DockStyle.Fill
+        Me.panBody.Location = New System.Drawing.Point(0, 52)
+        Me.panBody.Name = "panBody"
+        Me.panBody.Size = New System.Drawing.Size(856, 304)
+        Me.panBody.TabIndex = 1
+        '
+        'txtUrl
+        '
+        Me.txtUrl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
+        Me.txtUrl.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.txtUrl.ForeColor = System.Drawing.Color.Sienna
+        Me.txtUrl.Location = New System.Drawing.Point(181, 17)
+        Me.txtUrl.Name = "txtUrl"
+        Me.txtUrl.Size = New System.Drawing.Size(492, 26)
+        Me.txtUrl.TabIndex = 0
+        Me.txtUrl.Text = "http://www.pwmis.com/sqlmap"
+        '
+        'picGoback
+        '
+        Me.picGoback.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.picGoback.Image = Global.PDFDotNET.My.Resources.Resources.goback
+        Me.picGoback.Location = New System.Drawing.Point(12, 7)
+        Me.picGoback.Name = "picGoback"
+        Me.picGoback.Size = New System.Drawing.Size(40, 40)
+        Me.picGoback.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.picGoback.TabIndex = 2
+        Me.picGoback.TabStop = False
+        '
+        'btnGo
+        '
+        Me.btnGo.BackgroundImage = Global.PDFDotNET.My.Resources.Resources.gopage
+        Me.btnGo.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom
+        Me.btnGo.FlatAppearance.BorderSize = 0
+        Me.btnGo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
+        Me.btnGo.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.btnGo.ForeColor = System.Drawing.Color.Maroon
+        Me.btnGo.Location = New System.Drawing.Point(679, 7)
+        Me.btnGo.Name = "btnGo"
+        Me.btnGo.Size = New System.Drawing.Size(40, 40)
+        Me.btnGo.TabIndex = 1
+        Me.btnGo.Text = "Go"
+        Me.btnGo.UseVisualStyleBackColor = True
+        '
+        'picGofawerd
+        '
+        Me.picGofawerd.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.picGofawerd.Image = Global.PDFDotNET.My.Resources.Resources.gofawert
+        Me.picGofawerd.Location = New System.Drawing.Point(52, 7)
+        Me.picGofawerd.Name = "picGofawerd"
+        Me.picGofawerd.Size = New System.Drawing.Size(40, 40)
+        Me.picGofawerd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.picGofawerd.TabIndex = 3
+        Me.picGofawerd.TabStop = False
+        '
+        'picRefersh
+        '
+        Me.picRefersh.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.picRefersh.Image = Global.PDFDotNET.My.Resources.Resources.refresh
+        Me.picRefersh.Location = New System.Drawing.Point(93, 7)
+        Me.picRefersh.Name = "picRefersh"
+        Me.picRefersh.Size = New System.Drawing.Size(40, 40)
+        Me.picRefersh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.picRefersh.TabIndex = 4
+        Me.picRefersh.TabStop = False
+        '
+        'picGoHome
+        '
+        Me.picGoHome.Cursor = System.Windows.Forms.Cursors.Hand
+        Me.picGoHome.Image = Global.PDFDotNET.My.Resources.Resources.home
+        Me.picGoHome.Location = New System.Drawing.Point(135, 7)
+        Me.picGoHome.Name = "picGoHome"
+        Me.picGoHome.Size = New System.Drawing.Size(40, 40)
+        Me.picGoHome.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
+        Me.picGoHome.TabIndex = 5
+        Me.picGoHome.TabStop = False
         '
         'frmWelcom
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(538, 356)
+        Me.ClientSize = New System.Drawing.Size(856, 356)
+        Me.Controls.Add(Me.panBody)
+        Me.Controls.Add(Me.panHead)
         Me.Name = "frmWelcom"
         Me.Text = "frmWelcom"
+        Me.panHead.ResumeLayout(False)
+        Me.panHead.PerformLayout()
+        CType(Me.picGoback, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.picGofawerd, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.picRefersh, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.picGoHome, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
 
     End Sub
+
+    Friend WithEvents panHead As Panel
+    Friend WithEvents btnGo As Button
+    Friend WithEvents txtUrl As TextBox
+    Friend WithEvents panBody As Panel
+    Friend WithEvents picGoback As PictureBox
+    Friend WithEvents picGoHome As PictureBox
+    Friend WithEvents picRefersh As PictureBox
+    Friend WithEvents picGofawerd As PictureBox
 End Class

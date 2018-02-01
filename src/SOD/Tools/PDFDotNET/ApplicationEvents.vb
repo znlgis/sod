@@ -14,7 +14,10 @@
             If MessageBox.Show("当前有错误未处理，需要关闭本应用程序吗？" & vbCrLf & "（如果错误不是很严重你可以不退出或者稍后退出本程序）", "系统错误", MessageBoxButtons.YesNo, MessageBoxIcon.Error) = DialogResult.No Then
                 e.ExitApplication = False
             End If
+            If MessageBox.Show("错误原因是【未能加载文件或程序集 CefSharp.Core.dll 或者它的依赖项】么？" & vbCrLf & "（如果是请在弹出的网页地址下载安装CefSharp的支持库文件）", "系统错误", MessageBoxButtons.YesNo, MessageBoxIcon.Error) = DialogResult.Yes Then
+                System.Diagnostics.Process.Start("https://www.microsoft.com/zh-cn/download/confirmation.aspx?id=40784")
 
+            End If
         End Sub
     End Class
 

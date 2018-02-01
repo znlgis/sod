@@ -1,4 +1,7 @@
 ﻿PDF.NET 数据开发框架 
+Ver 5.X 更新：
+集成开发工具使用 CfeSharp浏览器控件，要求先安装 Visual C++ Redistributable Packages for Visual Studio 2013，下载地址：
+https://www.microsoft.com/zh-cn/download/confirmation.aspx?id=40784
 
 Ver 4.0 更新：
 
