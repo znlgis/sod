@@ -2,7 +2,11 @@
 
 Public Class frmWelcom
     Dim WebBrowser1 As CefSharp.WinForms.ChromiumWebBrowser
-
+    ''' <summary>
+    ''' 命令窗体
+    ''' </summary>
+    ''' <remarks></remarks>
+    Public CommandForm As ICommand
 
     Private Sub frmWelcom_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Dim settion As CefSettings = New CefSettings()
@@ -47,5 +51,10 @@ Public Class frmWelcom
     Private Sub picGoHome_Click(sender As Object, e As EventArgs) Handles picGoHome.Click
         Me.WebBrowser1.Load("http://www.pwmis.com/sqlmap")
         Me.txtUrl.Text = Me.WebBrowser1.Address
+    End Sub
+
+    Private Sub lnk12306_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lnk12306.LinkClicked
+        Dim window As New frm12306Ticket()
+        Me.CommandForm.OpenWindow(Me, window, "")
     End Sub
 End Class

@@ -34,6 +34,7 @@
         TestReadCfg()
 
         Dim welcomForm As New frmWelcom
+        welcomForm.CommandForm = Me
         Me.TabControlMain.TabPages.Add(welcomForm)
 
     End Sub

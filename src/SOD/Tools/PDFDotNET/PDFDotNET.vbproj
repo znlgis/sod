@@ -188,6 +188,12 @@
     <Compile Include="frmOther\AboutBox1.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="frmOther\frm12306Ticket.Designer.vb">
+      <DependentUpon>frm12306Ticket.vb</DependentUpon>
+    </Compile>
+    <Compile Include="frmOther\frm12306Ticket.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="frmOther\frmWelcom.Designer.vb">
       <DependentUpon>frmWelcom.vb</DependentUpon>
     </Compile>
@@ -296,6 +302,9 @@
     <EmbeddedResource Include="frmOther\AboutBox1.resx">
       <DependentUpon>AboutBox1.vb</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmOther\frm12306Ticket.resx">
+      <DependentUpon>frm12306Ticket.vb</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmOther\frmWelcom.resx">
       <DependentUpon>frmWelcom.vb</DependentUpon>
@@ -427,6 +436,9 @@
     <None Include="Resources\refresh.png" />
     <None Include="Resources\goback.png" />
     <None Include="Resources\gopage.png" />
+    <Content Include="TestHtml.html">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="verinfo.txt" />
   </ItemGroup>
   <ItemGroup>
