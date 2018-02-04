@@ -295,7 +295,7 @@
     End Function
 
     Private Sub frmDataQuery_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
-        If MessageBox.Show("确认关闭当前查询窗口吗？", "查询管理", MessageBoxButtons.OKCancel) = Windows.Forms.DialogResult.Cancel Then
+        If MessageBox.Show("确认关闭当前查询窗口吗？", "查询管理", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
             e.Cancel = True
         End If
     End Sub

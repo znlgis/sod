@@ -36,29 +36,29 @@
             // 
             // sqlRichTextBox
             // 
-            this.sqlRichTextBox.Location = new System.Drawing.Point(56, 32);
+            this.sqlRichTextBox.Location = new System.Drawing.Point(93, 48);
             this.sqlRichTextBox.Name = "sqlRichTextBox";
-            this.sqlRichTextBox.Size = new System.Drawing.Size(569, 346);
+            this.sqlRichTextBox.Size = new System.Drawing.Size(949, 519);
             this.sqlRichTextBox.TabIndex = 0;
             this.sqlRichTextBox.Text = "select * from table1";
+            this.sqlRichTextBox.TextChanged += new System.EventHandler(this.sqlRichTextBox_TextChanged);
             this.sqlRichTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.sqlRichTextBox_KeyDown);
             this.sqlRichTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.sqlRichTextBox_KeyPress);
-            this.sqlRichTextBox.TextChanged += new System.EventHandler(this.sqlRichTextBox_TextChanged);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(677, 32);
+            this.button1.Location = new System.Drawing.Point(1128, 48);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(125, 34);
             this.button1.TabIndex = 1;
             this.button1.Text = "button1";
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(677, 89);
+            this.button2.Location = new System.Drawing.Point(1128, 134);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(125, 34);
             this.button2.TabIndex = 2;
             this.button2.Text = "异步写文件";
             this.button2.UseVisualStyleBackColor = true;
@@ -66,8 +66,8 @@
             // 
             // Form1
             // 
-            this.AutoScaleBaseSize = new System.Drawing.Size(6, 14);
-            this.ClientSize = new System.Drawing.Size(830, 416);
+            this.AutoScaleBaseSize = new System.Drawing.Size(10, 21);
+            this.ClientSize = new System.Drawing.Size(1278, 466);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.sqlRichTextBox);

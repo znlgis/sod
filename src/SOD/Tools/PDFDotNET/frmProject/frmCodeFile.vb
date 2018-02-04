@@ -40,10 +40,10 @@
     Private Function ConfirmSaveFile() As Integer
         If Not Me.txtFileText.ReadOnly And Me.contentChange Then
             Select Case MessageBox.Show("文件已经修改，需要保存吗？", "编辑文件", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question)
-                Case Windows.Forms.DialogResult.Yes
+                Case DialogResult.Yes
                     SaveFile()
                     Return 1
-                Case Windows.Forms.DialogResult.Cancel
+                Case DialogResult.Cancel
                     Return -1
             End Select
 

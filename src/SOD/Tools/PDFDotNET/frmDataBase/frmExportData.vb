@@ -80,7 +80,7 @@
             Me.lblProcessMsg.Text = "操作已经取消"
             Return False
         End If
-        If MessageBox.Show("表" & tableName & " 共有" & allCount & " 条记录，需要全部导出吗？", "数据导出", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = Windows.Forms.DialogResult.No Then
+        If MessageBox.Show("表" & tableName & " 共有" & allCount & " 条记录，需要全部导出吗？", "数据导出", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
             Me.lblProcessMsg.Text = "操作已经取消"
             Return False
         End If

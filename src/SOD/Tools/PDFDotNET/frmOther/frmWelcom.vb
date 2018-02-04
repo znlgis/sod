@@ -9,14 +9,20 @@ Public Class frmWelcom
     Public CommandForm As ICommand
 
     Private Sub frmWelcom_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim settion As CefSettings = New CefSettings()
-        With settion
+        Dim setting As CefSettings = New CefSettings()
+        With setting
             .Locale = "zh-CN"
             .AcceptLanguageList = "zh-CN"
             .MultiThreadedMessageLoop = True
         End With
+        Dim osVersion = Environment.OSVersion
+        '//Disable GPU for Windows 7  ,8,8.1 
+        If osVersion.Version.Major = 6 Then
+            '// Disable GPU in WPF and Offscreen examples until #1634 has been resolved
+            setting.CefCommandLineArgs.Add("disable-gpu", "1")
+        End If
 
-        CefSharp.Cef.Initialize(settion)
+        CefSharp.Cef.Initialize(setting)
 
         Me.WebBrowser1 = New CefSharp.WinForms.ChromiumWebBrowser(Me.txtUrl.Text)
         Me.panBody.Controls.Add(Me.WebBrowser1)
@@ -55,6 +61,7 @@ Public Class frmWelcom
 
     Private Sub lnk12306_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lnk12306.LinkClicked
         Dim window As New frm12306Ticket()
+        window.CommandForm = Me.CommandForm
         Me.CommandForm.OpenWindow(Me, window, "")
     End Sub
 End Class

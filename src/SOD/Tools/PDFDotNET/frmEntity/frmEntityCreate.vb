@@ -573,7 +573,7 @@ ORDER
 
     Private Sub RunProcessByConfig(ByVal fileKey As String)
         System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory
-        Dim fileName As String = Configuration.ConfigurationManager.AppSettings(fileKey)
+        Dim fileName As String = System.Configuration.ConfigurationManager.AppSettings(fileKey)
         If System.IO.File.Exists(fileName) Then
             Try
                 System.Diagnostics.Process.Start(fileName)

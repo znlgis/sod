@@ -23,7 +23,7 @@
 
     Private Sub RunProcessByConfig(ByVal fileKey As String)
         System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory
-        Dim fileName As String = Configuration.ConfigurationManager.AppSettings(fileKey)
+        Dim fileName As String = System.Configuration.ConfigurationManager.AppSettings(fileKey)
         If System.IO.File.Exists(fileName) Then
             Try
                 System.Diagnostics.Process.Start(fileName)
@@ -40,7 +40,7 @@
 
     Private Sub OpenConfigFile(ByVal fileKey As String)
         System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory
-        Dim fileName As String = Configuration.ConfigurationManager.AppSettings(fileKey)
+        Dim fileName As String = System.Configuration.ConfigurationManager.AppSettings(fileKey)
         fileName = fileName & ".config"
         If System.IO.File.Exists(fileName) Then
             'System.Diagnostics.Process.Start("notepad", fileName)
@@ -103,8 +103,8 @@
         If VerCode = "R" Then
             System.Diagnostics.Process.Start("http://www.pwmis.com/sqlmap")
         Else
-            If Configuration.ConfigurationManager.AppSettings("OnLineHelp") <> "" Then
-                System.Diagnostics.Process.Start(Configuration.ConfigurationManager.AppSettings("OnLineHelp"))
+            If System.Configuration.ConfigurationManager.AppSettings("OnLineHelp") <> "" Then
+                System.Diagnostics.Process.Start(System.Configuration.ConfigurationManager.AppSettings("OnLineHelp"))
             End If
         End If
 
@@ -150,7 +150,7 @@
     End Sub
 
     Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        VerCode = Configuration.ConfigurationManager.AppSettings("VerCode") '等于Release版才可以
+        VerCode = System.Configuration.ConfigurationManager.AppSettings("VerCode") '等于Release版才可以
         Me.txtFileText.Text = My.Computer.FileSystem.ReadAllText("verinfo.txt", System.Text.Encoding.Default)
     End Sub
 

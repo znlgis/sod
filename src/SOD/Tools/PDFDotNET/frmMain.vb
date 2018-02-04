@@ -28,7 +28,7 @@
         tpSqlMapExpert = Me.TabControlLeft.TabPages.Add(New frmSqlMapExpert()) 'index=1
         tpPdfNetSlnExpert = Me.TabControlLeft.TabPages.Add(New frmPdfNetSlnExpert()) 'index=0
 
-        VerCode = Configuration.ConfigurationManager.AppSettings("VerCode") '等于Release版才可以
+        VerCode = System.Configuration.ConfigurationManager.AppSettings("VerCode") '等于Release版才可以
 
         TestWriteCfg()
         TestReadCfg()
@@ -102,7 +102,14 @@
     Public Function Command(ByVal commandName As String, ByVal parameters As Dictionary(Of String, Object)) As Boolean Implements ICommand.Command
         If commandName = "ShowPropertyForm" Then
             Me.TabControlMain.TabPages.Add(New frmPropertys())
-
+        ElseIf commandName = "TopForm" Then
+            Dim myAction As Action = Sub()
+                                         Me.WindowState = FormWindowState.Maximized
+                                         Dim form As Form = parameters("sender")
+                                         Me.TabControlMain.TabPages(form).Select()
+                                         form.Select()
+                                     End Sub
+            Me.Invoke(myAction)
         End If
     End Function
 
@@ -130,7 +137,7 @@
 
     Private Sub RunProcessByConfig(ByVal fileKey As String)
         System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory
-        Dim fileName As String = Configuration.ConfigurationManager.AppSettings(fileKey)
+        Dim fileName As String = System.Configuration.ConfigurationManager.AppSettings(fileKey)
         If System.IO.File.Exists(fileName) Then
             Try
                 System.Diagnostics.Process.Start(fileName)
@@ -204,8 +211,8 @@
         If VerCode = "R" Then
             System.Diagnostics.Process.Start("http://www.pwmis.com/sqlmap")
         Else
-            If Configuration.ConfigurationManager.AppSettings("OnLineHelp") <> "" Then
-                System.Diagnostics.Process.Start(Configuration.ConfigurationManager.AppSettings("OnLineHelp"))
+            If System.Configuration.ConfigurationManager.AppSettings("OnLineHelp") <> "" Then
+                System.Diagnostics.Process.Start(System.Configuration.ConfigurationManager.AppSettings("OnLineHelp"))
             End If
         End If
     End Sub
@@ -233,7 +240,7 @@
 
     Private Sub OpenConfigFile(ByVal fileKey As String)
         System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory
-        Dim fileName As String = Configuration.ConfigurationManager.AppSettings(fileKey)
+        Dim fileName As String = System.Configuration.ConfigurationManager.AppSettings(fileKey)
         fileName = fileName & ".config"
         If System.IO.File.Exists(fileName) Then
             'System.Diagnostics.Process.Start("notepad", fileName)

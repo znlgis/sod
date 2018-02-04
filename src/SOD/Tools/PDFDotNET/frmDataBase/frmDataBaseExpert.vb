@@ -885,7 +885,7 @@ Public Class frmDataBaseExpert
                     Dim objConnElement As XElement = objGroupElement.Elements _
                                                      .Where(Function(item As XElement) item.@Name = connName).FirstOrDefault
                     If objConnElement IsNot Nothing Then
-                        If MessageBox.Show("确认删除当前连接 [" & connName & "] 吗？", "数据连接管理", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.OK Then
+                        If MessageBox.Show("确认删除当前连接 [" & connName & "] 吗？", "数据连接管理", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = DialogResult.OK Then
                             objConnElement.Remove()
                             dbConnCfg.Save(fileName)
 
@@ -946,7 +946,7 @@ Public Class frmDataBaseExpert
         Dim dbConnCfg As XElement = XElement.Load(fileName)
         Dim objElement = dbConnCfg.<Group>.Where(Function(item As XElement) item.@Name = groupName).FirstOrDefault
         If objElement IsNot Nothing Then
-            If MessageBox.Show("确认删除当前分组 [" & groupName & "] 吗？如果删除那么下面的所有节点都将删除！", "分组管理", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = Windows.Forms.DialogResult.OK Then
+            If MessageBox.Show("确认删除当前分组 [" & groupName & "] 吗？如果删除那么下面的所有节点都将删除！", "分组管理", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = DialogResult.OK Then
                 objElement.Remove()
                 dbConnCfg.Save(fileName)
 
