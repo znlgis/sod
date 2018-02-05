@@ -29,7 +29,6 @@ Public Class frm12306Ticket
 
         Me.WebBrowser1 = New CefSharp.WinForms.ChromiumWebBrowser(Me.ticketUrl)
         Me.WebBrowser1.RegisterJsObject("jsObj", New TicketNotify(Me), Nothing)
-        'WindowsFormsControlLibrary1
 
         Me.panBody.Controls.Add(Me.WebBrowser1)
         Me.WebBrowser1.Dock = DockStyle.Fill
@@ -52,7 +51,7 @@ Public Class frm12306Ticket
     Private Sub frm12306Ticket_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         StopNotify()
-
+        Me.Timer1.Start()
     End Sub
 
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
@@ -119,7 +118,8 @@ Public Class frm12306Ticket
     Private Sub WebBrowser1_IsBrowserInitializedChanged(sender As Object, e As IsBrowserInitializedChangedEventArgs) Handles WebBrowser1.IsBrowserInitializedChanged
         If e.IsBrowserInitialized Then
             '不可以在这里注册JS代码，新版CefSharp 找不到
-            Me.Timer1.Start()
+            '不可以在这里开启定时器，否则定时器的事件会在当前线程，也就是UI线程之外运行，相关UI访问代码会发生“线程间操作无效”的异常
+            'Me.Timer1.Start()
         End If
     End Sub
 
@@ -127,25 +127,23 @@ Public Class frm12306Ticket
         Dim dict As New Dictionary(Of String, Object)
         dict.Add("sender", Me)
         Me.CommandForm.Command("TopForm", dict)
-        Dim myAction As Action = Sub()
-                                     'Me.Timer1.Stop()
-                                     'Me.Timer1.Interval = 10000
-                                     'Me.Timer1.Start()
-                                     Me.TopMost = True
-                                     Me.Activate()
-                                     'MessageBox.Show("有票了，请在浏览器中完成操作！\r\n 如果你返回修改了订票规则（比如修改席别），请单击下【继续刷票】按钮！")
-                                     lblMsg.Text = "有票了，请在网页上继续操作！"
-                                     Dim player As New System.Media.SoundPlayer
-                                     Dim alertWav As String = "Alarm01.wav"
-                                     player.SoundLocation = alertWav
-                                     player.Load()
-                                     player.Play()
-
-                                 End Sub
-        Me.Invoke(myAction)
+        '如果此方法运行在浏览器的工作线程，设置定时器的操作将会导致定时器无法启动
+        'Me.Timer1.Stop()
+        'Me.Timer1.Interval = 10000
+        'Me.Timer1.Start()
+        Me.TopMost = True
+        Me.Activate()
+        'MessageBox.Show("有票了，请在浏览器中完成操作！\r\n 如果你返回修改了订票规则（比如修改席别），请单击下【继续刷票】按钮！")
+        lblMsg.Text = "有票了，请在网页上继续操作！"
+        Dim player As New System.Media.SoundPlayer
+        Dim alertWav As String = "Alarm01.wav"
+        player.SoundLocation = alertWav
+        player.Load()
+        player.Play()
 
     End Sub
 
+#Region "原有IEBrowser控件版本的代码，已经注释"
     'Sub leftTicket()
     '    Dim aaa = Me.WebBrowser1.getf
     '    Dim div = WebBrowser1.GetElementById("autosubmitcheckticketinfo")
@@ -201,6 +199,9 @@ Public Class frm12306Ticket
     '    End If
     'End Sub
 
+#End Region
+
+
     Private Sub btnOpenUrl_Click(sender As Object, e As EventArgs) Handles btnOpenUrl.Click
         Dim path As String = System.IO.Path.Combine(System.Environment.CurrentDirectory, "TestHtml.html")
         Dim uri As New Uri(path)
@@ -226,6 +227,30 @@ Public Class frm12306Ticket
 
     Private Sub btnTestJS_Click(sender As Object, e As EventArgs) Handles btnTestJS.Click
         Me.WebBrowser1.ExecuteScriptAsync("alert(typeof jsObj )")
+    End Sub
+
+    Private Sub numericUpDown1_ValueChanged(sender As Object, e As EventArgs) Handles numericUpDown1.ValueChanged
+        If Me.Lookup Then
+            Dim autoSearchTime As Integer = numericUpDown1.Value
+            Dim js As String = "autoSearchTime = " + autoSearchTime.ToString()
+            Me.WebBrowser1.ExecuteScriptAsync(js)
+        End If
+
+    End Sub
+
+    Private Sub ckbFromStation_CheckedChanged(sender As Object, e As EventArgs) Handles ckbFromStation.CheckedChanged
+        If ckbFromStation.Checked AndAlso txtFromStation.Text <> "" Then
+            Dim js As String = "document.getElementById('fromStationText').value='" + txtFromStation.Text + "'"
+            Me.WebBrowser1.ExecuteScriptAsync(js)
+        End If
+    End Sub
+
+    Private Sub ckbToStation_CheckedChanged(sender As Object, e As EventArgs) Handles ckbToStation.CheckedChanged
+        If ckbToStation.Checked AndAlso txtToStation.Text <> "" Then
+            Dim js As String = "document.getElementById('txtName').value='" + txtToStation.Text + "'"
+            Me.WebBrowser1.ExecuteScriptAsync(js)
+        End If
+
     End Sub
 End Class
 
