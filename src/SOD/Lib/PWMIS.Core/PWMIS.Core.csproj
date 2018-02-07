@@ -80,6 +80,7 @@
     <Compile Include="CommUtil\DelegatedReflectionMemberAccessor.cs" />
     <Compile Include="CommUtil\LRUList.cs" />
     <Compile Include="CommUtil\MemoryCache.cs" />
+    <Compile Include="CommUtil\MyCommandEntity.cs" />
     <Compile Include="CommUtil\RemoteLoaderFactory.cs" />
     <Compile Include="CommUtil\RuntimeHandle.cs" />
     <Compile Include="CommUtil\TextSearchUtil.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="DataProvider\CommonDB.cs" />
     <Compile Include="DataProvider\ConnectionSession.cs" />
     <Compile Include="DataProvider\DataParameterFormat.cs" />
+    <Compile Include="DataProvider\DbParameterSerialize.cs" />
     <Compile Include="Interface\ICommonLog.cs" />
     <Compile Include="DataProvider\ODBC.cs" />
     <Compile Include="DataProvider\OleDB.cs" />

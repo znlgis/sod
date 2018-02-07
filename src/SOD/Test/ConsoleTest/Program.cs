@@ -33,6 +33,16 @@ namespace ConsoleTest
             if (read.ToUpper() == "Q")
                 return;
 
+            IDataParameter[] paraArr = new IDataParameter[] {
+                MyDB.Instance.GetParameter("P1",111),
+                MyDB.Instance.GetParameter("P2","abc'ee<edde/>e"),
+            };
+         
+            string str = DbParameterSerialize.Serialize(paraArr);
+            Console.WriteLine("测试参数序列化：{0}", str);
+            IDataParameter[] paraArr2 = DbParameterSerialize.DeSerialize(str,MyDB.Instance);
+            Console.WriteLine("测试反序列化成功！");
+
             //写入10000条日志，有缓存，可能不会写完
             Console.WriteLine("测试日志写入10000 条信息...");
             CommandLog loger = new CommandLog();

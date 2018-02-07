@@ -1,4 +1,6 @@
 ﻿using PWMIS.Common;
+using PWMIS.Core;
+using PWMIS.DataMap.Entity;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -97,5 +99,81 @@ namespace PWMIS.DataProvider.Data
         }
     }
 
-   
+    /// <summary>
+    /// 事务日志处理器，将记录事务型查询（例如增删改操作）的详细信息到当前连接的数据库的命令日志数据表
+    /// </summary>
+    public class TransactionLogHandle : ICommandHandle
+    {
+        private CommonDB currDb;
+        private MyCommandLogEntity logEntity;
+        /// <summary>
+        /// 默认构造函数
+        /// </summary>
+        public TransactionLogHandle()
+        {
+            logEntity = new MyCommandLogEntity();
+        }
+
+        /// <summary>
+        /// 应用的数据库类型，支持所有
+        /// </summary>
+        public DBMSType ApplayDBMSType
+        {
+            get { return DBMSType.UNKNOWN; }
+        }
+
+        /// <summary>
+        /// 在主体查询执行成功后调用，插入命令日志记录
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="recordAffected"></param>
+        /// <returns></returns>
+        public long OnExecuted(IDbCommand cmd, int recordAffected)
+        {
+            //recordAffected > 0 表示非SELECT语句
+            if (recordAffected > 0)
+            {
+                //如果下面一行执行失败，会抛出异常并且回滚事务，不会执行后面的 Commit方法
+                EntityQuery<MyCommandLogEntity>.Instance.Insert(this.logEntity, this.currDb);
+            }
+            this.currDb.Commit();
+            return 1;
+        }
+
+        /// <summary>
+        /// 在事务过程中，暂不记录相关消息，可以查看SQL日志
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="errorMessage"></param>
+        public void OnExecuteError(IDbCommand cmd, string errorMessage)
+        {
+            //throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 主体查询预备执行操作，这里会构造命令日志信息
+        /// </summary>
+        /// <param name="db">当前查询连接对象</param>
+        /// <param name="SQL">当前主体要执行的查询命令</param>
+        /// <param name="commandType">命令类型</param>
+        /// <param name="parameters">命令参数</param>
+        /// <returns>总是返回成功</returns>
+        public bool OnExecuting(CommonDB db, ref string SQL, CommandType commandType, IDataParameter[] parameters)
+        {
+            this.currDb = db;
+            db.BeginTransaction();
+            
+            logEntity.CommandID = CommonUtil.NewSequenceGUID();
+            logEntity.CommandText = SQL;
+            logEntity.CommandType = commandType;
+            logEntity.LogFlag = 0;
+            logEntity.ParameterInfo = DbParameterSerialize.Serialize(parameters);
+            logEntity.ExecuteTime = DateTime.Now;
+
+            return true;
+        }
+    }
+
+
+
 }
