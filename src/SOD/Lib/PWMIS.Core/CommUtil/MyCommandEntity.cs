@@ -69,7 +69,7 @@ namespace PWMIS.Core
         public string ParameterInfo
         {
             get { return getProperty<string>("Parameters"); }
-            set { setProperty("Parameters", value, int.MaxValue); }
+            set { setProperty("Parameters", value); }
         }
     }
 }

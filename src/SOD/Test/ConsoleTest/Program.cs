@@ -12,6 +12,7 @@ using System.Data;
 using LocalDB;
 using PDFNETClassLib.Model;
 using System.Reflection;
+using PWMIS.Core;
 
 namespace ConsoleTest
 {
@@ -42,6 +43,33 @@ namespace ConsoleTest
             Console.WriteLine("测试参数序列化：{0}", str);
             IDataParameter[] paraArr2 = DbParameterSerialize.DeSerialize(str,MyDB.Instance);
             Console.WriteLine("测试反序列化成功！");
+
+            LocalDbContext localDb = new LocalDbContext();
+            localDb.CurrentDataBase.RegisterCommandHandle(new TransactionLogHandle());
+            Table_User user = new Table_User();
+            user.Name = "zhang san";
+            user.Height = 1.8f;
+            user.Birthday = new DateTime(1980, 1, 1);
+            user.Sex = true;
+            localDb.Add(user);
+
+            user.Name = "lisi";
+            user.Height = 1.6f;
+            user.Birthday = new DateTime(1982, 3, 1);
+            user.Sex = false;
+            localDb.Add(user);
+            Console.WriteLine("测试 生成事务日志 成功！（此操作将写入事务日志信息到数据库中。）");
+
+            //var logList = localDb.QueryList<MyCommandLogEntity>(OQL.From(new MyCommandLogEntity()).Select().END);
+            AdoHelper db = MyDB.GetDBHelperByConnectionName("local");
+            var logList = OQL.From<MyCommandLogEntity>().Select().END.ToList(db);
+            foreach (MyCommandLogEntity log in logList)
+            {
+                var paras = DbParameterSerialize.DeSerialize(log.ParameterInfo, db);
+                int count= db.ExecuteNonQuery(log.CommandText, log.CommandType, paras);
+                Console.WriteLine("执行语句：{0} \r\n 受影响行数：{1}",log.CommandText,count);
+            }
+            Console.WriteLine("测试 运行事务日志 成功！（此操作将事务日志的操作信息回放执行。）");
 
             //写入10000条日志，有缓存，可能不会写完
             Console.WriteLine("测试日志写入10000 条信息...");

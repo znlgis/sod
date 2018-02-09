@@ -106,12 +106,14 @@ namespace PWMIS.DataProvider.Data
     {
         private CommonDB currDb;
         private MyCommandLogEntity logEntity;
+        private bool enable = false;
         /// <summary>
         /// 默认构造函数
         /// </summary>
         public TransactionLogHandle()
         {
             logEntity = new MyCommandLogEntity();
+            enable = true;
         }
 
         /// <summary>
@@ -130,13 +132,19 @@ namespace PWMIS.DataProvider.Data
         /// <returns></returns>
         public long OnExecuted(IDbCommand cmd, int recordAffected)
         {
-            //recordAffected > 0 表示非SELECT语句
-            if (recordAffected > 0)
+            if (this.enable)
             {
-                //如果下面一行执行失败，会抛出异常并且回滚事务，不会执行后面的 Commit方法
-                EntityQuery<MyCommandLogEntity>.Instance.Insert(this.logEntity, this.currDb);
+                //recordAffected > 0 表示非SELECT语句
+                if (recordAffected > 0)
+                {
+                    //下面一行必须禁用自身调用
+                    this.enable = false;
+                    //如果下面一行执行失败，会抛出异常并且回滚事务，不会执行后面的 Commit方法
+                    EntityQuery<MyCommandLogEntity>.Instance.Insert(this.logEntity, this.currDb);
+                    this.enable = true;
+                }
+                this.currDb.Commit();
             }
-            this.currDb.Commit();
             return 1;
         }
 
@@ -160,16 +168,18 @@ namespace PWMIS.DataProvider.Data
         /// <returns>总是返回成功</returns>
         public bool OnExecuting(CommonDB db, ref string SQL, CommandType commandType, IDataParameter[] parameters)
         {
-            this.currDb = db;
-            db.BeginTransaction();
-            
-            logEntity.CommandID = CommonUtil.NewSequenceGUID();
-            logEntity.CommandText = SQL;
-            logEntity.CommandType = commandType;
-            logEntity.LogFlag = 0;
-            logEntity.ParameterInfo = DbParameterSerialize.Serialize(parameters);
-            logEntity.ExecuteTime = DateTime.Now;
+            if (this.enable)
+            {
+                this.currDb = db;
+                db.BeginTransaction();
 
+                logEntity.CommandID = CommonUtil.NewSequenceGUID();
+                logEntity.CommandText = SQL;
+                logEntity.CommandType = commandType;
+                logEntity.LogFlag = 0;
+                logEntity.ParameterInfo = DbParameterSerialize.Serialize(parameters);
+                logEntity.ExecuteTime = DateTime.Now;
+            }
             return true;
         }
     }

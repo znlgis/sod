@@ -292,6 +292,8 @@ namespace PWMIS.DataProvider.Data
         public  override int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID,string insertKey)
         {
             if (insertKey == null) insertKey = "";
+            if (!OnCommandExecuting(ref SQL, commandType, parameters))
+                return -1;
             IDbConnection conn = GetConnection();
             IDbCommand cmd = conn.CreateCommand();
             CompleteCommand(cmd,  SQL,  commandType,  parameters);

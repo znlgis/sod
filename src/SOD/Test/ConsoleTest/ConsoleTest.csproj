@@ -80,6 +80,7 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="ITable_User.cs" />
+    <Compile Include="LocalDbContext.cs" />
     <Compile Include="LT_UserRoles.cs" />
     <Compile Include="LT_Users.cs" />
     <Compile Include="PocoQuery.cs" />
