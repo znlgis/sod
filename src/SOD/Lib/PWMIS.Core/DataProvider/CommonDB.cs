@@ -84,8 +84,11 @@
  * 修改者：         时间：2017-6-26
  * 开放事务计数器属性访问并改进事务计数器的线程安全，改进数据架构查询对事务过程的支持。
  * 
- * 修改者：         时间：2011-1-17
+ * 修改者：         时间：2018-1-17
  * 修改日志记录行为，只要执行查询出错，就会记录日志文件。
+ * 
+ * 修改者：         时间：2018-2-12
+ * 查询命令处理器接口增加命令执行类型的处理
  * ========================================================================
 */
 
@@ -794,13 +797,14 @@ namespace PWMIS.DataProvider.Data
             }
         }
 
-        protected bool OnCommandExecuting(ref string sql, CommandType commandType, IDataParameter[] parameters)
+        protected bool OnCommandExecuting(ref string sql, CommandType commandType, IDataParameter[] parameters, CommandExecuteType executeType = CommandExecuteType.ExecuteQuery)
         {
             //if (commandHandles != null)
             //{
             foreach (ICommandHandle handle in this.commandHandles)
             {
-                if (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
+                if (   (handle.ApplayExecuteType == CommandExecuteType.Any || handle.ApplayExecuteType == executeType)
+                    && (handle.ApplayDBMSType    == DBMSType.UNKNOWN       || handle.ApplayDBMSType == this.CurrentDBMSType))
                 {
                     bool flag = handle.OnExecuting(this, ref sql, commandType, parameters);
                     if (!flag)
@@ -811,25 +815,27 @@ namespace PWMIS.DataProvider.Data
             return true;
         }
 
-        protected void OnCommandExecuteError(IDbCommand cmd, string errorMessage)
+        protected void OnCommandExecuteError(IDbCommand cmd, string errorMessage, CommandExecuteType executeType = CommandExecuteType.ExecuteQuery)
         {
             //if (commandHandles != null)
             //{
             foreach (ICommandHandle handle in this.commandHandles)
             {
-                if (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
+                if ((handle.ApplayExecuteType == CommandExecuteType.Any || handle.ApplayExecuteType == executeType)
+                  && (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType))
                     handle.OnExecuteError(cmd, errorMessage);
             }
             //}
         }
 
-        protected void OnCommandExected(IDbCommand cmd, int recordAffected)
+        protected void OnCommandExected(IDbCommand cmd, int recordAffected, CommandExecuteType executeType = CommandExecuteType.ExecuteQuery)
         {
             //if (commandHandles != null)
             //{
             foreach (ICommandHandle handle in this.commandHandles)
             {
-                if (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType)
+                if ((handle.ApplayExecuteType == CommandExecuteType.Any || handle.ApplayExecuteType == executeType)
+                 && (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType))
                 {
                     long result = handle.OnExecuted(cmd, recordAffected);
                     if (handle is CommandExecuteLogHandle)
@@ -852,7 +858,7 @@ namespace PWMIS.DataProvider.Data
         /// <returns>受影响的行数</returns>
         public virtual int ExecuteNonQuery(string SQL, CommandType commandType, IDataParameter[] parameters)
         {
-            if (!OnCommandExecuting(ref SQL, commandType, parameters))
+            if (!OnCommandExecuting(ref SQL, commandType, parameters, CommandExecuteType.ExecuteNonQuery))
                 return -1;
 
             ErrorMessage = "";
@@ -877,7 +883,7 @@ namespace PWMIS.DataProvider.Data
                 if (cmd.Transaction != null && OnErrorRollback)
                     cmd.Transaction.Rollback();
 
-                OnCommandExecuteError(cmd, ErrorMessage);
+                OnCommandExecuteError(cmd, ErrorMessage, CommandExecuteType.ExecuteNonQuery);
                 if (OnErrorThrow)
                 {
                     throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString, ex);
@@ -885,7 +891,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                OnCommandExected(cmd,result );
+                OnCommandExected(cmd,result, CommandExecuteType.ExecuteNonQuery);
                 CloseConnection(conn, cmd);
             }
             return result;
@@ -913,7 +919,7 @@ namespace PWMIS.DataProvider.Data
         public virtual int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID,string insertKey)
         {
             if (insertKey == null) insertKey = "";
-            if (!OnCommandExecuting(ref SQL, commandType, parameters))
+            if (!OnCommandExecuting(ref SQL, commandType, parameters, CommandExecuteType.ExecuteNonQuery))
                 return -1;
             IDbConnection conn = GetConnection();
             if (conn.State != ConnectionState.Open) //连接已经打开，不能切换连接字符串，感谢网友 “长的没礼貌”发现此Bug 
@@ -966,7 +972,7 @@ namespace PWMIS.DataProvider.Data
                 if (inner)
                     cmd.Transaction = null;
 
-                OnCommandExecuteError(cmd, ErrorMessage);
+                OnCommandExecuteError(cmd, ErrorMessage, CommandExecuteType.ExecuteNonQuery);
                 if (OnErrorThrow)
                 {
                     throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
@@ -975,7 +981,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                OnCommandExected(cmd,result );
+                OnCommandExected(cmd,result, CommandExecuteType.ExecuteNonQuery);
                 CloseConnection(conn, cmd);
             }
             return result;

@@ -41,6 +41,10 @@ namespace PWMIS.DataProvider.Data
         /// <param name="recordAffected">命令执行的受影响记录行数</param>
         /// <returns>返回执行时间或者其它信息</returns>
         long OnExecuted(IDbCommand cmd, int recordAffected);
+        /// <summary>
+        /// 获取当前处理器要应用的命令执行类型，只有符合该类型才会应用当前命令处理器
+        /// </summary>
+        CommandExecuteType ApplayExecuteType { get; }
     }
 
     /// <summary>
@@ -96,6 +100,15 @@ namespace PWMIS.DataProvider.Data
         public DBMSType ApplayDBMSType
         {
             get { return DBMSType.UNKNOWN; }
+        }
+
+        /// <summary>
+        /// 获取当前处理器要应用的命令执行类型，只有符合该类型才会应用当前命令处理器
+        /// </summary>
+        public CommandExecuteType ApplayExecuteType {
+            get {
+                return CommandExecuteType.Any;
+            }
         }
     }
 
@@ -181,6 +194,17 @@ namespace PWMIS.DataProvider.Data
                 logEntity.ExecuteTime = DateTime.Now;
             }
             return true;
+        }
+
+        /// <summary>
+        /// 获取当前处理器要应用的命令执行类型，只有符合该类型才会应用当前命令处理器
+        /// </summary>
+        public CommandExecuteType ApplayExecuteType
+        {
+            get
+            {
+                return CommandExecuteType.ExecuteNonQuery;
+            }
         }
     }
 

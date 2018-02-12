@@ -18,7 +18,7 @@ Imports System.Runtime.InteropServices
 <Assembly: ComVisible(False)>
 
 '如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-<Assembly: Guid("b1e5f87e-c6f0-43ae-bce0-867d5f885966")> 
+<Assembly: Guid("b1e5f87e-c6f0-43ae-bce0-867d5f885966")>
 
 ' 程序集的版本信息由下面四个值组成:
 '
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' 方法是按如下所示使用“*”:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("5.3.6.1130")> 
-<Assembly: AssemblyFileVersion("5.3.6.1130")> 
+<Assembly: AssemblyVersion("5.6.2.0212")>
+<Assembly: AssemblyFileVersion("5.3.6.0212")>

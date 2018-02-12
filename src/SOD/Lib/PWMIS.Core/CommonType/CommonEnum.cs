@@ -62,4 +62,23 @@ namespace PWMIS.Common
     public delegate void MyAction<T1, T2>(T1 arg1, T2 arg2);
 
     public delegate void MyAction<T1, T2,T3>(T1 arg1, T2 arg2,T3 arg3);
+
+    /// <summary>
+    /// 命令执行的查询类型
+    /// </summary>
+    public enum CommandExecuteType
+    {
+        /// <summary>
+        /// 执行没有结果集的查询，例如写查询
+        /// </summary>
+        ExecuteNonQuery,
+        /// <summary>
+        /// 执行有返回值的查询
+        /// </summary>
+        ExecuteQuery,
+        /// <summary>
+        /// 不限制的查询类型
+        /// </summary>
+        Any
+    }
 }

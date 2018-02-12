@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PWMIS.Common;
 
 namespace SampleORMTest
 {
@@ -63,6 +64,11 @@ namespace SampleORMTest
         public PWMIS.Common.DBMSType ApplayDBMSType
         {
             get { return PWMIS.Common.DBMSType.Oracle; }
+        }
+
+        public CommandExecuteType ApplayExecuteType
+        {
+            get { return CommandExecuteType.Any; }
         }
     }
 }

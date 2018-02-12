@@ -13,6 +13,7 @@
  * 修改说明：在获取自增数据的时候,使用 SCOPE_IDENTITY 代替默认的方式
  * ========================================================================
 */
+using PWMIS.Common;
 using System;
 using System.Data ;
 using System.Data.SqlClient ;
@@ -292,7 +293,7 @@ namespace PWMIS.DataProvider.Data
         public  override int ExecuteInsertQuery(string SQL, CommandType commandType, IDataParameter[] parameters, ref object ID,string insertKey)
         {
             if (insertKey == null) insertKey = "";
-            if (!OnCommandExecuting(ref SQL, commandType, parameters))
+            if (!OnCommandExecuting(ref SQL, commandType, parameters, CommandExecuteType.ExecuteNonQuery))
                 return -1;
             IDbConnection conn = GetConnection();
             IDbCommand cmd = conn.CreateCommand();
@@ -329,7 +330,7 @@ namespace PWMIS.DataProvider.Data
                 if (inner)
                     cmd.Transaction = null;
 
-                OnCommandExecuteError(cmd, ErrorMessage);
+                OnCommandExecuteError(cmd, ErrorMessage, CommandExecuteType.ExecuteNonQuery);
                 if (OnErrorThrow)
                 {
                     throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString,ex);
@@ -338,7 +339,7 @@ namespace PWMIS.DataProvider.Data
             }
             finally
             {
-                OnCommandExected(cmd, result);
+                OnCommandExected(cmd, result, CommandExecuteType.ExecuteNonQuery);
                 CloseConnection(conn, cmd);
             }
           
