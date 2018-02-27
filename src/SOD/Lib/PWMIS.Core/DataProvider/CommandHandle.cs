@@ -138,6 +138,11 @@ namespace PWMIS.DataProvider.Data
         }
 
         /// <summary>
+        /// 在记录事务日志之前的自定义处理
+        /// </summary>
+        public MyFunc<MyCommandLogEntity, bool> BeforLog { get; set; }
+
+        /// <summary>
         /// 在主体查询执行成功后调用，插入命令日志记录
         /// </summary>
         /// <param name="cmd"></param>
@@ -147,14 +152,19 @@ namespace PWMIS.DataProvider.Data
         {
             if (this.enable)
             {
+                logEntity.CommandID = CommonUtil.NewSequenceGUID();
+                logEntity.ExecuteTime = DateTime.Now;
                 //recordAffected > 0 表示非SELECT语句
                 if (recordAffected > 0)
                 {
-                    //下面一行必须禁用自身调用
-                    this.enable = false;
-                    //如果下面一行执行失败，会抛出异常并且回滚事务，不会执行后面的 Commit方法
-                    EntityQuery<MyCommandLogEntity>.Instance.Insert(this.logEntity, this.currDb);
-                    this.enable = true;
+                    if (BeforLog==null || ( BeforLog != null && BeforLog(logEntity)))
+                    {
+                        //下面一行必须禁用自身调用
+                        this.enable = false;
+                        //如果下面一行执行失败，会抛出异常并且回滚事务，不会执行后面的 Commit方法
+                        EntityQuery<MyCommandLogEntity>.Instance.Insert(this.logEntity, this.currDb);
+                        this.enable = true;
+                    }
                 }
                 this.currDb.Commit();
             }
@@ -185,13 +195,28 @@ namespace PWMIS.DataProvider.Data
             {
                 this.currDb = db;
                 db.BeginTransaction();
-
-                logEntity.CommandID = CommonUtil.NewSequenceGUID();
+                //需要真实反映执行的语句顺序，CommandID的赋值推迟到执行后
+                //logEntity.CommandID = CommonUtil.NewSequenceGUID();
+                //logEntity.ExecuteTime = DateTime.Now;
                 logEntity.CommandText = SQL;
                 logEntity.CommandType = commandType;
                 logEntity.LogFlag = 0;
                 logEntity.ParameterInfo = DbParameterSerialize.Serialize(parameters);
-                logEntity.ExecuteTime = DateTime.Now;
+                if (db.ContextObject != null)
+                {
+                    if (db.ContextObject is OQL)
+                    {
+                        logEntity.CommandName = ((OQL)db.ContextObject).currEntity.GetTableName();
+                    }
+                    else if (db.ContextObject is EntityBase)
+                    {
+                        logEntity.CommandName = ((EntityBase)db.ContextObject).GetTableName();
+                    }
+                    else
+                    {
+                        logEntity.CommandName = "";
+                    }
+                }
             }
             return true;
         }

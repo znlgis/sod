@@ -89,6 +89,9 @@
  * 
  * 修改者：         时间：2018-2-12
  * 查询命令处理器接口增加命令执行类型的处理
+ * 
+ * 修改者：         时间：2018-2-27
+ * 为数据访问对象增加上下文对象
  * ========================================================================
 */
 
@@ -154,7 +157,7 @@ namespace PWMIS.DataProvider.Data
             //{
             //  必须取消上面的注释，否则发生错误且没有配置记录错误，将无法记录错误信息
             commandHandles = new List<ICommandHandle>();
-                commandHandles.Add(new CommandExecuteLogHandle());
+            commandHandles.Add(new CommandExecuteLogHandle());
             //}
             this.AllowTransaction = true; ;
         }
@@ -342,35 +345,22 @@ namespace PWMIS.DataProvider.Data
             get {
                 if (_logger == null)
                 {
-                    //if (commandHandles != null)
-                    //{
-                        foreach (ICommandHandle handle in this.commandHandles)
-                        {
-                            if (handle is CommandExecuteLogHandle)
-                            {
-                                _logger = ((CommandExecuteLogHandle)handle).CurrCommandLog.LogWriter;
-                                break;
-                            }
-                        }
-                    //}
+
+                   //第一个命令处理器就是日志处理器
+                    _logger = ((CommandExecuteLogHandle)this.commandHandles[0]).CurrCommandLog.LogWriter;
                 }
+                //上面必定有，注释下面代码
+                /*
                 //感谢网友 “芜湖－大枕头” 发现_logger==null 的问题。2016.9.23
                 if (_logger == null)
                     _logger = CommandLog.Instance.LogWriter;
+
+               */
                 return _logger; 
             }
             set {
                 _logger = value;
 
-                //if (commandHandles == null)
-                //{
-                //    CommandExecuteLogHandle handle = new CommandExecuteLogHandle();
-                //    handle.CurrCommandLog.LogWriter = _logger;
-                //    commandHandles = new List<ICommandHandle>();
-                //    commandHandles.Add(handle);
-                //}
-                //else
-                //{
                 foreach (ICommandHandle handle in this.commandHandles)
                 {
                     if (handle is CommandExecuteLogHandle)
@@ -379,9 +369,13 @@ namespace PWMIS.DataProvider.Data
                         break;
                     }
                 }
-                //}
             }
         }
+
+        /// <summary>
+        /// 上下文相关的对象，可能是实体类或者OQL，也可能为空
+        /// </summary>
+        public object ContextObject { get; protected internal set; }
 
         /// <summary>
         /// 获取事务的数据连结对象
@@ -799,8 +793,7 @@ namespace PWMIS.DataProvider.Data
 
         protected bool OnCommandExecuting(ref string sql, CommandType commandType, IDataParameter[] parameters, CommandExecuteType executeType = CommandExecuteType.ExecuteQuery)
         {
-            //if (commandHandles != null)
-            //{
+            bool isBreak = false;
             foreach (ICommandHandle handle in this.commandHandles)
             {
                 if (   (handle.ApplayExecuteType == CommandExecuteType.Any || handle.ApplayExecuteType == executeType)
@@ -808,11 +801,11 @@ namespace PWMIS.DataProvider.Data
                 {
                     bool flag = handle.OnExecuting(this, ref sql, commandType, parameters);
                     if (!flag)
-                        return false;
+                        isBreak = true; ;
                 }
             }
             //}
-            return true;
+            return ! isBreak;
         }
 
         protected void OnCommandExecuteError(IDbCommand cmd, string errorMessage, CommandExecuteType executeType = CommandExecuteType.ExecuteQuery)

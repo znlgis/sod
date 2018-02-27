@@ -68,6 +68,9 @@
  * 
  * 修改者：         时间：2017-5-6
  * 为事务查询异常抛出详细错误信息
+ * 
+ * 修改者：         时间：2018-2-27
+ * 为数据访问对象增加上下文对象，以区分是OQL还是实体操作
  * ========================================================================
 */
 
@@ -334,6 +337,7 @@ namespace PWMIS.DataMap.Entity
         /// <returns>实体类集合</returns>
         public List<T> FillEntityList(OQL oql, T entity)
         {
+            DefaultDataBase.ContextObject = entity;
             string sql = string.Empty;
             if (entity.PropertyChangedList.Count > 0)
             {
@@ -649,6 +653,7 @@ namespace PWMIS.DataMap.Entity
         /// <returns>实体对象集合</returns>
         public static List<T> QueryList(OQL oql, AdoHelper db)
         {
+            db.ContextObject = oql;
             //如果开启了分页且记录总数为0，直接返回空集合
             if (oql.PageEnable )
             {
@@ -732,6 +737,11 @@ namespace PWMIS.DataMap.Entity
             return EntityQueryAnonymous.GetMapSql(entityType);
         }
 
+        /// <summary>
+        /// 将数据阅读器的结果转换到实体列表上
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         public static List<T> QueryList(System.Data.IDataReader reader)
         {
             return QueryList(reader, "");
@@ -1727,6 +1737,7 @@ namespace PWMIS.DataMap.Entity
         {
             string sql = oql.ToString();
             oql.Dispose();
+            db.ContextObject = oql;
 
             if (oql.Parameters.Count > 0)
             {
@@ -1923,6 +1934,7 @@ namespace PWMIS.DataMap.Entity
                 throw new Exception("EntityQuery Error:实体类属性字段数量为0");
 
             //CommonDB DB = MyDB.GetDBHelper();
+            DB.ContextObject = entity;
 
             IDataParameter[] paras = new IDataParameter[fieldCount];
             string sql = "DELETE FROM " + entity.GetSchemeTableName() + " WHERE ";
@@ -1953,6 +1965,7 @@ namespace PWMIS.DataMap.Entity
             int fieldCount = entity.PropertyNames.Length;
             if (fieldCount == 0)
                 throw new Exception("EntityQuery Error:实体类属性字段数量为0");
+            DB.ContextObject = entity;
             IDataParameter[] paras = new IDataParameter[fieldCount];
             string sql = "SELECT Count(*) ";
             //string fields = "";
@@ -1984,6 +1997,7 @@ namespace PWMIS.DataMap.Entity
             int fieldCount = entity.PropertyNames.Length;
             if (fieldCount == 0)
                 throw new Exception("EntityQuery Error:实体类属性字段数量为0");
+            DB.ContextObject = entity;
             IDataParameter[] paras = new IDataParameter[entity.PrimaryKeys.Count];
             string sql = "SELECT ";
             //string fields = "";
@@ -2058,6 +2072,7 @@ namespace PWMIS.DataMap.Entity
 
         internal static int InsertInner(EntityBase entity, List<string> objFields, CommonDB DB)
         {
+            DB.ContextObject = entity;
             if (objFields == null || objFields.Count == 0)
                 return 0;
 
@@ -2124,6 +2139,7 @@ namespace PWMIS.DataMap.Entity
 
         internal static int UpdateInner(EntityBase entity, List<string> objFields, CommonDB DB)
         {
+            DB.ContextObject = entity;
             if (objFields == null || objFields.Count == 0)
                 return 0;
             if (entity.PrimaryKeys.Count == 0)

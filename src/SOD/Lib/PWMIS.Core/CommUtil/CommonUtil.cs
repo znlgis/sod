@@ -149,27 +149,33 @@ namespace PWMIS.Core
            }
            else
            {
-               //如果 Value为 decimal类型，Ｔ　为double 类型， (T)Value 将发生错误
-               //支持枚举类型
-               if (typeof(T).IsEnum)
+                //如果 Value为 decimal类型，Ｔ　为double 类型， (T)Value 将发生错误
+                //支持枚举类型
+                Type currType = typeof(T);
+
+               if (currType.IsEnum)
                    return (T)Convert.ChangeType(Value, System.TypeCode.Int32);
-               else if (!typeof(T).IsGenericType)
+               else if (!currType.IsGenericType)
                {
-                   return (T)Convert.ChangeType(Value, typeof(T));
+                    //2018.2.14 解决Value是Guid转换成string的问题
+                    if (currType == typeof(string))
+                        return (T)Convert.ChangeType(Value.ToString(), currType);
+                    else
+                        return (T)Convert.ChangeType(Value, currType);
                }
                else
                {
                    //增加对可空类型的支持，网友 ※DS 提供代码
-                   Type genericTypeDefinition = typeof(T).GetGenericTypeDefinition();
+                   Type genericTypeDefinition = currType.GetGenericTypeDefinition();
                    if (genericTypeDefinition == typeof(Nullable<>))
                    {
                        if (string.IsNullOrEmpty(Value.ToString()))
                        {
                            return default(T);
                        }
-                       return (T)Convert.ChangeType(Value, Nullable.GetUnderlyingType(typeof(T)));
+                       return (T)Convert.ChangeType(Value, Nullable.GetUnderlyingType(currType));
                    }
-                   return (T)Convert.ChangeType(Value, typeof(T));
+                   return (T)Convert.ChangeType(Value, currType);
                }
            }
 

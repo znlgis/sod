@@ -55,6 +55,7 @@ namespace PWMIS.Core
             get { return getProperty<string>("SQL"); }
             set { setProperty("SQL", value,4000); }
         }
+
         /// <summary>
         /// 命令类型
         /// </summary>
@@ -63,6 +64,16 @@ namespace PWMIS.Core
             get { return getProperty<CommandType>("CommandType"); }
             set { setProperty("CommandType", value); }
         }
+
+        /// <summary>
+        /// 命令名字，对应的表名称，存储过程名字或者其它分类名
+        /// </summary>
+        public string CommandName
+        {
+            get { return getProperty<string>("Name"); }
+            set { setProperty("Name", value, 100); }
+        }
+
         /// <summary>
         /// 命令参数信息
         /// </summary>
