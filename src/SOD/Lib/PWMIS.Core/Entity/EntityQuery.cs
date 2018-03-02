@@ -1095,6 +1095,7 @@ namespace PWMIS.DataMap.Entity
                 List<string> objFields = entity.PropertyChangedList;
                 if (objFields.Count == 0)
                     throw new Exception("QuickInsert 要求集合的第一个实体类的属性值更改的数量不少于一个！");
+                db.ContextObject = entity;
 
                 IDataParameter[] paras = new IDataParameter[objFields.Count];
 

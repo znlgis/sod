@@ -81,4 +81,27 @@ namespace PWMIS.Common
         /// </summary>
         Any
     }
+
+    /// <summary>
+    /// SQL操作类型
+    /// </summary>
+    public enum SQLOperatType
+    {
+        /// <summary>
+        /// 增加操作，值为1
+        /// </summary>
+        Insert=1,
+        /// <summary>
+        /// 删除操作，值为2
+        /// </summary>
+        Delete=2,
+        /// <summary>
+        /// 删除操作,值为4
+        /// </summary>
+        Update=4,
+        /// <summary>
+        /// 查询数据，值为8
+        /// </summary>
+        Select=8
+    }
 }

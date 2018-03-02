@@ -198,10 +198,12 @@ namespace PWMIS.DataProvider.Data
                 //需要真实反映执行的语句顺序，CommandID的赋值推迟到执行后
                 //logEntity.CommandID = CommonUtil.NewSequenceGUID();
                 //logEntity.ExecuteTime = DateTime.Now;
-                logEntity.CommandText = SQL;
+                //使用 PrepairSQL 方法处理
+                //logEntity.CommandText = SQL;
                 logEntity.CommandType = commandType;
                 logEntity.LogFlag = 0;
-                logEntity.ParameterInfo = DbParameterSerialize.Serialize(parameters);
+                //logEntity.ParameterInfo = DbParameterSerialize.Serialize(parameters);
+                logEntity.PrepairSQL(SQL, DbParameterSerialize.Serialize(parameters));
                 if (db.ContextObject != null)
                 {
                     if (db.ContextObject is OQL)

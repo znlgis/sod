@@ -1,4 +1,6 @@
-﻿using PWMIS.DataMap.Entity;
+﻿using PWMIS.Common;
+using PWMIS.DataMap.Entity;
+using PWMIS.DataProvider.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,7 +9,7 @@ using System.Text;
 namespace PWMIS.Core
 {
     /// <summary>
-    /// 命令日志实体类
+    /// 命令日志实体类(V2版本)
     /// </summary>
     public class MyCommandLogEntity:EntityBase
     {
@@ -16,7 +18,7 @@ namespace PWMIS.Core
         /// </summary>
         public MyCommandLogEntity()
         {
-            TableName = "SOD_CmdLog";
+            TableName = "SOD_CmdLog_V2";
             PrimaryKeys.Add("CmdID");
         }
 
@@ -48,12 +50,21 @@ namespace PWMIS.Core
         }
 
         /// <summary>
-        /// 执行的命令语句
+        /// 执行的命令语句（如果语句超过4000个字符，外面将无法直接设置此属性；在数据库获取此属性值的时候，会显示为[LonqSql]=lengch 字样）
         /// </summary>
         public string CommandText
         {
             get { return getProperty<string>("SQL"); }
             set { setProperty("SQL", value,4000); }
+        }
+
+        /// <summary>
+        /// 语句类型，取值为SQLOperatType 枚举
+        /// </summary>
+        public SQLOperatType SQLType
+        {
+            get { return getProperty<SQLOperatType>("SQLType"); }
+            set { setProperty("SQLType", value); }
         }
 
         /// <summary>
@@ -82,5 +93,66 @@ namespace PWMIS.Core
             get { return getProperty<string>("Parameters"); }
             set { setProperty("Parameters", value); }
         }
+
+        #region 实体操作方法定义
+
+        /// <summary>
+        /// 准备写入，设置最终写入的SQL语句和参数等信息
+        /// </summary>
+        protected internal void PrepairSQL(string sql,string parameterString)
+        {
+            if (sql.StartsWith("INSERT INTO"))
+                this.SQLType = SQLOperatType.Insert;
+            else if (sql.StartsWith("UPDATE "))
+                this.SQLType = SQLOperatType.Update;
+            else if (sql.StartsWith("DELETE FROM "))
+                this.SQLType = SQLOperatType.Delete;
+            else
+                this.SQLType = SQLOperatType.Select;
+
+            //处理SQL语句超长问题
+            if (sql.Length >= 4000)
+            {
+                this.CommandText = string.Format("[LonqSql]={0}", sql.Length);
+                this.ParameterInfo = sql + "\r\n\r\n" + parameterString;
+            }
+            else
+            {
+                this.CommandText = sql;
+                this.ParameterInfo = parameterString;
+            }
+        }
+
+        /// <summary>
+        /// 准备读取，设置程序处理需要的真正的SQL语句和参数信息，如果不调用此方法，得到的是数据库原始存储的属性值
+        /// </summary>
+        public void PrepairRead()
+        {
+            if (this.CommandText.StartsWith("[LonqSql]"))
+            {
+                string[] arr = this.CommandText.Split('=');
+                int length = int.Parse(arr[1]);
+                string temp = this.ParameterInfo;
+                this["CommandText"] = temp.Substring(0, length);
+                this.ParameterInfo = temp.Substring(length + 4);
+            }
+        }
+
+        /// <summary>
+        /// 根据参数信息字符串，解析当前查询语句对应的参数化对象数组。如果没有参数信息将返回空
+        /// </summary>
+        /// <param name="db">数据访问对象</param>
+        /// <returns></returns>
+        public IDataParameter[] ParseParameter(AdoHelper db)
+        {
+            PrepairRead();
+            if (!string.IsNullOrEmpty(this.ParameterInfo))
+            {
+                return DbParameterSerialize.DeSerialize(this.ParameterInfo, db);
+            }
+            return null;
+        }
+
+        #endregion
     }
 }
