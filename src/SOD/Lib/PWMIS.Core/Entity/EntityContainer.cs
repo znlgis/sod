@@ -212,6 +212,9 @@ namespace PWMIS.DataMap.Entity
                 #endregion
 
                 sql = EntityQueryAnonymous.GetOQLPageSql(oql, db);
+                //分页SQL为空，可能分页页码超出可用范围，感谢 @深圳-有事Q我 发现此bug
+                if (sql == string.Empty)
+                    return null;
             }
             else
             {

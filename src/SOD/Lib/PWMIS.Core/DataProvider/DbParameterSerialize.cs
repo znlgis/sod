@@ -12,8 +12,15 @@ namespace PWMIS.DataProvider.Data
     /// </summary>
     public class DbParameterSerialize
     {
+        /// <summary>
+        /// 将数据查询参数序列化
+        /// </summary>
+        /// <param name="paras"></param>
+        /// <returns></returns>
         public static string Serialize(IDataParameter[] paras)
         {
+            if (paras == null || paras.Length == 0)
+                return string.Empty;
             List<MyDbParameter> list = new List<MyDbParameter>();
             foreach (IDataParameter para in paras)
             {
@@ -34,6 +41,12 @@ namespace PWMIS.DataProvider.Data
             return strEntity;
         }
 
+        /// <summary>
+        /// 将符合本类序列化结果的字符串执行反序列化
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="db">数据访问对象</param>
+        /// <returns></returns>
         public static IDataParameter[] DeSerialize(string input,AdoHelper db)
         {
             XmlSerializer xs = new XmlSerializer(typeof(List<MyDbParameter>));

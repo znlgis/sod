@@ -213,7 +213,7 @@ namespace PWMIS.Common
         }
 
         /// <summary>
-        /// MS SQLSERVER 分页SQL语句生成器，同样适用于ACCESS数据库
+        /// MS SQLSERVER 分页SQL语句生成器，同样适用于ACCESS数据库。如果分页记录数不大于0，则返回空字符串。
         /// </summary>
         /// <param name="strSQLInfo">原始SQL语句</param>
         /// <param name="strWhere">在分页前要替换的字符串，用于分页前的筛选</param>

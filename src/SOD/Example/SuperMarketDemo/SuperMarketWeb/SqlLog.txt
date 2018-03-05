@@ -1,0 +1,233 @@
+﻿--SOD Log Ver 5.6--
+--SQLLog (Thread ID 8) Write Buffer:----
+--SQLLog (Thread ID 8) Init----
+//2018-3-5 14:07:20 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2018-3-5 14:07:20 @AdoHelper ：Execueted Time(ms):1396
+
+//2018-3-5 14:07:20 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2018-3-5 14:07:20 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [库存数量]) AS 库存数量 
+FROM [存货信息表]  
+     WHERE  1=1  AND [库存数量] > @P0 "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"0"  			//DbType=Int32
+//2018-3-5 14:07:20 @AdoHelper ：Execueted Time(ms):108
+
+//2018-3-5 14:07:20 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+--SQLLog (Thread ID 14) Init----
+//2018-3-5 14:08:22 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表]  
+ ) P_Count "
+//命令类型：Text
+//2018-3-5 14:08:22 @AdoHelper ：Execueted Time(ms):90
+
+//2018-3-5 14:08:22 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2018-3-5 14:08:22 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表]  order by [设备名称] asc,[编号] desc"
+//命令类型：Text
+//2018-3-5 14:08:22 @AdoHelper ：Execueted Time(ms):69
+
+//2018-3-5 14:08:22 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2018-3-5 14:08:26 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [客户号]) AS tempField 
+FROM [客户表]   "
+//命令类型：Text
+--SQLLog (Thread ID 15) Write Buffer:----
+//2018-3-5 14:08:26 @AdoHelper ：Execueted Time(ms):38
+
+//2018-3-5 14:08:26 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2018-3-5 14:08:26 @AdoHelper 执行命令：
+SQL="SELECT Top 5
+	[客户号],
+	[姓名],
+	[性别],
+	[出生日期],
+	[联系电话],
+	[联系地址],
+	[积分]
+FROM [客户表]  
+                 ORDER BY  [姓名] asc "
+//命令类型：Text
+//2018-3-5 14:08:26 @AdoHelper ：Execueted Time(ms):17
+
+//2018-3-5 14:08:26 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+--SQLLog (Thread ID 15) Init----
+//2018-3-5 14:08:34 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2018-3-5 14:08:34 @AdoHelper ：Execueted Time(ms):15
+
+//2018-3-5 14:08:34 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2018-3-5 14:08:34 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2018-3-5 14:08:34 @AdoHelper ：Execueted Time(ms):15
+
+//2018-3-5 14:08:34 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2018-3-5 14:08:38 @AdoHelper 执行命令：
+SQL="SELECT  
+     [编号]  
+FROM [设备表]  
+     WHERE  [设备名称]=@P0 "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"收银机"  			//DbType=String
+//2018-3-5 14:08:38 @AdoHelper ：Execueted Time(ms):14
+
+//2018-3-5 14:08:38 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2018-3-5 14:08:38 @AdoHelper 执行命令：
+SQL="SELECT  
+     [工号],
+     [姓名]  
+FROM [雇员表]  
+     WHERE  [职务名称]=@P0
+                 ORDER BY  [姓名] asc "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"收银员"  			//DbType=String
+//2018-3-5 14:08:38 @AdoHelper ：Execueted Time(ms):17
+
+//2018-3-5 14:08:38 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2018-3-5 14:08:59 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+--SQLLog (Thread ID 8) Write Buffer:----
+//2018-3-5 14:08:59 @AdoHelper ：Execueted Time(ms):17
+
+//2018-3-5 14:08:59 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2018-3-5 14:09:00 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [库存数量]) AS 库存数量 
+FROM [存货信息表]  
+     WHERE  1=1  AND [库存数量] > @P0 "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"0"  			//DbType=Int32
+//2018-3-5 14:09:00 @AdoHelper ：Execueted Time(ms):16
+
+//2018-3-5 14:09:00 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2018-3-5 14:09:12 @AdoHelper 执行命令：
+SQL="SELECT [客户号],[姓名],[性别],[出生日期],[联系电话],[联系地址],[积分] FROM [客户表] WHERE [客户号]=@P0"
+//命令类型：Text
+//1个命令参数：
+Parameter["@P0"]	=	"12345"  			//DbType=String
+//2018-3-5 14:09:12 @AdoHelper ：Execueted Time(ms):14
+
+//2018-3-5 14:09:12 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+--SQLLog (Thread ID 15) Init----
+//2018-3-5 14:10:00 @AdoHelper 执行命令：
+SQL="
+SELECT Top 3 * 
+FROM (
+         SELECT Top 3 * 
+         FROM (
+                SELECT Top 9
+	M.[商品名称],
+	M.[厂商名称],
+	M.[条码号],
+	T0.[售价] AS [T0_售价],
+	T0.[库存数量] AS [T0_库存数量],
+	T0.[存货记录号] AS [T0_存货记录号],
+	T0.[生产日期] AS [T0_生产日期],
+	M.[保质期]
+FROM [商品信息表] M   
+INNER JOIN [存货信息表] T0  ON  M.[条码号] = T0.[条码号] 
+                 ORDER BY  M.[条码号] asc, M.[商品名称] asc 
+		      ) P_T0 
+         ORDER BY [条码号] DESC,[商品名称] DESC
+     ) P_T1
+ORDER BY [条码号] ASC,[商品名称] ASC
+"
+//命令类型：Text
+//2018-3-5 14:10:00 @AdoHelper ：Execueted Time(ms):46
+
+//2018-3-5 14:10:00 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+--SQLLog (Thread ID 11) Init----
+//2018-3-5 14:11:06 @AdoHelper 执行命令：
+SQL="
+SELECT Top 3 * 
+FROM (
+         SELECT Top 3 * 
+         FROM (
+                SELECT Top 9
+	M.[商品名称],
+	M.[厂商名称],
+	M.[条码号],
+	T0.[售价] AS [T0_售价],
+	T0.[库存数量] AS [T0_库存数量],
+	T0.[存货记录号] AS [T0_存货记录号],
+	T0.[生产日期] AS [T0_生产日期],
+	M.[保质期]
+FROM [商品信息表] M   
+INNER JOIN [存货信息表] T0  ON  M.[条码号] = T0.[条码号] 
+                 ORDER BY  M.[条码号] asc, M.[商品名称] asc 
+		      ) P_T0 
+         ORDER BY [条码号] DESC,[商品名称] DESC
+     ) P_T1
+ORDER BY [条码号] ASC,[商品名称] ASC
+"
+//命令类型：Text
+//2018-3-5 14:11:06 @AdoHelper ：Execueted Time(ms):31
+
+//2018-3-5 14:11:06 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
