@@ -669,8 +669,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                             info.MessageID                          
                             );
                         workMessage += text;
-                        //真正发布给监听器才算一次发布
-                        lastPublishTime = DateTime.Now;
+                       
                     }
                     else
                     {
@@ -685,6 +684,9 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                     workMessage += string.Format("\r\n[{0}]请求处理完毕--Pub3 No.: {1} ------", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), count);
                 }
             }
+            //可能业务方法出错并没有推送任何消息，或者服务端主动中断了发布，可能会推送空消息
+            lastPublishTime = DateTime.Now;
+
             sw.Stop();
             workMessage += string.Format("\r\nPublish Message End,All Usetime:{0}ms.\r\n", sw.ElapsedMilliseconds);
         }
