@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>PDF.NET.SOD.WinForm.Extensions</id>
-        <version>5.6.2.0124</version>
+        <version>5.6.2.0212</version>
         <title>PDF.NET SOD WinForm Extensions</title>
         <authors>深蓝医生</authors>
         <licenseUrl>https://github.com/znlgis/sod/blob/master/LICENSE</licenseUrl>
@@ -10,7 +10,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>PDF.NET SOD WinForm开发扩展库</description>
         <dependencies>
-            <dependency id="PDF.NET.SOD" version="5.6.2.0124" />
+            <dependency id="PDF.NET.SOD" version="5.6.2.0212" />
         </dependencies>
     </metadata>
     <files>
