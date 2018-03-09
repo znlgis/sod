@@ -565,7 +565,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
     {
         
         string publishResult;
-        DateTime lastPublishTime;
+        DateTime lastPublishTime=DateTime.Now;//直接使用初始化的时间，而不再是默认时间，参考CheckActiveLife 方法内部说明
         bool published;
         AutoResetEvent workEvent = new AutoResetEvent(true);
 
@@ -697,8 +697,12 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         public bool CheckActiveLife()
         {
             //lastPublishTime 为默认值，表示从未收到过服务发布的事件数据，此时应该认为事件源为活动状态
-            return lastPublishTime == default(DateTime) ||
-                (int)DateTime.Now.Subtract(lastPublishTime).TotalMinutes < Context.PublishEventSource.ActiveLife;
+            //edit at:2018.3.9 实际使用发现，确实有可能创建订阅实例对象后，一直不推送任何消息的情况出现，
+            //  也就是服务实例方法一直执行不结束但没有任何推送消息的情况。
+            //  针对这种情况，取消下面的使用方式，修改为仅判断上次发布时间是否小于设置的活动时间。
+            //return lastPublishTime == default(DateTime) ||
+            //    (int)DateTime.Now.Subtract(lastPublishTime).TotalMinutes < Context.PublishEventSource.ActiveLife;
+            return (int)DateTime.Now.Subtract(lastPublishTime).TotalMinutes < Context.PublishEventSource.ActiveLife;
         }
 
         /// <summary>
