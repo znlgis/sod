@@ -29,6 +29,61 @@ namespace PWMIS.Core.Extensions
         /// </summary>
         Error
     }
+    /// <summary>
+    /// 日志阅读事件参数
+    /// </summary>
+    public class ReadLogEventArgs : EventArgs
+    {
+        /// <summary>
+        /// 日志记录总数
+        /// </summary>
+        public int AllCount { get; private set; }
+        /// <summary>
+        /// 当前已经读取并处理的日志记录数
+        /// </summary>
+        public int ReadCount { get; private set; }
+        /// <summary>
+        /// 已经读取的数据
+        /// </summary>
+        public IEnumerable<MyCommandLogEntity> ReadData { get;private set; }
+        /// <summary>
+        /// 以日志记录综合和阅读数初始化本类
+        /// </summary>
+        /// <param name="allCount"></param>
+        /// <param name="readCount"></param>
+        /// <param name="data">读取的数据</param>
+        public ReadLogEventArgs(int allCount, int readCount , IEnumerable<MyCommandLogEntity> data)
+        {
+            this.ReadCount = readCount;
+            this.AllCount = allCount;
+        }
+    }
+
+    /// <summary>
+    /// 复制操作发生后的事件参数
+    /// </summary>
+    public class ReplicationEventArgs : EventArgs
+    {
+        /// <summary>
+        /// 当前日志对象
+        /// </summary>
+        public MyCommandLogEntity Log { get; private set; }
+        /// <summary>
+        /// 受影响的记录数。如果执行某个事务日志的复制并没有引发相应的影响记录数可能是有问题的，
+        /// 可以在事件中处理，或者抛出异常停止复制过程
+        /// </summary>
+        public int AffectedCount { get; private set; }
+       /// <summary>
+       /// 以一个日志对象初始化本类
+       /// </summary>
+       /// <param name="log"></param>
+       /// <param name="affected"></param>
+        public ReplicationEventArgs(MyCommandLogEntity log,int affected)
+        {
+            this.Log = log;
+            this.AffectedCount = affected;
+        }
+    }
 
     /// <summary>
     /// 管理事务日志的数据访问上下文对象
@@ -43,6 +98,14 @@ namespace PWMIS.Core.Extensions
         /// 当前操作的复制状态
         /// </summary>
         public ReplicationStatus CurrentStatus { get; private set; }
+        /// <summary>
+        /// 读取日志并且处理前的时候
+        /// </summary>
+        public event EventHandler<ReadLogEventArgs> OnReadLog;
+        /// <summary>
+        /// 复制数据，提交事务之前
+        /// </summary>
+        public event EventHandler<ReplicationEventArgs> AfterReplications;
 
         /// <summary>
         /// 以一个数据上下文对象初始化本类
@@ -74,23 +137,40 @@ namespace PWMIS.Core.Extensions
         {
             int pageNumber = 1;
             int readCount = 0;
-            while (true)
-            {
-                var list = OQL.From<MyCommandLogEntity>()
+            int allCount = 0;
+            //先查询出所有记录数和第一页的数据
+            MyCommandLogEntity log = new MyCommandLogEntity();
+            var oql = OQL.From(log)
                 .Select()
-                .OrderBy((o, p) => o.Asc(p.CommandID))
-                .Limit(pageSize, pageNumber)
-                .ToList(this.CurrentDataBase);
-                if (list.Count == 0)
-                    break;
-                readCount += list.Count;
+                .OrderBy(o => o.Asc(log.CommandID))
+                .END
+                .Limit(pageSize, pageNumber);
 
+            oql.PageWithAllRecordCount = 0;
+            var list = EntityQuery<MyCommandLogEntity>.QueryList(oql, this.CurrentDataBase);
+            allCount = oql.PageWithAllRecordCount;
+
+            while (list.Count>0 )
+            {
+                readCount += list.Count;
+                ReadLogEventArgs args = new ReadLogEventArgs(allCount, readCount, list);
+                if (OnReadLog != null)
+                    OnReadLog(this, args);
                 if (!func(list))
                     break;
                 if (list.Count < pageSize)
                     break;
+               
                 pageNumber++;
+                //使用GOQL简化查询
+                list = OQL.From<MyCommandLogEntity>()
+                    .Select()
+                    .OrderBy((o, p) => o.Asc(p.CommandID))
+                    .Limit(pageSize, pageNumber,allCount)
+                    .ToList(this.CurrentDataBase);
             }
+           
+
             return readCount;
         }
 
@@ -128,6 +208,8 @@ namespace PWMIS.Core.Extensions
                     var paras= log.ParseParameter(this.CurrentDataBase);
                     int count= this.CurrentDataBase.ExecuteNonQuery(log.CommandText, log.CommandType, paras);
                     //可以在此处考虑引发处理后事件
+                    if (AfterReplications != null)
+                        AfterReplications(this, new ReplicationEventArgs(log, count));
                 }, out errorMessage);
 
                 this.ErrorMessage = errorMessage;
