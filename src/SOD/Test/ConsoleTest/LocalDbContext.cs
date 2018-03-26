@@ -17,7 +17,7 @@ namespace ConsoleTest
 
         protected override bool CheckAllTableExists()
         {
-            base.CheckTableExists<Table_User>();
+            base.InitializeTable<Table_User>("");
             base.CheckTableExists<MyCommandLogEntity>();
             return true;
         }

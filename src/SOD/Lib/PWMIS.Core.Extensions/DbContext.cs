@@ -105,8 +105,9 @@ namespace PWMIS.Core.Extensions
         {
             db = MyDB.GetDBHelperByConnectionName(connName);
             //在这里初始化合适的 IDbContextProvider
+            string key = GetContextKey(connName);
             this.provider = contextProvider;
-            dictCheckedDb.TryGetValue(connName, out checkedDb);
+            dictCheckedDb.TryGetValue(key, out checkedDb);
             if (!checkedDb)
                 {
                     lock (lock_obj)
@@ -114,7 +115,7 @@ namespace PWMIS.Core.Extensions
                         if (!checkedDb)
                         {
                             checkedDb = CheckDB();
-                            dictCheckedDb[connName] = checkedDb;
+                            dictCheckedDb[key] = checkedDb;
                         }
                     }
                 }
@@ -126,7 +127,7 @@ namespace PWMIS.Core.Extensions
         /// <param name="db">数据访问对象</param>
         public DbContext(AdoHelper db)
         {
-            string key=db.ConnectionString;
+            string key = GetContextKey(db.ConnectionString);
             dictCheckedDb.TryGetValue(key, out checkedDb);
             this.db = db;
             if (!checkedDb)
@@ -140,6 +141,20 @@ namespace PWMIS.Core.Extensions
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 根据连接名称或者连接字符串，结合当前实例类型名称，生成检查数据库的Key
+        /// </summary>
+        /// <remarks>同一个DbContext类型可能使用不同的连接初始化，原因是不同的库可能有相同的表；
+        /// 同样，不同的DbConext对象也可能使用相同的连接字符串，比如某个DbContext 初始化了一个数据库的部分表清单
+        /// </remarks>
+        /// <param name="connNameOrString">连接名称或者连接字符串</param>
+        /// <returns></returns>
+        private string GetContextKey(string connNameOrString)
+        {
+            string typeName = GetType().FullName;
+            return string.Format("CK_{0}_{1}", typeName, connNameOrString);
         }
 
         #region 接口实现
@@ -248,10 +263,21 @@ namespace PWMIS.Core.Extensions
         /// <returns>检查是否通过</returns>
         public  bool CheckDB()
         {
+            //可能会开启事务日志，这里需要回复事务连接的连接字符串
+            bool result = false;
             if (this.DbContextProvider.CheckDB())
-                return CheckAllTableExists();//其它类型的数据库，仅检查表是否存在
+            {
+                if (CurrentDataBase.Transaction != null)
+                    CurrentDataBase.Transaction.Connection.ConnectionString = CurrentDataBase.ConnectionString;
+                result = CheckAllTableExists();//其它类型的数据库，仅检查表是否存在
+            }
             else
-                return false;
+            {
+                if (CurrentDataBase.Transaction != null)
+                    CurrentDataBase.Transaction.Connection.ConnectionString = CurrentDataBase.ConnectionString;
+            }
+
+            return result;
         }
 
         /// <summary>

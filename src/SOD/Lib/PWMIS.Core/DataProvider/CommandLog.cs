@@ -34,6 +34,7 @@ using System.IO;
 using System.Data;
 using PWMIS.Core;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace PWMIS.DataProvider.Data
 {
@@ -444,7 +445,7 @@ namespace PWMIS.DataProvider.Data
                                     fStream.Close();
                                 }
                                 if(!isOK)
-                                    File.AppendAllText(DataLogFile, writeText);
+                                    ReTryWriteLog(DataLogFile, writeText);
                             },
                             fs);
                         //fs.EndWrite(writeResult);//在这里调用异步起不到效果
@@ -455,11 +456,27 @@ namespace PWMIS.DataProvider.Data
                     catch (Exception ex)
                     {
                         writeText = "*** 异步开始写日志文件异常，错误原因：" + ex.Message + "\r\n 原始日志信息：" + writeText + " \r\n***\r\n";
-                        File.AppendAllText(DataLogFile, writeText);
+                        ReTryWriteLog(DataLogFile, writeText);
                     }
 
                     _lastWrite = DateTime.Now;
                 }
+            }
+        }
+
+        private void ReTryWriteLog(string logFile, string logText)
+        {
+            //重试同步写日志文件，如果还失败，将它写入系统日志
+            try
+            {
+                File.AppendAllText(logFile, logText);
+            }
+            catch(Exception ex)
+            {
+                string errLogText = "【SOD】重试写日志失败，错误原因:"+ex.Message+"\r\n源日志信息："+logText;
+                EventLog eventLog = new EventLog();
+                eventLog.Source = "Application";
+                eventLog.WriteEntry(errLogText, EventLogEntryType.Error);
             }
         }
 

@@ -45,6 +45,8 @@ namespace ConsoleTest
             Console.WriteLine("测试反序列化成功！");
 
             LocalDbContext localDb = new LocalDbContext();
+            var entitys = localDb.ResolveAllEntitys();
+
             localDb.CurrentDataBase.RegisterCommandHandle(new TransactionLogHandle());
             Table_User user = new Table_User();
             user.Name = "zhang san";
