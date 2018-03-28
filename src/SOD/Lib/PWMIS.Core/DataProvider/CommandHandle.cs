@@ -157,6 +157,7 @@ namespace PWMIS.DataProvider.Data
                 //recordAffected > 0 表示非SELECT语句
                 if (recordAffected > 0)
                 {
+                    //如果有日志分表逻辑，需要在 BeforLog 业务方法内处理。
                     if (BeforLog==null || ( BeforLog != null && BeforLog(logEntity)))
                     {
                         //下面一行必须禁用自身调用

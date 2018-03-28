@@ -9,7 +9,7 @@ using System.Text;
 namespace PWMIS.Core
 {
     /// <summary>
-    /// 命令日志实体类(V2版本)
+    /// 命令日志实体类(V3版本)
     /// </summary>
     public class MyCommandLogEntity:EntityBase
     {
@@ -18,7 +18,7 @@ namespace PWMIS.Core
         /// </summary>
         public MyCommandLogEntity()
         {
-            TableName = "SOD_CmdLog_V2";
+            TableName = "SOD_CmdLog_V3";
             PrimaryKeys.Add("CmdID");
         }
 
@@ -92,6 +92,15 @@ namespace PWMIS.Core
         {
             get { return getProperty<string>("Parameters"); }
             set { setProperty("Parameters", value); }
+        }
+
+        /// <summary>
+        /// 命令日志的主题，比如要附加操作的数据条件，数据版本号等
+        /// </summary>
+        public string LogTopic
+        {
+            get { return getProperty<string>("LogTopic"); }
+            set { setProperty("LogTopic", value, 200); }
         }
 
         #region 实体操作方法定义

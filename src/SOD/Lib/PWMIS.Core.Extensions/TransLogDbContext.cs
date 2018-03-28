@@ -132,14 +132,18 @@ namespace PWMIS.Core.Extensions
         /// </summary>
         /// <param name="pageSize">每次要读取的日志页大小</param>
         /// <param name="func">处理日志的自定义方法，如果返回假则不再继续读取处理</param>
+        /// <param name="partLogName">分部的日志消息表名字,可以为空</param>
         /// <returns>返回已经读取的记录数量</returns>
-        public int ReadLog(int pageSize,Func<List<MyCommandLogEntity>,bool> func )
+        public int ReadLog(int pageSize,Func<List<MyCommandLogEntity>,bool> func ,string partLogName=null)
         {
             int pageNumber = 1;
             int readCount = 0;
             int allCount = 0;
             //先查询出所有记录数和第一页的数据
             MyCommandLogEntity log = new MyCommandLogEntity();
+            if (!string.IsNullOrEmpty(partLogName))
+                log.MapNewTableName(log.GetTableName() + "_" + partLogName);
+
             var oql = OQL.From(log)
                 .Select()
                 .OrderBy(o => o.Asc(log.CommandID))
@@ -162,12 +166,23 @@ namespace PWMIS.Core.Extensions
                     break;
                
                 pageNumber++;
+
+                /*
                 //使用GOQL简化查询
                 list = OQL.From<MyCommandLogEntity>()
                     .Select()
                     .OrderBy((o, p) => o.Asc(p.CommandID))
                     .Limit(pageSize, pageNumber,allCount)
                     .ToList(this.CurrentDataBase);
+                */
+                //因为日志可能分表，需要修改下面的方式:
+                var oql1 = OQL.From(log)
+                    .Select()
+                    .OrderBy(o => o.Asc(log.CommandID))
+                    .END
+                    .Limit(pageSize, pageNumber);
+                oql1.PageWithAllRecordCount = allCount;
+                list = EntityQuery<MyCommandLogEntity>.QueryList(oql1, this.CurrentDataBase);
             }
            
 
@@ -200,6 +215,8 @@ namespace PWMIS.Core.Extensions
                 newLog.CommandType = log.CommandType;
                 newLog.ExecuteTime = DateTime.Now;
                 newLog.LogFlag = 2;//表示已经复制的状态
+                //log 可能映射了新的表名
+                newLog.MapNewTableName(log.GetTableName());
 
                 bool result= Transaction(ctx => {
                     query.Insert(newLog);
