@@ -24,13 +24,20 @@ namespace PWMIS.DataProvider.Data
             List<MyDbParameter> list = new List<MyDbParameter>();
             foreach (IDataParameter para in paras)
             {
-                IDbDataParameter para1 = (IDbDataParameter)para;
-                MyDbParameter item = new MyDbParameter();
-                item.Name = para1.ParameterName;
-                item.Length = para1.Size;
-                item.Value = para1.Value;
-                item.ParaDbType = para1.DbType;
-                list.Add(item);
+                if (para == null)
+                {
+                    list.Add(null);
+                }
+                else
+                {
+                    IDbDataParameter para1 = (IDbDataParameter)para;
+                    MyDbParameter item = new MyDbParameter();
+                    item.Name = para1.ParameterName;
+                    item.Length = para1.Size;
+                    item.Value = para1.Value;
+                    item.ParaDbType = para1.DbType;
+                    list.Add(item);
+                }
             }
 
             StringBuilder sb = new StringBuilder();
@@ -55,10 +62,18 @@ namespace PWMIS.DataProvider.Data
             List<IDataParameter> result = new List<IDataParameter>();
             foreach (MyDbParameter item in list)
             {
-                IDbDataParameter para = (IDbDataParameter)db.GetParameter(item.Name, item.ParaDbType);
-                para.Value = item.Value;
-                para.Size = item.Length;
-                result.Add(para);
+                if (item == null)
+                {
+                    result.Add(null);
+                }
+                else
+                {
+                    IDbDataParameter para = (IDbDataParameter)db.GetParameter(item.Name, item.ParaDbType);
+                    para.Value = item.Value;
+                    para.Size = item.Length;
+                    result.Add(para);
+                }
+                
             }
             return result.ToArray();
         }

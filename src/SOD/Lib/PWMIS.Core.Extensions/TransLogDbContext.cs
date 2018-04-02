@@ -27,7 +27,11 @@ namespace PWMIS.Core.Extensions
         /// <summary>
         /// 复制过程发生错误，请查看错误信息
         /// </summary>
-        Error
+        Error,
+        /// <summary>
+        /// 已经执行过了，不会再执行复制
+        /// </summary>
+        Executed
     }
     /// <summary>
     /// 日志阅读事件参数
@@ -198,7 +202,11 @@ namespace PWMIS.Core.Extensions
         {
             this.ErrorMessage = string.Empty;
             this.CurrentStatus = ReplicationStatus.UnKnown;
-
+            if (log.LogFlag >0)
+            {
+                this.CurrentStatus = ReplicationStatus.Executed;
+                return true;
+            }
             var query = this.NewQuery<MyCommandLogEntity>();
             if (query.ExistsEntity(log))
             {
@@ -213,8 +221,12 @@ namespace PWMIS.Core.Extensions
                 newLog.CommandName = log.CommandName;
                 newLog.CommandText = log.CommandText;
                 newLog.CommandType = log.CommandType;
-                newLog.ExecuteTime = DateTime.Now;
-                newLog.LogFlag = 2;//表示已经复制的状态
+                newLog.ExecuteTime = DateTime.Now;//新执行的时间
+                newLog.LogFlag = 2;//表示已经复制到目标库的状态
+                newLog.ParameterInfo = log.ParameterInfo;
+                newLog.SQLType = log.SQLType;
+                newLog.LogTopic = log.LogTopic;
+
                 //log 可能映射了新的表名
                 newLog.MapNewTableName(log.GetTableName());
 

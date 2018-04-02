@@ -41,7 +41,7 @@ namespace PWMIS.Core
         }
 
         /// <summary>
-        /// 命令日志的使用标记（扩展备用）
+        /// 命令日志的使用标记0表示为源库未处理，1表示源库已经处理，2表示已经复制到目标库，其它值为用户自定义的状态标记
         /// </summary>
         public int LogFlag
         {
