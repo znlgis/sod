@@ -265,6 +265,9 @@ namespace PWMIS.Core.Extensions
         {
             //可能会开启事务日志，这里需要回复事务连接的连接字符串
             bool result = false;
+            bool oldEnable = CurrentDataBase.EnableCommandHandle;
+            //检查数据库的时候不能开启命令管道，否则在事务日志处理器里面，可能尝试记录命令消息取找不到对应的数据库
+            CurrentDataBase.EnableCommandHandle = false;
             if (this.DbContextProvider.CheckDB())
             {
                 if (CurrentDataBase.Transaction != null)
@@ -276,7 +279,7 @@ namespace PWMIS.Core.Extensions
                 if (CurrentDataBase.Transaction != null)
                     CurrentDataBase.Transaction.Connection.ConnectionString = CurrentDataBase.ConnectionString;
             }
-
+            CurrentDataBase.EnableCommandHandle = oldEnable;
             return result;
         }
 

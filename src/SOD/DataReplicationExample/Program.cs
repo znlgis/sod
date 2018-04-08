@@ -46,6 +46,7 @@ namespace DataReplicationExample
                 TransactionLogHandle logHandle = new TransactionLogHandle();
                 logHandle.BeforLog = log => {
                     //只有在指定范围内的表并且符合对此表指定的操作行为，才会记录事务日志
+                    log.LogTopic = "Test";
                     //定义操作策略
                     Dictionary<string, SQLOperatType> tableStrategy = new Dictionary<string, SQLOperatType>() {
                         { "Table_User",     SQLOperatType.Insert | SQLOperatType.Update  }
@@ -67,13 +68,13 @@ namespace DataReplicationExample
                 //在源添加和修改数据
                 UserEntity user = new UserEntity();
                 user.Name = "zhang san";
-                user.Height = 1.8f;
-                user.Birthday = new DateTime(1980, 1, 1);
+                user.Height = 1.81f;
+                user.Birthday = new DateTime(1980, 2, 1);
                 user.Sex = true;
                 sourceCtx.Add(user);
 
                 user.Name = "lisi";
-                user.Height = 1.6f;
+                user.Height = 1.65f;
                 user.Birthday = new DateTime(1982, 3, 1);
                 user.Sex = false;
                 sourceCtx.Add(user);

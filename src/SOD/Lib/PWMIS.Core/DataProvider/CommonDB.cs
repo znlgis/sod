@@ -92,6 +92,9 @@
  * 
  * 修改者：         时间：2018-2-27
  * 为数据访问对象增加上下文对象
+ * 
+ * 修改者：         时间：2018-4-8
+ * 增加是否开启命令处理管道的属性，比如用于事务日志处理器的情况
  * ========================================================================
 */
 
@@ -159,7 +162,8 @@ namespace PWMIS.DataProvider.Data
             commandHandles = new List<ICommandHandle>();
             commandHandles.Add(new CommandExecuteLogHandle());
             //}
-            this.AllowTransaction = true; ;
+            this.AllowTransaction = true;
+            this.EnableCommandHandle = true;
         }
 
         /// <summary>
@@ -376,6 +380,10 @@ namespace PWMIS.DataProvider.Data
         /// 上下文相关的对象，可能是实体类或者OQL，也可能为空
         /// </summary>
         public object ContextObject { get; protected internal set; }
+        /// <summary>
+        /// 是否开启命令管道处理器，默认开启
+        /// </summary>
+        public bool EnableCommandHandle { get; set; }
 
         /// <summary>
         /// 获取事务的数据连结对象
@@ -791,51 +799,75 @@ namespace PWMIS.DataProvider.Data
             }
         }
 
+        /// <summary>
+        /// 命令管道之命令处理之前的处理器处理，只要其中一个处理器不允许，后续都将不在处理，整个命令将无法执行。
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <param name="commandType"></param>
+        /// <param name="parameters"></param>
+        /// <param name="executeType">查询类型</param>
+        /// <returns></returns>
         protected bool OnCommandExecuting(ref string sql, CommandType commandType, IDataParameter[] parameters, CommandExecuteType executeType = CommandExecuteType.ExecuteQuery)
         {
-            bool isBreak = false;
-            foreach (ICommandHandle handle in this.commandHandles)
+            if (this.EnableCommandHandle)
             {
-                if (   (handle.ApplayExecuteType == CommandExecuteType.Any || handle.ApplayExecuteType == executeType)
-                    && (handle.ApplayDBMSType    == DBMSType.UNKNOWN       || handle.ApplayDBMSType == this.CurrentDBMSType))
+                bool isBreak = false;
+                foreach (ICommandHandle handle in this.commandHandles)
                 {
-                    bool flag = handle.OnExecuting(this, ref sql, commandType, parameters);
-                    if (!flag)
-                        isBreak = true; ;
+                    if ((handle.ApplayExecuteType == CommandExecuteType.Any || handle.ApplayExecuteType == executeType)
+                        && (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType))
+                    {
+                        bool flag = handle.OnExecuting(this, ref sql, commandType, parameters);
+                        if (!flag)
+                            isBreak = true; ;
+                    }
                 }
+                return !isBreak;
             }
-            //}
-            return ! isBreak;
+            return true;
+            
         }
 
+        /// <summary>
+        /// 命令管道之命令执行失败后的处理
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="errorMessage"></param>
+        /// <param name="executeType">查询类型</param>
         protected void OnCommandExecuteError(IDbCommand cmd, string errorMessage, CommandExecuteType executeType = CommandExecuteType.ExecuteQuery)
         {
-            //if (commandHandles != null)
-            //{
-            foreach (ICommandHandle handle in this.commandHandles)
+            if (this.EnableCommandHandle)
             {
-                if ((handle.ApplayExecuteType == CommandExecuteType.Any || handle.ApplayExecuteType == executeType)
-                  && (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType))
-                    handle.OnExecuteError(cmd, errorMessage);
-            }
-            //}
-        }
-
-        protected void OnCommandExected(IDbCommand cmd, int recordAffected, CommandExecuteType executeType = CommandExecuteType.ExecuteQuery)
-        {
-            //if (commandHandles != null)
-            //{
-            foreach (ICommandHandle handle in this.commandHandles)
-            {
-                if ((handle.ApplayExecuteType == CommandExecuteType.Any || handle.ApplayExecuteType == executeType)
-                 && (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType))
+                foreach (ICommandHandle handle in this.commandHandles)
                 {
-                    long result = handle.OnExecuted(cmd, recordAffected);
-                    if (handle is CommandExecuteLogHandle)
-                        this._elapsedMilliseconds = result;
+                    if ((handle.ApplayExecuteType == CommandExecuteType.Any || handle.ApplayExecuteType == executeType)
+                      && (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType))
+                        handle.OnExecuteError(cmd, errorMessage);
                 }
             }
-            //}
+        }
+
+        /// <summary>
+        /// 命令管道之命令执行成功后的处理器
+        /// </summary>
+        /// <param name="cmd"></param>
+        /// <param name="recordAffected"></param>
+        /// <param name="executeType">查询类型</param>
+        protected void OnCommandExected(IDbCommand cmd, int recordAffected, CommandExecuteType executeType = CommandExecuteType.ExecuteQuery)
+        {
+            if (this.EnableCommandHandle)
+            {
+                foreach (ICommandHandle handle in this.commandHandles)
+                {
+                    if ((handle.ApplayExecuteType == CommandExecuteType.Any || handle.ApplayExecuteType == executeType)
+                     && (handle.ApplayDBMSType == DBMSType.UNKNOWN || handle.ApplayDBMSType == this.CurrentDBMSType))
+                    {
+                        long result = handle.OnExecuted(cmd, recordAffected);
+                        if (handle is CommandExecuteLogHandle)
+                            this._elapsedMilliseconds = result;
+                    }
+                }
+            }
         }
 
         #endregion
