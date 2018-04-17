@@ -83,7 +83,6 @@ namespace PWMIS.DataProvider.Data
         /// <returns></returns>
         public bool CheckDB()
         {
-            string originalConnStr = CurrentDataBase.ConnectionString;
             var connBuilder = CurrentDataBase.ConnectionStringBuilder as MySqlConnectionStringBuilder;
             string database = connBuilder.Database;
             if (!string.IsNullOrEmpty(database))
@@ -93,11 +92,9 @@ namespace PWMIS.DataProvider.Data
                 string sql = string.Format(sqlformat, database);
                 //移除初始化的数据库名称，否则下面的执行打不开数据库
                 connBuilder.Database = "";
-                CurrentDataBase.ConnectionString = connBuilder.ConnectionString;
-                CurrentDataBase.ExecuteNonQuery(sql);
-                //恢复连接字符串
-                connBuilder.Database = database;
-                CurrentDataBase.ConnectionString = originalConnStr;
+                AdoHelper db = new MySQL();
+                db.ConnectionString = connBuilder.ConnectionString;
+                db.ExecuteNonQuery(sql);
             }
             return true;
         }

@@ -85,11 +85,9 @@ create database [{1}]
                 string sql = string.Format(sqlformat, database, database);
                 //移除初始化的数据库名称，否则下面的执行打不开数据库
                 connBuilder.InitialCatalog = "";
-                CurrentDataBase.ConnectionString = connBuilder.ConnectionString;
-                CurrentDataBase.ExecuteNonQuery(sql);
-                //恢复连接字符串
-                connBuilder.InitialCatalog = database;
-                CurrentDataBase.ConnectionString = connBuilder.ConnectionString;
+                AdoHelper db = new SqlServer();
+                db.ConnectionString = connBuilder.ConnectionString;
+                db.ExecuteNonQuery(sql);
             }
             return true;
         }

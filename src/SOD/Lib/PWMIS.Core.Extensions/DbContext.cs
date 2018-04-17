@@ -268,16 +268,13 @@ namespace PWMIS.Core.Extensions
             bool oldEnable = CurrentDataBase.EnableCommandHandle;
             //检查数据库的时候不能开启命令管道，否则在事务日志处理器里面，可能尝试记录命令消息取找不到对应的数据库
             CurrentDataBase.EnableCommandHandle = false;
+            //注意：在对应的数据库的实现类中，执行CheckDB 检查不可以使用CurrentDataBase 对象，否则可能会修改
+            //      CurrentDataBase.Transaction.Connection.ConnectionString 的值并且无法恢复连接串，因为此时可能在“事务日志”
+            //      操作过程中，连接可已经打开。
             if (this.DbContextProvider.CheckDB())
             {
-                if (CurrentDataBase.Transaction != null)
-                    CurrentDataBase.Transaction.Connection.ConnectionString = CurrentDataBase.ConnectionString;
+             
                 result = CheckAllTableExists();//其它类型的数据库，仅检查表是否存在
-            }
-            else
-            {
-                if (CurrentDataBase.Transaction != null)
-                    CurrentDataBase.Transaction.Connection.ConnectionString = CurrentDataBase.ConnectionString;
             }
             CurrentDataBase.EnableCommandHandle = oldEnable;
             return result;
