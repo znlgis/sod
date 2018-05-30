@@ -231,3 +231,51 @@ ORDER BY [条码号] ASC,[商品名称] ASC
 //2018-3-5 14:11:06 @AdoHelper ：RecordAffected:-1
 --SQLLog (Thread ID 11) Flush----
 
+--SQLLog (Thread ID 8) Write Buffer:----
+--SQLLog (Thread ID 8) Init----
+//2018-5-30 15:41:05 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2018-5-30 15:41:05 @AdoHelper ：Execueted Time(ms):1191
+
+//2018-5-30 15:41:05 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2018-5-30 15:41:06 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [库存数量]) AS 库存数量 
+FROM [存货信息表]  
+     WHERE  1=1  AND [库存数量] > @P0 "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"0"  			//DbType=Int32
+//2018-5-30 15:41:06 @AdoHelper ：Execueted Time(ms):130
+
+//2018-5-30 15:41:06 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+--SQLLog (Thread ID 8) Init----
+//2018-5-30 15:41:46 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2018-5-30 15:41:46 @AdoHelper ：Execueted Time(ms):139
+
+//2018-5-30 15:41:46 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2018-5-30 15:41:46 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [库存数量]) AS 库存数量 
+FROM [存货信息表]  
+     WHERE  1=1  AND [库存数量] > @P0 "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"0"  			//DbType=Int32
+//2018-5-30 15:41:46 @AdoHelper ：Execueted Time(ms):20
+
+//2018-5-30 15:41:46 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+

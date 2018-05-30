@@ -334,5 +334,14 @@ namespace PWMIS.Core
            return UniqueId.NewID();
        }
 
+        /// <summary>
+        /// 当前机器ID，可以作为分布式ID，如果需要指定此ID，请在应用程序配置文件配置 SOD_MachineID 的值，范围大于100，小于1000.
+        /// </summary>
+        /// <returns></returns>
+        public static int CurrentMachineID()
+        {
+            return UniqueSequenceGUID.GetCurrentMachineID();
+        }
+
     }
 }

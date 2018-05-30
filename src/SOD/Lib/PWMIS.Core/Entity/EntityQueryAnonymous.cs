@@ -1045,10 +1045,12 @@ namespace PWMIS.DataMap.Entity
                             //特别注意：
                             //如果size==Int.Max，那么 size+2 会得到负数，从而导致 length > size+2 表达式为false
                             //所以，修改成下面的样子，理论上不会再出错了。
-                            //感谢网友 广州-银古 朋友发现此 bug ,2017.2.16
-                            if (length-2 > size && size >0)
-                                throw new NotSupportedException("当前实体类映射的字段" + paraName + " 长度没有定义或者长度小于了当前实际值的长度："
-                                    + length + "，请在实体类定义里面使用 setProperty 的重载方法指定合适的字段长度。");
+                            //感谢网友【广州-银古】朋友发现此 bug ,2017.2.16
+                            //感谢网友【郑州-何】朋友发现在“ＯＲ”条件比较的查询下，查询的值应该可以超过字段长度的问题。
+                            //为了确保安全，不被恶意攻击，这里限制为不得超过字段设定长度的40 倍。2018.5.30
+                            if (length > size * 40 && size >0)
+                                throw new NotSupportedException("当前实体类映射的字段" + paraName + " 长度没有定义或者与该字段进行条件比较的值超过了字段设定长度的40倍，有被恶意攻击的风险！预定义的字段长度："
+                                    + length );
                             if (size > 0)
                             {
                                 ((IDbDataParameter)paras[index]).Size = size;
