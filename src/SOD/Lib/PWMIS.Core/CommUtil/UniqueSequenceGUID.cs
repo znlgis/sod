@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace PWMIS.Core
 {
@@ -9,6 +10,8 @@ namespace PWMIS.Core
         //机器标识，3位整数
         static int MachineID;
         static int SeqNum;
+        static int signal = 0;//0可用，1不可用。
+
 
         static readonly DateTime baseDate = new DateTime(2017, 3, 1);
 
@@ -72,6 +75,27 @@ namespace PWMIS.Core
         /// <returns></returns>
         protected internal static long InnerNewSequenceGUID(DateTime dt, bool haveMs)
         {
+            //线程安全的自增并且不超过最大值10000
+            int countNum = System.Threading.Interlocked.Increment(ref SeqNum);
+            if (countNum >= 10000)
+            {
+                while (Interlocked.Exchange(ref signal, 1) != 0)//加自旋锁
+                {
+                    //黑魔法
+                }
+                //进入临界区
+                if (SeqNum >= 10000)
+                {
+                    SeqNum = 0;
+                    //达到1万个数后，延迟10毫秒，重新取系统时间，避免重复
+                    Thread.Sleep(10);
+                    dt = DateTime.Now;
+                }
+                countNum = System.Threading.Interlocked.Increment(ref SeqNum);
+                //离开临界区
+                Interlocked.Exchange(ref signal, 0);  //释放锁
+            }
+
             //日期以 2017.3.1日为基准，计算当前日期距离基准日期相差的天数，可以使用20年。
             //日期部分使用4位数字表示
             int days = (int)dt.Subtract(baseDate).TotalDays;
@@ -97,22 +121,8 @@ namespace PWMIS.Core
             int mid = MachineID * 10000;
             //得到总数= 4（日期）+5（时间）+3（毫秒）+7(GUID)
             long seq = dateTiePart + mid;
-
-            //线程安全的自增并且不超过最大值10000
-            int startValue = System.Threading.Interlocked.Increment(ref SeqNum);
-            while (startValue >= 10000)
-            {
-                SeqNum = 0;
-                startValue = 0;
-                //可能此时别的线程再次更改了 SeqNum
-                while (startValue != SeqNum)
-                {
-                    startValue = System.Threading.Interlocked.Increment(ref SeqNum);
-                }
-            }
-
-            seq = seq + startValue;
-            return seq;
+            
+            return seq + countNum; ;
         }
     }
 }

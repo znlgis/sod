@@ -43,10 +43,14 @@ namespace ConsoleTest
             }
             Console.WriteLine();
             Console.WriteLine("测试分布式ID：唯一且有序");
-            for (int i = 0; i < 50; i++)
+            for (int i = 0; i < 20000; i++)
             {
-                Console.Write(CommonUtil.NewUniqueSequenceGUID());
-                Console.Write(",");
+                long seq=  CommonUtil.NewUniqueSequenceGUID();
+                if (i <= 50)
+                {
+                    Console.Write(CommonUtil.NewUniqueSequenceGUID());
+                    Console.Write(",");
+                }
             }
             Console.WriteLine();
 
