@@ -152,7 +152,7 @@ namespace PWMIS.DataProvider.Data
         {
             if (this.enable)
             {
-                logEntity.CommandID = CommonUtil.NewSequenceGUID();
+                logEntity.CommandID = CommonUtil.NewUniqueSequenceGUID();
                 logEntity.ExecuteTime = DateTime.Now;
                 //recordAffected > 0 表示非SELECT语句
                 if (recordAffected > 0)

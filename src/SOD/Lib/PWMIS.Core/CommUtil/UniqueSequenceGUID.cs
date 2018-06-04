@@ -68,7 +68,7 @@ namespace PWMIS.Core
         /// 获取一个新的有序GUID整数
         /// </summary>
         /// <param name="dt">当前时间</param>
-        /// <param name="haveMs">是否包含毫秒，生成更加有序的数字，但这会增加重复率</param>
+        /// <param name="haveMs">是否包含毫秒，如果不包含，将使用3位随机数代替</param>
         /// <returns></returns>
         protected internal static long InnerNewSequenceGUID(DateTime dt, bool haveMs)
         {
@@ -82,8 +82,17 @@ namespace PWMIS.Core
             //可用随机位数= 19-12=7
             long datePart = ((long)days + 1000) * 1000 * 1000 * 1000 * 100;
             long timePart = (long)times * 1000 * 1000;
-            long msPart = (long)dt.Millisecond * 1000;
-            long dateTiePart = (datePart + timePart + msPart) * 10000;
+            long msPart = 0;
+            if (haveMs)
+            {
+                msPart = (long)dt.Millisecond ;
+            }
+            else
+
+            {
+                msPart = new Random().Next(100, 1000);
+            }
+            long dateTiePart = (datePart + timePart + msPart*1000) * 10000;
 
             int mid = MachineID * 10000;
             //得到总数= 4（日期）+5（时间）+3（毫秒）+7(GUID)

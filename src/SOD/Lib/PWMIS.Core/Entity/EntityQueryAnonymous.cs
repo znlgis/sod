@@ -1010,57 +1010,54 @@ namespace PWMIS.DataMap.Entity
         {
             if (dictPara == null)
                 return null;
+            if (db == null)
+                throw new ArgumentNullException("参数 db 不能为空！");
             IDataParameter[] paras = new IDataParameter[dictPara.Count];
             int index = 0;
 
             foreach (string key in dictPara.Keys)
             {
-                object Value = dictPara[key];
-                if (Value is IDataParameter)
-                {
-                    paras[index] = (IDataParameter)Value;
-                }
-                else
-                {
-                    string paraName = key.StartsWith("@")?key.Substring(1):key;
-                    //参数名无需加上　ParameterChar
-                    //if (!key.StartsWith(db.GetParameterChar))
-                    //    paraName = db.GetParameterChar + key.Substring(1);
+                string paraName = key.StartsWith("@") ? key.Substring(1) : key;
+                //参数名无需加上　ParameterChar
+                //if (!key.StartsWith(db.GetParameterChar))
+                //    paraName = db.GetParameterChar + key.Substring(1);
 
-                    var tnf = dictPara[key];
-                    paras[index] = db.GetParameter(paraName, tnf.FieldValue);
-                    //为字符串类型的参数指定长度 edit at 2012.4.23
-                    //增加判断tnf.Name!=null,这可能是因为使用了自定义查询的SqlMap的OQL,感谢网友 吉林-stdbool 发现此问题
-                    if (tnf.Name!=null && paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
+                var tnf = dictPara[key];
+                if (tnf == null)
+                    continue;
+
+                paras[index] = db.GetParameter(paraName, tnf.FieldValue);
+                //为字符串类型的参数指定长度 edit at 2012.4.23
+                //增加判断tnf.Name!=null,这可能是因为使用了自定义查询的SqlMap的OQL,感谢网友 吉林-stdbool 发现此问题
+                if (tnf.Name != null && paras[index].Value != null && paras[index].Value.GetType() == typeof(string))
+                {
+                    //增加字符串长度的检查,如果值得长度大于定义的长度,抛出异常提示 2014.10.21
+                    //int size = tnf.Entity.GetStringFieldSize(tnf.Field);
+                    //采用下面的方法，避免没有实体类元数据缓存 edit at 2015-12-5
+                    SimplyField sf = EntityFieldsCache.Item(tnf.Entity.GetType()).GetPropertyFieldSize(tnf.Field, tnf.Entity);
+                    int size = sf.FieldLength;
+                    if (size != 0) //如果字段不是text等类型
                     {
-                        //增加字符串长度的检查,如果值得长度大于定义的长度,抛出异常提示 2014.10.21
-                        //int size = tnf.Entity.GetStringFieldSize(tnf.Field);
-                        //采用下面的方法，避免没有实体类元数据缓存 edit at 2015-12-5
-                         SimplyField sf =EntityFieldsCache.Item(tnf.Entity.GetType()).GetPropertyFieldSize(tnf.Field,tnf.Entity );
-                        int size=sf.FieldLength;
-                        if (size !=0) //如果字段不是text等类型
+                        int length = paras[index].Value.ToString().Length;
+                        //if (length > size+2) //处理 like查询可能增加 %% 匹配的情况
+                        //特别注意：
+                        //如果size==Int.Max，那么 size+2 会得到负数，从而导致 length > size+2 表达式为false
+                        //所以，修改成下面的样子，理论上不会再出错了。
+                        //感谢网友【广州-银古】朋友发现此 bug ,2017.2.16
+                        //感谢网友【郑州-何】朋友发现在“ＯＲ”条件比较的查询下，查询的值应该可以超过字段长度的问题。
+                        //为了确保安全，不被恶意攻击，这里限制为不得超过字段设定长度的40 倍。2018.5.30
+                        if (length > size * 40 && size > 0)
+                            throw new NotSupportedException("当前实体类映射的字段" + paraName + " 长度没有定义或者与该字段进行条件比较的值超过了字段设定长度的40倍，有被恶意攻击的风险！预定义的字段长度："
+                                + length);
+                        if (size > 0)
                         {
-                            int length = paras[index].Value.ToString().Length;
-                            //if (length > size+2) //处理 like查询可能增加 %% 匹配的情况
-                            //特别注意：
-                            //如果size==Int.Max，那么 size+2 会得到负数，从而导致 length > size+2 表达式为false
-                            //所以，修改成下面的样子，理论上不会再出错了。
-                            //感谢网友【广州-银古】朋友发现此 bug ,2017.2.16
-                            //感谢网友【郑州-何】朋友发现在“ＯＲ”条件比较的查询下，查询的值应该可以超过字段长度的问题。
-                            //为了确保安全，不被恶意攻击，这里限制为不得超过字段设定长度的40 倍。2018.5.30
-                            if (length > size * 40 && size >0)
-                                throw new NotSupportedException("当前实体类映射的字段" + paraName + " 长度没有定义或者与该字段进行条件比较的值超过了字段设定长度的40倍，有被恶意攻击的风险！预定义的字段长度："
-                                    + length );
-                            if (size > 0)
-                            {
-                                ((IDbDataParameter)paras[index]).Size = size;
-                                ((IDbDataParameter)paras[index]).DbType = sf.FieldDbType; //由实体类指定字段类型
-                            }
-                            else
-                            {
-                                ((IDbDataParameter)paras[index]).Size =Math.Abs ( size);
-                                ((IDbDataParameter)paras[index]).DbType = DbType.AnsiString ;
-                            }
+                            ((IDbDataParameter)paras[index]).Size = size;
+                            ((IDbDataParameter)paras[index]).DbType = sf.FieldDbType; //由实体类指定字段类型
+                        }
+                        else
+                        {
+                            ((IDbDataParameter)paras[index]).Size = Math.Abs(size);
+                            ((IDbDataParameter)paras[index]).DbType = DbType.AnsiString;
                         }
                     }
                 }

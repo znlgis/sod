@@ -34,6 +34,23 @@ namespace ConsoleTest
             if (read.ToUpper() == "Q")
                 return;
 
+            Console.WriteLine("当前机器的分布式ID：{0}",CommonUtil.CurrentMachineID());
+            Console.WriteLine("测试分布式ID：秒级有序");
+            for (int i= 0; i < 50; i++)
+            {
+                Console.Write(CommonUtil.NewSequenceGUID());
+                Console.Write(",");
+            }
+            Console.WriteLine();
+            Console.WriteLine("测试分布式ID：唯一且有序");
+            for (int i = 0; i < 50; i++)
+            {
+                Console.Write(CommonUtil.NewUniqueSequenceGUID());
+                Console.Write(",");
+            }
+            Console.WriteLine();
+
+
             IDataParameter[] paraArr = new IDataParameter[] {
                 MyDB.Instance.GetParameter("P1",111),
                 MyDB.Instance.GetParameter("P2","abc'ee<edde/>e"),
