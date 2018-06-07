@@ -81,15 +81,17 @@ namespace PWMIS.DataMap.Entity
         /// <typeparam name="TResult">输入类型</typeparam>
         /// <param name="arg">参数</param>
         /// <returns></returns>
-        public delegate TResult Func<TResult>(TResult arg);
+        public delegate TResult MyFunc1<TResult>(TResult arg);
+       
         /// <summary>
-        /// 返回一个结果类型的泛型委托函数
+        /// 接受一个对象数组参数并返回指定的结果类型
         /// </summary>
         /// <typeparam name="TResult"></typeparam>
+        /// <param name="args"></param>
         /// <returns></returns>
-        public delegate TResult MyFunc<TResult>();
+        public delegate TResult MyFunc2<TResult>(object[] args);
 
-        
+
 
         /// <summary>
         /// 默认构造函数
@@ -564,7 +566,7 @@ namespace PWMIS.DataMap.Entity
         /// <typeparam name="TResult">结果类型</typeparam>
         /// <param name="fun">处理数据的方法</param>
         /// <returns></returns>
-        public IEnumerable<TResult> Map<TResult>(Func<TResult> fun) where TResult : class, new()
+        public IEnumerable<TResult> Map<TResult>(MyFunc1<TResult> fun) where TResult : class, new()
         {
             if (this.Values == null)
                 this.Execute();
@@ -699,6 +701,7 @@ namespace PWMIS.DataMap.Entity
             foreach (var data in this.MapMoreEntity(this.OQL.GetAllUsedEntity()))
             {
                 //执行之前，必须先给相应的实体对象赋值，否则报错
+                this.currValue = data;
                 TResult obj = fun();
                 resultList.Add(obj);
             }
@@ -706,36 +709,61 @@ namespace PWMIS.DataMap.Entity
             return resultList;
         }
 
-        /// <summary>
-        /// 将实体类容器转换为对象列表
-        /// <example>
-        /// <code>
-        /// <![CDATA[
-        /// OQL q=OQL.From(entity1)
-        ///          .Join(entity2).On(entity1.PK,entity2.FK)
-        ///          .Select(entity1.Field1,entity2.Field2)
-        ///       .End;
-        /// EntityContainer ec=new EntityContainer(q);
-        /// var list=ec.ToObjectList( e =>
-        ///          {
-        ///             return new {
-        ///                          Property1=e.GetItemValue<int>(0), 
-        ///                          Property2=e.GetItemValue<string>(1) 
-        ///                        };
-        ///          });
-        /// 
-        /// foreache(var item in list)
-        /// {
-        ///     Console.WriteLine("Property1={0},Property2={1}",item.Property1,item.Property2);
-        /// }
-        /// ]]>
-        /// </code>
-        /// </example>
-        /// </summary>
-        /// <typeparam name="TResult">结果的列表元素类型</typeparam>
-        /// <param name="fun">容器结果委托函数</param>
-        /// <returns>对象列表</returns>
-        public IList<TResult> ToObjectList<TResult>(ECResultFunc<TResult> fun) where TResult : class
+        //public IList<TResult> MapToList<TResult>(MyFunc<TResult> fun)
+        //   where TResult : class
+        //{
+        //    if (executed)
+        //        throw new Exception("在执行 MapToList 方法之前，不能先执行 Execute 方法！");
+        //    this.oql.fieldStack.Clear();//清除可能的调试信息
+        //    var result = fun();
+
+        //    int count = this.oql.fieldStack.Count;
+        //    if (count < 1)
+        //        throw new ArgumentException("要将结果映射的查询的字段太少，请至少指定一个要查询的字段！");
+        //    this.oql.Select(new object[count]);
+
+        //    //已经获取到自定义实体类对象中选择的字段，可以用此OQL进行查询了，待完成
+        //    List<TResult> resultList = new List<TResult>();
+        //    foreach (var data in this.MapMoreEntity(this.OQL.GetAllUsedEntity()))
+        //    {
+        //        //执行之前，必须先给相应的实体对象赋值，否则报错
+        //        TResult obj = fun(data);
+        //        resultList.Add(obj);
+        //    }
+
+        //    return resultList;
+        //}
+
+            /// <summary>
+            /// 将实体类容器转换为对象列表
+            /// <example>
+            /// <code>
+            /// <![CDATA[
+            /// OQL q=OQL.From(entity1)
+            ///          .Join(entity2).On(entity1.PK,entity2.FK)
+            ///          .Select(entity1.Field1,entity2.Field2)
+            ///       .End;
+            /// EntityContainer ec=new EntityContainer(q);
+            /// var list=ec.ToObjectList( e =>
+            ///          {
+            ///             return new {
+            ///                          Property1=e.GetItemValue<int>(0), 
+            ///                          Property2=e.GetItemValue<string>(1) 
+            ///                        };
+            ///          });
+            /// 
+            /// foreache(var item in list)
+            /// {
+            ///     Console.WriteLine("Property1={0},Property2={1}",item.Property1,item.Property2);
+            /// }
+            /// ]]>
+            /// </code>
+            /// </example>
+            /// </summary>
+            /// <typeparam name="TResult">结果的列表元素类型</typeparam>
+            /// <param name="fun">容器结果委托函数</param>
+            /// <returns>对象列表</returns>
+            public IList<TResult> ToObjectList<TResult>(ECResultFunc<TResult> fun) where TResult : class
         {
             if (this.Values == null)
                 this.Execute();

@@ -34,6 +34,8 @@ namespace ConsoleTest
             if (read.ToUpper() == "Q")
                 return;
 
+          
+
             Console.WriteLine("当前机器的分布式ID：{0}",CommonUtil.CurrentMachineID());
             Console.WriteLine("测试分布式ID：秒级有序");
             for (int i= 0; i < 50; i++)
@@ -274,11 +276,13 @@ namespace ConsoleTest
 
             /////////////////////////////////////////////////////
             Console.WriteLine("18，测试实体类【自动保存】数据...");
-
             TestAutoSave();
 
+            Console.WriteLine("19，测试OQL上使用聚合函数...");
+            OQLAvgTest();
+
             /////////////////测试事务////////////////////////////////////
-            Console.WriteLine("19，测试测试事务...");
+            Console.WriteLine("20，测试测试事务...");
             TestTransaction();
             TestTransaction2();
             Console.WriteLine("事务测试完成！");
@@ -700,6 +704,22 @@ namespace ConsoleTest
                 DataSet ds = db.ExecuteDataSet(sql);
             }
 
+        }
+
+        static void OQLAvgTest()
+        {
+            Table_User user = new Table_User();
+            OQL q = OQL.From(user)
+                .Select().Avg(user.Height,"AvgHeight")
+                .GroupBy(user.Sex)
+                .END;
+            EntityContainer ec = new EntityContainer(q);
+            var result= ec.MapToList(() => new {
+                //获取聚合函数的值，用下面一行代码的方式
+                AvgHeight= ec.GetItemValue<double>("AvgHeight"),
+                Sex = user.Sex ?"男":"女"
+            });
+            Console.WriteLine("get AVG record count:"+ result.Count);
         }
     }
 

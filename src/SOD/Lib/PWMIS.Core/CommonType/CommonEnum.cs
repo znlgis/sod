@@ -53,6 +53,13 @@ namespace PWMIS.Common
 
     //下面的委托定义，用于.NET 2.0 没有的，替代.NET 3.5之后的委托方法
 
+    /// <summary>
+    /// 返回一个结果类型的泛型委托函数
+    /// </summary>
+    /// <typeparam name="TResult"></typeparam>
+    /// <returns></returns>
+    public delegate TResult MyFunc<TResult>();
+
     public delegate TResult MyFunc<T, TResult>(T arg);
 
     public delegate TResult MyFunc<T1,T2, TResult>(T1 arg1,T2 arg2);
