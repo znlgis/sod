@@ -34,7 +34,7 @@ namespace PWMIS.DataProvider.Data
                     MyDbParameter item = new MyDbParameter();
                     item.Name = para1.ParameterName;
                     item.Length = para1.Size;
-                    item.Value = para1.Value;
+                    item.Value = para1.Value==DBNull.Value?null:para1.Value;
                     item.ParaDbType = para1.DbType;
                     list.Add(item);
                 }

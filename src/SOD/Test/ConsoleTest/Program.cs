@@ -60,6 +60,7 @@ namespace ConsoleTest
             IDataParameter[] paraArr = new IDataParameter[] {
                 MyDB.Instance.GetParameter("P1",111),
                 MyDB.Instance.GetParameter("P2","abc'ee<edde/>e"),
+                MyDB.Instance.GetParameter("P3",DBNull.Value),
             };
          
             string str = DbParameterSerialize.Serialize(paraArr);
