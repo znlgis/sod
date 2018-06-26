@@ -636,7 +636,9 @@ namespace PWMIS.DataProvider.Data
             if (transCount <= 0)
             {
                 CloseGlobalConnection();
-                transCount = 0;            
+                transCount = 0;
+                //2018.6.26 事务全部Commit后，应设置Transaction 为空，否则 SQLite数据库再次查询会出错
+                Transaction = null;
             }
             Logger.WriteLog("提交事务并关闭连接", "AdoHelper Transaction");
             Logger.Flush();

@@ -92,6 +92,7 @@ namespace DataReplicationExample
             targetCtx.CheckTableExists<UserEntity>();
             Console.WriteLine("----目标数据库初始化检查成功-------");
 
+            sourceCtx.DbContextProvider.CurrentDataBase.Transaction = null;
             //从源读取数据
             sourceCtx.OnReadLog += SourceCtx_OnReadLog;
             int count= sourceCtx.ReadLog(5, list => {

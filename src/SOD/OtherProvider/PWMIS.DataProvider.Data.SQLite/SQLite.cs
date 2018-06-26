@@ -86,6 +86,32 @@ namespace PWMIS.DataProvider.Data
             para.Size = size;
             return para;
         }
+
+        /// <summary>
+        /// 根据参数名和值返回参数一个新的参数对象
+        /// </summary>
+        /// <param name="paraName">参数名</param>
+        /// <param name="Value">参数值</param>
+        /// <returns>特定于数据源的参数对象</returns>
+        public override IDataParameter GetParameter(string paraName, object Value)
+        {
+            //SQLite 不会根据值自动设置数据库类型，有些类型需要设置下
+            IDataParameter para = this.GetParameter();
+            para.ParameterName = paraName;
+            para.Value = Value;
+            if (Value != null)
+            {
+                if (Value.GetType() == typeof(DateTime))
+                    para.DbType = DbType.DateTime;
+            }
+            return para;
+        }
+
+        /// <summary>
+        /// 获取本地数据库类型名
+        /// </summary>
+        /// <param name="para"></param>
+        /// <returns></returns>
         public override string GetNativeDbTypeName(IDataParameter para)
         {
             SQLiteParameter mysqlPara = para as SQLiteParameter;

@@ -2102,13 +2102,22 @@ namespace PWMIS.DataMap.Entity
                     Type fieldType = entityFieldsCache.GetPropertyType(field);
 
                     if (fieldType == typeof(string) && paras[index].Value != null)
+                    {
                         //为字符串类型的参数指定长度 edit at 2012.4.23
                         //((IDbDataParameter)paras[index]).Size = entity.GetStringFieldSize(field);
-                         SetParameterSize(ref paras[index], entity, field,DB);
+                        SetParameterSize(ref paras[index], entity, field, DB);
+                    }
                     else if (fieldType == typeof(byte[]))
+                    {
                         //为字节类型指定转换类型，防止空值时被当作字符串类型
                         paras[index].DbType = DbType.Binary;
-
+                    }
+                    else if (fieldType == typeof(DateTime))
+                    {
+                        //当从一种数据库的日期值转换到另外一种数据库的日期值的时候，需要显式的设置，比如从MySQL到SQLite
+                        if (paras[index].DbType != DbType.DateTime && paras[index].DbType != DbType.DateTime2)
+                            paras[index].DbType = DbType.DateTime;
+                    }
                     index++;
                 }
             }
@@ -2177,12 +2186,22 @@ namespace PWMIS.DataMap.Entity
                 Type fieldType = entityFieldsCache.GetPropertyType(field);
 
                 if (fieldType == typeof(string) && paras[index].Value != null)
+                {
                     //为字符串类型的参数指定长度 edit at 2012.4.23
                     //((IDbDataParameter)paras[index]).Size = entity.GetStringFieldSize(field);
-                    SetParameterSize(ref paras[index], entity, field,DB);
+                    SetParameterSize(ref paras[index], entity, field, DB);
+                }
                 else if (fieldType == typeof(byte[]))
+                {
                     //为字节类型指定转换类型，防止空值时被当作字符串类型
                     paras[index].DbType = DbType.Binary;
+                }
+                else if (fieldType == typeof(DateTime))
+                {
+                    //当从一种数据库的日期值转换到另外一种数据库的日期值的时候，需要显式的设置，比如从MySQL到SQLite
+                    if (paras[index].DbType != DbType.DateTime && paras[index].DbType != DbType.DateTime2)
+                        paras[index].DbType = DbType.DateTime;
+                }
 
                 index++;
             }
