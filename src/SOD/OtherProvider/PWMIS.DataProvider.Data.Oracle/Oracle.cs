@@ -156,7 +156,7 @@ namespace PWMIS.DataProvider.Data.OracleDataAccess
         /// </summary>
         /// <param name="sql"></param>
         /// <returns></returns>
-        protected override string PrepareSQL( string sql)
+        protected override string PrepareSQL( string sql, IDataParameter[] parameters = null)
         {
             return sql.Replace("[", "\"").Replace("]", "\"").Replace("@", ":");
         }

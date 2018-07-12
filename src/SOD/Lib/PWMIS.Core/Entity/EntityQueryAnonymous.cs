@@ -1019,8 +1019,8 @@ namespace PWMIS.DataMap.Entity
             {
                 string paraName = key.StartsWith("@") ? key.Substring(1) : key;
                 //参数名无需加上　ParameterChar
-                //if (!key.StartsWith(db.GetParameterChar))
-                //    paraName = db.GetParameterChar + key.Substring(1);
+                //if (!paraName.StartsWith(db.GetParameterChar))
+                //    paraName = db.GetParameterChar + paraName;
 
                 var tnf = dictPara[key];
                 if (tnf == null)

@@ -96,6 +96,26 @@ namespace PWMIS.DataProvider.Data
             return para.DbType.ToString();
         }
 
+        protected override string PrepareSQL(string sql, IDataParameter[] parameters = null)
+        {
+            sql = sql.Replace("[", "").Replace("]", "");
+            if (parameters != null)
+            {
+                foreach (var para in parameters)
+                {
+                    string paraName = para.ParameterName;
+                    if (!paraName.StartsWith("@"))
+                        paraName = "@" + paraName;
+                    sql = sql.Replace(paraName, "?");
+                }
+                return sql;
+            }
+            else
+            {
+                return sql;
+            }
+        }
+
         /// <summary>
         /// 返回此 OdbcConnection 的数据源的架构信息。
         /// </summary>

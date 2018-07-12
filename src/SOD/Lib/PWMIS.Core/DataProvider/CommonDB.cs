@@ -723,8 +723,9 @@ namespace PWMIS.DataProvider.Data
         /// 对应SQL语句进行其它的处理，例如将SQLSERVER的字段名外的中括号替换成数据库特定的字符。该方法会在执行查询前调用，默认情况下不进行任何处理。
         /// </summary>
         /// <param name="sql"></param>
+        /// <param name="parameters"></param>
         /// <returns></returns>
-        protected virtual string PrepareSQL( string sql)
+        protected virtual string PrepareSQL( string sql, IDataParameter[] parameters=null)
         {
             return sql;
         }
@@ -750,7 +751,7 @@ namespace PWMIS.DataProvider.Data
         protected void CompleteCommand(IDbCommand cmd,  string SQL,  CommandType commandType,  IDataParameter[] parameters)
         {
             //SQL 可能在OnExecuting 已经处理，因此PrepareSQL 对于某些Oracle大写的字段名，不会有影响
-            cmd.CommandText = SqlServerCompatible ? PrepareSQL(  SQL) : SQL;
+            cmd.CommandText = SqlServerCompatible ? PrepareSQL(  SQL, parameters) : SQL;
             cmd.CommandType = commandType;
             cmd.Transaction = this.Transaction;
             if (this.CommandTimeOut > 0)
