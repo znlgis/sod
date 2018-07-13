@@ -101,9 +101,11 @@ namespace PWMIS.DataProvider.Data
             sql = sql.Replace("[", "").Replace("]", "");
             if (parameters != null)
             {
-                foreach (var para in parameters)
+                //必须倒序循环替换，感谢网友 北京-cool18 发现此问题
+                int pcount = parameters.Length;
+                for (int i = pcount - 1; i >= 0; i--)
                 {
-                    string paraName = para.ParameterName;
+                    string paraName = parameters[i].ParameterName;
                     if (!paraName.StartsWith("@"))
                         paraName = "@" + paraName;
                     sql = sql.Replace(paraName, "?");
