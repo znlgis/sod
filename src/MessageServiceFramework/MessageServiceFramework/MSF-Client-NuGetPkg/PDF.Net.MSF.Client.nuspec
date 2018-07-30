@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>PDF.Net.MSF.Client</id>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <title>PDF.NET MSF(Client )</title>
     <authors>bluedoctor</authors>
     <owners>PWMIS.com</owners>
