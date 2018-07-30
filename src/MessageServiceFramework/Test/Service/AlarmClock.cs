@@ -33,18 +33,13 @@ namespace ServiceSample
                 publishCount++;
                 Console.WriteLine("AlarmClockService Publish Count:{0}",publishCount);
             }
-            if (publishCount > 10)
-            {
-                timer.Stop();
-                Console.WriteLine("[{0}] AlarmClockService Timer Stoped. ",DateTime.Now);
-                CurrentContext.PublishEventSource.DeActive();
-            }
+           
         }
 
        
         public ServiceEventSource SetAlarmTime(DateTime targetTime)
         {
-            return new ServiceEventSource(timer, 2, () => {
+            return new ServiceEventSource(timer, 20, () => {
                 //要初始化执行的代码或者方法
                 publishCount = 0;
                 this.AlarmTime = targetTime;
@@ -65,6 +60,20 @@ namespace ServiceSample
                 //如果事件推送结束，需要设置事件源为非活动状态，否则，需要等待 ActiveLife 时间之后自然过期成为非活动状态。
                 //如果你无法确定事件推送何时结束，请不要调用下面的方法
                 //CurrentContext.PublishEventSource.DeActive();
+
+                //本方法执行完成，将结束事件推送。如果你在其它线程上执行耗时的任务，需要在这里阻塞任务直到执行完成。
+                while (true)
+                {
+                    //响铃100次，闹钟停止工作
+                    if (publishCount > 100)
+                    {
+                        timer.Stop();
+                        Console.WriteLine("[{0}] AlarmClockService Timer Stoped. ", DateTime.Now);
+                        break;
+                    }
+                    System.Threading.Thread.Sleep(1000);
+                }
+                
             });
         }
 

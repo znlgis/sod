@@ -14,6 +14,7 @@ using PWMIS.EnterpriseFramework.Service.Runtime;
 using PWMIS.EnterpriseFramework.Service.Client.Model;
 using PWMIS.EnterpriseFramework.Service.Group;
 using System.Xml;
+using System.ServiceModel.Description;
 
 namespace PWMIS.EnterpriseFramework.Service.Host
 {
@@ -196,9 +197,20 @@ namespace PWMIS.EnterpriseFramework.Service.Host
 
             //Console.WriteLine("binding init ok.");
             ListAllBindingElements(binding);
-           
+            Console.WriteLine("service binding config check all ok.");
+
             ServiceHost host = new ServiceHost(typeof(MessagePublishServiceImpl));
-            Console.WriteLine("service config check all ok.");
+            ServiceThrottlingBehavior throttlingBehavior = host.Description.Behaviors.Find<ServiceThrottlingBehavior>();
+            if (null == throttlingBehavior)
+            {
+                throttlingBehavior = new ServiceThrottlingBehavior();
+                host.Description.Behaviors.Add(throttlingBehavior);
+            }
+            throttlingBehavior.MaxConcurrentCalls = 50;
+            throttlingBehavior.MaxConcurrentInstances = 30;
+            throttlingBehavior.MaxConcurrentSessions = 50;
+            Console.WriteLine("service behavior config check  ok.");
+
             host.AddServiceEndpoint(typeof(IMessagePublishService), binding, uri);
             Console.WriteLine("=========PDF.NET.MSF (PWMIS Message Service) Ver {0} ==", System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString());
             Console.WriteLine("启动消息发布服务……接入地址：{0}", uri);
@@ -426,14 +438,14 @@ namespace PWMIS.EnterpriseFramework.Service.Host
                 e.ErrorMessageText,
                 e.ErrorSource == null ? "NULL" : e.ErrorSource.ToString());
             ConsoleWriteSubText(text, 1000);
-            WriteLogFile("ErrorLog.txt", text);
+            WriteLogFile("MSFErrorLog.txt", text);
         }
 
         static void Instance_ListenerEventMessage(object sender, MessageListenerEventArgs e)
         {
             string text = string.Format("[{0}]监听器事件--From: {1}:{2}\r\n[{3}]", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"), e.Listener.FromIP, e.Listener.FromPort, e.MessageText);
             ConsoleWriteSubText(text,1000);
-            WriteLogFile("ListenerEvent.txt", text);
+            WriteLogFile("MSFListenerEvent.txt", text);
         }
 
         static void ListAllBindingElements(Binding binding)
@@ -478,7 +490,7 @@ namespace PWMIS.EnterpriseFramework.Service.Host
         {
             string errMsg = "程序发生未处理的异常：\r\n" + e.ExceptionObject.ToString();
             Console.WriteLine(errMsg);
-            WriteLogFile("ErrorLog.txt",errMsg);
+            WriteLogFile("MSFErrorLog.txt",errMsg);
         }
 
         static void WriteLogFile(string fileName,string logMsg)

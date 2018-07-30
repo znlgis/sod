@@ -265,7 +265,7 @@ namespace WinClient
 
             ServiceRequest request = new ServiceRequest();
             request.ServiceName = "AlarmClockService";
-            request.MethodName = "SetAlarmTime";
+            request.MethodName = "SetAlarmTime1";
             request.Parameters = new object[] { this.dateTimePicker1.Value };
 
             //异步方式测试

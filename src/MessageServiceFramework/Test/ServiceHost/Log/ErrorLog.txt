@@ -1119,3 +1119,210 @@ System.Exception: test error...............
    在 ServiceSample.TestTimeService.PublishParallelData(Int32 timeCount) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 53
    在 ServiceSample.TestTimeService.<>c__DisplayClass4_0.<ParallelTime>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestTimeService.cs:行号 30
    在 PWMIS.EnterpriseFramework.Service.Host.EventServicePublisher.<>c__DisplayClass6_0.<Ready>b__0() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceHost\Publisher.cs:行号 604
+------------------------------
+[2018-07-30 15:32:43]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:54538,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 15:32:49]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:54539,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 15:33:00]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:54541,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 15:35:49]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:54553,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 15:37:40]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：当前方法调用无效，请确认方法名称正确并且具有公开的访问属性。，
+请求的Uri:
+Service://Calculator/Sub1/System.Int32=1&System.Int32=2，
+127.0.0.1:54562,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.InvalidOperationException: 当前方法调用无效，请确认方法名称正确并且具有公开的访问属性。
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 656
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 15:39:15]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：当前方法调用无效，请确认方法名称正确并且具有公开的访问属性。，
+请求的Uri:
+Publish://AlarmClockService/SetAlarmTime1/System.DateTime=636685620060000000，
+127.0.0.1:54572,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.InvalidOperationException: 当前方法调用无效，请确认方法名称正确并且具有公开的访问属性。
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 656
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 15:39:55]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：当前方法调用无效，请确认方法名称正确并且具有公开的访问属性。，
+请求的Uri:
+Publish://AlarmClockService/SetAlarmTime1/System.DateTime=636685619907960847，
+127.0.0.1:54574,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.InvalidOperationException: 当前方法调用无效，请确认方法名称正确并且具有公开的访问属性。
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 656
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 15:41:18]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：当前方法调用无效，请确认方法名称正确并且具有公开的访问属性。，
+请求的Uri:
+Publish://AlarmClockService/SetAlarmTime1/System.DateTime=636685620757871177，
+127.0.0.1:54577,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.InvalidOperationException: 当前方法调用无效，请确认方法名称正确并且具有公开的访问属性。
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 656
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 15:42:59]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:54581,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 15:48:06]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:54597,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 15:49:11]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:54601,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 15:49:52]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:54605,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 15:52:02]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：当前方法调用无效，请确认方法名称正确并且具有公开的访问属性。，
+请求的Uri:
+Publish://AlarmClockService/SetAlarmTime1/System.DateTime=636685627062387133，
+127.0.0.1:54615,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.InvalidOperationException: 当前方法调用无效，请确认方法名称正确并且具有公开的访问属性。
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 656
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 16:05:41]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：当前方法调用无效，请确认方法名称正确并且具有公开的访问属性。，
+请求的Uri:
+Publish://AlarmClockService/SetAlarmTime1/System.DateTime=636685635363769554，
+127.0.0.1:54640,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.InvalidOperationException: 当前方法调用无效，请确认方法名称正确并且具有公开的访问属性。
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 656
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474
+------------------------------
+[2018-07-30 16:08:46]处理服务的时候发生异常：执行服务方法错误：
+源错误信息：sub error.，
+请求的Uri:
+Service://Calculator/Sub/System.Int32=1&System.Int32=2，
+127.0.0.1:54654,WMI2114256838
+
+错误发生时的异常对象调用堆栈：
+System.Exception: sub error.
+   在 ServiceSample.TestCalculatorService.Sub(Int32 a, Int32 b) 位置 E:\Git\sod\src\MessageServiceFramework\Test\Service\TestCalculatorService.cs:行号 34
+   在 lambda_method(Closure , Object , Object[] )
+   在 PWMIS.EnterpriseFramework.Service.Basic.DynamicMethodExecutor.Execute(Object instance, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceBasic\DynamicMethodExecutor.cs:行号 27
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.DynamicServiceCall(IService service, String methodName, Object[] parameters) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 657
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ExecuteService(IService service) 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 641
+   在 PWMIS.EnterpriseFramework.Service.Runtime.ServiceContext.ProcessService() 位置 E:\Git\sod\src\MessageServiceFramework\PWMISServiceRuntime\ServiceContext.cs:行号 474

@@ -23,6 +23,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
 
         private void RaiseSubscriberError(object sender, MessageEventArgs e)
         {
+            this.Close();//订阅出错，需要及时关闭连接
             if (this.ErrorMessage != null)
                 this.ErrorMessage(sender, e);
         }
@@ -65,7 +66,7 @@ namespace PWMIS.EnterpriseFramework.Service.Client
             {
                 //throw new InvalidOperationException("未打开连接或者连接已经关闭，请先调用Connect 方法");
                 RaiseSubscriberError(this, new MessageEventArgs("未打开连接或者连接已经关闭，程序将重新连接服务"));
-                this.Close();
+               
                 this.Connect();
             }
         }
