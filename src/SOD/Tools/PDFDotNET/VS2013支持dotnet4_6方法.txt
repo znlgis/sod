@@ -1,0 +1,6 @@
+﻿如果你当前使用VS2013打开本解决方案，请参考下面文章：
+
+让您的 VS 2012/2013 升级开发 .NET 4.6 -- Targeting the .NET Framework 4.6 (多目标包)
+https://www.cnblogs.com/mis2000lab/p/4496758.html
+
+注意：本程序集项目由于使用了Cef组建，最低要求使用 .Net 4.5.2，安装了上面的VS包后，可以支持选择 .Net 4.6
