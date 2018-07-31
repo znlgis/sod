@@ -50,7 +50,7 @@ namespace ServiceSample
                 },i);
             }
             Task.WaitAll(tasks, -1);
-            throw new Exception("test error...............");
+            //throw new Exception("test error...............");
         }
 
         public void CompleteRequest(IServiceContext context)

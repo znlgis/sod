@@ -85,7 +85,7 @@ namespace WinClient
             sessionProxy.ErrorMessage += new EventHandler<MessageSubscriber.MessageEventArgs>(sessionProxy_ErrorMessage);
             System.Diagnostics.Stopwatch sw = new Stopwatch();
             sw.Start();
-            //同步方式必须显示的打开和关闭连接
+            //GetServiceMessage 同步方式必须显示的打开和关闭连接
             sessionProxy.RegisterData = "1234567890";
             if (sessionProxy.Connect(this.txtSerivceUri.Text))
             {
@@ -265,7 +265,7 @@ namespace WinClient
 
             ServiceRequest request = new ServiceRequest();
             request.ServiceName = "AlarmClockService";
-            request.MethodName = "SetAlarmTime1";
+            request.MethodName = "SetAlarmTime";
             request.Parameters = new object[] { this.dateTimePicker1.Value };
 
             //异步方式测试
@@ -318,6 +318,7 @@ namespace WinClient
                    
                 });
             });
+            MessageBox.Show("请在服务控制台输入测试文字。");
         }
 
         private void btnParallel_Click(object sender, EventArgs e)
@@ -331,22 +332,23 @@ namespace WinClient
             Proxy serviceProxy = new Proxy();
             serviceProxy.ErrorMessage += new EventHandler<MessageSubscriber.MessageEventArgs>(serviceProxy_ErrorMessage);
             serviceProxy.ServiceBaseUri = this.txtSerivceUri.Text;
+            this.txtBlock.Text = "";
             int msgId = serviceProxy.Subscribe<DateTime>(request, DataType.DateTime, (converter) =>
             {
                 if (converter.Succeed)
                 {
+                    int count = System.Threading.Interlocked.Increment(ref this.debugCount);
+                    string text = string.Format("count={0},Data={1},ThreadID={2}\r\n", count, converter.Result,
+                        System.Threading.Thread.CurrentThread.ManagedThreadId);
                     MyInvoke(this, () =>
                     {
-                        this.lblResult.Text = converter.Result.ToString();
+                        this.txtBlock.Text += text;
                         if (converter.Result == new DateTime(2018, 1, 1))
                         {
                             btnParallel.Enabled = true;
+                            MessageBox.Show("操作完成");
                         }
-                        else
-                        {
-                            int count= System.Threading.Interlocked.Increment(ref this.debugCount);
-                            System.Diagnostics.Debug.WriteLine("count="+count+",Data="+converter.Result);
-                        }
+                       
                     });
                 }
                 else

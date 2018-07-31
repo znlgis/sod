@@ -45,6 +45,7 @@
             this.btnAlarmClock = new System.Windows.Forms.Button();
             this.btnServerText = new System.Windows.Forms.Button();
             this.btnParallel = new System.Windows.Forms.Button();
+            this.txtBlock = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // txtA
@@ -103,9 +104,9 @@
             // 
             this.btnAdd.Location = new System.Drawing.Point(39, 127);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(75, 23);
+            this.btnAdd.Size = new System.Drawing.Size(137, 23);
             this.btnAdd.TabIndex = 6;
-            this.btnAdd.Text = "计算 a+b";
+            this.btnAdd.Text = "（同步会话）计算 a+b";
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
@@ -113,9 +114,9 @@
             // 
             this.btnSub.Location = new System.Drawing.Point(179, 127);
             this.btnSub.Name = "btnSub";
-            this.btnSub.Size = new System.Drawing.Size(75, 23);
+            this.btnSub.Size = new System.Drawing.Size(100, 23);
             this.btnSub.TabIndex = 7;
-            this.btnSub.Text = "计算 a-b";
+            this.btnSub.Text = "(异常)计算 a-b";
             this.btnSub.UseVisualStyleBackColor = true;
             this.btnSub.Click += new System.EventHandler(this.btnSub_Click);
             // 
@@ -144,9 +145,9 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(39, 13);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(215, 12);
+            this.label5.Size = new System.Drawing.Size(239, 12);
             this.label5.TabIndex = 10;
-            this.label5.Text = "消息服务框架测试程序 ，服务器地址：";
+            this.label5.Text = "iMSF消息服务框架测试程序 ，服务器地址：";
             // 
             // txtSerivceUri
             // 
@@ -205,11 +206,21 @@
             this.btnParallel.UseVisualStyleBackColor = true;
             this.btnParallel.Click += new System.EventHandler(this.btnParallel_Click);
             // 
+            // txtBlock
+            // 
+            this.txtBlock.Location = new System.Drawing.Point(41, 269);
+            this.txtBlock.Multiline = true;
+            this.txtBlock.Name = "txtBlock";
+            this.txtBlock.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtBlock.Size = new System.Drawing.Size(424, 132);
+            this.txtBlock.TabIndex = 17;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(534, 271);
+            this.ClientSize = new System.Drawing.Size(534, 421);
+            this.Controls.Add(this.txtBlock);
             this.Controls.Add(this.btnParallel);
             this.Controls.Add(this.btnServerText);
             this.Controls.Add(this.btnAlarmClock);
@@ -228,7 +239,7 @@
             this.Controls.Add(this.txtB);
             this.Controls.Add(this.txtA);
             this.Name = "Form1";
-            this.Text = "PDF.NET(http://www.pwmis.com/sqlmap)";
+            this.Text = "PDF.NET.MSF(http://www.pwmis.com/sqlmap)";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -254,6 +265,7 @@
         private System.Windows.Forms.Button btnAlarmClock;
         private System.Windows.Forms.Button btnServerText;
         private System.Windows.Forms.Button btnParallel;
+        private System.Windows.Forms.TextBox txtBlock;
     }
 }
 
