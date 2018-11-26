@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>PDF.NET.SOD.MySQL.Provider</id>
-        <version>5.6.2.1229</version>
+        <version>5.6.2.1230</version>
         <title>PDF.NET SOD MySQL Provider</title>
         <authors>深蓝医生</authors>
         <license type="expression">LGPL-2.1-only</license>
@@ -13,13 +13,13 @@
         <tags>ORM SQL-MAP OQL PDF.NET SOD</tags>
         <dependencies>
             <dependency id="MySql.Data" version="8.0.13" />
-            <dependency id="PDF.NET.SOD" version="5.6.2.1229" />
+            <dependency id="PDF.NET.SOD" version="5.6.2.1230" />
         </dependencies>
     </metadata>
     <files>
-        <file src="..\OtherProvider\发布目录\PWMIS.MySqlClient.dll" target="lib\net452\PWMIS.MySqlClient.dll" />
-        <file src="..\OtherProvider\发布目录\PWMIS.MySqlClient.dll.config" target="lib\net452\PWMIS.MySqlClient.dll.config" />
-        <file src="..\OtherProvider\发布目录\PWMIS.MySqlClient.pdb" target="lib\net452\PWMIS.MySqlClient.pdb" />
-        <file src="..\OtherProvider\发布目录\PWMIS.MySqlClient.XML" target="lib\net452\PWMIS.MySqlClient.XML" />
+        <file src="..\OtherProvider\发布目录\PWMIS.MySqlClient.dll" target="lib\PWMIS.MySqlClient.dll" />
+        <file src="..\OtherProvider\发布目录\PWMIS.MySqlClient.dll.config" target="lib\PWMIS.MySqlClient.dll.config" />
+        <file src="..\OtherProvider\发布目录\PWMIS.MySqlClient.pdb" target="lib\PWMIS.MySqlClient.pdb" />
+        <file src="..\OtherProvider\发布目录\PWMIS.MySqlClient.XML" target="lib\PWMIS.MySqlClient.XML" />
     </files>
 </package>

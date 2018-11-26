@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>PDF.NET.SOD.Oracle.Provider</id>
-    <version>5.6.2.1229</version>
+    <version>5.6.2.1230</version>
     <title>PDF.NET SOD Oracle Provider</title>
     <authors>深蓝医生</authors>
     <owners>深蓝医生</owners>
@@ -11,13 +11,13 @@
     <projectUrl>http://www.pwmis.com/SqlMap/</projectUrl>
     <description>PDF.NET SOD Oracle扩展库</description>
     <dependencies>
-      <dependency id="PDF.NET.SOD" version="5.6.2.1229" />
+      <dependency id="PDF.NET.SOD" version="5.6.2.1230" />
       <dependency id="Oracle.ManagedDataAccess" version="18.3.0" />
     </dependencies>
   </metadata>
   <files>
-    <file src="..\OtherProvider\发布目录\PWMIS.OracleClient.dll" target="lib\net452\PWMIS.OracleClient.dll" />
-    <file src="..\OtherProvider\发布目录\PWMIS.OracleClient.dll.config" target="lib\net452\PWMIS.OracleClient.dll.config" />
-    <file src="..\OtherProvider\发布目录\PWMIS.OracleClient.pdb" target="lib\net452\PWMIS.OracleClient.pdb" />
+    <file src="..\OtherProvider\发布目录\PWMIS.OracleClient.dll" target="lib\PWMIS.OracleClient.dll" />
+    <file src="..\OtherProvider\发布目录\PWMIS.OracleClient.dll.config" target="lib\PWMIS.OracleClient.dll.config" />
+    <file src="..\OtherProvider\发布目录\PWMIS.OracleClient.pdb" target="lib\PWMIS.OracleClient.pdb" />
   </files>
 </package>

@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>PDF.NET.SOD.Core</id>
-        <version>5.6.2.1229</version>
+        <version>5.6.2.1230</version>
         <title>PDF.NET SOD Core</title>
         <authors>深蓝医生</authors>
         <license type="expression">LGPL-2.1-only</license>
@@ -11,9 +11,9 @@
         <description>PDF.NET SOD核心库</description>
     </metadata>
     <files>
-        <file src="..\Lib\发布目录\PWMIS.Core.dll" target="lib\net20\PWMIS.Core.dll" />
-        <file src="..\Lib\发布目录\PWMIS.Core.dll.config" target="lib\net20\PWMIS.Core.dll.config" />
-        <file src="..\Lib\发布目录\PWMIS.Core.pdb" target="lib\net20\PWMIS.Core.pdb" />
-        <file src="..\Lib\发布目录\PWMIS.Core.XML" target="lib\net20\PWMIS.Core.XML" />
+        <file src="..\Lib\发布目录\PWMIS.Core.dll" target="lib\PWMIS.Core.dll" />
+        <file src="..\Lib\发布目录\PWMIS.Core.dll.config" target="lib\PWMIS.Core.dll.config" />
+        <file src="..\Lib\发布目录\PWMIS.Core.pdb" target="lib\PWMIS.Core.pdb" />
+        <file src="..\Lib\发布目录\PWMIS.Core.XML" target="lib\PWMIS.Core.XML" />
     </files>
 </package>
