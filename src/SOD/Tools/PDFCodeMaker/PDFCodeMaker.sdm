@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Visual Studio 生成的基于系统定义模型(SDM)的文件。-->
+<!--建议不要手动编辑此文件，这可能会导致错误。-->
+<SystemDefinitionModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="PDFCodeMaker" Version="1.0.0.0" Culture="zh-CN" DocumentLanguage="zh-CN" xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1">
+  <Import Alias="System" Name="System" Version="1.0.60130.0" />
+  <Import Alias="MicrosoftFileSystem" Name="Microsoft.FileSystem" Version="1.0.60130.0" />
+  <Import Alias="MicrosoftWindowsApplication" Name="Microsoft.WindowsApplication" Version="1.0.60130.0" />
+  <Import Alias="MicrosoftConfiguration" Name="Microsoft.Configuration" Version="1.0.60130.0" />
+  <DesignData>
+    <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+      <ModelElement Id="b253db2b19ed4047a6572c483acfb08a" Type="Microsoft.VisualStudio.EnterpriseTools.Application.Modeling.SoftwareComponentDocument">
+        <Property Name="Version" Value="1" />
+        <Property Name="VSProjectId" Value="36f29014-a12d-45bb-892e-e5710e1cb72f" />
+        <Relationship Id="da860f88c38b4271a0453627bb68717d" Type="Microsoft.VisualStudio.EnterpriseTools.Application.Modeling.SoftwareComponentDocumentAffiliatedWithVSProject" Role1="@03c40de3e45b4ec5b96970cfa9139bd8" RoleType1="Microsoft.VisualStudio.EnterpriseTools.Application.Modeling.SoftwareComponentDocumentAffiliatedWithVSProject.VSProject" />
+        <ModelElement Id="03c40de3e45b4ec5b96970cfa9139bd8" Type="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Project.VSProject">
+          <Property Name="Name" Value="PDFCodeMaker" />
+          <Property Name="Guid" Value="36f29014-a12d-45bb-892e-e5710e1cb72f" />
+          <Property Name="Location" Value="D:\tools\PDF.NET\PDFCodeMaker\" />
+          <Property Name="IsImplemented" Value="true" />
+          <Property Name="BuildOutputPath" Value="bin\" />
+          <Property Name="ProjectType" Value="Executable" />
+          <ModelElement Id="99a245bec1974d95bdc8a92e5c0e5142" Type="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Clr.ProjectClassModelRoot">
+            <ModelElement Id="a8dff0c5b5d7430d8072cb62ee205024" Type="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Clr.RootNamespace">
+              <Property Name="Name" Value="PDFCodeMaker" />
+              <Property Name="CustomAttributes" Value="" />
+              <Property Name="FullyQualifiedName" Value="PDFCodeMaker" />
+              <Property Name="LanguageType" Value="VisualBasic" />
+              <Relationship Id="eba90220f3834ba8a00302de409fbe55" Type="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Clr.ProjectClassRootContainsNamespace" Role1="@99a245bec1974d95bdc8a92e5c0e5142" RoleType1="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Clr.ProjectClassRootContainsNamespace.ProjectClassModelRoot" />
+            </ModelElement>
+            <Relationship Id="ab6c6cfd832f4acabe233c222f6d8b2b" Type="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Project.VSProjectContainsClassModelRoot" Role1="@03c40de3e45b4ec5b96970cfa9139bd8" RoleType1="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Project.VSProjectContainsClassModelRoot.VSProject" />
+          </ModelElement>
+        </ModelElement>
+      </ModelElement>
+    </VisualStudio>
+  </DesignData>
+  <SystemDefinition Name="PDFCodeMaker" Extends="MicrosoftWindowsApplication:WindowsApplication" SimulationRoot="false">
+    <DesignData>
+      <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+        <ModelElement Type="Microsoft.VisualStudio.EnterpriseTools.Application.Modeling.PlugIns.WindowsComponentType">
+          <Property Name="State" Value="Implemented" />
+          <Property Name="Project" Value="PDFCodeMaker" />
+          <Property Name="CachedLanguage" Value="vb" />
+        </ModelElement>
+      </VisualStudio>
+    </DesignData>
+    <ResourceDefinition Name="Directory" Extends="MicrosoftFileSystem:Directory">
+      <ResourceDefinition Name="Configuration" Extends="MicrosoftConfiguration:Configuration" />
+      <Resource Name="Configuration" Definition="PDFCodeMaker.Directory.Configuration" MinOccurs="1" MaxOccurs="1" Reference="false">
+        <DesignData>
+          <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+            <ModelElement>
+              <Property Name="DisplayName" Value="Configuration" />
+            </ModelElement>
+          </VisualStudio>
+        </DesignData>
+      </Resource>
+      <Containment Name="ConfigurationContainment" Definition="MicrosoftFileSystem:DirectoryContainsFile" ChildMember="Configuration" />
+    </ResourceDefinition>
+    <Resource Name="Directory" Definition="PDFCodeMaker.Directory" MinOccurs="1" MaxOccurs="1" Reference="false" />
+    <Containment Name="DirectoryContainment" Definition="MicrosoftWindowsApplication:WindowsApplicationContainsDirectory" ChildMember="Directory" />
+    <Hosting Name="DirectoryHostsConfiguration" Definition="MicrosoftFileSystem:DirectoryHostsFile" GuestMember="Directory.Configuration" HostMember="Directory" />
+  </SystemDefinition>
+</SystemDefinitionModel>

@@ -22,10 +22,11 @@
     End Sub
 
     Private Sub RunProcessByConfig(ByVal fileKey As String)
-        System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory
+
         Dim fileName As String = System.Configuration.ConfigurationManager.AppSettings(fileKey)
         If System.IO.File.Exists(fileName) Then
             Try
+                System.Environment.CurrentDirectory = System.IO.Path.GetDirectoryName(fileName)
                 System.Diagnostics.Process.Start(fileName)
             Catch ex As Exception
                 MessageBox.Show(ex.Message, "打开文件", MessageBoxButtons.OK, MessageBoxIcon.Error)
@@ -82,7 +83,7 @@
     Private Sub menuOpenMakedCodeFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles menuOpenMakedCodeFile.Click
         OpenMyFileDialog("C#文件|*.cs|VB文件|*.vb|所有文件|*.*")
 
-      
+
     End Sub
 
     Private Sub OpenMyFileDialog(ByVal filter As String)

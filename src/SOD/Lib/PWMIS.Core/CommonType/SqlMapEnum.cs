@@ -83,7 +83,11 @@ namespace PWMIS.Common
         /// 默认类型，根据配置决定默认生成哪一种结果类型
         /// </summary>
         /// <remarks></remarks>
-        Default
+        Default,
+        /// <summary>
+        /// 任意对象列表，要求对象属性名必须与字段名严格一致，否则请用EntityList类型，需要指定 ResuleMap 属性
+        /// </summary>
+        ObjectList
     }
 
     /// <summary>

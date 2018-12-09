@@ -13,6 +13,7 @@
             <xs:enumeration value ="DataSet"></xs:enumeration>
             <xs:enumeration value ="EntityObject"></xs:enumeration>
             <xs:enumeration value ="EntityList"></xs:enumeration>
+            <xs:enumeration value ="ObjectList"></xs:enumeration>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="enumScriptType" >

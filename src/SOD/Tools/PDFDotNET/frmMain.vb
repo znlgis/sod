@@ -56,7 +56,7 @@
 
     Private Sub TestReadCfg()
         Dim cfgItemList As List(Of GenerateConfigItem) = Nothing
-       
+
         Dim ser As New System.Xml.Serialization.XmlSerializer(GetType(List(Of GenerateConfigItem)))
         Dim reader As System.IO.TextReader = FileIO.FileSystem.OpenTextFileReader(".\GenerateConfig.xml")
 
@@ -136,11 +136,13 @@
     End Sub
 
     Private Sub RunProcessByConfig(ByVal fileKey As String)
-        System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory
+
         Dim fileName As String = System.Configuration.ConfigurationManager.AppSettings(fileKey)
         If System.IO.File.Exists(fileName) Then
             Try
-                System.Diagnostics.Process.Start(fileName)
+                System.Environment.CurrentDirectory = System.IO.Path.GetDirectoryName(fileName)
+                Dim currFileName As String = System.IO.Path.GetFileName(fileName)
+                System.Diagnostics.Process.Start(currFileName)
             Catch ex As Exception
                 MessageBox.Show(ex.Message, "打开文件", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try

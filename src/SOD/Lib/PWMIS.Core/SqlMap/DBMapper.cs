@@ -95,6 +95,17 @@ namespace PWMIS.DataMap.SqlMap
 
         #endregion
 
+        /// <summary>
+        /// 映射到对象列表，要求对象的属性名根字段名大小写严格一致
+        /// </summary>
+        /// <typeparam name="T">对象类型，如一个DTO类</typeparam>
+        /// <param name="reader">数据阅读器</param>
+        /// <returns>对象列表</returns>
+        public List<T> MapObjectList<T>(System.Data.IDataReader reader) where T:class,new()
+        {
+            return AdoHelper.QueryList<T>(reader);
+        }
+
     }
 
 }

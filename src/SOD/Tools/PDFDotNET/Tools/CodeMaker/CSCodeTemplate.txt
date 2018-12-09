@@ -1,0 +1,65 @@
+//<%R:REM[ C# Code Template  For PDF.NET,Version 4.0.1,http://www.pwmis.com/SqlMap REM]%> 
+// ========================================================================
+// Copyright(c) 2008-2010 公司名称, All Rights Reserved.
+// ========================================================================
+using System;
+using System.Data;
+using System.Collections.Generic;
+using PWMIS.DataMap.SqlMap;
+using PWMIS.DataMap.Entity;
+using PWMIS.Common;
+
+namespace #CurrNameSpace#
+{
+/// <summary>
+/// 文件名：#CommandClassMap#.cs
+/// 类　名：#CommandClassMap#
+/// 版　本：1.0
+/// 创建时间：#CreateDateTime#
+/// 用途描述：#ClassDescription#
+/// 其它信息：该文件由 PDF.NET Code Maker 自动生成，修改前请先备份！
+/// </summary>
+public partial class #CommandClassMap#
+    : DBMapper #CommandClassInterface#
+{
+	/// <summary>
+	/// 默认构造函数
+	/// </summary>
+    public #CommandClassMap#()
+    {
+        Mapper.CommandClassName = "#CommandClassName#";
+        //CurrentDataBase.DataBaseType=DataBase.enumDataBaseType.SqlServer;
+        Mapper.EmbedAssemblySource="#EmbedAssemblySource#";//SQL-MAP文件嵌入的程序集名称和资源名称，如果有多个SQL-MAP文件建议在此指明。
+    }
+
+<%R:Function[
+    /// <summary>
+    /// #CommandDescription#
+    /// </summary>
+    <%R:Params[
+    /// <param name="#ParameterName#"></param>
+    Params]%>
+    /// <returns></returns>
+    public #ResultClass# #Method#(<%R:Params[#DataType# #ParameterName# [, ] Params]%> ) 
+    { 
+            //获取命令信息
+            CommandInfo cmdInfo=Mapper.GetCommandInfo("#CommandName#");
+            //参数赋值，推荐使用该种方式；
+            <%R:Params[
+            cmdInfo.DataParameters[#ParamIndex#].Value = #ParameterName#;
+            Params]%>
+            //参数赋值，使用命名方式；
+            <%R:Params[
+            //cmdInfo.SetParameterValue("@#ParameterName#", #ParameterName#);
+            Params]%>
+            //执行参数替换
+            cmdInfo.SetParameterValue("#ReplaceableParameter#", #ReplaceableParameter#, enumParamType.ReplacedText);
+            //执行查询
+            return CurrentDataBase.#ExecuteType#(CurrentDataBase.ConnectionString, cmdInfo.CommandType, cmdInfo.CommandText #DataParameters#);
+        //
+    }//End Function
+Function]%>
+
+}//End Class
+
+}//End NameSpace 
