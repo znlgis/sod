@@ -15,7 +15,7 @@ namespace SqlMapDemo.SqlMapDAL
 /// 文件名：TestSqlMapClass.cs
 /// 类　名：TestSqlMapClass
 /// 版　本：1.0
-/// 创建时间：2018/12/9 20:48:31
+/// 创建时间：2018/12/13 16:46:16
 /// 用途描述：SQL-MAP示例测试程序
 /// 其它信息：该文件由 PDF.NET Code Maker 自动生成，修改前请先备份！
 /// </summary>
@@ -43,60 +43,6 @@ public partial class TestSqlMapClass
             CommandInfo cmdInfo=Mapper.GetCommandInfo("QueryStudentSores");
             //执行查询
             return CurrentDataBase.ExecuteDataSet(CurrentDataBase.ConnectionString, cmdInfo.CommandType, cmdInfo.CommandText ,null);
-        //
-    }//End Function
-
-    /// <summary>
-    /// 查询所属系的学生信息
-    /// </summary>
-    /// <param name="DID"></param>
-    /// <returns></returns>
-    public DataSet GetStudent(Int32 DID   ) 
-    { 
-            //获取命令信息
-            CommandInfo cmdInfo=Mapper.GetCommandInfo("GetStudent");
-            //参数赋值，推荐使用该种方式；
-            cmdInfo.DataParameters[0].Value = DID;
-            //参数赋值，使用命名方式；
-            //cmdInfo.SetParameterValue("@DID", DID);
-            //执行查询
-            return CurrentDataBase.ExecuteDataSet(CurrentDataBase.ConnectionString, cmdInfo.CommandType, cmdInfo.CommandText , cmdInfo.DataParameters);
-        //
-    }//End Function
-
-    /// <summary>
-    /// 查询所属系的学生成绩
-    /// </summary>
-    /// <param name="Category"></param>
-    /// <returns></returns>
-    public DataSet GetStudentScore(String Category   ) 
-    { 
-            //获取命令信息
-            CommandInfo cmdInfo=Mapper.GetCommandInfo("GetStudentScore");
-            //参数赋值，推荐使用该种方式；
-            cmdInfo.DataParameters[0].Value = Category;
-            //参数赋值，使用命名方式；
-            //cmdInfo.SetParameterValue("@Category", Category);
-            //执行查询
-            return CurrentDataBase.ExecuteDataSet(CurrentDataBase.ConnectionString, cmdInfo.CommandType, cmdInfo.CommandText , cmdInfo.DataParameters);
-        //
-    }//End Function
-
-    /// <summary>
-    /// 查询学生的成绩
-    /// </summary>
-    /// <param name="StuId"></param>
-    /// <returns></returns>
-    public List<SqlMapDemo.StudentScore> GetStudentScore2(Int32 StuId   ) 
-    { 
-            //获取命令信息
-            CommandInfo cmdInfo=Mapper.GetCommandInfo("GetStudentScore2");
-            //参数赋值，推荐使用该种方式；
-            cmdInfo.DataParameters[0].Value = StuId;
-            //参数赋值，使用命名方式；
-            //cmdInfo.SetParameterValue("@StuId", StuId);
-            //执行查询
-            return MapObjectList<SqlMapDemo.StudentScore>( CurrentDataBase.ExecuteReader(CurrentDataBase.ConnectionString, cmdInfo.CommandType, cmdInfo.CommandText , cmdInfo.DataParameters));
         //
     }//End Function
 
