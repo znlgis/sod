@@ -1,4 +1,5 @@
 ﻿Imports CefSharp
+Imports CefSharp.WinForms
 
 Public Class frmWelcom
     Dim WebBrowser1 As CefSharp.WinForms.ChromiumWebBrowser
