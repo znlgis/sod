@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Edit @ FileVersion 5.6.3.0305 :DataCheckBoxValue 的GetValue方法根据设定的值判断，比如当前选项按钮选择了，但其值设定为 "False"
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using PWMIS.Common;
@@ -121,6 +123,11 @@ namespace PWMIS.DataMap
                     }
                 case TypeCode.Boolean :
                     {
+                        //根据设定的值判断，比如当前选项按钮选择了，但其值设定为 "False",EDIT at 2019.3.5
+                        if (strValue != "")
+                        {
+                            return Convert.ToBoolean(strValue);
+                        }
                         return this.Checked;
                     }
                 default:

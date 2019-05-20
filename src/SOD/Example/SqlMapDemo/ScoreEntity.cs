@@ -11,6 +11,9 @@ namespace SqlMapDemo
         public ScoreEntity()
         {
             TableName = "Score";
+            EntityMap = PWMIS.Common.EntityMapType.Table;
+            PrimaryKeys.Add("stuID");
+            IdentityName = "stuID";
         }
 
         public int StudentID 

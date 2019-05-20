@@ -15,7 +15,7 @@ namespace SqlMapDemo.SqlMapDAL
 /// 文件名：TestSqlMapClass.cs
 /// 类　名：TestSqlMapClass
 /// 版　本：1.0
-/// 创建时间：2018/12/13 16:46:16
+/// 创建时间：2019/5/17 12:41:09
 /// 用途描述：SQL-MAP示例测试程序
 /// 其它信息：该文件由 PDF.NET Code Maker 自动生成，修改前请先备份！
 /// </summary>

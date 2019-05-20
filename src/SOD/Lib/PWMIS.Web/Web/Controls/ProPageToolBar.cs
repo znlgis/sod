@@ -1062,7 +1062,9 @@ namespace PWMIS.Web.Controls
         /// <returns></returns>
         private string ConvertColorFormat(System.Drawing.Color RGBColor)
         {
-            return "RGB(" + RGBColor.R.ToString() + "," + RGBColor.G.ToString() + "," + RGBColor.G.ToString() + ")";
+            //return "RGB(" + RGBColor.R.ToString() + "," + RGBColor.G.ToString() + "," + RGBColor.G.ToString() + ")";
+            //2019.3.6 修改，原有方法有问题，可能取不到RGB分值
+            return System.Drawing.ColorTranslator.ToHtml(RGBColor);
         }
 
         /// <summary>

@@ -279,3 +279,2761 @@ Parameter["P0"]	=	"0"  			//DbType=Int32
 //2018-5-30 15:41:46 @AdoHelper ：RecordAffected:-1
 --SQLLog (Thread ID 8) Flush----
 
+--SQLLog (Thread ID 7) Write Buffer:----
+--SQLLog (Thread ID 7) Init----
+//2019/2/5 22:16:06 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2019/2/5 22:16:06 @AdoHelper ：Execueted Time(ms):241
+
+//2019/2/5 22:16:06 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/2/5 22:16:12 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2019/2/5 22:16:12 @AdoHelper ：Execueted Time(ms):6
+
+//2019/2/5 22:16:12 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/2/5 22:16:12 @AdoHelper 执行命令：
+SQL="SELECT [客户号],[姓名],[性别],[出生日期],[联系电话],[联系地址],[积分] FROM [客户表] WHERE [客户号]=@P0"
+//命令类型：Text
+//1个命令参数：
+Parameter["@P0"]	=	""  			//DbType=String
+//2019/2/5 22:16:12 @AdoHelper ：Execueted Time(ms):6
+
+//2019/2/5 22:16:12 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/2/5 22:16:15 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2019/2/5 22:16:15 @AdoHelper ：Execueted Time(ms):6
+
+//2019/2/5 22:16:15 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/2/5 22:16:15 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2019/2/5 22:16:15 @AdoHelper ：Execueted Time(ms):5
+
+//2019/2/5 22:16:15 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+--SQLLog (Thread ID 7) Init----
+//2019/2/5 22:17:05 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表]  
+ ) P_Count "
+//命令类型：Text
+//2019/2/5 22:17:05 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:17:05 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/2/5 22:17:05 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表]  order by [设备名称] asc,[编号] desc"
+//命令类型：Text
+//2019/2/5 22:17:05 @AdoHelper ：Execueted Time(ms):5
+
+//2019/2/5 22:17:05 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/2/5 22:17:59 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P1,@P2,@P3,@P4,@P5)"
+//命令类型：Text
+--SQLLog (Thread ID 9) Write Buffer:----
+//5个命令参数：
+Parameter["@P1"]	=	"001"  			//DbType=String
+Parameter["@P2"]	=	"收银机"  			//DbType=String
+Parameter["@P3"]	=	"syj-201901"  			//DbType=String
+Parameter["@P4"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P5"]	=	""  			//DbType=String
+//2019/2/5 22:17:59 @AdoHelper ：Execueted Time(ms):7
+
+//2019/2/5 22:17:59 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+--SQLLog (Thread ID 9) Init----
+//2019/2/5 22:17:59 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表]  
+ ) P_Count "
+//命令类型：Text
+//2019/2/5 22:17:59 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:17:59 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/2/5 22:17:59 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表]  order by [设备名称] asc,[编号] desc"
+//命令类型：Text
+//2019/2/5 22:17:59 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:17:59 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/2/5 22:18:29 @AdoHelper 执行命令：
+SQL="SELECT  
+     [商品名称]  
+FROM [商品信息表]  
+          GROUP BY  [商品名称]
+                 ORDER BY  [商品名称] asc "
+//命令类型：Text
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/2/5 22:18:29 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:18:29 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+--SQLLog (Thread ID 12) Init----
+//2019/2/5 22:18:29 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT [存货记录号],[条码号],[售价],[成本价],[生产日期],[上货时间],[库存数量]  FROM [存货信息表] 
+ ) P_Count "
+//命令类型：Text
+//2019/2/5 22:18:29 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:18:29 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/2/5 22:18:29 @AdoHelper 执行命令：
+SQL="SELECT Top 5
+	[存货记录号],
+	[条码号],
+	[售价],
+	[成本价],
+	[生产日期],
+	[上货时间],
+	[库存数量]
+FROM [存货信息表] order by [存货记录号] desc"
+//命令类型：Text
+//2019/2/5 22:18:29 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:18:29 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/2/5 22:18:54 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/2/5 22:18:54 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:18:54 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/2/5 22:18:54 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [条码号],[商品名称],[厂商名称],[保质期]  
+FROM [商品信息表]  
+                 
+  ) P_Count "
+//命令类型：Text
+//2019/2/5 22:18:54 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:18:54 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/2/5 22:19:30 @AdoHelper 执行命令：
+SQL="SELECT Count(*)  FROM [商品信息表] WHERE [条码号]=@P0"
+//命令类型：Text
+--SQLLog (Thread ID 11) Write Buffer:----
+//1个命令参数：
+Parameter["@P0"]	=	"20180011"  			//DbType=String
+//2019/2/5 22:19:30 @AdoHelper ：Execueted Time(ms):6
+
+//2019/2/5 22:19:30 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/2/5 22:19:30 @AdoHelper 执行命令：
+SQL="INSERT INTO [商品信息表]([条码号],[商品名称],[厂商名称],[保质期]) VALUES (@P0,@P1,@P2,@P3)"
+//命令类型：Text
+//4个命令参数：
+Parameter["@P0"]	=	"20180011"  			//DbType=String
+Parameter["@P1"]	=	"PC"  			//DbType=String
+Parameter["@P2"]	=	"联想"  			//DbType=String
+Parameter["@P3"]	=	"36"  			//DbType=Int32
+//2019/2/5 22:19:30 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:19:30 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/2/5 22:19:30 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2019/2/5 22:19:30 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:19:30 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/2/5 22:19:30 @AdoHelper 执行命令：
+SQL="Select top 5 [条码号],[商品名称],[厂商名称],[保质期] from [商品信息表] where  1=1 order by [条码号] desc "
+//命令类型：Text
+//2019/2/5 22:19:30 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:19:30 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/2/5 22:20:44 @AdoHelper 执行命令：
+SQL="SELECT Count(*)  FROM [商品信息表] WHERE [条码号]=@P0"
+//命令类型：Text
+--SQLLog (Thread ID 14) Write Buffer:----
+//1个命令参数：
+Parameter["@P0"]	=	"20172255"  			//DbType=String
+//2019/2/5 22:20:44 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:20:44 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/2/5 22:20:44 @AdoHelper 执行命令：
+SQL="INSERT INTO [商品信息表]([条码号],[商品名称],[厂商名称],[保质期]) VALUES (@P0,@P1,@P2,@P3)"
+//命令类型：Text
+//4个命令参数：
+Parameter["@P0"]	=	"20172255"  			//DbType=String
+Parameter["@P1"]	=	"手抄本"  			//DbType=String
+Parameter["@P2"]	=	"创想办公用品公司"  			//DbType=String
+Parameter["@P3"]	=	"12"  			//DbType=Int32
+//2019/2/5 22:20:44 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:20:44 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/2/5 22:20:44 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2019/2/5 22:20:44 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:20:44 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/2/5 22:20:44 @AdoHelper 执行命令：
+SQL="Select top 5 [条码号],[商品名称],[厂商名称],[保质期] from [商品信息表] where  1=1 order by [条码号] desc "
+//命令类型：Text
+//2019/2/5 22:20:44 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:20:44 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2019/2/5 22:20:51 @AdoHelper 执行命令：
+SQL="SELECT  
+     [商品名称]  
+FROM [商品信息表]  
+          GROUP BY  [商品名称]
+                 ORDER BY  [商品名称] asc "
+//命令类型：Text
+//2019/2/5 22:20:51 @AdoHelper ：Execueted Time(ms):5
+
+//2019/2/5 22:20:51 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+--SQLLog (Thread ID 15) Init----
+//2019/2/5 22:20:51 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT [存货记录号],[条码号],[售价],[成本价],[生产日期],[上货时间],[库存数量]  FROM [存货信息表] 
+ ) P_Count "
+//命令类型：Text
+//2019/2/5 22:20:51 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:20:51 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2019/2/5 22:20:51 @AdoHelper 执行命令：
+SQL="SELECT Top 5
+	[存货记录号],
+	[条码号],
+	[售价],
+	[成本价],
+	[生产日期],
+	[上货时间],
+	[库存数量]
+FROM [存货信息表] order by [存货记录号] desc"
+//命令类型：Text
+//2019/2/5 22:20:51 @AdoHelper ：Execueted Time(ms):5
+
+//2019/2/5 22:20:51 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/2/5 22:20:54 @AdoHelper 执行命令：
+SQL="SELECT  
+     [条码号],
+     [商品名称],
+     [厂商名称],
+     [保质期]  
+FROM [商品信息表]  
+     WHERE  [商品名称]=@P0
+                 ORDER BY  [商品名称] asc "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"PC"  			//DbType=String
+//2019/2/5 22:20:54 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:20:54 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/2/5 22:21:28 @AdoHelper 执行命令：
+SQL="INSERT INTO [存货信息表]([条码号],[售价],[成本价],[生产日期],[上货时间],[库存数量]) VALUES (@P0,@P1,@P2,@P3,@P4,@P5)"
+//命令类型：Text
+--SQLLog (Thread ID 7) Write Buffer:----
+//6个命令参数：
+Parameter["@P0"]	=	"20180011"  			//DbType=String
+Parameter["@P1"]	=	"8000"  			//DbType=Decimal
+Parameter["@P2"]	=	"7000"  			//DbType=Decimal
+Parameter["@P3"]	=	"2018/2/26 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P5"]	=	"10"  			//DbType=Int32
+//2019/2/5 22:21:28 @AdoHelper ：Execueted Time(ms):17
+
+//2019/2/5 22:21:28 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+--SQLLog (Thread ID 7) Init----
+//2019/2/5 22:21:28 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT [存货记录号],[条码号],[售价],[成本价],[生产日期],[上货时间],[库存数量]  FROM [存货信息表] 
+ ) P_Count "
+//命令类型：Text
+//2019/2/5 22:21:28 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:21:28 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/2/5 22:21:28 @AdoHelper 执行命令：
+SQL="SELECT Top 5
+	[存货记录号],
+	[条码号],
+	[售价],
+	[成本价],
+	[生产日期],
+	[上货时间],
+	[库存数量]
+FROM [存货信息表] order by [存货记录号] desc"
+//命令类型：Text
+//2019/2/5 22:21:28 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:21:28 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/2/5 22:21:34 @AdoHelper 执行命令：
+SQL="SELECT  
+     [条码号],
+     [商品名称],
+     [厂商名称],
+     [保质期]  
+FROM [商品信息表]  
+     WHERE  [商品名称]=@P0
+                 ORDER BY  [商品名称] asc "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"手抄本"  			//DbType=String
+//2019/2/5 22:21:34 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:21:34 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+//2019/2/5 22:22:08 @AdoHelper 执行命令：
+SQL="UPDATE [存货信息表] SET [条码号] = @P1,[售价] = @P2,[成本价] = @P3,[生产日期] = @P4,[上货时间] = @P5,[库存数量] = @P6 WHERE 1=1  And [存货记录号] = @P0"
+//命令类型：Text
+--SQLLog (Thread ID 13) Write Buffer:----
+//7个命令参数：
+Parameter["@P1"]	=	"20172255"  			//DbType=String
+Parameter["@P2"]	=	"8"  			//DbType=Decimal
+Parameter["@P3"]	=	"5"  			//DbType=Decimal
+Parameter["@P4"]	=	"2019/1/8 0:00:00"  			//DbType=DateTime
+Parameter["@P5"]	=	"2019/1/16 0:00:00"  			//DbType=DateTime
+Parameter["@P6"]	=	"100"  			//DbType=Int32
+Parameter["@P0"]	=	"1"  			//DbType=Int32
+//2019/2/5 22:22:08 @AdoHelper ：Execueted Time(ms):5
+
+//2019/2/5 22:22:08 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+--SQLLog (Thread ID 13) Init----
+//2019/2/5 22:22:08 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT [存货记录号],[条码号],[售价],[成本价],[生产日期],[上货时间],[库存数量]  FROM [存货信息表] 
+ ) P_Count "
+//命令类型：Text
+//2019/2/5 22:22:08 @AdoHelper ：Execueted Time(ms):5
+
+//2019/2/5 22:22:08 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+//2019/2/5 22:22:08 @AdoHelper 执行命令：
+SQL="SELECT Top 5
+	[存货记录号],
+	[条码号],
+	[售价],
+	[成本价],
+	[生产日期],
+	[上货时间],
+	[库存数量]
+FROM [存货信息表] order by [存货记录号] desc"
+//命令类型：Text
+//2019/2/5 22:22:08 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:22:08 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//1个命令参数：
+Parameter["P0"]	=	"PC"  			//DbType=String
+//2019/2/5 22:22:36 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:22:36 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+      ORDER BY  [商品名称] asc "
+//命令类型：Text
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/2/5 22:22:55 @AdoHelper 执行命令：
+SQL="INSERT INTO [存货信息表]([条码号],[售价],[成本价],[生产日期],[上货时间],[库存数量]) VALUES (@P0,@P1,@P2,@P3,@P4,@P5)"
+//命令类型：Text
+//6个命令参数：
+Parameter["@P0"]	=	"20180011"  			//DbType=String
+Parameter["@P1"]	=	"8000"  			//DbType=Decimal
+Parameter["@P2"]	=	"7000"  			//DbType=Decimal
+Parameter["@P3"]	=	"2018/1/2 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P5"]	=	"10"  			//DbType=Int32
+//2019/2/5 22:22:55 @AdoHelper ：Execueted Time(ms):6
+
+//2019/2/5 22:22:55 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+--SQLLog (Thread ID 11) Init----
+//2019/2/5 22:22:55 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT [存货记录号],[条码号],[售价],[成本价],[生产日期],[上货时间],[库存数量]  FROM [存货信息表] 
+ ) P_Count "
+//命令类型：Text
+//2019/2/5 22:22:55 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:22:55 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/2/5 22:22:55 @AdoHelper 执行命令：
+SQL="SELECT Top 5
+	[存货记录号],
+	[条码号],
+	[售价],
+	[成本价],
+	[生产日期],
+	[上货时间],
+	[库存数量]
+FROM [存货信息表] order by [存货记录号] desc"
+//命令类型：Text
+//2019/2/5 22:22:55 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:22:55 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2019/2/5 22:23:29 @AdoHelper 执行命令：
+SQL="SELECT  
+     [编号]  
+FROM [设备表]  
+     WHERE  [设备名称]=@P0 "
+//命令类型：Text
+--SQLLog (Thread ID 15) Write Buffer:----
+//1个命令参数：
+Parameter["P0"]	=	"收银机"  			//DbType=String
+//2019/2/5 22:23:29 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:23:29 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2019/2/5 22:23:29 @AdoHelper 执行命令：
+SQL="SELECT  
+     [工号],
+     [姓名]  
+FROM [雇员表]  
+     WHERE  [职务名称]=@P0
+                 ORDER BY  [姓名] asc "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"收银员"  			//DbType=String
+//2019/2/5 22:23:29 @AdoHelper ：Execueted Time(ms):5
+
+//2019/2/5 22:23:29 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/2/5 22:23:39 @AdoHelper 执行命令：
+SQL="SELECT  
+     [工号],
+     [姓名]  
+FROM [雇员表]  
+     WHERE  [职务名称]=@P0
+                 ORDER BY  [姓名] asc "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"收银员"  			//DbType=String
+//2019/2/5 22:23:39 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:23:39 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+--SQLLog (Thread ID 9) Init----
+//2019/2/5 22:23:49 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT [工号],[姓名],[性别],[出生日期],[入职时间],[职务名称]  FROM [雇员表] 
+ ) P_Count "
+//命令类型：Text
+//2019/2/5 22:23:49 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:23:49 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/2/5 22:23:49 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[工号],
+	[姓名],
+	[性别],
+	[出生日期],
+	[入职时间],
+	[职务名称]
+FROM [雇员表] order by [姓名]"
+//命令类型：Text
+//2019/2/5 22:23:49 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:23:49 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/2/5 22:23:55 @AdoHelper 执行命令：
+SQL="SELECT [工号],[姓名],[性别],[出生日期],[入职时间],[职务名称] FROM [雇员表] WHERE 1=1  And [工号] = 'YG-2016001'"
+//命令类型：Text
+//2019/2/5 22:23:55 @AdoHelper ：Execueted Time(ms):5
+
+//2019/2/5 22:23:55 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/2/5 22:24:04 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2019/2/5 22:24:04 @AdoHelper ：Execueted Time(ms):5
+
+//2019/2/5 22:24:04 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/2/5 22:24:04 @AdoHelper 执行命令：
+SQL="Select top 5 [条码号],[商品名称],[厂商名称],[保质期] from [商品信息表] where  1=1 order by [条码号] desc "
+//命令类型：Text
+//2019/2/5 22:24:04 @AdoHelper ：Execueted Time(ms):3
+
+//2019/2/5 22:24:04 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/2/5 22:24:18 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2019/2/5 22:24:18 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:24:18 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/2/5 22:24:18 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [库存数量]) AS 库存数量 
+FROM [存货信息表]  
+     WHERE  1=1  AND [库存数量] > @P0 "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"0"  			//DbType=Int32
+//2019/2/5 22:24:18 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:24:18 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+--SQLLog (Thread ID 15) Init----
+//2019/2/5 22:24:20 @AdoHelper 执行命令：
+SQL="
+SELECT Top 3 * 
+FROM (
+         SELECT Top 3 * 
+         FROM (
+                SELECT Top 9
+	M.[商品名称],
+	M.[厂商名称],
+	M.[条码号],
+	T0.[售价] AS [T0_售价],
+	T0.[库存数量] AS [T0_库存数量],
+	T0.[存货记录号] AS [T0_存货记录号],
+	T0.[生产日期] AS [T0_生产日期],
+	M.[保质期]
+FROM [商品信息表] M   
+INNER JOIN [存货信息表] T0  ON  M.[条码号] = T0.[条码号] 
+                 ORDER BY  M.[条码号] asc, M.[商品名称] asc 
+		      ) P_T0 
+         ORDER BY [条码号] DESC,[商品名称] DESC
+     ) P_T1
+ORDER BY [条码号] ASC,[商品名称] ASC
+"
+//命令类型：Text
+//2019/2/5 22:24:20 @AdoHelper ：Execueted Time(ms):4
+
+//2019/2/5 22:24:20 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+--SQLLog (Thread ID 7) Init----
+//2019/3/6 10:22:12 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2019/3/6 10:22:12 @AdoHelper ：Execueted Time(ms):349
+
+//2019/3/6 10:22:12 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 10:22:12 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [库存数量]) AS 库存数量 
+FROM [存货信息表]  
+     WHERE  1=1  AND [库存数量] > @P0 "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"0"  			//DbType=Int32
+//2019/3/6 10:22:12 @AdoHelper ：Execueted Time(ms):6
+
+//2019/3/6 10:22:12 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/3/6 10:22:55 @AdoHelper 执行命令：
+SQL="SELECT  
+     [工号],
+     [姓名]  
+FROM [雇员表]  
+     WHERE  [职务名称]=@P0
+                 ORDER BY  [姓名] asc "
+//命令类型：Text
+--SQLLog (Thread ID 11) Write Buffer:----
+//1个命令参数：
+Parameter["P0"]	=	"收银员"  			//DbType=String
+//2019/3/6 10:22:55 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 10:22:55 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+--SQLLog (Thread ID 14) Init----
+//2019/3/6 10:23:09 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 10:23:09 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 10:23:09 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 10:23:09 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 10:23:09 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:23:09 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 10:23:15 @AdoHelper 执行命令：
+SQL="SELECT  
+     [编号]  
+FROM [设备表]  
+     WHERE  [设备名称]=@P0 "
+//命令类型：Text
+--SQLLog (Thread ID 10) Write Buffer:----
+//1个命令参数：
+Parameter["P0"]	=	"收银机"  			//DbType=String
+//2019/3/6 10:23:15 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:23:15 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 10:23:15 @AdoHelper 执行命令：
+SQL="SELECT  
+     [工号],
+     [姓名]  
+FROM [雇员表]  
+     WHERE  [职务名称]=@P0
+                 ORDER BY  [姓名] asc "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"收银员"  			//DbType=String
+//2019/3/6 10:23:15 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:23:15 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2019/3/6 10:23:18 @AdoHelper 执行命令：
+SQL="SELECT  
+     [工号],
+     [姓名]  
+FROM [雇员表]  
+     WHERE  [职务名称]=@P0
+                 ORDER BY  [姓名] asc "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"收银员"  			//DbType=String
+//2019/3/6 10:23:18 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:23:18 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+--SQLLog (Thread ID 12) Init----
+//2019/3/6 10:23:50 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 10:23:50 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 10:23:50 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 10:23:50 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 10:23:50 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 10:23:50 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 10:24:48 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+--SQLLog (Thread ID 7) Write Buffer:----
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/3/6 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"新购"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-102354"  			//DbType=String
+//2019/3/6 10:24:48 @AdoHelper ：Execueted Time(ms):6
+
+//2019/3/6 10:24:48 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 10:24:49 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-102354"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/3/6 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"新购"  			//DbType=String
+//2019/3/6 10:24:49 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 10:24:49 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+--SQLLog (Thread ID 7) Init----
+//2019/3/6 10:24:49 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 10:24:49 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:24:49 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 10:24:49 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 10:24:49 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 10:24:49 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 10:25:37 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = '001'"
+//命令类型：Text
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 10:25:37 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:25:37 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2019/3/6 10:26:01 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+--SQLLog (Thread ID 15) Write Buffer:----
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"修改"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-102546"  			//DbType=String
+//2019/3/6 10:26:01 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 10:26:01 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2019/3/6 10:26:01 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-102546"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"修改"  			//DbType=String
+//2019/3/6 10:26:01 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:26:01 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+--SQLLog (Thread ID 15) Init----
+//2019/3/6 10:26:01 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 10:26:01 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:26:01 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2019/3/6 10:26:01 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 10:26:01 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 10:26:01 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 10:26:19 @AdoHelper 执行命令：
+SQL="SELECT  
+     [工号],
+     [姓名]  
+FROM [雇员表]  
+     WHERE  [职务名称]=@P0
+                 ORDER BY  [姓名] asc "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"收银员"  			//DbType=String
+//2019/3/6 10:26:19 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 10:26:19 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+--SQLLog (Thread ID 15) Init----
+//2019/3/6 10:26:25 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 10:26:25 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:26:25 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 15) Write Buffer:----
+//2019/3/6 10:26:25 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 10:26:25 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:26:25 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 15) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+--SQLLog (Thread ID 12) Init----
+//2019/3/6 10:28:56 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 10:28:56 @AdoHelper ：Execueted Time(ms):57
+
+//2019/3/6 10:28:56 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 10:28:56 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 10:28:56 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:28:56 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+--SQLLog (Thread ID 7) Init----
+//2019/3/6 10:30:06 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 10:30:06 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:30:06 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 10:30:06 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 10:30:06 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 10:30:06 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+--SQLLog (Thread ID 12) Init----
+//2019/3/6 10:39:07 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 10:39:07 @AdoHelper ：Execueted Time(ms):61
+
+//2019/3/6 10:39:07 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 10:39:07 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 10:39:07 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:39:07 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+--SQLLog (Thread ID 12) Init----
+//2019/3/6 10:53:00 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2019/3/6 10:53:00 @AdoHelper ：Execueted Time(ms):58
+
+//2019/3/6 10:53:00 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 10:53:01 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [库存数量]) AS 库存数量 
+FROM [存货信息表]  
+     WHERE  1=1  AND [库存数量] > @P0 "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"0"  			//DbType=Int32
+//2019/3/6 10:53:01 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:53:01 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+--SQLLog (Thread ID 14) Init----
+//2019/3/6 10:53:31 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 10:53:31 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:53:31 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 10:53:31 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 10:53:31 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 10:53:31 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+--SQLLog (Thread ID 10) Init----
+//2019/3/6 10:54:27 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 10:54:27 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:54:27 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 10:54:27 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 10:54:27 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:54:27 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+--SQLLog (Thread ID 14) Init----
+//2019/3/6 10:55:32 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 10:55:32 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 10:55:32 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 10:55:32 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 10:55:32 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 10:55:32 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+--SQLLog (Thread ID 8) Init----
+//2019/3/6 11:41:35 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2019/3/6 11:41:35 @AdoHelper ：Execueted Time(ms):57
+
+//2019/3/6 11:41:35 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2019/3/6 11:41:35 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [库存数量]) AS 库存数量 
+FROM [存货信息表]  
+     WHERE  1=1  AND [库存数量] > @P0 "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"0"  			//DbType=Int32
+//2019/3/6 11:41:35 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 11:41:35 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 11:41:57 @AdoHelper 执行命令：
+SQL="SELECT  
+     [工号],
+     [姓名]  
+FROM [雇员表]  
+     WHERE  [职务名称]=@P0
+                 ORDER BY  [姓名] asc "
+//命令类型：Text
+--SQLLog (Thread ID 9) Write Buffer:----
+//1个命令参数：
+Parameter["P0"]	=	"收银员"  			//DbType=String
+//2019/3/6 11:41:57 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 11:41:57 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+--SQLLog (Thread ID 10) Init----
+//2019/3/6 11:42:00 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 11:42:00 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 11:42:00 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 11:42:00 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 11:42:00 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 11:42:00 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/3/6 11:42:58 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-102354'"
+//命令类型：Text
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/3/6 11:42:58 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 11:42:58 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+--SQLLog (Thread ID 14) Init----
+//2019/3/6 15:29:00 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [条码号]) AS MyCount 
+FROM [商品信息表]   "
+//命令类型：Text
+//2019/3/6 15:29:00 @AdoHelper ：Execueted Time(ms):62
+
+//2019/3/6 15:29:00 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 15:29:00 @AdoHelper 执行命令：
+SQL="SELECT   COUNT( [库存数量]) AS 库存数量 
+FROM [存货信息表]  
+     WHERE  1=1  AND [库存数量] > @P0 "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"0"  			//DbType=Int32
+//2019/3/6 15:29:00 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:29:00 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+--SQLLog (Thread ID 9) Init----
+//2019/3/6 15:31:29 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:31:29 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:31:29 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:31:29 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:31:29 @AdoHelper ：Execueted Time(ms):8
+
+//2019/3/6 15:31:29 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:32:14 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+--SQLLog (Thread ID 9) Write Buffer:----
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201903"  			//DbType=String
+Parameter["@P3"]	=	"2019/3/6 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033136"  			//DbType=String
+//2019/3/6 15:32:14 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:32:14 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:32:14 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-033136"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201903"  			//DbType=String
+Parameter["@P3"]	=	"2019/3/6 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+//2019/3/6 15:32:14 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:32:14 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+--SQLLog (Thread ID 9) Init----
+//2019/3/6 15:32:15 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:32:15 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:32:15 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:32:15 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:32:15 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:32:15 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:32:24 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = '001'"
+//命令类型：Text
+//2019/3/6 15:32:24 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:32:24 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2019/3/6 15:32:28 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033226"  			//DbType=String
+//2019/3/6 15:32:28 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:32:28 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2019/3/6 15:32:28 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-033226"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+//2019/3/6 15:32:28 @AdoHelper ：Execueted Time(ms):29
+
+//2019/3/6 15:32:28 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+--SQLLog (Thread ID 8) Init----
+//2019/3/6 15:32:28 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:32:28 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:32:28 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2019/3/6 15:32:28 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:32:28 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:32:28 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/3/6 15:32:30 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = '001'"
+//命令类型：Text
+//2019/3/6 15:32:30 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:32:30 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 15:32:36 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033232"  			//DbType=String
+//2019/3/6 15:32:36 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:32:36 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 15:32:36 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-033232"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+//2019/3/6 15:32:36 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:32:36 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+--SQLLog (Thread ID 12) Init----
+//2019/3/6 15:32:36 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:32:36 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:32:36 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 15:32:36 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:32:36 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:32:36 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:32:38 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = '001'"
+//命令类型：Text
+//2019/3/6 15:32:38 @AdoHelper ：Execueted Time(ms):6
+
+//2019/3/6 15:32:38 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:32:41 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033240"  			//DbType=String
+//2019/3/6 15:32:41 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:32:41 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:32:41 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-033240"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+//2019/3/6 15:32:41 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:32:41 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+--SQLLog (Thread ID 10) Init----
+//2019/3/6 15:32:41 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:32:41 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:32:41 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:32:41 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:32:41 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:32:41 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:32:46 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = '001'"
+//命令类型：Text
+//2019/3/6 15:32:46 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:32:46 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:32:49 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033248"  			//DbType=String
+//2019/3/6 15:32:49 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:32:49 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:32:49 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-033248"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+//2019/3/6 15:32:49 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:32:49 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+--SQLLog (Thread ID 7) Init----
+//2019/3/6 15:32:49 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:32:49 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:32:49 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:32:49 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:32:49 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:32:49 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:32:54 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = '001'"
+//命令类型：Text
+//2019/3/6 15:32:54 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:32:54 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 15:32:56 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033255"  			//DbType=String
+//2019/3/6 15:32:56 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:32:56 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 15:32:56 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-033255"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+//2019/3/6 15:32:56 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:32:56 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+--SQLLog (Thread ID 14) Init----
+//2019/3/6 15:32:56 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:32:56 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:32:56 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 15:32:56 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:32:56 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:32:56 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+//2019/3/6 15:33:00 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = '001'"
+//命令类型：Text
+//2019/3/6 15:33:00 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:33:00 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/3/6 15:33:03 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033302"  			//DbType=String
+//2019/3/6 15:33:03 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:33:03 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/3/6 15:33:03 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-033302"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+//2019/3/6 15:33:03 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:33:03 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+--SQLLog (Thread ID 11) Init----
+//2019/3/6 15:33:03 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:33:03 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:33:03 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/3/6 15:33:03 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:33:03 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:33:03 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:33:06 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-102546'"
+//命令类型：Text
+//2019/3/6 15:33:06 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:33:06 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+//2019/3/6 15:33:16 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机1"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"修改"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-102546"  			//DbType=String
+//2019/3/6 15:33:16 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:33:16 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+--SQLLog (Thread ID 13) Init----
+//2019/3/6 15:33:16 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:33:16 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:33:16 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+//2019/3/6 15:33:16 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:33:16 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:33:16 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 15:33:25 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-033302'"
+//命令类型：Text
+//2019/3/6 15:33:25 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:33:25 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:33:31 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机2"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033302"  			//DbType=String
+//2019/3/6 15:33:31 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:33:31 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+--SQLLog (Thread ID 7) Init----
+//2019/3/6 15:33:32 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:33:32 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:33:32 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:33:32 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:33:32 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:33:32 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2019/3/6 15:33:40 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-033240'"
+//命令类型：Text
+//2019/3/6 15:33:40 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:33:40 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 15:33:44 @AdoHelper 执行命令：
+SQL="SELECT  
+     [工号],
+     [姓名]  
+FROM [雇员表]  
+     WHERE  [职务名称]=@P0
+                 ORDER BY  [姓名] asc "
+//命令类型：Text
+//1个命令参数：
+Parameter["P0"]	=	"收银员"  			//DbType=String
+//2019/3/6 15:33:44 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:33:44 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+--SQLLog (Thread ID 8) Init----
+//2019/3/6 15:33:46 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:33:46 @AdoHelper ：Execueted Time(ms):7
+
+//2019/3/6 15:33:46 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2019/3/6 15:33:46 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:33:46 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:33:46 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 15:34:04 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = '001'"
+//命令类型：Text
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 15:34:04 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:34:04 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:34:10 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机3"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+Parameter["@P0"]	=	"001"  			//DbType=String
+//2019/3/6 15:34:10 @AdoHelper ：Execueted Time(ms):8
+
+//2019/3/6 15:34:10 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+--SQLLog (Thread ID 7) Init----
+//2019/3/6 15:34:10 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:34:10 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:34:10 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:34:10 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:34:10 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:34:10 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+--SQLLog (Thread ID 12) Init----
+//2019/3/6 15:34:30 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:34:30 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:34:30 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 15:34:30 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:34:30 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:34:30 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:34:40 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-033255'"
+//命令类型：Text
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:34:40 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:34:40 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:34:44 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033441"  			//DbType=String
+//2019/3/6 15:34:44 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:34:44 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:34:44 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-033441"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+//2019/3/6 15:34:44 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:34:44 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+--SQLLog (Thread ID 7) Init----
+//2019/3/6 15:34:44 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:34:44 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:34:44 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:34:44 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:34:45 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:34:45 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2019/3/6 15:34:48 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-033248'"
+//命令类型：Text
+//2019/3/6 15:34:48 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:34:48 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 15:34:51 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033450"  			//DbType=String
+//2019/3/6 15:34:51 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:34:51 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 15:34:51 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-033450"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+//2019/3/6 15:34:51 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:34:51 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+--SQLLog (Thread ID 12) Init----
+//2019/3/6 15:34:51 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:34:51 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:34:51 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 15:34:51 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:34:51 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:34:51 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:34:57 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033455"  			//DbType=String
+//2019/3/6 15:34:57 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:34:57 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:34:57 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-033455"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	""  			//DbType=String
+//2019/3/6 15:34:57 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:34:57 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+--SQLLog (Thread ID 7) Init----
+//2019/3/6 15:34:57 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:34:57 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:34:57 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 7) Write Buffer:----
+//2019/3/6 15:34:57 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:34:57 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:34:57 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 7) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:35:16 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"No.1"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033502"  			//DbType=String
+//2019/3/6 15:35:16 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:35:16 @AdoHelper ：RecordAffected:0
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:35:16 @AdoHelper 执行命令：
+SQL="INSERT INTO [设备表]([编号],[设备名称],[型号],[购置时间],[备注]) VALUES (@P0,@P1,@P2,@P3,@P4)"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P0"]	=	"CRM-20190306-033502"  			//DbType=String
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"No.1"  			//DbType=String
+//2019/3/6 15:35:16 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:35:16 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+--SQLLog (Thread ID 9) Init----
+//2019/3/6 15:35:16 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:35:16 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:35:16 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:35:16 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:35:16 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:35:16 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:35:19 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-102354'"
+//命令类型：Text
+//2019/3/6 15:35:19 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:35:19 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/3/6 15:35:29 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/3/6 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"No.2"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-102354"  			//DbType=String
+//2019/3/6 15:35:29 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:35:29 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+--SQLLog (Thread ID 11) Init----
+//2019/3/6 15:35:29 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:35:29 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:35:29 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/3/6 15:35:29 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:35:29 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:35:29 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/3/6 15:35:32 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-033455'"
+//命令类型：Text
+//2019/3/6 15:35:32 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:35:32 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:35:38 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"No.3"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033455"  			//DbType=String
+//2019/3/6 15:35:38 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:35:38 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+--SQLLog (Thread ID 10) Init----
+//2019/3/6 15:35:38 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:35:38 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:35:38 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:35:38 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:35:38 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:35:38 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 11) Write Buffer:----
+//2019/3/6 15:35:44 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-033450'"
+//命令类型：Text
+//2019/3/6 15:35:44 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:35:44 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 11) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+//2019/3/6 15:35:51 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"No.4"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033450"  			//DbType=String
+//2019/3/6 15:35:51 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:35:51 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+--SQLLog (Thread ID 13) Init----
+//2019/3/6 15:35:51 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:35:51 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:35:51 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+//2019/3/6 15:35:51 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:35:51 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:35:51 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 15:35:54 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-033441'"
+//命令类型：Text
+//2019/3/6 15:35:54 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:35:54 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 15:36:00 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"No.5"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033441"  			//DbType=String
+//2019/3/6 15:36:00 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:36:00 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+--SQLLog (Thread ID 14) Init----
+//2019/3/6 15:36:00 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:36:00 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:36:00 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+//2019/3/6 15:36:00 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:36:00 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:36:00 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+//2019/3/6 15:36:02 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-033255'"
+//命令类型：Text
+//2019/3/6 15:36:02 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:36:02 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+//2019/3/6 15:36:09 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"No.6"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033255"  			//DbType=String
+//2019/3/6 15:36:09 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:36:09 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+--SQLLog (Thread ID 13) Init----
+//2019/3/6 15:36:09 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:36:09 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:36:09 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+//2019/3/6 15:36:09 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:36:09 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:36:09 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:36:14 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-033248'"
+//命令类型：Text
+//2019/3/6 15:36:14 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:36:14 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+//2019/3/6 15:36:22 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"No.7"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033248"  			//DbType=String
+//2019/3/6 15:36:22 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:36:22 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+--SQLLog (Thread ID 13) Init----
+//2019/3/6 15:36:23 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:36:23 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:36:23 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 13) Write Buffer:----
+//2019/3/6 15:36:23 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:36:23 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:36:23 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 13) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:36:25 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-033240'"
+//命令类型：Text
+//2019/3/6 15:36:25 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:36:25 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:36:32 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"No.8"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033240"  			//DbType=String
+//2019/3/6 15:36:32 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:36:32 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+--SQLLog (Thread ID 9) Init----
+//2019/3/6 15:36:32 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:36:32 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:36:32 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+//2019/3/6 15:36:32 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:36:32 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:36:32 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:36:34 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-033232'"
+//命令类型：Text
+//2019/3/6 15:36:34 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:36:34 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:36:48 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"No.9"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033232"  			//DbType=String
+//2019/3/6 15:36:48 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:36:48 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+--SQLLog (Thread ID 10) Init----
+//2019/3/6 15:36:48 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:36:48 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:36:48 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+//2019/3/6 15:36:49 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:36:49 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:36:49 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+//2019/3/6 15:36:51 @AdoHelper 执行命令：
+SQL="SELECT [编号],[设备名称],[型号],[购置时间],[备注] FROM [设备表] WHERE 1=1  And [编号] = 'CRM-20190306-033226'"
+//命令类型：Text
+//2019/3/6 15:36:51 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:36:51 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2019/3/6 15:37:00 @AdoHelper 执行命令：
+SQL="UPDATE [设备表] SET [设备名称] = @P1,[型号] = @P2,[购置时间] = @P3,[备注] = @P4 WHERE 1=1  And [编号] = @P0"
+//命令类型：Text
+//5个命令参数：
+Parameter["@P1"]	=	"收银机"  			//DbType=String
+Parameter["@P2"]	=	"syj-201901"  			//DbType=String
+Parameter["@P3"]	=	"2019/1/1 0:00:00"  			//DbType=DateTime
+Parameter["@P4"]	=	"No.10"  			//DbType=String
+Parameter["@P0"]	=	"CRM-20190306-033226"  			//DbType=String
+//2019/3/6 15:37:00 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:37:00 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+--SQLLog (Thread ID 8) Init----
+//2019/3/6 15:37:00 @AdoHelper 执行命令：
+SQL="Select COUNT(*) FROM ( SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' 
+ ) P_Count "
+//命令类型：Text
+//2019/3/6 15:37:00 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:37:00 @AdoHelper ：RecordAffected:1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 8) Write Buffer:----
+//2019/3/6 15:37:00 @AdoHelper 执行命令：
+SQL="SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:37:00 @AdoHelper ：Execueted Time(ms):3
+
+//2019/3/6 15:37:00 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 8) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+--SQLLog (Thread ID 12) Init----
+//2019/3/6 15:37:06 @AdoHelper 执行命令：
+SQL="SELECT Top 5
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:37:06 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:37:06 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+
+--SQLLog (Thread ID 14) Write Buffer:----
+--SQLLog (Thread ID 14) Init----
+//2019/3/6 15:37:09 @AdoHelper 执行命令：
+SQL="
+SELECT Top 5 * 
+FROM (
+         SELECT Top 5 * 
+         FROM (
+                SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc
+		      ) P_T0 
+         ORDER BY [编号] ASC
+     ) P_T1
+ORDER BY [编号] DESC
+"
+//命令类型：Text
+//2019/3/6 15:37:09 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:37:09 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 14) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+--SQLLog (Thread ID 10) Init----
+//2019/3/6 15:37:11 @AdoHelper 执行命令：
+SQL="
+ SELECT * 
+ FROM (	 
+       SELECT Top 1
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' 
+ ORDER BY [编号] ASC
+
+      )  P_T0 
+ ORDER BY [编号] DESC
+"
+//命令类型：Text
+//2019/3/6 15:37:11 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:37:11 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 9) Write Buffer:----
+--SQLLog (Thread ID 9) Init----
+//2019/3/6 15:37:14 @AdoHelper 执行命令：
+SQL="
+SELECT Top 5 * 
+FROM (
+         SELECT Top 5 * 
+         FROM (
+                SELECT Top 10
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc
+		      ) P_T0 
+         ORDER BY [编号] ASC
+     ) P_T1
+ORDER BY [编号] DESC
+"
+//命令类型：Text
+//2019/3/6 15:37:14 @AdoHelper ：Execueted Time(ms):4
+
+//2019/3/6 15:37:14 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 9) Flush----
+
+--SQLLog (Thread ID 10) Write Buffer:----
+--SQLLog (Thread ID 10) Init----
+//2019/3/6 15:38:02 @AdoHelper 执行命令：
+SQL="SELECT Top 35
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:38:02 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:38:02 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 10) Flush----
+
+--SQLLog (Thread ID 12) Write Buffer:----
+--SQLLog (Thread ID 12) Init----
+//2019/3/6 15:38:06 @AdoHelper 执行命令：
+SQL="SELECT Top 5
+	[编号],
+	[设备名称],
+	[型号],
+	[购置时间],
+	[备注]
+FROM [设备表] where [设备名称]='收银机' order by [编号] desc"
+//命令类型：Text
+//2019/3/6 15:38:06 @AdoHelper ：Execueted Time(ms):5
+
+//2019/3/6 15:38:06 @AdoHelper ：RecordAffected:-1
+--SQLLog (Thread ID 12) Flush----
+

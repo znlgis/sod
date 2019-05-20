@@ -35,8 +35,9 @@
 
         Dim welcomForm As New frmWelcom
         welcomForm.CommandForm = Me
+        welcomForm.ParentContainer = Me.TabControlMain
+        Me.TabControlMain.SetControlsSizeLocation()
         Me.TabControlMain.TabPages.Add(welcomForm)
-
     End Sub
 
     Private Sub TestWriteCfg()
@@ -138,6 +139,9 @@
     Private Sub RunProcessByConfig(ByVal fileKey As String)
 
         Dim fileName As String = System.Configuration.ConfigurationManager.AppSettings(fileKey)
+        If Not System.IO.Path.IsPathRooted(fileName) Then
+            fileName = System.IO.Path.Combine(Application.StartupPath, fileName)
+        End If
         If System.IO.File.Exists(fileName) Then
             Try
                 System.Environment.CurrentDirectory = System.IO.Path.GetDirectoryName(fileName)
@@ -252,6 +256,8 @@
 
             Dim frmCF As New frmCodeFile
             frmCF.FileName = fileName
+            frmCF.Text = fileName
+
             Me.TabControlMain.TabPages.Add(frmCF)
 
         Else
@@ -261,5 +267,11 @@
 
     Private Sub menuIDEConfig_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles menuIDEConfig.Click
         OpenConfigFile("PDFDotNETPath")
+    End Sub
+
+    Private Sub menuSODBrowser_Click(sender As Object, e As EventArgs) Handles menuSODBrowser.Click
+        Dim welcomForm As New frmWelcom
+        welcomForm.CommandForm = Me
+        Me.TabControlMain.TabPages.Add(welcomForm)
     End Sub
 End Class

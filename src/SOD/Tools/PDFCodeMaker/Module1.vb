@@ -26,7 +26,7 @@ Module Module1
     End Enum
 
     Sub Main()
-        Dim VerMsg As String = "PDF.NET Code Maker : " & AppDomain.CurrentDomain.GetAssemblies(AppDomain.CurrentDomain.GetAssemblies.Length - 1).FullName & ",http://www.pwmis.com/SqlMap/"
+        Dim VerMsg As String = "PDF.NET Code Maker : " & System.Reflection.Assembly.GetEntryAssembly().FullName & ",http://www.pwmis.com/SqlMap/"
         Console.WriteLine(VerMsg)
         WriteLog("============================================")
         WriteLog(VerMsg)
@@ -37,7 +37,7 @@ Module Module1
         Dim OutPutPath As String = ConfigurationManager.AppSettings("OutPutPath")
         Dim ReWrite As Boolean = Convert.ToBoolean(ConfigurationManager.AppSettings("ReWrite"))
         Dim Language As CodeLanguage = [Enum].Parse(GetType(CodeLanguage), ConfigurationManager.AppSettings("CodeLanguage"))
-       
+
         Console.WriteLine("已经读取配置信息，开始生成代码．．．")
         Console.WriteLine()
         Dim DoneMsg As String = String.Empty
@@ -55,7 +55,7 @@ Module Module1
             DoneMsg = ex.ToString()
 
         End Try
-        
+
         Console.WriteLine()
         Console.WriteLine(DoneMsg)
         WriteLog(DoneMsg)

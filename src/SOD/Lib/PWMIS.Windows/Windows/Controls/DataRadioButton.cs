@@ -1,4 +1,6 @@
-﻿using System;
+﻿//Edit @ FileVersion 5.6.3.0311 :DataRadioButton 增加设定与数据绑定相关的数据值，该值与Value属性值相同则控件被选中
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -82,6 +84,13 @@ namespace PWMIS.Windows.Controls
         {
             get;
             set;
+        }
+
+        [Category("外观"), Description("设定与数据绑定相关的数据值，该值与Value属性值相同则控件被选中")]
+        public object BindingValue
+        {
+            get { return GetValue(); }
+            set { SetValue(value); }
         }
 
         public void SetValue(object value)

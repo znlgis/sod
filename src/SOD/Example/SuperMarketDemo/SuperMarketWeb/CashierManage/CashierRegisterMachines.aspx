@@ -52,8 +52,8 @@
         </Columns>
     </asp:GridView>
     <br />
-<cc1:ProPageToolBar ID="ProPageToolBar1" runat="server" Width="624px" 
+<cc1:ProPageToolBar ID="ProPageToolBar1" runat="server" Width="505px" 
         AutoBindData="True" AutoConfig="True" AutoIDB="True" BindToControl="GridView1" 
-        SQL="SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' order by [编号] desc" />
+        SQL="SELECT  [编号] ,[设备名称],[型号] ,[购置时间] ,[备注]  FROM [设备表] where [设备名称]='收银机' order by [编号] desc" BackColor="#FFFFCC" BorderColor="#FF9900" BorderWidth="1px"  />
 
 </asp:Content>

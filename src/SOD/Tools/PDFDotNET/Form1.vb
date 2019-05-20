@@ -24,6 +24,9 @@
     Private Sub RunProcessByConfig(ByVal fileKey As String)
 
         Dim fileName As String = System.Configuration.ConfigurationManager.AppSettings(fileKey)
+        If Not System.IO.Path.IsPathRooted(fileName) Then
+            fileName = System.IO.Path.Combine(Application.StartupPath, fileName)
+        End If
         If System.IO.File.Exists(fileName) Then
             Try
                 System.Environment.CurrentDirectory = System.IO.Path.GetDirectoryName(fileName)
@@ -43,6 +46,9 @@
         System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory
         Dim fileName As String = System.Configuration.ConfigurationManager.AppSettings(fileKey)
         fileName = fileName & ".config"
+        If Not System.IO.Path.IsPathRooted(fileName) Then
+            fileName = System.IO.Path.Combine(Application.StartupPath, fileName)
+        End If
         If System.IO.File.Exists(fileName) Then
             'System.Diagnostics.Process.Start("notepad", fileName)
             Me.txtFileText.Text = System.IO.File.ReadAllText(fileName, System.Text.Encoding.Default)

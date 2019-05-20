@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--Visual Studio 生成的基于系统定义模型(SDM)的文件。-->
+<!--建议不要手动编辑此文件，这可能会导致错误。-->
+<SystemDefinitionModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="SqlMapBuilder" Version="1.0.0.0" Culture="zh-CN" DocumentLanguage="zh-CN" xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1">
+  <Import Alias="System" Name="System" Version="1.0.60130.0" />
+  <Import Alias="MicrosoftConfiguration" Name="Microsoft.Configuration" Version="1.0.60130.0" />
+  <Import Alias="MicrosoftFileSystem" Name="Microsoft.FileSystem" Version="1.0.60130.0" />
+  <Import Alias="MicrosoftWindowsApplication" Name="Microsoft.WindowsApplication" Version="1.0.60130.0" />
+  <DesignData>
+    <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+      <ModelElement Id="27e38c4764764fcb9a5a0d861018af43" Type="Microsoft.VisualStudio.EnterpriseTools.Application.Modeling.SoftwareComponentDocument">
+        <Property Name="Version" Value="1" />
+        <Property Name="VSProjectId" Value="9b9b2933-d6cd-41c1-be5e-b687176fb161" />
+        <Relationship Id="4ec28e2d30bc4f319590cf954fb80140" Type="Microsoft.VisualStudio.EnterpriseTools.Application.Modeling.SoftwareComponentDocumentAffiliatedWithVSProject" Role1="@ebc05560ddab40a18d59a7fec0103a2c" RoleType1="Microsoft.VisualStudio.EnterpriseTools.Application.Modeling.SoftwareComponentDocumentAffiliatedWithVSProject.VSProject" />
+        <ModelElement Id="ebc05560ddab40a18d59a7fec0103a2c" Type="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Project.VSProject">
+          <Property Name="Name" Value="SqlMapBuilder" />
+          <Property Name="Guid" Value="9b9b2933-d6cd-41c1-be5e-b687176fb161" />
+          <Property Name="Location" Value="D:\work\批量诊断\PWMIS\SqlMapBuilder\" />
+          <Property Name="IsImplemented" Value="true" />
+          <Property Name="BuildOutputPath" Value="bin\" />
+          <Property Name="ProjectType" Value="Executable" />
+          <ModelElement Id="299ea52c87d24089b472f26ad45edc6d" Type="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Clr.ProjectClassModelRoot">
+            <ModelElement Id="dee248efe9b84363b224441c7d30a4a2" Type="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Clr.RootNamespace">
+              <Property Name="Name" Value="SqlMapBuilder" />
+              <Property Name="CustomAttributes" Value="" />
+              <Property Name="FullyQualifiedName" Value="SqlMapBuilder" />
+              <Property Name="LanguageType" Value="VisualBasic" />
+              <Relationship Id="ec221aacf0c940eeb6245e764affebc2" Type="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Clr.ProjectClassRootContainsNamespace" Role1="@299ea52c87d24089b472f26ad45edc6d" RoleType1="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Clr.ProjectClassRootContainsNamespace.ProjectClassModelRoot" />
+            </ModelElement>
+            <Relationship Id="6ab28aef69be4bd8bc16e35697a873f1" Type="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Project.VSProjectContainsClassModelRoot" Role1="@ebc05560ddab40a18d59a7fec0103a2c" RoleType1="Microsoft.VisualStudio.EnterpriseTools.ArtifactModel.Project.VSProjectContainsClassModelRoot.VSProject" />
+          </ModelElement>
+        </ModelElement>
+      </ModelElement>
+    </VisualStudio>
+  </DesignData>
+  <SystemDefinition Name="SqlMapBuilder" Extends="MicrosoftWindowsApplication:WindowsApplication" SimulationRoot="false">
+    <DesignData>
+      <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+        <ModelElement Type="Microsoft.VisualStudio.EnterpriseTools.Application.Modeling.PlugIns.WindowsComponentType">
+          <Property Name="State" Value="Implemented" />
+          <Property Name="Project" Value="SqlMapBuilder" />
+          <Property Name="CachedLanguage" Value="vb" />
+        </ModelElement>
+      </VisualStudio>
+    </DesignData>
+    <ResourceDefinition Name="Directory" Extends="MicrosoftFileSystem:Directory">
+      <ResourceDefinition Name="Configuration" Extends="MicrosoftConfiguration:Configuration">
+        <ResourceDefinition Name="TransactionsSectionGroup" Extends="MicrosoftConfiguration:TransactionsSectionGroup" />
+        <ResourceDefinition Name="SerializationSectionGroup" Extends="MicrosoftConfiguration:SerializationSectionGroup" />
+        <ResourceDefinition Name="SystemWebSectionGroup" Extends="MicrosoftConfiguration:SystemWebSectionGroup">
+          <ResourceDefinition Name="SystemWebCachingSectionGroup" Extends="MicrosoftConfiguration:SystemWebCachingSectionGroup" />
+          <Resource Name="SystemWebCachingSectionGroup" Definition="SqlMapBuilder.Directory.Configuration.SystemWebSectionGroup.SystemWebCachingSectionGroup" MinOccurs="1" MaxOccurs="1" Reference="false">
+            <DesignData>
+              <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+                <ModelElement>
+                  <Property Name="DisplayName" Value="SystemWebCachingSectionGroup" />
+                  <Property Name="CreatedByUser" Value="true" />
+                </ModelElement>
+              </VisualStudio>
+            </DesignData>
+          </Resource>
+          <Containment Name="SystemWebCachingSectionGroupContainment" Definition="MicrosoftConfiguration:SystemWebSectionGroupContainsSystemWebCachingSectionGroup" ChildMember="SystemWebCachingSectionGroup" />
+        </ResourceDefinition>
+        <ResourceDefinition Name="NetSectionGroup" Extends="MicrosoftConfiguration:NetSectionGroup">
+          <ResourceDefinition Name="MailSettingsSectionGroup" Extends="MicrosoftConfiguration:MailSettingsSectionGroup" />
+          <Resource Name="MailSettingsSectionGroup" Definition="SqlMapBuilder.Directory.Configuration.NetSectionGroup.MailSettingsSectionGroup" MinOccurs="1" MaxOccurs="1" Reference="false">
+            <DesignData>
+              <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+                <ModelElement>
+                  <Property Name="DisplayName" Value="MailSettingsSectionGroup" />
+                  <Property Name="CreatedByUser" Value="true" />
+                </ModelElement>
+              </VisualStudio>
+            </DesignData>
+          </Resource>
+          <Containment Name="MailSettingsSectionGroupContainment" Definition="MicrosoftConfiguration:NetSectionGroupContainsMailSettingsSectionGroup" ChildMember="MailSettingsSectionGroup" />
+        </ResourceDefinition>
+        <ResourceDefinition Name="AppSettingsSection" Extends="MicrosoftConfiguration:AppSettingsSection">
+          <SettingValueList Path="Settings" Fixed="false" />
+          <SettingValue Path="File" Fixed="false" />
+        </ResourceDefinition>
+        <ResourceDefinition Name="ConnectionStringsSection" Extends="MicrosoftConfiguration:ConnectionStringsSection" />
+        <Resource Name="TransactionsSectionGroup" Definition="SqlMapBuilder.Directory.Configuration.TransactionsSectionGroup" MinOccurs="1" MaxOccurs="1" Reference="false">
+          <DesignData>
+            <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+              <ModelElement>
+                <Property Name="DisplayName" Value="TransactionsSectionGroup" />
+                <Property Name="CreatedByUser" Value="true" />
+              </ModelElement>
+            </VisualStudio>
+          </DesignData>
+        </Resource>
+        <Containment Name="TransactionsSectionGroupContainment" Definition="MicrosoftConfiguration:ConfigurationContainsTransactionsSectionGroup" ChildMember="TransactionsSectionGroup" />
+        <Resource Name="SerializationSectionGroup" Definition="SqlMapBuilder.Directory.Configuration.SerializationSectionGroup" MinOccurs="1" MaxOccurs="1" Reference="false">
+          <DesignData>
+            <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+              <ModelElement>
+                <Property Name="DisplayName" Value="SerializationSectionGroup" />
+                <Property Name="CreatedByUser" Value="true" />
+              </ModelElement>
+            </VisualStudio>
+          </DesignData>
+        </Resource>
+        <Containment Name="SerializationSectionGroupContainment" Definition="MicrosoftConfiguration:ConfigurationContainsSerializationSectionGroup" ChildMember="SerializationSectionGroup" />
+        <Resource Name="SystemWebSectionGroup" Definition="SqlMapBuilder.Directory.Configuration.SystemWebSectionGroup" MinOccurs="1" MaxOccurs="1" Reference="false">
+          <DesignData>
+            <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+              <ModelElement>
+                <Property Name="DisplayName" Value="SystemWebSectionGroup" />
+                <Property Name="CreatedByUser" Value="true" />
+              </ModelElement>
+            </VisualStudio>
+          </DesignData>
+        </Resource>
+        <Containment Name="SystemWebSectionGroupContainment" Definition="MicrosoftConfiguration:ConfigurationContainsSystemWebSectionGroup" ChildMember="SystemWebSectionGroup" />
+        <Hosting Name="SystemWebSectionGroupHostsSystemWebCachingSectionGroup" Definition="MicrosoftConfiguration:SystemWebSectionGroupHostsSystemWebCachingSectionGroup" GuestMember="SystemWebSectionGroup.SystemWebCachingSectionGroup" HostMember="SystemWebSectionGroup" />
+        <Resource Name="NetSectionGroup" Definition="SqlMapBuilder.Directory.Configuration.NetSectionGroup" MinOccurs="1" MaxOccurs="1" Reference="false">
+          <DesignData>
+            <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+              <ModelElement>
+                <Property Name="DisplayName" Value="NetSectionGroup" />
+                <Property Name="CreatedByUser" Value="true" />
+              </ModelElement>
+            </VisualStudio>
+          </DesignData>
+        </Resource>
+        <Containment Name="NetSectionGroupContainment" Definition="MicrosoftConfiguration:ConfigurationContainsNetSectionGroup" ChildMember="NetSectionGroup" />
+        <Hosting Name="NetSectionGroupHostsMailSettingsSectionGroup" Definition="MicrosoftConfiguration:NetSectionGroupHostsMailSettingsSectionGroup" GuestMember="NetSectionGroup.MailSettingsSectionGroup" HostMember="NetSectionGroup" />
+        <Resource Name="AppSettingsSection" Definition="SqlMapBuilder.Directory.Configuration.AppSettingsSection" MinOccurs="1" MaxOccurs="1" Reference="false">
+          <DesignData>
+            <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+              <ModelElement>
+                <Property Name="DisplayName" Value="AppSettingsSection" />
+                <Property Name="CreatedByUser" Value="true" />
+              </ModelElement>
+            </VisualStudio>
+          </DesignData>
+        </Resource>
+        <Containment Name="AppSettingsSectionContainment" Definition="MicrosoftConfiguration:ConfigurationContainsAppSettingsSection" ChildMember="AppSettingsSection" />
+        <Resource Name="ConnectionStringsSection" Definition="SqlMapBuilder.Directory.Configuration.ConnectionStringsSection" MinOccurs="1" MaxOccurs="1" Reference="false">
+          <DesignData>
+            <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+              <ModelElement>
+                <Property Name="DisplayName" Value="ConnectionStringsSection" />
+                <Property Name="CreatedByUser" Value="true" />
+              </ModelElement>
+            </VisualStudio>
+          </DesignData>
+        </Resource>
+        <Containment Name="ConnectionStringsSectionContainment" Definition="MicrosoftConfiguration:ConfigurationContainsConnectionStringsSection" ChildMember="ConnectionStringsSection" />
+      </ResourceDefinition>
+      <Resource Name="Configuration" Definition="SqlMapBuilder.Directory.Configuration" MinOccurs="1" MaxOccurs="1" Reference="false">
+        <DesignData>
+          <VisualStudio xmlns="http://schemas.microsoft.com/SystemDefinitionModel/2005/1/DesignData/VisualStudio">
+            <ModelElement>
+              <Property Name="DisplayName" Value="Configuration" />
+            </ModelElement>
+          </VisualStudio>
+        </DesignData>
+      </Resource>
+      <Containment Name="ConfigurationContainment" Definition="MicrosoftFileSystem:DirectoryContainsFile" ChildMember="Configuration" />
+      <Hosting Name="ConfigurationHostsTransactionsSectionGroup" Definition="MicrosoftConfiguration:ConfigurationHostsTransactionsSectionGroup" GuestMember="Configuration.TransactionsSectionGroup" HostMember="Configuration" />
+      <Hosting Name="ConfigurationHostsSerializationSectionGroup" Definition="MicrosoftConfiguration:ConfigurationHostsSerializationSectionGroup" GuestMember="Configuration.SerializationSectionGroup" HostMember="Configuration" />
+      <Hosting Name="ConfigurationHostsSystemWebSectionGroup" Definition="MicrosoftConfiguration:ConfigurationHostsSystemWebSectionGroup" GuestMember="Configuration.SystemWebSectionGroup" HostMember="Configuration" />
+      <Hosting Name="ConfigurationHostsNetSectionGroup" Definition="MicrosoftConfiguration:ConfigurationHostsNetSectionGroup" GuestMember="Configuration.NetSectionGroup" HostMember="Configuration" />
+      <Hosting Name="ConfigurationHostsAppSettingsSection" Definition="MicrosoftConfiguration:ConfigurationHostsAppSettingsSection" GuestMember="Configuration.AppSettingsSection" HostMember="Configuration" />
+      <Hosting Name="ConfigurationHostsConnectionStringsSection" Definition="MicrosoftConfiguration:ConfigurationHostsConnectionStringsSection" GuestMember="Configuration.ConnectionStringsSection" HostMember="Configuration" />
+    </ResourceDefinition>
+    <Resource Name="Directory" Definition="SqlMapBuilder.Directory" MinOccurs="1" MaxOccurs="1" Reference="false" />
+    <Containment Name="DirectoryContainment" Definition="MicrosoftWindowsApplication:WindowsApplicationContainsDirectory" ChildMember="Directory" />
+    <Hosting Name="DirectoryHostsConfiguration" Definition="MicrosoftFileSystem:DirectoryHostsFile" GuestMember="Directory.Configuration" HostMember="Directory" />
+  </SystemDefinition>
+</SystemDefinitionModel>

@@ -13,7 +13,9 @@
         'fileName = fileName & ".config"
         If System.IO.File.Exists(fileName) Then
             'System.Diagnostics.Process.Start("notepad", fileName)
-            Me.txtFileText.Text = System.IO.File.ReadAllText(fileName, System.Text.Encoding.Default)
+            '使用ReadAllText的重载方法参数 System.Text.Encoding.Default 可能无法正确打开utf8的配置文件
+            '默认将使用UTF8格式
+            Me.txtFileText.Text = System.IO.File.ReadAllText(fileName)
 
             Me.Text = "文件：" + fileName
 
@@ -62,7 +64,17 @@
                 End If
 
             End If
-            My.Computer.FileSystem.WriteAllText(saveFileName, Me.txtFileText.Text, False, System.Text.Encoding.Default)
+            Dim diaResult As DialogResult = MessageBox.Show("文件将默认使用UTF8格式保存，选择【是】将使用此编码，选择【否】将使用当前系统编码（ANSI），选择【取消】可以放弃本次编辑。", "保存文件", MessageBoxButtons.YesNoCancel)
+            If diaResult = DialogResult.Cancel Then Exit Sub
+
+            Dim encoding As System.Text.Encoding
+            If diaResult = DialogResult.Yes Then
+                encoding = System.Text.Encoding.UTF8
+            Else
+                encoding = System.Text.Encoding.Default
+            End If
+
+            My.Computer.FileSystem.WriteAllText(saveFileName, Me.txtFileText.Text, False, encoding)
             Me.contentChange = False
             Me.Text = Me.Text.TrimStart("*"c)
 

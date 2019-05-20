@@ -11,8 +11,8 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyTitle("PDFDotNET")> 
 <Assembly: AssemblyDescription("PDF.NET SOD框架 集成开发工具")> 
 <Assembly: AssemblyCompany("PWMIS")> 
-<Assembly: AssemblyProduct("PDFDotNET")> 
-<Assembly: AssemblyCopyright("Copyright © PWMIS 2010")> 
+<Assembly: AssemblyProduct("PDFDotNET")>
+<Assembly: AssemblyCopyright("Copyright © PWMIS 2019")>
 <Assembly: AssemblyTrademark("SOD")> 
 
 <Assembly: ComVisible(False)>
@@ -31,5 +31,5 @@ Imports System.Runtime.InteropServices
 ' 方法是按如下所示使用“*”:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("5.6.2.0212")>
-<Assembly: AssemblyFileVersion("5.3.6.0212")>
+<Assembly: AssemblyVersion("5.7.5.0517")>
+<Assembly: AssemblyFileVersion("5.7.5.0517")>

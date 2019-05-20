@@ -1,13 +1,11 @@
-﻿using PWMIS.Common;
+﻿//Edit @ FileVersion 5.6.3.0311 :MVVM窗体 增加动态绑定事件的重载方法BindCommandControls
+
+using PWMIS.Common;
 using PWMIS.Core;
 using PWMIS.DataForms.Adapter;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Reflection;
-using System.Text;
 using System.Windows.Forms;
 
 
@@ -130,6 +128,21 @@ namespace PWMIS.Windows.Mvvm
 
             Type ctrType = control.GetType();
             ctrType.GetEvent(controlEvent).AddEventHandler(control, hander);
+        }
+
+        /// <summary>
+        /// 绑定ViewModel的命令到窗体的任意控件的特定类型事件上
+        /// </summary>
+        /// <param name="control">引发事件的控件</param>
+        /// <param name="controlEvent">控件的事件名</param>
+        /// <param name="target">要绑定的事件处理方法所在的对象</param>
+        /// <param name="EventHandleMethod">事件处理方法</param>
+        public void BindCommandControls(Control control, string controlEvent, object target,string EventHandleMethod) 
+        {
+            Type ctrType = control.GetType();
+            var eventInfo = ctrType.GetEvent(controlEvent);
+            var dele = Delegate.CreateDelegate(eventInfo.EventHandlerType, target, EventHandleMethod);
+            eventInfo.AddEventHandler(control, dele);
         }
 
         /// <summary>
