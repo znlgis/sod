@@ -111,6 +111,13 @@
                                          form.Select()
                                      End Sub
             Me.Invoke(myAction)
+        ElseIf commandName = "OpreationStatus" Then
+            Dim myAction As Action = Sub()
+                                         Me.WindowState = FormWindowState.Maximized
+                                         Dim message As String = parameters("OpreationStatusMsg")
+                                         OpreationStatusMsg.Text = message
+                                     End Sub
+            Me.Invoke(myAction)
         End If
     End Function
 

@@ -811,9 +811,8 @@ Public Class frmDataBaseExpert
         window.rtbQueryText.Text = SQL
         window.CurrDBName = Me.CurrDBName
         window.CurrDBPath = Me.dbNodePathKey & "-" & Me.CurrDBName
-        Me.CommandForm.OpenWindow(Me, window, "")
         window.CommandForm = Me.CommandForm
-
+        Me.CommandForm.OpenWindow(Me, window, "")
     End Sub
 
 

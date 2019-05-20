@@ -45,6 +45,7 @@ Public Class frmWelcom
             CefSharp.Cef.Initialize(setting)
 
         End If
+        SendOperationStatusMessage("Web等待输入网址")
 
         Me.WebBrowser1 = New CefSharp.WinForms.ChromiumWebBrowser(Me.txtUrl.Text)
         Me.panBody.Controls.Add(Me.WebBrowser1)
@@ -56,16 +57,18 @@ Public Class frmWelcom
             btnNewTabWindow.Enabled = False
         End If
 
-        If Me.txtUrl.Text = "" Then Me.txtUrl.Text = "http://"
+        If Me.txtUrl.Text = "" Then Me.txtUrl.Text = "http://" Else SendOperationStatusMessage("Web页正在加载...")
     End Sub
 
     Private Sub btnGo_Click(sender As Object, e As EventArgs) Handles btnGo.Click
         Me.WebBrowser1.Load(Me.txtUrl.Text)
+        SendOperationStatusMessage("Web页正在加载...")
     End Sub
 
     Private Sub txtUrl_KeyDown(sender As Object, e As KeyEventArgs) Handles txtUrl.KeyDown
         If e.KeyCode = Keys.Enter Then
             Me.WebBrowser1.Load(Me.txtUrl.Text)
+            SendOperationStatusMessage("Web页正在加载...")
         End If
     End Sub
 
@@ -108,6 +111,7 @@ Public Class frmWelcom
                       Me.Text = e.Title + " @[SOD谷歌极简浏览器]"
                       PageLoaded = True
                   End Sub)
+        SendOperationStatusMessage("Web页加载成功")
     End Sub
 
     Private Sub WebBrowser1_IsBrowserInitializedChanged(sender As Object, e As IsBrowserInitializedChangedEventArgs) Handles WebBrowser1.IsBrowserInitializedChanged
@@ -132,8 +136,16 @@ Public Class frmWelcom
             window.CommandForm = Me.CommandForm
             window.HomeUrl = ""
             window.Text = "[SOD谷歌极简浏览器]"
-
+            window.ParentContainer = Me.ParentContainer
             CommandForm.OpenWindow(Me, window, "")
+        End If
+    End Sub
+
+    Private Sub SendOperationStatusMessage(message As String)
+        If Not CommandForm Is Nothing Then
+            Dim dict As New Dictionary(Of String, Object)
+            dict.Add("OpreationStatusMsg", message)
+            CommandForm.Command("OpreationStatus", dict)
         End If
     End Sub
 End Class

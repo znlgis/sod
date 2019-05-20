@@ -185,9 +185,10 @@
                 Else
                     Me.TabPageGrid.Controls.Add(grid1)
                 End If
-
+                SendOperationStatusMessage("查询操作成功！")
             Catch ex As Exception
                 MessageBox.Show(ex.Message, "数据查询", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                SendOperationStatusMessage("查询操作失败：" + ex.Message)
             End Try
 
         End If
@@ -249,6 +250,7 @@
         Me.dgvGroupQuery.DataSource = DataConnections
 
         Me.btnLoadGQuery.Enabled = My.Computer.FileSystem.FileExists(GroupQueryCfgFile)
+        SendOperationStatusMessage("查询准备就绪")
     End Sub
 
     Private Sub rtbQueryText_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) _
@@ -463,6 +465,14 @@
             BindGroupQueryGrid()
         Else
             MessageBox.Show("请先选择要删除的行！")
+        End If
+    End Sub
+
+    Private Sub SendOperationStatusMessage(message As String)
+        If Not CommandForm Is Nothing Then
+            Dim dict As New Dictionary(Of String, Object)
+            dict.Add("OpreationStatusMsg", message)
+            CommandForm.Command("OpreationStatus", dict)
         End If
     End Sub
 End Class
