@@ -56,7 +56,7 @@ namespace PWMIS.OData.Client
                 System.Xml.XmlReader reader = CreateXmlReaderFromUrl(metadataUrl);
                 try
                 {
-                    return Microsoft.OData.Edm.Csdl.EdmxReader.Parse(reader);
+                    return Microsoft.OData.Edm.Csdl.CsdlReader.Parse(reader);
                 }
                 finally
                 {

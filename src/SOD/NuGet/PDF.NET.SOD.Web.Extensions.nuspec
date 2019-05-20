@@ -2,21 +2,21 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>PDF.NET.SOD.Web.Extensions</id>
-        <version>5.6.2.0725</version>
+        <version>5.6.2.1231</version>
         <title>PDF.NET SOD Web Extensions</title>
         <authors>深蓝医生</authors>
-        <licenseUrl>https://github.com/znlgis/sod/blob/master/LICENSE</licenseUrl>
+        <license type="expression">LGPL-2.1-only</license>
         <projectUrl>http://www.pwmis.com/SqlMap/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>PDF.NET SOD Web开发扩展库</description>
         <dependencies>
-            <dependency id="PDF.NET.SOD" version="5.6.2.0725" />
+            <dependency id="PDF.NET.SOD.Core" version="5.6.2.1231" />
         </dependencies>
     </metadata>
     <files>
-        <file src="..\Lib\发布目录\PWMIS.Web.dll" target="lib\PWMIS.Web.dll" />
-        <file src="..\Lib\发布目录\PWMIS.Web.dll.config" target="lib\PWMIS.Web.dll.config" />
-        <file src="..\Lib\发布目录\PWMIS.Web.pdb" target="lib\PWMIS.Web.pdb" />
-        <file src="..\Lib\发布目录\PWMIS.Web.XML" target="lib\PWMIS.Web.XML" />
+        <file src="..\Lib\发布目录\PWMIS.Web.dll" target="lib\net20\PWMIS.Web.dll" />
+        <file src="..\Lib\发布目录\PWMIS.Web.dll.config" target="lib\net20\PWMIS.Web.dll.config" />
+        <file src="..\Lib\发布目录\PWMIS.Web.pdb" target="lib\net20\PWMIS.Web.pdb" />
+        <file src="..\Lib\发布目录\PWMIS.Web.XML" target="lib\net20\PWMIS.Web.XML" />
     </files>
 </package>

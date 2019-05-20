@@ -2,23 +2,23 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>PDF.NET.SOD.ODataClient.Extensions</id>
-        <version>5.6.2.0725</version>
+        <version>5.6.2.1231</version>
         <title>PDF.NET SOD ODataClient Extensions</title>
         <authors>深蓝医生</authors>
-        <licenseUrl>https://github.com/znlgis/sod/blob/master/LICENSE</licenseUrl>
+        <license type="expression">LGPL-2.1-only</license>
         <projectUrl>http://www.pwmis.com/SqlMap/</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>PDF.NET SOD ODataClient扩展库</description>
         <dependencies>
-            <dependency id="Microsoft.OData.Client" version="6.15.0" />
-            <dependency id="Microsoft.OData.Core" version="6.15.0" />
-            <dependency id="Microsoft.OData.Edm" version="6.15.0" />
-            <dependency id="Microsoft.Spatial" version="6.15.0" />
-            <dependency id="PDF.NET.SOD" version="5.6.2.0725" />
+            <dependency id="Microsoft.OData.Client" version="7.5.3" />
+            <dependency id="Microsoft.OData.Core" version="7.5.3" />
+            <dependency id="Microsoft.OData.Edm" version="7.5.3" />
+            <dependency id="Microsoft.Spatial" version="7.5.3" />
+            <dependency id="PDF.NET.SOD" version="5.6.2.1231" />
         </dependencies>
     </metadata>
     <files>
-        <file src="..\OtherExtensions\PWMIS.OData.Client\bin\Release\PWMIS.OData.Client.dll" target="lib\PWMIS.OData.Client.dll" />
-        <file src="..\OtherExtensions\PWMIS.OData.Client\bin\Release\PWMIS.OData.Client.pdb" target="lib\PWMIS.OData.Client.pdb" />
+        <file src="..\OtherExtensions\PWMIS.OData.Client\bin\Release\PWMIS.OData.Client.dll" target="lib\net452\PWMIS.OData.Client.dll" />
+        <file src="..\OtherExtensions\PWMIS.OData.Client\bin\Release\PWMIS.OData.Client.pdb" target="lib\net452\PWMIS.OData.Client.pdb" />
     </files>
 </package>
