@@ -51,13 +51,14 @@ Public Class frmWelcom
         Me.panBody.Controls.Add(Me.WebBrowser1)
 
         If Not ParentContainer Is Nothing Then
-            Me.WebBrowser1.Size = New Drawing.Size(ParentContainer.Width, ParentContainer.Height)
+            Me.WebBrowser1.Size = New Drawing.Size(ParentContainer.Width, ParentContainer.Height - 50)
             Me.WebBrowser1.Dock = DockStyle.None
         Else
             btnNewTabWindow.Enabled = False
         End If
 
         If Me.txtUrl.Text = "" Then Me.txtUrl.Text = "http://" Else SendOperationStatusMessage("Web页正在加载...")
+        LoadHotWebSiteInfo()
     End Sub
 
     Private Sub btnGo_Click(sender As Object, e As EventArgs) Handles btnGo.Click
@@ -97,13 +98,13 @@ Public Class frmWelcom
         Me.CommandForm.OpenWindow(Me, window, "")
     End Sub
 
+    '独立窗口打开网页
     Private Sub lnkNewWindow_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lnkNewWindow.LinkClicked
         Dim window As New frmWelcom()
         window.CommandForm = Me.CommandForm
         window.HomeUrl = ""
         window.Text = "[SOD谷歌极简浏览器]"
         window.Show()
-        'Me.CommandForm.OpenWindow(Me, window, "")
     End Sub
 
     Private Sub WebBrowser1_TitleChanged(sender As Object, e As TitleChangedEventArgs) Handles WebBrowser1.TitleChanged
@@ -114,16 +115,10 @@ Public Class frmWelcom
         SendOperationStatusMessage("Web页加载成功")
     End Sub
 
-    Private Sub WebBrowser1_IsBrowserInitializedChanged(sender As Object, e As IsBrowserInitializedChangedEventArgs) Handles WebBrowser1.IsBrowserInitializedChanged
-        ' Me.WebBrowser1.SetZoomLevel(0.5)
-
-
-    End Sub
-
     Private Sub panBody_Resize(sender As Object, e As EventArgs) Handles panBody.Resize
         If PageLoaded Then
             If Not ParentContainer Is Nothing Then
-                Me.WebBrowser1.Size = New Drawing.Size(ParentContainer.Width, ParentContainer.Height)
+                Me.WebBrowser1.Size = New Drawing.Size(ParentContainer.Width, ParentContainer.Height - 50)
                 Me.WebBrowser1.Dock = DockStyle.None
             End If
         End If
@@ -146,6 +141,34 @@ Public Class frmWelcom
             Dim dict As New Dictionary(Of String, Object)
             dict.Add("OpreationStatusMsg", message)
             CommandForm.Command("OpreationStatus", dict)
+        End If
+    End Sub
+
+    Private Sub LoadHotWebSiteInfo()
+        Dim hotCfg As String = System.Configuration.ConfigurationManager.AppSettings("HotWebSite")
+        If Not String.IsNullOrEmpty(hotCfg) Then
+            Dim siteList As List(Of KeyValuePair(Of String, String)) = New List(Of KeyValuePair(Of String, String))
+            siteList.Add(New KeyValuePair(Of String, String)("常用网址", ""))
+
+            Dim items As String() = hotCfg.Split(";")
+            For Each s In items
+                Dim site As String() = s.Split("|")
+                If site.Length = 2 Then
+                    siteList.Add(New KeyValuePair(Of String, String)(site(0), site(1)))
+                End If
+            Next
+            cmbHotWebSite.DataSource = siteList
+            cmbHotWebSite.DisplayMember = "Key"
+            cmbHotWebSite.ValueMember = "Value"
+        End If
+
+    End Sub
+
+    Private Sub cmbHotWebSite_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbHotWebSite.SelectedIndexChanged
+        If cmbHotWebSite.SelectedIndex > 0 Then
+            Dim url As String = cmbHotWebSite.SelectedValue
+            Me.txtUrl.Text = url
+            btnGo.PerformClick()
         End If
     End Sub
 End Class

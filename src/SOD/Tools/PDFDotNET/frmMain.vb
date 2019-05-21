@@ -38,6 +38,7 @@
         welcomForm.ParentContainer = Me.TabControlMain
         Me.TabControlMain.SetControlsSizeLocation()
         Me.TabControlMain.TabPages.Add(welcomForm)
+
     End Sub
 
     Private Sub TestWriteCfg()
@@ -122,8 +123,23 @@
     End Function
 
     Function OpenWindow(ByVal sender As Object, ByVal objectWindow As System.Windows.Forms.Form, ByVal openStyle As String) As Boolean Implements ICommand.OpenWindow
-        Me.TabControlMain.TabPages.Add(objectWindow)
+        Dim page As MdiTabControl.TabPage = Me.TabControlMain.TabPages.Add(objectWindow)
+        AddHandler page.Click, AddressOf TabControlMainPage_Click
+        '重新调整Tab窗体大小，否则在工具条容器内显示不完全
+        ResizeTabControlMainWindow(objectWindow)
     End Function
+
+    Private Sub TabControlMainPage_Click(ByVal sender As System.Object, ByVal e As System.EventArgs)
+        Dim page As MdiTabControl.TabPage = sender
+        Dim objectWindow As System.Windows.Forms.Form = page.Form
+        ResizeTabControlMainWindow(objectWindow)
+    End Sub
+
+    Private Sub ResizeTabControlMainWindow(ByVal objectWindow As System.Windows.Forms.Form)
+        objectWindow.Dock = DockStyle.None
+        Dim cSize As Size = SplitContainer1.Panel2.Size
+        objectWindow.Size = New Size(cSize.Width - 3, cSize.Height - 23)
+    End Sub
 
     Private Sub tsSqlMapper_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsSqlMapper.Click
         RunProcessByConfig("SqlMapBuilderPath")
@@ -281,4 +297,6 @@
         welcomForm.CommandForm = Me
         Me.TabControlMain.TabPages.Add(welcomForm)
     End Sub
+
+
 End Class

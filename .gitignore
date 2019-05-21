@@ -7,3 +7,7 @@ obj
 packages
 ToolsBin
 /src/MessageServiceFramework/Test/ServiceHost
+/src/MessageServiceFramework/MessageServiceFramework
+/src/SOD/Backup
+/src/SOD/Backup1
+/src/SOD/ClassLibrary1

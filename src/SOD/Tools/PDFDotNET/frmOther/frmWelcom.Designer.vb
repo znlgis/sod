@@ -23,6 +23,7 @@ Partial Class frmWelcom
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.panHead = New System.Windows.Forms.Panel()
+        Me.btnNewTabWindow = New System.Windows.Forms.Button()
         Me.lnkNewWindow = New System.Windows.Forms.LinkLabel()
         Me.lnk12306 = New System.Windows.Forms.LinkLabel()
         Me.picGoHome = New System.Windows.Forms.PictureBox()
@@ -32,7 +33,7 @@ Partial Class frmWelcom
         Me.btnGo = New System.Windows.Forms.Button()
         Me.txtUrl = New System.Windows.Forms.TextBox()
         Me.panBody = New System.Windows.Forms.Panel()
-        Me.btnNewTabWindow = New System.Windows.Forms.Button()
+        Me.cmbHotWebSite = New System.Windows.Forms.ComboBox()
         Me.panHead.SuspendLayout()
         CType(Me.picGoHome, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picRefersh, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -43,6 +44,7 @@ Partial Class frmWelcom
         'panHead
         '
         Me.panHead.BackColor = System.Drawing.Color.White
+        Me.panHead.Controls.Add(Me.cmbHotWebSite)
         Me.panHead.Controls.Add(Me.btnNewTabWindow)
         Me.panHead.Controls.Add(Me.lnkNewWindow)
         Me.panHead.Controls.Add(Me.lnk12306)
@@ -59,11 +61,22 @@ Partial Class frmWelcom
         Me.panHead.Size = New System.Drawing.Size(1475, 78)
         Me.panHead.TabIndex = 0
         '
+        'btnNewTabWindow
+        '
+        Me.btnNewTabWindow.FlatStyle = System.Windows.Forms.FlatStyle.System
+        Me.btnNewTabWindow.Font = New System.Drawing.Font("黑体", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.btnNewTabWindow.Location = New System.Drawing.Point(232, 12)
+        Me.btnNewTabWindow.Name = "btnNewTabWindow"
+        Me.btnNewTabWindow.Size = New System.Drawing.Size(50, 50)
+        Me.btnNewTabWindow.TabIndex = 8
+        Me.btnNewTabWindow.Text = "+"
+        Me.btnNewTabWindow.UseVisualStyleBackColor = True
+        '
         'lnkNewWindow
         '
         Me.lnkNewWindow.AutoSize = True
         Me.lnkNewWindow.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.lnkNewWindow.Location = New System.Drawing.Point(1121, 30)
+        Me.lnkNewWindow.Location = New System.Drawing.Point(1064, 30)
         Me.lnkNewWindow.Name = "lnkNewWindow"
         Me.lnkNewWindow.Size = New System.Drawing.Size(94, 24)
         Me.lnkNewWindow.TabIndex = 7
@@ -74,7 +87,7 @@ Partial Class frmWelcom
         '
         Me.lnk12306.AutoSize = True
         Me.lnk12306.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.lnk12306.Location = New System.Drawing.Point(1222, 31)
+        Me.lnk12306.Location = New System.Drawing.Point(1165, 30)
         Me.lnk12306.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lnk12306.Name = "lnk12306"
         Me.lnk12306.Size = New System.Drawing.Size(166, 24)
@@ -138,7 +151,7 @@ Partial Class frmWelcom
         Me.btnGo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnGo.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.btnGo.ForeColor = System.Drawing.Color.Maroon
-        Me.btnGo.Location = New System.Drawing.Point(1029, 4)
+        Me.btnGo.Location = New System.Drawing.Point(1002, 4)
         Me.btnGo.Margin = New System.Windows.Forms.Padding(4)
         Me.btnGo.Name = "btnGo"
         Me.btnGo.Size = New System.Drawing.Size(55, 55)
@@ -154,7 +167,7 @@ Partial Class frmWelcom
         Me.txtUrl.Location = New System.Drawing.Point(285, 19)
         Me.txtUrl.Margin = New System.Windows.Forms.Padding(4)
         Me.txtUrl.Name = "txtUrl"
-        Me.txtUrl.Size = New System.Drawing.Size(737, 35)
+        Me.txtUrl.Size = New System.Drawing.Size(709, 35)
         Me.txtUrl.TabIndex = 0
         Me.txtUrl.Text = "http://www.pwmis.com/sqlmap"
         '
@@ -167,16 +180,15 @@ Partial Class frmWelcom
         Me.panBody.Size = New System.Drawing.Size(1475, 563)
         Me.panBody.TabIndex = 1
         '
-        'btnNewTabWindow
+        'cmbHotWebSite
         '
-        Me.btnNewTabWindow.FlatStyle = System.Windows.Forms.FlatStyle.System
-        Me.btnNewTabWindow.Font = New System.Drawing.Font("黑体", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.btnNewTabWindow.Location = New System.Drawing.Point(232, 12)
-        Me.btnNewTabWindow.Name = "btnNewTabWindow"
-        Me.btnNewTabWindow.Size = New System.Drawing.Size(50, 50)
-        Me.btnNewTabWindow.TabIndex = 8
-        Me.btnNewTabWindow.Text = "+"
-        Me.btnNewTabWindow.UseVisualStyleBackColor = True
+        Me.cmbHotWebSite.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.cmbHotWebSite.ForeColor = System.Drawing.Color.Sienna
+        Me.cmbHotWebSite.FormattingEnabled = True
+        Me.cmbHotWebSite.Location = New System.Drawing.Point(1338, 22)
+        Me.cmbHotWebSite.Name = "cmbHotWebSite"
+        Me.cmbHotWebSite.Size = New System.Drawing.Size(125, 32)
+        Me.cmbHotWebSite.TabIndex = 9
         '
         'frmWelcom
         '
@@ -209,4 +221,5 @@ Partial Class frmWelcom
     Friend WithEvents lnk12306 As LinkLabel
     Friend WithEvents lnkNewWindow As LinkLabel
     Friend WithEvents btnNewTabWindow As Button
+    Friend WithEvents cmbHotWebSite As ComboBox
 End Class

@@ -812,7 +812,8 @@ Public Class frmDataBaseExpert
         window.CurrDBName = Me.CurrDBName
         window.CurrDBPath = Me.dbNodePathKey & "-" & Me.CurrDBName
         window.CommandForm = Me.CommandForm
-        Me.CommandForm.OpenWindow(Me, window, "")
+        'window.Dock = DockStyle.Fill
+        Me.CommandForm.OpenWindow(Me, window, "Fill")
     End Sub
 
 

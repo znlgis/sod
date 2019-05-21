@@ -1,9 +1,9 @@
-﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
+﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
 Partial Class frmMain
     Inherits System.Windows.Forms.Form
 
     'Form 重写 Dispose，以清理组件列表。
-    <System.Diagnostics.DebuggerNonUserCode()> _
+    <System.Diagnostics.DebuggerNonUserCode()>
     Protected Overrides Sub Dispose(ByVal disposing As Boolean)
         Try
             If disposing AndAlso components IsNot Nothing Then
@@ -20,7 +20,7 @@ Partial Class frmMain
     '注意: 以下过程是 Windows 窗体设计器所必需的
     '可以使用 Windows 窗体设计器修改它。
     '不要使用代码编辑器修改它。
-    <System.Diagnostics.DebuggerStepThrough()> _
+    <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
         Dim ToolStripSystemRenderer1 As System.Windows.Forms.ToolStripSystemRenderer = New System.Windows.Forms.ToolStripSystemRenderer()
@@ -97,7 +97,7 @@ Partial Class frmMain
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Padding = New System.Windows.Forms.Padding(9, 3, 0, 3)
-        Me.MenuStrip1.Size = New System.Drawing.Size(1038, 34)
+        Me.MenuStrip1.Size = New System.Drawing.Size(1056, 34)
         Me.MenuStrip1.TabIndex = 1
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -407,7 +407,7 @@ Partial Class frmMain
         '
         Me.SplitContainer1.Panel2.AutoScroll = True
         Me.SplitContainer1.Panel2.Controls.Add(Me.TabControlMain)
-        Me.SplitContainer1.Size = New System.Drawing.Size(1008, 505)
+        Me.SplitContainer1.Size = New System.Drawing.Size(1026, 533)
         Me.SplitContainer1.SplitterDistance = 275
         Me.SplitContainer1.SplitterWidth = 6
         Me.SplitContainer1.TabIndex = 7
@@ -426,7 +426,7 @@ Partial Class frmMain
         'ToolStripContainer1.ContentPanel
         '
         Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.SplitContainer1)
-        Me.ToolStripContainer1.ContentPanel.Size = New System.Drawing.Size(1008, 505)
+        Me.ToolStripContainer1.ContentPanel.Size = New System.Drawing.Size(1026, 533)
         Me.ToolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill
         '
         'ToolStripContainer1.LeftToolStripPanel
@@ -434,7 +434,7 @@ Partial Class frmMain
         Me.ToolStripContainer1.LeftToolStripPanel.Controls.Add(Me.ToolStrip1)
         Me.ToolStripContainer1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStripContainer1.Name = "ToolStripContainer1"
-        Me.ToolStripContainer1.Size = New System.Drawing.Size(1038, 568)
+        Me.ToolStripContainer1.Size = New System.Drawing.Size(1056, 596)
         Me.ToolStripContainer1.TabIndex = 8
         Me.ToolStripContainer1.Text = "ToolStripContainer1"
         '
@@ -444,12 +444,13 @@ Partial Class frmMain
         '
         'StatusStrip1
         '
+        Me.StatusStrip1.AutoSize = False
         Me.StatusStrip1.Dock = System.Windows.Forms.DockStyle.None
         Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpreationStatusMsg})
         Me.StatusStrip1.Location = New System.Drawing.Point(0, 0)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1038, 29)
+        Me.StatusStrip1.Size = New System.Drawing.Size(1056, 29)
         Me.StatusStrip1.TabIndex = 0
         '
         'OpreationStatusMsg
@@ -468,7 +469,7 @@ Partial Class frmMain
         Me.TabControlLeft.Margin = New System.Windows.Forms.Padding(4)
         Me.TabControlLeft.MenuRenderer = Nothing
         Me.TabControlLeft.Name = "TabControlLeft"
-        Me.TabControlLeft.Size = New System.Drawing.Size(275, 505)
+        Me.TabControlLeft.Size = New System.Drawing.Size(275, 533)
         Me.TabControlLeft.TabCloseButtonImage = Nothing
         Me.TabControlLeft.TabCloseButtonImageDisabled = Nothing
         Me.TabControlLeft.TabCloseButtonImageHot = Nothing
@@ -492,7 +493,7 @@ Partial Class frmMain
         Me.TabControlMain.Location = New System.Drawing.Point(0, 0)
         Me.TabControlMain.MenuRenderer = ToolStripSystemRenderer1
         Me.TabControlMain.Name = "TabControlMain"
-        Me.TabControlMain.Size = New System.Drawing.Size(727, 505)
+        Me.TabControlMain.Size = New System.Drawing.Size(745, 533)
         Me.TabControlMain.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed
         Me.TabControlMain.TabBorderEnhanced = True
         Me.TabControlMain.TabBorderEnhanceWeight = MdiTabControl.TabControl.Weight.Soft
@@ -511,7 +512,7 @@ Partial Class frmMain
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 18.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1038, 568)
+        Me.ClientSize = New System.Drawing.Size(1056, 596)
         Me.Controls.Add(Me.ToolStripContainer1)
         Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "frmMain"
@@ -525,7 +526,6 @@ Partial Class frmMain
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).EndInit()
         Me.SplitContainer1.ResumeLayout(False)
         Me.ToolStripContainer1.BottomToolStripPanel.ResumeLayout(False)
-        Me.ToolStripContainer1.BottomToolStripPanel.PerformLayout()
         Me.ToolStripContainer1.ContentPanel.ResumeLayout(False)
         Me.ToolStripContainer1.LeftToolStripPanel.ResumeLayout(False)
         Me.ToolStripContainer1.LeftToolStripPanel.PerformLayout()
