@@ -87,6 +87,14 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "MdiTabControl", "Tools\MdiT
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "SqlMapBuilder", "Tools\SqlMapBuilder\SqlMapBuilder.vbproj", "{9B9B2933-D6CD-41C1-BE5E-B687176FB161}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WinFormMvvm", "WinFormMvvm", "{C333C6E8-EAEB-40C6-9566-2AA06E901552}"
+	ProjectSection(SolutionItems) = preProject
+		Example\WinFormMvvm\MVVM项目说明.txt = Example\WinFormMvvm\MVVM项目说明.txt
+		Example\WinFormMvvm\老坛泡新菜：SOD MVVM，让WinForm焕发新春.docx = Example\WinFormMvvm\老坛泡新菜：SOD MVVM，让WinForm焕发新春.docx
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSync", "Example\DataSync\DataSync.csproj", "{419461A2-288D-48D8-AA43-C773FF032B85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -436,6 +444,18 @@ Global
 		{9B9B2933-D6CD-41C1-BE5E-B687176FB161}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{9B9B2933-D6CD-41C1-BE5E-B687176FB161}.Release|x86.ActiveCfg = Release|Any CPU
 		{9B9B2933-D6CD-41C1-BE5E-B687176FB161}.Release|x86.Build.0 = Release|Any CPU
+		{419461A2-288D-48D8-AA43-C773FF032B85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{419461A2-288D-48D8-AA43-C773FF032B85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{419461A2-288D-48D8-AA43-C773FF032B85}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{419461A2-288D-48D8-AA43-C773FF032B85}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{419461A2-288D-48D8-AA43-C773FF032B85}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{419461A2-288D-48D8-AA43-C773FF032B85}.Debug|x86.Build.0 = Debug|Any CPU
+		{419461A2-288D-48D8-AA43-C773FF032B85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{419461A2-288D-48D8-AA43-C773FF032B85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{419461A2-288D-48D8-AA43-C773FF032B85}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{419461A2-288D-48D8-AA43-C773FF032B85}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{419461A2-288D-48D8-AA43-C773FF032B85}.Release|x86.ActiveCfg = Release|Any CPU
+		{419461A2-288D-48D8-AA43-C773FF032B85}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -475,6 +495,8 @@ Global
 		{A209A60F-D556-4B3D-8937-9C3508D5C5B7} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
 		{7F98F809-CE14-43D5-B3DF-40D8F0B7A1AF} = {9854DD26-9CA3-45ED-9A51-C614C0F5EBD8}
 		{9B9B2933-D6CD-41C1-BE5E-B687176FB161} = {9854DD26-9CA3-45ED-9A51-C614C0F5EBD8}
+		{C333C6E8-EAEB-40C6-9566-2AA06E901552} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
+		{419461A2-288D-48D8-AA43-C773FF032B85} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0F0161B3-B516-4F75-AEC8-20C6F08526DE}

@@ -410,13 +410,18 @@ namespace PWMIS.DataMap.Entity
                         fieldType = "char";
                     else if (sf.FieldDbType == DbType.StringFixedLength)
                         fieldType = "nchar";
-                    else if (db.CurrentDBMSType == DBMSType.SqlServer ||
-                        db.CurrentDBMSType == DBMSType.Oracle ||
-                        db.CurrentDBMSType == DBMSType.SqlServerCe)
-                        fieldType = "nvarchar";
                     else
                         fieldType = "varchar";
 
+
+                    if (db.CurrentDBMSType == DBMSType.Access)
+                    {
+                        if (fieldType == "nvarchar")
+                            fieldType = "varchar";
+                        else if (fieldType == "nchar")
+                            fieldType = "char";
+                    }
+                    
                     temp = temp + "[" + field + "] " +fieldType + "(" + length + ")";
                 }
                 else if (length < 0)

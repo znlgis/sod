@@ -139,6 +139,11 @@ namespace PWMIS.MemoryStorage
         /// 是否撤销导入
         /// </summary>
         public bool Cancel { get; set; }
+
+        /// <summary>
+        /// 当前导入数据方法使用的导入模式
+        /// </summary>
+        public ImportMode Mode { get; set; }
         /// <summary>
         /// 使用一个数据集合和其它信息初始化本类
         /// </summary>
@@ -171,6 +176,7 @@ namespace PWMIS.MemoryStorage
         /// 导入后事件
         /// </summary>
         public event EventHandler<ImportEntityEventArgs<T>> AfterImport;
+        
 
         /// <summary>
         /// 以一个内存数据库对象和数据上下文对象初始化本类
@@ -197,7 +203,7 @@ namespace PWMIS.MemoryStorage
             ImportResult result = new ImportResult();
             result.ImportTable = importTableName;
             result.IsCancel = true;
-
+          
             //导出批次管理
             string memDbPath = this.MemDB.Path;
             string pkgPath = memDbPath.Length > 255 ? memDbPath.Substring(memDbPath.Length - 255) : memDbPath;
@@ -241,6 +247,7 @@ namespace PWMIS.MemoryStorage
             if (list.Count > 0)
             {
                 ImportEntityEventArgs<T> args = new ImportEntityEventArgs<T>(list, entityType, importTableName, currBatch.BatchNumber);
+                args.Mode = mode;
                 if (BeforeImport != null)
                 {
                     BeforeImport(this,args);
@@ -260,13 +267,20 @@ namespace PWMIS.MemoryStorage
                 }
                 else if (mode == ImportMode.TruncateAndInsert)
                 {
+                    //Access等数据库不支持TRUNCATE TABLE ,下面做异常处理
                     string sql = "TRUNCATE TABLE [" + importTableName + "]";
-                    this.CurrDbContext.CurrentDataBase.ExecuteNonQuery(sql);
-                    //list.ForEach(item =>
-                    //{
-                    //    item.SetDefaultChanges();
-                    //});
-                    //count = this.CurrDbContext.AddList(list);
+                    if (this.CurrDbContext.CurrentDataBase.CurrentDBMSType == Common.DBMSType.Access)
+                        sql = "DELETE FROM [" + importTableName + "]";
+                    try
+                    {
+                        this.CurrDbContext.CurrentDataBase.ExecuteNonQuery(sql);
+                    }
+                    catch
+                    {
+                        sql = "DELETE FROM [" + importTableName + "]";
+                        this.CurrDbContext.CurrentDataBase.ExecuteNonQuery(sql);
+                    }
+                   
                     list[0].ResetChanges(true);
                     EntityQuery<T> eq = new EntityQuery<T>(this.CurrDbContext.CurrentDataBase);
                     count= eq.QuickInsert(list);
@@ -275,6 +289,7 @@ namespace PWMIS.MemoryStorage
                 {
                     if (isNew == null)
                         throw new ArgumentNullException("当 ImportMode 为Update 模式的时候，参数 isNew 不能为空。");
+                    count = 0;
                     foreach (T item in list)
                     {
                         T dbEntity = (T)item.Clone();
@@ -286,6 +301,11 @@ namespace PWMIS.MemoryStorage
                                 item.ResetChanges(true); ;//设置了更改状态，才可以更新到数据库
                                 count += eq.Update(item);
                             }
+                        }
+                        else
+                        {
+                            item.ResetChanges(true); ;//设置了更改状态，才可以更新到数据库
+                            count += eq.Insert(item);
                         }
                     }
                 }

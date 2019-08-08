@@ -47,6 +47,16 @@ namespace EntityTest
             Console.WriteLine("读取属性 user.Age:{0}", user.Age);
             Console.WriteLine("空值判断 user[\"Age\"]==null:{0}", user["Age"]==null);
 
+            //分库分表测试
+            Console.WriteLine("-------------测试分表分库----------------");
+            TestPartitionEntity(100);
+            TestPartitionEntity(1000);
+            TestPartitionEntity(2000);
+
+            TestDBPartition(100);
+            TestDBPartition(1000);
+            TestDBPartition(2000);
+
             Console.WriteLine("第一次运行，将检查并创建数据表");
             LocalDbContext context = new LocalDbContext();//自动创建表
             //删除测试数据
@@ -141,6 +151,57 @@ namespace EntityTest
             Console.WriteLine();
             Console.WriteLine("----测试完毕，回车结束-----");
             Console.ReadLine();
+        }
+
+        static void TestPartitionEntity(int userId)
+        {
+            UserPartitionEntity upe = new UserPartitionEntity();
+            upe.UserID = userId;
+            upe.FirstName = "zhang";
+            upe.LasttName = "san";
+            upe.Age = 20;
+            var insertQ1 = OQL.From(upe).Insert(upe.UserID, upe.FirstName, upe.LasttName, upe.Age);
+
+            Console.WriteLine("Partition When user id={0}, Insert SQL:\r\n{1}", userId, insertQ1);
+            Console.WriteLine("{0}", insertQ1.PrintParameterInfo());
+
+            upe.Age = 30;
+            var updateQ1 = OQL.From(upe).Update(upe.Age).END;
+            Console.WriteLine("Partition When user id={0}, Update SQL:\r\n{1}", userId, updateQ1);
+            Console.WriteLine("{0}", updateQ1.PrintParameterInfo());
+
+            
+            var selectQ1 = OQL.From(upe).Select().Where(cmp => cmp.Comparer(upe.Age, "<=", 35)).END;
+            Console.WriteLine("Partition When user id={0}, SELECT SQL:\r\n{1}", userId, selectQ1);
+            Console.WriteLine("{0}", selectQ1.PrintParameterInfo());
+        }
+
+        static void TestDBPartition(int userId)
+        {
+            UserPartitionEntity2 upe = new UserPartitionEntity2();
+            upe.UserID = userId;
+            upe.FirstName = "zhang";
+            upe.LasttName = "san";
+            upe.Age = 20;
+            var insertQ1 = OQL.From(upe).Insert(upe.UserID, upe.FirstName, upe.LasttName, upe.Age);
+
+            Console.WriteLine("Partition When user id={0}, Insert SQL:\r\n{1}", userId, insertQ1);
+            Console.WriteLine("{0}", insertQ1.PrintParameterInfo());
+
+            AdoHelper helper = new SqlServer();
+            var stringBuilder= helper.ConnectionStringBuilder;
+            var sqlConnStrBuilder = (System.Data.SqlClient.SqlConnectionStringBuilder)stringBuilder;
+            sqlConnStrBuilder.InitialCatalog = upe.GetDatabaseName();
+            sqlConnStrBuilder.DataSource = upe.GetServerName();
+            sqlConnStrBuilder.UserID = "sa";
+            sqlConnStrBuilder.Password = "sa123";
+            //重写设置ConnectionString
+            helper.ConnectionString = sqlConnStrBuilder.ConnectionString;
+            Console.WriteLine("When user id={0}, DB Partition Connection String :\r\n  {1}", 
+                userId ,helper.ConnectionString );
+            //查询分片的数据库，下面仅示例修改连接字符串，先注释下面一行代码
+            //EntityQuery.ExecuteOql(insertQ1, helper);
+
         }
     }
 }

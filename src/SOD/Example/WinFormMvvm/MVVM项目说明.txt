@@ -1,0 +1,5 @@
+请看到当前目录 Example\WinFormMvvm 下面的文件
+“老坛泡新菜：SOD MVVM，让WinForm焕发新春.docx”了解SOD有关MVVM支持的情况
+
+然后，打开目录下面的解决方案文件 WinFormMvvm.sln 查看示例。
+

@@ -71,6 +71,9 @@
  * 
  * 修改者：         时间：2018-2-27
  * 为数据访问对象增加上下文对象，以区分是OQL还是实体操作
+ * 
+ * 修改者：         时间：2019-8-7
+ * 修正 QuickInsert在Access 数据库的时候查询参数处理的错误
  * ========================================================================
 */
 
@@ -1196,7 +1199,11 @@ namespace PWMIS.DataMap.Entity
                         {
                             for (int i = 0; i < paras.Length; i++)
                             {
-                                paras[i].Value = item.PropertyList(objFields[i]);
+                                if (paras[i] != null)
+                                {
+                                    //Access等数据库对参数类型有特殊要求，必须重新处理
+                                    paras[i] = db.GetParameter(paras[i].ParameterName, item.PropertyList(paras[i].SourceColumn));
+                                }
                             }
                             count += db.ExecuteNonQuery(sql, CommandType.Text, paras);
 

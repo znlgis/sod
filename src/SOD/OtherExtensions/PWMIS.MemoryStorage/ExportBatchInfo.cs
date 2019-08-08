@@ -13,7 +13,7 @@ namespace PWMIS.MemoryStorage
     {
         public ExportBatchInfo()
         {
-            TableName = "ExportBatchInfoV2";
+            TableName = "ExportBatchInfo";
             IdentityName = "ID";
             PrimaryKeys.Add("ID");
         }

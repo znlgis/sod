@@ -52,12 +52,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IDBPartition.cs" />
     <Compile Include="IUserEntity.cs" />
     <Compile Include="LocalDbContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserDto.cs" />
     <Compile Include="UserEntity.cs" />
+    <Compile Include="UserPartitionEntity.cs" />
+    <Compile Include="UserPartitionEntity2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -106,6 +106,8 @@ namespace PWMIS.DataProvider.Data
                 type = OleDbType.Date;
             else if (type == OleDbType.Boolean)
                 return "YESNO";
+            else if (type == OleDbType.BigInt)
+                return "Long";
             return type.ToString();
         }
     }

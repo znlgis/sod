@@ -294,7 +294,8 @@ namespace PWMIS.DataMap.Entity
                         return _tableName;
 
                 }
-                return this.GetTableName();
+                _tableName= this.GetTableName();
+                return _tableName;
             }
         }
         /// <summary>
