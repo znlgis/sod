@@ -63,7 +63,6 @@
     <Compile Include="Entitys\TestEntity.cs" />
     <Compile Include="Entitys\UserEntity.cs" />
     <Compile Include="ExportEntity.cs" />
-    <Compile Include="IExportTable.cs" />
     <Compile Include="ImportEntity.cs" />
     <Compile Include="IWriteDataWarpper.cs" />
     <Compile Include="Program.cs" />
@@ -72,7 +71,9 @@
     <Compile Include="WriteDataWarpper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Lib\PWMIS.Access.Extensions\PWMIS.Access.Extensions.csproj">

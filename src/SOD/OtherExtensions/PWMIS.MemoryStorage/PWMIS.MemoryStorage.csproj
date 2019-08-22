@@ -53,6 +53,7 @@
     <Compile Include="CacheProvider.cs" />
     <Compile Include="ExportBatchInfo.cs" />
     <Compile Include="ExportEntity.cs" />
+    <Compile Include="IExportTable.cs" />
     <Compile Include="ImportEntity.cs" />
     <Compile Include="MemDB.cs" />
     <Compile Include="MemDBEngin.cs" />

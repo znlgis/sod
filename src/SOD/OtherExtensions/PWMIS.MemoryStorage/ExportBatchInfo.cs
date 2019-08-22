@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PWMIS.MemoryStorage
+namespace SOD.DataSync
 {
     /// <summary>
     /// 数据导入批次信息

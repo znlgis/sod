@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PWMIS.MemoryStorage
+namespace SOD.DataSync
 {
     /// <summary>
     /// 导出实体事件参数对象

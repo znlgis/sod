@@ -6,7 +6,8 @@
  * ========================================================================
  * 该类的作用:
  * 内存数据库 数据从内存数据库导入到关系数据库，支持多个数据包源导入同一张表。
- */ 
+ */
+using PWMIS.Common;
 using PWMIS.Core.Extensions;
 using PWMIS.DataMap.Entity;
 using PWMIS.DataProvider.Data;
@@ -18,7 +19,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PWMIS.MemoryStorage
+namespace SOD.DataSync
 {
 
     /// <summary>
@@ -269,7 +270,7 @@ namespace PWMIS.MemoryStorage
                 {
                     //Access等数据库不支持TRUNCATE TABLE ,下面做异常处理
                     string sql = "TRUNCATE TABLE [" + importTableName + "]";
-                    if (this.CurrDbContext.CurrentDataBase.CurrentDBMSType == Common.DBMSType.Access)
+                    if (this.CurrDbContext.CurrentDataBase.CurrentDBMSType == DBMSType.Access)
                         sql = "DELETE FROM [" + importTableName + "]";
                     try
                     {

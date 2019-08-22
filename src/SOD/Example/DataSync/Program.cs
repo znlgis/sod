@@ -27,97 +27,104 @@ namespace SOD.DataSync
                 dbName = args[1];
             if (args.Length > 2)
                 projectID = args[2];
-          
 
-            try
+
+            if (mode == "/export")
             {
-                if (mode == "/export")
+                Export(dbName, projectID);
+            }
+            else if (mode == "/import")
+            {
+                Import(dbName, projectID, "TargetDB");
+            }
+            else if (mode == "/auto")
+            {
+                var result = Export(dbName, projectID);
+                if (result.Item2)
                 {
-                    Export(dbName, projectID);
-                }
-                else if (mode == "/import")
-                {
+                    //导出成功才上传和远程导入
+                    string dbPath = result.Item1;
                     Import(dbName, projectID, "TargetDB");
-                }
-                else if (mode == "/auto")
-                {
-                    var result = Export(dbName, projectID);
-                    if (result.Item2)
-                    {
-                        //导出成功才上传和远程导入
-                        string dbPath = result.Item1;
-                        Import(dbName, projectID, "TargetDB");
 
-                        //服务器导入成功，删除本地数据文件，需确保之前已经备份（导出后就会备份）
-                        string dataFolder = System.IO.Path.Combine(dbPath, "Data");
-                        var files = System.IO.Directory.GetFiles(dataFolder);
-                        foreach (string file in files)
-                        {
-                            if (file.Contains("PWMIS.MemoryStorage.ExportBatchInfo.pmdb"))
-                                continue;
-                            System.IO.File.Delete(file);
-                        }
-                        Console.WriteLine("导入数据成功，数据文件备份和清理完成。");
-
-                        string logFile = System.IO.Path.Combine(dbPath, "AutoDataSync.log");
-                        string logText = string.Format("{0} 自动导出、导入成功，本地数据文件已经清除，详细请看数据导出日志。\r\n",
-                            DateTime.Now);
-                        System.IO.File.AppendAllText(logFile, logText);
-                    }
-                    else
+                    //服务器导入成功，删除本地数据文件，需确保之前已经备份（导出后就会备份）
+                    string dataFolder = System.IO.Path.Combine(dbPath, "Data");
+                    var files = System.IO.Directory.GetFiles(dataFolder);
+                    foreach (string file in files)
                     {
-                        //-1 没有数据需要提交
-                        System.Environment.Exit(-1);
+                        if (file.Contains("PWMIS.MemoryStorage.ExportBatchInfo.pmdb"))
+                            continue;
+                        System.IO.File.Delete(file);
                     }
+                    Console.WriteLine("导入数据成功，数据文件备份和清理完成。");
+
+                    string logFile = System.IO.Path.Combine(dbPath, "AutoDataSync.log");
+                    string logText = string.Format("{0} 自动导出、导入成功，本地数据文件已经清除，详细请看数据导出日志。\r\n",
+                        DateTime.Now);
+                    System.IO.File.AppendAllText(logFile, logText);
                 }
                 else
                 {
-                    Console.WriteLine("数据导出 程序测试，请输入项目ID，输入 exit 退出");
-                    string input = Console.ReadLine();
-                    if (input == "exit")
-                    {
-                        //如果抛出错误，控制台程序会得到一个非0的退出代码
-                        //调用程序需要检查此退出代码
-                        //DOS 下查看退出代码：echo %errorlevel%
-                        //throw new Exception("user exit.");
-                        System.Environment.Exit(1);
-                        return;
-                    }
-                    //初始化数据
-                    InitData(dbName,input);
-                    //导出数据
-                    var result = Export(dbName, input);
-                    Console.WriteLine();
-                    if (result.Item2)
-                    {
-                        Console.WriteLine("数据导入 程序测试，按任意键开始。");
-                        Console.ReadLine();
-                        Import(dbName, input, "TargetDB");
-                        //
-                        string dbPath = result.Item1;
-                        //目标数据库导入成功，删除本地数据文件，需确保之前已经备份（导出后就会备份）
-                        string dataFolder = System.IO.Path.Combine(dbPath, "Data");
-                        var files = System.IO.Directory.GetFiles(dataFolder);
-                        foreach (string file in files)
-                        {
-                            if (file.Contains("PWMIS.MemoryStorage.ExportBatchInfo.pmdb"))
-                                continue;
-                            System.IO.File.Delete(file);
-                        }
-                        Console.WriteLine("导入数据成功，数据文件备份和清理完成。");
-                    }
-                   
-                    Console.WriteLine("----------测试全部完成------------");
-                    Console.WriteLine("按任意键退出");
-                    Console.Read();
+                    //-1 没有数据需要提交
+                    System.Environment.Exit(-1);
                 }
-                System.Environment.Exit(0);
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine("DataSync Error:{0}", ex.ToString());
-                System.Environment.Exit(20171122);
+                Console.WriteLine("【SOD框架数据同步程序】测试，请输入项目ID，输入 exit 退出");
+                string input = Console.ReadLine();
+                if (string.IsNullOrEmpty(input))
+                    input = projectID;
+                if (input == "exit")
+                {
+                    //如果抛出错误，控制台程序会得到一个非0的退出代码
+                    //调用程序需要检查此退出代码
+                    //DOS 下查看退出代码：echo %errorlevel%
+                    //throw new Exception("user exit.");
+                    System.Environment.Exit(1);
+                    return;
+                }
+                Console.WriteLine("要同步的数据分类标识（项目ID）：{0}",input);
+                //初始化数据
+                InitData(dbName, input);
+                //导出数据
+                var result = Export(dbName, input);
+                Console.WriteLine();
+                if (result.Item2)
+                {
+                    Console.WriteLine("数据导入 程序测试，按任意键开始。");
+                    Console.ReadLine();
+                    Import(dbName, input, "TargetDB");
+                    //
+                    string dbPath = result.Item1;
+                    //目标数据库导入成功，删除本地数据文件，需确保之前已经备份（导出后就会备份）
+                    string dataFolder = System.IO.Path.Combine(dbPath, "Data");
+                    var files = System.IO.Directory.GetFiles(dataFolder);
+                    string file_exportBatchInfo = typeof(ExportBatchInfo).FullName+ ".pmdb";
+                    foreach (string file in files)
+                    {
+                        if (file.Contains(file_exportBatchInfo))
+                            continue;
+                        System.IO.File.Delete(file);
+                    }
+                    Console.WriteLine("导入数据成功，数据文件备份和清理完成。");
+                }
+
+                Console.WriteLine("----------测试全部完成------------");
+                Console.WriteLine("按任意键退出");
+                Console.Read();
             }
+            System.Environment.Exit(0);
+
+            //作为控制台运行的时候如故有异常可以用下面的方式返回错误值
+            //try
+            //{
+               
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine("DataSync Error:{0}", ex.ToString());
+            //    System.Environment.Exit(20190822);
+            //}
         }
 
         static void InitData(string dbName,string prjId)
@@ -217,7 +224,6 @@ namespace SOD.DataSync
         /// <returns></returns>
         private static bool ExportData(MemDB mem, string dbName, string projectID)
         {
-            //AdoHelper db= AuditWorkDbManage.GetAuditWorkDbAdoByCustomerID("");
             AdoHelper db = AdoHelper.CreateHelper(dbName);
             DemoDbContext localDbContext = new DemoDbContext(db);
             //导出数据
@@ -239,7 +245,6 @@ namespace SOD.DataSync
         /// <param name="dataSyncType">提交复核/提交归档</param>
         private static void ImportData(MemDB mem, string dbName, string projectID)
         {
-            //AduitWorkDbContext remoteDbContext = new AduitWorkDbContext(AdoHelper.CreateHelper("RemoteAuditWork"));
             AdoHelper db = AdoHelper.CreateHelper(dbName);
             DemoDbContext remoteDbContext = new DemoDbContext(db);
             SimpleImportEntitys importer = new SimpleImportEntitys(mem, remoteDbContext);

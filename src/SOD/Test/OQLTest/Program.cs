@@ -28,11 +28,11 @@ namespace OQLTest
            
 
             Program p = new Program();
-            p.TestLimit();
-            p.TestSqlPage();
-            p.TestOqlPage();
-            p.TestEntityContainer();
-            Console.Read();
+            //p.TestLimit();
+            //p.TestSqlPage();
+            //p.TestOqlPage();
+            //p.TestEntityContainer();
+            //Console.Read();
 
             //p.TestMapOql();
             p.Test1();
@@ -64,6 +64,14 @@ namespace OQLTest
         {
             Users user = new Users() { NickName = "pdf.net", RoleID = RoleNames.Admin };
             UserRoles roles = new UserRoles() { RoleName = "role1" };
+            OQL qU = OQL.From(user)
+                .Update(user.RoleID)
+                //.Delete()
+                .WhereAll()
+            .END;
+            Console.WriteLine("qU:one table and update all record\r\n{0}", qU);
+           
+
             //测试字段直接比较
             OQL q00 = OQL.From(user)
                 .Select()

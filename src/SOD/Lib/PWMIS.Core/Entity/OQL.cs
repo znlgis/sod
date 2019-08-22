@@ -1537,6 +1537,18 @@ namespace PWMIS.DataMap.Entity
             CurrentOQL = oql;
         }
 
+        /// <summary>
+        /// 操作所有记录，不附带任何条件，比如更新或者删除所有记录。请谨慎使用此方法避免造成操作失误。
+        /// </summary>
+        /// <remarks>网友【深圳-百转魂回】2019.8.22日提供建议</remarks>
+        /// <returns></returns>
+        public OQL2 WhereAll()
+        {
+            CurrentOQL.sql_condition = "";
+            CurrentOQL.oqlString = " Where 1=1 ";
+            return new OQL2(CurrentOQL);
+        }
+
         public OQL2 Where(OQLCondition condition)
         {
             CurrentOQL.sql_condition = condition.ConditionString;

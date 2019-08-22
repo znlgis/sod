@@ -87,7 +87,7 @@ namespace SOD.DataSync
         }
 
         /// <summary>
-        /// 导入提交复核数据
+        /// 导入数据
         /// </summary>
         public void DoImportData()
         {
