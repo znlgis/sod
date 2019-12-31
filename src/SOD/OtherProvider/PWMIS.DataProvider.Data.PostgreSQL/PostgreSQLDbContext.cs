@@ -25,12 +25,12 @@ namespace PWMIS.PostgreSQLClient
         /// <summary>
         /// 检查实体类对应的数据表是否在数据库中存在
         /// </summary>
-        public bool CheckTableExists<T>() where T : EntityBase, new()
+        public bool CheckTableExists<T>(T entity = null) where T : EntityBase, new()
         {
             //创建表
             if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.PostgreSQL)
             {
-                var entity = new T();
+                if (entity == null) entity = new T();
                 var dsScheme = CurrentDataBase.GetSchema("Tables", null);
                 var rows = dsScheme.Select("table_name='" + entity.GetTableName() + "'");
                 if (rows.Length == 0)
@@ -76,9 +76,9 @@ namespace PWMIS.PostgreSQLClient
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <param name="initSql">要初始化执行的SQL语句</param>
-        public void InitializeTable<T>(string initSql) where T : EntityBase, new()
+        public void InitializeTable<T>(string initSql, T entity = null) where T : EntityBase, new()
         {
-            if (!CheckTableExists<T>())
+            if (!CheckTableExists<T>(entity))
             {
                 CurrentDataBase.ExecuteNonQuery(initSql);
             }

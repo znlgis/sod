@@ -26,16 +26,20 @@ namespace SODTest
             long[] useTime1 = new long[10];
             long[] useTime2 = new long[10];
             long[] useTime3 = new long[10];
+            long[] useTime4 = new long[10];
 
             for (int i = 0; i < 10; i++)
             {
                 useTime1[i]= HandQuery(db, watch);
                 System.Threading.Thread.Sleep(1000); //便于观察CPU、内存等资源变化
 
-                useTime2[i] = EntityQuery(db, watch);
+                useTime2[i] = QueryPOCO(db, watch);
                 System.Threading.Thread.Sleep(1000);
 
-                useTime3[i] = EntityQuery2(db, watch);
+                useTime3[i] = EntityQuery(db, watch);
+                System.Threading.Thread.Sleep(1000);
+
+                useTime4[i] = EntityQuery2(db, watch);
                 System.Threading.Thread.Sleep(1000);
 
                 Console.WriteLine("run test No.{0},sleep 1000 ms", i + 1);
@@ -45,8 +49,9 @@ namespace SODTest
             useTime1[0] = 0;
             useTime2[0] = 0;
             useTime3[0] = 0;
-            Console.WriteLine("Avg HandQuery={0} ms, \r\n Avg SOD EntityQuery={1} ms,\r\n Avg EntityQuery2={2} ms"
-                ,useTime1.Average(),useTime2.Average(),useTime3.Average());
+            useTime4[0] = 0;
+            Console.WriteLine("Avg HandQuery={0} ms, \r\n Avg QueryPOCO={1} ms, \r\n Avg SOD EntityQuery={2} ms,\r\n Avg EntityQuery2={3} ms"
+                , useTime1.Average(),useTime2.Average(),useTime3.Average(), useTime4.Average());
             
             Console.ReadLine();
         }
@@ -55,16 +60,26 @@ namespace SODTest
         private static long HandQuery(AdoHelper db, System.Diagnostics.Stopwatch watch)
         {
             watch.Restart();
-            string sql = "select  UserID, Name, Pwd, RegistedDate from Tb_User";
+            string sql = "select  UserID, Name, Pwd, RegistedDate from Tb_User1";
             IList<UserDto> list = db.ExecuteMapper(sql).MapToList<UserDto>(reader => new UserDto
             {
-                ID = reader.IsDBNull(0)? default(int): reader.GetInt32(0),
+                UserID = reader.IsDBNull(0)? default(int): reader.GetInt32(0),
                 Name = reader.IsDBNull(1) ? default(string) : reader.GetString(1),
                 Pwd = reader.IsDBNull(2) ? default(string) : reader.GetString(2),
                 RegistedDate = reader.IsDBNull(3) ? default(DateTime) : reader.GetDateTime(3)
             });
             watch.Stop();
             Console.WriteLine("HandQuery List (100000 item) 耗时：(ms)" + watch.ElapsedMilliseconds);
+            return watch.ElapsedMilliseconds;
+        }
+
+        private static long QueryPOCO(AdoHelper db, System.Diagnostics.Stopwatch watch)
+        {
+            watch.Restart();
+            string sql = "select  UserID, Name, Pwd, RegistedDate from Tb_User1";
+            IList<UserDto> list = db.QueryList<UserDto>(sql);
+            watch.Stop();
+            Console.WriteLine("QueryPOCO List (100000 item) 耗时：(ms)" + watch.ElapsedMilliseconds);
             return watch.ElapsedMilliseconds;
         }
 
@@ -81,32 +96,20 @@ namespace SODTest
             return watch.ElapsedMilliseconds;
         }
 
-        //模拟手写DataReader,尝试优化的方式
+        //模拟手写DataReader,尝试优化的方式，证明类型化读取器遇到装箱，效率较慢。
         private static long EntityQuery2(AdoHelper db, System.Diagnostics.Stopwatch watch)
         {
             watch.Restart();
-            string sql = "select  UserID, Name, Pwd, RegistedDate from Tb_User";
+            string sql = "select  UserID, Name, Pwd, RegistedDate from Tb_User1";
 
+            //Action<IDataReader, int, object[]> readInt = (r, i, o) => { if (r.IsDBNull(i)) o[i] = DBNull.Value; else o[i] = r.GetInt32(i); };
+            //Action<IDataReader, int, object[]> readString = (r, i, o) => { if (r.IsDBNull(i)) o[i] = DBNull.Value; else o[i] = r.GetString(i); };
+            //Action<IDataReader, int, object[]> readDateTime = (r, i, o) => { if (r.IsDBNull(i)) o[i] = DBNull.Value; else o[i] = r.GetDateTime(i); };
 
-            Action<IDataReader, int, object[]> readInt = (r, i, o) => { if (r.IsDBNull(i))  o[i] = DBNull.Value;  else  o[i] = r.GetInt32(i); };
-            Action<IDataReader, int, object[]> readString = (r, i, o) => { if (r.IsDBNull(i)) o[i] = DBNull.Value; else o[i] = r.GetString(i); };
-            Action<IDataReader, int, object[]> readDateTime = (r, i, o) => { if (r.IsDBNull(i)) o[i] = DBNull.Value; else o[i] = r.GetDateTime(i); };
-            
-            Action<IDataReader, int, object[]>[] readerActions = {
-                 readInt,readString,readString,readDateTime
-            };
+            //Action<IDataReader, int, object[]>[] readerActions = {
+            //     readInt,readString,readString,readDateTime
+            //};
 
-            //User userEntity = new User();
-            //IList<User> list = db.ExecuteMapper(sql).MapToList<User>(reader => 
-            //{
-            //    User item = (User)userEntity.Clone();
-            //    for (int i = 0; i < readerActions.Length; i++)
-            //    {
-            //        readerActions[i](reader, i, item.PropertyValues);
-            //    }
-            //    return item;
-            //}
-            //);
             string tableName = "";
             User entity = new User();
             IDataReader reader = db.ExecuteDataReader(sql);
@@ -125,12 +128,20 @@ namespace SODTest
                         t0.MapNewTableName(tableName);
                     //正式，下面放开
                     // t0.PropertyNames = names;
+                    //
+                    Action< int, object[]> readInt = ( i, o) => { if (reader.IsDBNull(i)) o[i] = DBNull.Value; else o[i] = reader.GetInt32(i); };
+                    Action< int, object[]> readString = ( i, o) => { if (reader.IsDBNull(i)) o[i] = DBNull.Value; else o[i] = reader.GetString(i); };
+                    Action< int, object[]> readDateTime = ( i, o) => { if (reader.IsDBNull(i)) o[i] = DBNull.Value; else o[i] = reader.GetDateTime(i); };
+                    Action< int, object[]>[] readerActions = {
+                             readInt,readString,readString,readDateTime
+                      };
+                    //
                     do
                     {
                         User item = (User)t0.Clone(false);
                         for (int i = 0; i < readerActions.Length; i++)
                         {
-                            readerActions[i](reader, i, item.PropertyValues);
+                            readerActions[i]( i, item.PropertyValues);
                         }
 
                         list.Add(item);
@@ -149,16 +160,17 @@ namespace SODTest
         {
             //自动创建数据库和表
             LocalDbContext context = new LocalDbContext();
-            Console.WriteLine("需要初始化数据吗？(Y/N) [请勿重复初始化，否则出错。]");
+            Console.WriteLine("需要初始化数据吗？(Y/N) ");
             string input= Console.ReadLine();
-            if (input.ToLower() != "Y") return;
+            if (input.ToLower() != "y") return;
             Console.WriteLine("正在初始化数据，请稍后。。。。");
+            context.TruncateTable<User>();
+            Console.WriteLine("...");
             watch.Restart();
-
             List<User> batchList = new List<User>();
             for (int i = 0; i < 100000; i++)
             {
-                User zhang_yeye = new User() { ID = 1000 + i, Name = "zhang yeye" + i, Pwd = "pwd" + i };
+                User zhang_yeye = new User() { ID = 1000 + i, Name = "zhang yeye" + i, Pwd = "pwd" + i ,RegistedDate =DateTime.Now };
                 //count += EntityQuery<User>.Instance.Insert(zhang_yeye);//采用泛型 EntityQuery 方式插入数据
                 batchList.Add(zhang_yeye);
             }

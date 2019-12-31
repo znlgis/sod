@@ -10,7 +10,7 @@ namespace SampleORMTest
     {
         public User()
         {
-            TableName="Tb_User";
+            TableName="Tb_User1";
            
             IdentityName = "UserID";
             PrimaryKeys.Add("UserID");
@@ -67,7 +67,7 @@ namespace SampleORMTest
 
         }
 
-        public int ID
+        public int UserID
         { get; set; }
 
         public string Name

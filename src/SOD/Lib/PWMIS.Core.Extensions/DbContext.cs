@@ -170,9 +170,11 @@ namespace PWMIS.Core.Extensions
         /// 在数据库中检查指定的实体类映射的数据表是否存在，如果不存在，将创建表
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
-        public bool CheckTableExists<T>() where T : EntityBase, new()
+        /// <param name="entity">检查和创建表所依据的实体类，可以通过这种方式来指定不同的表名称</param>
+        /// <returns>检查前表是否存在</returns>
+        public bool CheckTableExists<T>(T entity=null) where T : EntityBase, new()
         {
-            bool flag=  DbContextProvider.CheckTableExists<T>();
+            bool flag=  DbContextProvider.CheckTableExists<T>(entity);
             //这里记录下所有检查的表，供需要的时候使用
             RuntimeTypeHandle thisHandle = GetType().TypeHandle;
             RuntimeTypeHandle entityHandle = typeof(T).TypeHandle;
@@ -196,18 +198,58 @@ namespace PWMIS.Core.Extensions
         /// 检查实体类对应的表是否存在，如果不存在则创建表并执行可选的SQL语句，比如为表增加索引等。
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
+        /// <param name="entity">检查和创建表所依据的实体类，可以通过这种方式来指定不同的表名称</param>
         /// <param name="initSql">要初始化执行的SQL语句，为空则忽略，支持{0} 占位符，者将会用表名称替换。</param>
-        public void InitializeTable<T>(string initSql) where T : EntityBase, new()
+        public void InitializeTable<T>(string initSql,T entity=null) where T : EntityBase, new()
         {
-            if (!CheckTableExists<T>())
+            if (!CheckTableExists<T>(entity))
             {
                 if (!string.IsNullOrEmpty(initSql))
                 {
-                    T entity = new T();
+                    if( entity==null) entity= new T();
                     string tableName = entity.GetTableName();
                     string sql = string.Format(initSql, tableName);
                     CurrentDataBase.ExecuteNonQuery(sql);
                 }
+            }
+        }
+
+        /// <summary>
+        /// 快速清除实体类型对应的表的全部数据
+        /// </summary>
+        /// <typeparam name="T">实体类型</typeparam>
+        /// <param name="entity">执行操作所对应的实体类，可选</param>
+        /// <returns>返回是否已经执行了清除数据</returns>
+        public bool TruncateTable<T>(T entity=null) where T : EntityBase, new()
+        {
+            if (CheckTableExists<T>(entity))
+            {
+                if(entity==null) entity = new T();
+                string sql = "TRUNCATE TABLE ["+ entity.GetTableName()+"]";
+                this.CurrentDataBase.ExecuteNonQuery(sql);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 删除实体类类型对应的表
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entity">执行操作所对应的实体类，可选</param>
+        /// <returns></returns>
+        public bool DropTable<T>(T entity=null) where T : EntityBase, new()
+        {
+            if (entity == null) entity = new T();
+            string sql = "DROP TABLE [" + entity.GetTableName() + "]";
+            try
+            {
+                this.CurrentDataBase.ExecuteNonQuery(sql);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
         #endregion

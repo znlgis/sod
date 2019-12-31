@@ -28,12 +28,12 @@ namespace PWMIS.DataProvider.Data
         /// 检查表是否存在，如果不存在，则创建
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public bool CheckTableExists<T>() where T : DataMap.Entity.EntityBase, new()
+        public bool CheckTableExists<T>(T entity = null) where T : DataMap.Entity.EntityBase, new()
         {
             //创建表
             if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.MySql)
             {
-                var entity = new T();
+                if (entity == null) entity = new T();
                 var dsScheme = CurrentDataBase.GetSchema("Tables", new string[] { null, null, null, "BASE TABLE" });
                 var rows = dsScheme.Select("table_name='" + entity.GetTableName() + "'");
                 if (rows.Length == 0)
@@ -54,12 +54,12 @@ namespace PWMIS.DataProvider.Data
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <param name="initSql">要初始化执行的SQL语句</param>
-        public void InitializeTable<T>(string initSql) where T : EntityBase, new()
+        public void InitializeTable<T>(string initSql, T entity = null) where T : EntityBase, new()
         {
             //创建表
             if (CurrentDataBase.CurrentDBMSType == PWMIS.Common.DBMSType.MySql)
             {
-                var entity = new T();
+                if (entity == null) entity = new T();
                 var dsScheme = CurrentDataBase.GetSchema("Tables", new string[] { null, null, null, "BASE TABLE" });
                 var rows = dsScheme.Select("table_name='" + entity.GetTableName() + "'");
                 if (rows.Length == 0)

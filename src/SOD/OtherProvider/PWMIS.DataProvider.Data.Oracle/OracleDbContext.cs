@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace PWMIS.Core.Extensions
+namespace PWMIS.DataProvider.Data.OracleDataAccess
 {
     public sealed class OracleDbContext : IDbContextProvider
     {

@@ -74,12 +74,16 @@
  *  
  *  修改者：         时间：2015.4.29                
  *  修改说明：修改了条件比较过程中，OQLCompare对象Comparer 方法上处理可空类型可能发生的问题。
+ *  
+ *  修改者：         时间：2019.12.30                
+ *  修改说明：实体类关联查询增加可指定属性关联方式（On方法重载）。
  */
 #endregion
 
 using System;
 using System.Collections.Generic;
 using System.Text;
+using PWMIS.Common;
 using PWMIS.DataMap.Entity;
 
 namespace PWMIS.DataMap.Entity
@@ -2211,6 +2215,42 @@ namespace PWMIS.DataMap.Entity
             }
             return this._mainOql;
         }
+
+        /// <summary>
+        /// 指定要关联查询的实体类属性（内部对应字段）和属性关联的方式
+        /// <example>
+        /// <code>
+        /// <![CDATA[
+        /// var q1 = OQL.From(a)
+        ///             .InnerJoin(b).On(a.ID,enumCompare.Greater, b.ID) // ON a.ID > b.ID
+        ///             .Select(a.ID,a.Name,b.Name)
+        ///          .END;
+        /// ]]>
+        /// </code>
+        /// </example>
+        /// </summary>
+        /// <param name="joinField1">要关联的主表字段</param>
+        /// <param name="compareType">字段关联的方式，默认为相等条件关联</param>
+        /// <param name="joinField2">要关联的从表字段</param>
+        /// <returns></returns>
+        public OQL On(object joinField1, enumCompare compareType, object joinField2)
+        {
+            string cmpTypeStr = GetCompareTypeString(compareType);
+            TableNameField tnfRight = this._mainOql.fieldStack.Pop();
+            TableNameField tnfLeft = this._mainOql.fieldStack.Pop();
+            LeftString = this._mainOql.GetOqlFieldName(tnfLeft);
+            RightString = this._mainOql.GetOqlFieldName(tnfRight);
+
+            this.JoinedString = string.Format("\r\n{0} [{1}] {2}  ON {3} {4} {5} ", _joinType,
+                _joinedEntity.GetTableName(),
+                this._mainOql.GetTableAliases(_joinedEntity),
+                LeftString,
+                cmpTypeStr,
+                RightString);
+            this._mainOql.oqlString += this.JoinedString;
+
+            return this._mainOql;
+        }
         /// <summary>
         /// （OQL内部使用）添加要关联的字段名
         /// </summary>
@@ -2222,6 +2262,38 @@ namespace PWMIS.DataMap.Entity
             else if (string.IsNullOrEmpty(this.RightString))
                 this.RightString = fieldName;
         }
+
+        private string GetCompareTypeString(enumCompare para)
+        {
+            string cmpType = "";
+            switch (para)
+            {
+                case PWMIS.Common.enumCompare.Equal:
+                    cmpType = "=";
+                    break;
+                case PWMIS.Common.enumCompare.Greater:
+                    cmpType = ">";
+                    break;
+              
+                case PWMIS.Common.enumCompare.NoGreater:
+                    cmpType = "<=";
+                    break;
+                case PWMIS.Common.enumCompare.NoSmaller:
+                    cmpType = ">=";
+                    break;
+                case PWMIS.Common.enumCompare.NotEqual:
+                    cmpType = "<>";
+                    break;
+                case PWMIS.Common.enumCompare.Smaller:
+                    cmpType = "<";
+                    break;
+                default:
+                    cmpType = "=";
+                    break;
+            }
+            return cmpType;
+        }
+
     }
 
     /// <summary>
