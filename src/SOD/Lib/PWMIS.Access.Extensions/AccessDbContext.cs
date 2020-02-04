@@ -65,10 +65,10 @@ namespace PWMIS.AccessExtensions
         /// 检查实体类对应的数据表是否在数据库中存在
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        public  bool CheckTableExists<T>() where T : EntityBase, new()
+        public  bool CheckTableExists<T>(T entity = null) where T : EntityBase, new()
         {
             //创建表
-            var entity = new T();
+            if (entity == null) entity = new T();
             Access access = (Access)CurrentDataBase;
             var dsScheme = access.GetSchema("Tables", new string[] { null, null, null, "TABLE" });
             var rows = dsScheme.Select("table_name='" + entity.GetTableName() + "'");
@@ -85,9 +85,10 @@ namespace PWMIS.AccessExtensions
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <param name="initSql">要初始化执行的SQL语句</param>
-        public void InitializeTable<T>(string initSql) where T : EntityBase, new()
+        /// <param name="entity">对应的实体类，可选</param>
+        public void InitializeTable<T>(string initSql, T entity = null) where T : EntityBase, new()
         {
-            if (!CheckTableExists<T>())
+            if (!CheckTableExists<T>(entity))
             {
                 CurrentDataBase.ExecuteNonQuery(initSql);
             }
