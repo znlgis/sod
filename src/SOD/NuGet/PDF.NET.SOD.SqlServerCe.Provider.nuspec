@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>PDF.NET.SOD.SqlServerCe.Provider</id>
-        <version>5.6.3.0904</version>
+        <version>5.6.4.0204</version>
         <title>PDF.NET SOD SqlServerCe Provider</title>
         <authors>深蓝医生</authors>
         <license type="expression">LGPL-2.1-only</license>
@@ -11,7 +11,7 @@
         <description>PDF.NET SOD SqlServerCe扩展库</description>
         <dependencies>
             <dependency id="Microsoft.SqlServer.Compact" version="4.0.8876.1" />
-            <dependency id="PDF.NET.SOD" version="5.6.3.0904" />
+            <dependency id="PDF.NET.SOD" version="5.6.4.0204" />
         </dependencies>
     </metadata>
     <files>
