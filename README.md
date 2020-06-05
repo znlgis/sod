@@ -12,22 +12,23 @@ It is easy, and simple.
 
 *SOD* _not only_ a ORM framework,include SQL-MAP,DataControls,detai ,but it is a light weight framework . see  [this page] (http://www.pwmis.com/sqlmap) 
 
-*SOD* 不仅仅是一个ORM框架，还包括 SQL-MAP,DataControls,但它却是一个非常轻量级的框架。了解更多，看[这里](http://www.pwmis.com/sqlmap)
+*SOD* **不仅仅是一个ORM框架，还包括 SQL-MAP,DataControls,但它却是一个非常轻量级的框架。** 了解更多，看[这里](http://www.pwmis.com/sqlmap)
 
 
 Learning more,see [this page](https://pwmis.codeplex.com/wikipage?title=Framework%20details&version=2). 
 
 要了解更多，请看[这篇文章](https://pwmis.codeplex.com/wikipage?title=Framework%20details&version=2)
+或者参考框架作者编著的图书：**《SOD框架企业级应用数据架构实战》**。
 
 ----
 
 下面一个简单的SOD框架ORM使用的实例：
 在开始工作之前，先建立一个控制台项目，然后在程序包管理控制台，添加SOD框架的Nuget 包：
-{{
+ ```
 Install-Package PDF.NET 
-}}
+ ```
 这样即可获取到最新的SOD框架包并且添加引用，然后，就可以开始下面的工作了。
-已经建立好的当前Demo程序下载，[url:看这里 |http://pwmis.codeplex.com/downloads/get/1522232]
+已经建立好的当前Demo程序下载，[看这里](http://pwmis.codeplex.com/downloads/get/1522232)
  
 * 1，首先建立一个实体类： 
  ```c#
@@ -59,6 +60,8 @@ Install-Package PDF.NET
        } 
     } 
 ```
+* SOD框架的实体类采用“动态元数据映射”，这些元数据包括映射的表名称、主外键、标识字段、属性映射的字段名称和字段类型、长度等。这些元数据都是可以在程序运行时进行修改的，因此它与Entity Framework等ORM框架的实体类映射方式有很大不同。这个特点使得实体类的定义和元数据映射可以在一个类代码中完成，并且不依赖于.NET特性申明。这种动态性使得SOD框架可以脱离繁琐的数据库表元数据映射过程，简化数据访问配置，并且能够轻松的支持“分表、分库”访问。
+* 元数据的映射可以是“逻辑映射”，例如指定要映射外键字段，但数据库可以没有物理的外键字段，或者指定一个虚拟的主键。也可以不做任何元数据映射，这样实体类可以作为一个类似的“字典”对象来使用，或者用于UI层数据对象。
 
 * 2，然后建立一个 DbContext: 
 ```c#
@@ -79,6 +82,7 @@ Install-Package PDF.NET
    }
  
 ```
+*注意：这一步骤只是为了 code first ，如果表事先已经存在，可以略去本步骤，当然下面的代码会有所调整。*
 
 * 3，修改下App.config 文件的连接配置： 
 
@@ -91,20 +95,19 @@ Install-Package PDF.NET
 </configuration> 
 ```
 providerName 是SOD框架提供的驱动程序，可选的内容有：
-
-# Access
-# SqlServer
-# Oracle
-# SqlCe
-# OleDb
-# Odbc
+1. Access
+2. SqlServer
+3. Oracle
+4. SqlCe
+5. OleDb
+6. Odbc
 
 如果是其它的扩展程序集，那么providerName应该写成下面的形式：
-{{
+```xml
     providerName="PWMIS.DataProvider.Data.OracleDataAccess.Oracle,PWMIS.OracleClient"
-}}
+```
 其中，“,”号前是驱动程序类型的全名称， “,”号后是驱动程序所在的程序集名称，要求该程序集必须放到 跟PWMIS.Core.dll 同一个目录下，且是同一个兼容版本。
-有关数据库连接配置的详细内容，请参考：[2.2.3 扩展数据访问类配置]
+有关数据库连接配置的详细内容，请参考作者图书：[《SOD框架企业级应用架构实战》]
 
 * 4，然后，像下面这样使用，即可自动创建数据库和表，并且添加一条初始数据：
 ```c#
