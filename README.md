@@ -16,9 +16,9 @@ It is easy, and simple.
 
 # 1，为什么需要SOD框架 --Why Need the SOD Frmaework?
 
-__EF框架或大部分ORM框架的缺点就是SOD框架的优点，它为此而生！__
+__EF框架或大部分ORM框架的缺点就是SOD框架的优点，它拥有超过15年的项目应用历史，为你而生！__
 
-__The disadvantage of Entity Framework or most ORM frameworks is the advantage of SOD framework,which is born for this! __
+__The disadvantage of Entity Framework or most ORM frameworks is the advantage of SOD framework,It has more than 15 years of project application history, born for you! __
 
 *SOD* **不仅仅是一个ORM框架，还包括 SQL-MAP,DataControls,但它却是一个非常轻量级的框架。** 了解更多，看[这里](http://www.pwmis.com/sqlmap)
 
@@ -26,6 +26,8 @@ __The disadvantage of Entity Framework or most ORM frameworks is the advantage o
 
 <p align="center"><img width = '200' height ='200' 
 src ="https://avatars3.githubusercontent.com/u/2637208?s=460&u=ec5ff1f40f8de3275506a2ffd41e23c1172f3df7&v=4"/>
+<br/>
+ Begin 2006-06-06
  </p>
  
  SOD框架特别适合于以下类型的企业项目：
