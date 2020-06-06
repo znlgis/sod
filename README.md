@@ -1,23 +1,85 @@
-﻿*Beginner*：How to use Entity Framework? SOS!
-*Senior men*：Try using the SOD Framework!
+*菜鸟*：“怎么使用EF（Entity Framework）框架啊？遇到麻烦了，救命！”
 
-*菜鸟*：怎么使用EF框架啊？遇到麻烦了，救命！
-*老鸟*：试试SOD开发框架！
+*Beginner*："How to use Entity Framework? SOS!"
 
-Still using *EF* and get stuck? Why not release yourself and try *SOD*!
-It is easy, and simple.
+*老鸟*：“试试SOD开发框架！”
+
+*Senior men*："Try using the SOD Framework!"
 
 一直使用EF并且老是遇到麻烦？何不解放自己并且试试SOD框架呢！
 它是简单的，并且容易使用的，轻量级的框架。
 
-*SOD* _not only_ a ORM framework,include SQL-MAP,DataControls,detai ,but it is a light weight framework . see  [this page] (http://www.pwmis.com/sqlmap) 
+Still using *EF* and get stuck? Why not release yourself and try *SOD*!
+It is easy, and simple.
+
+------
+EF框架 或大部分ORM框架的缺点就是SOD框架的优点，它为此而生！
+
+The disadvantage of Entity Framework or most ORM frameworks is the advantage of SOD framework,which is born for this!
 
 *SOD* **不仅仅是一个ORM框架，还包括 SQL-MAP,DataControls,但它却是一个非常轻量级的框架。** 了解更多，看[这里](http://www.pwmis.com/sqlmap)
 
+*SOD* _not only_ a ORM framework,include SQL-MAP,DataControls,detai ,but it is a light weight framework . see  [this page] (http://www.pwmis.com/sqlmap) 
 
-Learning more,see [this page](https://pwmis.codeplex.com/wikipage?title=Framework%20details&version=2). 
+SOD框架由PDF.NET框架发展而来，它包括以下功能：
+The SOD framework contains the following functional features:
 
-要了解更多，请看[这篇文章](https://pwmis.codeplex.com/wikipage?title=Framework%20details&version=2)
+--核心三大功能（S，O，D）：
+
+SQL-MAP  
+
+    XML SQL config and Map DAL  
+    SQL Map Entity
+
+ORM  
+
+    OQL(ORM Query Language)  
+    Data Container  
+    Entity Indexer  
+    Table Map route Query(分表查询）
+
+ 
+
+Data Controls (Web/WinForm)
+
+ 
+
+--有用的功能组件：
+
+    Hot Use Cache
+    Binary Serialization
+    Query Log
+    Command Pipeline
+    Distributed Identification
+
+ 
+
+--企业级解决方案：
+
+    MVVM (Web/WinForm)，参考链接
+    Memory Database
+    Transaction Log Data Replication
+    Data Synchronization
+    Distributed transaction
+    OData Client
+
+--工具：
+
+    Integrated Development Tool
+
+ 
+
+--源码和社区：
+
+    Code: https://github.com/znlgis/sod or https://gitee.com/znlgis/sod
+    Home: http://www.pwmis.com/sqlmap
+    Blog: https://www.cnblogs.com/bluedoctor
+    QQ Group:18215717,154224970
+
+
+Learning more,see [this page](https://www.cnblogs.com/bluedoctor/p/4306131.html). 
+
+要了解更多，请看[这篇文章:.NET ORM 的 “SOD蜜”--零基础入门篇](https://www.cnblogs.com/bluedoctor/p/4306131.html)
 或者参考框架作者编著的图书：**《SOD框架企业级应用数据架构实战》**。
 
 ----
@@ -94,20 +156,18 @@ Install-Package PDF.NET
 </connectionStrings> 
 </configuration> 
 ```
-providerName 是SOD框架提供的驱动程序，可选的内容有：
-1. Access
-2. SqlServer
-3. Oracle
-4. SqlCe
-5. OleDb
-6. Odbc
+providerName 是SOD框架提供的驱动程序，可选的内容有：Access | SqlServer | Oracle | SqlCe | OleDb | Odbc
 
 如果是其它的扩展程序集，那么providerName应该写成下面的形式：
+
+providerName="<提供程序类全名称>,<提供程序类所在程序集>"
+
+比如使用SOD封装过的Oracle官方的ADO.NET提供程序类：
 ```xml
     providerName="PWMIS.DataProvider.Data.OracleDataAccess.Oracle,PWMIS.OracleClient"
 ```
-其中，“,”号前是驱动程序类型的全名称， “,”号后是驱动程序所在的程序集名称，要求该程序集必须放到 跟PWMIS.Core.dll 同一个目录下，且是同一个兼容版本。
-有关数据库连接配置的详细内容，请参考作者图书：[《SOD框架企业级应用架构实战》]
+*注意：提供程序程序集必须放到 跟PWMIS.Core.dll 同一个目录下，且是同一个兼容版本。*
+有关数据库连接配置的详细内容，请参考作者图书：《SOD框架企业级应用架构实战》。
 
 * 4，然后，像下面这样使用，即可自动创建数据库和表，并且添加一条初始数据：
 ```c#
@@ -175,7 +235,7 @@ providerName 是SOD框架提供的驱动程序，可选的内容有：
            List<User> users = q.ToList<User>(); 
 ```
 
-实际上，框架提供了至少6种查询方式，详细内容，请看Demo程序下载，[url:看这里 |http://pwmis.codeplex.com/downloads/get/1522232]
+实际上，框架提供了至少8种查询方式，详细内容，请看[.NET ORM 的 “SOD蜜”--零基础入门篇](https://www.cnblogs.com/bluedoctor/p/4306131.html)
 
   附注：
 
