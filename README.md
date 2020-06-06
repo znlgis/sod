@@ -12,64 +12,74 @@
 Still using *EF* and get stuck? Why not release yourself and try *SOD*!
 It is easy, and simple.
 
-------
-EF框架 或大部分ORM框架的缺点就是SOD框架的优点，它为此而生！
+----
 
-The disadvantage of Entity Framework or most ORM frameworks is the advantage of SOD framework,which is born for this!
+# 1，为什么需要SOD框架 --Why Need the SOD Frmaework?
+
+__EF框架或大部分ORM框架的缺点就是SOD框架的优点，它为此而生！__
+
+__The disadvantage of Entity Framework or most ORM frameworks is the advantage of SOD framework,which is born for this! __
 
 *SOD* **不仅仅是一个ORM框架，还包括 SQL-MAP,DataControls,但它却是一个非常轻量级的框架。** 了解更多，看[这里](http://www.pwmis.com/sqlmap)
 
 *SOD* _not only_ a ORM framework,include SQL-MAP,DataControls,detai ,but it is a light weight framework . see  [this page] (http://www.pwmis.com/sqlmap) 
 
+**SOD框架是少数仍然支持 .NET 2.0的框架**，当然，它也支持 .NET 3.x,.NET 4.x，以及.Net core 和马上到来的.NET 5 。
+
+**The SOD framework is one of the few that still supports. Net 2.0.** Of course, it also supports. Net 3. X,. Net 4. X, as well as. Net core and. Net 5.
+
+# 2,功能特性 --functional and features
+
 SOD框架由PDF.NET框架发展而来，它包括以下功能：
+
 The SOD framework contains the following functional features:
 
---核心三大功能（S，O，D）：
+## 核心三大功能 --Main purpose（S，O，D）：
 
 SQL-MAP  
 
-    XML SQL config and Map DAL  
-    SQL Map Entity
+    XML SQL config and Map DAL  --基于XML配置的SQL查询和数据访问层映射
+    SQL Map Entity              --SQL语句映射为实体类
 
 ORM  
 
-    OQL(ORM Query Language)  
-    Data Container  
-    Entity Indexer  
-    Table Map route Query(分表查询）
+    OQL(ORM Query Language)      --ORM查询语言：OQL 
+    Data Container               --数据容器
+    Entity Indexer               --实体类索引器访问
+    Table Map route Query        --分表查询支持
 
+Data Controls 
+
+    Consistent Data Froms        --一致的数据窗体访问技术
+    WebForm Data Controls        --Web窗体数据控件
+    WinForm Data Controls        --Windows窗体数据控件
+
+----
+
+## 有用的功能组件：
+
+    Hot Use Cache               --热缓存（缓存最常用的数据）
+    Binary Serialization        --二进制序列化
+    Query Log                   --查询日志
+    Command Pipeline            --命令管道
+    Distributed Identification  --分布式ID
+
+## 企业级解决方案：
+
+    MVVM (Web/WinForm)               --MVVM数据窗体
+    Memory Database                  --内存数据库
+    Transaction Log Data Replication --事务日志数据复制
+    Data Synchronization             --数据同步
+    Distributed transaction          --分布式事务
+    OData Client                     --OData 客户端
+
+## 工具：
+
+    Integrated Development Tool     --集成开发工具，包括实体类生成、SQL-MAP代码自动生成和多种数据库访问工具。
+    Nuget support                   --Nuget 支持
  
 
-Data Controls (Web/WinForm)
-
- 
-
---有用的功能组件：
-
-    Hot Use Cache
-    Binary Serialization
-    Query Log
-    Command Pipeline
-    Distributed Identification
-
- 
-
---企业级解决方案：
-
-    MVVM (Web/WinForm)，参考链接
-    Memory Database
-    Transaction Log Data Replication
-    Data Synchronization
-    Distributed transaction
-    OData Client
-
---工具：
-
-    Integrated Development Tool
-
- 
-
---源码和社区：
+## 源码和社区：
 
     Code: https://github.com/znlgis/sod or https://gitee.com/znlgis/sod
     Home: http://www.pwmis.com/sqlmap
@@ -82,7 +92,7 @@ Learning more,see [this page](https://www.cnblogs.com/bluedoctor/p/4306131.html)
 要了解更多，请看[这篇文章:.NET ORM 的 “SOD蜜”--零基础入门篇](https://www.cnblogs.com/bluedoctor/p/4306131.html)
 或者参考框架作者编著的图书：**《SOD框架企业级应用数据架构实战》**。
 
-----
+# 3,ORM简单示例 --use ORM Simple example
 
 下面一个简单的SOD框架ORM使用的实例：
 在开始工作之前，先建立一个控制台项目，然后在程序包管理控制台，添加SOD框架的Nuget 包：
