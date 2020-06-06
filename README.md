@@ -24,6 +24,21 @@ __The disadvantage of Entity Framework or most ORM frameworks is the advantage o
 
 *SOD* _not only_ a ORM framework,include SQL-MAP,DataControls,detai ,but it is a light weight framework . see  [this page] (http://www.pwmis.com/sqlmap) 
 
+<p align="center"><img width = '200' height ='200' 
+src ="https://avatars3.githubusercontent.com/u/2637208?s=460&u=ec5ff1f40f8de3275506a2ffd41e23c1172f3df7&v=4"/>
+ </p>
+ 
+ SOD框架特别适合于以下类型的企业项目：
+ 
+ The SOD framework is particularly suitable for the following types of enterprise projects：  
+ 
+ 1. 对数据操作安全有严格要求的金融行业；--Financial industry with strict requirements for data operation security  
+ 2. 对数据访问速度、内存和CPU资源有苛刻要求的互联网行业；--Internet industry with stringent requirements for data access speed, memory and CPU resources
+ 2. 对需求常常变化，项目经常迭代，要求快速开发上线的项目；--Requirements often change, projects often iterate, requiring rapid development of online projects    
+ 3. 对稳定性要求高，需要长期维护的企业级应用如MIS、ERP、MES等行业；--Enterprise applications requiring high stability and long-term maintenance, such as MIS, ERP, MES and other industries    
+ 4. 需要低成本开发，人员技能偏低的中小型项目。 --Small and medium-sized projects requiring low-cost development and low personnel skills   
+ 
+
 **SOD框架是少数仍然支持 .NET 2.0的框架**，当然，它也支持 .NET 3.x,.NET 4.x，以及.Net core 和马上到来的.NET 5 。
 
 **The SOD framework is one of the few that still supports. Net 2.0.** Of course, it also supports. Net 3. X,. Net 4. X, as well as. Net core and. Net 5.
@@ -47,6 +62,7 @@ ORM
     Data Container               --数据容器
     Entity Indexer               --实体类索引器访问
     Table Map route Query        --分表查询支持
+    Micro ORM                    --微型ORM
 
 Data Controls 
 
@@ -261,10 +277,39 @@ providerName="<提供程序类全名称>,<提供程序类所在程序集>"
 
  该方法可以打印OQL的SQL和参数信息，为你调试代码带来方便。 
  
+
 ----
  
  这样，一个简单的ORM使用实例就做好了。上面这段ORM例子，不仅仅适用于Oracle,使用在其它数据库都是可以得，只需要修改 连接字符串配置的 providerName和 connectionString 即可。
 
  详细可以参考  [Oracle 免费的数据库--Database 快捷版 11g 安装使用与"SOD框架"对Oracle的CodeFirst支持] (http://www.cnblogs.com/bluedoctor/p/4359878.html)
  
-   
+ __附注：__
+  OQL也可以支持复杂的多表联合查询，如下面的例子：
+ ```c#
+OQL q=OQL.From(entity1)
+         .Join(entity2).On(entity1.PK,entity2.FK)
+         //.Select(entity1.Field1,entity2.Field2) //不再需要指定查询的属性
+         .Select()
+      .End;
+EntityContainer ec=new EntityContainer(q);
+var list=ec.MapToList(()=>
+         {
+            return new {
+                         Property1=entity1.Field1, 
+                         Property2=entity2.Field2 
+                       };
+         });
+
+foreache(var item in list)
+{
+    Console.WriteLine("Property1={0},Property2={1}",item.Property1,item.Property2);
+}
+ 
+```
+有关OQL的高级用法和详细示例，请参考这篇文章和它的系列链接：[ORM查询语言（OQL）简介--实例篇](https://www.cnblogs.com/bluedoctor/archive/2013/04/01/2992981.html)
+
+# 4,其它
+Thank you for your donation
+欢迎您捐助本项目，捐赠地址：[框架官网](http://www.pwmis.com/sqlmap )
+
