@@ -18,11 +18,11 @@ It is easy, and simple.
 
 __EF框架或大部分ORM框架的缺点就是SOD框架的优点，它拥有超过15年的项目应用历史，为你而生！__
 
-__The disadvantage of Entity Framework or most ORM frameworks is the advantage of SOD framework,It has more than 15 years of project application history, born for you! __
+__The disadvantage of Entity Framework or most ORM frameworks is the advantage of SOD framework,It has more than 15 years of project application history, born for you!__
 
-*SOD* **不仅仅是一个ORM框架，还包括 SQL-MAP,DataControls,但它却是一个非常轻量级的框架。** 了解更多，看[这里](http://www.pwmis.com/sqlmap)
+*SOD* **不止是一个ORM框架，还包括 SQL-MAP,DataControls,但它却是一个非常轻量级的框架，也是一个企业级数据应用开发的解决方案。** 了解更多，看[这里](http://www.pwmis.com/sqlmap)
 
-*SOD* _not only_ a ORM framework,include SQL-MAP,DataControls,detai ,but it is a light weight framework . see  [this page] (http://www.pwmis.com/sqlmap) 
+*SOD* _not only_ a ORM framework,include SQL-MAP,DataControls,detai ,but it is a light weight framework,and also it is an enterprise level data application development solution . see  [this page] (http://www.pwmis.com/sqlmap) 
 
 <p align="center"><img width = '200' height ='200' 
 src ="https://avatars3.githubusercontent.com/u/2637208?s=460&u=ec5ff1f40f8de3275506a2ffd41e23c1172f3df7&v=4"/>
@@ -115,7 +115,7 @@ Learning more,see [this page](https://www.cnblogs.com/bluedoctor/p/4306131.html)
 下面一个简单的SOD框架ORM使用的实例：
 在开始工作之前，先建立一个控制台项目，然后在程序包管理控制台，添加SOD框架的Nuget 包：
  ```
-Install-Package PDF.NET 
+Install-Package PDF.NET.SOD 
  ```
 这样即可获取到最新的SOD框架包并且添加引用，然后，就可以开始下面的工作了。
 已经建立好的当前Demo程序下载，[看这里](http://pwmis.codeplex.com/downloads/get/1522232)
@@ -150,7 +150,7 @@ Install-Package PDF.NET
        } 
     } 
 ```
-* SOD框架的实体类采用“动态元数据映射”，这些元数据包括映射的表名称、主外键、标识字段、属性映射的字段名称和字段类型、长度等。这些元数据都是可以在程序运行时进行修改的，因此它与Entity Framework等ORM框架的实体类映射方式有很大不同。这个特点使得实体类的定义和元数据映射可以在一个类代码中完成，并且不依赖于.NET特性申明。这种动态性使得SOD框架可以脱离繁琐的数据库表元数据映射过程，简化数据访问配置，并且能够轻松的支持“分表、分库”访问。
+* SOD框架的实体类采用“动态元数据映射”，这些元数据包括映射的表名称、主外键、标识字段、属性映射的字段名称和字段类型、长度等。这些元数据都是可以在程序运行时进行修改的，因此它与Entity Framework等ORM框架的实体类映射方式有很大不同。这个特点使得实体类的定义和元数据映射可以在一个类代码中完成，并且不依赖于.NET特性声明。这种动态性使得SOD框架可以脱离繁琐的数据库表元数据映射过程，简化数据访问配置，并且能够轻松的支持“分表、分库”访问。
 * 元数据的映射可以是“逻辑映射”，例如指定要映射外键字段，但数据库可以没有物理的外键字段，或者指定一个虚拟的主键。也可以不做任何元数据映射，这样实体类可以作为一个类似的“字典”对象来使用，或者用于UI层数据对象。
 
 * 2，然后建立一个 DbContext: 
@@ -184,9 +184,11 @@ Install-Package PDF.NET
 </connectionStrings> 
 </configuration> 
 ```
-providerName 是SOD框架提供的驱动程序，可选的内容有：Access | SqlServer | Oracle | SqlCe | OleDb | Odbc
+providerName 是SOD框架的数据访问提供程序，PWMIS.Core.dll内置的可选简略名称有：Access | SqlServer | Oracle | SqlCe | OleDb | Odbc
 
-如果是其它的扩展程序集，那么providerName应该写成下面的形式：
+在其它提供程序中，SOD框架提供了对 MySQL/Oracle/PostgreSQL/SQLite 等常见数据库的支持（扩展程序集），**只要数据库提供了ADO.Net驱动程序，那么SOD框架经过简单包装即可保证支持。**
+
+如果是其它的**扩展程序集**，那么providerName应该写成下面的形式：
 
 providerName="<提供程序类全名称>,<提供程序类所在程序集>"
 
