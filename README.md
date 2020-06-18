@@ -100,15 +100,15 @@ Data Controls
 ## 源码和社区：
 
     Code: https://github.com/znlgis/sod or https://gitee.com/znlgis/sod
-    Home: http://www.pwmis.com/sqlmap
-    Blog: https://www.cnblogs.com/bluedoctor
+    Home: [http://www.pwmis.com/sqlmap](http://www.pwmis.com/sqlmap)
+    Blog: [https://www.cnblogs.com/bluedoctor](https://www.cnblogs.com/bluedoctor)
     QQ Group:18215717,154224970
 
 
 Learning more,see [this page](https://www.cnblogs.com/bluedoctor/p/4306131.html). 
 
 要了解更多，请看[这篇文章:.NET ORM 的 “SOD蜜”--零基础入门篇](https://www.cnblogs.com/bluedoctor/p/4306131.html)
-或者参考框架作者编著的图书：**《SOD框架企业级应用数据架构实战》**。
+或者参考框架作者编著的图书：**《[SOD框架企业级应用数据架构实战](http://www.pwmis.com/sod/)》**。
 
 # 3,ORM简单示例 --use ORM Simple example
 
@@ -152,6 +152,7 @@ Install-Package PDF.NET.SOD
 ```
 * SOD框架的实体类采用“动态元数据映射”，这些元数据包括映射的表名称、主外键、标识字段、属性映射的字段名称和字段类型、长度等。这些元数据都是可以在程序运行时进行修改的，因此它与Entity Framework等ORM框架的实体类映射方式有很大不同。这个特点使得实体类的定义和元数据映射可以在一个类代码中完成，并且不依赖于.NET特性声明。这种动态性使得SOD框架可以脱离繁琐的数据库表元数据映射过程，简化数据访问配置，并且能够轻松的支持“分表、分库”访问。
 * 元数据的映射可以是“逻辑映射”，例如指定要映射外键字段，但数据库可以没有物理的外键字段，或者指定一个虚拟的主键。也可以不做任何元数据映射，这样实体类可以作为一个类似的“字典”对象来使用，或者用于UI层数据对象。
+* 如果元数据全部采用默认映射，也可以使用接口类型动态创建实体类：IUser user = EntityBuilder.CreateEntity<IUser>(); 
 
 * 2，然后建立一个 DbContext: 
 ```c#
