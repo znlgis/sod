@@ -14,7 +14,7 @@ It is easy, and simple.
 
 ----
 
-# 1，为什么需要SOD框架 --Why Need the SOD Frmaework?
+# 1，为什么需要SOD框架 --Why Need the SOD Framework?
 
 __EF框架或大部分ORM框架的缺点就是SOD框架的优点，它拥有超过15年的项目应用历史，为你而生！__
 
@@ -314,6 +314,39 @@ foreache(var item in list)
     Console.WriteLine("Property1={0},Property2={1}",item.Property1,item.Property2);
 }
  
+```
+相比EF等ORM框架，SOD有更方便的批量插入和更新方式，都能通过OQL完成。比如OQL 的 Update 方法更新指定的实体类属性数据到数据，Where 方法 的条件表达式表示更新指定 RoleID 的所有数据，如果更新条件对应的数据是多条的，那么 即可实现“批量更新”的效果。 
+ ```c#
+void TestUpdate() {  
+  Users user = new Users() {     
+ AddTime=DateTime.Now.AddDays(-1),       
+ Authority="Read",       
+ NickName = "菜鸟"  
+ };  
+ OQL q = OQL.From(user)
+          .Update(user.AddTime, user.Authority, user.NickName)
+          .Where(cmp => cmp.Property(user.RoleID) == 100)
+      .END; 
+ 
+ Console.WriteLine("OQL update:\r\n{0}\r\n",q); 
+ Console.WriteLine(q.PrintParameterInfo()); 
+} 
+```
+程序输出：
+ ```text
+OQL update: UPDATE [LT_Users]  SET
+      [AddTime] = @P0,
+      [Authority] = @P1,
+      [NickName] = @P2 
+     WHERE  [RoleID] = @P3 
+ 
+--------OQL Parameters information----------
+  have 4 parameter,detail: 
+   @P0=2013/7/28 22:15:38      Type:DateTime
+    @P1=Read      Type:String
+    @P2=菜鸟      Type:String
+    @P3=100      Type:Int32  
+------------------End------------------------ 
 ```
 有关OQL的高级用法和详细示例，请参考这篇文章和它的系列链接：[ORM查询语言（OQL）简介--实例篇](https://www.cnblogs.com/bluedoctor/archive/2013/04/01/2992981.html)
 
