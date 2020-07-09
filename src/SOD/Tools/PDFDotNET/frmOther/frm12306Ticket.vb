@@ -116,13 +116,13 @@ Public Class frm12306Ticket
     End Sub
 
 
-    Private Sub WebBrowser1_IsBrowserInitializedChanged(sender As Object, e As IsBrowserInitializedChangedEventArgs) Handles WebBrowser1.IsBrowserInitializedChanged
-        If e.IsBrowserInitialized Then
-            '不可以在这里注册JS代码，新版CefSharp 找不到
-            '不可以在这里开启定时器，否则定时器的事件会在当前线程，也就是UI线程之外运行，相关UI访问代码会发生“线程间操作无效”的异常
-            'Me.Timer1.Start()
-        End If
-    End Sub
+    'Private Sub WebBrowser1_IsBrowserInitializedChanged(sender As Object, e As IsBrowserInitializedChangedEventArgs) Handles WebBrowser1.IsBrowserInitializedChanged
+    '    If e.IsBrowserInitialized Then
+    '        '不可以在这里注册JS代码，新版CefSharp 找不到
+    '        '不可以在这里开启定时器，否则定时器的事件会在当前线程，也就是UI线程之外运行，相关UI访问代码会发生“线程间操作无效”的异常
+    '        'Me.Timer1.Start()
+    '    End If
+    'End Sub
 
     Public Sub Notify()
         Dim dict As New Dictionary(Of String, Object)
