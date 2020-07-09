@@ -10,4 +10,5 @@ nuget pack PDF.NET.SOD.SQLite.Provider.nuspec
 nuget pack PDF.NET.SOD.SqlServerCe.Provider.nuspec
 nuget pack PDF.NET.SOD.Web.Extensions.nuspec
 nuget pack PDF.NET.SOD.WinForm.Extensions.nuspec
+nuget pack PDF.NET.SOD.Dameng.Provider.nuspec
 pause
