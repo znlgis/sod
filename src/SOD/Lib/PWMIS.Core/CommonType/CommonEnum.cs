@@ -33,22 +33,8 @@ namespace PWMIS.Common
         MySql,
         SQLite,
         PostgreSQL,
+        Dameng,
         UNKNOWN=999
-    }
-
-    /// <summary>
-    /// 数据源类型
-    /// </summary>
-    public enum DataSourceType
-    { 
-        OleDb,
-        SqlServer,
-        SqlServerCe,
-        SQLite,
-        Oracle,
-        Odbc,
-        TextFile,
-        XML
     }
 
     //下面的委托定义，用于.NET 2.0 没有的，替代.NET 3.5之后的委托方法
