@@ -1,0 +1,603 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PWMIS.DataProvider.Adapter.IBCommand" Collapsed="true">
+    <Position X="22.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAMAAAABAAAEAAABABAAAAACAAAAAAIgAAQAEAII=</HashCode>
+      <FileName>Adapter\IBCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataProvider.Adapter.MyDataForm" Collapsed="true">
+    <Position X="14" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAGAAAMAAAAAAAAAEAABAEEAEAABAAAAAAAAAAEAAA=</HashCode>
+      <FileName>Adapter\MyDataForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataProvider.Adapter.MyDB" Collapsed="true">
+    <Position X="15.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABCFAAAAAAAAAAAEAAAEhAgAgAAAAAAIREAEIAIoBAI=</HashCode>
+      <FileName>Adapter\MyDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.Common.SqlInfo" Collapsed="true">
+    <Position X="14" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAACAAAAAABAAAAAAAAAAwIAkAQAAAAA=</HashCode>
+      <FileName>SqlUtil\SqlCache.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.Common.SQLPage" Collapsed="true">
+    <Position X="17.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAgAAAAAAwACAAAABAAAAAAAAAAAAAAABAIAAAAA=</HashCode>
+      <FileName>SqlUtil\SQLPage.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.Core.CommonUtil" Collapsed="true">
+    <Position X="15.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQIAAAAAAgAAEABAAAAAAAAAAIAABAAAAAAAA=</HashCode>
+      <FileName>CommUtil\CommonUtil.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.ControlDataMap" Collapsed="true">
+    <Position X="19.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAgAAAAAAAAAAACAAAAAAAAAAEAAAQAAAAAA=</HashCode>
+      <FileName>DataMap\ControlDataMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.DataCheckBoxValue" Collapsed="true">
+    <Position X="21" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAgCAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>DataMap\DataCheckBoxValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.DataTextBoxValue" Collapsed="true">
+    <Position X="12.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAIAAAAgAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>DataMap\DataTextBoxValue.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataProvider.Data.Access" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAQAAAAEAAAABAAAAAAAAAAAAAAAAAAAI=</HashCode>
+      <FileName>DataProvider\Access.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataProvider.Data.AdoHelper" Collapsed="true">
+    <Position X="5.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAACAAABAAAEAAAAAAAAABCECAAAAAAAo=</HashCode>
+      <FileName>DataProvider\AdoHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataProvider.Data.CommandLog" Collapsed="true">
+    <Position X="14" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIQAAAACAAABBQAAECECIAAAAAGAAAARAAAAAIAAAA=</HashCode>
+      <FileName>DataProvider\CommandLog.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataProvider.Data.CommonDB" Collapsed="true">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IQKQJEABAAKyQICCIFIAkHBchAJoIEADACABkxgAhMo=</HashCode>
+      <FileName>DataProvider\CommonDB.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PWMIS.DataProvider.Data.ConnectionSession" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DataProvider\ConnectionSession.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PWMIS.DataProvider.Data.DataParameterFormat" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="22.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAACAAAAAAAAAAggAAAAAAAAAAQAAABA=</HashCode>
+      <FileName>DataProvider\DataParameterFormat.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PWMIS.DataProvider.Data.Odbc" Collapsed="true">
+    <Position X="0.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAQAAAAAAAAAAIAABAIAAAAAAAARAAAAI=</HashCode>
+      <FileName>DataProvider\ODBC.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataProvider.Data.OleDb" Collapsed="true">
+    <Position X="3" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAQAAAAAAAAAAIAABAIAAAAAAAARAAAAI=</HashCode>
+      <FileName>DataProvider\OleDB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataProvider.Data.Oracle" Collapsed="true">
+    <Position X="5.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAQAAAIAAAAAAIAABAIAAAAAAAARAAAAo=</HashCode>
+      <FileName>DataProvider\Oracle.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataProvider.Data.QueryException" Collapsed="true">
+    <Position X="21" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAQABAEAAAAQAAAAAAAAIACAAAIAKAAIAAAAAA=</HashCode>
+      <FileName>DataProvider\QueryException.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataProvider.Data.SqlServer" Collapsed="true">
+    <Position X="7.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAQAAAABAAgQAAAAAAAAAAIAAJAIAAAAAAAARAAAAI=</HashCode>
+      <FileName>DataProvider\SqlServer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataProvider.Data.SqlServerCe" Collapsed="true">
+    <Position X="9.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAQAAAAAAAAAAIAABAIAAAAAAAARAAAAI=</HashCode>
+      <FileName>DataProvider\SqlServerCe.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.Entity" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="15.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAABAAAAAAwAQAIAAAAAAAgQAUAAAJAAAAARAAAZA=</HashCode>
+      <FileName>Entity\Entity.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.PropertyGettingEventArgs" Collapsed="true">
+    <Position X="17.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Entity\Entity.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.EntityBase" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YEIAAhAAAAgAwAQAqAAAgAAggBCUACABEAEAEREAAZA=</HashCode>
+      <FileName>Entity\EntityBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.EntityBuilder" Collapsed="true">
+    <Position X="19.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAAgAAAAAAAgAAAAggQACAAAACAAAAAQ=</HashCode>
+      <FileName>Entity\EntityBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.EntityCommand" Collapsed="true">
+    <Position X="21" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAgmCACAgAAAMgAABAAIAEgAAAAQAQAAAAAAABAAA=</HashCode>
+      <FileName>Entity\EntityCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.EntityContainer" Collapsed="true">
+    <Position X="22.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgBABAQFAQABAQAAAAABAAAAAAAAAItAAAAEAA=</HashCode>
+      <FileName>Entity\EntityContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.EntityFields" Collapsed="true">
+    <Position X="12.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAiAAAQAAAAAAAAAAAAAgAAAAIAAAAApAAAWAQAAgAA=</HashCode>
+      <FileName>Entity\EntityFields.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.EntityFieldsCache" Collapsed="true">
+    <Position X="14" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\EntityFields.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.EntityQuery&lt;T&gt;" Collapsed="true">
+    <Position X="15.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQGgMQCAAgEAAEEAAIAAAA0gAEgCAIAQAAIQARAgAA=</HashCode>
+      <FileName>Entity\EntityQuery.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.EntityQuery" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCgMQgAAgEQAEEAAAAAAQkAAEgAAIAAAAIQARAAAA=</HashCode>
+      <FileName>Entity\EntityQuery.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.EntityQueryAnonymous" Collapsed="true">
+    <Position X="19.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACAAARIAAAABEAAIAIAQAQAIAgAgABAAAACAAAAAA=</HashCode>
+      <FileName>Entity\EntityQueryAnonymous.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.EntitySerializable" Collapsed="true">
+    <Position X="21" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAAEAAAAAAAAAAAgAAAAACAAAABABAAAAAAAQA=</HashCode>
+      <FileName>Entity\EntitySerializable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQL" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>Yg6QSEABGGkkqSkUabQBEwoBICEGBEIgIrJAUyFBAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQL1" Collapsed="true">
+    <Position X="0.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAABAAAAAAEAAAAAQEBAEAQAAgAAAAIASAAAQ=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQL2" Collapsed="true">
+    <Position X="3" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAEAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQL3" Collapsed="true">
+    <Position X="5.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQL4" Collapsed="true">
+    <Position X="3" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAEAAAAAAAAAAAgAAAQAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQLOrderType" Collapsed="true">
+    <Position X="12.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAAAAAAAAgAAAQAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.JoinEntity" Collapsed="true">
+    <Position X="12.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAEAAEAAAAAAAAABAAAAAIgAAAAAAEAIA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQLCondition" Collapsed="true">
+    <Position X="21" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAIAACAAAAAAEABAAAAAABgIQAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQLOrder" Collapsed="true">
+    <Position X="22.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAABAAEAAAAAAAAAAAAQAAAJAAAQAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.OQLCompare" Collapsed="true">
+    <Position X="19.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAQBAAABAEAgAggAGDkg4AAGhAAIAgKCIAAQAAhzA=</HashCode>
+      <FileName>Entity\OQLCompare.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.PdfNetSerialize" Collapsed="true">
+    <Position X="14" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAIAAAAAAIIAAAAAAAAAAAAAAAAQA=</HashCode>
+      <FileName>Entity\PdfNetSerialize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.PdfNetSerialize&lt;T&gt;" Collapsed="true">
+    <Position X="15.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAIAAAAAAAAAAACAAAAAgA=</HashCode>
+      <FileName>Entity\PdfNetSerialize.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.PropertyNameValues" Collapsed="true">
+    <Position X="19.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\PropertyNameValues.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.QueryParameter" Collapsed="true">
+    <Position X="12.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAAAAAAAAAiAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\QueryParameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.Entity.QueryParameter&lt;T&gt;" Collapsed="true">
+    <Position X="22.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAgAAACgAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\QueryParameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.SqlMap.CommandInfo" Collapsed="true">
+    <Position X="12.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAEAAAAAAASAAAEACACAgAAQAAAAIAAAcAAAAAA=</HashCode>
+      <FileName>SqlMap\CommandInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.SqlMap.DBMapper" Collapsed="true">
+    <Position X="14" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAAACAAAUAAAAAAAAAAAAAAAAAAAARA=</HashCode>
+      <FileName>SqlMap\DBMapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.SqlMap.SqlMapper" Collapsed="true">
+    <Position X="15.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IqQFQAAAAQAAAEEABAMAQBAAgAAAAEOCAAACwSAEgBI=</HashCode>
+      <FileName>SqlMap\SqlMapper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PWMIS.DataMap.SqlMap.XmlCommand" Collapsed="true">
+    <Position X="19.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIIAAQAAIQQAACAAAAISAAFAAAAAAAAAAACAgDABAI=</HashCode>
+      <FileName>SqlMap\XmlCommand.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="PWMIS.Common.ParamMapType" Collapsed="true">
+    <Position X="12.25" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAIAAAAAAAAAAAAA=</HashCode>
+      <FileName>CommonType\SqlMapEnum.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="PWMIS.DataMap.Entity.TableNameField" Collapsed="true">
+    <Position X="14" Y="6.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAEAAAAAgAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="PWMIS.Common.IDataControl" Collapsed="true">
+    <Position X="1.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIACAAgAAAAoAAAAAAAAAAAAAAAAICEBAgAA=</HashCode>
+      <FileName>Interface\IDataControl.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PWMIS.Common.IDataTextBox" Collapsed="true">
+    <Position X="0.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQGAAAAAA=</HashCode>
+      <FileName>Interface\IDataControl.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PWMIS.Common.IDataCheckBox" Collapsed="true">
+    <Position X="2.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Interface\IDataControl.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PWMIS.Common.IEntity" Collapsed="true">
+    <Position X="12.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAgAAAABAEAAAAAAEAAAAAAQA=</HashCode>
+      <FileName>Interface\IEntity.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PWMIS.Common.IQueryControl" Collapsed="true">
+    <Position X="17.5" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Interface\IQueryControl.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PWMIS.Common.IReadData" Collapsed="true">
+    <Position X="19.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IReadData.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PWMIS.DataMap.Entity.IEntityQuery" Collapsed="true">
+    <Position X="14" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAMAAAAAEAAEAAAAAAAAAAAEAAAAAAAAIQAQAAAA=</HashCode>
+      <FileName>Entity\IEntityQuery.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PWMIS.DataMap.Entity.IOQL" Collapsed="true">
+    <Position X="15.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAA=</HashCode>
+      <FileName>Entity\IOQL.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PWMIS.DataMap.Entity.IOQL1" Collapsed="true">
+    <Position X="8.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\IOQL.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PWMIS.DataMap.Entity.IOQL2" Collapsed="true">
+    <Position X="8.5" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\IOQL.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PWMIS.DataMap.Entity.IOQL3" Collapsed="true">
+    <Position X="8.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\IOQL.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="PWMIS.DataMap.Entity.IOQL4" Collapsed="true">
+    <Position X="8.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\IOQL.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="PWMIS.Common.DBMSType" Collapsed="true">
+    <Position X="14" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAABAEAEAAAAAACAACAAAAAAFAAAAAAAAAABA=</HashCode>
+      <FileName>CommonType\CommonEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PWMIS.Common.DataSourceType" Collapsed="true">
+    <Position X="12.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAEgAAAAAEAACCACAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>CommonType\CommonEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PWMIS.Common.enumParamType" Collapsed="true">
+    <Position X="19.25" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>CommonType\SqlMapEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PWMIS.Common.enumQueryType" Collapsed="true">
+    <Position X="21" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAAAAAAAAAAAAAAEAAEAAAAAAQAAAAAA=</HashCode>
+      <FileName>CommonType\SqlMapEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PWMIS.Common.enumResultClass" Collapsed="true">
+    <Position X="22.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAgoAAEAA=</HashCode>
+      <FileName>CommonType\SqlMapEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PWMIS.Common.enumCompare" Collapsed="true">
+    <Position X="17.5" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAQAAAAAAgAAAAAAAAAAAAACIAQAAEAQBAAA=</HashCode>
+      <FileName>CommonType\SqlMapEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="PWMIS.Common.EntityMapType" Collapsed="true">
+    <Position X="15.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAEAAAAAAAAAAAAAAAQAAAAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>CommonType\SqlMapEnum.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Delegate Name="PWMIS.DataProvider.Adapter.UseDataControl" Collapsed="true">
+    <Position X="17.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Adapter\MyDataForm.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.ConditionHandle&lt;T&gt;" Collapsed="true">
+    <Position X="12.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\EntityQuery.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.SqlInfoAction" Collapsed="true">
+    <Position X="15.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Entity\EntityQuery.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.OQLChildFunc" Collapsed="true">
+    <Position X="15.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.OQLCacheFunc" Collapsed="true">
+    <Position X="14" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.OQLOrderAction" Collapsed="true">
+    <Position X="12.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.OQLOrderAction&lt;T&gt;" Collapsed="true">
+    <Position X="14" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQL.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.OQLCompareFunc" Collapsed="true">
+    <Position X="17.5" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQLCompare.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.OQLCompareFunc&lt;T&gt;" Collapsed="true">
+    <Position X="19.25" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQLCompare.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.OQLCompareFunc&lt;T1, T2&gt;" Collapsed="true">
+    <Position X="21" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAgAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQLCompare.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Delegate Name="PWMIS.DataMap.Entity.OQLCompareFunc&lt;T1, T2, T3&gt;" Collapsed="true">
+    <Position X="22.75" Y="10" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAgAAAAAAgAAAAAAAAAAIAAAAAAAAAA=</HashCode>
+      <FileName>Entity\OQLCompare.cs</FileName>
+    </TypeIdentifier>
+  </Delegate>
+  <Font Name="微软雅黑" Size="9" />
+</ClassDiagram>

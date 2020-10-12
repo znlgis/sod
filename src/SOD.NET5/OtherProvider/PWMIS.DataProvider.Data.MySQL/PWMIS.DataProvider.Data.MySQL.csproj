@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>PWMIS.MySqlClient</AssemblyName>
+    <Description>SOD框架支持.NET 5以及之后的版本迁移升级的版本</Description>
+    <Copyright>PWMIS.COM</Copyright>
+    <Version>6.0.0</Version>
+    <Company>PWMIS（程序员蜜糍）</Company>
+    <Authors>深蓝医生</Authors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.0.21" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\PWMIS.SOD.Core\PWMIS.SOD.Core.csproj" />
+  </ItemGroup>
+
+</Project>
