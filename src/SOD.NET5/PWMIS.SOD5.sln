@@ -1,0 +1,67 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30323.103
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{114850E0-A30A-4426-8D0C-03BF72E0FB7C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PWMIS.SOD.Core", "Lib\PWMIS.SOD.Core\PWMIS.SOD.Core.csproj", "{E7846751-8B85-4661-BB10-B4DD68335C65}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PWMIS.SOD.Core.Extensions", "Lib\PWMIS.SOD.Core.Extensions\PWMIS.SOD.Core.Extensions.csproj", "{C2286B6C-B3C8-4D09-B0D8-7AF40138800C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.SOD.Core.AccessExtensions", "Lib\PWMIS.SOD.Core.AccessExtensions\PWMIS.SOD.Core.AccessExtensions.csproj", "{3E7E32A7-7AA3-4DF6-AA6D-B48D1313D40C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OtherProvider", "OtherProvider", "{521B1FC5-C012-41A2-A692-EC14AACC9A28}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.MySQL", "OtherProvider\PWMIS.DataProvider.Data.MySQL\PWMIS.DataProvider.Data.MySQL.csproj", "{588DA866-DC22-42B8-A6AE-F0D9BB6F0134}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.Oracle", "OtherProvider\PWMIS.DataProvider.Data.Oracle\PWMIS.DataProvider.Data.Oracle.csproj", "{59442E16-7F69-49CE-B896-429729F51E2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.PostgreSQL", "OtherProvider\PWMIS.DataProvider.Data.PostgreSQL\PWMIS.DataProvider.Data.PostgreSQL.csproj", "{D2132085-6087-4DBC-AF0A-BE5752AA0795}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E7846751-8B85-4661-BB10-B4DD68335C65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7846751-8B85-4661-BB10-B4DD68335C65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7846751-8B85-4661-BB10-B4DD68335C65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7846751-8B85-4661-BB10-B4DD68335C65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2286B6C-B3C8-4D09-B0D8-7AF40138800C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2286B6C-B3C8-4D09-B0D8-7AF40138800C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2286B6C-B3C8-4D09-B0D8-7AF40138800C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2286B6C-B3C8-4D09-B0D8-7AF40138800C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E7E32A7-7AA3-4DF6-AA6D-B48D1313D40C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E7E32A7-7AA3-4DF6-AA6D-B48D1313D40C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E7E32A7-7AA3-4DF6-AA6D-B48D1313D40C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E7E32A7-7AA3-4DF6-AA6D-B48D1313D40C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{588DA866-DC22-42B8-A6AE-F0D9BB6F0134}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{588DA866-DC22-42B8-A6AE-F0D9BB6F0134}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{588DA866-DC22-42B8-A6AE-F0D9BB6F0134}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{588DA866-DC22-42B8-A6AE-F0D9BB6F0134}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59442E16-7F69-49CE-B896-429729F51E2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59442E16-7F69-49CE-B896-429729F51E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59442E16-7F69-49CE-B896-429729F51E2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59442E16-7F69-49CE-B896-429729F51E2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2132085-6087-4DBC-AF0A-BE5752AA0795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2132085-6087-4DBC-AF0A-BE5752AA0795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2132085-6087-4DBC-AF0A-BE5752AA0795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2132085-6087-4DBC-AF0A-BE5752AA0795}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E7846751-8B85-4661-BB10-B4DD68335C65} = {114850E0-A30A-4426-8D0C-03BF72E0FB7C}
+		{C2286B6C-B3C8-4D09-B0D8-7AF40138800C} = {114850E0-A30A-4426-8D0C-03BF72E0FB7C}
+		{3E7E32A7-7AA3-4DF6-AA6D-B48D1313D40C} = {114850E0-A30A-4426-8D0C-03BF72E0FB7C}
+		{588DA866-DC22-42B8-A6AE-F0D9BB6F0134} = {521B1FC5-C012-41A2-A692-EC14AACC9A28}
+		{59442E16-7F69-49CE-B896-429729F51E2D} = {521B1FC5-C012-41A2-A692-EC14AACC9A28}
+		{D2132085-6087-4DBC-AF0A-BE5752AA0795} = {521B1FC5-C012-41A2-A692-EC14AACC9A28}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A45F51F5-1687-4BFE-B248-EE3E5C487857}
+	EndGlobalSection
+EndGlobal
