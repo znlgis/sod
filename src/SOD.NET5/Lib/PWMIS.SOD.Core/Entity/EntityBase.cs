@@ -172,14 +172,30 @@ namespace PWMIS.DataMap.Entity
         #endregion
 
         #region 实体类基本映射信息 相关成员
-        private PWMIS.Common.EntityMapType _entityMap = PWMIS.Common.EntityMapType.Table;
+       
+        //代码生成器会在新的EntityBase 子类对象构造函数中共享一个 Meta对象实例，
+        //从而节省元数据所占用的内存（从SOD for .NET 5 开始）。
+        protected internal EntityMetaData Meta { get; set; }
+        //任何对实体类元数据的修改，都会复制一个新的元数据 Meta 对象，从而避免对共享元数据对象的破坏
+        // Meta = Meta with { TableName  = value };
+
         /// <summary>
         /// 实体类的映射类型
         /// </summary>
-        protected internal PWMIS.Common.EntityMapType EntityMap //
+        protected internal PWMIS.Common.EntityMapType EntityMap 
         {
-            get { return _entityMap; }
-            set { _entityMap = value; }
+            get { return Meta.EntityMap; }
+            set 
+            {
+                if (Meta == null)
+                {
+                    Meta = new EntityMetaData() { EntityMap = value };
+                }
+                else
+                {
+                    Meta = Meta with { EntityMap = value };
+                }
+            }
         }
 
 
@@ -196,6 +212,11 @@ namespace PWMIS.DataMap.Entity
             this.names = ef.Fields;
         }
 
+        #region FieldDescription，已移除
+        /* 
+         * FieldDescription 描述信息功能极少使用，移除此功能
+         *
+        
         /// <summary>
         /// 获取字段描述信息，默认无，如果需要请在具体的实现类里面重写该方法。
         /// 代码生成器可能会重写该方法。
@@ -246,27 +267,77 @@ namespace PWMIS.DataMap.Entity
             return GetFieldDescriptions()[index];
         }
 
-
-        //[NonSerialized()] 
-        private string _identity = string.Empty;
+        */
+        #endregion
 
         /// <summary>
         /// 标识字段名称（有些数据库可能内置不支持），该字段不可更新，但是插入数据的时候可以获取该字段
         /// </summary>
         protected internal string IdentityName
         {
-            get { return _identity; }
-            set { _identity = value; }
+            get { return Meta.IdentityName; }
+            set
+            {
+                if (Meta == null)
+                {
+                    Meta = new EntityMetaData() { IdentityName = value };
+                }
+                else if (Meta.Sharing)
+                {
+                    Meta = Meta with { IdentityName = value };
+                }
+                else
+                {
+                    Meta.IdentityName = value;
+                }
+            }
         }
 
         /// <summary>
         /// 实体类映射的表的架构名字
         /// </summary>
-        protected internal string Schema { get; set; }
+        protected internal string Schema
+        {
+            get { return Meta.Schema; }
+            set
+            {
+                if (Meta == null)
+                {
+                    Meta = new EntityMetaData() { Schema = value };
+                }
+                else if (Meta.Sharing)
+                {
+                    Meta = Meta with { Schema = value };
+                }
+                else
+                {
+                    Meta.Schema = value;
+                }
+            }
+        }
+
         /// <summary>
         /// 当前实体类对应的数据源名称，通常对应一个连接字符串名字，用于主子实体查询
         /// </summary>
-        protected string DataSource { get; set; }
+        protected string DataSource
+        {
+            get { return Meta.DataSource; }
+            set
+            {
+                if (Meta == null)
+                {
+                    Meta = new EntityMetaData() { DataSource = value };
+                }
+                else if (Meta.Sharing)
+                {
+                    Meta = Meta with { DataSource = value };
+                }
+                else
+                {
+                    Meta.DataSource = value;
+                }
+            }
+        }
 
         private string setingFieldName = string.Empty;
 
@@ -275,27 +346,40 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         private string foreignKeys = string.Empty;
 
-        //[NonSerialized()] 
-        private string _tableName;
+       
         /// <summary>
         /// 实体类对应的数据库表名称
         /// </summary>
         protected internal string TableName
         {
-            set { _tableName = value; }
+            set 
+            { 
+                if (Meta == null)
+                {
+                    Meta = new EntityMetaData() { TableName = value };
+                }
+                else if (Meta.Sharing)
+                {
+                    Meta = Meta with { TableName = value };
+                }
+                else
+                {
+                    Meta.TableName = value;
+                }
+            }
             get
             {
                 if (EntityMap == EntityMapType.SqlMap)
                 {
-                    int at = _tableName.LastIndexOf('.');
+                    int at = Meta.TableName.LastIndexOf('.');
                     if (at > 0)
-                        return _tableName.Substring(at + 1);
+                        return Meta.TableName.Substring(at + 1);
                     else
-                        return _tableName;
+                        return Meta.TableName;
 
                 }
-                _tableName= this.GetTableName();
-                return _tableName;
+                
+                return this.GetTableName();
             }
         }
         /// <summary>
@@ -453,15 +537,23 @@ namespace PWMIS.DataMap.Entity
 
         #region IEntity 成员
 
-        //[NonSerialized()] 
-        private List<string> _pks = new List<string>();
         /// <summary>
         /// 主键字段名称列表
         /// </summary>
-        public List<string> PrimaryKeys
+        public NotifyingArrayList<string> PrimaryKeys
         {
-            protected set { _pks = value; }
-            get { return _pks; }
+            protected set 
+            {
+                Meta = Meta with { PrimaryKeys = new NotifyingArrayList<string> ( value) };
+            }
+            get 
+            {
+                if (Meta.PrimaryKeys == null)
+                {
+                    Meta.PrimaryKeys = new NotifyingArrayList<string>();
+                }
+                return Meta.PrimaryKeys;//.InnerCollection; 
+            }
         }
 
         public string GetIdentityName()
@@ -475,26 +567,9 @@ namespace PWMIS.DataMap.Entity
         /// <returns></returns>
         public virtual string GetTableName()
         {
-            return _tableName; ;
+            return Meta.TableName;
         }
 
-        ///// <summary>
-        ///// 获取设置过的属性字段名称，用于映射到表字段的属性进行赋值操作之后
-        ///// </summary>
-        ///// <returns></returns>
-        //public string GetSetPropertyFieldName()
-        //{
-        //    return setingFieldName;
-        //}
-
-        //private bool _IsTestWriteProperty;
-        ///// <summary>
-        ///// 测试写入属性（仅程序集内部使用）
-        ///// </summary>
-        //internal void TestWriteProperty()
-        //{
-        //    _IsTestWriteProperty = true;
-        //}
 
         /// <summary>
         /// 新增加实体虚拟字段属性，用来传递内容。注意不检查是否重复

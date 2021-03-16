@@ -13,11 +13,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.SOD.Core.AccessExtens
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OtherProvider", "OtherProvider", "{521B1FC5-C012-41A2-A692-EC14AACC9A28}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.MySQL", "OtherProvider\PWMIS.DataProvider.Data.MySQL\PWMIS.DataProvider.Data.MySQL.csproj", "{588DA866-DC22-42B8-A6AE-F0D9BB6F0134}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PWMIS.DataProvider.Data.MySQL", "OtherProvider\PWMIS.DataProvider.Data.MySQL\PWMIS.DataProvider.Data.MySQL.csproj", "{588DA866-DC22-42B8-A6AE-F0D9BB6F0134}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.Oracle", "OtherProvider\PWMIS.DataProvider.Data.Oracle\PWMIS.DataProvider.Data.Oracle.csproj", "{59442E16-7F69-49CE-B896-429729F51E2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PWMIS.DataProvider.Data.Oracle", "OtherProvider\PWMIS.DataProvider.Data.Oracle\PWMIS.DataProvider.Data.Oracle.csproj", "{59442E16-7F69-49CE-B896-429729F51E2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.PostgreSQL", "OtherProvider\PWMIS.DataProvider.Data.PostgreSQL\PWMIS.DataProvider.Data.PostgreSQL.csproj", "{D2132085-6087-4DBC-AF0A-BE5752AA0795}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PWMIS.DataProvider.Data.PostgreSQL", "OtherProvider\PWMIS.DataProvider.Data.PostgreSQL\PWMIS.DataProvider.Data.PostgreSQL.csproj", "{D2132085-6087-4DBC-AF0A-BE5752AA0795}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{501BC81E-1125-49E9-84F0-B22E209DE9FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppTest", "Test\ConsoleAppTest\ConsoleAppTest.csproj", "{344D4D1E-4E13-4187-A8F9-DC213D988E92}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +53,10 @@ Global
 		{D2132085-6087-4DBC-AF0A-BE5752AA0795}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D2132085-6087-4DBC-AF0A-BE5752AA0795}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D2132085-6087-4DBC-AF0A-BE5752AA0795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{344D4D1E-4E13-4187-A8F9-DC213D988E92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{344D4D1E-4E13-4187-A8F9-DC213D988E92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{344D4D1E-4E13-4187-A8F9-DC213D988E92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{344D4D1E-4E13-4187-A8F9-DC213D988E92}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +68,7 @@ Global
 		{588DA866-DC22-42B8-A6AE-F0D9BB6F0134} = {521B1FC5-C012-41A2-A692-EC14AACC9A28}
 		{59442E16-7F69-49CE-B896-429729F51E2D} = {521B1FC5-C012-41A2-A692-EC14AACC9A28}
 		{D2132085-6087-4DBC-AF0A-BE5752AA0795} = {521B1FC5-C012-41A2-A692-EC14AACC9A28}
+		{344D4D1E-4E13-4187-A8F9-DC213D988E92} = {501BC81E-1125-49E9-84F0-B22E209DE9FB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A45F51F5-1687-4BFE-B248-EE3E5C487857}

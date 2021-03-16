@@ -224,7 +224,7 @@ using PWMIS.Core;
 using System.Collections;
 using PWMIS.Common;
 using System.Reflection;
-
+using System.Linq;
 
 namespace PWMIS.DataMap.Entity
 {
@@ -878,7 +878,7 @@ namespace PWMIS.DataMap.Entity
             {
                 string name = db.GetParameterChar+ "P"+count;
                 paraNames.Add(name);
-                paras.Add(db.GetParameter(name,e[e.PrimaryKeys[0]]));
+                paras.Add(db.GetParameter(name,e[e.PrimaryKeys.First()]));
                 count++;
             }
             //会有2100个参数的限制问题，下期解决
@@ -900,7 +900,7 @@ namespace PWMIS.DataMap.Entity
                 List<TChild> newChilds = new List<TChild>();
                 foreach (TChild child in childList)
                 {
-                    if (child[child.GetForeignKey<T>()].Equals( e[e.PrimaryKeys[0]])) //待优化
+                    if (child[child.GetForeignKey<T>()].Equals( e[e.PrimaryKeys.First()])) //待优化
                     {
                         newChilds.Add(child);
                     }

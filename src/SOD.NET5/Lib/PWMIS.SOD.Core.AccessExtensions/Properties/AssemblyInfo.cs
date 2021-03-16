@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("PWMIS.SOD.Core.AccessExtensions")]
-[assembly: AssemblyDescription("SOD框架提供给 .NET 5 以及之后框架版本的适用于Access\OLEDB的数据访问组件")]
+[assembly: AssemblyDescription("SOD框架提供给 .NET 5 以及之后框架版本的适用于Access,OLEDB的数据访问组件")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("PWMIS（程序员蜜糍）")]
 [assembly: AssemblyProduct("PWMIS.SOD.Core.AccessExtensions")]

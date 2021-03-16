@@ -13,6 +13,7 @@
  * 修改说明：修改 PropertyList 为方法，增加 PropertyNames 属性
  * ========================================================================
 */
+using PWMIS.DataMap.Entity;
 using System;
 namespace PWMIS.Common
 {
@@ -28,7 +29,7 @@ namespace PWMIS.Common
         /// <summary>
         /// 获取主键
         /// </summary>
-        System.Collections.Generic.List<string> PrimaryKeys { get; }
+       NotifyingArrayList<string> PrimaryKeys { get; }
         /// <summary>
         /// 获取属性列的值
         /// </summary>

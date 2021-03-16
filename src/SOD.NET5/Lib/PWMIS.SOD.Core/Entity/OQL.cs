@@ -82,6 +82,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using PWMIS.Common;
 using PWMIS.DataMap.Entity;
@@ -1350,7 +1351,7 @@ namespace PWMIS.DataMap.Entity
                 {
                     if (this.currEntity.PrimaryKeys == null || this.currEntity.PrimaryKeys.Count == 0)
                         throw new Exception("OQL 分页错误，没有指明分页标识字段，也未给当前实体类设置主键。");
-                    this.PageField = string.Format("[{0}]", this.currEntity.PrimaryKeys[0]);
+                    this.PageField = string.Format("[{0}]", this.currEntity.PrimaryKeys.First());
                 }
             }
             return sql;
