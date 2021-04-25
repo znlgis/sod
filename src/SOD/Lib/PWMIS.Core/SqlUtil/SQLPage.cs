@@ -123,6 +123,7 @@ FETCH NEXT 50 ROWS ONLY;
  * 
  * 如果前面加上TOP（50），效果会更好，具体可以参考 http://www.cnblogs.com/ebread/p/SQLServer.html
 		 */
+using PWMIS.Core;
 using System;
 
 namespace PWMIS.Common
@@ -302,8 +303,8 @@ namespace PWMIS.Common
             #region 排序语法分析
             //排序语法分析 开始
             SqlOrderBuilder sob = new SqlOrderBuilder(strSQLInfo);
-            int iOrderAt = strSQLInfo.LastIndexOf("order by ", StringComparison.OrdinalIgnoreCase);
-
+            var point = TextSearchUtil.SearchWordsIndex(strSQLInfo, "order by");
+            int iOrderAt = point.A;
             if (iOrderAt == -1 && strSQLType != "Count")
             {
                 if (PageNumber == 1)

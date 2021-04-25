@@ -42,7 +42,7 @@ namespace PWMIS.Core.Extensions
                 //if (!p[p.PrimaryKeys[0]].GetType().Equals(entity[fKey].GetType()))
                 //    return null;
 
-                p[p.PrimaryKeys[0]] = entity[fKey];
+                p[p.PrimaryKeys.First()] = entity[fKey];
 
                 EntityQuery<T> eq = new EntityQuery<T>(db);
 
@@ -105,7 +105,7 @@ namespace PWMIS.Core.Extensions
 
             string name = db.GetParameterChar + "P0";
             paraNames.Add(name);
-            paras.Add(db.GetParameter(name, entity[entity.PrimaryKeys[0]]));
+            paras.Add(db.GetParameter(name, entity[entity.PrimaryKeys.First()]));
 
             //会有2100个参数的限制问题，下期解决
             string objSql = string.Format(sql, string.Join(",", paraNames.ToArray()));

@@ -100,10 +100,10 @@ namespace PWMIS.DataMap.Entity
     /// <summary>
     /// 改变集合元素的操作方法无法修改当前集合对象，但是会返回一个新的集合对象，从而使得当前集合对象看起来是不可变的，只读的。注意线程安全。
     /// </summary>
-    public class NotifyingArrayList<T> : IEnumerable<T>, IEnumerator<T> 
+    public class NotifyingArrayList<T> : IEnumerable<T>
     {
         private T[] _arr;
-        int position = -1;
+        //int position = -1;
 
         public NotifyingArrayList()
         {
@@ -188,63 +188,64 @@ namespace PWMIS.DataMap.Entity
         }
 
         #region 接口方法
-        public T Current
-        {
-            get
-            {
-                try
-                {
-                    return _arr[position];
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    throw new IndexOutOfRangeException();
-                }
-            }
-        }
+        //public T Current
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            return _arr[position];
+        //        }
+        //        catch (IndexOutOfRangeException)
+        //        {
+        //            throw new IndexOutOfRangeException();
+        //        }
+        //    }
+        //}
 
-        object IEnumerator.Current
-        {
-            get
-            {
-                try
-                {
-                    return _arr[position];
-                }
-                catch (IndexOutOfRangeException)
-                {
-                    throw new IndexOutOfRangeException();
-                }
-            }
-        }
+        //object IEnumerator.Current
+        //{
+        //    get
+        //    {
+        //        try
+        //        {
+        //            return _arr[position];
+        //        }
+        //        catch (IndexOutOfRangeException)
+        //        {
+        //            throw new IndexOutOfRangeException();
+        //        }
+        //    }
+        //}
 
        
 
         public IEnumerator<T> GetEnumerator()
         {
-            return this;
+            for (int i = 0; i < _arr.Length; i++)
+                yield return _arr[i];
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return this;
+            return this.GetEnumerator();
         }
 
-        public bool MoveNext()
-        {
-            position++;
-            return (position < _arr.Length);
-        }
+        //public bool MoveNext()
+        //{
+        //    position++;
+        //    return (position < _arr.Length);
+        //}
 
-        public void Reset()
-        {
-            position = -1;
-        }
+        //public void Reset()
+        //{
+        //    position = -1;
+        //}
 
-        public void Dispose()
-        {
+        //public void Dispose()
+        //{
            
-        }
+        //}
         #endregion
     }
 }

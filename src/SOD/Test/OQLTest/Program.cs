@@ -22,7 +22,7 @@ namespace OQLTest
             //TestProperty();
             //TestCached();
 
-            //TestSqlOrderBuilder();
+            TestSqlOrderBuilder();
             
             Console.WriteLine("OQL 测试，按任意键开始");
            
@@ -973,12 +973,13 @@ ORDER BY T0.[RoleName] ASC
 
         private static void TestSqlOrderBuilder()
         {
-            string sql = @"SELECT  [OrderID],[OrderCode],[AirComNo],[AirLine],[OrderDate],[IsInternational],[IsTeam],[OutTicUserID],[OutTicTime],[PerCount],[PerCountAdult],[PerCountBaby],[TicPrice],[FactPrice],[TaxFee],[DisRate],[TicSum],[FactSum],[PaySum],[InsSum],[MacSum],[FueSum],[TaxSum],[OthSum],[RecSum],[TotalSum],[DisSum],[PNR1],[PNR2],[AirCount],[OrderType],[RecieveDate],[RecieveState],[ProcessDate],[ProcessState],[PayDate],[PayState],[OriginalOrderInfo],[MessageID],[FailedState],[FailedMemo]  
+            string sql = @"SELECT  [OrderID],[OrderCode],FromAirComNo,[AirLine],[OrderDate],[IsInternational],[IsTeam],[OutTicUserID],[OutTicTime],[PerCount],[PerCountAdult],[PerCountBaby],[TicPrice],[FactPrice],[TaxFee],[DisRate],[TicSum],[FactSum],[PaySum],[InsSum],[MacSum],[FueSum],[TaxSum],[OthSum],[RecSum],[TotalSum],[DisSum],[PNR1],[PNR2],[AirCount],[OrderType],[RecieveDate],[RecieveState],[ProcessDate],[ProcessState],[PayDate],[PayState],[OriginalOrderInfo],[MessageID],[FailedState],[FailedMemo]  
 FROM [dbo].[OrderFailed]  
      WHERE  [AirComNo] = @P0
                  ORDER     BY  [OrderID] desc";
             SqlOrderBuilder sob = new SqlOrderBuilder(sql);
             string sqlOrder1 = sob.Build(50);
+            string sqlPage1 = SQLPage.MakeSQLStringByPage(sql, "", 10, 2, 100);
             string sqlOrder2 = sob.Build(50, "Age>=20");
         }
 
