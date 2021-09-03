@@ -9,11 +9,9 @@ namespace ConsoleAppTest
     {
         public SimpleEntity()
         {
-            Meta = EntityMetaData.SharedMeta<SimpleEntity>(meta=> {
-                meta.TableName = "Table_1";
-                meta.IdentityName = "ID";
-                meta.AddPrimaryKey("ID");
-            });
+            TableName = "Table_1";
+            IdentityName = "ID";
+            PrimaryKeys.Add("ID");
         }
 
         public int ID 

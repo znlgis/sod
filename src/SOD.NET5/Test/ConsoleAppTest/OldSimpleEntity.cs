@@ -9,6 +9,7 @@ namespace ConsoleAppTest
     {
         public OldSimpleEntity()
         {
+            Meta= new EntityMetaData();
             TableName = "Table_1";
             IdentityName  = "ID";
             PrimaryKeys.Add("ID");

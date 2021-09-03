@@ -91,6 +91,25 @@ namespace PWMIS.DataMap.Entity
                 }
             }
         }
+
+        public static EntityMetaData GetSharedMeta(string entity_key)
+        {
+            if (metaCache.TryGetValue(entity_key, out EntityMetaData value))
+            {
+                return value;
+            }
+            else
+            {
+                lock (lock_obj)
+                {
+                    EntityMetaData meta = new EntityMetaData() { PrimaryKeys = new NotifyingArrayList<string>() };
+                   
+                    meta.Sharing = true;
+                    metaCache.Add(entity_key, meta);
+                    return meta;
+                }
+            }
+        }
     }
 
    
@@ -103,7 +122,6 @@ namespace PWMIS.DataMap.Entity
     public class NotifyingArrayList<T> : IEnumerable<T>
     {
         private T[] _arr;
-        //int position = -1;
 
         public NotifyingArrayList()
         {
@@ -112,10 +130,20 @@ namespace PWMIS.DataMap.Entity
 
         public NotifyingArrayList(T item)
         {
-            _arr = new T[] { item};
+            CreateNewData(item);
         }
 
         public NotifyingArrayList(IEnumerable<T> data)
+        {
+            CreateNewData(data);
+        }
+
+        private void CreateNewData(T item)
+        {
+            _arr = new T[] { item };
+        }
+
+        private void CreateNewData(IEnumerable<T> data)
         {
             int count = data.Count();
             T[] temp = new T[count];
@@ -124,6 +152,7 @@ namespace PWMIS.DataMap.Entity
                 temp[i++] = item;
             this._arr = temp;
         }
+
 
         /// <summary>
         /// 通知有更改集合元数行为的操作
@@ -138,12 +167,18 @@ namespace PWMIS.DataMap.Entity
         {
             if (_arr == null)
             {
-                return new NotifyingArrayList<T>(item);
+                CreateNewData(item);
             }
-            T[] temp = new T[_arr.Length+1];
-            Array.Copy(_arr, temp,_arr.Length);
-            temp[temp.Length - 1] = item;
-            return new NotifyingArrayList<T>(temp);
+            else
+            {
+                T[] temp = new T[_arr.Length + 1];
+                Array.Copy(_arr, temp, _arr.Length);
+                temp[temp.Length - 1] = item;
+                CreateNewData(temp);
+            }
+            if (Changed!= null)
+                Changed(this);
+            return this;
         }
 
         /// <summary>
@@ -172,7 +207,10 @@ namespace PWMIS.DataMap.Entity
                 if (!object.Equals(_arr[i], item))
                     temp[j++] = _arr[i];
             }
-            return new NotifyingArrayList<T>(temp);
+            CreateNewData(temp);
+            if (Changed!= null)
+                Changed(this);
+            return this;
         }
 
         public int Count => _arr.Length;
@@ -188,37 +226,6 @@ namespace PWMIS.DataMap.Entity
         }
 
         #region 接口方法
-        //public T Current
-        //{
-        //    get
-        //    {
-        //        try
-        //        {
-        //            return _arr[position];
-        //        }
-        //        catch (IndexOutOfRangeException)
-        //        {
-        //            throw new IndexOutOfRangeException();
-        //        }
-        //    }
-        //}
-
-        //object IEnumerator.Current
-        //{
-        //    get
-        //    {
-        //        try
-        //        {
-        //            return _arr[position];
-        //        }
-        //        catch (IndexOutOfRangeException)
-        //        {
-        //            throw new IndexOutOfRangeException();
-        //        }
-        //    }
-        //}
-
-       
 
         public IEnumerator<T> GetEnumerator()
         {
@@ -231,21 +238,6 @@ namespace PWMIS.DataMap.Entity
             return this.GetEnumerator();
         }
 
-        //public bool MoveNext()
-        //{
-        //    position++;
-        //    return (position < _arr.Length);
-        //}
-
-        //public void Reset()
-        //{
-        //    position = -1;
-        //}
-
-        //public void Dispose()
-        //{
-           
-        //}
         #endregion
     }
 }

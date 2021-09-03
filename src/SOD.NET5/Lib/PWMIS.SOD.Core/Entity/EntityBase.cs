@@ -111,7 +111,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         protected virtual void InitMetaDataExt()
         {
-
+            this.Meta = EntityMetaData.GetSharedMeta(this.GetGolbalEntityID());
         }
 
         /// <summary>
@@ -278,13 +278,9 @@ namespace PWMIS.DataMap.Entity
             get { return Meta.IdentityName; }
             set
             {
-                if (Meta == null)
+                if (Meta.Sharing)
                 {
-                    Meta = new EntityMetaData() { IdentityName = value };
-                }
-                else if (Meta.Sharing)
-                {
-                    Meta = Meta with { IdentityName = value };
+                    Meta = Meta with { IdentityName = value ,Sharing=false};
                 }
                 else
                 {
@@ -353,14 +349,10 @@ namespace PWMIS.DataMap.Entity
         protected internal string TableName
         {
             set 
-            { 
-                if (Meta == null)
+            {
+                if (Meta.Sharing)
                 {
-                    Meta = new EntityMetaData() { TableName = value };
-                }
-                else if (Meta.Sharing)
-                {
-                    Meta = Meta with { TableName = value };
+                    Meta = Meta with { TableName = value ,Sharing=false};
                 }
                 else
                 {

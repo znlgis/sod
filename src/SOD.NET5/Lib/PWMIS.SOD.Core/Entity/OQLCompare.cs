@@ -881,7 +881,7 @@ namespace PWMIS.DataMap.Entity
         public OQLCompare IsNull(object field)
         {
             OQLCompare compare = new OQLCompare(this.LinkedOQL);
-            compare.ComparedFieldName = compare.LinkedOQL.TakeOneStackFields().Field;
+            compare.ComparedFieldName = compare.LinkedOQL.TakeOneStackFields().SqlFieldName;
             compare.ComparedParameterName = "NULL";
             compare.ComparedType = CompareType.IS;
 
