@@ -180,7 +180,8 @@ namespace OQLTest
 
             OQL q6 = OQL.From(user).Select()
                 .Where(cmp =>
-                     cmp.Comparer(user.RoleID, "is not", null) &
+                     cmp.IsNull(user.RoleID) & //等价于下面一行
+                     // cmp.Comparer(user.RoleID, "is not", null) &
                      cmp.Comparer(user.AddTime, ">=", DateTime.Now.AddDays(-1)) &
                      cmp.Comparer(user.AddTime, "<", DateTime.Now)
                      )
