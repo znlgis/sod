@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>PDF.NET.SOD.PostgreSQL.Provider</id>
-        <version>5.6.4.0709</version>
+        <version>5.6.5.0903</version>
         <title>PDF.NET SOD PostgreSQL Provider</title>
         <authors>深蓝医生</authors>
         <license type="expression">LGPL-2.1-only</license>
@@ -13,7 +13,7 @@
         <tags>ORM SQL-MAP OQL PDF.NET SOD</tags>
         <dependencies>
             <dependency id="Npgsql" version="4.0.10" />
-            <dependency id="PDF.NET.SOD" version="5.6.4.0709" />
+            <dependency id="PDF.NET.SOD" version="5.6.5.0903" />
         </dependencies>
     </metadata>
     <files>

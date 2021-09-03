@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>PDF.NET.SOD.Oracle.Provider</id>
-    <version>5.6.4.0709</version>
+    <version>5.6.5.0903</version>
     <title>PDF.NET SOD Oracle Provider</title>
     <authors>深蓝医生</authors>
     <owners>深蓝医生</owners>
@@ -11,7 +11,7 @@
     <projectUrl>http://www.pwmis.com/SqlMap/</projectUrl>
     <description>PDF.NET SOD Oracle扩展库</description>
     <dependencies>
-      <dependency id="PDF.NET.SOD" version="5.6.4.0709" />
+      <dependency id="PDF.NET.SOD" version="5.6.5.0903" />
       <dependency id="Oracle.ManagedDataAccess" version="19.8.0" />
     </dependencies>
   </metadata>
