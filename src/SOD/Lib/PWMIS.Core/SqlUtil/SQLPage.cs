@@ -728,7 +728,7 @@ where @conditon And @PKName<
                 conditon = "1=1";
             if (pageNum == 1)
             {
-                string sqlTemplage = "Select top @pageSize @filedList from @table1 where  @conditon order by @PKName desc ";
+                string sqlTemplage = "Select Top @pageSize @filedList From @table1 Where  @conditon Order by @PKName Asc ";
                 return sqlTemplage
                     .Replace("@pageSize", pageSize.ToString())
                     .Replace("@filedList", filedList)
