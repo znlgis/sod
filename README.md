@@ -271,6 +271,35 @@ providerName="<提供程序类全名称>,<提供程序类所在程序集>"
 
 实际上，框架提供了至少8种查询方式，详细内容，请看[.NET ORM 的 “SOD蜜”--零基础入门篇](https://www.cnblogs.com/bluedoctor/p/4306131.html)
 
+如果你只需进行“单表查询”，那么用泛型OQL是一个更好的选择。例如下面的示例，分页查询用户表的数据，并能够在第一次查询的时候自动探测到该查询未分页的时候的记录总数，然后在后续查询的时候传递该记录总数，从而实现一个高效的查询：
+```c#
+       void Test3(int pageNum, int pageSize)
+        {
+            var goql = OQL.From<User>()
+                .Select()
+                .OrderBy((o, u) => o.Asc(u.ID));
+            // .Limit(pageSize, pageNum, true);
+            if (this.txtRecNumber.Text == "0" || this.txtRecNumber.Text == "")
+            {
+                goql.Limit(pageSize, pageNum, true);//第三个参数为true，表示在本次查询中自动探查符合查询条件的记录总数
+            }
+            else
+            {
+                int allCount = int.Parse(this.txtRecNumber.Text);
+                goql.Limit(pageSize, pageNum, allCount);//记录总数，以便准确分页。
+            }
+            var list = goql.ToList();
+            // 单行泛型OQL方式：
+            // var list = OQL.From<User>()..Select().OrderBy((o, u) => o.Asc(u.ID)).Limit(pageSize, pageNum, true) ;   
+            
+            this.dataGridView1.DataSource = list;
+            int recCount = goql.AllCount;
+
+            this.txtRecNumber.Text = recCount.ToString();
+        }
+
+```
+
   附注：
 
 ```c#
