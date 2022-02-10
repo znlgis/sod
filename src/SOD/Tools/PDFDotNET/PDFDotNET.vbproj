@@ -562,4 +562,6 @@ copy /y "$(SolutionDir)\Tools\SqlMapBuilder\bin\$(ConfigurationName)\*.dll" "$(T
 copy /y "$(SolutionDir)\Tools\SqlMapBuilder\bin\$(ConfigurationName)\*.exe" "$(TargetDir)\Tools\SqlMapBuilder"
 copy /y "$(SolutionDir)\Tools\SqlMapBuilder\bin\$(ConfigurationName)\*.pdb" "$(TargetDir)\Tools\SqlMapBuilder"</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\..\packages\CefSharp.Common.83.4.20\build\CefSharp.Common.targets" Condition="Exists('..\..\packages\CefSharp.Common.83.4.20\build\CefSharp.Common.targets')" />
+  <Import Project="..\..\packages\CefSharp.WinForms.83.4.20\build\CefSharp.WinForms.targets" Condition="Exists('..\..\packages\CefSharp.WinForms.83.4.20\build\CefSharp.WinForms.targets')" />
 </Project>
