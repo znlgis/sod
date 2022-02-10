@@ -28,8 +28,9 @@ Public Class frm12306Ticket
 
 
         Me.WebBrowser1 = New CefSharp.WinForms.ChromiumWebBrowser(Me.ticketUrl)
-        CefSharpSettings.LegacyJavascriptBindingEnabled = True
-        Me.WebBrowser1.RegisterJsObject("jsObj", New TicketNotify(Me), Nothing)
+        Me.WebBrowser1.JavascriptObjectRepository.Settings.LegacyBindingEnabled = True
+        CefSharpSettings.WcfEnabled = True
+        Me.WebBrowser1.JavascriptObjectRepository.Register("jsObj", New TicketNotify(Me), False, Nothing)
 
         Me.panBody.Controls.Add(Me.WebBrowser1)
         Me.WebBrowser1.Dock = DockStyle.Fill
