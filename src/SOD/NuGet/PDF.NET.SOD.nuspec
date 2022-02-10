@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>PDF.NET.SOD</id>
-    <version>5.6.5.0903</version>
+    <version>5.6.6.0210</version>
     <title>PDF.NET SOD</title>
     <authors>深蓝医生</authors>
     <owners>深蓝医生</owners>
@@ -11,7 +11,7 @@
     <projectUrl>http://www.pwmis.com/SqlMap/</projectUrl>
     <description>PDF.NET SOD基础库</description>
     <dependencies>
-      <dependency id="PDF.NET.SOD.Core" version="5.6.5.0903" />
+      <dependency id="PDF.NET.SOD.Core" version="5.6.6.0210" />
       <dependency id="Newtonsoft.Json" version="12.0.3" />
     </dependencies>
   </metadata>
