@@ -188,6 +188,8 @@ namespace PWMIS.Common
                     SQL = MakePageSQLStringByMySQL(strSQLInfo, strWhere, PageSize, PageNumber, AllCount);
                     break;
                 case DBMSType.PostgreSQL:
+                case DBMSType.Dameng:
+                case DBMSType.Kingbase:
                     SQL = MakePageSQLStringByPostgreSQL(strSQLInfo, strWhere, PageSize, PageNumber, AllCount);
                     break;
                 default:

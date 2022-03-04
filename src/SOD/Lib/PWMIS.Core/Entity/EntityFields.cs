@@ -477,6 +477,14 @@ namespace PWMIS.DataMap.Entity
                 {
                     temp = temp + " DEFAULT nextval('" + entity.TableName + "_" + entity.IdentityName + "_" + "seq'::regclass) NOT NULL";
                 }
+                else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.Dameng)
+                {
+                    temp = temp + " DEFAULT nextval('" + entity.TableName + "_" + entity.IdentityName + "_" + "seq'::regclass) NOT NULL";
+                }
+                else if (db.CurrentDBMSType == PWMIS.Common.DBMSType.Kingbase)
+                {
+                    temp = temp + " DEFAULT nextval('" + entity.TableName + "_" + entity.IdentityName + "_" + "seq'::regclass) NOT NULL";
+                }
                 else
                 {
                     //Oracle 采用序列和触发器,这里不处理 

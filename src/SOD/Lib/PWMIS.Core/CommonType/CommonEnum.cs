@@ -34,7 +34,8 @@ namespace PWMIS.Common
         SQLite,
         PostgreSQL,
         Dameng,
-        UNKNOWN=999
+        Kingbase,
+        UNKNOWN =999
     }
 
     //下面的委托定义，用于.NET 2.0 没有的，替代.NET 3.5之后的委托方法
