@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>PDF.NET.SOD.MemoryStorage.Extensions</id>
-        <version>5.6.6.34</version>
+        <version>5.6.7.0</version>
         <title>PDF.NET SOD MemoryStorage Extensions</title>
         <authors>深蓝医生</authors>
         <license type="expression">LGPL-2.1-only</license>
@@ -10,7 +10,7 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>PDF.NET SOD内存数据库扩展库</description>
         <dependencies>
-            <dependency id="PDF.NET.SOD" version="5.6.6.34" />
+            <dependency id="PDF.NET.SOD" version="5.6.7.0" />
         </dependencies>
     </metadata>
     <files>
