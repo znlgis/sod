@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>PDF.NET.SOD.ODataClient.Extensions</id>
-        <version>5.6.6.0210</version>
+        <version>5.6.6.34</version>
         <title>PDF.NET SOD ODataClient Extensions</title>
         <authors>深蓝医生</authors>
         <license type="expression">LGPL-2.1-only</license>
@@ -14,11 +14,10 @@
             <dependency id="Microsoft.OData.Core" version="7.7.0" />
             <dependency id="Microsoft.OData.Edm" version="7.7.0" />
             <dependency id="Microsoft.Spatial" version="7.7.0" />
-            <dependency id="PDF.NET.SOD" version="5.6.6.0210" />
+            <dependency id="PDF.NET.SOD" version="5.6.6.34" />
         </dependencies>
     </metadata>
     <files>
         <file src="..\OtherExtensions\PWMIS.OData.Client\bin\Release\PWMIS.OData.Client.dll" target="lib\net452\PWMIS.OData.Client.dll" />
-        <file src="..\OtherExtensions\PWMIS.OData.Client\bin\Release\PWMIS.OData.Client.pdb" target="lib\net452\PWMIS.OData.Client.pdb" />
     </files>
 </package>
