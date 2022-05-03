@@ -1195,7 +1195,17 @@ namespace PWMIS.DataMap.Entity
                     object Value = this.PropertyValues[i];
                     if (Value != null && Value != DBNull.Value)
                     {
-                        accessors[i].SetValue(pocoClass, this.PropertyValues[i]);
+                        try
+                        {
+                            //属性名相同，但是类型不相同，可能出现转换错误。下面捕获异常给出明确提示。edit by bluedoctor,2022-5-3
+                            accessors[i].SetValue(pocoClass, this.PropertyValues[i]);
+                        }
+                        catch (Exception ex)
+                        {
+                            string errMsg = string.Format("尝试给对象{0} 的属性{1} 设置值的时候错误，详细请见内部错误。实体类同名属性的值：{2}", pocoClass.ToString(), PropertyNames[i], this.PropertyValues[i]);
+                            Exception ex1 = new Exception(errMsg,  ex);
+                            throw ex1;
+                        }
                         count++;
                     }
                 }

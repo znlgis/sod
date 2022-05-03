@@ -137,7 +137,9 @@ namespace PWMIS.Core
                         return null;
                 }
                 accessor = Activator.CreateInstance(typeof(PropertyAccessor<,>).MakeGenericType(type, propertyInfo.PropertyType), type, memberName) as INamedMemberAccessor;
-                accessorCache.Add(key, accessor);
+                //下面一行在多线程环境下可能会出错，直接使用索引器不会出错。edit by bluedoctor,2022-5-3
+                //accessorCache.Add(key, accessor);
+                accessorCache[key] = accessor;
             }
 
             return accessor;

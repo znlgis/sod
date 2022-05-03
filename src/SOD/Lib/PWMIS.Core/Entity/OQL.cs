@@ -1083,7 +1083,7 @@ namespace PWMIS.DataMap.Entity
         /// <example>
         /// <code>
         /// <![CDATA[
-        ///   List<User> users=OQL.From<User>.ToList();
+        ///   List<IUser> users=OQL.From<IUser>().ToList();
         /// ]]>
         /// </code>
         /// </example>
@@ -1107,7 +1107,7 @@ namespace PWMIS.DataMap.Entity
         /// <example>
         /// <code>
         /// <![CDATA[
-        ///   List<User> users=OQL.From<User>.ToList<User>();
+        ///   List<User> users=OQL.From<User>().ToList();
         /// ]]>
         /// </code>
         /// </example>
