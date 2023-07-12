@@ -108,6 +108,21 @@ Create table [TbUser](
                 .Where(ue.LoginName, ue.Password)
                 .END;
             var userObj = EntityQuery<UserEntity>.QueryObject(oql, db2);
+
+            var userObj2 = OQL.FromObject<UserEntity>()
+             .Select()
+             .Where((cmp, obj) => cmp.Comparer(obj.LoginName, "=", "zhangsan") & 
+                                  cmp.Comparer(obj.Password, "=", "888888"))
+             .END
+             .ToObject(db2);
+
+            var userObj3 = OQL.FromObject<UserEntity>()
+            .Select()
+            .Where((cmp, obj) => cmp.Property(obj.LoginName)== "zhangsan" &
+                                 cmp.Property(obj.Password) == "888888")
+            .END
+            .ToObject(db2);
+
             var list3 = EntityQuery<UserEntity>.QueryList(oql, db2);
 
             //OQL复杂查询示例
@@ -118,6 +133,32 @@ Create table [TbUser](
                 .END;
             oql2.Limit(5, 1);
             var list4 = EntityQuery<UserEntity>.QueryList(oql2, db2);
+
+            ue.Password = "8888";
+            var oql_update = OQL.From(ue).Update(ue.Password).END;
+            var ru = EntityQuery<UserEntity>.ExecuteOql(oql_update, db2);
+
+            //增删改数据
+            UserEntity ue2 = new UserEntity();
+            ue2.LoginName = "lisi";
+            ue2.Password = "8888";
+            ue2.Name = "李四";
+            int ic= EntityQuery<UserEntity>.Instance.Insert(ue2, db2);
+            if(ic>0)
+                Console.WriteLine("保存数据成功，用户ID={0}", ue2.ID);
+
+            ue2.BirthDate = new DateTime(1990, 1, 2);
+            ue2.Sex = false ;
+            int uc=EntityQuery<UserEntity>.Instance.Update(ue2, db2);
+            if(uc>0)
+                Console.WriteLine("保存数据成功，用户ID={0}", ue2.ID);
+
+            ue2.PrimaryKeys.Clear();
+            ue2.PrimaryKeys.Add("LoginName");
+            int dc= EntityQuery<UserEntity>.Instance.Delete(ue2, db2);
+            if (dc > 0)
+                Console.WriteLine("删除用户[{0}]成功！",ue2.LoginName);
+
 
             //自动创建表
             SimpleDbContext db2_ctx = new SimpleDbContext();
