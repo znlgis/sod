@@ -518,7 +518,8 @@ GOQL适合单表查询，可以仅定义一个对应数据表的接口类型来�
 ```
 OQL表达式总是以From方法开始，以END属性结束，通过OQL的链式语法，Select、Where、OrderBy方法总是以固定的顺序出现，因此无任何SQL编写经验的人也可以通过OQL写出正确的查询。
 GOQL对象通过调用OQL的FormObject泛型方法得到，之后的语法跟OQL一样，最后通过GOQL的ToList方法执行查询得到结果。
-ToList方法有重载，可以用一个AdoHelper对象做参数来对指定的数据库进行查询。
+ToList方法有重载，可以用一个AdoHelper对象做参数来对指定的数据库进行查询,如果不指定，则默认取最后一个连接配置对应的AdoHelper对象，例如：
+> var list=OQL.FromObject<TbUser>().Select().END.ToList();
 
 GOQL的复杂查询支持通过Select方法指定要查询的实体类属性字段，也可以在Where、OrderBy方法上使用Lambda表达式购置查询和排序条件。
 Where方法上使用了OQLCompare对象来生成查询条件对象，它有多种条件比较方法和方法重载，也支持操作符重载。
@@ -871,6 +872,28 @@ SimpleOrder包含一个商品清单OrderItems，它是ISimpleOrderItem[]类型�
 ```
 上面的关联查询使用了OQL的InnerJoin查询，由于关联查询一般都需要将结果映射到一个新的结果类型，所以OQL的Select方法对于查询字段的选择延迟到EntityContainer对象的MapToList方法里面进行，
 MapToList方法可以将结果映射到一个已知的类型，包括实体类类型，也可以直接映射到一个匿名类型，如上面的示例。
+
+### 5.6,列表动态排序
+当页面数据以表格形式呈现给用户后，为方便用户查看数据，一般都允许用户对某些列进行自定义的排序，后端程序接收用户在前端的排序操作，根据用户选择的排序字段重新组织查询。
+
+假设用户正在查看订单用户信息列表页面，用户希望该列表以订单下单日期排序或者订单价格排序。在本例中，下单日期排序基本上就是订单表的自增字段排序了，所以本例的问题是按照OrderID字段排序还是OrderDate排序。下面是修改后的OQL语句写法示例：
+
+`   string orderField="OrderPrice"; //"OrderDate","OrderID"
+   
+    SimpleOrderEntity soe = new SimpleOrderEntity();
+    UserEntity ue = new UserEntity();
+    var oql_OrderUser = OQL.From(soe)
+          .InnerJoin(ue).On(soe.UserID, ue.ID)
+          .Select()
+          .Where(cmp => cmp.Comparer(soe.OrderName, "like", "笔记本订单%"))
+          .OrderBy(soe[orderField],"desc")
+          //等价于 .OrderBy(soe.OrderPrice,"desc")
+     .END;``C#
+
+```
+这里实现动态排序的关键是利用了实体类的索引器属性，调用soe["OrderPrice"] 与调用 soe.OrderPrice 结果基本是一样的。同样的道理，在Where方法的条件比较中，
+也可以利用实体类索引器调用的方式，实现动态条件字段查询。如果是其它ORM框架要实现动态查询和动态排序代码编写是比较复杂的，没法做到SOD框架这么简单。
+
 
 
 ## 6，数据窗体
