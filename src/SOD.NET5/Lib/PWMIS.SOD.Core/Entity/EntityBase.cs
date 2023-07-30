@@ -171,7 +171,7 @@ namespace PWMIS.DataMap.Entity
 
         #endregion
 
-        #region 实体类基本映射信息 相关成员
+        #region 实体类基本映射信息（元数据映射）相关成员
        
         //代码生成器会在新的EntityBase 子类对象构造函数中共享一个 Meta对象实例，
         //从而节省元数据所占用的内存（从SOD for .NET 5 开始）。
@@ -187,13 +187,16 @@ namespace PWMIS.DataMap.Entity
             get { return Meta.EntityMap; }
             set 
             {
-                if (Meta == null)
+                if (Meta.Sharing)
                 {
-                    Meta = new EntityMetaData() { EntityMap = value };
+                    if (Meta.EntityMap== EntityMapType.None)
+                        Meta.EntityMap = value;
+                    else if (Meta.EntityMap != value)
+                        Meta = Meta with { EntityMap = value, Sharing = false };
                 }
                 else
                 {
-                    Meta = Meta with { EntityMap = value };
+                    Meta.EntityMap = value;
                 }
             }
         }
@@ -278,9 +281,12 @@ namespace PWMIS.DataMap.Entity
             get { return Meta.IdentityName; }
             set
             {
-                if (Meta.Sharing)
-                {
-                    Meta = Meta with { IdentityName = value ,Sharing=false};
+                if (Meta.Sharing) 
+                { 
+                    if(string.IsNullOrEmpty(Meta.IdentityName))
+                        Meta.IdentityName = value;
+                    else if (Meta.IdentityName != value)
+                        Meta = Meta with { IdentityName = value, Sharing = false };
                 }
                 else
                 {
@@ -297,13 +303,12 @@ namespace PWMIS.DataMap.Entity
             get { return Meta.Schema; }
             set
             {
-                if (Meta == null)
+                if (Meta.Sharing)
                 {
-                    Meta = new EntityMetaData() { Schema = value };
-                }
-                else if (Meta.Sharing)
-                {
-                    Meta = Meta with { Schema = value };
+                    if (string.IsNullOrEmpty(Meta.Schema))
+                        Meta.Schema = value;
+                    else if (Meta.Schema != value)
+                        Meta = Meta with { Schema = value, Sharing = false };
                 }
                 else
                 {
@@ -320,13 +325,12 @@ namespace PWMIS.DataMap.Entity
             get { return Meta.DataSource; }
             set
             {
-                if (Meta == null)
+                if (Meta.Sharing)
                 {
-                    Meta = new EntityMetaData() { DataSource = value };
-                }
-                else if (Meta.Sharing)
-                {
-                    Meta = Meta with { DataSource = value };
+                    if (string.IsNullOrEmpty(Meta.DataSource))
+                        Meta.DataSource = value;
+                    else if (Meta.DataSource != value)
+                        Meta = Meta with { DataSource = value, Sharing = false };
                 }
                 else
                 {
@@ -350,9 +354,12 @@ namespace PWMIS.DataMap.Entity
         {
             set 
             {
-                if (Meta.Sharing)
+                if (Meta.Sharing) 
                 {
-                    Meta = Meta with { TableName = value ,Sharing=false};
+                    if (string.IsNullOrEmpty(Meta.TableName))
+                        Meta.TableName = value;
+                    else if (Meta.TableName != value)
+                        Meta = Meta with { TableName = value, Sharing = false };
                 }
                 else
                 {
@@ -529,22 +536,21 @@ namespace PWMIS.DataMap.Entity
 
         #region IEntity 成员
 
+        SharedStringList _primaryKeys;
         /// <summary>
         /// 主键字段名称列表
         /// </summary>
-        public NotifyingArrayList<string> PrimaryKeys
+        public SharedStringList PrimaryKeys
         {
             protected set 
             {
-                Meta = Meta with { PrimaryKeys = new NotifyingArrayList<string> ( value) };
+                _primaryKeys = value;
             }
             get 
             {
-                if (Meta.PrimaryKeys == null)
-                {
-                    Meta.PrimaryKeys = new NotifyingArrayList<string>();
-                }
-                return Meta.PrimaryKeys;//.InnerCollection; 
+                if (_primaryKeys == null)
+                    _primaryKeys = new SharedStringList(GetType());
+                return _primaryKeys;
             }
         }
 

@@ -6,6 +6,9 @@ using System.Text;
 
 namespace EntityTest
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class UserEntity:EntityBase, IUser
     {
         public UserEntity()
@@ -15,6 +18,12 @@ namespace EntityTest
             PrimaryKeys.Add("User ID");
         }
 
+        /// <summary>
+        /// 用户ID
+        /// </summary>
+        /// <remarks>
+        /// 自增
+        /// </remarks>
         public int UserID
         {
             get { return getProperty<int>("User ID"); }

@@ -41,31 +41,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         public bool Sharing { get; protected  internal set; }
 
-        /* 对PrimaryKeys的任何操作都会产生一个新的PrimaryKeys */
-
-        /// <summary>
-        /// 实体类的主键名称集合
-        /// </summary>
-        public NotifyingArrayList<string> PrimaryKeys { get; protected internal set; } 
-        /// <summary>
-        /// 添加一个主键名字。本方法线程安全。
-        /// </summary>
-        /// <param name="keyName"></param>
-        public void AddPrimaryKey(string keyName)
-        {
-            lock (lock_obj)
-            {
-                if (this.PrimaryKeys == null)
-                {
-                    PrimaryKeys = new NotifyingArrayList<string>(keyName);
-                }
-                else
-                {
-                    var keys = PrimaryKeys.Add(keyName);
-                    PrimaryKeys = new NotifyingArrayList<string>(keys);
-                }
-            }
-        }
+        
         /// <summary>
         /// 创建一个元数据的共享实例。如果缓存中没有当前实体类的元数据对象，则创建一个。
         /// </summary>
@@ -83,7 +59,7 @@ namespace PWMIS.DataMap.Entity
             {
                 lock (lock_obj)
                 {
-                    EntityMetaData meta = new EntityMetaData() { PrimaryKeys = new NotifyingArrayList<string>() };
+                    EntityMetaData meta = new EntityMetaData();
                     init_meta(meta);
                     meta.Sharing = true;
                     metaCache.Add(entity_key, meta);
@@ -102,7 +78,7 @@ namespace PWMIS.DataMap.Entity
             {
                 lock (lock_obj)
                 {
-                    EntityMetaData meta = new EntityMetaData() { PrimaryKeys = new NotifyingArrayList<string>() };
+                    EntityMetaData meta = new EntityMetaData();
                    
                     meta.Sharing = true;
                     metaCache.Add(entity_key, meta);
@@ -159,35 +135,43 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         public Action<NotifyingArrayList<T>> Changed;
         /// <summary>
-        /// 向数组添加一个元素到数组末尾
+        /// 向集合添加一个不重复的元素到末尾并返回新的集合，原来的集合不变
         /// </summary>
         /// <param name="item"></param>
-        /// <returns></returns>
+        /// <returns>当集合元素多余一个且操作成功，触发Changed方法</returns>
         public NotifyingArrayList<T> Add(T item)
         {
-            if (_arr == null)
+            if (_arr == null || _arr.Length==0)
             {
                 CreateNewData(item);
             }
             else
             {
-                T[] temp = new T[_arr.Length + 1];
-                Array.Copy(_arr, temp, _arr.Length);
-                temp[temp.Length - 1] = item;
-                CreateNewData(temp);
+                if (!Contains(item))
+                {
+                    T[] temp = new T[_arr.Length + 1];
+                    Array.Copy(_arr, temp, _arr.Length);
+                    temp[temp.Length - 1] = item;
+
+                    var newObj = new NotifyingArrayList<T>(temp);
+                    if (Changed != null)
+                        Changed(newObj);
+                    return newObj;
+                }
             }
-            if (Changed!= null)
-                Changed(this);
             return this;
         }
 
         /// <summary>
-        /// 创建一个没有任何成员的新数组对象
+        /// 返回新的集合，原来的集合不变
         /// </summary>
-        /// <returns></returns>
+        /// <returns>如果操作成功，触发Changed方法</returns>
         public NotifyingArrayList<T> Clear()
         {
-            return new NotifyingArrayList<T>();
+            var newObj = new NotifyingArrayList<T>();
+            if (Changed != null)
+                Changed(newObj);
+            return newObj;
         }
 
 
@@ -195,11 +179,11 @@ namespace PWMIS.DataMap.Entity
         /// 从数组删除一个元素，如果元素为空或者元素不存在于数组中，将返回原数组
         /// </summary>
         /// <param name="item"></param>
-        /// <returns></returns>
+        /// <returns>如果操作成功，触发Changed方法</returns>
         public NotifyingArrayList<T> Remove(T item)
         {
-            if (item == null) return this;
-            if (!this.Contains(item)) return this;
+            if (!this.Contains(item)) 
+                return this;
             T[] temp = new T[_arr.Length - 1];
             int j = 0;
             for (int i = 0; i < _arr.Length; i++)
@@ -207,10 +191,10 @@ namespace PWMIS.DataMap.Entity
                 if (!object.Equals(_arr[i], item))
                     temp[j++] = _arr[i];
             }
-            CreateNewData(temp);
-            if (Changed!= null)
-                Changed(this);
-            return this;
+            var newObj = new NotifyingArrayList<T>(temp);
+            if (Changed != null)
+                Changed(newObj);
+            return newObj;
         }
 
         public int Count => _arr.Length;
@@ -229,6 +213,373 @@ namespace PWMIS.DataMap.Entity
 
         public IEnumerator<T> GetEnumerator()
         {
+            for (int i = 0; i < _arr.Length; i++)
+                yield return _arr[i];
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// 共享字符串列表类型。向该类型的首个实例对象添加数据将创建共享的数据，当其它实例对象添加不同的数据的时候会添加到自己的实例上。
+    /// 不同的使用类型将使用不同的共享数据。
+    /// </summary>
+    /// <typeparam name="T">使用该类的类型</typeparam>
+    public class SharedStringList<T> : IEnumerable<string> where T : class,new ()
+    {
+        private string[] _arr;
+        private static Dictionary<Type , string[]> SharedData = new Dictionary<Type, string[]>(); 
+        private static object SharedDataLock = new object();
+
+        public SharedStringList()
+        {
+            //_arr = new string[0];
+        }
+
+        public SharedStringList(string item)
+        {
+            CreateNewData(item);
+        }
+
+        public SharedStringList(IEnumerable<string> data)
+        {
+            CreateNewData(data);
+        }
+
+        private void CreateNewData(string item)
+        {
+            _arr = new string[] { item };
+        }
+
+        private void CreateNewData(IEnumerable<string> data)
+        {
+            int count = data.Count();
+            string[] temp = new string[count];
+            int i = 0;
+            foreach (string item in data)
+                temp[i++] = item;
+            this._arr = temp;
+        }
+
+        /// <summary>
+        /// 向集合添加一个不重复的元素到末尾。
+        /// 如果还没有共享的数据，此时添加的数据会被其它实例共享，否则只会添加到当前实例对象上。线程安全。
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>返回是否成功添加</returns>
+        public bool Add(string item)
+        {
+            if (_arr == null )
+            {
+                Type type = typeof(T);
+                if (SharedData.TryGetValue(type, out _arr))
+                {
+                    if (_arr.Contains(item))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        _arr = new string[1] { item };
+                        return true;
+                    }
+                }
+                else
+                {
+                    //如果还没有共享数据
+                    lock (SharedDataLock)
+                    {
+                        //再次判断，确保线程安全
+                        if (SharedData.TryGetValue(type, out _arr))
+                        {
+                            if (_arr.Contains(item))
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                _arr = new string[1] { item };
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            _arr = new string[1] { item };
+                            SharedData[type] = _arr;
+                            return true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //此操作将添加到当前对象的实例数据而不会添加到共享数据
+                lock (SharedDataLock)
+                {
+                    if (!Contains(item))
+                    {
+                        string[] temp = new string[_arr.Length + 1];
+                        Array.Copy(_arr, temp, _arr.Length);
+                        temp[temp.Length - 1] = item;
+                        _arr = temp;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 清除当前数据并使用新的实例数据
+        /// </summary>
+        public void Clear()
+        {
+            _arr = new string[0];
+        }
+
+
+        /// <summary>
+        /// 从集合删除一个元素，如果操作成功，当前对象将使用新的实例数据。线程安全。
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>是否操作成功</returns>
+        public bool Remove(string item)
+        {
+            if (!this.Contains(item))
+                return false ;
+            lock (SharedDataLock)
+            {
+                string[] temp = new string[_arr.Length - 1];
+                int j = 0;
+                for (int i = 0; i < _arr.Length; i++)
+                {
+                    if (!object.Equals(_arr[i], item))
+                        temp[j++] = _arr[i];
+                }
+                _arr = temp;
+                return true;
+            }
+        }
+
+        public int Count()
+        {
+            if (_arr == null)
+                return 0;
+            else
+               return _arr.Length;
+        }
+
+        public bool Contains( string item)
+        {
+            if(_arr==null) return false;
+            for (int i = 0; i < _arr.Length; i++)
+            {
+                if (object.Equals(_arr[i], item))
+                    return true;
+            }
+            return false;
+        }
+
+        #region 接口方法
+
+        public IEnumerator<string> GetEnumerator()
+        {
+            if (_arr == null)
+            {
+                Type type = typeof(T);
+                if (!SharedData.TryGetValue(type, out _arr))
+                {
+                    yield return null;
+                }
+            }
+            for (int i = 0; i < _arr.Length; i++)
+                yield return _arr[i];
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
+        #endregion
+    }
+
+    public class SharedStringList : IEnumerable<string> 
+    {
+        private string[] _arr;
+        private static Dictionary<Type, string[]> SharedData = new Dictionary<Type, string[]>();
+        private static object SharedDataLock = new object();
+        private Type _sharedType;
+
+        public SharedStringList(Type sharedType)
+        {
+            _sharedType = sharedType;
+            //_arr = new string[0];
+        }
+
+        public SharedStringList(Type sharedType,string item)
+        {
+            _sharedType = sharedType;
+            CreateNewData(item);
+        }
+
+        public SharedStringList(Type sharedType, IEnumerable<string> data)
+        {
+            _sharedType = sharedType;
+            CreateNewData(data);
+        }
+
+        private void CreateNewData(string item)
+        {
+            _arr = new string[] { item };
+        }
+
+        private void CreateNewData(IEnumerable<string> data)
+        {
+            int count = data.Count();
+            string[] temp = new string[count];
+            int i = 0;
+            foreach (string item in data)
+                temp[i++] = item;
+            this._arr = temp;
+        }
+
+        /// <summary>
+        /// 向集合添加一个不重复的元素到末尾。
+        /// 如果还没有共享的数据，此时添加的数据会被其它实例共享，否则只会添加到当前实例对象上。线程安全。
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>返回是否成功添加</returns>
+        public bool Add(string item)
+        {
+            if (_arr == null)
+            {
+                if (SharedData.TryGetValue(_sharedType, out _arr))
+                {
+                    if (_arr.Contains(item))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        _arr = new string[1] { item };
+                        return true;
+                    }
+                }
+                else
+                {
+                    //如果还没有共享数据
+                    lock (SharedDataLock)
+                    {
+                        //再次判断，确保线程安全
+                        if (SharedData.TryGetValue(_sharedType, out _arr))
+                        {
+                            if (_arr.Contains(item))
+                            {
+                                return false;
+                            }
+                            else
+                            {
+                                _arr = new string[1] { item };
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            _arr = new string[1] { item };
+                            SharedData[_sharedType] = _arr;
+                            return true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                //此操作将添加到当前对象的实例数据而不会添加到共享数据
+                lock (SharedDataLock)
+                {
+                    if (!Contains(item))
+                    {
+                        string[] temp = new string[_arr.Length + 1];
+                        Array.Copy(_arr, temp, _arr.Length);
+                        temp[temp.Length - 1] = item;
+                        _arr = temp;
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 清除当前数据并使用新的实例数据
+        /// </summary>
+        public void Clear()
+        {
+            _arr = new string[0];
+        }
+
+
+        /// <summary>
+        /// 从集合删除一个元素，如果操作成功，当前对象将使用新的实例数据。线程安全。
+        /// </summary>
+        /// <param name="item"></param>
+        /// <returns>是否操作成功</returns>
+        public bool Remove(string item)
+        {
+            if (!this.Contains(item))
+                return false;
+            lock (SharedDataLock)
+            {
+                string[] temp = new string[_arr.Length - 1];
+                int j = 0;
+                for (int i = 0; i < _arr.Length; i++)
+                {
+                    if (!object.Equals(_arr[i], item))
+                        temp[j++] = _arr[i];
+                }
+                _arr = temp;
+                return true;
+            }
+        }
+
+        public int Count
+        {
+            get {
+                if (_arr == null)
+                    return 0;
+                else
+                    return _arr.Length;
+            }
+        }
+
+        public bool Contains(string item)
+        {
+            if (_arr == null) return false;
+            for (int i = 0; i < _arr.Length; i++)
+            {
+                if (object.Equals(_arr[i], item))
+                    return true;
+            }
+            return false;
+        }
+
+        #region 接口方法
+
+        public IEnumerator<string> GetEnumerator()
+        {
+            if (_arr == null)
+            {
+                if (!SharedData.TryGetValue(_sharedType, out _arr))
+                {
+                    yield return null;
+                }
+            }
             for (int i = 0; i < _arr.Length; i++)
                 yield return _arr[i];
         }

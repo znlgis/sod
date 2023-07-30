@@ -29,7 +29,7 @@ namespace PWMIS.Common
         /// <summary>
         /// 获取主键
         /// </summary>
-       NotifyingArrayList<string> PrimaryKeys { get; }
+       SharedStringList PrimaryKeys { get; }
         /// <summary>
         /// 获取属性列的值
         /// </summary>

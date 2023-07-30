@@ -165,7 +165,11 @@ namespace PWMIS.Common
         /// <summary>
         /// 存储过程，将从SQL-MAP实体配置文件中使用用户定义的存储过程名称和参数信息，需要采用SQL-MAP的参数语法
         /// </summary>
-        StoredProcedure
+        StoredProcedure,
+        /// <summary>
+        /// 没有任何映射
+        /// </summary>
+        None
     }
 
 }

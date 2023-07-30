@@ -7,12 +7,11 @@
  * http://pwmis.codeplex.com
  * -----------------------------------------------------
  * 
- * 使用说明：请看类的注释。
- * 如果需要在.net 4.0 下面使用，可以取消FastPropertyAccessor 类的注释，有关
- * FastPropertyAccessor 类的原理，参见 
+ * 使用说明：
+ * FastPropertyAccessor 类原理请参见 
  * http://www.cnblogs.com/bluedoctor/archive/2012/12/18/2823325.html
  * 
- * 本文原理，参见
+ * 本文FastPropertyAccessor被注释不使用的原因，请参见
  * http://www.cnblogs.com/bluedoctor/archive/2012/12/20/2826392.html
  * 
  */
@@ -22,6 +21,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using PWMIS.DataMap.Entity;
+using System.Collections.Concurrent;
 //using System.Collections.Concurrent;
 
 namespace PWMIS.Core.Extensions
@@ -97,7 +97,10 @@ namespace PWMIS.Core.Extensions
             {
                 foreach (PropertyInfo tp in targetProperties)
                 {
-                    if (sp.Name == tp.Name && sp.PropertyType == tp.PropertyType)
+                    //if (sp.Name == tp.Name && sp.PropertyType == tp.PropertyType)
+                    //修改后的版本增加了“源实例中属性类型为int而目标实例中属性类型为可控类型（例如：int?）的情况下也进行复制”的判定
+                    //感谢网友 【落阳】提供修改建议
+                    if (sp.Name == tp.Name && (sp.PropertyType == tp.PropertyType || Nullable.GetUnderlyingType(sp.PropertyType) == tp.PropertyType))
                     {
                         CastProperty cp = new CastProperty();
                         cp.SourceProperty = new PropertyAccessorHandler(sp);
@@ -223,12 +226,7 @@ namespace PWMIS.Core.Extensions
             public PropertyAccessorHandler(PropertyInfo propInfo)
             {
                 this.PropertyName = propInfo.Name;
-                //var obj = Activator.CreateInstance(classType);
-                //var getterType = typeof(FastPropertyAccessor.GetPropertyValue<>).MakeGenericType(propInfo.PropertyType);
-                //var setterType = typeof(FastPropertyAccessor.SetPropertyValue<>).MakeGenericType(propInfo.PropertyType);
-
-                //this.Getter = Delegate.CreateDelegate(getterType, null, propInfo.GetGetMethod());
-                //this.Setter = Delegate.CreateDelegate(setterType, null, propInfo.GetSetMethod());
+               
                 if(propInfo.CanRead)
                     this.Getter = propInfo.GetValue;
 
@@ -250,52 +248,55 @@ namespace PWMIS.Core.Extensions
         }
     }
 
-    ///// <summary>
-    ///// 快速属性访问器，注意，这将于具体的对象相绑定，如果某对象用得不多，请使用 NoCache 相关的方法
-    ///// </summary>
-    //public class FastPropertyAccessor
-    //{
-    //    public delegate T GetPropertyValue<T>();
-    //    public delegate void SetPropertyValue<T>(T Value);
+    /*
+     * 
+    /// <summary>
+    /// 快速属性访问器，注意，这将于具体的对象相绑定，如果某对象用得不多，请使用 NoCache 相关的方法
+    /// </summary>
+    public class FastPropertyAccessor
+    {
+        public delegate T GetPropertyValue<T>();
+        public delegate void SetPropertyValue<T>(T Value);
 
-    //    private static ConcurrentDictionary<string, Delegate> myDelegateCache = new ConcurrentDictionary<string, Delegate>();
+        private static ConcurrentDictionary<string, Delegate> myDelegateCache = new ConcurrentDictionary<string, Delegate>();
 
-    //    public static GetPropertyValue<T> CreateGetPropertyValueDelegate<TSource, T>(TSource obj, string propertyName)
-    //    {
-    //        string key = string.Format("DGP-{0}-{1}", typeof(TSource).FullName, propertyName);//Delegate-GetProperty-{0}-{1}
-    //        GetPropertyValue<T> result = (GetPropertyValue<T>)myDelegateCache.GetOrAdd(
-    //            key,
-    //            newkey =>
-    //            {
-    //                return Delegate.CreateDelegate(typeof(GetPropertyValue<T>), obj, typeof(TSource).GetProperty(propertyName).GetGetMethod());
-    //            }
-    //            );
+        public static GetPropertyValue<T> CreateGetPropertyValueDelegate<TSource, T>(TSource obj, string propertyName)
+        {
+            string key = string.Format("DGP-{0}-{1}", typeof(TSource).FullName, propertyName);//Delegate-GetProperty-{0}-{1}
+            GetPropertyValue<T> result = (GetPropertyValue<T>)myDelegateCache.GetOrAdd(
+                key,
+                newkey =>
+                {
+                    return Delegate.CreateDelegate(typeof(GetPropertyValue<T>), obj, typeof(TSource).GetProperty(propertyName).GetGetMethod());
+                }
+                );
 
-    //        return result;
-    //    }
-    //    public static SetPropertyValue<T> CreateSetPropertyValueDelegate<TSource, T>(TSource obj, string propertyName)
-    //    {
-    //        string key = string.Format("DSP-{0}-{1}", typeof(TSource).FullName, propertyName);//Delegate-SetProperty-{0}-{1}
-    //        SetPropertyValue<T> result = (SetPropertyValue<T>)myDelegateCache.GetOrAdd(
-    //           key,
-    //           newkey =>
-    //           {
-    //               return Delegate.CreateDelegate(typeof(SetPropertyValue<T>), obj, typeof(TSource).GetProperty(propertyName).GetSetMethod());
-    //           }
-    //           );
+            return result;
+        }
+        public static SetPropertyValue<T> CreateSetPropertyValueDelegate<TSource, T>(TSource obj, string propertyName)
+        {
+            string key = string.Format("DSP-{0}-{1}", typeof(TSource).FullName, propertyName);//Delegate-SetProperty-{0}-{1}
+            SetPropertyValue<T> result = (SetPropertyValue<T>)myDelegateCache.GetOrAdd(
+               key,
+               newkey =>
+               {
+                   return Delegate.CreateDelegate(typeof(SetPropertyValue<T>), obj, typeof(TSource).GetProperty(propertyName).GetSetMethod());
+               }
+               );
 
-    //        return result;
-    //    }
+            return result;
+        }
 
-    //    public static GetPropertyValue<T> CreateGetPropertyValueDelegateNoCache<TSource, T>(TSource obj, string propertyName)
-    //    {
-    //        return (GetPropertyValue<T>)Delegate.CreateDelegate(typeof(GetPropertyValue<T>), obj, typeof(TSource).GetProperty(propertyName).GetGetMethod()); ;
-    //    }
-    //    public static SetPropertyValue<T> CreateSetPropertyValueDelegateNoCache<TSource, T>(TSource obj, string propertyName)
-    //    {
-    //        return (SetPropertyValue<T>)Delegate.CreateDelegate(typeof(SetPropertyValue<T>), obj, typeof(TSource).GetProperty(propertyName).GetSetMethod()); ;
-    //    }
-    //}
+        public static GetPropertyValue<T> CreateGetPropertyValueDelegateNoCache<TSource, T>(TSource obj, string propertyName)
+        {
+            return (GetPropertyValue<T>)Delegate.CreateDelegate(typeof(GetPropertyValue<T>), obj, typeof(TSource).GetProperty(propertyName).GetGetMethod()); ;
+        }
+        public static SetPropertyValue<T> CreateSetPropertyValueDelegateNoCache<TSource, T>(TSource obj, string propertyName)
+        {
+            return (SetPropertyValue<T>)Delegate.CreateDelegate(typeof(SetPropertyValue<T>), obj, typeof(TSource).GetProperty(propertyName).GetSetMethod()); ;
+        }
+    }
+    */
 
     /// <summary>
     /// 对象转换扩展（可安全的处理PDF.NET实体类之间的转换）

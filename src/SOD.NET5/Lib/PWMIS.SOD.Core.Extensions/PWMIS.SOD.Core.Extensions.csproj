@@ -7,7 +7,20 @@
     <Copyright>PWMIS.COM</Copyright>
     <Company>PWMIS（程序员蜜糍）</Company>
     <Authors>深蓝医生</Authors>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>SOD框架核心库功能扩展</Title>
+    <PackageProjectUrl>https://github.com/znlgis/sod</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/znlgis/sod</RepositoryUrl>
+    <PackageId>PDF.NET.SOD.Extensions</PackageId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="3.1.8" />

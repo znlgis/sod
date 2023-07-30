@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30225.117
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33829.357
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib", "Lib", "{63B868D2-6CFF-4B03-8A57-F8963055418D}"
 EndProject
@@ -98,6 +98,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.Dameng", "OtherProvider\PWMIS.DataProvider.Data.Dameng\PWMIS.DataProvider.Data.Dameng.csproj", "{AB003DC4-A0BF-46D2-9B0F-87A58E9DFA04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.Kingbase", "OtherProvider\PWMIS.DataProvider.Data.Kingbase\PWMIS.DataProvider.Data.Kingbase.csproj", "{984D8FFC-C2CB-48A3-8872-336696DE2176}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityCreateTool", "Tools\EntityCreateTool\EntityCreateTool.csproj", "{A77EEB8A-078E-42A0-90D5-406B3433BBAE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -484,6 +486,18 @@ Global
 		{984D8FFC-C2CB-48A3-8872-336696DE2176}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{984D8FFC-C2CB-48A3-8872-336696DE2176}.Release|x86.ActiveCfg = Release|Any CPU
 		{984D8FFC-C2CB-48A3-8872-336696DE2176}.Release|x86.Build.0 = Release|Any CPU
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE}.Debug|x86.Build.0 = Debug|Any CPU
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE}.Release|x86.ActiveCfg = Release|Any CPU
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -527,6 +541,7 @@ Global
 		{419461A2-288D-48D8-AA43-C773FF032B85} = {09629F97-3C50-4B71-8327-BC10CBEF07AD}
 		{AB003DC4-A0BF-46D2-9B0F-87A58E9DFA04} = {2A4234BB-564F-402C-9C23-466843666189}
 		{984D8FFC-C2CB-48A3-8872-336696DE2176} = {2A4234BB-564F-402C-9C23-466843666189}
+		{A77EEB8A-078E-42A0-90D5-406B3433BBAE} = {9854DD26-9CA3-45ED-9A51-C614C0F5EBD8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0F0161B3-B516-4F75-AEC8-20C6F08526DE}
