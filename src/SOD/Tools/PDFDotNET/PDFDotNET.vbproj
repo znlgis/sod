@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="..\..\packages\CefSharp.Common.97.1.61\build\CefSharp.Common.props" Condition="Exists('..\..\packages\CefSharp.Common.97.1.61\build\CefSharp.Common.props')" />
-  <Import Project="..\..\packages\cef.redist.x86.97.1.6\build\cef.redist.x86.props" Condition="Exists('..\..\packages\cef.redist.x86.97.1.6\build\cef.redist.x86.props')" />
-  <Import Project="..\..\packages\cef.redist.x64.97.1.6\build\cef.redist.x64.props" Condition="Exists('..\..\packages\cef.redist.x64.97.1.6\build\cef.redist.x64.props')" />
+  <Import Project="..\..\packages\CefSharp.Common.115.3.110\build\CefSharp.Common.props" Condition="Exists('..\..\packages\CefSharp.Common.115.3.110\build\CefSharp.Common.props')" />
+  <Import Project="..\..\packages\cef.redist.x86.115.3.11\build\cef.redist.x86.props" Condition="Exists('..\..\packages\cef.redist.x86.115.3.11\build\cef.redist.x86.props')" />
+  <Import Project="..\..\packages\cef.redist.x64.115.3.11\build\cef.redist.x64.props" Condition="Exists('..\..\packages\cef.redist.x64.115.3.11\build\cef.redist.x64.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -15,7 +15,7 @@
     <AssemblyName>PDFDotNET</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MyType>WindowsForms</MyType>
-    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <OptionExplicit>On</OptionExplicit>
     <OptionCompare>Binary</OptionCompare>
     <OptionStrict>Off</OptionStrict>
@@ -154,14 +154,14 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CefSharp, Version=97.1.61.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CefSharp.Common.97.1.61\lib\net452\CefSharp.dll</HintPath>
+    <Reference Include="CefSharp, Version=115.3.110.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CefSharp.Common.115.3.110\lib\net462\CefSharp.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp.Core, Version=97.1.61.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CefSharp.Common.97.1.61\lib\net452\CefSharp.Core.dll</HintPath>
+    <Reference Include="CefSharp.Core, Version=115.3.110.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CefSharp.Common.115.3.110\lib\net462\CefSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp.WinForms, Version=97.1.61.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\CefSharp.WinForms.97.1.61\lib\net462\CefSharp.WinForms.dll</HintPath>
+    <Reference Include="CefSharp.WinForms, Version=115.3.110.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\CefSharp.WinForms.115.3.110\lib\net462\CefSharp.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -570,5 +570,14 @@ copy /y "$(SolutionDir)\Tools\SqlMapBuilder\bin\$(ConfigurationName)\*.dll" "$(T
 copy /y "$(SolutionDir)\Tools\SqlMapBuilder\bin\$(ConfigurationName)\*.exe" "$(TargetDir)\Tools\SqlMapBuilder"
 copy /y "$(SolutionDir)\Tools\SqlMapBuilder\bin\$(ConfigurationName)\*.pdb" "$(TargetDir)\Tools\SqlMapBuilder"</PostBuildEvent>
   </PropertyGroup>
-  <Import Project="..\..\packages\CefSharp.Common.97.1.61\build\CefSharp.Common.targets" Condition="Exists('..\..\packages\CefSharp.Common.97.1.61\build\CefSharp.Common.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>这台计算机上缺少此项目引用的 NuGet 程序包。使用“NuGet 程序包还原”可下载这些程序包。有关更多信息，请参见 http://go.microsoft.com/fwlink/?LinkID=322105。缺少的文件是 {0}。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\cef.redist.x64.115.3.11\build\cef.redist.x64.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\cef.redist.x64.115.3.11\build\cef.redist.x64.props'))" />
+    <Error Condition="!Exists('..\..\packages\cef.redist.x86.115.3.11\build\cef.redist.x86.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\cef.redist.x86.115.3.11\build\cef.redist.x86.props'))" />
+    <Error Condition="!Exists('..\..\packages\CefSharp.Common.115.3.110\build\CefSharp.Common.props')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CefSharp.Common.115.3.110\build\CefSharp.Common.props'))" />
+    <Error Condition="!Exists('..\..\packages\CefSharp.Common.115.3.110\build\CefSharp.Common.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\CefSharp.Common.115.3.110\build\CefSharp.Common.targets'))" />
+  </Target>
+  <Import Project="..\..\packages\CefSharp.Common.115.3.110\build\CefSharp.Common.targets" Condition="Exists('..\..\packages\CefSharp.Common.115.3.110\build\CefSharp.Common.targets')" />
 </Project>
