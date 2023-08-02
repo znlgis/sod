@@ -43,6 +43,9 @@ namespace ConsoleAppTest
             se2.PrimaryKeys.Remove("ID2");
             se2.MapNewTableName("Table_2");
             Console.WriteLine("TableName:{0}",se2.GetTableName());
+
+            se["AtTime"] = DateTime.Now.ToString();
+            Console.WriteLine("AtTime:{0}", se.AtTime);
             Console.ReadLine();
         }
     }

@@ -26,5 +26,10 @@ namespace ConsoleAppTest
             set { setProperty(nameof(Name), value,100); }
         }
 
+        public DateTime AtTime
+        {
+            get { return getProperty<DateTime>(nameof(AtTime)); }
+            set { setProperty(nameof(AtTime), value); }
+        }
     }
 }

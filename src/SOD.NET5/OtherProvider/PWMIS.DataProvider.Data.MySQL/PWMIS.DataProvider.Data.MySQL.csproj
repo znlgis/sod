@@ -14,6 +14,7 @@
     <PackageProjectUrl>https://github.com/znlgis/sod</PackageProjectUrl>
     <RepositoryUrl>https://github.com/znlgis/sod</RepositoryUrl>
     <PackageTags>.NET;MySql;ORM;SqlMap</PackageTags>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

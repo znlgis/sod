@@ -13,6 +13,7 @@
     <Title>SOD框架支持.NET 5以及之后的版本的Oracle数据提供程序</Title>
     <PackageProjectUrl>https://github.com/znlgis/sod</PackageProjectUrl>
     <PackageTags>.NET;Oraclel;ORM;SqlMap</PackageTags>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

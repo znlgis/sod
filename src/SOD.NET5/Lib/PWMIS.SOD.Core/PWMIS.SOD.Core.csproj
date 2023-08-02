@@ -17,6 +17,7 @@
 	  <RepositoryUrl>https://github.com/znlgis/sod</RepositoryUrl>
 	  <PackageTags>ORM,SqlMap</PackageTags>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 	
   <ItemGroup>
