@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Description>SOD框架支持.NET 5以及之后的版本迁移升级的版本</Description>
-    <Version>7.0.0-beta</Version>
+    <Version>7.0.0-beta2</Version>
     <Copyright>PWMIS.COM</Copyright>
     <Company>PWMIS（程序员蜜糍）</Company>
     <Authors>深蓝医生</Authors>
@@ -12,7 +12,7 @@
     <PackageProjectUrl>https://github.com/znlgis/sod</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/znlgis/sod</RepositoryUrl>
-    <PackageId>PDF.NET.SOD.Extensions</PackageId>
+    <PackageId>PDF.NET.SOD</PackageId>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
