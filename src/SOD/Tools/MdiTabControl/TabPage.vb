@@ -1,9 +1,9 @@
 Imports System.ComponentModel
 Imports System.Drawing.Drawing2D
+Imports System.Runtime.InteropServices
 
-<DesignTimeVisible(False), Description("Represents a single tab page in a MdiTabControl.TabControl.")> _
+<DesignTimeVisible(False), Description("Represents a single tab page in a MdiTabControl.TabControl.")>
 Public Class TabPage
-
     Private m_BackHighColor As Color
     Private m_BackHighColorDisabled As Color
     Private m_BackLowColor As Color
@@ -51,15 +51,16 @@ Public Class TabPage
 
     Private MouseOverCloseButton As Boolean = False
 
-    <Description("Occurs when the user clicks the Tab Control.")> _
-    Public Shadows Event Click(ByVal sender As Object, ByVal e As EventArgs)
-    Friend Event Close(ByVal sender As Object, ByVal e As EventArgs)
-    Friend Event GetTabRegion(ByVal sender As Object, ByVal e As TabControl.GetTabRegionEventArgs)
-    Friend Event TabPaintBackground(ByVal sender As Object, ByVal e As TabControl.TabPaintEventArgs)
-    Friend Event TabPaintBorder(ByVal sender As Object, ByVal e As TabControl.TabPaintEventArgs)
-    Friend Event Draging(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs)
+    <Description("Occurs when the user clicks the Tab Control.")>
+    Public Shadows Event Click(sender As Object, e As EventArgs)
 
-    Sub New(ByVal Form As System.Windows.Forms.Form)
+    Friend Event Close(sender As Object, e As EventArgs)
+    Friend Event GetTabRegion(sender As Object, e As TabControl.GetTabRegionEventArgs)
+    Friend Event TabPaintBackground(sender As Object, e As TabControl.TabPaintEventArgs)
+    Friend Event TabPaintBorder(sender As Object, e As TabControl.TabPaintEventArgs)
+    Friend Event Draging(sender As Object, e As MouseEventArgs)
+
+    Sub New(Form As Form)
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
         ' Add any initialization after the InitializeComponent() call.
@@ -70,10 +71,10 @@ Public Class TabPage
         Me.SetStyle(ControlStyles.SupportsTransparentBackColor, True)
         MyBase.BackColor = Color.Transparent
         Me.Visible = False
-        Me.Size = New System.Drawing.Size(1, 1)
+        Me.Size = New Size(1, 1)
         Form.TopLevel = False
         Form.MdiParent = Nothing
-        Form.FormBorderStyle = Windows.Forms.FormBorderStyle.None
+        Form.FormBorderStyle = FormBorderStyle.None
         Form.Dock = DockStyle.Fill
         Me.m_Form = Form
         MenuItem.Text = Form.Text
@@ -82,95 +83,119 @@ Public Class TabPage
         Me.ResumeLayout(False)
     End Sub
 
-    <Description("Gets the form associated with the tab page")> _
-    Public ReadOnly Property Form() As Object
+    <Description("Gets the form associated with the tab page")>
+    Public ReadOnly Property Form As Object
         Get
             Return m_Form
         End Get
     End Property
 
-    <Description("Gets or sets the System.Drawing.Color structure that represents the starting color of the Background linear gradient for the tab.")> _
-    Public Property BackHighColor() As Color
+    <
+        Description _
+            (
+                "Gets or sets the System.Drawing.Color structure that represents the starting color of the Background linear gradient for the tab.")
+        >
+    Public Property BackHighColor As Color
         Get
             Return m_BackHighColor
         End Get
-        Set(ByVal value As Color)
+        Set
             m_BackHighColor = value
             Invalidate()
         End Set
     End Property
 
-    <Description("Gets or sets the System.Drawing.Color structure that represents the ending color of the Background linear gradient for the tab.")> _
-    Public Property BackLowColor() As Color
+    <
+        Description _
+            (
+                "Gets or sets the System.Drawing.Color structure that represents the ending color of the Background linear gradient for the tab.")
+        >
+    Public Property BackLowColor As Color
         Get
             Return m_BackLowColor
         End Get
-        Set(ByVal value As Color)
+        Set
             m_BackLowColor = value
             Invalidate()
         End Set
     End Property
 
-    <Description("Gets or sets the System.Drawing.Color structure that represents the border color.")> _
-    Friend Property BorderColor() As Color
+    <Description("Gets or sets the System.Drawing.Color structure that represents the border color.")>
+    Friend Property BorderColor As Color
         Get
             Return m_BorderColor
         End Get
-        Set(ByVal value As Color)
+        Set
             m_BorderColor = value
             Invalidate()
         End Set
     End Property
 
-    <Description("Gets or sets the System.Drawing.Color structure that represents the starting color of the Background linear gradient for a non selected tab.")> _
-    Public Property BackHighColorDisabled() As Color
+    <
+        Description _
+            (
+                "Gets or sets the System.Drawing.Color structure that represents the starting color of the Background linear gradient for a non selected tab.")
+        >
+    Public Property BackHighColorDisabled As Color
         Get
             Return m_BackHighColorDisabled
         End Get
-        Set(ByVal value As Color)
+        Set
             m_BackHighColorDisabled = value
             Invalidate()
         End Set
     End Property
 
-    <Description("Gets or sets the System.Drawing.Color structure that represents the ending color of the Background linear gradient for a non selected tab.")> _
-    Public Property BackLowColorDisabled() As Color
+    <
+        Description _
+            (
+                "Gets or sets the System.Drawing.Color structure that represents the ending color of the Background linear gradient for a non selected tab.")
+        >
+    Public Property BackLowColorDisabled As Color
         Get
             Return m_BackLowColorDisabled
         End Get
-        Set(ByVal value As Color)
+        Set
             m_BackLowColorDisabled = value
             Invalidate()
         End Set
     End Property
 
-    <Description("Gets or sets the System.Drawing.Color structure that represents the border color of the tab when not selected.")> _
-    Public Property BorderColorDisabled() As Color
+    <
+        Description _
+            (
+                "Gets or sets the System.Drawing.Color structure that represents the border color of the tab when not selected.")
+        >
+    Public Property BorderColorDisabled As Color
         Get
             Return m_BorderColorDisabled
         End Get
-        Set(ByVal value As Color)
+        Set
             m_BorderColorDisabled = value
             Invalidate()
         End Set
     End Property
 
-    <Description("Gets or sets the System.Drawing.Color structure that represents the fore color of the tab when not selected.")> _
-    Public Property ForeColorDisabled() As Color
+    <
+        Description _
+            (
+                "Gets or sets the System.Drawing.Color structure that represents the fore color of the tab when not selected.")
+        >
+    Public Property ForeColorDisabled As Color
         Get
             Return m_ForeColorDisabled
         End Get
-        Set(ByVal value As Color)
+        Set
             m_ForeColorDisabled = value
             Invalidate()
         End Set
     End Property
 
-    Friend Property IsSelected() As Boolean
+    Friend Property IsSelected As Boolean
         Get
             Return m_Selected
         End Get
-        Set(ByVal Value As Boolean)
+        Set
             If m_Selected <> Value Then
                 m_Selected = Value
                 If m_Selected Then
@@ -181,63 +206,63 @@ Public Class TabPage
         End Set
     End Property
 
-    <Description("Returns whether the tab is selected or not.")> _
-    Public ReadOnly Property Selected() As Boolean
+    <Description("Returns whether the tab is selected or not.")>
+    Public ReadOnly Property Selected As Boolean
         Get
             Return IsSelected
         End Get
     End Property
 
-    Friend Property MaximumWidth() As Integer
+    Friend Property MaximumWidth As Integer
         Get
             Return m_MaximumWidth
         End Get
-        Set(ByVal value As Integer)
+        Set
             m_MaximumWidth = value
             CalculateWidth()
             Invalidate()
         End Set
     End Property
 
-    Friend Property MinimumWidth() As Integer
+    Friend Property MinimumWidth As Integer
         Get
             Return m_MinimumWidth
         End Get
-        Set(ByVal value As Integer)
+        Set
             m_MinimumWidth = value
             CalculateWidth()
             Invalidate()
         End Set
     End Property
 
-    Friend Property PadLeft() As Integer
+    Friend Property PadLeft As Integer
         Get
             Return m_PadLeft
         End Get
-        Set(ByVal value As Integer)
+        Set
             m_PadLeft = value
             CalculateWidth()
             Invalidate()
         End Set
     End Property
 
-    Friend Property PadRight() As Integer
+    Friend Property PadRight As Integer
         Get
             Return m_PadRight
         End Get
-        Set(ByVal value As Integer)
+        Set
             m_PadRight = value
             CalculateWidth()
             Invalidate()
         End Set
     End Property
 
-    <Description("Gets or sets whether the tab close button is visble or not.")> _
-    Public Property CloseButtonVisible() As Boolean
+    <Description("Gets or sets whether the tab close button is visble or not.")>
+    Public Property CloseButtonVisible As Boolean
         Get
             Return m_CloseButtonVisible
         End Get
-        Set(ByVal value As Boolean)
+        Set
             If m_CloseButtonVisible <> value Then
                 m_CloseButtonVisible = value
                 CalculateWidth()
@@ -246,251 +271,254 @@ Public Class TabPage
         End Set
     End Property
 
-    Public Property CloseButtonImage() As Image
+    Public Property CloseButtonImage As Image
         Get
             Return m_CloseButton
         End Get
-        Set(ByVal value As Image)
+        Set
             m_CloseButton = value
             Invalidate()
         End Set
     End Property
 
-    Public Property CloseButtonImageHot() As Image
+    Public Property CloseButtonImageHot As Image
         Get
             Return m_CloseButtonImageHot
         End Get
-        Set(ByVal value As Image)
+        Set
             m_CloseButtonImageHot = value
             Invalidate()
         End Set
     End Property
 
-    Public Property CloseButtonImageDisabled() As Image
+    Public Property CloseButtonImageDisabled As Image
         Get
             Return m_CloseButtonImageDisabled
         End Get
-        Set(ByVal value As Image)
+        Set
             m_CloseButtonImageDisabled = value
             Invalidate()
         End Set
     End Property
 
-    Public Property CloseButtonBackHighColor() As System.Drawing.Color
+    Public Property CloseButtonBackHighColor As Color
         Get
             Return m_CloseButtonBackHighColor
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_CloseButtonBackHighColor = Value
         End Set
     End Property
 
-    Public Property CloseButtonBackLowColor() As System.Drawing.Color
+    Public Property CloseButtonBackLowColor As Color
         Get
             Return m_CloseButtonBackLowColor
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_CloseButtonBackLowColor = Value
         End Set
     End Property
 
-    Public Property CloseButtonBorderColor() As System.Drawing.Color
+    Public Property CloseButtonBorderColor As Color
         Get
             Return m_CloseButtonBorderColor
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_CloseButtonBorderColor = Value
         End Set
     End Property
 
-    Public Property CloseButtonForeColor() As System.Drawing.Color
+    Public Property CloseButtonForeColor As Color
         Get
             Return m_CloseButtonForeColor
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_CloseButtonForeColor = Value
         End Set
     End Property
 
-    Public Property CloseButtonBackHighColorDisabled() As System.Drawing.Color
+    Public Property CloseButtonBackHighColorDisabled As Color
         Get
             Return m_CloseButtonBackHighColorDisabled
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_CloseButtonBackHighColorDisabled = Value
         End Set
     End Property
 
-    Public Property CloseButtonBackLowColorDisabled() As System.Drawing.Color
+    Public Property CloseButtonBackLowColorDisabled As Color
         Get
             Return m_CloseButtonBackLowColorDisabled
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_CloseButtonBackLowColorDisabled = Value
         End Set
     End Property
 
-    Public Property CloseButtonBorderColorDisabled() As System.Drawing.Color
+    Public Property CloseButtonBorderColorDisabled As Color
         Get
             Return m_CloseButtonBorderColorDisabled
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_CloseButtonBorderColorDisabled = Value
         End Set
     End Property
 
-    Public Property CloseButtonForeColorDisabled() As System.Drawing.Color
+    Public Property CloseButtonForeColorDisabled As Color
         Get
             Return m_CloseButtonForeColorDisabled
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_CloseButtonForeColorDisabled = Value
         End Set
     End Property
 
-    Public Property CloseButtonBackHighColorHot() As System.Drawing.Color
+    Public Property CloseButtonBackHighColorHot As Color
         Get
             Return m_CloseButtonBackHighColorHot
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_CloseButtonBackHighColorHot = Value
         End Set
     End Property
 
-    Public Property CloseButtonBackLowColorHot() As System.Drawing.Color
+    Public Property CloseButtonBackLowColorHot As Color
         Get
             Return m_CloseButtonBackLowColorHot
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_CloseButtonBackLowColorHot = Value
         End Set
     End Property
 
-    Public Property CloseButtonBorderColorHot() As System.Drawing.Color
+    Public Property CloseButtonBorderColorHot As Color
         Get
             Return m_CloseButtonBorderColorHot
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_CloseButtonBorderColorHot = Value
         End Set
     End Property
 
-    Public Property CloseButtonForeColorHot() As System.Drawing.Color
+    Public Property CloseButtonForeColorHot As Color
         Get
             Return m_CloseButtonForeColorHot
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_CloseButtonForeColorHot = Value
         End Set
     End Property
 
-    Friend Property HotTrack() As Boolean
+    Friend Property HotTrack As Boolean
         Get
             Return m_HotTrack
         End Get
-        Set(ByVal value As Boolean)
+        Set
             m_HotTrack = value
             Invalidate()
         End Set
     End Property
 
-    Friend Property CloseButtonSize() As Size
+    Friend Property CloseButtonSize As Size
         Get
             Return m_CloseButtonSize
         End Get
-        Set(ByVal value As Size)
+        Set
             m_CloseButtonSize = value
             CalculateWidth()
             Invalidate()
         End Set
     End Property
 
-    Friend Property FontBoldOnSelect() As Boolean
+    Friend Property FontBoldOnSelect As Boolean
         Get
             Return m_FontBoldOnSelect
         End Get
-        Set(ByVal value As Boolean)
+        Set
             m_FontBoldOnSelect = value
             CalculateWidth()
             Invalidate()
         End Set
     End Property
 
-    Friend Property IconSize() As Size
+    Friend Property IconSize As Size
         Get
             Return m_IconSize
         End Get
-        Set(ByVal value As Size)
+        Set
             m_IconSize = value
             CalculateWidth()
             Invalidate()
         End Set
     End Property
 
-    Friend Property SmoothingMode() As SmoothingMode
+    Friend Property SmoothingMode As SmoothingMode
         Get
             Return m_SmoothingMode
         End Get
-        Set(ByVal value As SmoothingMode)
+        Set
             m_SmoothingMode = value
             Invalidate()
         End Set
     End Property
 
-    Friend Property Alignment() As TabControl.TabAlignment
+    Friend Property Alignment As TabControl.TabAlignment
         Get
             Return m_Alignment
         End Get
-        Set(ByVal value As TabControl.TabAlignment)
+        Set
             m_Alignment = value
             Invalidate()
         End Set
     End Property
 
-    Friend Property GlassGradient() As Boolean
+    Friend Property GlassGradient As Boolean
         Get
             Return m_GlassGradient
         End Get
-        Set(ByVal value As Boolean)
+        Set
             m_GlassGradient = value
         End Set
     End Property
 
-    Friend Property BorderEnhanced() As Boolean
+    Friend Property BorderEnhanced As Boolean
         Get
             Return m_BorderEnhanced
         End Get
-        Set(ByVal value As Boolean)
+        Set
             m_BorderEnhanced = value
         End Set
     End Property
 
-    Friend Property RenderMode() As ToolStripRenderMode
+    Friend Property RenderMode As ToolStripRenderMode
         Get
             Return m_RenderMode
         End Get
-        Set(ByVal value As ToolStripRenderMode)
+        Set
             m_RenderMode = value
             Invalidate()
         End Set
     End Property
 
-    Friend Property BorderEnhanceWeight() As TabControl.Weight
+    Friend Property BorderEnhanceWeight As TabControl.Weight
         Get
             Return m_BorderEnhanceWeight
         End Get
-        Set(ByVal value As TabControl.Weight)
+        Set
             m_BorderEnhanceWeight = value
         End Set
     End Property
 
-    Public Property Icon() As Icon
+    Public Property Icon As Icon
         Get
             Return m_Form.Icon
         End Get
-        Set(ByVal value As Icon)
+        Set
             m_Form.Icon = value
-            Dim r As New Region(New Rectangle(PadLeft, (Me.Height / 2 - m_IconSize.Height / 2), m_IconSize.Width, m_IconSize.Height))
+            Dim _
+                r As _
+                    New Region(New Rectangle(PadLeft, (Me.Height/2 - m_IconSize.Height/2), m_IconSize.Width,
+                                             m_IconSize.Height))
             Me.Invalidate(r)
             r.Dispose()
             r = Nothing
@@ -498,35 +526,36 @@ Public Class TabPage
         End Set
     End Property
 
-    <Description("Selects the TabPage.")> _
+    <Description("Selects the TabPage.")>
     Public Shadows Sub [Select]()
         If Not IsSelected Then
             RaiseEvent Click(Me, New EventArgs)
         End If
     End Sub
 
-    Private Function CreateGradientBrush(ByVal Rectangle As Rectangle, ByVal Color1 As Color, ByVal Color2 As Color) As Drawing2D.LinearGradientBrush
+    Private Function CreateGradientBrush(Rectangle As Rectangle, Color1 As Color, Color2 As Color) _
+        As LinearGradientBrush
         If m_GlassGradient Then
-            Return Helper.CreateGlassGradientBrush(Rectangle, Color1, Color2)
+            Return CreateGlassGradientBrush(Rectangle, Color1, Color2)
         Else
-            Return New Drawing2D.LinearGradientBrush(Rectangle, Color1, Color2, Drawing2D.LinearGradientMode.Vertical)
+            Return New LinearGradientBrush(Rectangle, Color1, Color2, LinearGradientMode.Vertical)
         End If
     End Function
 
-    Private Sub TabContent_FormClosed(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosedEventArgs) Handles m_Form.FormClosed
+    Private Sub TabContent_FormClosed(sender As Object, e As FormClosedEventArgs) Handles m_Form.FormClosed
         ' if the form is closed closes the tabpage
         RaiseEvent Close(Me, New EventArgs)
     End Sub
 
-    Private Sub TabContent_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles m_Form.TextChanged
+    Private Sub TabContent_TextChanged(sender As Object, e As EventArgs) Handles m_Form.TextChanged
         CalculateWidth()
         Invalidate()
         MenuItem.Text = m_Form.Text
     End Sub
 
-    Private Sub Tab_MouseDown(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseDown
+    Private Sub Tab_MouseDown(sender As Object, e As MouseEventArgs) Handles Me.MouseDown
         If m_Selected And Not (MouseOverCloseButton And m_CloseButtonVisible) Then Exit Sub
-        If e.Button = Windows.Forms.MouseButtons.Left Then
+        If e.Button = MouseButtons.Left Then
             ' Close button was clicked
             If MouseOverCloseButton And m_CloseButtonVisible Then
                 ' try to close the form
@@ -538,25 +567,26 @@ Public Class TabPage
         End If
     End Sub
 
-    Private Sub Tab_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.MouseEnter
+    Private Sub Tab_MouseEnter(sender As Object, e As EventArgs) Handles Me.MouseEnter
         If m_Selected Then Exit Sub
         If m_HotTrack Then m_Hot = True
         Invalidate()
     End Sub
 
-    Private Sub Tab_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.MouseLeave
+    Private Sub Tab_MouseLeave(sender As Object, e As EventArgs) Handles Me.MouseLeave
         MouseOverCloseButton = False
         m_Hot = False
         Invalidate()
     End Sub
 
-    Private Sub Tab_MouseMove(ByVal sender As Object, ByVal e As System.Windows.Forms.MouseEventArgs) Handles Me.MouseMove
+    Private Sub Tab_MouseMove(sender As Object, e As MouseEventArgs) Handles Me.MouseMove
         Static State As Boolean = False
         If m_CloseButtonVisible Then
             ' verify if the mouse is over the close button
             Dim x As Integer = Me.Width - PadRight - m_CloseButtonSize.Width - 2
-            Dim y As Integer = Me.Height / 2 - m_CloseButtonSize.Height / 2
-            MouseOverCloseButton = e.X >= x And e.X <= x + m_CloseButtonSize.Width - 1 And e.Y >= y And e.Y <= y + m_CloseButtonSize.Height - 1
+            Dim y As Integer = Me.Height/2 - m_CloseButtonSize.Height/2
+            MouseOverCloseButton = e.X >= x And e.X <= x + m_CloseButtonSize.Width - 1 And e.Y >= y And
+                                   e.Y <= y + m_CloseButtonSize.Height - 1
             If State <> MouseOverCloseButton And m_CloseButtonVisible Then
                 State = MouseOverCloseButton
                 Dim r As New Region(New Rectangle(x, y, m_CloseButtonSize.Width, m_CloseButtonSize.Height))
@@ -567,17 +597,21 @@ Public Class TabPage
         End If
         If Me.RectangleToScreen(Me.ClientRectangle).Contains(Me.PointToScreen(New Point(e.X, e.Y))) Then
             Cursor = Cursors.Default
-        Else ' the mouse is outside the tab (it happens only when the mouse was pressed on the tab and moved away while pressed)
+        Else _
+' the mouse is outside the tab (it happens only when the mouse was pressed on the tab and moved away while pressed)
             RaiseEvent Draging(Me, e)
             Cursor = Cursors.No
         End If
     End Sub
 
     ' Draws the tab text (the form text)
-    Private Sub DrawText(ByVal g As Graphics)
+    Private Sub DrawText(g As Graphics)
         Dim f As Font = New Font(Font, IIf(m_Selected And m_FontBoldOnSelect, FontStyle.Bold, FontStyle.Regular))
         Dim b As Brush = New SolidBrush(IIf(m_Selected Or m_Hot, ForeColor, m_ForeColorDisabled))
-        Dim bounds As RectangleF = New RectangleF(PadLeft + IIf(m_Form.Icon Is Nothing, 0, m_IconSize.Width) + 2, 1, Width - PadLeft - IIf(m_Form.Icon Is Nothing, 0, m_IconSize.Height) - 5 - IIf(m_CloseButtonVisible, m_CloseButtonSize.Width, 0) - PadRight, Me.DisplayRectangle.Height)
+        Dim bounds As RectangleF = New RectangleF(PadLeft + IIf(m_Form.Icon Is Nothing, 0, m_IconSize.Width) + 2, 1,
+                                                  Width - PadLeft - IIf(m_Form.Icon Is Nothing, 0, m_IconSize.Height) -
+                                                  5 - IIf(m_CloseButtonVisible, m_CloseButtonSize.Width, 0) - PadRight,
+                                                  Me.DisplayRectangle.Height)
         Dim MyFormat As StringFormat = New StringFormat
         MyFormat.FormatFlags = StringFormatFlags.NoWrap
         MyFormat.LineAlignment = StringAlignment.Center
@@ -592,10 +626,11 @@ Public Class TabPage
     End Sub
 
     ' Draws the tab icon if exists (the form icon)
-    Private Sub DrawIcon(ByVal g As Graphics)
+    Private Sub DrawIcon(g As Graphics)
         Try
             If m_Form.Icon Is Nothing Then Exit Sub
-            Dim r As Rectangle = New Rectangle(PadLeft, (Me.Height / 2 - m_IconSize.Height / 2), m_IconSize.Width, m_IconSize.Height)
+            Dim r As Rectangle = New Rectangle(PadLeft, (Me.Height/2 - m_IconSize.Height/2), m_IconSize.Width,
+                                               m_IconSize.Height)
             Dim i As Icon = New Icon(m_Form.Icon, m_IconSize)
             g.DrawIcon(i, r)
             DestroyIcon(i.Handle)
@@ -605,16 +640,16 @@ Public Class TabPage
         End Try
     End Sub
 
-    <System.Runtime.InteropServices.DllImportAttribute("user32.dll")> _
-    Private Shared Function DestroyIcon(ByVal handle As IntPtr) As Boolean
+    <DllImport("user32.dll")>
+    Private Shared Function DestroyIcon(handle As IntPtr) As Boolean
     End Function
 
     ' Draws the Close Button
-    Private Sub DrawCloseButton(ByVal g As Graphics)
+    Private Sub DrawCloseButton(g As Graphics)
         Try
             Dim I As Bitmap
             Dim x As Integer = Me.Width - (m_CloseButtonSize.Width + PadRight + 2)
-            Dim y As Integer = Me.Height / 2 - m_CloseButtonSize.Height / 2
+            Dim y As Integer = Me.Height/2 - m_CloseButtonSize.Height/2
             If MouseOverCloseButton Then
                 I = m_CloseButtonImageHot
             ElseIf m_Selected Then
@@ -627,7 +662,7 @@ Public Class TabPage
                 I = GetButton()
                 IsDisposable = True
             End If
-            Dim icon As Icon = Drawing.Icon.FromHandle(I.GetHicon)
+            Dim icon As Icon = Icon.FromHandle(I.GetHicon)
             Dim r As Rectangle = New Rectangle(x, y, m_CloseButtonSize.Width, m_CloseButtonSize.Height)
             g.DrawIcon(icon, r)
             If IsDisposable Then
@@ -643,15 +678,20 @@ Public Class TabPage
 
     ' Generates the close button image
     Private Function GetButton() As Bitmap
-        Dim Points() As System.Drawing.Point = {New Point(1, 0), New Point(3, 0), New Point(5, 2), New Point(7, 0), New Point(9, 0), New Point(6, 3), New Point(6, 4), New Point(9, 7), New Point(7, 7), New Point(5, 5), New Point(3, 7), New Point(1, 7), New Point(4, 4), New Point(4, 3)}
-        Dim gp As New Drawing2D.GraphicsPath
+        Dim Points() As Point =
+                {New Point(1, 0), New Point(3, 0), New Point(5, 2), New Point(7, 0), New Point(9, 0), New Point(6, 3),
+                 New Point(6, 4), New Point(9, 7), New Point(7, 7), New Point(5, 5), New Point(3, 7), New Point(1, 7),
+                 New Point(4, 4), New Point(4, 3)}
+        Dim gp As New GraphicsPath
         Dim bch As Color
         Dim bcl As Color
         Dim bc As Color
         Dim fc As Color
         Dim B As Bitmap
-        Dim m As New Drawing2D.Matrix
-        Dim path() As System.Drawing.Point = {New Point(0, 1), New Point(1, 0), New Point(15, 0), New Point(16, 1), New Point(16, 14), New Point(15, 15), New Point(1, 15), New Point(0, 14)}
+        Dim m As New Matrix
+        Dim path() As Point =
+                {New Point(0, 1), New Point(1, 0), New Point(15, 0), New Point(16, 1), New Point(16, 14),
+                 New Point(15, 15), New Point(1, 15), New Point(0, 14)}
         Dim g As Graphics
         If MouseOverCloseButton Then
             bch = RenderColors.TabCloseButtonBackHighColorHot(m_RenderMode, CloseButtonBackHighColorHot)
@@ -673,12 +713,12 @@ Public Class TabPage
         B.MakeTransparent()
         g = Graphics.FromImage(B)
         ' draw the border and background
-        g.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
-        Dim l As New Drawing2D.LinearGradientBrush(New Point(0, 0), New Point(0, 15), bch, bcl)
+        g.SmoothingMode = SmoothingMode.AntiAlias
+        Dim l As New LinearGradientBrush(New Point(0, 0), New Point(0, 15), bch, bcl)
         g.FillPolygon(l, path)
         Dim p As New Pen(bc)
         g.DrawPolygon(p, path)
-        g.SmoothingMode = Drawing2D.SmoothingMode.Default
+        g.SmoothingMode = SmoothingMode.Default
         ' draw the foreground
         gp.AddPolygon(Points)
         m.Translate(3, 4)
@@ -719,8 +759,10 @@ Public Class TabPage
     End Sub
 
     ' Get the tab region shape
-    Private Function GetRegion(ByVal W As Integer, ByVal H As Integer, ByVal H1 As Integer) As Point()
-        Dim R() As Point = {New Point(0, H), New Point(0, 2), New Point(2, 0), New Point(W - 3, 0), New Point(W - 1, 2), New Point(W - 1, H)}
+    Private Function GetRegion(W As Integer, H As Integer, H1 As Integer) As Point()
+        Dim R() As Point =
+                {New Point(0, H), New Point(0, 2), New Point(2, 0), New Point(W - 3, 0), New Point(W - 1, 2),
+                 New Point(W - 1, H)}
         Dim e As New TabControl.GetTabRegionEventArgs(R, W, H, Me.IsSelected)
         RaiseEvent GetTabRegion(Me, e)
         Array.Resize(e.Points, e.Points.Length + 2)
@@ -730,16 +772,16 @@ Public Class TabPage
         Return e.Points
     End Function
 
-    Private Sub MirrorPath(ByVal GraphicPath As Drawing2D.GraphicsPath)
+    Private Sub MirrorPath(GraphicPath As GraphicsPath)
         Dim m As New Matrix
         m.Translate(0, Height - 1)
-        m.Scale(1, -1)
+        m.Scale(1, - 1)
         GraphicPath.Transform(m)
         m.Dispose()
     End Sub
 
     ' Paint the tab
-    Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
+    Protected Overrides Sub OnPaint(e As PaintEventArgs)
         Dim Painting As Boolean = False
         If Painting Then Exit Sub
         Painting = True
@@ -748,7 +790,7 @@ Public Class TabPage
         Dim RenderBottomColor As Color
         Dim RenderHighColor As Color
         Dim RenderLowColor As Color
-        Dim GraphicPath As New Drawing2D.GraphicsPath
+        Dim GraphicPath As New GraphicsPath
 
         Dim w As Integer = Me.Width
         CalculateWidth()
@@ -794,7 +836,7 @@ Public Class TabPage
         Dim M1 As Matrix = New Matrix
         Dim M2 As Matrix = New Matrix
         Dim M3 As Matrix = New Matrix
-        M1.Translate(0, -0.5)
+        M1.Translate(0, - 0.5)
         M2.Translate(0, 0.5)
         M3.Translate(1, 0)
         R1.Transform(M1)
@@ -811,7 +853,8 @@ Public Class TabPage
 
         te = New TabControl.TabPaintEventArgs(e.Graphics, rec, m_Selected, m_Hot, GraphicPath, Width, Height)
         RaiseEvent TabPaintBackground(Me, te) ' try to owner draw
-        Dim gb As LinearGradientBrush = CreateGradientBrush(New Rectangle(0, 0, Me.Width, Me.Height), RenderHighColor, RenderLowColor)
+        Dim gb As LinearGradientBrush = CreateGradientBrush(New Rectangle(0, 0, Me.Width, Me.Height), RenderHighColor,
+                                                            RenderLowColor)
         If Not te.Handled Then e.Graphics.FillPath(gb, GraphicPath)
         gb.Dispose()
         te.Dispose()
@@ -831,8 +874,9 @@ Public Class TabPage
         End If
         te.Dispose()
 
-        e.Graphics.SmoothingMode = Drawing2D.SmoothingMode.None
-        e.Graphics.DrawLine(New Pen(RenderBottomColor), GraphicPath.PathPoints(0), GraphicPath.PathPoints(GraphicPath.PointCount - 1))
+        e.Graphics.SmoothingMode = SmoothingMode.None
+        e.Graphics.DrawLine(New Pen(RenderBottomColor), GraphicPath.PathPoints(0),
+                            GraphicPath.PathPoints(GraphicPath.PointCount - 1))
         e.Graphics.SmoothingMode = m_SmoothingMode
 
         DrawIcon(e.Graphics)
@@ -855,63 +899,62 @@ Public Class TabPage
 
 #Region " Obsolete properties "
 
-    <EditorBrowsable(EditorBrowsableState.Never)> _
-    Public Overrides Property MinimumSize() As Size
+    <EditorBrowsable(EditorBrowsableState.Never)>
+    Public Overrides Property MinimumSize As Size
         Get
         End Get
-        Set(ByVal value As Size)
+        Set
         End Set
     End Property
 
-    <EditorBrowsable(EditorBrowsableState.Never)> _
-    Public Overrides Property MaximumSize() As Size
+    <EditorBrowsable(EditorBrowsableState.Never)>
+    Public Overrides Property MaximumSize As Size
         Get
         End Get
-        Set(ByVal value As Size)
+        Set
         End Set
     End Property
 
-    <EditorBrowsable(EditorBrowsableState.Never)> _
-    Public Shadows Property Padding() As Padding
+    <EditorBrowsable(EditorBrowsableState.Never)>
+    Public Shadows Property Padding As Padding
         Get
         End Get
-        Set(ByVal value As Padding)
+        Set
         End Set
     End Property
 
-    <EditorBrowsable(EditorBrowsableState.Never)> _
-    Public Overrides Property BackColor() As Color
+    <EditorBrowsable(EditorBrowsableState.Never)>
+    Public Overrides Property BackColor As Color
         Get
         End Get
-        Set(ByVal value As Color)
+        Set
         End Set
     End Property
 
-    <EditorBrowsable(EditorBrowsableState.Never)> _
-    Public Overrides Property Dock() As System.Windows.Forms.DockStyle
+    <EditorBrowsable(EditorBrowsableState.Never)>
+    Public Overrides Property Dock As DockStyle
         Get
         End Get
-        Set(ByVal value As System.Windows.Forms.DockStyle)
+        Set
         End Set
     End Property
 
-    <EditorBrowsable(EditorBrowsableState.Never)> _
-    Public Overrides Property Anchor() As System.Windows.Forms.AnchorStyles
+    <EditorBrowsable(EditorBrowsableState.Never)>
+    Public Overrides Property Anchor As AnchorStyles
         Get
         End Get
-        Set(ByVal value As System.Windows.Forms.AnchorStyles)
+        Set
         End Set
     End Property
 
-    <EditorBrowsable(EditorBrowsableState.Never)> _
-    Public Overrides Property Text() As String
+    <EditorBrowsable(EditorBrowsableState.Never)>
+    Public Overrides Property Text As String
         Get
             Return Nothing
         End Get
-        Set(ByVal value As String)
+        Set
         End Set
     End Property
 
 #End Region
-
 End Class

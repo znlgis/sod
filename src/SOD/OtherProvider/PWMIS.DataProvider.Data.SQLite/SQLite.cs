@@ -2,149 +2,40 @@
  * ========================================================================
  * Copyright(c) 2006-2012 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
- * See more information,Please goto http://www.pwmis.com/sqlmap 
+ * See more information,Please goto http://www.pwmis.com/sqlmap
  * ========================================================================
  * 该类是一个Windows下的SQLite的PDF.NET驱动程序类，
  * 注意需要区分引用的SQLite版本和所在的操作系统版本（32位或者64位）。
- * 
+ *
  * 作者：深蓝医生    时间：2012-11-1
  * 版本：V4.5
- * 
- * 修改者：         时间：                
+ *
+ * 修改者：         时间：
  * 修改说明：
  * ========================================================================
-*/
+ */
+
 using System;
 using System.Data;
+using System.Data.Common;
 using System.Data.SQLite;
-using PWMIS.DataProvider.Data;
+using PWMIS.Common;
 
 namespace PWMIS.DataProvider.Data
 {
     /// <summary>
-    /// SQLite 数据访问类 dth,2012.11.1
+    ///     SQLite 数据访问类 dth,2012.11.1
     /// </summary>
     public sealed class SQLite : AdoHelper
     {
         /// <summary>
-        /// 默认构造函数
+        ///     默认构造函数
         /// </summary>
         public SQLite()
         {
             //
             // TODO: 在此处添加构造函数逻辑
             //
-        }
-
-        /// <summary>
-        /// 创建并且打开数据库连接
-        /// </summary>
-        /// <returns>数据库连接</returns>
-        protected override IDbConnection GetConnection()
-        {
-            IDbConnection conn = base.GetConnection();
-            if (conn == null)
-            {
-                conn = new SQLiteConnection(base.ConnectionString);
-                //conn.Open ();
-            }
-            return conn;
-        }
-
-        /// <summary>
-        /// 获取数据适配器实例
-        /// </summary>
-        /// <returns>数据适配器</returns>
-        protected override IDbDataAdapter GetDataAdapter(IDbCommand command)
-        {
-            IDbDataAdapter ada = new SQLiteDataAdapter((SQLiteCommand)command);
-            // ((SQLiteCommand )command).Connection
-            return ada;
-        }
-
-        /// <summary>
-        /// 获取一个新参数对象
-        /// </summary>
-        /// <returns>特定于数据源的参数对象</returns>
-        public override IDataParameter GetParameter()
-        {
-            return new SQLiteParameter();
-        }
-
-        /// <summary>
-        ///  获取一个新参数对象
-        /// </summary>
-        /// <param name="paraName">参数名</param>
-        /// <param name="dbType">参数数据类型</param>
-        /// <param name="size">参数大小</param>
-        /// <returns>特定于数据源的参数对象</returns>
-        public override IDataParameter GetParameter(string paraName, System.Data.DbType dbType, int size)
-        {
-            SQLiteParameter para = new SQLiteParameter();
-            para.ParameterName = paraName;
-            para.DbType = dbType;
-            para.Size = size;
-            return para;
-        }
-
-        /// <summary>
-        /// 根据参数名和值返回参数一个新的参数对象
-        /// </summary>
-        /// <param name="paraName">参数名</param>
-        /// <param name="Value">参数值</param>
-        /// <returns>特定于数据源的参数对象</returns>
-        public override IDataParameter GetParameter(string paraName, object Value)
-        {
-            //SQLite 不会根据值自动设置数据库类型，有些类型需要设置下
-            IDataParameter para = this.GetParameter();
-            para.ParameterName = paraName;
-            para.Value = Value;
-            if (Value != null)
-            {
-                if (Value.GetType() == typeof(DateTime))
-                    para.DbType = DbType.DateTime;
-            }
-            return para;
-        }
-
-        /// <summary>
-        /// 获取本地数据库类型名
-        /// </summary>
-        /// <param name="para"></param>
-        /// <returns></returns>
-        public override string GetNativeDbTypeName(IDataParameter para)
-        {
-            SQLiteParameter mysqlPara = para as SQLiteParameter;
-            DbType dbType = mysqlPara.DbType;
-            if (dbType == DbType.Int32)
-                return "INTEGER";
-            else
-                return dbType.ToString();
-        }
-        /// <summary>
-        /// 更新数据（为SQLite重写的支持多线程并发写入功能）
-        /// </summary>
-        /// <param name="connectionString"></param>
-        /// <param name="commandType"></param>
-        /// <param name="SQL"></param>
-        /// <returns></returns>
-        public override int ExecuteNonQuery(string connectionString, CommandType commandType, string SQL)
-        {
-            //根据connectionString 缓存每一个写入锁
-            return base.ExecuteNonQuery(connectionString, commandType, SQL);
-        }
-
-        /// <summary>
-        /// 更新数据（为SQLite重写的支持多线程并发写入功能）
-        /// </summary>
-        /// <param name="connectionString"></param>
-        /// <param name="commandType"></param>
-        /// <param name="SQL"></param>
-        /// <param name="parameters"></param>
-        /// <returns></returns>
-        public override int ExecuteNonQuery(string connectionString, CommandType commandType, string SQL, IDataParameter[] parameters)
-        {
-            return this.ExecuteNonQuery(connectionString, commandType, SQL, parameters);
         }
 
         //public override int ExecuteNonQuery(string SQL, CommandType commandType, IDataParameter[] parameters)
@@ -221,28 +112,13 @@ namespace PWMIS.DataProvider.Data
         //    return result;
         //}
 
-        public override System.Data.Common.DbConnectionStringBuilder ConnectionStringBuilder
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public override DbConnectionStringBuilder ConnectionStringBuilder => throw new NotImplementedException();
 
-        public override string ConnectionUserID
-        {
-            get { throw new NotImplementedException(); }
-        }
+        public override string ConnectionUserID => throw new NotImplementedException();
 
-        public override PWMIS.Common.DBMSType CurrentDBMSType
-        {
-            get { return PWMIS.Common.DBMSType.SQLite; }
-        }
+        public override DBMSType CurrentDBMSType => DBMSType.SQLite;
 
-        public override string GetParameterChar
-        {
-            get
-            {
-                return base.GetParameterChar;
-            }
-        }
+        public override string GetParameterChar => base.GetParameterChar;
 
         public override string InsertKey
         {
@@ -251,11 +127,114 @@ namespace PWMIS.DataProvider.Data
                 base.InsertKey = "select last_insert_rowid();";
                 return base.InsertKey;
             }
-            set
-            {
-                base.InsertKey = value;
-            }
+            set => base.InsertKey = value;
+        }
+
+        /// <summary>
+        ///     创建并且打开数据库连接
+        /// </summary>
+        /// <returns>数据库连接</returns>
+        protected override IDbConnection GetConnection()
+        {
+            var conn = base.GetConnection();
+            if (conn == null) conn = new SQLiteConnection(ConnectionString);
+            //conn.Open ();
+            return conn;
+        }
+
+        /// <summary>
+        ///     获取数据适配器实例
+        /// </summary>
+        /// <returns>数据适配器</returns>
+        protected override IDbDataAdapter GetDataAdapter(IDbCommand command)
+        {
+            IDbDataAdapter ada = new SQLiteDataAdapter((SQLiteCommand)command);
+            // ((SQLiteCommand )command).Connection
+            return ada;
+        }
+
+        /// <summary>
+        ///     获取一个新参数对象
+        /// </summary>
+        /// <returns>特定于数据源的参数对象</returns>
+        public override IDataParameter GetParameter()
+        {
+            return new SQLiteParameter();
+        }
+
+        /// <summary>
+        ///     获取一个新参数对象
+        /// </summary>
+        /// <param name="paraName">参数名</param>
+        /// <param name="dbType">参数数据类型</param>
+        /// <param name="size">参数大小</param>
+        /// <returns>特定于数据源的参数对象</returns>
+        public override IDataParameter GetParameter(string paraName, DbType dbType, int size)
+        {
+            var para = new SQLiteParameter();
+            para.ParameterName = paraName;
+            para.DbType = dbType;
+            para.Size = size;
+            return para;
+        }
+
+        /// <summary>
+        ///     根据参数名和值返回参数一个新的参数对象
+        /// </summary>
+        /// <param name="paraName">参数名</param>
+        /// <param name="Value">参数值</param>
+        /// <returns>特定于数据源的参数对象</returns>
+        public override IDataParameter GetParameter(string paraName, object Value)
+        {
+            //SQLite 不会根据值自动设置数据库类型，有些类型需要设置下
+            var para = GetParameter();
+            para.ParameterName = paraName;
+            para.Value = Value;
+            if (Value != null)
+                if (Value.GetType() == typeof(DateTime))
+                    para.DbType = DbType.DateTime;
+            return para;
+        }
+
+        /// <summary>
+        ///     获取本地数据库类型名
+        /// </summary>
+        /// <param name="para"></param>
+        /// <returns></returns>
+        public override string GetNativeDbTypeName(IDataParameter para)
+        {
+            var mysqlPara = para as SQLiteParameter;
+            var dbType = mysqlPara.DbType;
+            if (dbType == DbType.Int32)
+                return "INTEGER";
+            return dbType.ToString();
+        }
+
+        /// <summary>
+        ///     更新数据（为SQLite重写的支持多线程并发写入功能）
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <param name="commandType"></param>
+        /// <param name="SQL"></param>
+        /// <returns></returns>
+        public override int ExecuteNonQuery(string connectionString, CommandType commandType, string SQL)
+        {
+            //根据connectionString 缓存每一个写入锁
+            return base.ExecuteNonQuery(connectionString, commandType, SQL);
+        }
+
+        /// <summary>
+        ///     更新数据（为SQLite重写的支持多线程并发写入功能）
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <param name="commandType"></param>
+        /// <param name="SQL"></param>
+        /// <param name="parameters"></param>
+        /// <returns></returns>
+        public override int ExecuteNonQuery(string connectionString, CommandType commandType, string SQL,
+            IDataParameter[] parameters)
+        {
+            return ExecuteNonQuery(connectionString, commandType, SQL, parameters);
         }
     }
 }
-

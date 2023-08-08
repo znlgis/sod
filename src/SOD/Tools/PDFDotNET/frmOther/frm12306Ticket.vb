@@ -1,10 +1,13 @@
-﻿Imports CefSharp
+﻿Imports System.Media
+Imports CefSharp
+Imports CefSharp.WinForms
 
 Public Class frm12306Ticket
     Dim ticketUrl As String = "TestHtml.html" ' "https://kyfw.12306.cn/otn/leftTicket/init"
-    Dim WithEvents WebBrowser1 As CefSharp.WinForms.ChromiumWebBrowser
+    Dim WithEvents WebBrowser1 As ChromiumWebBrowser
+
     ''' <summary>
-    ''' 命令窗体
+    '''     命令窗体
     ''' </summary>
     ''' <remarks></remarks>
     Public CommandForm As ICommand
@@ -21,20 +24,19 @@ Public Class frm12306Ticket
         '有关 CefSharp的使用，请看 http://blog.csdn.net/gong_hui2000/article/details/48155547
         '                         http://www.codebye.com/cefsharp-help-5-javascript-handler.html
         If ticketUrl = "TestHtml.html" Then
-            Dim path As String = System.IO.Path.Combine(System.Environment.CurrentDirectory, "TestHtml.html")
+            Dim path As String = IO.Path.Combine(Environment.CurrentDirectory, "TestHtml.html")
             Dim uri As New Uri(path)
             ticketUrl = uri.AbsoluteUri
         End If
 
 
-        Me.WebBrowser1 = New CefSharp.WinForms.ChromiumWebBrowser(Me.ticketUrl)
+        Me.WebBrowser1 = New ChromiumWebBrowser(Me.ticketUrl)
         Me.WebBrowser1.JavascriptObjectRepository.Settings.LegacyBindingEnabled = True
         CefSharpSettings.WcfEnabled = True
         Me.WebBrowser1.JavascriptObjectRepository.Register("jsObj", New TicketNotify(Me), False, Nothing)
 
         Me.panBody.Controls.Add(Me.WebBrowser1)
         Me.WebBrowser1.Dock = DockStyle.Fill
-
     End Sub
 
     Public Sub StartNotify()
@@ -50,6 +52,7 @@ Public Class frm12306Ticket
         If Not Me.Lookup Then Me.FoundTickt = False
         Return Me.Lookup
     End Function
+
     Private Sub frm12306Ticket_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         StopNotify()
@@ -76,12 +79,11 @@ Public Class frm12306Ticket
     End Sub
 
     Private Sub frm12306Ticket_Activated(sender As Object, e As EventArgs) Handles MyBase.Activated
-
     End Sub
 
     Private Sub WebBrowser1_FrameLoadEnd(sender As Object, e As FrameLoadEndEventArgs) Handles WebBrowser1.FrameLoadEnd
         Dim js As String =
-<string>
+                <string>
        var divAlert=true;
        function checkHaveTicket() {
             var div = document.getElementById('autosubmitcheckticketinfo');
@@ -137,12 +139,11 @@ Public Class frm12306Ticket
         Me.Activate()
         'MessageBox.Show("有票了，请在浏览器中完成操作！\r\n 如果你返回修改了订票规则（比如修改席别），请单击下【继续刷票】按钮！")
         lblMsg.Text = "有票了，请在网页上继续操作！"
-        Dim player As New System.Media.SoundPlayer
-        Dim alertWav As String = "Alarm01.wav"
+        Dim player As New SoundPlayer
+        Dim alertWav = "Alarm01.wav"
         player.SoundLocation = alertWav
         player.Load()
         player.Play()
-
     End Sub
 
 #Region "原有IEBrowser控件版本的代码，已经注释"
@@ -205,7 +206,7 @@ Public Class frm12306Ticket
 
 
     Private Sub btnOpenUrl_Click(sender As Object, e As EventArgs) Handles btnOpenUrl.Click
-        Dim path As String = System.IO.Path.Combine(System.Environment.CurrentDirectory, "TestHtml.html")
+        Dim path As String = IO.Path.Combine(Environment.CurrentDirectory, "TestHtml.html")
         Dim uri As New Uri(path)
         ticketUrl = uri.AbsoluteUri
         Me.txtUrl.Text = "TestHtml.html"
@@ -224,7 +225,6 @@ Public Class frm12306Ticket
             lblMsg.Text = "请登陆12306后，开启网页的【订票助手】功能，设定好条件后，勾选【开启自动查询】，最后点击【查询】按钮。本程序监控到有票的时候，会及时弹窗通知。"
             btnOpenUrl2.Text = "停止刷票"
         End If
-     
     End Sub
 
     Private Sub btnTestJS_Click(sender As Object, e As EventArgs) Handles btnTestJS.Click
@@ -237,7 +237,6 @@ Public Class frm12306Ticket
             Dim js As String = "autoSearchTime = " + autoSearchTime.ToString()
             Me.WebBrowser1.ExecuteScriptAsync(js)
         End If
-
     End Sub
 
     Private Sub ckbFromStation_CheckedChanged(sender As Object, e As EventArgs) Handles ckbFromStation.CheckedChanged
@@ -252,16 +251,16 @@ Public Class frm12306Ticket
             Dim js As String = "document.getElementById('txtName').value='" + txtToStation.Text + "'"
             Me.WebBrowser1.ExecuteScriptAsync(js)
         End If
-
     End Sub
 End Class
 
 Public Class TicketNotify
-    Dim owerForm As Form
+    Dim ReadOnly owerForm As Form
 
-    Public Sub New(ByVal owner As Form)
+    Public Sub New(owner As Form)
         Me.owerForm = owner
     End Sub
+
     Public Sub TestNotify()
 
         Dim target As frm12306Ticket = Me.owerForm
@@ -271,11 +270,13 @@ Public Class TicketNotify
             MessageBox.Show("停止【测试】弹窗和音乐通知。", "VB.NET -》浏览器脚本通知", MessageBoxButtons.OK)
         End If
     End Sub
+
     Public Sub MyNotify()
         Dim target As frm12306Ticket = Me.owerForm
         target.FoundTickt = True
         ' target.Notify()
     End Sub
+
     Public Sub EndNotify()
         Dim target As frm12306Ticket = Me.owerForm
         target.FoundTickt = False

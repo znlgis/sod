@@ -1,4 +1,5 @@
 ﻿using System;
+
 namespace ConsoleTest
 {
     public interface ITable_User

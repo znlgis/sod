@@ -1,7 +1,7 @@
 Imports System.ComponentModel
+Imports System.Drawing.Drawing2D
 
 Friend Class ControlButton
-
     Sub New()
         ' This call is required by the Windows Form Designer.
         InitializeComponent()
@@ -31,31 +31,31 @@ Friend Class ControlButton
     Private ReadOnly defaultBackLowColor As Color = SystemColors.ControlDark
     Private ReadOnly defaultBorderColor As Color = SystemColors.ControlDarkDark
 
-    Friend Property RenderMode() As ToolStripRenderMode
+    Friend Property RenderMode As ToolStripRenderMode
         Get
             Return m_RenderMode
         End Get
-        Set(ByVal value As ToolStripRenderMode)
+        Set
             m_RenderMode = value
             Invalidate()
         End Set
     End Property
 
-    Property Style() As ButtonStyle
+    Property Style As ButtonStyle
         Get
             Return m_style
         End Get
-        Set(ByVal value As ButtonStyle)
+        Set
             m_style = value
         End Set
     End Property
 
-    <Browsable(True), Category("Appearance")> _
-    Public Property BackHighColor() As System.Drawing.Color
+    <Browsable(True), Category("Appearance")>
+    Public Property BackHighColor As Color
         Get
             Return m_BackHighColor
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_BackHighColor = Value
         End Set
     End Property
@@ -68,12 +68,12 @@ Friend Class ControlButton
         m_BackHighColor = Me.defaultBackHighColor
     End Sub
 
-    <Browsable(True), Category("Appearance")> _
-    Public Property BackLowColor() As Color
+    <Browsable(True), Category("Appearance")>
+    Public Property BackLowColor As Color
         Get
             Return m_BackLowColor
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_BackLowColor = Value
         End Set
     End Property
@@ -86,12 +86,12 @@ Friend Class ControlButton
         m_BackLowColor = Me.defaultBackLowColor
     End Sub
 
-    <Browsable(True), Category("Appearance")> _
-    Public Property BorderColor() As Color
+    <Browsable(True), Category("Appearance")>
+    Public Property BorderColor As Color
         Get
             Return m_BorderColor
         End Get
-        Set(ByVal Value As Color)
+        Set
             m_BorderColor = Value
         End Set
     End Property
@@ -104,22 +104,27 @@ Friend Class ControlButton
         m_BorderColor = Me.defaultBorderColor
     End Sub
 
-    <DebuggerStepThrough()> _
-    Protected Overrides Sub OnPaint(ByVal e As System.Windows.Forms.PaintEventArgs)
-        Dim DropPoints() As System.Drawing.Point = {New Point(0, 0), New Point(11, 0), New Point(5, 6)}
-        Dim ClosePoints() As System.Drawing.Point = {New Point(0, 0), New Point(2, 0), New Point(5, 3), New Point(8, 0), New Point(10, 0), New Point(6, 4), New Point(10, 8), New Point(8, 8), New Point(5, 5), New Point(2, 8), New Point(0, 8), New Point(4, 4)}
+    <DebuggerStepThrough>
+    Protected Overrides Sub OnPaint(e As PaintEventArgs)
+        Dim DropPoints() As Point = {New Point(0, 0), New Point(11, 0), New Point(5, 6)}
+        Dim ClosePoints() As Point =
+                {New Point(0, 0), New Point(2, 0), New Point(5, 3), New Point(8, 0), New Point(10, 0), New Point(6, 4),
+                 New Point(10, 8), New Point(8, 8), New Point(5, 5), New Point(2, 8), New Point(0, 8), New Point(4, 4)}
         Dim rec As New Rectangle
         rec.Size = New Size(Me.Width - 1, Me.Height - 1)
         If m_hot Then
-            e.Graphics.SmoothingMode = Drawing2D.SmoothingMode.AntiAlias
-            e.Graphics.FillRectangle(New Drawing2D.LinearGradientBrush(New Point(0, 0), New Point(0, Me.Height), RenderColors.ControlButtonBackHighColor(m_RenderMode, m_BackHighColor), RenderColors.ControlButtonBackLowColor(m_RenderMode, m_BackLowColor)), rec)
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias
+            e.Graphics.FillRectangle(
+                New LinearGradientBrush(New Point(0, 0), New Point(0, Me.Height),
+                                        RenderColors.ControlButtonBackHighColor(m_RenderMode, m_BackHighColor),
+                                        RenderColors.ControlButtonBackLowColor(m_RenderMode, m_BackLowColor)), rec)
             e.Graphics.DrawRectangle(New Pen(RenderColors.ControlButtonBorderColor(m_RenderMode, m_BorderColor)), rec)
-            e.Graphics.SmoothingMode = Drawing2D.SmoothingMode.Default
+            e.Graphics.SmoothingMode = SmoothingMode.Default
         End If
-        Dim g As New Drawing2D.GraphicsPath
-        Dim m As New Drawing2D.Matrix
-        Dim x As Integer = (Me.Width - 11) / 2
-        Dim y As Integer = (Me.Height - 11) / 2 + 1
+        Dim g As New GraphicsPath
+        Dim m As New Matrix
+        Dim x As Integer = (Me.Width - 11)/2
+        Dim y As Integer = (Me.Height - 11)/2 + 1
         If m_style = ButtonStyle.Drop Then
             e.Graphics.FillRectangle(New SolidBrush(ForeColor), x, y, 11, 2)
             g.AddPolygon(DropPoints)
@@ -137,14 +142,13 @@ Friend Class ControlButton
         m.Dispose()
     End Sub
 
-    Private Sub MdiTab_MouseEnter(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.MouseEnter
+    Private Sub MdiTab_MouseEnter(sender As Object, e As EventArgs) Handles Me.MouseEnter
         m_hot = True
         Invalidate()
     End Sub
 
-    Private Sub MdiTab_MouseLeave(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.MouseLeave
+    Private Sub MdiTab_MouseLeave(sender As Object, e As EventArgs) Handles Me.MouseLeave
         m_hot = False
         Invalidate()
     End Sub
-
 End Class

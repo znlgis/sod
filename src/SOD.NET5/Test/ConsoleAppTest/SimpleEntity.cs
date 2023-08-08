@@ -1,35 +1,32 @@
-﻿using PWMIS.DataMap.Entity;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using PWMIS.DataMap.Entity;
 
-namespace ConsoleAppTest
+namespace ConsoleAppTest;
+
+internal class SimpleEntity : EntityBase
 {
-    class SimpleEntity:EntityBase
+    public SimpleEntity()
     {
-        public SimpleEntity()
-        {
-            TableName = "Table_1";
-            IdentityName = "ID";
-            PrimaryKeys.Add("ID");
-        }
+        TableName = "Table_1";
+        IdentityName = "ID";
+        PrimaryKeys.Add("ID");
+    }
 
-        public int ID 
-        {
-            get { return getProperty<int>("ID"); }
-            set { setProperty("ID", value); }
-        }
+    public int ID
+    {
+        get => getProperty<int>("ID");
+        set => setProperty("ID", value);
+    }
 
-        public string Name
-        {
-            get { return getProperty<string>( nameof( Name)); }
-            set { setProperty(nameof(Name), value,100); }
-        }
+    public string Name
+    {
+        get => getProperty<string>(nameof(Name));
+        set => setProperty(nameof(Name), value, 100);
+    }
 
-        public DateTime AtTime
-        {
-            get { return getProperty<DateTime>(nameof(AtTime)); }
-            set { setProperty(nameof(AtTime), value); }
-        }
+    public DateTime AtTime
+    {
+        get => getProperty<DateTime>(nameof(AtTime));
+        set => setProperty(nameof(AtTime), value);
     }
 }

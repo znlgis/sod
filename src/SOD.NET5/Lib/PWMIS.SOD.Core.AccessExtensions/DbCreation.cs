@@ -1,45 +1,44 @@
-﻿using System;
-using System.Collections.Generic;
-//using System.Linq;
-using System.Text;
-using PWMIS.DataProvider.Data;
-using PWMIS.DataMap.Entity;
+﻿using System.Configuration;
+using System.Data.OleDb;
 using ADOX;
-using System.Configuration;
+using PWMIS.DataMap.Entity;
+using PWMIS.DataProvider.Data;
+//using System.Linq;
 
 namespace PWMIS.AccessExtensions
 {
     /// <summary>
-    /// Access 数据库访问帮助类
+    ///     Access 数据库访问帮助类
     /// </summary>
     public static class AccessUility
     {
         //Access 2003
         //Provider=Microsoft.Jet.OLEDB.4.0;;Jet OLEDB:Engine Type=5;Data Source=
         //Access 2007
-        static string providerStr = "Provider=Microsoft.ACE.OLEDB.12.0;Jet OLEDB:Engine Type=6;Data Source=";
+        private static readonly string providerStr =
+            "Provider=Microsoft.ACE.OLEDB.12.0;Jet OLEDB:Engine Type=6;Data Source=";
 
         /// <summary>
-        /// 指定文件名，创建Access数据库文件，适用于32位系统的Access
+        ///     指定文件名，创建Access数据库文件，适用于32位系统的Access
         /// </summary>
         /// <param name="filePath">数据库文件路径</param>
-        public static void CreateDataBase(string filePath, System.Data.OleDb.OleDbConnectionStringBuilder connBuilder)
+        public static void CreateDataBase(string filePath, OleDbConnectionStringBuilder connBuilder)
         {
-            ADOX.Catalog catalog = new Catalog();
-            if (connBuilder==null)
+            var catalog = new Catalog();
+            if (connBuilder == null)
             {
                 catalog.Create(providerStr + filePath);
             }
             else
             {
                 connBuilder.DataSource = filePath;
-                string connStr = connBuilder.ConnectionString;
+                var connStr = connBuilder.ConnectionString;
                 catalog.Create(connStr);
             }
         }
 
         /// <summary>
-        /// 创建Access2007格式的Access 连接字符串
+        ///     创建Access2007格式的Access 连接字符串
         /// </summary>
         /// <param name="filePath"></param>
         /// <returns></returns>
@@ -49,29 +48,29 @@ namespace PWMIS.AccessExtensions
         }
 
         /// <summary>
-        /// 根据连接字符串，创建数据库文件，适用于OLEDB4.0 之后的Access数据库版本或者64位系统
+        ///     根据连接字符串，创建数据库文件，适用于OLEDB4.0 之后的Access数据库版本或者64位系统
         /// </summary>
         /// <param name="connString"></param>
         public static void CreateDataBaseByConnString(string connString)
         {
-            ADOX.Catalog catalog = new Catalog();
+            var catalog = new Catalog();
             catalog.Create(connString);
         }
 
         /// <summary>
-        /// 创建表
+        ///     创建表
         /// </summary>
         /// <param name="access"></param>
         /// <param name="entity">实体类</param>
         public static void CreateTable(Access access, EntityBase entity)
         {
-            EntityCommand ecmd = new EntityCommand(entity, access);
-            string sql = ecmd.CreateTableCommand;
+            var ecmd = new EntityCommand(entity, access);
+            var sql = ecmd.CreateTableCommand;
             access.ExecuteNonQuery(sql);
         }
 
         /// <summary>
-        /// 配置一个指定的连接名称，并指定Access数据库文件的名字，适用于32位系统
+        ///     配置一个指定的连接名称，并指定Access数据库文件的名字，适用于32位系统
         /// </summary>
         /// <param name="connectionName">连接名称</param>
         /// <param name="dbFilePath">数据库文件路径</param>
@@ -86,17 +85,17 @@ namespace PWMIS.AccessExtensions
             //    ConfigurationManager.RefreshSection("connectionStrings");
             //}
 
-            ConfigConnectionSettings2(connectionName, providerStr +dbFilePath);
+            ConfigConnectionSettings2(connectionName, providerStr + dbFilePath);
         }
 
         /// <summary>
-        /// 配置一个指定的连接名称，并指定Access数据库文件的名字，适用于64位系统
+        ///     配置一个指定的连接名称，并指定Access数据库文件的名字，适用于64位系统
         /// </summary>
         /// <param name="connectionName"></param>
         /// <param name="connectionString"></param>
-        public static void ConfigConnectionSettings2(string connectionName,string connectionString)
+        public static void ConfigConnectionSettings2(string connectionName, string connectionString)
         {
-            Configuration cfa = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var cfa = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             if (cfa.ConnectionStrings.ConnectionStrings[connectionName] == null)
             {
                 var connSetting = new ConnectionStringSettings(connectionName, connectionString, "Access");

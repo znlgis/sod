@@ -1,12 +1,20 @@
-﻿Public Class frmDataQuery
-    Public CurrDataBase As PWMIS.DataProvider.Data.AdoHelper
+﻿Imports System.IO
+Imports System.Text
+Imports System.Xml.Serialization
+Imports PWMIS.Common
+Imports PWMIS.DataProvider.Adapter
+Imports PWMIS.DataProvider.Data
+
+Public Class frmDataQuery
+    Public CurrDataBase As AdoHelper
     Public CurrDBName As String = ""
     Public CurrScriptFileName As String = ""
     Public IsGroupQuery As Boolean
 
     Private Const GroupQueryCfgFile As String = ".\Config\GroupQueryCfg.xml"
+
     ''' <summary>
-    ''' 组查询的数据连接列表
+    '''     组查询的数据连接列表
     ''' </summary>
     ''' <remarks></remarks>
     Public DataConnections As New List(Of DataConnection)
@@ -14,28 +22,30 @@
     Dim blockSqlCount As Integer = 0
 
     Dim _currDBPath As String = ""
+
     ''' <summary>
-    ''' 当前查询窗体使用的数据访问对象路径
+    '''     当前查询窗体使用的数据访问对象路径
     ''' </summary>
     ''' <remarks></remarks>
-    Public Property CurrDBPath() As String
+    Public Property CurrDBPath As String
         Get
             Return _currDBPath
         End Get
-        Set(ByVal value As String)
+        Set
             Me.Text &= "@" & value
             _currDBPath = value
         End Set
     End Property
+
     Dim contentTextChange As Boolean
 
     ''' <summary>
-    ''' 命令窗体
+    '''     命令窗体
     ''' </summary>
     ''' <remarks></remarks>
     Public CommandForm As ICommand
 
-    Public Sub New(ByVal dataBase As PWMIS.DataProvider.Data.AdoHelper)
+    Public Sub New(dataBase As AdoHelper)
 
         ' 此调用是 Windows 窗体设计器所必需的。
         InitializeComponent()
@@ -46,13 +56,13 @@
     End Sub
 
     ''' <summary>
-    ''' 多数据源查询
+    '''     多数据源查询
     ''' </summary>
     ''' <param name="sql"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function ExecuteGroupQuery(ByVal sql As String) As Integer
-        Dim count As Integer = 0
+    Private Function ExecuteGroupQuery(sql As String) As Integer
+        Dim count = 0
         For Each dc As DataConnection In DataConnections
             If dc.Enabled Then
                 If dc.CurrAdoHelper IsNot Nothing Then
@@ -65,7 +75,7 @@
         Return count
     End Function
 
-    Private Function ExecuteNoneQuery(ByVal sql As String) As Integer
+    Private Function ExecuteNoneQuery(sql As String) As Integer
         Dim acceptCount As Integer
         If Me.chkGroupQuery.Checked Then
             Me.txtExecuteMsg.Text &= vbCrLf & "*********开始执行组查询（多数据源查询） ***********************"
@@ -79,16 +89,16 @@
     End Function
 
     ''' <summary>
-    ''' 批量执行数据库更新，将以脚本指定的分隔符分隔执行块，例如SQLServer 的Go语句（Go之后必须立刻回车，不能有其它字符）
+    '''     批量执行数据库更新，将以脚本指定的分隔符分隔执行块，例如SQLServer 的Go语句（Go之后必须立刻回车，不能有其它字符）
     ''' </summary>
     ''' <param name="db"></param>
     ''' <param name="sql"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Private Function BatchExecuteNoneQuery(ByVal db As PWMIS.DataProvider.Data.AdoHelper, ByVal sql As String) As Integer
-        Dim count As Integer = 0
+    Private Function BatchExecuteNoneQuery(db As AdoHelper, sql As String) As Integer
+        Dim count = 0
         blockSqlCount = 0
-        If db.GetType() Is GetType(PWMIS.DataProvider.Data.SqlServer) Then
+        If db.GetType() Is GetType(SqlServer) Then
             'SQLServer 分隔处理
             sql = sql.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf) & vbCrLf ' 防止最后一句没有加回车
             Dim spliteString = "GO" & vbCrLf
@@ -103,24 +113,26 @@
                 db.Commit()
             Catch ex As Exception
                 db.Rollback()
-                MessageBox.Show("执行T-SQL出错，已经终止操作并回滚事务，详细原因：" & ex.Message, "数据查询", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                MessageBox.Show("执行T-SQL出错，已经终止操作并回滚事务，详细原因：" & ex.Message, "数据查询", MessageBoxButtons.OK,
+                                MessageBoxIcon.Error)
             End Try
-           
+
 
         Else
             count = db.ExecuteNonQuery(sql)
         End If
         Return count
     End Function
-    Private Sub ExecuteQuery(ByVal sql As String, ByVal isUpdate As Boolean, ByVal autoCheck As Boolean)
+
+    Private Sub ExecuteQuery(sql As String, isUpdate As Boolean, autoCheck As Boolean)
         Me.Cursor = Cursors.WaitCursor
         If sql <> "" Then
             Me.SplitContainer1.Panel2Collapsed = False
             Try
                 Dim stopWatch As New Stopwatch
                 Dim dsResult As DataSet = Nothing
-                Dim acceptCount As Integer = 0
-                Dim isUpdateSql As Boolean = False
+                Dim acceptCount = 0
+                Dim isUpdateSql = False
 
                 stopWatch.Start()
                 If autoCheck Then
@@ -175,7 +187,7 @@
 
                     Dim fatherSplite As SplitContainer = splite1
 
-                    For i As Integer = 1 To dsResult.Tables.Count - 1
+                    For i = 1 To dsResult.Tables.Count - 1
                         Dim gridTemp As New DataGridView
                         Dim spliteTemp As SplitContainer = CreateNewSpliteContainer(fatherSplite, gridTemp)
                         gridTemp.DataSource = dsResult.Tables(i)
@@ -195,7 +207,7 @@
         Me.Cursor = Cursors.Default
     End Sub
 
-    Private Sub rtbQueryText_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles rtbQueryText.KeyDown
+    Private Sub rtbQueryText_KeyDown(sender As Object, e As KeyEventArgs) Handles rtbQueryText.KeyDown
         'If e.KeyCode = Keys.F5 Then
         '    ' MessageBox.Show("F5 key down.")
         '    Dim sql As String = Me.rtbQueryText.SelectedText
@@ -204,10 +216,9 @@
         '    End If
         '    ExecuteQuery(sql, False, True)
         'End If
-
     End Sub
 
-    Private Function CreateNewSpliteContainer(ByVal father As SplitContainer, ByVal gridView As DataGridView) As SplitContainer
+    Private Function CreateNewSpliteContainer(father As SplitContainer, gridView As DataGridView) As SplitContainer
 
         Dim spliteTemp As New SplitContainer()
         spliteTemp.Orientation = Orientation.Horizontal
@@ -224,7 +235,7 @@
         Return spliteTemp
     End Function
 
-    Private Sub frmDataQuery_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub frmDataQuery_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         ' Me.dgvQueryData.Hide()
         ' Dim SplitContainer2 As New SplitContainer()
         If IsGroupQuery Then
@@ -237,8 +248,8 @@
         Me.rtbQueryText.Focus()
         Me.rtbQueryText.AllowDrop = True
 
-        Dim source = From item As String In [Enum].GetNames(GetType(PWMIS.Common.DBMSType)) _
-                                    Select Name = item, Value = [Enum].Parse(GetType(PWMIS.Common.DBMSType), item)
+        Dim source = From item As String In [Enum].GetNames(GetType(DBMSType)) _
+                Select Name = item, Value = [Enum].Parse(GetType(DBMSType), item)
 
         Me.colDbmsType.DataSource = source.ToList()
         Me.colDbmsType.DisplayMember = "Name"
@@ -253,8 +264,8 @@
         SendOperationStatusMessage("查询准备就绪")
     End Sub
 
-    Private Sub rtbQueryText_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) _
-   Handles rtbQueryText.DragEnter
+    Private Sub rtbQueryText_DragEnter(sender As Object, e As DragEventArgs) _
+        Handles rtbQueryText.DragEnter
         If (e.Data.GetDataPresent(DataFormats.Text)) Then
             e.Effect = DragDropEffects.Copy
         Else
@@ -263,8 +274,8 @@
     End Sub
 
 
-    Private Sub rtbQueryText_DragDrop(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) _
-   Handles rtbQueryText.DragDrop
+    Private Sub rtbQueryText_DragDrop(sender As Object, e As DragEventArgs) _
+        Handles rtbQueryText.DragDrop
         Dim i As Int16
         Dim s As String
         Dim s2 As String
@@ -280,11 +291,10 @@
 
         'Mid(source, i) = e.Data.GetData(DataFormats.Text).ToString()
         'rtbQueryText.Text = source
-
     End Sub
 
     ''' <summary>
-    ''' 获取用户输入或者选择的SQL语句
+    '''     获取用户输入或者选择的SQL语句
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
@@ -296,21 +306,21 @@
         Return sql
     End Function
 
-    Private Sub frmDataQuery_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+    Private Sub frmDataQuery_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         If MessageBox.Show("确认关闭当前查询窗口吗？", "查询管理", MessageBoxButtons.OKCancel) = DialogResult.Cancel Then
             e.Cancel = True
         End If
     End Sub
 
-    Private Sub tsmItemQueryDataSet_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmItemQueryDataSet.Click
+    Private Sub tsmItemQueryDataSet_Click(sender As Object, e As EventArgs) Handles tsmItemQueryDataSet.Click
         ExecuteQuery(GetUserSQL, False, False)
     End Sub
 
-    Private Sub tsmItemUpdateTable_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmItemUpdateTable.Click
+    Private Sub tsmItemUpdateTable_Click(sender As Object, e As EventArgs) Handles tsmItemUpdateTable.Click
         ExecuteQuery(GetUserSQL, True, False)
     End Sub
 
-    Private Sub tsmItemSaveSQLScript_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmItemSaveSQLScript.Click
+    Private Sub tsmItemSaveSQLScript_Click(sender As Object, e As EventArgs) Handles tsmItemSaveSQLScript.Click
         If Me.CurrScriptFileName = "" Then
             Me.SaveFileDialog1.Filter = "SQL查询文件|*.sql|所有文件|*.*"
             Me.SaveFileDialog1.ShowDialog()
@@ -321,8 +331,6 @@
         Else
             SaveFile()
         End If
-        
-
     End Sub
 
     Private Sub SaveFile()
@@ -335,18 +343,18 @@
         End Try
     End Sub
 
-    Private Sub tsmItemExecute_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmItemExecute.Click
+    Private Sub tsmItemExecute_Click(sender As Object, e As EventArgs) Handles tsmItemExecute.Click
         ExecuteQuery(GetUserSQL, False, True)
     End Sub
 
-    Private Sub rtbQueryText_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rtbQueryText.TextChanged
+    Private Sub rtbQueryText_TextChanged(sender As Object, e As EventArgs) Handles rtbQueryText.TextChanged
         If Not Me.contentTextChange Then
             Me.contentTextChange = True
             Me.Text = "*" & Me.Text
         End If
     End Sub
 
-    Private Sub tsmItemCreateEntity_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmItemCreateEntity.Click
+    Private Sub tsmItemCreateEntity_Click(sender As Object, e As EventArgs) Handles tsmItemCreateEntity.Click
         Dim sqlForm As New frmEntityFromSQL
         sqlForm.MapSQL = GetUserSQL()
         sqlForm.ClassNamespace = Me.CurrDBName
@@ -360,23 +368,25 @@
             End With
             Me.CommandForm.OpenWindow(Me, window, "")
         End If
-        
     End Sub
 
-    Private Sub btnAddConn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnAddConn.Click
-        DataConnections.Add(New DataConnection() With {.Enabled = False, .DbType = PWMIS.Common.DBMSType.SqlServer, .ConnectionStrng = "Server=<IP或名称>;DataBase=<数据库名称>;uid=sa;pwd=<数据库密码>"})
+    Private Sub btnAddConn_Click(sender As Object, e As EventArgs) Handles btnAddConn.Click
+        DataConnections.Add(
+            New DataConnection() _
+                               With {.Enabled = False, .DbType = DBMSType.SqlServer,
+                               .ConnectionStrng = "Server=<IP或名称>;DataBase=<数据库名称>;uid=sa;pwd=<数据库密码>"})
         BindGroupQueryGrid()
-
     End Sub
 
-    Private Sub dgvGroupQuery_CellEndEdit(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgvGroupQuery.CellEndEdit
+    Private Sub dgvGroupQuery_CellEndEdit(sender As Object, e As DataGridViewCellEventArgs) _
+        Handles dgvGroupQuery.CellEndEdit
         If e.ColumnIndex = 0 Then
             If dgvGroupQuery.Rows(e.RowIndex).Cells(0).Value IsNot Nothing Then
                 If dgvGroupQuery.Rows(e.RowIndex).Cells(0).Value = True Then
                     '选择了当前连接
                     Dim dbType As String = dgvGroupQuery.Rows(e.RowIndex).Cells(1).Value
                     Dim connStr As String = dgvGroupQuery.Rows(e.RowIndex).Cells(2).Value
-                    Dim db As PWMIS.DataProvider.Data.AdoHelper = TestConnection(dbType, connStr)
+                    Dim db As AdoHelper = TestConnection(dbType, connStr)
                     If db Is Nothing Then
                         dgvGroupQuery.Rows(e.RowIndex).Cells(0).Value = False
                         'MessageBox.Show("数据连接测试失败：" & connStr)
@@ -391,10 +401,10 @@
         End If
     End Sub
 
-    Private Function TestConnection(ByVal dbType As String, ByVal connStr As String) As PWMIS.DataProvider.Data.AdoHelper
+    Private Function TestConnection(dbType As String, connStr As String) As AdoHelper
         Try
-            Dim DBMSType As PWMIS.Common.DBMSType = System.Enum.Parse(GetType(PWMIS.Common.DBMSType), dbType)
-            Dim db As PWMIS.DataProvider.Data.AdoHelper = PWMIS.DataProvider.Adapter.MyDB.GetDBHelper(DBMSType, connStr)
+            Dim DBMSType As DBMSType = [Enum].Parse(GetType(DBMSType), dbType)
+            Dim db As AdoHelper = MyDB.GetDBHelper(DBMSType, connStr)
             Dim conn As IDbConnection = db.GetConnection(connStr)
             conn.Open()
             conn.Close()
@@ -409,28 +419,27 @@
         Return Nothing
     End Function
 
-    Private Sub tsmItemProperty_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmItemProperty.Click
+    Private Sub tsmItemProperty_Click(sender As Object, e As EventArgs) Handles tsmItemProperty.Click
         Me.TabControl1.SelectedTab = Me.TabPageMsg
         Me.SplitContainer1.Panel2Collapsed = False
         If Me.CurrDataBase Is Nothing Then
             Me.txtExecuteMsg.Text &= vbCrLf & "-------------当前查询窗口属性---------------" _
-                 & vbCrLf & "脚本文件名：" & Me.CurrScriptFileName _
-                 & vbCrLf & "是否组查询：" & Me.IsGroupQuery
+                                     & vbCrLf & "脚本文件名：" & Me.CurrScriptFileName _
+                                     & vbCrLf & "是否组查询：" & Me.IsGroupQuery
         Else
             Me.txtExecuteMsg.Text &= vbCrLf & "-------------当前查询窗口属性---------------" _
-                  & vbCrLf & "数据库名称：" & Me.CurrDBName _
-                  & vbCrLf & "连接字符串：" & Me.CurrDataBase.ConnectionString _
-                  & vbCrLf & "脚本文件名：" & Me.CurrScriptFileName _
-                  & vbCrLf & "是否组查询：" & Me.IsGroupQuery
+                                     & vbCrLf & "数据库名称：" & Me.CurrDBName _
+                                     & vbCrLf & "连接字符串：" & Me.CurrDataBase.ConnectionString _
+                                     & vbCrLf & "脚本文件名：" & Me.CurrScriptFileName _
+                                     & vbCrLf & "是否组查询：" & Me.IsGroupQuery
         End If
-      
     End Sub
 
-    Private Sub btnSaveGQuery_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveGQuery.Click
+    Private Sub btnSaveGQuery_Click(sender As Object, e As EventArgs) Handles btnSaveGQuery.Click
         Dim type As Type = GetType(List(Of DataConnection))
-        Dim xs As New System.Xml.Serialization.XmlSerializer(type)
-        Dim sb As New System.Text.StringBuilder()
-        Dim sw As New System.IO.StringWriter(sb)
+        Dim xs As New XmlSerializer(type)
+        Dim sb As New StringBuilder()
+        Dim sw As New StringWriter(sb)
         xs.Serialize(sw, DataConnections)
         Dim result As String = sb.ToString()
 
@@ -438,10 +447,10 @@
         MessageBox.Show("保存成功！", "数据连接文件")
     End Sub
 
-    Private Sub btnLoadGQuery_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnLoadGQuery.Click
+    Private Sub btnLoadGQuery_Click(sender As Object, e As EventArgs) Handles btnLoadGQuery.Click
         Dim type As Type = GetType(List(Of DataConnection))
-        Dim xs As New System.Xml.Serialization.XmlSerializer(type)
-        Dim reader As New System.IO.StringReader(My.Computer.FileSystem.ReadAllText(GroupQueryCfgFile))
+        Dim xs As New XmlSerializer(type)
+        Dim reader As New StringReader(My.Computer.FileSystem.ReadAllText(GroupQueryCfgFile))
         DataConnections = xs.Deserialize(reader)
 
         BindGroupQueryGrid()
@@ -452,10 +461,10 @@
         Me.dgvGroupQuery.DataSource = DataConnections
     End Sub
 
-    Private Sub btnDelConn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelConn.Click
+    Private Sub btnDelConn_Click(sender As Object, e As EventArgs) Handles btnDelConn.Click
         If Me.dgvGroupQuery.SelectedRows.Count > 0 Then
             Dim list As New List(Of DataConnection)
-            For i As Integer = 0 To Me.dgvGroupQuery.SelectedRows.Count - 1
+            For i = 0 To Me.dgvGroupQuery.SelectedRows.Count - 1
                 Dim dc As DataConnection = Me.dgvGroupQuery.SelectedRows(i).DataBoundItem
                 list.Add(dc)
             Next

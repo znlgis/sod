@@ -1,9 +1,11 @@
-﻿Imports PWMIS.DataProvider.Adapter
+﻿Imports System.ComponentModel
+Imports System.Xml
+Imports PWMIS.Common
+Imports PWMIS.DataProvider.Adapter
 Imports PWMIS.DataProvider.Data
 
 
 Public Class frmDataBaseExpert
-
     Dim _currDataBase As AdoHelper = Nothing
     Dim CurrDBName As String
     Dim oldSqlConnStr As String
@@ -11,11 +13,11 @@ Public Class frmDataBaseExpert
     Dim CurrDbType As String
     Dim dbLeftChar As String = "["
     Dim dbRightChar As String = "]" '其它数据库必须处理
-    Dim DBNodePath As Dictionary(Of String, AdoHelper) = New Dictionary(Of String, AdoHelper)
-    Dim OldConnStrNodePath As Dictionary(Of String, String) = New Dictionary(Of String, String)
+    Dim ReadOnly DBNodePath As Dictionary(Of String, AdoHelper) = New Dictionary(Of String, AdoHelper)
+    Dim ReadOnly OldConnStrNodePath As Dictionary(Of String, String) = New Dictionary(Of String, String)
     Dim dbNodePathKey As String = ""
 
-    Private Property CurrDataBase() As AdoHelper
+    Private Property CurrDataBase As AdoHelper
         Get
             '从当前树选择的路径来获取指定的数据访问对象
             If Me.TreeView1.SelectedNode IsNot Nothing Then
@@ -29,16 +31,16 @@ Public Class frmDataBaseExpert
                     End If
                 Next
             End If
-            Module1.CurrentDataBase = _currDataBase
+            CurrentDataBase = _currDataBase
             Return _currDataBase
         End Get
-        Set(ByVal value As AdoHelper)
+        Set
             _currDataBase = value
         End Set
     End Property
 
     ''' <summary>
-    ''' 命令窗体
+    '''     命令窗体
     ''' </summary>
     ''' <remarks></remarks>
     Public CommandForm As ICommand
@@ -49,31 +51,28 @@ Public Class frmDataBaseExpert
         InitializeComponent()
 
         ' 在 InitializeComponent() 调用之后添加任何初始化。
-
     End Sub
 
-    Public Sub New(ByVal commandForm As ICommand)
+    Public Sub New(commandForm As ICommand)
         InitializeComponent()
         Me.CommandForm = commandForm
-
-
     End Sub
 
 
     Private Sub initTreeView()
         Me.TreeView1.Nodes(0).Nodes.Clear()
 
-        Dim doc As New Xml.XmlDocument()
+        Dim doc As New XmlDocument()
         doc.Load("Config\DataConnectionCfg.xml")
-        Dim groups As Xml.XmlNodeList = doc.GetElementsByTagName("Group")
-        For Each group As Xml.XmlNode In groups
+        Dim groups As XmlNodeList = doc.GetElementsByTagName("Group")
+        For Each group As XmlNode In groups
             Dim groupName As String = group.Attributes("Name").Value
 
             Dim groupNode As TreeNode = Me.TreeView1.Nodes(0).Nodes.Add(groupName)
             groupNode.ImageKey = "ConnStrSection"
             groupNode.SelectedImageKey = "ConnStrSection"
 
-            For Each conn As Xml.XmlNode In group
+            For Each conn As XmlNode In group
                 If conn.Name = "Connection" Then
                     Dim connNode As New TreeNode()
                     connNode.SelectedImageKey = "SQLHost"
@@ -99,7 +98,7 @@ Public Class frmDataBaseExpert
         Next
     End Sub
 
-    Private Sub frmDataBaseExpert_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub frmDataBaseExpert_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.ImageList1.Images.Add("CfgNode", LoadImageFile(".\images\ConfigurationNode.bmp"))
         Me.ImageList1.Images.Add("ConnStrSection", LoadImageFile(".\images\ConnectionStringsSectionNode.bmp"))
         Me.ImageList1.Images.Add("ConnStrSettings", LoadImageFile(".\images\ConnectionStringSettingsNode.bmp"))
@@ -122,7 +121,6 @@ Public Class frmDataBaseExpert
         Me.TreeView1.Nodes(0).ImageKey = "ConnStrSection"
         Me.TreeView1.Nodes(0).SelectedImageKey = "ConnStrSection"
         initTreeView()
-
     End Sub
 
     Private Function LoadImageFile(fileName As String) As Image
@@ -133,16 +131,15 @@ Public Class frmDataBaseExpert
         Return bmp
     End Function
 
-    Private Sub tsmiProperty_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmiProperty.Click
+    Private Sub tsmiProperty_Click(sender As Object, e As EventArgs) Handles tsmiProperty.Click
         Dim paras As New Dictionary(Of String, Object)
         paras.Add("key1", "aaa")
         paras.Add("key2", "bbb")
 
         CommandForm.Command("ShowPropertyForm", paras)
-
     End Sub
 
-    Private Sub TreeView1_AfterExpand(ByVal sender As System.Object, ByVal e As System.Windows.Forms.TreeViewEventArgs) Handles TreeView1.AfterExpand
+    Private Sub TreeView1_AfterExpand(sender As Object, e As TreeViewEventArgs) Handles TreeView1.AfterExpand
         Me.Cursor = Cursors.WaitCursor
         TreeView1.SelectedNode = e.Node
 
@@ -230,7 +227,7 @@ Public Class frmDataBaseExpert
                         node.Nodes(0).ImageKey = "Tables"
                         node.Nodes(1).SelectedImageKey = "Views"
                         node.Nodes(1).ImageKey = "Views"
-                   ElseIf Me.CurrDbType = "SQLite" Or Me.CurrDbType = "Access" Then
+                    ElseIf Me.CurrDbType = "SQLite" Or Me.CurrDbType = "Access" Then
                         Dim node As New TreeNode("数据库")
                         node.Name = "main"
                         e.Node.Nodes.Add(node) '添加数据库名称节点
@@ -260,15 +257,16 @@ Public Class frmDataBaseExpert
                 Dim node As TreeNode = e.Node
                 Me.CurrDBName = node.Name
 
-                If Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.SqlServer _
-                Or Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.MySql _
-                Or Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.PostgreSQL Then
-                    Me.CurrDataBase.ConnectionString = oldSqlConnStr & ";DataBase=" & node.Name '直接使用 oldSqlConnStr 可能会出错
+                If Me.CurrDataBase.CurrentDBMSType = DBMSType.SqlServer _
+                   Or Me.CurrDataBase.CurrentDBMSType = DBMSType.MySql _
+                   Or Me.CurrDataBase.CurrentDBMSType = DBMSType.PostgreSQL Then
+                    Me.CurrDataBase.ConnectionString = oldSqlConnStr & ";DataBase=" & node.Name _
+                    '直接使用 oldSqlConnStr 可能会出错
                 End If
                 Dim nodeTable As TreeNode = node.Nodes(0)
                 If nodeTable.Nodes.Count > 0 And Not needRefresh Then Exit Select '不再重复构建树
                 Dim dbName As String = node.Name
-                Dim tableFilter As String = "BASE TABLE"
+                Dim tableFilter = "BASE TABLE"
 
                 If Me.CurrDbType = "SQLite" Then tableFilter = "table" '
                 If Me.CurrDbType = "SQLServerCe" Then
@@ -279,10 +277,11 @@ Public Class frmDataBaseExpert
                     dbName = Nothing
                     tableFilter = "TABLE"
                 End If
-                Dim dtSchema As DataTable '= Me.CurrDataBase.GetSchema("Tables", New String() {dbName, Nothing, Nothing, tableFilter})
-                If Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.MySql Then
+                Dim dtSchema As DataTable _
+                '= Me.CurrDataBase.GetSchema("Tables", New String() {dbName, Nothing, Nothing, tableFilter})
+                If Me.CurrDataBase.CurrentDBMSType = DBMSType.MySql Then
                     dtSchema = Me.CurrDataBase.GetSchema("Tables", New String() {Nothing, dbName, Nothing, tableFilter})
-                ElseIf Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.Oracle Then
+                ElseIf Me.CurrDataBase.CurrentDBMSType = DBMSType.Oracle Then
                     dtSchema = Me.CurrDataBase.GetSchema("Tables", Nothing)
                 Else
                     dtSchema = Me.CurrDataBase.GetSchema("Tables", New String() {dbName, Nothing, Nothing, tableFilter})
@@ -291,9 +290,11 @@ Public Class frmDataBaseExpert
 
                 nodeTable.Nodes.Clear()
 
-                If Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.Oracle Then
+                If Me.CurrDataBase.CurrentDBMSType = DBMSType.Oracle Then
                     Dim owner As String = Me.CurrDataBase.ConnectionUserID
-                    Dim dvCurr As New DataView(dtSchema, "OWNER='" & owner & "'", "table_name", DataViewRowState.CurrentRows)
+                    Dim _
+                        dvCurr As _
+                            New DataView(dtSchema, "OWNER='" & owner & "'", "table_name", DataViewRowState.CurrentRows)
                     For Each item As DataRowView In dvCurr
                         Dim childNode As New TreeNode(item(1))
                         childNode.Name = item(1)
@@ -349,7 +350,6 @@ Public Class frmDataBaseExpert
                 End If
 
 
-                
                 If Me.CurrDbType = "SQLServerCe" Then Exit Select 'SQLCE 不支持视图、存储过程
 
                 '显示所有视图
@@ -358,12 +358,15 @@ Public Class frmDataBaseExpert
                 tableView = dtSchema.DefaultView
 
                 nodeView.Nodes.Clear()
-                If Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.Oracle Then
+                If Me.CurrDataBase.CurrentDBMSType = DBMSType.Oracle Then
                     'owner view_name text_length text type_text_length type_text oid_text_length oid_text view_type_owner view_type 
                     'tableView.Sort = "owner,view_name"
 
                     Dim owner As String = Me.CurrDataBase.ConnectionUserID
-                    Dim dvCurr As New DataView(dtSchema, "OWNER='" & owner & "'", "owner,view_name", DataViewRowState.CurrentRows)
+                    Dim _
+                        dvCurr As _
+                            New DataView(dtSchema, "OWNER='" & owner & "'", "owner,view_name",
+                                         DataViewRowState.CurrentRows)
 
                     For Each item As DataRowView In dvCurr
                         Dim childNode As New TreeNode(item(0) & "." & item(1))
@@ -407,14 +410,13 @@ Public Class frmDataBaseExpert
                 End If
 
 
-                
-
                 If node.Nodes.Count < 3 Then Exit Select '有些数据库没有存储过程
                 'PostgreSQL 没有单独的存储过程，统一成为函数
-                If Me.CurrDataBase.CurrentDBMSType <> PWMIS.Common.DBMSType.PostgreSQL Then
+                If Me.CurrDataBase.CurrentDBMSType <> DBMSType.PostgreSQL Then
                     '显示所有存储过程
                     Dim nodeProc As TreeNode = node.Nodes(2)
-                    dtSchema = Me.CurrDataBase.GetSchema("Procedures", New String() {node.Name, Nothing, Nothing}) ' , New String() {node.Name, Nothing, Nothing}
+                    dtSchema = Me.CurrDataBase.GetSchema("Procedures", New String() {node.Name, Nothing, Nothing}) _
+                    ' , New String() {node.Name, Nothing, Nothing}
                     tableView = dtSchema.DefaultView
                     tableView.RowFilter = "ROUTINE_TYPE='PROCEDURE'"
                     tableView.Sort = "ROUTINE_NAME"
@@ -454,7 +456,8 @@ Public Class frmDataBaseExpert
 
                 Else
                     Dim nodeProc As TreeNode = node.Nodes(2)
-                    dtSchema = Me.CurrDataBase.GetSchema("Procedures", Nothing) ' New String() {node.Name, Nothing, Nothing}
+                    dtSchema = Me.CurrDataBase.GetSchema("Procedures", Nothing) _
+                    ' New String() {node.Name, Nothing, Nothing}
 
                     Dim nodeFun As TreeNode = node.Nodes(3)
                     tableView = dtSchema.DefaultView
@@ -488,11 +491,13 @@ Public Class frmDataBaseExpert
                             nodeColumns.Nodes.Clear()
 
                             Dim tableName As String = node.Name
-                            Dim dtSchema As DataTable '= Me.CurrDataBase.GetSchema("Columns", New String() {Nothing, Nothing, tableName})
+                            Dim dtSchema As DataTable _
+                            '= Me.CurrDataBase.GetSchema("Columns", New String() {Nothing, Nothing, tableName})
                             Dim tableView As DataView '= dtSchema.DefaultView
-                            
+
                             If Me.CurrDbType = "Access" Then
-                                dtSchema = Me.CurrDataBase.GetSchema("Columns", New String() {Nothing, Nothing, tableName})
+                                dtSchema = Me.CurrDataBase.GetSchema("Columns",
+                                                                     New String() {Nothing, Nothing, tableName})
                                 tableView = dtSchema.DefaultView
                                 tableView.Sort = "ordinal_position"
 
@@ -528,7 +533,10 @@ Public Class frmDataBaseExpert
                             ElseIf Me.CurrDbType = "Oracle" Then
                                 '注意：应该指名 owner的值，否则可能是另外一个表的结构
 
-                                dtSchema = Me.CurrDataBase.GetSchema("Columns", New String() {Me.CurrDataBase.ConnectionUserID, tableName}) 'owner table_name column_name id datatype length precision scale nullable
+                                dtSchema = Me.CurrDataBase.GetSchema("Columns",
+                                                                     New String() _
+                                                                        {Me.CurrDataBase.ConnectionUserID, tableName}) _
+                                'owner table_name column_name id datatype length precision scale nullable
                                 tableView = dtSchema.DefaultView
                                 tableView.Sort = "column_name"
 
@@ -546,7 +554,8 @@ Public Class frmDataBaseExpert
                                     nodeColumns.Nodes.Add(childNode)
                                 Next
                             Else
-                                dtSchema = Me.CurrDataBase.GetSchema("Columns", New String() {Nothing, Nothing, tableName})
+                                dtSchema = Me.CurrDataBase.GetSchema("Columns",
+                                                                     New String() {Nothing, Nothing, tableName})
                                 tableView = dtSchema.DefaultView
                                 tableView.Sort = "ordinal_position"
 
@@ -574,15 +583,19 @@ Public Class frmDataBaseExpert
 
                             Dim viewName As String = node.Name
                             '对于视图，仍然使用Columns 获取视图的列，ViewColumns 获取的则是各表的原始列
-                            Dim dtSchema As DataTable = Me.CurrDataBase.GetSchema("Columns", New String() {Nothing, Nothing, viewName})
+                            Dim dtSchema As DataTable = Me.CurrDataBase.GetSchema("Columns",
+                                                                                  New String() _
+                                                                                     {Nothing, Nothing, viewName})
                             Dim tableView As DataView = dtSchema.DefaultView
                             tableView.Sort = "COLUMN_NAME"
 
 
                             For Each item As DataRowView In tableView
-                                Dim text As String = item("TABLE_SCHEMA") & "." & item("TABLE_NAME") & "." & item("COLUMN_NAME")
+                                Dim text As String = item("TABLE_SCHEMA") & "." & item("TABLE_NAME") & "." &
+                                                     item("COLUMN_NAME")
                                 Dim childNode As New TreeNode(text)
-                                childNode.Name = item("COLUMN_NAME") ' IIf(item("COLUMN_NAME") Is DBNull.Value, "", item("COLUMN_NAME").ToString())
+                                childNode.Name = item("COLUMN_NAME") _
+                                ' IIf(item("COLUMN_NAME") Is DBNull.Value, "", item("COLUMN_NAME").ToString())
                                 childNode.SelectedImageKey = "Element"
                                 childNode.ImageKey = "Element"
 
@@ -595,12 +608,14 @@ Public Class frmDataBaseExpert
 
                             'Dim viewName As String = node.Name
                             '对于视图，仍然使用Columns 获取视图的列，ViewColumns 获取的则是各表的原始列
-                            dtSchema = Me.CurrDataBase.GetSchema("ViewColumns", New String() {Nothing, Nothing, viewName})
+                            dtSchema = Me.CurrDataBase.GetSchema("ViewColumns",
+                                                                 New String() {Nothing, Nothing, viewName})
                             tableView = dtSchema.DefaultView
                             tableView.Sort = "COLUMN_NAME"
 
                             For Each item As DataRowView In tableView
-                                Dim text As String = item("TABLE_SCHEMA") & "." & item("TABLE_NAME") & "." & item("COLUMN_NAME")
+                                Dim text As String = item("TABLE_SCHEMA") & "." & item("TABLE_NAME") & "." &
+                                                     item("COLUMN_NAME")
                                 Dim childNode As New TreeNode(text)
                                 childNode.Name = item("COLUMN_NAME")
                                 childNode.SelectedImageKey = "Element"
@@ -616,17 +631,21 @@ Public Class frmDataBaseExpert
                             nodeParas.Nodes.Clear()
 
                             Dim procName As String = node.Name
-                            Dim procedureParameters As String = "ProcedureParameters"
-                            If Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.MySql Then
+                            Dim procedureParameters = "ProcedureParameters"
+                            If Me.CurrDataBase.CurrentDBMSType = DBMSType.MySql Then
                                 procedureParameters = "Procedure Parameters"
                             End If
-                            Dim dtSchema As DataTable = Me.CurrDataBase.GetSchema(procedureParameters, New String() {Nothing, Nothing, procName}) '
+                            Dim dtSchema As DataTable = Me.CurrDataBase.GetSchema(procedureParameters,
+                                                                                  New String() _
+                                                                                     {Nothing, Nothing, procName}) '
                             Dim tableView As DataView = dtSchema.DefaultView
                             tableView.Sort = "ordinal_position"
 
 
                             For Each item As DataRowView In tableView
-                                Dim text As String = item("PARAMETER_NAME") & " [" & item("DATA_TYPE") & "," & item("CHARACTER_MAXIMUM_LENGTH") & "," & item("PARAMETER_MODE") & "]"
+                                Dim text As String = item("PARAMETER_NAME") & " [" & item("DATA_TYPE") & "," &
+                                                     item("CHARACTER_MAXIMUM_LENGTH") & "," & item("PARAMETER_MODE") &
+                                                     "]"
                                 Dim childNode As New TreeNode(text)
                                 childNode.Name = item("PARAMETER_NAME")
                                 childNode.SelectedImageKey = "Element"
@@ -643,10 +662,12 @@ Public Class frmDataBaseExpert
                             Dim funName As String = node.Name
                             Dim dtSchema As DataTable = Nothing
                             Try
-                                dtSchema = Me.CurrDataBase.GetSchema("ProcedureParameters", New String() {Nothing, Nothing, funName})
+                                dtSchema = Me.CurrDataBase.GetSchema("ProcedureParameters",
+                                                                     New String() {Nothing, Nothing, funName})
                             Catch ex As Exception
-                                If Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.PostgreSQL Then
-                                    MessageBox.Show("获取函数参数信息失败，请尝试手工执行下面地址的脚本：http://www.alberton.info/postgresql_meta_info.html ，脚本名称：public.function_args")
+                                If Me.CurrDataBase.CurrentDBMSType = DBMSType.PostgreSQL Then
+                                    MessageBox.Show(
+                                        "获取函数参数信息失败，请尝试手工执行下面地址的脚本：http://www.alberton.info/postgresql_meta_info.html ，脚本名称：public.function_args")
                                     Process.Start("http://www.alberton.info/postgresql_meta_info.html")
                                 Else
                                     MessageBox.Show("获取函数参数信息失败：" & ex.Message)
@@ -659,7 +680,9 @@ Public Class frmDataBaseExpert
                             tableView.RowFilter = "IS_RESULT='NO'"
 
                             For Each item As DataRowView In tableView
-                                Dim text As String = item("PARAMETER_NAME") & " [" & item("DATA_TYPE") & "," & item("CHARACTER_MAXIMUM_LENGTH") & "," & item("PARAMETER_MODE") & "]"
+                                Dim text As String = item("PARAMETER_NAME") & " [" & item("DATA_TYPE") & "," &
+                                                     item("CHARACTER_MAXIMUM_LENGTH") & "," & item("PARAMETER_MODE") &
+                                                     "]"
                                 Dim childNode As New TreeNode(text)
                                 childNode.Name = item("PARAMETER_NAME")
                                 childNode.SelectedImageKey = "Element"
@@ -675,7 +698,9 @@ Public Class frmDataBaseExpert
 
                             nodeReturn.Nodes.Clear()
                             For Each item As DataRowView In tableView
-                                Dim text As String = "return " & item("PARAMETER_NAME") & " [" & item("DATA_TYPE") & "," & item("CHARACTER_MAXIMUM_LENGTH") & "," & item("PARAMETER_MODE") & "]"
+                                Dim text As String = "return " & item("PARAMETER_NAME") & " [" & item("DATA_TYPE") & "," &
+                                                     item("CHARACTER_MAXIMUM_LENGTH") & "," & item("PARAMETER_MODE") &
+                                                     "]"
                                 Dim childNode As New TreeNode(text)
                                 childNode.Name = item("PARAMETER_NAME")
                                 childNode.SelectedImageKey = "Element"
@@ -694,13 +719,12 @@ Public Class frmDataBaseExpert
         Me.Cursor = Cursors.Default
     End Sub
 
-    Private Sub ToolStripMenuItem1_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ToolStripMenuItem1.Click
+    Private Sub ToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ToolStripMenuItem1.Click
         Me.needRefresh = True
-
     End Sub
 
     ''' <summary>
-    ''' 创建实体类，打开实体类生成器窗口
+    '''     创建实体类，打开实体类生成器窗口
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
@@ -708,7 +732,7 @@ Public Class frmDataBaseExpert
         Dim currNode As TreeNode = Me.TreeView1.SelectedNode
         Dim tables As New List(Of String)
         Dim views As New List(Of String)
-        Dim dbName As String = "MyDB"
+        Dim dbName = "MyDB"
         If currNode IsNot Nothing Then
             If currNode.Nodes.Count > 0 AndAlso currNode.FirstNode.Text = "列" Then
                 '当前节点是表或者视图名称
@@ -764,24 +788,24 @@ Public Class frmDataBaseExpert
         Return False
     End Function
 
-    Private Sub tsmiCreateEntity_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmiCreateEntity.Click
+    Private Sub tsmiCreateEntity_Click(sender As Object, e As EventArgs) Handles tsmiCreateEntity.Click
         CreateEntity()
     End Sub
 
-    Private Sub tsmiNewQuery_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmiNewQuery.Click
+    Private Sub tsmiNewQuery_Click(sender As Object, e As EventArgs) Handles tsmiNewQuery.Click
         If Me.CurrDataBase Is Nothing Then
             MessageBox.Show("请先打开一个数据库连接", "新建表查询", MessageBoxButtons.OK, MessageBoxIcon.Exclamation)
             Return
         End If
 
         Dim currNode As TreeNode = Me.TreeView1.SelectedNode
-        Dim SQL As String = ""
+        Dim SQL = ""
         If currNode IsNot Nothing Then
             If currNode.Nodes.Count > 0 AndAlso currNode.FirstNode.Text = "列" Then
                 '当前节点是表或者视图名称
                 Dim noteText As String = currNode.Text
 
-                Dim strScheme As String = ""
+                Dim strScheme = ""
                 Dim strTableName As String = noteText
                 Dim dotIndex As Integer = noteText.IndexOf("."c)
                 If dotIndex > 0 Then
@@ -789,7 +813,7 @@ Public Class frmDataBaseExpert
                     strTableName = noteText.Substring(dotIndex + 1)
                 End If
 
-                Dim columns As String = ""
+                Dim columns = ""
                 For Each node As TreeNode In currNode.FirstNode.Nodes
                     columns &= vbTab & dbLeftChar & node.Name & dbRightChar & " ," & vbCrLf
                 Next
@@ -817,10 +841,9 @@ Public Class frmDataBaseExpert
     End Sub
 
 
-    Private Sub TreeView1_ItemDrag(ByVal sender As System.Object, ByVal e As System.Windows.Forms.ItemDragEventArgs) Handles TreeView1.ItemDrag
+    Private Sub TreeView1_ItemDrag(sender As Object, e As ItemDragEventArgs) Handles TreeView1.ItemDrag
         Dim node As TreeNode = e.Item
         TreeView1.DoDragDrop(node.Name, DragDropEffects.Copy Or DragDropEffects.Move)
-
     End Sub
 
     Private Sub CreatNewConn()
@@ -830,15 +853,18 @@ Public Class frmDataBaseExpert
                 Dim dbLogin As New frmDBLogin
                 dbLogin.ShowDialog()
                 If dbLogin.ConnectionString <> "" And dbLogin.ServerName <> "" Then
-                    Dim fileName As String = ".\Config\DataConnectionCfg.xml"
+                    Dim fileName = ".\Config\DataConnectionCfg.xml"
                     Dim dbConnCfg As XElement = XElement.Load(fileName)
                     For Each groupElement As XElement In dbConnCfg.Elements("Group")
                         If groupElement.Attribute("Name") = groupName Then
-                            Dim ServerName As String = ""
+                            Dim ServerName = ""
                             Dim DbType As String = dbLogin.DBMSType.ToString()
 
-                            If dbLogin.DBMSType = PWMIS.Common.DBMSType.UNKNOWN Then
-                                DbType = InputBox("请输入数据库类型(注意大小写)。" & vbCrLf & "系统支持的类型有：Access,SqlServer,Oracle,DB2,Sysbase,MySql,SQLite,UNKNOWN", "数据连接管理")
+                            If dbLogin.DBMSType = DBMSType.UNKNOWN Then
+                                DbType =
+                                    InputBox(
+                                        "请输入数据库类型(注意大小写)。" & vbCrLf &
+                                        "系统支持的类型有：Access,SqlServer,Oracle,DB2,Sysbase,MySql,SQLite,UNKNOWN", "数据连接管理")
                                 If DbType = "SQLite" Then
                                     ServerName = "main"
                                 Else
@@ -851,8 +877,9 @@ Public Class frmDataBaseExpert
                             Else
                                 ServerName = dbLogin.ServerName
                             End If
-                            Dim connElement As XElement = _
-                       <Connection DbType=<%= DbType %> Name=<%= ServerName %> ConnectionString=<%= dbLogin.ConnectionString %> Provider=<%= dbLogin.Provider %>/>
+                            Dim connElement As XElement =
+                                    <Connection DbType=<%= DbType %> Name=<%= ServerName %> ConnectionString=<%= dbLogin _
+                                    .ConnectionString %> Provider=<%= dbLogin.Provider %>/>
                             groupElement.Add(connElement)
                             dbConnCfg.Save(fileName)
 
@@ -878,14 +905,17 @@ Public Class frmDataBaseExpert
                 Dim connName As String = Mid(TreeView1.SelectedNode.Text, at + 1)
                 Dim groupName As String = TreeView1.SelectedNode.Parent.Text
 
-                Dim fileName As String = ".\Config\DataConnectionCfg.xml"
+                Dim fileName = ".\Config\DataConnectionCfg.xml"
                 Dim dbConnCfg As XElement = XElement.Load(fileName)
-                Dim objGroupElement As XElement = dbConnCfg.<Group>.Where(Function(item As XElement) item.@Name = groupName).FirstOrDefault
+                Dim objGroupElement As XElement =
+                        dbConnCfg.<Group>.Where(Function(item As XElement) item.@Name = groupName).FirstOrDefault
                 If objGroupElement IsNot Nothing Then
                     Dim objConnElement As XElement = objGroupElement.Elements _
-                                                     .Where(Function(item As XElement) item.@Name = connName).FirstOrDefault
+                            .Where(Function(item As XElement) item.@Name = connName).FirstOrDefault
                     If objConnElement IsNot Nothing Then
-                        If MessageBox.Show("确认删除当前连接 [" & connName & "] 吗？", "数据连接管理", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = DialogResult.OK Then
+                        If _
+                            MessageBox.Show("确认删除当前连接 [" & connName & "] 吗？", "数据连接管理", MessageBoxButtons.OKCancel,
+                                            MessageBoxIcon.Warning) = DialogResult.OK Then
                             objConnElement.Remove()
                             dbConnCfg.Save(fileName)
 
@@ -901,16 +931,15 @@ Public Class frmDataBaseExpert
         End If
     End Sub
 
-    Private Sub tsbNewConn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsbNewConn.Click
-        CreatNewConn()
-
-    End Sub
-
-    Private Sub tsmItemNewConn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmItemNewConn.Click
+    Private Sub tsbNewConn_Click(sender As Object, e As EventArgs) Handles tsbNewConn.Click
         CreatNewConn()
     End Sub
 
-    Private Sub ContextMenuStrip1_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles ContextMenuStrip1.Opening
+    Private Sub tsmItemNewConn_Click(sender As Object, e As EventArgs) Handles tsmItemNewConn.Click
+        CreatNewConn()
+    End Sub
+
+    Private Sub ContextMenuStrip1_Opening(sender As Object, e As CancelEventArgs) Handles ContextMenuStrip1.Opening
         If TreeView1.SelectedNode IsNot Nothing Then
             If TreeView1.SelectedNode.Level = 0 Or TreeView1.SelectedNode.Level = 1 Then
                 tsmItemDeleGroup.Enabled = True
@@ -933,33 +962,31 @@ Public Class frmDataBaseExpert
         End If
     End Sub
 
-    Private Sub tsmItemDeleConn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmItemDeleConn.Click
+    Private Sub tsmItemDeleConn_Click(sender As Object, e As EventArgs) Handles tsmItemDeleConn.Click
         DeleteSelectedConn()
-
-
-
     End Sub
 
-    Private Sub tsmItemDeleGroup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmItemDeleGroup.Click
+    Private Sub tsmItemDeleGroup_Click(sender As Object, e As EventArgs) Handles tsmItemDeleGroup.Click
         Dim groupName As String = TreeView1.SelectedNode.Text
-        Dim fileName As String = ".\Config\DataConnectionCfg.xml"
+        Dim fileName = ".\Config\DataConnectionCfg.xml"
         Dim dbConnCfg As XElement = XElement.Load(fileName)
         Dim objElement = dbConnCfg.<Group>.Where(Function(item As XElement) item.@Name = groupName).FirstOrDefault
         If objElement IsNot Nothing Then
-            If MessageBox.Show("确认删除当前分组 [" & groupName & "] 吗？如果删除那么下面的所有节点都将删除！", "分组管理", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) = DialogResult.OK Then
+            If _
+                MessageBox.Show("确认删除当前分组 [" & groupName & "] 吗？如果删除那么下面的所有节点都将删除！", "分组管理", MessageBoxButtons.OKCancel,
+                                MessageBoxIcon.Warning) = DialogResult.OK Then
                 objElement.Remove()
                 dbConnCfg.Save(fileName)
 
                 initTreeView()
             End If
         End If
-
     End Sub
 
-    Private Sub tsmItemNewGroup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmItemNewGroup.Click
+    Private Sub tsmItemNewGroup_Click(sender As Object, e As EventArgs) Handles tsmItemNewGroup.Click
         Dim newGroupName As String = InputBox("请输入新建的分组名称：", "分组管理", "新建分组1")
         If newGroupName <> "" Then
-            Dim fileName As String = ".\Config\DataConnectionCfg.xml"
+            Dim fileName = ".\Config\DataConnectionCfg.xml"
             Dim dbConnCfg As XElement = XElement.Load(fileName)
             Dim newGroupElement As XElement = <Group Name=<%= newGroupName %>/>
             dbConnCfg.Add(newGroupElement)
@@ -969,9 +996,9 @@ Public Class frmDataBaseExpert
         End If
     End Sub
 
-    Private Sub tsmItemEditGroup_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmItemEditGroup.Click
+    Private Sub tsmItemEditGroup_Click(sender As Object, e As EventArgs) Handles tsmItemEditGroup.Click
         Dim groupName As String = TreeView1.SelectedNode.Text
-        Dim fileName As String = ".\Config\DataConnectionCfg.xml"
+        Dim fileName = ".\Config\DataConnectionCfg.xml"
         Dim dbConnCfg As XElement = XElement.Load(fileName)
         Dim objElement = dbConnCfg.<Group>.Where(Function(item As XElement) item.@Name = groupName).FirstOrDefault
         If objElement IsNot Nothing Then
@@ -987,21 +1014,21 @@ Public Class frmDataBaseExpert
         End If
     End Sub
 
-    Private Sub tsmItemCloseConn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmItemCloseConn.Click
+    Private Sub tsmItemCloseConn_Click(sender As Object, e As EventArgs) Handles tsmItemCloseConn.Click
         CurrDataBase = Nothing
         CurrDBName = ""
         CurrDbType = ""
     End Sub
 
-    Private Sub tsmiNewGroupQuery_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmiNewGroupQuery.Click
+    Private Sub tsmiNewGroupQuery_Click(sender As Object, e As EventArgs) Handles tsmiNewGroupQuery.Click
         Dim currNode As TreeNode = Me.TreeView1.SelectedNode
-        Dim SQL As String = ""
+        Dim SQL = ""
         If currNode IsNot Nothing Then
             If currNode.Nodes.Count > 0 AndAlso currNode.FirstNode.Text = "列" Then
                 '当前节点是表或者视图名称
                 Dim tableName As String = currNode.Name
 
-                Dim columns As String = ""
+                Dim columns = ""
                 For Each node As TreeNode In currNode.FirstNode.Nodes
                     columns &= vbTab & dbLeftChar & node.Name & dbRightChar & " ," & vbCrLf
                 Next
@@ -1020,11 +1047,11 @@ Public Class frmDataBaseExpert
         window.IsGroupQuery = True
 
         For Each key As String In DBNodePath.Keys
-            Dim dc As DataConnection = New DataConnection
+            Dim dc = New DataConnection
             Dim strTemp As String = key.Split("\")(2).Split(":")(0)
             dc.Enabled = True
             'PWMIS.Common.DBMSType.SqlServer 
-            dc.DbType = System.Enum.Parse(GetType(PWMIS.Common.DBMSType), strTemp, True)
+            dc.DbType = [Enum].Parse(GetType(DBMSType), strTemp, True)
             dc.ConnectionStrng = DBNodePath(key).ConnectionString
             dc.CurrAdoHelper = DBNodePath(key)
 
@@ -1038,7 +1065,7 @@ Public Class frmDataBaseExpert
         window.CommandForm = Me.CommandForm
     End Sub
 
-    Private Sub tsmiExpTableDataSQL_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles tsmiExpTableDataSQL.Click
+    Private Sub tsmiExpTableDataSQL_Click(sender As Object, e As EventArgs) Handles tsmiExpTableDataSQL.Click
         Dim currNode As TreeNode = Me.TreeView1.SelectedNode
 
         If currNode IsNot Nothing Then

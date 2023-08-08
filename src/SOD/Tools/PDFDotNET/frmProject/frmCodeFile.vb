@@ -1,21 +1,27 @@
-﻿Public Class frmCodeFile
+﻿Imports System.ComponentModel
+Imports System.IO
+Imports System.Text
+
+Public Class frmCodeFile
     Public FileName As String
+
     ''' <summary>
-    ''' 当前操作的内容文本
+    '''     当前操作的内容文本
     ''' </summary>
     ''' <remarks></remarks>
     Public ContentText As String
+
     Private contentChange As Boolean
 
-    Private Sub OpenConfigFile(ByVal fileName As String)
+    Private Sub OpenConfigFile(fileName As String)
         'System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory
         'Dim fileName As String = Configuration.ConfigurationManager.AppSettings(fileKey)
         'fileName = fileName & ".config"
-        If System.IO.File.Exists(fileName) Then
+        If File.Exists(fileName) Then
             'System.Diagnostics.Process.Start("notepad", fileName)
             '使用ReadAllText的重载方法参数 System.Text.Encoding.Default 可能无法正确打开utf8的配置文件
             '默认将使用UTF8格式
-            Me.txtFileText.Text = System.IO.File.ReadAllText(fileName)
+            Me.txtFileText.Text = File.ReadAllText(fileName)
 
             Me.Text = "文件：" + fileName
 
@@ -24,18 +30,17 @@
         End If
     End Sub
 
-    Private Sub frmCodeFile_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub frmCodeFile_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         '如果指定了文件名，则打开文件，否则用指定的文本初始化控件内容
         If Me.FileName IsNot Nothing OrElse Me.FileName <> "" Then
             OpenConfigFile(Me.FileName)
         Else
             Me.txtFileText.Text = Me.ContentText
         End If
-
     End Sub
 
-    Private Sub 关闭ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 关闭ToolStripMenuItem.Click
-       
+    Private Sub 关闭ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 关闭ToolStripMenuItem.Click
+
         Me.Close()
     End Sub
 
@@ -46,7 +51,7 @@
                     SaveFile()
                     Return 1
                 Case DialogResult.Cancel
-                    Return -1
+                    Return - 1
             End Select
 
         End If
@@ -64,14 +69,16 @@
                 End If
 
             End If
-            Dim diaResult As DialogResult = MessageBox.Show("文件将默认使用UTF8格式保存，选择【是】将使用此编码，选择【否】将使用当前系统编码（ANSI），选择【取消】可以放弃本次编辑。", "保存文件", MessageBoxButtons.YesNoCancel)
+            Dim diaResult As DialogResult =
+                    MessageBox.Show("文件将默认使用UTF8格式保存，选择【是】将使用此编码，选择【否】将使用当前系统编码（ANSI），选择【取消】可以放弃本次编辑。", "保存文件",
+                                    MessageBoxButtons.YesNoCancel)
             If diaResult = DialogResult.Cancel Then Exit Sub
 
-            Dim encoding As System.Text.Encoding
+            Dim encoding As Encoding
             If diaResult = DialogResult.Yes Then
-                encoding = System.Text.Encoding.UTF8
+                encoding = Encoding.UTF8
             Else
-                encoding = System.Text.Encoding.Default
+                encoding = Encoding.Default
             End If
 
             My.Computer.FileSystem.WriteAllText(saveFileName, Me.txtFileText.Text, False, encoding)
@@ -85,7 +92,7 @@
         End Try
     End Sub
 
-    Private Sub 保存ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 保存ToolStripMenuItem.Click
+    Private Sub 保存ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 保存ToolStripMenuItem.Click
         SaveFile()
         Me.txtFileText.ReadOnly = True
     End Sub
@@ -100,11 +107,11 @@
         ContextMenuStrip1.Items(8).Enabled = Not Me.txtFileText.ReadOnly
     End Sub
 
-    Private Sub ContextMenuStrip1_Opening(ByVal sender As System.Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles ContextMenuStrip1.Opening
+    Private Sub ContextMenuStrip1_Opening(sender As Object, e As CancelEventArgs) Handles ContextMenuStrip1.Opening
         SetMenuEnabled()
     End Sub
 
-    Private Sub 编辑ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 编辑ToolStripMenuItem.Click
+    Private Sub 编辑ToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles 编辑ToolStripMenuItem.Click
         If 编辑ToolStripMenuItem.Text = "编辑" Then
             Me.txtFileText.ReadOnly = False
             编辑ToolStripMenuItem.Text = "保护"
@@ -115,7 +122,8 @@
         SetMenuEnabled()
     End Sub
 
-    Private Sub 启用外部程序编辑ToolStripMenuItem_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles 启用外部程序编辑ToolStripMenuItem.Click
+    Private Sub 启用外部程序编辑ToolStripMenuItem_Click(sender As Object, e As EventArgs) _
+        Handles 启用外部程序编辑ToolStripMenuItem.Click
 
         '
         '
@@ -123,47 +131,44 @@
         Me.txtFileText.ReadOnly = True
     End Sub
 
-    Private Sub menu_Paste_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles menu_Paste.Click
+    Private Sub menu_Paste_Click(sender As Object, e As EventArgs) Handles menu_Paste.Click
         ' Determine if there is any text in the Clipboard to paste into the text box.
         If Clipboard.GetDataObject().GetDataPresent(DataFormats.Text) = True Then
             ' Determine if any text is selected in the text box.
             If txtFileText.SelectionLength > 0 Then
                 ' Ask user if they want to paste over currently selected text.
-                If MessageBox.Show("Do you want to paste over current selection?", _
-                    "Cut Example", MessageBoxButtons.YesNo) = DialogResult.No Then
+                If MessageBox.Show("Do you want to paste over current selection?",
+                                   "Cut Example", MessageBoxButtons.YesNo) = DialogResult.No Then
                     ' Move selection to the point after the current selection and paste.
-                    txtFileText.SelectionStart = txtFileText.SelectionStart + _
-                        txtFileText.SelectionLength
+                    txtFileText.SelectionStart = txtFileText.SelectionStart +
+                                                 txtFileText.SelectionLength
                 End If
             End If
             ' Paste current text in Clipboard into text box.
             txtFileText.Paste()
             SetContentChange()
         End If
-
     End Sub
 
-    Private Sub menu_Copy_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles menu_Copy.Click
+    Private Sub menu_Copy_Click(sender As Object, e As EventArgs) Handles menu_Copy.Click
         ' Ensure that text is selected in the text box.   
         If txtFileText.SelectionLength > 0 Then
             ' Copy the selected text to the Clipboard.
             txtFileText.Copy()
             SetContentChange()
         End If
-
     End Sub
 
-    Private Sub menu_Cut_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles menu_Cut.Click
+    Private Sub menu_Cut_Click(sender As Object, e As EventArgs) Handles menu_Cut.Click
         ' Ensure that text is currently selected in the text box.   
         If txtFileText.SelectedText <> "" Then
             ' Cut the selected text in the control and paste it into the Clipboard.
             txtFileText.Cut()
             SetContentChange()
         End If
-
     End Sub
 
-    Private Sub menu_Undo_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles menu_Undo.Click
+    Private Sub menu_Undo_Click(sender As Object, e As EventArgs) Handles menu_Undo.Click
         ' Determine if last operation can be undone in text box.   
         If txtFileText.CanUndo = True Then
             ' Undo the last operation.
@@ -172,18 +177,17 @@
             ' txtFileText.ClearUndo()
             SetContentChange()
         End If
-
     End Sub
 
-    Private Sub txtFileText_KeyPress(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyPressEventArgs) Handles txtFileText.KeyPress
+    Private Sub txtFileText_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtFileText.KeyPress
         'If Not Char.IsControl(e.KeyChar) Then
         '    SetContentChange()
 
         'End If
     End Sub
 
-    Private Sub frmCodeFile_FormClosing(ByVal sender As System.Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
-        If ConfirmSaveFile() = -1 Then
+    Private Sub frmCodeFile_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        If ConfirmSaveFile() = - 1 Then
             e.Cancel = True
         End If
     End Sub
@@ -195,7 +199,7 @@
         End If
     End Sub
 
-    Private Sub txtFileText_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtFileText.TextChanged
+    Private Sub txtFileText_TextChanged(sender As Object, e As EventArgs) Handles txtFileText.TextChanged
         SetContentChange()
     End Sub
 End Class

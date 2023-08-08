@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data;
-using System.Reflection;
 
 namespace ConsoleTest
 {
@@ -11,15 +8,14 @@ namespace ConsoleTest
      * http://www.cnblogs.com/nankezhishi/archive/2012/02/11/dynamicaccess.html
      */
 
-        
 
     /// <summary>
-    /// Abstraction of the function of accessing member of a object at runtime.
+    ///     Abstraction of the function of accessing member of a object at runtime.
     /// </summary>
     internal interface IMemberAccessor
     {
         /// <summary>
-        /// Get the member value of an object.
+        ///     Get the member value of an object.
         /// </summary>
         /// <param name="instance">The object to get the member value from.</param>
         /// <param name="memberName">The member name, could be the name of a property of field. Must be public member.</param>
@@ -27,7 +23,7 @@ namespace ConsoleTest
         object GetValue(object instance, string memberName);
 
         /// <summary>
-        /// Set the member value of an object.
+        ///     Set the member value of an object.
         /// </summary>
         /// <param name="instance">The object to get the member value from.</param>
         /// <param name="memberName">The member name, could be the name of a property of field. Must be public member.</param>
@@ -43,8 +39,8 @@ namespace ConsoleTest
 
     internal class PropertyAccessor<T, P> : INamedMemberAccessor
     {
-        private Func<T, P> GetValueDelegate;
-        private Action<T, P> SetValueDelegate;
+        private readonly Func<T, P> GetValueDelegate;
+        private readonly Action<T, P> SetValueDelegate;
 
         public PropertyAccessor(Type type, string propertyName)
         {
@@ -52,7 +48,8 @@ namespace ConsoleTest
             if (propertyInfo != null)
             {
                 GetValueDelegate = (Func<T, P>)Delegate.CreateDelegate(typeof(Func<T, P>), propertyInfo.GetGetMethod());
-                SetValueDelegate = (Action<T, P>)Delegate.CreateDelegate(typeof(Action<T, P>), propertyInfo.GetSetMethod());
+                SetValueDelegate =
+                    (Action<T, P>)Delegate.CreateDelegate(typeof(Action<T, P>), propertyInfo.GetSetMethod());
             }
         }
 
@@ -69,7 +66,8 @@ namespace ConsoleTest
 
     public class DelegatedReflectionMemberAccessor : IMemberAccessor
     {
-        private static Dictionary<string, INamedMemberAccessor> accessorCache = new Dictionary<string, INamedMemberAccessor>();
+        private static readonly Dictionary<string, INamedMemberAccessor> accessorCache =
+            new Dictionary<string, INamedMemberAccessor>();
 
         public object GetValue(object instance, string memberName)
         {
@@ -103,44 +101,41 @@ namespace ConsoleTest
                 var propertyInfo = type.GetProperty(memberName);
                 if (propertyInfo == null)
                     throw new ArgumentException("实体类中没有属性名为" + memberName + " 的属性！");
-                accessor = Activator.CreateInstance(typeof(PropertyAccessor<,>).MakeGenericType(type, propertyInfo.PropertyType), type, memberName) as INamedMemberAccessor;
+                accessor = Activator.CreateInstance(
+                    typeof(PropertyAccessor<,>).MakeGenericType(type, propertyInfo.PropertyType), type,
+                    memberName) as INamedMemberAccessor;
                 accessorCache.Add(key, accessor);
             }
 
             return accessor;
         }
     }
-    
-    class PocoQuery
+
+    internal class PocoQuery
     {
-        public List<T> QueryList<T>(IDataReader reader) where T : class,new()
+        public List<T> QueryList<T>(IDataReader reader) where T : class, new()
         {
-            List<T> list = new List<T>();
+            var list = new List<T>();
             using (reader)
             {
-
                 if (reader.Read())
                 {
-                    int fcount = reader.FieldCount;
-                    INamedMemberAccessor[] accessors = new INamedMemberAccessor[fcount];
-                    DelegatedReflectionMemberAccessor drm = new DelegatedReflectionMemberAccessor();
-                    for (int i = 0; i < fcount; i++)
-                    {
-                        accessors[i] = drm.FindAccessor<T>(reader.GetName(i));
-                    }
-                   
+                    var fcount = reader.FieldCount;
+                    var accessors = new INamedMemberAccessor[fcount];
+                    var drm = new DelegatedReflectionMemberAccessor();
+                    for (var i = 0; i < fcount; i++) accessors[i] = drm.FindAccessor<T>(reader.GetName(i));
+
                     do
                     {
-                        T t = new T();
-                        for (int i = 0; i < fcount; i++)
-                        {
-                            if(!reader.IsDBNull(i))
+                        var t = new T();
+                        for (var i = 0; i < fcount; i++)
+                            if (!reader.IsDBNull(i))
                                 accessors[i].SetValue(t, reader.GetValue(i));
-                        }
                         list.Add(t);
                     } while (reader.Read());
                 }
             }
+
             return list;
         }
     }

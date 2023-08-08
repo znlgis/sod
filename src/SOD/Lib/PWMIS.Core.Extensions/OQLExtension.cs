@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using PWMIS.DataMap.Entity;
-using PWMIS.DataProvider.Data;
 using PWMIS.DataProvider.Adapter;
-
+using PWMIS.DataProvider.Data;
 
 namespace PWMIS.Core.Extensions
 {
     /// <summary>
-    /// OQL扩展类
+    ///     OQL扩展类
     /// </summary>
     public static class OQLExtension
     {
         /// <summary>
-        /// OQL 扩展，可以直接返回查询的列表
-        /// <example>
-        /// <code>
+        ///     OQL 扩展，可以直接返回查询的列表
+        ///     <example>
+        ///         <code>
         /// <![CDATA[
         /// 
         ///   User user=new User();
@@ -26,37 +24,39 @@ namespace PWMIS.Core.Extensions
         /// 
         /// ]]>
         /// </code>
-        /// </example>
+        ///     </example>
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <param name="q">OQL对象</param>
         /// <returns>实体类列表</returns>
-        public static List<T> ToList<T>(this OQL q) where T:EntityBase,new()
+        public static List<T> ToList<T>(this OQL q) where T : EntityBase, new()
         {
             return EntityQuery<T>.QueryList(q);
         }
+
         /// <summary>
-        /// OQL 扩展，可以直接返回查询的列表
+        ///     OQL 扩展，可以直接返回查询的列表
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <param name="q">OQL对象</param>
         /// <param name="db">数据访问对象</param>
         /// <returns>实体类列表</returns>
-        public static List<T> ToList<T>(this OQL q,AdoHelper db) where T : EntityBase, new()
+        public static List<T> ToList<T>(this OQL q, AdoHelper db) where T : EntityBase, new()
         {
-            return EntityQuery<T>.QueryList(q,db);
+            return EntityQuery<T>.QueryList(q, db);
         }
+
         /// <summary>
-        /// OQL 扩展，可以直接返回查询的实体类
-        /// <example>
-        /// <code>
+        ///     OQL 扩展，可以直接返回查询的实体类
+        ///     <example>
+        ///         <code>
         /// <![CDATA[
         ///   User user=new User(){ID=100};
         ///   OQL q=OQL.From(user).Select(user.ID,user.Name).Where(user.ID).End;
         ///   User result = q.ToEntity<User>();
         /// ]]>
         /// </code>
-        /// </example>
+        ///     </example>
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <param name="q">OQL对象</param>
@@ -65,8 +65,9 @@ namespace PWMIS.Core.Extensions
         {
             return EntityQuery<T>.QueryObject(q);
         }
+
         /// <summary>
-        ///  OQL 扩展，可以直接返回查询的实体类
+        ///     OQL 扩展，可以直接返回查询的实体类
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <param name="q">OQL对象</param>
@@ -74,12 +75,13 @@ namespace PWMIS.Core.Extensions
         /// <returns>实体类</returns>
         public static T ToEntity<T>(this OQL q, AdoHelper db) where T : EntityBase, new()
         {
-            return EntityQuery<T>.QueryObject(q,db);
+            return EntityQuery<T>.QueryObject(q, db);
         }
+
         /// <summary>
-        /// 直接返回实体类列表查询结果
-        /// <example>
-        /// <code>
+        ///     直接返回实体类列表查询结果
+        ///     <example>
+        ///         <code>
         /// <![CDATA[
         /// AdoHelper dbHelper=new SqlServer(){ConnectionString="....."};
         /// var list= OQL.From(entity1)
@@ -100,24 +102,25 @@ namespace PWMIS.Core.Extensions
         /// }
         /// ]]>
         /// </code>
-        /// </example>
+        ///     </example>
         /// </summary>
         /// <param name="q">OQL对象</param>
         /// <param name="db">数据访问对象</param>
         /// <param name="ecFun">结果对象映射委托</param>
         /// <typeparam name="TResult">结果元素类型</typeparam>
         /// <returns>实体类列表</returns>
-        public static IList<TResult> ToObjectList<TResult>(this OQL q, AdoHelper db, ECResultFunc<TResult> ecFun) where TResult : class
+        public static IList<TResult> ToObjectList<TResult>(this OQL q, AdoHelper db, ECResultFunc<TResult> ecFun)
+            where TResult : class
         {
-            EntityContainer ec = new EntityContainer(q, db);
-            return ec.ToObjectList<TResult>(ecFun);
+            var ec = new EntityContainer(q, db);
+            return ec.ToObjectList(ecFun);
         }
 
 
         /// <summary>
-        /// 直接返回实体类列表查询结果
-        /// <example>
-        /// <code>
+        ///     直接返回实体类列表查询结果
+        ///     <example>
+        ///         <code>
         /// <![CDATA[
         /// var list= OQL.From(entity1)
         ///          .Join(entity2).On(entity1.PK,entity2.FK)
@@ -137,29 +140,30 @@ namespace PWMIS.Core.Extensions
         /// }
         /// ]]>
         /// </code>
-        /// </example>
+        ///     </example>
         /// </summary>
         /// <param name="q">OQL对象</param>
         /// <param name="ecFun">结果对象映射委托</param>
         /// <typeparam name="TResult">结果元素类型</typeparam>
         /// <returns>实体类列表</returns>
-        public static IList<TResult> ToObjectList<TResult>(this OQL q, ECResultFunc<TResult> ecFun) where TResult : class
+        public static IList<TResult> ToObjectList<TResult>(this OQL q, ECResultFunc<TResult> ecFun)
+            where TResult : class
         {
-            EntityContainer ec = new EntityContainer(q);
-            return ec.ToObjectList<TResult>(ecFun);
+            var ec = new EntityContainer(q);
+            return ec.ToObjectList(ecFun);
         }
 
         /// <summary>
-        /// 将关联查询结果映射到POCO类型列表
-        /// <example>
-        /// <code>
+        ///     将关联查询结果映射到POCO类型列表
+        ///     <example>
+        ///         <code>
         /// <![CDATA[
         /// OQL joinQ = OQL.From(bInfo)
         ///   .Join(stock).On(bInfo.SerialNumber, stock.SerialNumber)
         ///   .Select()
         ///   .OrderBy(bInfo.SerialNumber, "asc").OrderBy(bInfo.GoodsName, "asc")
         /// .END;
-        ///
+        /// 
         /// var resultList = joinQ.MapToList<GoodsSaleInfoVM>(() => new GoodsSaleInfoVM()
         /// {
         ///     GoodsName = bInfo.GoodsName,
@@ -174,7 +178,7 @@ namespace PWMIS.Core.Extensions
         /// });
         /// ]]>
         /// </code>
-        /// </example>
+        ///     </example>
         /// </summary>
         /// <typeparam name="TResult">POCO类型</typeparam>
         /// <param name="q">实体类关联查询的OQL语句</param>
@@ -182,27 +186,28 @@ namespace PWMIS.Core.Extensions
         /// <returns>POCO类型列表</returns>
         public static IList<TResult> MapToList<TResult>(this OQL q, ECMapFunc<TResult> fun) where TResult : class
         {
-            EntityContainer ec = new EntityContainer(q);
-            return ec.MapToList<TResult>(fun);
+            var ec = new EntityContainer(q);
+            return ec.MapToList(fun);
         }
 
         /// <summary>
-        /// 将关联查询结果映射到POCO类型列表
+        ///     将关联查询结果映射到POCO类型列表
         /// </summary>
         /// <typeparam name="TResult">POCO类型</typeparam>
         /// <param name="q">实体类关联查询的OQL语句</param>
         /// <param name="db">数据访问对象</param>
         /// <param name="fun">映射方法委托</param>
         /// <returns>POCO类型列表</returns>
-        public static IList<TResult> MapToList<TResult>(this OQL q, AdoHelper db, ECMapFunc<TResult> fun) where TResult : class
+        public static IList<TResult> MapToList<TResult>(this OQL q, AdoHelper db, ECMapFunc<TResult> fun)
+            where TResult : class
         {
-            EntityContainer ec = new EntityContainer(q,db);
-            return ec.MapToList<TResult>(fun);
+            var ec = new EntityContainer(q, db);
+            return ec.MapToList(fun);
         }
-       
+
 
         /// <summary>
-        /// 执行OQL
+        ///     执行OQL
         /// </summary>
         /// <param name="oql">OQL</param>
         /// <param name="db">数据访问对象</param>
@@ -211,8 +216,9 @@ namespace PWMIS.Core.Extensions
         {
             return EntityQuery.ExecuteOql(oql, db);
         }
+
         /// <summary>
-        /// 使用默认连接，执行OQL
+        ///     使用默认连接，执行OQL
         /// </summary>
         /// <param name="oql">OQL</param>
         /// <returns>操作受影响的行数</returns>
@@ -222,15 +228,15 @@ namespace PWMIS.Core.Extensions
         }
 
         /// <summary>
-        /// 过滤枚举中包含指定值的组合方式值，比如在OQL中比较，要求使用的枚举类型的值是2的次方
-        /// 感谢网友 深圳-Panke 2014.11.11 提供
-        /// <example>
-        /// <![CDATA[
+        ///     过滤枚举中包含指定值的组合方式值，比如在OQL中比较，要求使用的枚举类型的值是2的次方
+        ///     感谢网友 深圳-Panke 2014.11.11 提供
+        ///     <example>
+        ///         <![CDATA[
         /// OQL q=OQL.From(paper)
         ///          .Where(cmp=>cmp.Compare(paper.Color,"in",typeof(Colors).FilterEnumValues((int)Colors.Blue) ))
         ///    .END;
         /// ]]>
-        /// </example>
+        ///     </example>
         /// </summary>
         /// <param name="enumType"></param>
         /// <param name="FilterContainValue">要筛选的枚举值</param>
@@ -242,12 +248,11 @@ namespace PWMIS.Core.Extensions
             return (from enumArrA in Enumerable.Range(0, 1 << enumValueArr.Length)
                     select
                         (from enumArrB in Enumerable.Range(0, enumValueArr.Length)
-                         where (enumArrA & (1 << enumArrB)) != 0
-                         select enumValueArr[enumArrB]).Sum())
+                            where (enumArrA & (1 << enumArrB)) != 0
+                            select enumValueArr[enumArrB]).Sum())
                 .Where(x => (x & FilterContainValue) == x)
                 .Distinct()
                 .ToArray();
         }
-
     }
 }

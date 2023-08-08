@@ -1,8 +1,6 @@
-﻿using PWMIS.DataMap.Entity;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using PWMIS.DataMap.Entity;
 
 namespace SODTest
 {
@@ -17,11 +15,11 @@ namespace SODTest
     }
 
     public interface ISimpleOrderItem
-    { 
-         string GoodsID { get; set; }
-         string GoodsName { get; set; }
-         int Number { get; set; }
-         double UnitPrice { get; set; }
+    {
+        string GoodsID { get; set; }
+        string GoodsName { get; set; }
+        int Number { get; set; }
+        double UnitPrice { get; set; }
     }
 
     public class SimpleOrder : ISimpleOrder
@@ -34,7 +32,7 @@ namespace SODTest
         public ISimpleOrderItem[] OrderItems { get; set; }
     }
 
-    public class SimpleOrderItem: ISimpleOrderItem
+    public class SimpleOrderItem : ISimpleOrderItem
     {
         public string GoodsID { get; set; }
         public string GoodsName { get; set; }
@@ -42,7 +40,7 @@ namespace SODTest
         public double UnitPrice { get; set; }
     }
 
-    public class SimpleOrderEntity :EntityBase, ISimpleOrder
+    public class SimpleOrderEntity : EntityBase, ISimpleOrder
     {
         public SimpleOrderEntity()
         {
@@ -50,42 +48,39 @@ namespace SODTest
             PrimaryKeys.Add(nameof(OrderID));
         }
 
+        public List<SimpleOrderItemEntity> OrderItemEntities { get; set; }
+
         public long OrderID
         {
-            get { return getProperty<long>(nameof(OrderID)); }
-            set { setProperty(nameof(OrderID), value); } 
+            get => getProperty<long>(nameof(OrderID));
+            set => setProperty(nameof(OrderID), value);
         }
+
         public string OrderName
         {
-            get { return getProperty<string>(nameof(OrderName)); }
-            set { setProperty(nameof(OrderName), value, 100); } //长度 100
+            get => getProperty<string>(nameof(OrderName));
+            set => setProperty(nameof(OrderName), value, 100); //长度 100
         }
+
         public int UserID
         {
-            get { return getProperty<int>(nameof(UserID)); }
-            set { setProperty(nameof(UserID), value); } 
+            get => getProperty<int>(nameof(UserID));
+            set => setProperty(nameof(UserID), value);
         }
+
         public DateTime OrderDate
         {
-            get { return getProperty<DateTime>(nameof(OrderDate)); }
-            set { setProperty(nameof(OrderDate), value); } 
+            get => getProperty<DateTime>(nameof(OrderDate));
+            set => setProperty(nameof(OrderDate), value);
         }
 
         public double OrderPrice
         {
-            get { return getProperty<double>(nameof(OrderPrice)); }
-            set { setProperty(nameof(OrderPrice), value); }
+            get => getProperty<double>(nameof(OrderPrice));
+            set => setProperty(nameof(OrderPrice), value);
         }
 
-        public ISimpleOrderItem[] OrderItems 
-        {
-            get {
-                return this.OrderItemEntities.ToArray();
-            }
-        }
-
-        public List<SimpleOrderItemEntity> OrderItemEntities { get; set; }
-        
+        public ISimpleOrderItem[] OrderItems => OrderItemEntities.ToArray();
     }
 
     public class SimpleOrderItemEntity : EntityBase, ISimpleOrderItem
@@ -100,36 +95,38 @@ namespace SODTest
 
         public long ID
         {
-            get { return getProperty<long>(nameof(ID)); }
-            set { setProperty(nameof(ID), value); }
+            get => getProperty<long>(nameof(ID));
+            set => setProperty(nameof(ID), value);
         }
 
         public long OrderID
         {
-            get { return getProperty<long>(nameof(OrderID)); }
-            set { setProperty(nameof(OrderID), value); }
+            get => getProperty<long>(nameof(OrderID));
+            set => setProperty(nameof(OrderID), value);
         }
 
         public string GoodsID
         {
-            get { return getProperty<string>(nameof(GoodsID)); }
-            set { setProperty(nameof(GoodsID), value, 100); } //长度 100
+            get => getProperty<string>(nameof(GoodsID));
+            set => setProperty(nameof(GoodsID), value, 100); //长度 100
         }
+
         public string GoodsName
         {
-            get { return getProperty<string>(nameof(GoodsName)); }
-            set { setProperty(nameof(GoodsName), value, 100); } //长度 100
+            get => getProperty<string>(nameof(GoodsName));
+            set => setProperty(nameof(GoodsName), value, 100); //长度 100
         }
+
         public int Number
         {
-            get { return getProperty<int>(nameof(Number)); }
-            set { setProperty(nameof(Number), value); } 
+            get => getProperty<int>(nameof(Number));
+            set => setProperty(nameof(Number), value);
         }
+
         public double UnitPrice
         {
-            get { return getProperty<double>(nameof(UnitPrice)); }
-            set { setProperty(nameof(UnitPrice), value); } 
+            get => getProperty<double>(nameof(UnitPrice));
+            set => setProperty(nameof(UnitPrice), value);
         }
     }
-
 }

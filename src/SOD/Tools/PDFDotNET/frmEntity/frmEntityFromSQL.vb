@@ -2,87 +2,84 @@
     Dim _isOK As Boolean = False
 
     '查询将会保存在EntitySqlMap.config文件中，文件配置节有<命名空间><查询名字><SQL>
-    Public Property MapSQL() As String
+    Public Property MapSQL As String
         Get
             Return Me.txtSQL.Text
         End Get
-        Set(ByVal value As String)
+        Set
             Me.txtSQL.Text = value.Replace(vbCrLf, vbLf).Replace(vbLf, vbCrLf)
         End Set
     End Property
 
-    Public Property TableName() As String
+    Public Property TableName As String
         Get
             Return Me.txtTableName.Text
         End Get
-        Set(ByVal value As String)
+        Set
             Me.txtTableName.Text = value
         End Set
     End Property
 
-    Public Property IsCheckedSQL() As Boolean
+    Public Property IsCheckedSQL As Boolean
         Get
             Return Me.CheckedSQL.Checked
         End Get
-        Set(ByVal value As Boolean)
+        Set
             Me.CheckedSQL.Checked = value
         End Set
     End Property
 
-    Public Property ClassName() As String
+    Public Property ClassName As String
         Get
             Return Me.txtClassName.Text
         End Get
-        Set(ByVal value As String)
+        Set
             Me.txtClassName.Text = value
         End Set
     End Property
 
-    Public Property ClassNamespace() As String
+    Public Property ClassNamespace As String
         Get
             Return Me.txtNamespace.Text
         End Get
-        Set(ByVal value As String)
+        Set
             Me.txtNamespace.Text = value
         End Set
     End Property
 
-    Public Property EntityMapTypeString() As String
+    Public Property EntityMapTypeString As String
         Get
             Return txtMapType.Text
         End Get
-        Set(ByVal value As String)
+        Set
             txtMapType.Text = value
         End Set
     End Property
 
     ''' <summary>
-    ''' 是否确定根据查询生成实体类
+    '''     是否确定根据查询生成实体类
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property IsOK() As Boolean
+    Public Property IsOK As Boolean
         Get
             Return Me._isOK
         End Get
-        Protected Set(ByVal value As Boolean)
+        Protected Set
             Me._isOK = value
         End Set
     End Property
 
-    Private Sub frmEntityFromSQL_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
-
+    Private Sub frmEntityFromSQL_Load(sender As Object, e As EventArgs) Handles MyBase.Load
     End Sub
 
 
-
-    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
         Me.Close()
     End Sub
 
-    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
+    Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
         Me.IsOK = False
         If Me.CheckedSQL.Checked Then
             If Me.txtTableName.Text.Trim = "" Then
@@ -111,7 +108,5 @@
             MsgBox("SQL 查询还未验证！", MsgBoxStyle.Exclamation, "SQL-实体类映射")
 
         End If
-
-
     End Sub
 End Class

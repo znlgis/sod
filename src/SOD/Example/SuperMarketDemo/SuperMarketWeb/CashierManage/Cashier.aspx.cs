@@ -1,31 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using SuperMarketBLL;
 using PWMIS.DataForms.Adapter;
+using SuperMarketBLL;
 
 namespace SuperMarketWeb.CashierManage
 {
-    public partial class Cashier : System.Web.UI.Page
+    public partial class Cashier : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                CashierManageBIZ biz = new CashierManageBIZ();
-                var list= biz.GetAllCashiers();
-                this.GridView1.DataSource = list;
-                this.GridView1.DataBind();
+                var biz = new CashierManageBIZ();
+                var list = biz.GetAllCashiers();
+                GridView1.DataSource = list;
+                GridView1.DataBind();
             }
         }
 
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            dtbWorkNumber.Text  = this.GridView1.SelectedRow.Cells[2].Text;
-            MyWebForm.Instance.AutoSelectIBForm(this.Controls);
+            dtbWorkNumber.Text = GridView1.SelectedRow.Cells[2].Text;
+            MyWebForm.Instance.AutoSelectIBForm(Controls);
             lblMsg.Text = "修改后请保存！";
         }
 
@@ -37,10 +33,9 @@ namespace SuperMarketWeb.CashierManage
             }
             else
             {
-                MyWebForm.Instance.AutoUpdateIBFormData(this.Controls);
+                MyWebForm.Instance.AutoUpdateIBFormData(Controls);
                 lblMsg.Text = "修改成功！";
             }
-            
         }
     }
 }

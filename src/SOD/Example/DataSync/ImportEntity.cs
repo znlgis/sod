@@ -1,154 +1,147 @@
-﻿using SOD.DataSync.Entitys;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using PWMIS.Core.Extensions;
 using PWMIS.DataMap.Entity;
 using PWMIS.MemoryStorage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+using SOD.DataSync.Entitys;
 
 namespace SOD.DataSync
 {
     /// <summary>
-    /// 导入数据
+    ///     导入数据
     /// </summary>
-    class SimpleImportEntitys
+    internal class SimpleImportEntitys
     {
-        MemDB MemDB;
-        DbContext CurrDbContext;
+        private const string C_Classification = "Classification";
+        private const string C_BatchNumber = "BatchNumber";
+        private readonly DbContext CurrDbContext;
+        private readonly MemDB MemDB;
 
-        const string C_Classification = "Classification";
-        const string C_BatchNumber = "BatchNumber";
-
-        /// <summary>
-        /// 数据分类标识
-        /// </summary>
-        public string Classification { get; set; }
-      
         public SimpleImportEntitys(MemDB mem, DbContext dbContext)
         {
-            this.MemDB = mem;
-            this.CurrDbContext = dbContext;
-           
+            MemDB = mem;
+            CurrDbContext = dbContext;
         }
-        
+
+        /// <summary>
+        ///     数据分类标识
+        /// </summary>
+        public string Classification { get; set; }
+
         private void Importer_BeforeImport<T>(object sender, ImportEntityEventArgs<T> e) where T : EntityBase, new()
         {
             //导入前数据检查
-            if (e.DataList.Count > 0 )
+            if (e.DataList.Count > 0)
             {
                 //检查是否需要导入指定数据分类的数据
-                if (string.IsNullOrEmpty(this.Classification))
+                if (string.IsNullOrEmpty(Classification))
                 {
                     var list = e.DataList as List<EntityBase>;
-                    EntityBase entity = list[0];
+                    var entity = list[0];
                     var fieldList = entity.PropertyNames;
                     //如果目标表字段包含该数据分类字段
                     if (fieldList.Contains(C_Classification))
                     {
-                        int count = list.Count(p => (string)p[C_Classification] != this.Classification);
+                        var count = list.Count(p => (string)p[C_Classification] != Classification);
                         if (count > 0)
                         {
                             e.Cancel = true;
                             Console.WriteLine("当前表{0}有{1}条记录不符合指定数据分类（分类标识={2}）值的数据，本次导入取消。",
-                                e.ImportTable, count, this.Classification);
+                                e.ImportTable, count, Classification);
                         }
                     }
                 }
 
                 Console.WriteLine("------------------------------------------------------------");
                 Console.WriteLine("BeforeImport：\t 导入批次号：{0}\t 导入表名称：{1}\t 导入记录数：{2}，导入模式：{3}",
-                        e.BatchNumber,
-                        e.ImportTable,
-                        e.DataList.Count,e.Mode 
-                        );
-            }
-        }       
-        private void Importer_AfterImport<T>(object sender, ImportEntityEventArgs<T> e) where T:EntityBase,new()
-        {
-            if (e.DataList.Count > 0)
-            {
-                Console.WriteLine("AfterImport：\t 导入批次号：{0}\t 导入表名称：{1}\t 导入记录数：{2}",
-                       e.BatchNumber,
-                       e.ImportTable,
-                       e.DataList.Count
-                       );
+                    e.BatchNumber,
+                    e.ImportTable,
+                    e.DataList.Count, e.Mode
+                );
             }
         }
 
-        private ImportResult InnerImport<T>(ImportMode model,Func<T,T,bool> isNew) where T:EntityBase,new ()
+        private void Importer_AfterImport<T>(object sender, ImportEntityEventArgs<T> e) where T : EntityBase, new()
         {
-            ImportEntity<T> imp = new ImportEntity<T>(this.MemDB, this.CurrDbContext);
+            if (e.DataList.Count > 0)
+                Console.WriteLine("AfterImport：\t 导入批次号：{0}\t 导入表名称：{1}\t 导入记录数：{2}",
+                    e.BatchNumber,
+                    e.ImportTable,
+                    e.DataList.Count
+                );
+        }
+
+        private ImportResult InnerImport<T>(ImportMode model, Func<T, T, bool> isNew) where T : EntityBase, new()
+        {
+            var imp = new ImportEntity<T>(MemDB, CurrDbContext);
             imp.AfterImport += Importer_AfterImport;
             imp.BeforeImport += Importer_BeforeImport;
             return imp.Import(model, isNew);
         }
 
         /// <summary>
-        /// 导入数据
+        ///     导入数据
         /// </summary>
         public void DoImportData()
         {
             //首先导入其它业务表            
-            ShowImportResult(InnerImport<TestEntity>(ImportMode.Update, (s,t)=>s.AtTime>t.AtTime));
+            ShowImportResult(InnerImport<TestEntity>(ImportMode.Update, (s, t) => s.AtTime > t.AtTime));
             ShowImportResult(InnerImport<UserEntity>(ImportMode.Merge, null));
 
             //由于要处理上一次未导入成功的情况，新的数据文件包含了上次的数据，所以要在其它表导入成功后再删除表需要删除的记录。
-            ImportResult result = InnerImport<DeletedPKIDEntity>(ImportMode.TruncateAndInsert, null);
-            if (result.Flag == ImportResultFlag.Succeed)
-            {
-                ExecuteDeleteData();
-            }
+            var result = InnerImport<DeletedPKIDEntity>(ImportMode.TruncateAndInsert, null);
+            if (result.Flag == ImportResultFlag.Succeed) ExecuteDeleteData();
             ShowImportResult(result);
         }
-       
+
         /// <summary>
-        /// 根据ID删除表，删除目标表的数据
+        ///     根据ID删除表，删除目标表的数据
         /// </summary>
         private void ExecuteDeleteData()
         {
-            List<DeletedPKIDEntity> idList = this.MemDB.Get<DeletedPKIDEntity>();
+            var idList = MemDB.Get<DeletedPKIDEntity>();
             var tableNames = idList.Select(s => s.TargetTableName).Distinct().ToArray();
-            List<EntityBase> entitys = CurrDbContext.ResolveAllEntitys();
+            var entitys = CurrDbContext.ResolveAllEntitys();
 
-            foreach (string name in tableNames)
+            foreach (var name in tableNames)
             {
-                EntityBase targetEntity = entitys.FirstOrDefault(p => p.GetTableName() == name);
+                var targetEntity = entitys.FirstOrDefault(p => p.GetTableName() == name);
                 if (targetEntity == null)
                 {
-                    Console.WriteLine("表名称{0} 不属于实体类型集合中的任意一个元素",name);
+                    Console.WriteLine("表名称{0} 不属于实体类型集合中的任意一个元素", name);
                     continue;
                 }
-                string pkName = targetEntity.PrimaryKeys[0];
-                var targetIDs = idList.Where(p => p.TargetTableName == name && p.TargetID > 0).Select(s => s.TargetID).ToArray();
-                Console.WriteLine("表{0} 可能有{1}条数据需要删除..", name, targetIDs.Length );
+
+                var pkName = targetEntity.PrimaryKeys[0];
+                var targetIDs = idList.Where(p => p.TargetTableName == name && p.TargetID > 0).Select(s => s.TargetID)
+                    .ToArray();
+                Console.WriteLine("表{0} 可能有{1}条数据需要删除..", name, targetIDs.Length);
                 OQL q = null;
-                int DATA_BLOCK = 500;//必须限定in查询的数量，否则出错
+                var DATA_BLOCK = 500; //必须限定in查询的数量，否则出错
                 if (targetIDs.Length > 0)
                 {
                     targetEntity[pkName] = 0;
-                    
+
                     if (targetIDs.Length > DATA_BLOCK)
                     {
-                        long[] arrIds = new long[DATA_BLOCK];
-                        int offset = 0;
+                        var arrIds = new long[DATA_BLOCK];
+                        var offset = 0;
                         while (offset < targetIDs.Length)
                         {
-                            int length = offset + DATA_BLOCK < targetIDs.Length ? DATA_BLOCK : targetIDs.Length - offset;
+                            var length = offset + DATA_BLOCK < targetIDs.Length
+                                ? DATA_BLOCK
+                                : targetIDs.Length - offset;
                             if (length < DATA_BLOCK)
-                            {
                                 //处理结尾的数据
                                 arrIds = new long[length];
-                            }
                             Array.Copy(targetIDs, offset, arrIds, 0, length);
                             //构造和执行查询
                             q = OQL.From(targetEntity)
-                              .Delete()
-                              .Where(cmp => cmp.Comparer(Convert.ToInt64( targetEntity[pkName]), "in", arrIds))
-                              .END;
-                            int cur_count = EntityQuery.ExecuteOql(q, CurrDbContext.CurrentDataBase);
+                                .Delete()
+                                .Where(cmp => cmp.Comparer(Convert.ToInt64(targetEntity[pkName]), "in", arrIds))
+                                .END;
+                            var cur_count = EntityQuery.ExecuteOql(q, CurrDbContext.CurrentDataBase);
                             Console.WriteLine("已经删除表{0} {1}条数据！", name, cur_count);
 
                             offset += DATA_BLOCK;
@@ -158,38 +151,39 @@ namespace SOD.DataSync
                     {
                         //构造和执行查询
                         q = OQL.From(targetEntity)
-                          .Delete()
-                          .Where(cmp => cmp.Comparer(Convert.ToInt64(targetEntity[pkName]), "in", targetIDs))
-                          .END;
-                        int cur_count = EntityQuery.ExecuteOql(q, CurrDbContext.CurrentDataBase);
+                            .Delete()
+                            .Where(cmp => cmp.Comparer(Convert.ToInt64(targetEntity[pkName]), "in", targetIDs))
+                            .END;
+                        var cur_count = EntityQuery.ExecuteOql(q, CurrDbContext.CurrentDataBase);
                         Console.WriteLine("已经删除表{0} {1}条数据！", name, cur_count);
                     }
                 }
                 else
                 {
                     //字符串ID处理
-                    var targetStringIDs = idList.Where(p => p.TargetTableName == name).Select(s => s.TargetStringID).ToArray();
+                    var targetStringIDs = idList.Where(p => p.TargetTableName == name).Select(s => s.TargetStringID)
+                        .ToArray();
                     targetEntity[pkName] = "0";
                     //
                     if (targetStringIDs.Length > DATA_BLOCK)
                     {
-                        string[] arrIds = new string[DATA_BLOCK];
-                        int offset = 0;
+                        var arrIds = new string[DATA_BLOCK];
+                        var offset = 0;
                         while (offset < targetStringIDs.Length)
                         {
-                            int length = offset + DATA_BLOCK < targetStringIDs.Length ? DATA_BLOCK : targetStringIDs.Length - offset;
+                            var length = offset + DATA_BLOCK < targetStringIDs.Length
+                                ? DATA_BLOCK
+                                : targetStringIDs.Length - offset;
                             if (length < DATA_BLOCK)
-                            {
                                 //处理结尾的数据
                                 arrIds = new string[length];
-                            }
                             Array.Copy(targetStringIDs, offset, arrIds, 0, length);
                             //构造和执行查询
                             q = OQL.From(targetEntity)
-                              .Delete()
-                              .Where(cmp => cmp.Comparer((string)targetEntity[pkName], "in", arrIds))
-                              .END;
-                            int cur_count = EntityQuery.ExecuteOql(q, CurrDbContext.CurrentDataBase);
+                                .Delete()
+                                .Where(cmp => cmp.Comparer((string)targetEntity[pkName], "in", arrIds))
+                                .END;
+                            var cur_count = EntityQuery.ExecuteOql(q, CurrDbContext.CurrentDataBase);
                             Console.WriteLine("已经删除表{0} {1}条数据！", name, cur_count);
 
                             offset += DATA_BLOCK;
@@ -199,16 +193,13 @@ namespace SOD.DataSync
                     {
                         //构造和执行查询
                         q = OQL.From(targetEntity)
-                          .Delete()
-                          .Where(cmp => cmp.Comparer((string)targetEntity[pkName], "in", targetStringIDs))
-                          .END;
-                        int cur_count = EntityQuery.ExecuteOql(q, CurrDbContext.CurrentDataBase);
+                            .Delete()
+                            .Where(cmp => cmp.Comparer((string)targetEntity[pkName], "in", targetStringIDs))
+                            .END;
+                        var cur_count = EntityQuery.ExecuteOql(q, CurrDbContext.CurrentDataBase);
                         Console.WriteLine("已经删除表{0} {1}条数据！", name, cur_count);
                     }
-
-                 
                 }
-               
             }
         }
 
@@ -240,6 +231,7 @@ namespace SOD.DataSync
                     Console.WriteLine("导入失败");
                     break;
             }
+
             Console.WriteLine("=======================================================");
         }
     }

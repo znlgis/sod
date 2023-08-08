@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using SuperMarketModel;
 
 namespace SuperMarketWeb
 {
-    public partial class ShoppingCart : System.Web.UI.Page
+    public partial class ShoppingCart : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -17,35 +15,34 @@ namespace SuperMarketWeb
 
             if (!IsPostBack)
             {
-                Customer customer = (Customer)Session["Curr_Customer"];
-                this.GridView1.DataKeyNames = new string[] { "GoodsID" };
+                var customer = (Customer)Session["Curr_Customer"];
+                GridView1.DataKeyNames = new[] { "GoodsID" };
                 bindGrid(customer);
-                this.lblWelcomeMsg.Text = string.Format("你好[{0}]，你的客户号是：{1}", customer.CustomerName, customer.CustomerID);
+                lblWelcomeMsg.Text = string.Format("你好[{0}]，你的客户号是：{1}", customer.CustomerName, customer.CustomerID);
 
-                ((Site2)this.Master).NavigateMessage = "我的购物车"; 
+                ((Site2)Master).NavigateMessage = "我的购物车";
             }
-          
         }
 
         private void bindGrid()
         {
-            Customer customer = (Customer)Session["Curr_Customer"];
-            this.GridView1.DataSource = customer.Goodss;
-            this.GridView1.DataBind();
-            this.lblAmout.Text = customer.GoodsAmount().ToString ();
+            var customer = (Customer)Session["Curr_Customer"];
+            GridView1.DataSource = customer.Goodss;
+            GridView1.DataBind();
+            lblAmout.Text = customer.GoodsAmount().ToString();
         }
 
         private void bindGrid(Customer customer)
         {
-            this.GridView1.DataSource = customer.Goodss;
-            this.GridView1.DataBind();
-            this.lblAmout.Text = customer.GoodsAmount().ToString();
+            GridView1.DataSource = customer.Goodss;
+            GridView1.DataBind();
+            lblAmout.Text = customer.GoodsAmount().ToString();
         }
 
         protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
-            string goodsID = GridView1.DataKeys[e.RowIndex].Value.ToString();
-            Customer customer = (Customer)Session["Curr_Customer"];
+            var goodsID = GridView1.DataKeys[e.RowIndex].Value.ToString();
+            var customer = (Customer)Session["Curr_Customer"];
             customer.Goodss.RemoveAll(p => p.GoodsID == int.Parse(goodsID));
             bindGrid(customer);
         }
@@ -58,14 +55,13 @@ namespace SuperMarketWeb
 
         protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
-            string goodsID = GridView1.DataKeys[e.RowIndex].Value.ToString();
-            string strCount = ((TextBox)GridView1.Rows[e.RowIndex].Cells[4].Controls[0]).Text.ToString().Trim();
-            Customer customer = (Customer)Session["Curr_Customer"];
-            Goods goods = customer.Goodss.Where(p => p.GoodsID == int.Parse(goodsID)).FirstOrDefault ();
+            var goodsID = GridView1.DataKeys[e.RowIndex].Value.ToString();
+            var strCount = ((TextBox)GridView1.Rows[e.RowIndex].Cells[4].Controls[0]).Text.Trim();
+            var customer = (Customer)Session["Curr_Customer"];
+            var goods = customer.Goodss.Where(p => p.GoodsID == int.Parse(goodsID)).FirstOrDefault();
             goods.GoodsNumber = int.Parse(strCount);
             GridView1.EditIndex = -1;
             bindGrid();
-
         }
 
         protected void GridView1_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)

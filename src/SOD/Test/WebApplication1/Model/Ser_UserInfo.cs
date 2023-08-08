@@ -1,70 +1,71 @@
 ﻿using System;
-using System.Collections.Generic;
-//using System.Linq;
-using System.Text;
 using PWMIS.DataMap.Entity;
+
+//using System.Linq;
 
 namespace TestWebAppModel
 {
     public class Ser_UserInfo : EntitySerializable
     {
-        public Ser_UserInfo() { }
+        public Ser_UserInfo()
+        {
+        }
 
         /// <summary>
-        /// 设置用户信息（此构造函数可选）
+        ///     设置用户信息（此构造函数可选）
         /// </summary>
         /// <param name="user"></param>
         public Ser_UserInfo(Tb_UserInfo user)
         {
-            base.SetNameValues(user.GetNameValues());
+            SetNameValues(user.GetNameValues());
         }
 
-        public System.Int32 ID
+        public int ID
         {
-            get { return (System.Int32)getProperty("ID", TypeCode.Int32); }
-            set { setProperty("ID", value); }
+            get => (int)getProperty("ID", TypeCode.Int32);
+            set => setProperty("ID", value);
         }
 
-        public System.String UserName
+        public string UserName
         {
-            get { return (System.String)getProperty("UserName", TypeCode.String); }
-            set { setProperty("UserName", value); }
+            get => (string)getProperty("UserName", TypeCode.String);
+            set => setProperty("UserName", value);
         }
 
-        public System.Boolean Sex
+        public bool Sex
         {
-            get { return (System.Boolean)getProperty("Sex", TypeCode.Boolean); }
-            set { setProperty("Sex", value); }
+            get => (bool)getProperty("Sex", TypeCode.Boolean);
+            set => setProperty("Sex", value);
         }
 
-        public System.String IDCode
+        public string IDCode
         {
-            get { return (System.String)getProperty("IDCode", TypeCode.String); }
-            set { setProperty("IDCode", value); }
+            get => (string)getProperty("IDCode", TypeCode.String);
+            set => setProperty("IDCode", value);
         }
 
-        public System.String Nation
+        public string Nation
         {
-            get { return (System.String)getProperty("Nation", TypeCode.String); }
-            set { setProperty("Nation", value); }
+            get => (string)getProperty("Nation", TypeCode.String);
+            set => setProperty("Nation", value);
         }
 
-        public System.Double Stature
+        public double Stature
         {
-            get { return (System.Double)getProperty("Stature", TypeCode.Double); }
-            set { setProperty("Stature", value); }
+            get => (double)getProperty("Stature", TypeCode.Double);
+            set => setProperty("Stature", value);
         }
 
-        public System.String Remark
+        public string Remark
         {
-            get { return (System.String)getProperty("Remark", TypeCode.String); }
-            set { setProperty("Remark", value); }
+            get => (string)getProperty("Remark", TypeCode.String);
+            set => setProperty("Remark", value);
         }
 
-        public System.DateTime Birthday
+        public DateTime Birthday
         {
-            get { return (System.DateTime)getProperty("Birthday", TypeCode.DateTime); }
-            set { setProperty("Birthday", value); }
+            get => (DateTime)getProperty("Birthday", TypeCode.DateTime);
+            set => setProperty("Birthday", value);
         }
     }
 }

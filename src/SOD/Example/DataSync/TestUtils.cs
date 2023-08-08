@@ -1,66 +1,62 @@
-﻿using SOD.DataSync.Entitys;
+﻿using System;
 using PWMIS.DataMap.Entity;
 using PWMIS.DataProvider.Data;
 using PWMIS.MemoryStorage;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using SOD.DataSync.Entitys;
 
 namespace SOD.DataSync
 {
-    class TestUtils
+    internal class TestUtils
     {
-        static void TestWriteDataWarpper()
+        private static void TestWriteDataWarpper()
         {
-            DemoDbContext remoteDbContext = new DemoDbContext(AdoHelper.CreateHelper("DemoDB"));
+            var remoteDbContext = new DemoDbContext(AdoHelper.CreateHelper("DemoDB"));
             //删除数据，必须通过DbContext 来处理，详细参见 解决方案说明.txt 文件的数据同步说明
-            using (IWriteDataWarpper warpper = WriteDataWarpperFactory.Create(remoteDbContext))
+            using (var warpper = WriteDataWarpperFactory.Create(remoteDbContext))
             {
-                UserEntity entity = new UserEntity();
+                var entity = new UserEntity();
                 entity.UID = 100;
-                remoteDbContext.Remove<UserEntity>(entity);
+                remoteDbContext.Remove(entity);
             }
         }
 
 
-        static void TestMemDb()
+        private static void TestMemDb()
         {
-            MemDB db = MemDBEngin.GetDB();
-            List<TestEntity> list = db.Get<TestEntity>();
+            var db = MemDBEngin.GetDB();
+            var list = db.Get<TestEntity>();
             Console.WriteLine("加载数据 {0}条", list.Count);
 
-            TestEntity[] entitys = new TestEntity[10000];
-            for (int i = 0; i < 10000; i++)
-            {
-                entitys[i] = new TestEntity()
+            var entitys = new TestEntity[10000];
+            for (var i = 0; i < 10000; i++)
+                entitys[i] = new TestEntity
                 {
                     ID = i,
                     Name = "Name" + i,
                     AtTime = DateTime.Now
                 };
-            }
 
-            bool flag = db.SaveEntity<TestEntity>(entitys);
+            var flag = db.SaveEntity(entitys);
             if (flag)
                 Console.WriteLine("保存数据成功！");
         }
 
-        static void SaveEntity<T>(MemDB mem, T[] entitys) where T : EntityBase, new()
+        private static void SaveEntity<T>(MemDB mem, T[] entitys) where T : EntityBase, new()
         {
-            bool flag = mem.SaveEntity<T>(entitys);
+            var flag = mem.SaveEntity(entitys);
             if (flag)
                 Console.WriteLine("保存数据成功！");
         }
 
-        static void ExportEntity<T>(MemDB mem, DemoDbContext dbContext) where T : EntityBase, new()
+        private static void ExportEntity<T>(MemDB mem, DemoDbContext dbContext) where T : EntityBase, new()
         {
-            List<T> entityList = dbContext.QueryAllList<T>();
-            SaveEntity<T>(mem, entityList.ToArray());
+            var entityList = dbContext.QueryAllList<T>();
+            SaveEntity(mem, entityList.ToArray());
         }
 
-        static void ExportEntityData(EntityBase entity, MemDB mem, DemoDbContext dbContext)
+        private static void ExportEntityData(EntityBase entity, MemDB mem, DemoDbContext dbContext)
         {
-            Type entityType = entity.GetType();
+            var entityType = entity.GetType();
         }
     }
 }

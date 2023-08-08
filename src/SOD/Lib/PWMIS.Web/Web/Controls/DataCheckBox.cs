@@ -2,54 +2,47 @@
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
- * See more information,Please goto http://www.pwmis.com/sqlmap 
+ * See more information,Please goto http://www.pwmis.com/sqlmap
  * ========================================================================
  * 该类的作用
- * 
+ *
  * 作者：邓太华     时间：2008-10-12
  * 版本：V4.5
- * 
- * 修改者：         时间：2013-3-1                
+ *
+ * 修改者：         时间：2013-3-1
  * 修改说明：完善了控件
  * ========================================================================
-*/
+ */
+
 using System;
-using System.Data;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Design;
+using System.Web.UI.WebControls;
 using PWMIS.Common;
 using PWMIS.DataMap;
-using System.Drawing.Design;
-
 
 namespace PWMIS.Web.Controls
 {
     /// <summary>
-    /// BrainCheckBox 的摘要说明。2008.7.6
+    ///     BrainCheckBox 的摘要说明。2008.7.6
     /// </summary>
-    [System.Drawing.ToolboxBitmap(typeof(ControlIcon), "DataCheckBox.bmp")]
+    [ToolboxBitmap(typeof(ControlIcon), "DataCheckBox.bmp")]
     public class DataCheckBox : CheckBox, IDataCheckBox, IQueryControl
     {
-        public DataCheckBox()
-        {
-            //
-            // TODO: 在此处添加构造函数逻辑
-            //
-        }
-
-
-
         #region IBrainControl 成员
 
         #region 数据属性
-        [Category("Data"), Description("设定对应的数据源，格式：FullClassName,AssemblyName 。如果需要绑定实体类，可以设置该属性。")]
+
+        [Category("Data")]
+        [Description("设定对应的数据源，格式：FullClassName,AssemblyName 。如果需要绑定实体类，可以设置该属性。")]
         public string DataProvider { get; set; }
+
         /// <summary>
-        /// 指定是否是主键
+        ///     指定是否是主键
         /// </summary>
-        [Category("Data"), Description("设定对应的数据库字段是否是主键，用于自动数据查询和更新的依据")]
+        [Category("Data")]
+        [Description("设定对应的数据库字段是否是主键，用于自动数据查询和更新的依据")]
         public bool PrimaryKey
         {
             get
@@ -58,13 +51,11 @@ namespace PWMIS.Web.Controls
                     return (bool)ViewState["PrimaryKey"];
                 return false;
             }
-            set
-            {
-                ViewState["PrimaryKey"] = value;
-            }
+            set => ViewState["PrimaryKey"] = value;
         }
 
-        [Category("Data"), Description("设定与数据库字段对应的数据值")]
+        [Category("Data")]
+        [Description("设定与数据库字段对应的数据值")]
         public string Value
         {
             get
@@ -73,13 +64,11 @@ namespace PWMIS.Web.Controls
                     return (string)ViewState["CheckBoxvalue"];
                 return "";
             }
-            set
-            {
-                ViewState["CheckBoxvalue"] = value;
-            }
+            set => ViewState["CheckBoxvalue"] = value;
         }
 
-        [Category("Data"), Description("设定与数据库字段对应的数据名")]
+        [Category("Data")]
+        [Description("设定与数据库字段对应的数据名")]
         [Editor(typeof(PropertyUITypeEditor), typeof(UITypeEditor))]
         public string LinkProperty
         {
@@ -89,13 +78,11 @@ namespace PWMIS.Web.Controls
                     return (string)ViewState["LinkProperty"];
                 return "";
             }
-            set
-            {
-                ViewState["LinkProperty"] = value;
-            }
+            set => ViewState["LinkProperty"] = value;
         }
 
-        [Category("Data"), Description("设定与数据表对应的数据表名")]
+        [Category("Data")]
+        [Description("设定与数据表对应的数据表名")]
         public string LinkObject
         {
             get
@@ -105,39 +92,29 @@ namespace PWMIS.Web.Controls
                 return "";
                 // TODO:  添加 BrainDropDownList.LinkObject getter 实现
             }
-            set
-            {
-                ViewState["LinkObject"] = value;
-                // TODO:  添加 BrainDropDownList.LinkObject setter 实现
-            }
+            set => ViewState["LinkObject"] = value;
+            // TODO:  添加 BrainDropDownList.LinkObject setter 实现
         }
 
         #endregion
 
         #region 默认属性
 
-        public bool IsValid
-        {
-            get
-            {
-                // TODO:  添加 BrainListBox.IsValid getter 实现
-                return true;
-            }
-        }
+        public bool IsValid =>
+            // TODO:  添加 BrainListBox.IsValid getter 实现
+            true;
 
-        [Category("Data"), Description("设定数据类型代码")]
-        public System.TypeCode SysTypeCode
+        [Category("Data")]
+        [Description("设定数据类型代码")]
+        public TypeCode SysTypeCode
         {
             get
             {
                 if (ViewState["SysTypeCode"] != null)
-                    return (System.TypeCode)ViewState["SysTypeCode"];
-                return System.TypeCode.String;
+                    return (TypeCode)ViewState["SysTypeCode"];
+                return TypeCode.String;
             }
-            set
-            {
-                ViewState["SysTypeCode"] = value;
-            }
+            set => ViewState["SysTypeCode"] = value;
         }
 
         public virtual bool Validate()
@@ -145,6 +122,7 @@ namespace PWMIS.Web.Controls
             // TODO:  添加 BrainListBox.Validate 实现
             return true;
         }
+
         #endregion
 
         #region 其他属性
@@ -153,20 +131,17 @@ namespace PWMIS.Web.Controls
         {
             get
             {
-                if (!this.Checked)//如果未选择，那么设定为只读数据属性。
+                if (!Checked) //如果未选择，那么设定为只读数据属性。
                     return true;
                 return !base.Enabled;
             }
-            set
-            {
-                base.Enabled = !value;
-            }
+            set => base.Enabled = !value;
         }
 
-        [Category("Data"), Description("设定与数据是否必添")]
+        [Category("Data")]
+        [Description("设定与数据是否必添")]
         public bool IsNull
         {
-
             get
             {
                 // TODO:  添加 BrainTextBox.isClientValidation getter 实现
@@ -174,28 +149,27 @@ namespace PWMIS.Web.Controls
                     return (bool)ViewState["isNull"];
                 return true;
             }
-            set
-            {
+            set =>
                 // TODO:  添加 BrainTextBox.isClientValidation setter 实现
                 ViewState["isNull"] = value;
-
-            }
         }
+
         #endregion
 
         #region 接口方法
 
         public void SetValue(object value)
         {
-            DataCheckBoxValue dcbv = new DataCheckBoxValue(this,false );
+            var dcbv = new DataCheckBoxValue(this, false);
             dcbv.SetValue(value);
         }
 
         public object GetValue()
         {
-            DataCheckBoxValue dcbv = new DataCheckBoxValue(this,false );
+            var dcbv = new DataCheckBoxValue(this, false);
             return dcbv.GetValue();
         }
+
         #endregion
 
         #region IQueryControl 成员
@@ -208,10 +182,7 @@ namespace PWMIS.Web.Controls
                     return (string)ViewState["CompareSymbol"];
                 return "";
             }
-            set
-            {
-                ViewState["CompareSymbol"] = value;
-            }
+            set => ViewState["CompareSymbol"] = value;
         }
 
         public string QueryFormatString
@@ -222,14 +193,10 @@ namespace PWMIS.Web.Controls
                     return (string)ViewState["QueryFormatString"];
                 return "";
             }
-            set
-            {
-                ViewState["QueryFormatString"] = value;
-            }
+            set => ViewState["QueryFormatString"] = value;
         }
 
         #endregion
-
 
         #endregion
     }

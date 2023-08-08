@@ -1,29 +1,33 @@
+Imports System.ComponentModel
+Imports System.Globalization
+Imports System.IO
 Imports System.Xml
-Imports PWMIS.DataMap.SqlMap
 Imports PWMIS.Common
+Imports PWMIS.DataMap.SqlMap
+Imports PWMIS.DataProvider.Adapter
 
 Public Class Form1
-    Inherits System.Windows.Forms.Form
+    Inherits Form
 
-    Private ArrSqlScript As New Hashtable
+    Private ReadOnly ArrSqlScript As New Hashtable
     Private IsCmdType As Boolean
     Private AddRowInex As Integer
     Private EditRowIndex As Integer
     Private LastSelectedCmdName As String
     Private LastRowIndex As Integer '上一次选择的行索引
     Private XPath As String
-    Private Mapper As PWMIS.DataMap.SqlMap.SqlMapper
-    Friend WithEvents DataGridTableStyle1 As System.Windows.Forms.DataGridTableStyle
-    Friend WithEvents DataGridTextBoxColumn1 As System.Windows.Forms.DataGridTextBoxColumn
-    Friend WithEvents DataGridTextBoxColumn2 As System.Windows.Forms.DataGridTextBoxColumn
-    Friend WithEvents cmdSave As System.Windows.Forms.Button
+    Private Mapper As SqlMapper
+    Friend WithEvents DataGridTableStyle1 As DataGridTableStyle
+    Friend WithEvents DataGridTextBoxColumn1 As DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn2 As DataGridTextBoxColumn
+    Friend WithEvents cmdSave As Button
     Private IsLoadCmdType As Boolean
-    Friend WithEvents DataGridTextBoxColumn3 As System.Windows.Forms.DataGridTextBoxColumn
-    Friend WithEvents DataGridTextBoxColumn4 As System.Windows.Forms.DataGridTextBoxColumn
-    Friend WithEvents DataGridTextBoxColumn5 As System.Windows.Forms.DataGridTextBoxColumn
-    Friend WithEvents DataGridTextBoxColumn6 As System.Windows.Forms.DataGridTextBoxColumn
-    Friend WithEvents DataGridTextBoxColumn7 As System.Windows.Forms.DataGridTextBoxColumn
-    Friend WithEvents lblHelp As System.Windows.Forms.Label '是否正在装载数据
+    Friend WithEvents DataGridTextBoxColumn3 As DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn4 As DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn5 As DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn6 As DataGridTextBoxColumn
+    Friend WithEvents DataGridTextBoxColumn7 As DataGridTextBoxColumn
+    Friend WithEvents lblHelp As Label '是否正在装载数据
     Private SqlMapScriptChanged As Boolean '脚本是否手工改变过。
 
 #Region " Windows 窗体设计器生成的代码 "
@@ -35,11 +39,10 @@ Public Class Form1
         InitializeComponent()
 
         '在 InitializeComponent() 调用之后添加任何初始化
-
     End Sub
 
     '窗体重写 dispose 以清理组件列表。
-    Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
+    Protected Overloads Overrides Sub Dispose(disposing As Boolean)
         If disposing Then
             If Not (components Is Nothing) Then
                 components.Dispose()
@@ -49,107 +52,109 @@ Public Class Form1
     End Sub
 
     'Windows 窗体设计器所必需的
-    Private components As System.ComponentModel.IContainer
+    Private components As IContainer
 
     '注意: 以下过程是 Windows 窗体设计器所必需的
     '可以使用 Windows 窗体设计器修改此过程。
     '不要使用代码编辑器修改它。
-    Friend WithEvents txtFileName As System.Windows.Forms.TextBox
-    Friend WithEvents OpenFileDialog1 As System.Windows.Forms.OpenFileDialog
-    Friend WithEvents btnFileOpen As System.Windows.Forms.Button
-    Friend WithEvents cmbScriptType As System.Windows.Forms.ComboBox
-    Friend WithEvents lstClassName As System.Windows.Forms.ListBox
-    Friend WithEvents dgCommandInfo As System.Windows.Forms.DataGrid
-    Friend WithEvents txtCommandText As System.Windows.Forms.TextBox
-    Friend WithEvents DataSet1 As System.Data.DataSet
-    Friend WithEvents dtCommandClass As System.Data.DataTable
-    Friend WithEvents CommandName As System.Data.DataColumn
-    Friend WithEvents CommandType As System.Data.DataColumn
-    Friend WithEvents QueryType As System.Data.DataColumn
-    Friend WithEvents Method As System.Data.DataColumn
-    Friend WithEvents btnParseXml As System.Windows.Forms.Button
-    Friend WithEvents Description As System.Data.DataColumn
-    Friend WithEvents cmbCmdType As System.Windows.Forms.ComboBox
-    Friend WithEvents btnConfig As System.Windows.Forms.Button
-    Friend WithEvents Label1 As System.Windows.Forms.Label
-    Friend WithEvents Label2 As System.Windows.Forms.Label
-    Friend WithEvents txtSQL As System.Windows.Forms.TextBox
-    Friend WithEvents btnParamBuilder As System.Windows.Forms.Button
-    Friend WithEvents btnSQLTest As System.Windows.Forms.Button
-    Friend WithEvents Label3 As System.Windows.Forms.Label
-    Friend WithEvents ResultClass As System.Data.DataColumn
-    Friend WithEvents cmbResultClass As System.Windows.Forms.ComboBox
-    Friend WithEvents ResultMap As System.Data.DataColumn
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
-        Me.txtFileName = New System.Windows.Forms.TextBox
-        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
-        Me.btnFileOpen = New System.Windows.Forms.Button
-        Me.cmbScriptType = New System.Windows.Forms.ComboBox
-        Me.lstClassName = New System.Windows.Forms.ListBox
-        Me.dgCommandInfo = New System.Windows.Forms.DataGrid
-        Me.DataSet1 = New System.Data.DataSet
-        Me.dtCommandClass = New System.Data.DataTable
-        Me.CommandName = New System.Data.DataColumn
-        Me.CommandType = New System.Data.DataColumn
-        Me.QueryType = New System.Data.DataColumn
-        Me.Method = New System.Data.DataColumn
-        Me.Description = New System.Data.DataColumn
-        Me.ResultClass = New System.Data.DataColumn
-        Me.ResultMap = New System.Data.DataColumn
-        Me.DataGridTableStyle1 = New System.Windows.Forms.DataGridTableStyle
-        Me.DataGridTextBoxColumn1 = New System.Windows.Forms.DataGridTextBoxColumn
-        Me.DataGridTextBoxColumn2 = New System.Windows.Forms.DataGridTextBoxColumn
-        Me.DataGridTextBoxColumn3 = New System.Windows.Forms.DataGridTextBoxColumn
-        Me.DataGridTextBoxColumn4 = New System.Windows.Forms.DataGridTextBoxColumn
-        Me.DataGridTextBoxColumn5 = New System.Windows.Forms.DataGridTextBoxColumn
-        Me.DataGridTextBoxColumn6 = New System.Windows.Forms.DataGridTextBoxColumn
-        Me.DataGridTextBoxColumn7 = New System.Windows.Forms.DataGridTextBoxColumn
-        Me.txtCommandText = New System.Windows.Forms.TextBox
-        Me.btnParseXml = New System.Windows.Forms.Button
-        Me.cmbCmdType = New System.Windows.Forms.ComboBox
-        Me.btnConfig = New System.Windows.Forms.Button
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.txtSQL = New System.Windows.Forms.TextBox
-        Me.btnParamBuilder = New System.Windows.Forms.Button
-        Me.btnSQLTest = New System.Windows.Forms.Button
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.cmbResultClass = New System.Windows.Forms.ComboBox
-        Me.cmdSave = New System.Windows.Forms.Button
-        Me.lblHelp = New System.Windows.Forms.Label
-        CType(Me.dgCommandInfo, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.DataSet1, System.ComponentModel.ISupportInitialize).BeginInit()
-        CType(Me.dtCommandClass, System.ComponentModel.ISupportInitialize).BeginInit()
+    Friend WithEvents txtFileName As TextBox
+    Friend WithEvents OpenFileDialog1 As OpenFileDialog
+    Friend WithEvents btnFileOpen As Button
+    Friend WithEvents cmbScriptType As ComboBox
+    Friend WithEvents lstClassName As ListBox
+    Friend WithEvents dgCommandInfo As DataGrid
+    Friend WithEvents txtCommandText As TextBox
+    Friend WithEvents DataSet1 As DataSet
+    Friend WithEvents dtCommandClass As DataTable
+    Friend WithEvents CommandName As DataColumn
+    Friend WithEvents CommandType As DataColumn
+    Friend WithEvents QueryType As DataColumn
+    Friend WithEvents Method As DataColumn
+    Friend WithEvents btnParseXml As Button
+    Friend WithEvents Description As DataColumn
+    Friend WithEvents cmbCmdType As ComboBox
+    Friend WithEvents btnConfig As Button
+    Friend WithEvents Label1 As Label
+    Friend WithEvents Label2 As Label
+    Friend WithEvents txtSQL As TextBox
+    Friend WithEvents btnParamBuilder As Button
+    Friend WithEvents btnSQLTest As Button
+    Friend WithEvents Label3 As Label
+    Friend WithEvents ResultClass As DataColumn
+    Friend WithEvents cmbResultClass As ComboBox
+    Friend WithEvents ResultMap As DataColumn
+
+    <DebuggerStepThrough>
+    Private Sub InitializeComponent()
+        Me.txtFileName = New TextBox
+        Me.OpenFileDialog1 = New OpenFileDialog
+        Me.btnFileOpen = New Button
+        Me.cmbScriptType = New ComboBox
+        Me.lstClassName = New ListBox
+        Me.dgCommandInfo = New DataGrid
+        Me.DataSet1 = New DataSet
+        Me.dtCommandClass = New DataTable
+        Me.CommandName = New DataColumn
+        Me.CommandType = New DataColumn
+        Me.QueryType = New DataColumn
+        Me.Method = New DataColumn
+        Me.Description = New DataColumn
+        Me.ResultClass = New DataColumn
+        Me.ResultMap = New DataColumn
+        Me.DataGridTableStyle1 = New DataGridTableStyle
+        Me.DataGridTextBoxColumn1 = New DataGridTextBoxColumn
+        Me.DataGridTextBoxColumn2 = New DataGridTextBoxColumn
+        Me.DataGridTextBoxColumn3 = New DataGridTextBoxColumn
+        Me.DataGridTextBoxColumn4 = New DataGridTextBoxColumn
+        Me.DataGridTextBoxColumn5 = New DataGridTextBoxColumn
+        Me.DataGridTextBoxColumn6 = New DataGridTextBoxColumn
+        Me.DataGridTextBoxColumn7 = New DataGridTextBoxColumn
+        Me.txtCommandText = New TextBox
+        Me.btnParseXml = New Button
+        Me.cmbCmdType = New ComboBox
+        Me.btnConfig = New Button
+        Me.Label1 = New Label
+        Me.Label2 = New Label
+        Me.txtSQL = New TextBox
+        Me.btnParamBuilder = New Button
+        Me.btnSQLTest = New Button
+        Me.Label3 = New Label
+        Me.cmbResultClass = New ComboBox
+        Me.cmdSave = New Button
+        Me.lblHelp = New Label
+        CType(Me.dgCommandInfo, ISupportInitialize).BeginInit()
+        CType(Me.DataSet1, ISupportInitialize).BeginInit()
+        CType(Me.dtCommandClass, ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'txtFileName
         '
-        Me.txtFileName.Location = New System.Drawing.Point(211, 8)
+        Me.txtFileName.Location = New Drawing.Point(211, 8)
         Me.txtFileName.Name = "txtFileName"
-        Me.txtFileName.Size = New System.Drawing.Size(383, 21)
+        Me.txtFileName.Size = New Size(383, 21)
         Me.txtFileName.TabIndex = 0
         '
         'btnFileOpen
         '
-        Me.btnFileOpen.Location = New System.Drawing.Point(600, 6)
+        Me.btnFileOpen.Location = New Drawing.Point(600, 6)
         Me.btnFileOpen.Name = "btnFileOpen"
-        Me.btnFileOpen.Size = New System.Drawing.Size(88, 23)
+        Me.btnFileOpen.Size = New Size(88, 23)
         Me.btnFileOpen.TabIndex = 1
         Me.btnFileOpen.Text = "(&B)打开文件"
         '
         'cmbScriptType
         '
-        Me.cmbScriptType.Location = New System.Drawing.Point(24, 40)
+        Me.cmbScriptType.Location = New Drawing.Point(24, 40)
         Me.cmbScriptType.Name = "cmbScriptType"
-        Me.cmbScriptType.Size = New System.Drawing.Size(168, 20)
+        Me.cmbScriptType.Size = New Size(168, 20)
         Me.cmbScriptType.TabIndex = 2
         '
         'lstClassName
         '
         Me.lstClassName.ItemHeight = 12
-        Me.lstClassName.Location = New System.Drawing.Point(24, 72)
+        Me.lstClassName.Location = New Drawing.Point(24, 72)
         Me.lstClassName.Name = "lstClassName"
-        Me.lstClassName.Size = New System.Drawing.Size(168, 172)
+        Me.lstClassName.Size = New Size(168, 172)
         Me.lstClassName.TabIndex = 3
         '
         'dgCommandInfo
@@ -157,24 +162,29 @@ Public Class Form1
         Me.dgCommandInfo.AllowSorting = False
         Me.dgCommandInfo.DataMember = "dtClass"
         Me.dgCommandInfo.DataSource = Me.DataSet1
-        Me.dgCommandInfo.HeaderForeColor = System.Drawing.SystemColors.ControlText
-        Me.dgCommandInfo.Location = New System.Drawing.Point(211, 40)
+        Me.dgCommandInfo.HeaderForeColor = SystemColors.ControlText
+        Me.dgCommandInfo.Location = New Drawing.Point(211, 40)
         Me.dgCommandInfo.Name = "dgCommandInfo"
-        Me.dgCommandInfo.Size = New System.Drawing.Size(771, 203)
+        Me.dgCommandInfo.Size = New Size(771, 203)
         Me.dgCommandInfo.TabIndex = 4
-        Me.dgCommandInfo.TableStyles.AddRange(New System.Windows.Forms.DataGridTableStyle() {Me.DataGridTableStyle1})
+        Me.dgCommandInfo.TableStyles.AddRange(New DataGridTableStyle() {Me.DataGridTableStyle1})
         '
         'DataSet1
         '
         Me.DataSet1.DataSetName = "NewDataSet"
-        Me.DataSet1.Locale = New System.Globalization.CultureInfo("zh-CN")
-        Me.DataSet1.Tables.AddRange(New System.Data.DataTable() {Me.dtCommandClass})
+        Me.DataSet1.Locale = New CultureInfo("zh-CN")
+        Me.DataSet1.Tables.AddRange(New DataTable() {Me.dtCommandClass})
         '
         'dtCommandClass
         '
-        Me.dtCommandClass.Columns.AddRange(New System.Data.DataColumn() {Me.CommandName, Me.CommandType, Me.QueryType, Me.Method, Me.Description, Me.ResultClass, Me.ResultMap})
-        Me.dtCommandClass.Constraints.AddRange(New System.Data.Constraint() {New System.Data.UniqueConstraint("Constraint1", New String() {"命令名"}, True)})
-        Me.dtCommandClass.PrimaryKey = New System.Data.DataColumn() {Me.CommandName}
+        Me.dtCommandClass.Columns.AddRange(
+            New DataColumn() _
+                                              {Me.CommandName, Me.CommandType, Me.QueryType, Me.Method, Me.Description,
+                                               Me.ResultClass, Me.ResultMap})
+        Me.dtCommandClass.Constraints.AddRange(
+            New Constraint() _
+                                                  {New UniqueConstraint("Constraint1", New String() {"命令名"}, True)})
+        Me.dtCommandClass.PrimaryKey = New DataColumn() {Me.CommandName}
         Me.dtCommandClass.TableName = "dtClass"
         '
         'CommandName
@@ -217,8 +227,13 @@ Public Class Form1
         'DataGridTableStyle1
         '
         Me.DataGridTableStyle1.DataGrid = Me.dgCommandInfo
-        Me.DataGridTableStyle1.GridColumnStyles.AddRange(New System.Windows.Forms.DataGridColumnStyle() {Me.DataGridTextBoxColumn1, Me.DataGridTextBoxColumn2, Me.DataGridTextBoxColumn3, Me.DataGridTextBoxColumn4, Me.DataGridTextBoxColumn5, Me.DataGridTextBoxColumn6, Me.DataGridTextBoxColumn7})
-        Me.DataGridTableStyle1.HeaderForeColor = System.Drawing.SystemColors.ControlText
+        Me.DataGridTableStyle1.GridColumnStyles.AddRange(
+            New DataGridColumnStyle() _
+                                                            {Me.DataGridTextBoxColumn1, Me.DataGridTextBoxColumn2,
+                                                             Me.DataGridTextBoxColumn3, Me.DataGridTextBoxColumn4,
+                                                             Me.DataGridTextBoxColumn5, Me.DataGridTextBoxColumn6,
+                                                             Me.DataGridTextBoxColumn7})
+        Me.DataGridTableStyle1.HeaderForeColor = SystemColors.ControlText
         Me.DataGridTableStyle1.MappingName = "dtClass"
         '
         'DataGridTextBoxColumn1
@@ -279,120 +294,120 @@ Public Class Form1
         '
         'txtCommandText
         '
-        Me.txtCommandText.Location = New System.Drawing.Point(24, 508)
+        Me.txtCommandText.Location = New Drawing.Point(24, 508)
         Me.txtCommandText.Multiline = True
         Me.txtCommandText.Name = "txtCommandText"
-        Me.txtCommandText.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtCommandText.Size = New System.Drawing.Size(958, 175)
+        Me.txtCommandText.ScrollBars = ScrollBars.Both
+        Me.txtCommandText.Size = New Size(958, 175)
         Me.txtCommandText.TabIndex = 5
         Me.txtCommandText.Text = "CommandText"
         Me.txtCommandText.WordWrap = False
         '
         'btnParseXml
         '
-        Me.btnParseXml.Location = New System.Drawing.Point(706, 6)
+        Me.btnParseXml.Location = New Drawing.Point(706, 6)
         Me.btnParseXml.Name = "btnParseXml"
-        Me.btnParseXml.Size = New System.Drawing.Size(88, 23)
+        Me.btnParseXml.Size = New Size(88, 23)
         Me.btnParseXml.TabIndex = 6
         Me.btnParseXml.Text = "(&R)重新加载"
         '
         'cmbCmdType
         '
-        Me.cmbCmdType.Location = New System.Drawing.Point(608, 283)
+        Me.cmbCmdType.Location = New Drawing.Point(608, 283)
         Me.cmbCmdType.Name = "cmbCmdType"
-        Me.cmbCmdType.Size = New System.Drawing.Size(80, 20)
+        Me.cmbCmdType.Size = New Size(80, 20)
         Me.cmbCmdType.TabIndex = 7
         Me.cmbCmdType.Text = "Text"
         '
         'btnConfig
         '
-        Me.btnConfig.Location = New System.Drawing.Point(891, 6)
+        Me.btnConfig.Location = New Drawing.Point(891, 6)
         Me.btnConfig.Name = "btnConfig"
-        Me.btnConfig.Size = New System.Drawing.Size(88, 23)
+        Me.btnConfig.Size = New Size(88, 23)
         Me.btnConfig.TabIndex = 8
         Me.btnConfig.Text = "(&M)配置管理"
         '
         'Label1
         '
-        Me.Label1.Location = New System.Drawing.Point(24, 487)
+        Me.Label1.Location = New Drawing.Point(24, 487)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(168, 16)
+        Me.Label1.Size = New Size(168, 16)
         Me.Label1.TabIndex = 9
         Me.Label1.Text = "SqlMap 脚本:"
         '
         'Label2
         '
-        Me.Label2.Location = New System.Drawing.Point(24, 289)
+        Me.Label2.Location = New Drawing.Point(24, 289)
         Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(100, 16)
+        Me.Label2.Size = New Size(100, 16)
         Me.Label2.TabIndex = 10
         Me.Label2.Text = "SQL 语句:"
         '
         'txtSQL
         '
-        Me.txtSQL.Location = New System.Drawing.Point(24, 311)
+        Me.txtSQL.Location = New Drawing.Point(24, 311)
         Me.txtSQL.Multiline = True
         Me.txtSQL.Name = "txtSQL"
-        Me.txtSQL.ScrollBars = System.Windows.Forms.ScrollBars.Both
-        Me.txtSQL.Size = New System.Drawing.Size(958, 173)
+        Me.txtSQL.ScrollBars = ScrollBars.Both
+        Me.txtSQL.Size = New Size(958, 173)
         Me.txtSQL.TabIndex = 11
         Me.txtSQL.Text = "SQL"
         Me.txtSQL.WordWrap = False
         '
         'btnParamBuilder
         '
-        Me.btnParamBuilder.Location = New System.Drawing.Point(211, 279)
+        Me.btnParamBuilder.Location = New Drawing.Point(211, 279)
         Me.btnParamBuilder.Name = "btnParamBuilder"
-        Me.btnParamBuilder.Size = New System.Drawing.Size(98, 26)
+        Me.btnParamBuilder.Size = New Size(98, 26)
         Me.btnParamBuilder.TabIndex = 14
         Me.btnParamBuilder.Text = "(&P)参数生成器"
         '
         'btnSQLTest
         '
-        Me.btnSQLTest.Location = New System.Drawing.Point(360, 279)
+        Me.btnSQLTest.Location = New Drawing.Point(360, 279)
         Me.btnSQLTest.Name = "btnSQLTest"
-        Me.btnSQLTest.Size = New System.Drawing.Size(96, 26)
+        Me.btnSQLTest.Size = New Size(96, 26)
         Me.btnSQLTest.TabIndex = 15
         Me.btnSQLTest.Text = "(&T)查询测试"
         '
         'Label3
         '
-        Me.Label3.Location = New System.Drawing.Point(24, 8)
+        Me.Label3.Location = New Drawing.Point(24, 8)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(142, 23)
+        Me.Label3.Size = New Size(142, 23)
         Me.Label3.TabIndex = 16
         Me.Label3.Text = "Sql Map 配置文件："
         '
         'cmbResultClass
         '
-        Me.cmbResultClass.Location = New System.Drawing.Point(514, 283)
+        Me.cmbResultClass.Location = New Drawing.Point(514, 283)
         Me.cmbResultClass.Name = "cmbResultClass"
-        Me.cmbResultClass.Size = New System.Drawing.Size(80, 20)
+        Me.cmbResultClass.Size = New Size(80, 20)
         Me.cmbResultClass.TabIndex = 17
         Me.cmbResultClass.Text = "ResultClass"
         '
         'cmdSave
         '
-        Me.cmdSave.Location = New System.Drawing.Point(810, 6)
+        Me.cmdSave.Location = New Drawing.Point(810, 6)
         Me.cmdSave.Name = "cmdSave"
-        Me.cmdSave.Size = New System.Drawing.Size(75, 23)
+        Me.cmdSave.Size = New Size(75, 23)
         Me.cmdSave.TabIndex = 18
         Me.cmdSave.Text = "(&S)保存"
         Me.cmdSave.UseVisualStyleBackColor = True
         '
         'lblHelp
         '
-        Me.lblHelp.ForeColor = System.Drawing.Color.DarkBlue
-        Me.lblHelp.Location = New System.Drawing.Point(212, 246)
+        Me.lblHelp.ForeColor = Color.DarkBlue
+        Me.lblHelp.Location = New Drawing.Point(212, 246)
         Me.lblHelp.Name = "lblHelp"
-        Me.lblHelp.Size = New System.Drawing.Size(770, 26)
+        Me.lblHelp.Size = New Size(770, 26)
         Me.lblHelp.TabIndex = 19
         Me.lblHelp.Text = "请打开一个配置文件！"
         '
         'Form1
         '
-        Me.AutoScaleBaseSize = New System.Drawing.Size(6, 14)
-        Me.ClientSize = New System.Drawing.Size(994, 695)
+        Me.AutoScaleBaseSize = New Size(6, 14)
+        Me.ClientSize = New Size(994, 695)
         Me.Controls.Add(Me.lblHelp)
         Me.Controls.Add(Me.cmdSave)
         Me.Controls.Add(Me.cmbResultClass)
@@ -411,21 +426,20 @@ Public Class Form1
         Me.Controls.Add(Me.lstClassName)
         Me.Controls.Add(Me.cmbScriptType)
         Me.Controls.Add(Me.btnFileOpen)
-        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.FormBorderStyle = FormBorderStyle.FixedSingle
         Me.MaximizeBox = False
         Me.Name = "Form1"
         Me.Text = "SqlMap Builder Ver 3.1.3"
-        CType(Me.dgCommandInfo, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.DataSet1, System.ComponentModel.ISupportInitialize).EndInit()
-        CType(Me.dtCommandClass, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dgCommandInfo, ISupportInitialize).EndInit()
+        CType(Me.DataSet1, ISupportInitialize).EndInit()
+        CType(Me.dtCommandClass, ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
-
     End Sub
 
 #End Region
 
-    Private Sub btnFileOpen_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileOpen.Click
+    Private Sub btnFileOpen_Click(sender As Object, e As EventArgs) Handles btnFileOpen.Click
         Me.OpenFileDialog1.ShowDialog()
         Me.txtFileName.Text = Me.OpenFileDialog1.FileName
         ConfirmSave()
@@ -434,7 +448,7 @@ Public Class Form1
         Me.lblHelp.Text = "请先选择脚本类型。"
     End Sub
 
-    Private Sub btnParseXml_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnParseXml.Click
+    Private Sub btnParseXml_Click(sender As Object, e As EventArgs) Handles btnParseXml.Click
         'Dim doc As XmlDocument = New XmlDocument
         'Dim _ErrDescription As String
         'Me.cmbScriptType.Items.Clear()
@@ -459,7 +473,8 @@ Public Class Form1
         cmbScriptType.Text = "选择脚本类型"
     End Sub
 
-    Private Sub cmbScriptType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbScriptType.SelectedIndexChanged
+    Private Sub cmbScriptType_SelectedIndexChanged(sender As Object, e As EventArgs) _
+        Handles cmbScriptType.SelectedIndexChanged
         Me.lblHelp.Text = "选SQL-MAP择脚本对应的数据库类型。可以在SQL-MAP配置文件中指定不同的数据库类型，从而在程序运行时适配合适的数据驱动程序。"
         'Dim doc As XmlDocument = New XmlDocument
         'Dim _ErrDescription As String
@@ -483,12 +498,12 @@ Public Class Form1
         Dim strScriptType As String = CStr(cmbScriptType.SelectedItem)
         'CurrDataBase..DataBaseType = [Enum].Parse(GetType(DataBase.enumDataBaseType), strScriptType)
         GetClassNameList(Me.txtFileName.Text, strScriptType, Me.lstClassName)
-        Mapper.DataBase = PWMIS.DataProvider.Adapter.MyDB.GetDBHelper() 'DataBase.CreateDataBase(CurrDataBase.DataBaseType)
+        Mapper.DataBase = MyDB.GetDBHelper() 'DataBase.CreateDataBase(CurrDataBase.DataBaseType)
     End Sub
 
     '确认是否保存
     Private Sub ConfirmSave()
-        If DataSet1.HasChanges() Then  'Or SqlScriptChanged
+        If DataSet1.HasChanges() Then 'Or SqlScriptChanged
             Select Case MsgBox("你已经做了修改，需要保存吗？", MsgBoxStyle.YesNoCancel, "操作提示")
                 Case MsgBoxResult.Cancel
                     Debug.WriteLine("用户已经取消该操作")
@@ -504,14 +519,15 @@ Public Class Form1
         End If
     End Sub
 
-    Private Sub lstClassName_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lstClassName.SelectedIndexChanged
+    Private Sub lstClassName_SelectedIndexChanged(sender As Object, e As EventArgs) _
+        Handles lstClassName.SelectedIndexChanged
         Me.lblHelp.Text = "选择命令组。命令组是一组SQL-MAP脚本的集合，映射为.NET的一个数据访问层类。"
         ConfirmSave()
         Me.dgCommandInfo.ReadOnly = False
         Dim doc As XmlDocument = New XmlDocument
         Dim _ErrDescription As String
-        AddRowInex = -1
-        EditRowIndex = -1
+        AddRowInex = - 1
+        EditRowIndex = - 1
         Me.dtCommandClass.Rows.Clear()
         Me.cmbCmdType.Visible = False
         Me.cmbResultClass.Visible = False
@@ -523,7 +539,8 @@ Public Class Form1
             Dim SqlScripts As XmlNode
             Dim root As XmlElement = doc.DocumentElement
             Dim ClassName As String = CStr(Me.lstClassName.SelectedItem)
-            XPath = "/SqlMap/Script[@Type='" & CStr(cmbScriptType.SelectedItem) & "']/CommandClass[@Name='" & ClassName & "']"
+            XPath = "/SqlMap/Script[@Type='" & CStr(cmbScriptType.SelectedItem) & "']/CommandClass[@Name='" & ClassName &
+                    "']"
             SqlScripts = root.SelectSingleNode(XPath)
             If Not SqlScripts Is Nothing AndAlso SqlScripts.HasChildNodes Then
                 For Each node As XmlNode In SqlScripts.ChildNodes
@@ -565,7 +582,7 @@ Public Class Form1
     End Sub
 
 
-    Private Sub dgCommandInfo_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgCommandInfo.Click
+    Private Sub dgCommandInfo_Click(sender As Object, e As EventArgs) Handles dgCommandInfo.Click
         Try
             'AddRowInex = -1
             Me.lblHelp.Text = "选择一条SQL-MAP脚本命令。移动[当前单元格]，可以编辑当前信息。如果需要增加新的命令，请在空白行输入信息。"
@@ -577,8 +594,11 @@ Public Class Form1
 
     Private Sub SelectCommandName()
 
-        If ArrSqlScript.Count > 0 AndAlso dtCommandClass.Rows.Count > 0 AndAlso dgCommandInfo.CurrentRowIndex() < ArrSqlScript.Count Then
-            Dim Key As Object '= dtCommandClass.Rows(dgCommandInfo.CurrentRowIndex).RowState=DataRowState.Modified .Item(0, DataRowVersion.Original)  '  dgCommandInfo.Item(dgCommandInfo.CurrentRowIndex, 0)
+        If _
+            ArrSqlScript.Count > 0 AndAlso dtCommandClass.Rows.Count > 0 AndAlso
+            dgCommandInfo.CurrentRowIndex() < ArrSqlScript.Count Then
+            Dim Key As Object _
+            '= dtCommandClass.Rows(dgCommandInfo.CurrentRowIndex).RowState=DataRowState.Modified .Item(0, DataRowVersion.Original)  '  dgCommandInfo.Item(dgCommandInfo.CurrentRowIndex, 0)
             If dtCommandClass.Rows(dgCommandInfo.CurrentRowIndex).RowState = DataRowState.Modified Then
                 Key = dtCommandClass.Rows(dgCommandInfo.CurrentRowIndex).Item(0, DataRowVersion.Original)
             Else
@@ -594,7 +614,8 @@ Public Class Form1
         cmbResultClass.Visible = False
     End Sub
 
-    Private Sub dgCommandInfo_CurrentCellChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgCommandInfo.CurrentCellChanged
+    Private Sub dgCommandInfo_CurrentCellChanged(sender As Object, e As EventArgs) _
+        Handles dgCommandInfo.CurrentCellChanged
         Select Case dgCommandInfo.CurrentCell.ColumnNumber
             Case 0
                 Me.lblHelp.Text = "SQL-MAP脚本命令名。在同一个命令组中必须唯一，对应于SQL-MAP数据访问类中的一个方法名称。"
@@ -610,14 +631,14 @@ Public Class Form1
                 Me.lblHelp.Text = "结果类型，指示查询的结果类型是值类型，数据集，还是实体类或者实体类集合。"
             Case 6
                 Me.lblHelp.Text = "结果映射，如果你指定了结果类型是实体类或实体类集合，那么需要指定具体的结果映射的目标实体类类型。"
-           
+
         End Select
 
         If Me.LastRowIndex <> dgCommandInfo.CurrentRowIndex Then
             Me.LastRowIndex = dgCommandInfo.CurrentRowIndex
             SelectCommandName()
         End If
-        If EditRowIndex <> -1 And Me.dtCommandClass.Rows.Count >= EditRowIndex Then
+        If EditRowIndex <> - 1 And Me.dtCommandClass.Rows.Count >= EditRowIndex Then
             '编辑信息
             Dim NewEditedName As String = dgCommandInfo.Item(EditRowIndex, 0)
             Debug.WriteLine("edit row " & EditRowIndex.ToString & ":" & NewEditedName)
@@ -626,18 +647,21 @@ Public Class Form1
             If Not ArrSqlScript.ContainsKey(NewEditedName) Then
                 ArrSqlScript.Add(NewEditedName, ArrSqlScript(LastSelectedCmdName))
             End If
-            EditRowIndex = -1
+            EditRowIndex = - 1
 
         End If
 
-        Dim tempIndex As Integer = -1 '刚被添加的行
+        Dim tempIndex As Integer = - 1 '刚被添加的行
         If AddRowInex = dgCommandInfo.CurrentRowIndex Then
             tempIndex = AddRowInex
         Else
             tempIndex = dgCommandInfo.CurrentRowIndex
         End If
         On Error GoTo ex
-        If AddRowInex <> -1 And tempIndex <> -1 And EditRowIndex = -1 And AddRowInex > dtCommandClass.Rows.Count And AddRowInex = dgCommandInfo.CurrentRowIndex AndAlso Not dgCommandInfo.Item(tempIndex, 0) Is Nothing AndAlso Not dgCommandInfo.Item(tempIndex, 0) Is System.DBNull.Value Then
+        If _
+            AddRowInex <> - 1 And tempIndex <> - 1 And EditRowIndex = - 1 And AddRowInex > dtCommandClass.Rows.Count And
+            AddRowInex = dgCommandInfo.CurrentRowIndex AndAlso Not dgCommandInfo.Item(tempIndex, 0) Is Nothing AndAlso
+            Not dgCommandInfo.Item(tempIndex, 0) Is DBNull.Value Then
             '添加新行
             '默认值
             dgCommandInfo.Item(tempIndex, 1) = "Text"
@@ -646,7 +670,7 @@ Public Class Form1
             Dim NewAddName As String = dgCommandInfo.Item(tempIndex, 0)
             If Not ArrSqlScript.ContainsKey(NewAddName) Then
                 ArrSqlScript.Add(NewAddName, Me.txtCommandText.Text)
-                AddRowInex = -1
+                AddRowInex = - 1
                 Debug.WriteLine("new key added:" & NewAddName)
             End If
 
@@ -661,8 +685,8 @@ Public Class Form1
 
         Select Case dgCommandInfo.CurrentCell.ColumnNumber
             Case 0
-                If AddRowInex <> -1 And tempIndex <> -1 Then
-                    If Not dgCommandInfo.Item(dgCommandInfo.CurrentCell) Is System.DBNull.Value Then
+                If AddRowInex <> - 1 And tempIndex <> - 1 Then
+                    If Not dgCommandInfo.Item(dgCommandInfo.CurrentCell) Is DBNull.Value Then
                         EditRowIndex = dgCommandInfo.CurrentCell.RowNumber
                         LastSelectedCmdName = dgCommandInfo.Item(dgCommandInfo.CurrentCell)
                     End If
@@ -691,45 +715,45 @@ Public Class Form1
                 Me.cmbResultClass.Visible = False
                 dgCommandInfo.ReadOnly = False
         End Select
-ex:
+        ex:
         If Err.Number <> 0 Then
             MsgBox(Err.Description, MsgBoxStyle.Critical, "操作错误")
             Err.Clear()
-            AddRowInex = -1
-            EditRowIndex = -1
+            AddRowInex = - 1
+            EditRowIndex = - 1
         End If
-
     End Sub
 
     Private Sub ShowCmbCmdType()
         ShowDGCombox(cmbCmdType)
     End Sub
 
-    Private Sub ShowDGCombox(ByVal myCmb As ComboBox)
+    Private Sub ShowDGCombox(myCmb As ComboBox)
         myCmb.SelectedItem = dgCommandInfo.Item(dgCommandInfo.CurrentCell)
         myCmb.Width = dgCommandInfo.GetCurrentCellBounds.Width
         myCmb.Left = dgCommandInfo.Left + dgCommandInfo.GetCurrentCellBounds.Left
         myCmb.Top = dgCommandInfo.Top + dgCommandInfo.GetCurrentCellBounds.Top
-        myCmb.Text = IIf(dgCommandInfo.Item(dgCommandInfo.CurrentCell) Is System.DBNull.Value, "", dgCommandInfo.Item(dgCommandInfo.CurrentCell))
+        myCmb.Text = IIf(dgCommandInfo.Item(dgCommandInfo.CurrentCell) Is DBNull.Value, "",
+                         dgCommandInfo.Item(dgCommandInfo.CurrentCell))
         myCmb.Visible = True
     End Sub
 
-    Private Sub Form1_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         IsCmdType = True
-        AddRowInex = -1
-        EditRowIndex = -1
+        AddRowInex = - 1
+        EditRowIndex = - 1
         cmbCmdType.Visible = False
         cmbResultClass.Visible = False
-        cmbResultClass.DataSource = [Enum].GetNames(GetType(PWMIS.Common.enumResultClass))
+        cmbResultClass.DataSource = [Enum].GetNames(GetType(enumResultClass))
         LoadCmdType(IsCmdType)
         dgCommandInfo.ReadOnly = True
-        Mapper = New PWMIS.DataMap.SqlMap.SqlMapper
+        Mapper = New SqlMapper
     End Sub
 
-    Private Sub LoadCmdType(ByVal TypeFlag As Boolean)
+    Private Sub LoadCmdType(TypeFlag As Boolean)
         'cmbCmdType.Items.Clear()
         cmbCmdType.DataSource = Nothing
-        cmbCmdType.SelectedIndex = -1
+        cmbCmdType.SelectedIndex = - 1
         IsLoadCmdType = True
         If TypeFlag Then
             'cmbCmdType.Items.Add(System.Data.CommandType.StoredProcedure.ToString())
@@ -743,16 +767,16 @@ ex:
             'cmbCmdType.Items.Add("Create")
             cmbCmdType.DataSource = [Enum].GetNames(GetType(enumQueryType))
         End If
-
     End Sub
 
-    Private Sub cmbCmdType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbCmdType.TextChanged
+    Private Sub cmbCmdType_TextChanged(sender As Object, e As EventArgs) Handles cmbCmdType.TextChanged
         If IsLoadCmdType Then
             IsLoadCmdType = False
             Exit Sub
         End If
-        If dgCommandInfo.CurrentRowIndex = dgCommandInfo.CurrentCell.RowNumber Then  ' dgCommandInfo.CurrentRowIndex <> -1 
-            If cmbCmdType.SelectedIndex <> -1 Then
+        If dgCommandInfo.CurrentRowIndex = dgCommandInfo.CurrentCell.RowNumber Then _
+' dgCommandInfo.CurrentRowIndex <> -1 
+            If cmbCmdType.SelectedIndex <> - 1 Then
                 Dim strText As String = cmbCmdType.Text
                 For I As Integer = 0 To cmbCmdType.Items.Count - 1
                     If strText = cmbCmdType.Items(I) Then
@@ -764,23 +788,21 @@ ex:
 
             End If
         End If
-
     End Sub
 
 
-    Private Sub dgCommandInfo_Scroll(ByVal sender As Object, ByVal e As System.EventArgs) Handles dgCommandInfo.Scroll
+    Private Sub dgCommandInfo_Scroll(sender As Object, e As EventArgs) Handles dgCommandInfo.Scroll
         Me.cmbCmdType.Visible = False
         Me.cmbResultClass.Visible = False
     End Sub
 
-    Private Sub txtCommandText_TextChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCommandText.TextChanged
+    Private Sub txtCommandText_TextChanged(sender As Object, e As EventArgs) Handles txtCommandText.TextChanged
         On Error Resume Next
         If Not Mapper Is Nothing Then
             'Dim cmdInfo As CommandInfo = Mapper.GetScriptInfo(txtCommandText.Text)
             txtSQL.Text = Mapper.GetScriptInfo(txtCommandText.Text) 'cmdInfo.CommandText
             SqlMapScriptChanged = True
         End If
-
     End Sub
 
     Private Sub AddNode()
@@ -806,7 +828,7 @@ ex:
         End Try
     End Sub
 
-    Private Sub UpdateSubNode(ByVal doc As XmlDocument, ByVal SqlScripts As XmlNode, ByVal rowState As DataRowState)
+    Private Sub UpdateSubNode(doc As XmlDocument, SqlScripts As XmlNode, rowState As DataRowState)
         Dim myTable As DataTable
         Dim node As XmlElement
         myTable = Me.dtCommandClass.GetChanges(rowState)
@@ -827,21 +849,21 @@ ex:
         End If
     End Sub
 
-    Private Sub AddSubNode(ByVal doc As XmlDocument, ByVal SqlScripts As XmlNode, ByVal dr As DataRow)
+    Private Sub AddSubNode(doc As XmlDocument, SqlScripts As XmlNode, dr As DataRow)
         Dim node As XmlElement = GetUpdateSubNode(doc, dr)
         Dim CDATASqlText As XmlCDataSection = doc.CreateCDataSection(ArrSqlScript(dr(0)))
         node.AppendChild(CDATASqlText)
         SqlScripts.AppendChild(node)
     End Sub
 
-    Private Sub EditSubNode(ByVal doc As XmlDocument, ByVal SqlScripts As XmlNode, ByVal dr As DataRow)
+    Private Sub EditSubNode(doc As XmlDocument, SqlScripts As XmlNode, dr As DataRow)
         Dim node As XmlElement = GetUpdateSubNode(doc, dr)
         Dim CDATASqlText As XmlCDataSection = doc.CreateCDataSection(ArrSqlScript(dr(0, DataRowVersion.Original)))
         node.AppendChild(CDATASqlText)
         SqlScripts.AppendChild(node)
     End Sub
 
-    Private Function GetUpdateSubNode(ByVal doc As XmlDocument, ByVal dr As DataRow) As XmlElement
+    Private Function GetUpdateSubNode(doc As XmlDocument, dr As DataRow) As XmlElement
         Dim node As XmlElement
         If dr.IsNull(0) Then Throw New Exception("列 [" & dr.Table.Columns(0).ColumnName() & "] 不能为空！")
         If dr.IsNull(1) Then Throw New Exception("列 [" & dr.Table.Columns(1).ColumnName() & "] 不能为空！")
@@ -855,7 +877,7 @@ ex:
             '处理结果类型
             node.SetAttribute("ResultClass", dr(5))
             If dr(5) = enumResultClass.EntityObject.ToString() Or dr(5) = enumResultClass.EntityList.ToString Then
-                If dr(6) Is System.DBNull.Value Then
+                If dr(6) Is DBNull.Value Then
                     MessageBox.Show(dr(0).ToString() & " 需要指定映射具体的实体类类型！")
                 Else
                     node.SetAttribute("ResultMap", dr(6))
@@ -864,29 +886,29 @@ ex:
             End If
         End If
         Return node
-
     End Function
 
 
-    Private Sub dtCommandClass_RowDeleted(ByVal sender As Object, ByVal e As System.Data.DataRowChangeEventArgs) Handles dtCommandClass.RowDeleted
-        EditRowIndex = -1
+    Private Sub dtCommandClass_RowDeleted(sender As Object, e As DataRowChangeEventArgs) _
+        Handles dtCommandClass.RowDeleted
+        EditRowIndex = - 1
     End Sub
 
-    Private Sub btnConfig_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnConfig.Click
+    Private Sub btnConfig_Click(sender As Object, e As EventArgs) Handles btnConfig.Click
         ConfirmSave()
         Dim FileName As String = Me.txtFileName.Text
         Dim frmNewOpt1 As New frmNewOpt
-        If System.IO.File.Exists(FileName) Then
+        If File.Exists(FileName) Then
             frmNewOpt1.CurrConfigFile = FileName
         End If
         frmNewOpt1.Show()
     End Sub
 
 
-    Private Sub txtCommandText_LostFocus(ByVal sender As Object, ByVal e As System.EventArgs) Handles txtCommandText.LostFocus
+    Private Sub txtCommandText_LostFocus(sender As Object, e As EventArgs) Handles txtCommandText.LostFocus
         '记录修改
         Dim index As Integer = dgCommandInfo.CurrentRowIndex
-        If index <> -1 Then
+        If index <> - 1 Then
             Dim Key As Object = dgCommandInfo.Item(index, 0)
             If ArrSqlScript.ContainsKey(Key) Then
                 ArrSqlScript(Key) = txtCommandText.Text
@@ -898,16 +920,17 @@ ex:
         End If
     End Sub
 
-    Private Sub btnParamBuilder_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnParamBuilder.Click
+    Private Sub btnParamBuilder_Click(sender As Object, e As EventArgs) Handles btnParamBuilder.Click
         If Me.txtSQL.Text = "" Then
             MsgBox("请先选择网格中的一条记录（如果已经选择请输入SQL语句）", MsgBoxStyle.Exclamation, "参数生成器")
             Return
         End If
         Dim frmParasBuilder As New frmParamsBuilder
         'txtCommandText.Text = "正在解析参数，请稍候。。。"
-        If dgCommandInfo.CurrentRowIndex <> -1 Then
+        If dgCommandInfo.CurrentRowIndex <> - 1 Then
 
-            frmParasBuilder.DataBaseType = [Enum].Parse(GetType(DBMSType), Me.cmbScriptType.SelectedItem.ToString())  'DataBase.enumDataBaseType.DB2
+            frmParasBuilder.DataBaseType = [Enum].Parse(GetType(DBMSType), Me.cmbScriptType.SelectedItem.ToString()) _
+            'DataBase.enumDataBaseType.DB2
             frmParasBuilder.CommandType = dgCommandInfo.Item(dgCommandInfo.CurrentRowIndex, 1)
             frmParasBuilder.QueryType = dgCommandInfo.Item(dgCommandInfo.CurrentRowIndex, 2)
             frmParasBuilder.SqlMapScript = txtCommandText.Text
@@ -920,16 +943,16 @@ ex:
         Else
             MsgBox("请先加载配置文件并选择一行！")
         End If
-        
     End Sub
 
-    Private Sub Form1_Closing(ByVal sender As Object, ByVal e As System.ComponentModel.CancelEventArgs) Handles MyBase.Closing
+    Private Sub Form1_Closing(sender As Object, e As CancelEventArgs) Handles MyBase.Closing
         ConfirmSave()
     End Sub
 
-    Private Sub cmbResultClass_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbResultClass.TextChanged
-        If dgCommandInfo.CurrentRowIndex = dgCommandInfo.CurrentCell.RowNumber Then  ' dgCommandInfo.CurrentRowIndex <> -1 
-            If cmbResultClass.SelectedIndex <> -1 Then
+    Private Sub cmbResultClass_TextChanged(sender As Object, e As EventArgs) Handles cmbResultClass.TextChanged
+        If dgCommandInfo.CurrentRowIndex = dgCommandInfo.CurrentCell.RowNumber Then _
+' dgCommandInfo.CurrentRowIndex <> -1 
+            If cmbResultClass.SelectedIndex <> - 1 Then
                 Dim strText As String = cmbResultClass.Text
                 For I As Integer = 0 To cmbResultClass.Items.Count - 1
                     If strText = cmbResultClass.Items(I) Then
@@ -942,7 +965,7 @@ ex:
         End If
     End Sub
 
-    Private Sub btnSQLTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSQLTest.Click
+    Private Sub btnSQLTest_Click(sender As Object, e As EventArgs) Handles btnSQLTest.Click
         'MsgBox("该版本暂时不支持此功能！")
         Dim frmParasBuilder As New frmParamsBuilder
         'txtCommandText.Text = "正在解析参数，请稍候。。。"
@@ -953,19 +976,23 @@ ex:
         frmParasBuilder.ShowDialog()
     End Sub
 
-    Private Sub cmdSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdSave.Click
+    Private Sub cmdSave_Click(sender As Object, e As EventArgs) Handles cmdSave.Click
         ConfirmSave()
     End Sub
 
-    Private Sub txtCommandText_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCommandText.Leave
+    Private Sub txtCommandText_Leave(sender As Object, e As EventArgs) Handles txtCommandText.Leave
         If SqlMapScriptChanged Then
-            If ArrSqlScript.Count = 0 AndAlso dtCommandClass.Rows.Count = 1 AndAlso dgCommandInfo.CurrentRowIndex() = 0 Then
+            If ArrSqlScript.Count = 0 AndAlso dtCommandClass.Rows.Count = 1 AndAlso dgCommandInfo.CurrentRowIndex() = 0 _
+                Then
                 Dim Key As Object = dgCommandInfo.Item(dgCommandInfo.CurrentRowIndex, 0)
                 ArrSqlScript(Key) = Me.txtCommandText.Text
             End If
 
-            If ArrSqlScript.Count > 0 AndAlso dtCommandClass.Rows.Count > 0 AndAlso dgCommandInfo.CurrentRowIndex() <= ArrSqlScript.Count Then
-                Dim Key As Object '= dtCommandClass.Rows(dgCommandInfo.CurrentRowIndex).RowState=DataRowState.Modified .Item(0, DataRowVersion.Original)  '  dgCommandInfo.Item(dgCommandInfo.CurrentRowIndex, 0)
+            If _
+                ArrSqlScript.Count > 0 AndAlso dtCommandClass.Rows.Count > 0 AndAlso
+                dgCommandInfo.CurrentRowIndex() <= ArrSqlScript.Count Then
+                Dim Key As Object _
+                '= dtCommandClass.Rows(dgCommandInfo.CurrentRowIndex).RowState=DataRowState.Modified .Item(0, DataRowVersion.Original)  '  dgCommandInfo.Item(dgCommandInfo.CurrentRowIndex, 0)
                 If dtCommandClass.Rows(dgCommandInfo.CurrentRowIndex).RowState = DataRowState.Modified Then
                     Key = dtCommandClass.Rows(dgCommandInfo.CurrentRowIndex).Item(0, DataRowVersion.Original)
                 Else
@@ -983,15 +1010,15 @@ ex:
         End If
     End Sub
 
-    Private Sub txtSQL_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSQL.Enter
+    Private Sub txtSQL_Enter(sender As Object, e As EventArgs) Handles txtSQL.Enter
         Me.lblHelp.Text = "请在此输入你准备查询的SQL 语句，可以使用 @参数名 的参数查询方式，然后单击 [参数生成器]，进行参数信息设置，最后确定，就会自动生成SQL-MAP脚本。"
     End Sub
 
-    Private Sub txtCommandText_Enter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtCommandText.Enter
+    Private Sub txtCommandText_Enter(sender As Object, e As EventArgs) Handles txtCommandText.Enter
         Me.lblHelp.Text = "SQL-MAP脚本编辑框，你可以在这里直接输入SQL-MAP脚本，但是建议你先使用[参数生成器]并且执行[查询测试]，由程序为你生成正确的 SQL-MAP脚本。"
     End Sub
 
-    Private Sub txtSQL_Leave(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles txtSQL.Leave
+    Private Sub txtSQL_Leave(sender As Object, e As EventArgs) Handles txtSQL.Leave
         If Me.txtCommandText.Text.Trim() = "" Then
             ' MessageBox.Show("请输入SQL-MAP脚本！（可以单击【参数生成器】自动生成）", "操作提示")
             Me.lblHelp.Text = "请输入SQL-MAP脚本！（可以单击【参数生成器】自动生成）"

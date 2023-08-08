@@ -1,5 +1,4 @@
-﻿using System;
-namespace EntityTest
+﻿namespace EntityTest
 {
     public interface IUser
     {

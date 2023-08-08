@@ -2,15 +2,16 @@
 Imports CefSharp.WinForms
 
 Public Class Form2
-    Dim WithEvents WebBrowser1 As CefSharp.WinForms.ChromiumWebBrowser
+    Dim WithEvents WebBrowser1 As ChromiumWebBrowser
 
     Private Sub Form2_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        If Not CefSharp.Cef.IsInitialized Then
-            Dim setting As CefSettings = New CefSettings()
+        If Not Cef.IsInitialized Then
+            Dim setting = New CefSettings()
             With setting
                 .Locale = "zh-CN"
                 .AcceptLanguageList = "zh-CN"
-                .UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
+                .UserAgent =
+                    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
                 .MultiThreadedMessageLoop = True
                 .SetOffScreenRenderingBestPerformanceArgs()
             End With
@@ -22,19 +23,18 @@ Public Class Form2
                 'SetOffScreenRenderingBestPerformanceArgs 已经调用此方法来设置相同的功能
             End If
 
-            CefSharp.Cef.Initialize(setting)
+            Cef.Initialize(setting)
 
         End If
 
-        Me.WebBrowser1 = New CefSharp.WinForms.ChromiumWebBrowser("http://www.pwmis.com/sqlmap")
+        Me.WebBrowser1 = New ChromiumWebBrowser("http://www.pwmis.com/sqlmap")
         Me.PanelBody.Controls.Add(Me.WebBrowser1)
         Me.WebBrowser1.Dock = DockStyle.Fill
-
     End Sub
 
     Private Sub WebBrowser1_TitleChanged(sender As Object, e As TitleChangedEventArgs) Handles WebBrowser1.TitleChanged
         Me.Invoke(Sub()
-                      Me.Text = e.Title
-                  End Sub)
+            Me.Text = e.Title
+        End Sub)
     End Sub
 End Class

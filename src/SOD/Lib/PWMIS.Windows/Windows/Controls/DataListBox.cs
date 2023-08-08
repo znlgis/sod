@@ -1,138 +1,99 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
+using System.Drawing.Design;
 using System.Windows.Forms;
 using PWMIS.Common;
-using System.Drawing.Design;
 
 namespace PWMIS.Windows.Controls
 {
-    [System.Drawing.ToolboxBitmap(typeof(ControlIcon), "DataListBox.bmp")]
+    [ToolboxBitmap(typeof(ControlIcon), "DataListBox.bmp")]
     public partial class DataListBox : ListBox, IDataControl, IQueryControl
     {
-
         #region IDataControl 成员
+
         //[Category("Data"), Description("设定对应的数据源，格式：FullClassName,AssemblyName 。如果需要绑定实体类，可以设置该属性。")]
         //public string DataProvider { get; set; }
 
-        [Category("Data"), Description("设定与数据库字段对应的数据名")]
+        [Category("Data")]
+        [Description("设定与数据库字段对应的数据名")]
         [Editor(typeof(PropertyUITypeEditor), typeof(UITypeEditor))]
-        public string LinkProperty
-        {
-            get;
-            set;
-        }
+        public string LinkProperty { get; set; }
 
         /// <summary>
-        /// 设定与数据库字段对应的数据表名
+        ///     设定与数据库字段对应的数据表名
         /// </summary>
-        [Category("Data"), Description("设定与数据库字段对应的数据表名")]
-        public string LinkObject
-        {
-            get;
-            set;
-        }
-        public bool IsValid
-        {
-            get { return true; }
-        }
+        [Category("Data")]
+        [Description("设定与数据库字段对应的数据表名")]
+        public string LinkObject { get; set; }
 
-        public TypeCode SysTypeCode
-        {
-            get;
-            set;
-        }
+        public bool IsValid => true;
+
+        public TypeCode SysTypeCode { get; set; }
 
         public bool ReadOnly
         {
             get
             {
                 //未选择，设置为只读数据属性，将不更新数据库。dth,2008.7.27
-                if (this.SelectedIndex == -1)
+                if (SelectedIndex == -1)
                     return true;
-                return !this.Enabled;
+                return !Enabled;
             }
-            set
-            {
-                this.Enabled = !value;
-            }
+            set => Enabled = !value;
         }
 
-        public bool IsNull
-        {
-            get { return true; }
-        }
+        public bool IsNull => true;
 
         /// <summary>
-        /// 设定对应的数据字段是否是主键
+        ///     设定对应的数据字段是否是主键
         /// </summary>
-        [Category("Data"), Description("设定对应的数据字段是否是主键")]
-        public bool PrimaryKey
-        {
-            get;
-            set;
-        }
+        [Category("Data")]
+        [Description("设定对应的数据字段是否是主键")]
+        public bool PrimaryKey { get; set; }
 
         public void SetValue(object obj)
         {
             if (obj == null) return;
-            this.ClearSelected();
-           
-            string SelItemValues = "";
+            ClearSelected();
+
+            var SelItemValues = "";
             //if(obj!=null)
             SelItemValues = obj.ToString().Trim();
             //string delimStr = ",";
             //char [] delimiter = delimStr.ToCharArray();
 
-            string[] SelItemobj = SelItemValues.Split(',');// SelItemValues.Split(delimiter);
+            var SelItemobj = SelItemValues.Split(','); // SelItemValues.Split(delimiter);
 
-            foreach (string s in SelItemobj)
-            {
-                foreach (var item in this.Items)
+            foreach (var s in SelItemobj)
+            foreach (var item in Items)
+                if (item.ToString() == s)
                 {
-                    if (item.ToString() == s)
-                    {
-                        this.SelectedItem = item;
-                        break;                    
-                    }
+                    SelectedItem = item;
+                    break;
                 }
-            }
         }
 
         public object GetValue()
         {
-            string SelItemValues = "";
-            foreach (var item in this.SelectedItems)
-            {
+            var SelItemValues = "";
+            foreach (var item in SelectedItems)
                 if (item != null)
                 {
                     if (SelItemValues == string.Empty)
-                    {
                         SelItemValues += item.ToString();
-                    }
                     else
-                    {
-                        SelItemValues += "," + item.ToString();
-                    }
-
+                        SelItemValues += "," + item;
                 }
-            }
+
             return SelItemValues;
         }
 
         public bool Validate()
         {
             if (!IsNull)
-            {
-                if (this.SelectedValue==null)
-                {
+                if (SelectedValue == null)
                     return false;
-                }
-
-            }
             return true;
         }
 
@@ -140,17 +101,9 @@ namespace PWMIS.Windows.Controls
 
         #region IQueryControl 成员
 
-        public string CompareSymbol
-        {
-            get;
-            set;
-        }
+        public string CompareSymbol { get; set; }
 
-        public string QueryFormatString
-        {
-            get;
-            set;
-        }
+        public string QueryFormatString { get; set; }
 
         #endregion
     }

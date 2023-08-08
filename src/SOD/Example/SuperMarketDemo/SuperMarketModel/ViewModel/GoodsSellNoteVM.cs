@@ -2,10 +2,8 @@
  * PDF.NET 数据开发框架
  * http://www.pwmis.com/sqlmap
  */
+
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SuperMarketModel.ViewModel
 {

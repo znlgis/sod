@@ -1,20 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
-//using System.Linq;
-using System.Text;
-using PWMIS.DataMap.Entity;
 using PWMIS.Common;
+using PWMIS.DataMap.Entity;
+
+//using System.Linq;
 
 namespace OQLTest
 {
     public enum RoleNames
-    { 
-        User=1,
-        Manager=2,
-        Admin=3
-    }
-    public partial class Users : EntityBase
     {
+        User = 1,
+        Manager = 2,
+        Admin = 3
+    }
+
+    public class Users : EntityBase
+    {
+        //用下面的方式处理实体类的子实体类问题
+        private UserRoles _roles;
+
         public Users()
         {
             TableName = "LT_Users";
@@ -25,136 +28,125 @@ namespace OQLTest
 
             //PrimaryKeys.Add("主键字段名");
             PrimaryKeys.Add("ID");
-
-
-        }
-
-
-        protected override void SetFieldNames()
-        {
-            PropertyNames = new string[] { "ID", "UserName", "Password", "NickName", "RoleID", "Authority", "IsEnable",  "LastLoginIP", "Remarks", "AddTime"};
-        }
-
-        public override string GetTableName()
-        {
-            if (this.ID < 100000)
-                return "LT_Users";
-            else
-                return "LT_Users_01";
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.Int32 ID
+        public int ID
         {
-            get { return getProperty<System.Int32>("ID"); }
-            set { setProperty("ID", value); }
+            get => getProperty<int>("ID");
+            set => setProperty("ID", value);
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.String UserName
+        public string UserName
         {
-            get { return getProperty<System.String>("UserName"); }
-            set { setProperty("UserName", value, 50); }
+            get => getProperty<string>("UserName");
+            set => setProperty("UserName", value, 50);
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.String Password
+        public string Password
         {
-            get { return getProperty<System.String>("Password"); }
-            set { setProperty("Password", value, 50); }
+            get => getProperty<string>("Password");
+            set => setProperty("Password", value, 50);
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.String NickName
+        public string NickName
         {
-            get { return getProperty<System.String>("NickName"); }
-            set { setProperty("NickName", value, 50); }
+            get => getProperty<string>("NickName");
+            set => setProperty("NickName", value, 50);
         }
 
         /// <summary>
-        /// 
         /// </summary>
         public RoleNames RoleID
         {
-            get { return getProperty<RoleNames>("RoleID"); }
-            set { setProperty("RoleID", value); }
+            get => getProperty<RoleNames>("RoleID");
+            set => setProperty("RoleID", value);
         }
 
-        //用下面的方式处理实体类的子实体类问题
-        UserRoles _roles;
         public UserRoles Roles
         {
             get
             {
                 if (_roles == null)
                 {
-                    _roles = new UserRoles() { ID = this.RoleID };
+                    _roles = new UserRoles { ID = RoleID };
                     EntityQuery<UserRoles>.Fill(_roles);
                 }
+
                 return _roles;
             }
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.String Authority
+        public string Authority
         {
-            get { return getProperty<System.String>("Authority"); }
-            set { setProperty("Authority", value, 250); }
+            get => getProperty<string>("Authority");
+            set => setProperty("Authority", value, 250);
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.Boolean IsEnable
+        public bool IsEnable
         {
-            get { return getProperty<System.Boolean>("IsEnable"); }
-            set { setProperty("IsEnable", value); }
+            get => getProperty<bool>("IsEnable");
+            set => setProperty("IsEnable", value);
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.DateTime? LastLoginTime
+        public DateTime? LastLoginTime
         {
-            get { return getProperty<System.DateTime?>("LastLoginTime"); }
-            set { setProperty("LastLoginTime", value); }
+            get => getProperty<DateTime?>("LastLoginTime");
+            set => setProperty("LastLoginTime", value);
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.String LastLoginIP
+        public string LastLoginIP
         {
-            get { return getProperty<System.String>("LastLoginIP"); }
-            set { setProperty("LastLoginIP", value, 20); }
+            get => getProperty<string>("LastLoginIP");
+            set => setProperty("LastLoginIP", value, 20);
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.String Remarks
+        public string Remarks
         {
-            get { return getProperty<System.String>("Remarks"); }
-            set { setProperty("Remarks", value, 150); }
+            get => getProperty<string>("Remarks");
+            set => setProperty("Remarks", value, 150);
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.DateTime? AddTime
+        public DateTime? AddTime
         {
-            get { return getProperty<System.DateTime?>("AddTime"); }
-            set { setProperty("AddTime", value); }
+            get => getProperty<DateTime?>("AddTime");
+            set => setProperty("AddTime", value);
+        }
+
+
+        protected override void SetFieldNames()
+        {
+            PropertyNames = new[]
+            {
+                "ID", "UserName", "Password", "NickName", "RoleID", "Authority", "IsEnable", "LastLoginIP", "Remarks",
+                "AddTime"
+            };
+        }
+
+        public override string GetTableName()
+        {
+            if (ID < 100000)
+                return "LT_Users";
+            return "LT_Users_01";
         }
 
         //public int Age
@@ -162,7 +154,5 @@ namespace OQLTest
         //    get { return getProperty<int>("Age"); }
         //    set { setProperty("Age", value); }
         //}
-
     }
-
 }

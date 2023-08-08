@@ -2,28 +2,28 @@
 
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="Expires" content="0"> 
+    <meta charset="utf-8"/>
+    <meta http-equiv="Expires" content="0">
     <title></title>
     <script type="text/javascript">
         var time = 5000;
     </script>
 </head>
-<body  style="background-color :aliceblue  ">
-    <p style="color :burlywood">
-        本程序是<a href="http://www.cnblogs.com/bluedoctor/p/3513689.html">“无声购票弹窗”工具</a>的谷歌浏览器内核版，原来IE控件版本在某些Windows系统下页面功能不正常，比如不能正常提交订单和支付，<br />
-        现在的版本完全可以在一个程序里面完成全部购票操作，减少因为切换浏览器造成刷票成功率下降。
-    </p>
-    <p>
-        这是一个测试页面，它可以模拟测试12306刷票成功后的弹窗通知效果。
-    </p>
-    <p>
-        您现在按下“测试”按钮,最小化本程序并且等待10秒钟，可以看到效果，窗口将弹到最顶层，以便您及时处理。
-    </p>
-  <hr />
-    <input type="text" id="txtName" />
-    <input type="button" value="测试弹窗"  onclick="checkHaveTicket2()"/>
-    <script type="text/javascript">
+<body style="background-color :aliceblue  ">
+<p style="color :burlywood">
+    本程序是<a href="http://www.cnblogs.com/bluedoctor/p/3513689.html">“无声购票弹窗”工具</a>的谷歌浏览器内核版，原来IE控件版本在某些Windows系统下页面功能不正常，比如不能正常提交订单和支付，<br/>
+    现在的版本完全可以在一个程序里面完成全部购票操作，减少因为切换浏览器造成刷票成功率下降。
+</p>
+<p>
+    这是一个测试页面，它可以模拟测试12306刷票成功后的弹窗通知效果。
+</p>
+<p>
+    您现在按下“测试”按钮,最小化本程序并且等待10秒钟，可以看到效果，窗口将弹到最顶层，以便您及时处理。
+</p>
+<hr/>
+<input type="text" id="txtName"/>
+<input type="button" value="测试弹窗" onclick="checkHaveTicket2()"/>
+<script type="text/javascript">
         //window.setTimeout("txtName.value ='有票了'", 10000);
         function Test()
         {
@@ -49,18 +49,18 @@
         }
        
     </script>
-    <br />
-    <div id=autosubmitcheckticketinfo style="POSITION: fixed; LEFT: 381px; Z-INDEX: 20000; DISPLAY: none; TOP:280px" dhxbox="1" jquery1910021022635977561266="490">
-        <div class="up-box w664" id=content_autosubmitcheckticketinfo>
-            <div class=up-box-hd>已查到车票，请核对以下信息 </div>
-            <p>
-                车票信息......
-            </p>
-        </div>
+<br/>
+<div id="autosubmitcheckticketinfo" style="POSITION: fixed; LEFT: 381px; Z-INDEX: 20000; DISPLAY: none; TOP:280px" dhxbox="1" jquery1910021022635977561266="490">
+    <div class="up-box w664" id="content_autosubmitcheckticketinfo">
+        <div class="up-box-hd">已查到车票，请核对以下信息 </div>
+        <p>
+            车票信息......
+        </p>
     </div>
-    <br />
-    <p>
-        说明：本程序仅仅作为有票后的弹窗和音乐通知工具，不会记录您的任何个人信息，并且软件已经开源，开源地址：<a href="https://github.com/znlgis/sod" >https://github.com/znlgis/sod</a> 
-    </p>
+</div>
+<br/>
+<p>
+    说明：本程序仅仅作为有票后的弹窗和音乐通知工具，不会记录您的任何个人信息，并且软件已经开源，开源地址：<a href="https://github.com/znlgis/sod">https://github.com/znlgis/sod</a>
+</p>
 </body>
 </html>

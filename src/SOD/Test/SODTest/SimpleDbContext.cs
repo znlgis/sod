@@ -1,15 +1,11 @@
 ﻿using PWMIS.Core.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace SODTest
 {
     public class SimpleDbContext : DbContext
     {
-        public SimpleDbContext():base("local2")
-        { 
+        public SimpleDbContext() : base("local2")
+        {
         }
 
         protected override bool CheckAllTableExists()

@@ -1,12 +1,8 @@
 ﻿using PWMIS.DataMap.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace OQLTest
 {
-    class UserEntity:EntityBase
+    internal class UserEntity : EntityBase
     {
         public UserEntity()
         {
@@ -17,21 +13,20 @@ namespace OQLTest
 
         public int ID
         {
-            get { return getProperty<int>("Id"); }
-            set { setProperty("Id", value); }
+            get => getProperty<int>("Id");
+            set => setProperty("Id", value);
         }
 
         public string Name
         {
-            get { return getProperty<string>("User Name"); }
-            set { setProperty("User Name", value,50); }
+            get => getProperty<string>("User Name");
+            set => setProperty("User Name", value, 50);
         }
 
         public int Age
         {
-            get { return getProperty<int>("Age"); }
-            set { setProperty("Age", value); }
+            get => getProperty<int>("Age");
+            set => setProperty("Age", value);
         }
-
     }
 }

@@ -1,27 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Data;
 
 namespace PWMIS.DataProvider.Data
 {
     /// <summary>
-    /// 连接会话对象类
+    ///     连接会话对象类
     /// </summary>
-    public class ConnectionSession:IDisposable  
+    public class ConnectionSession : IDisposable
     {
-        public IDbConnection Connection { get; private set; }
         /// <summary>
-        /// 以一个使用的连接初始化本类
+        ///     以一个使用的连接初始化本类
         /// </summary>
         /// <param name="conn"></param>
         public ConnectionSession(IDbConnection conn)
         {
-            this.Connection = conn;
+            Connection = conn;
         }
 
+        public IDbConnection Connection { get; private set; }
+
         /// <summary>
-        /// 释放连接
+        ///     释放连接
         /// </summary>
         public void Dispose()
         {

@@ -3,7 +3,9 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <p>
-        这里是收银管理首页</p>
+        这里是收银管理首页
+    </p>
     <p>
-        &nbsp;</p>
+        &nbsp;
+    </p>
 </asp:Content>

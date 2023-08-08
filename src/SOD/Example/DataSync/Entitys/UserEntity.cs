@@ -1,8 +1,9 @@
-﻿using PWMIS.DataMap.Entity;
+﻿using System;
+using PWMIS.DataMap.Entity;
 
 namespace SOD.DataSync.Entitys
 {
-    public partial class UserEntity : EntityBase, IExportTable
+    public class UserEntity : EntityBase, IExportTable
     {
         public UserEntity()
         {
@@ -12,59 +13,52 @@ namespace SOD.DataSync.Entitys
 
             //PrimaryKeys.Add("主键字段名");
             PrimaryKeys.Add("UID");
-
-
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.Int32 UID
+        public int UID
         {
-            get { return getProperty<System.Int32>("UID"); }
-            set { setProperty("UID", value); }
+            get => getProperty<int>("UID");
+            set => setProperty("UID", value);
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.String Name
+        public string Name
         {
-            get { return getProperty<System.String>("Name"); }
-            set { setProperty("Name", value, 50); }
+            get => getProperty<string>("Name");
+            set => setProperty("Name", value, 50);
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.Boolean Sex
+        public bool Sex
         {
-            get { return getProperty<System.Boolean>("Sex"); }
-            set { setProperty("Sex", value); }
+            get => getProperty<bool>("Sex");
+            set => setProperty("Sex", value);
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.Single Height
+        public float Height
         {
-            get { return getProperty<System.Single>("Height"); }
-            set { setProperty("Height", value); }
+            get => getProperty<float>("Height");
+            set => setProperty("Height", value);
         }
 
         /// <summary>
-        /// 
         /// </summary>
-        public System.DateTime Birthday
+        public DateTime Birthday
         {
-            get { return getProperty<System.DateTime>("Birthday"); }
-            set { setProperty("Birthday", value); }
+            get => getProperty<DateTime>("Birthday");
+            set => setProperty("Birthday", value);
         }
 
         public int BatchNumber
         {
-            get { return getProperty<int>("BatchNumber"); }
-            set { setProperty("BatchNumber", value); }
+            get => getProperty<int>("BatchNumber");
+            set => setProperty("BatchNumber", value);
         }
     }
 }

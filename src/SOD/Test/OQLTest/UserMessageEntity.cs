@@ -1,12 +1,9 @@
-﻿using PWMIS.DataMap.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System;
+using PWMIS.DataMap.Entity;
 
 namespace OQLTest
 {
-    class UserMessageEntity:EntityBase
+    internal class UserMessageEntity : EntityBase
     {
         public UserMessageEntity()
         {
@@ -16,26 +13,26 @@ namespace OQLTest
 
         public int ID
         {
-            get { return getProperty<int>("Id"); }
-            set { setProperty("Id", value); }
+            get => getProperty<int>("Id");
+            set => setProperty("Id", value);
         }
 
         public int UserID
         {
-            get { return getProperty<int>("UserID"); }
-            set { setProperty("UserID", value); }
+            get => getProperty<int>("UserID");
+            set => setProperty("UserID", value);
         }
 
         public string Message
         {
-            get { return getProperty<string>("Message"); }
-            set { setProperty("Message", value, 50); }
+            get => getProperty<string>("Message");
+            set => setProperty("Message", value, 50);
         }
 
         public DateTime SendTime
         {
-            get { return getProperty<DateTime>("SendTime"); }
-            set { setProperty("SendTime", value); }
+            get => getProperty<DateTime>("SendTime");
+            set => setProperty("SendTime", value);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-/* 
+﻿/*
  本类由PWMIS 实体类生成工具(Ver 4.1)自动生成
  http://www.pwmis.com/sqlmap
  使用前请先在项目工程中引用 PWMIS.Core.dll
@@ -7,13 +6,14 @@
 */
 
 using System;
+using ConsoleTest;
 using PWMIS.Common;
 using PWMIS.DataMap.Entity;
 
 namespace LocalDB
 {
-    [Serializable()]
-    public partial class Table_User : EntityBase, ConsoleTest.ITable_User
+    [Serializable]
+    public class Table_User : EntityBase, ITable_User
     {
         public Table_User()
         {
@@ -24,61 +24,53 @@ namespace LocalDB
 
             //PrimaryKeys.Add("主键字段名");
             PrimaryKeys.Add("UID");
+        }
 
 
+        /// <summary>
+        /// </summary>
+        public int UID
+        {
+            get => getProperty<int>("UID");
+            set => setProperty("UID", value);
+        }
+
+        /// <summary>
+        /// </summary>
+        public string Name
+        {
+            get => getProperty<string>("Name");
+            set => setProperty("Name", value, 50);
+        }
+
+        /// <summary>
+        /// </summary>
+        public bool Sex
+        {
+            get => getProperty<bool>("Sex");
+            set => setProperty("Sex", value);
+        }
+
+        /// <summary>
+        /// </summary>
+        public float Height
+        {
+            get => getProperty<float>("Height");
+            set => setProperty("Height", value);
+        }
+
+        /// <summary>
+        /// </summary>
+        public DateTime Birthday
+        {
+            get => getProperty<DateTime>("Birthday");
+            set => setProperty("Birthday", value);
         }
 
 
         protected override void SetFieldNames()
         {
-            PropertyNames = new string[] { "UID", "Name", "Sex", "Height", "Birthday"};
-        }
-
-
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public System.Int32 UID
-        {
-            get { return getProperty<System.Int32>("UID"); }
-            set { setProperty("UID", value); }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public System.String Name
-        {
-            get { return getProperty<System.String>("Name"); }
-            set { setProperty("Name", value, 50); }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public System.Boolean Sex
-        {
-            get { return getProperty<System.Boolean>("Sex"); }
-            set { setProperty("Sex", value); }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public System.Single Height
-        {
-            get { return getProperty<System.Single>("Height"); }
-            set { setProperty("Height", value); }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public System.DateTime Birthday
-        {
-            get { return getProperty<System.DateTime>("Birthday"); }
-            set { setProperty("Birthday", value); }
+            PropertyNames = new[] { "UID", "Name", "Sex", "Height", "Birthday" };
         }
 
         /// <summary>

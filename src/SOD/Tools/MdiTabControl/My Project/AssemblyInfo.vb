@@ -1,5 +1,4 @@
-﻿Imports System
-Imports System.Reflection
+﻿Imports System.Reflection
 Imports System.Runtime.InteropServices
 
 ' General Information about an assembly is controlled through the following 
@@ -8,17 +7,17 @@ Imports System.Runtime.InteropServices
 
 ' Review the values of the assembly attributes
 
-<Assembly: AssemblyTitle("MdiTabControl")> 
-<Assembly: AssemblyDescription("MdiTabControl")> 
-<Assembly: AssemblyCompany("Eduardo Oliveira")> 
-<Assembly: AssemblyProduct("MdiTabControl")> 
-<Assembly: AssemblyCopyright("Eduardo Oliveira - 2006")> 
-<Assembly: AssemblyTrademark("")> 
+<Assembly: AssemblyTitle("MdiTabControl")>
+<Assembly: AssemblyDescription("MdiTabControl")>
+<Assembly: AssemblyCompany("Eduardo Oliveira")>
+<Assembly: AssemblyProduct("MdiTabControl")>
+<Assembly: AssemblyCopyright("Eduardo Oliveira - 2006")>
+<Assembly: AssemblyTrademark("")>
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("5687331c-e464-45a6-8616-5038a29b3253")> 
+<Assembly: Guid("5687331c-e464-45a6-8616-5038a29b3253")>
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -30,5 +29,5 @@ Imports System.Runtime.InteropServices
 ' You can specify all the values or you can default the Build and Revision Numbers 
 ' by using the '*' as shown below:
 
-<Assembly: AssemblyVersion("1.0.*")> 
-<Assembly: AssemblyFileVersion("1.0.0.0")> 
+<Assembly: AssemblyVersion("1.0.*")>
+<Assembly: AssemblyFileVersion("1.0.0.0")>

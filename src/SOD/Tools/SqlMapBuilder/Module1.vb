@@ -1,26 +1,29 @@
+Imports System.Text
 Imports System.Xml
+Imports PWMIS.Common
+Imports PWMIS.DataProvider.Data
 
 Module Module1
-
     Structure ListItem
         Dim ItemText As String
         Dim ItemValue As String
     End Structure
 
-    Public CurrDataBase As PWMIS.DataProvider.Data.AdoHelper
-    Public CurrDataBaseType As PWMIS.Common.DBMSType
+    Public CurrDataBase As AdoHelper
+    Public CurrDataBaseType As DBMSType
 
     '创建配置文件
-    Function CreateConfigFile(ByVal ConfigFile As String) As Boolean
+    Function CreateConfigFile(ConfigFile As String) As Boolean
         'strScriptBlock ="<?xml version="1.0" encoding="utf-8"?>" _
         '"<!-- PWMIS SqlMap Ver 1.0.1 ,2006.11.7,http://www.pwmis.cn/SqlMap/ -->" _  
         '"<SqlMap><Script Type="Access" Version="2000,2002,2003"/></SqlMap>"
         Dim _ErrDescription As String
         If ConfigFile = "" Then Exit Function
         Try
-            Dim writer As New XmlTextWriter(ConfigFile, System.Text.Encoding.UTF8)
-            Dim CommentMsg As String = vbCrLf & "PWMIS SqlMap Ver 1.1.2 ,2006-11-22,http://www.pwmis.com/SqlMap/" & _
-            vbCrLf & "Config by SqlMap Builder,Date:" & DateTime.Today.ToShortDateString & vbCrLf
+            Dim writer As New XmlTextWriter(ConfigFile, Encoding.UTF8)
+            Dim CommentMsg As String = vbCrLf & "PWMIS SqlMap Ver 1.1.2 ,2006-11-22,http://www.pwmis.com/SqlMap/" &
+                                       vbCrLf & "Config by SqlMap Builder,Date:" & DateTime.Today.ToShortDateString &
+                                       vbCrLf
             With writer
                 .Formatting = Formatting.Indented
                 .Indentation = 4
@@ -40,7 +43,7 @@ Module Module1
         End Try
     End Function
 
-    Function GetCommandClassNode(ByVal ConfigFile As String, ByVal ScriptType As String, ByVal CommandClassName As String) As XmlNode
+    Function GetCommandClassNode(ConfigFile As String, ScriptType As String, CommandClassName As String) As XmlNode
         Dim doc As XmlDocument = New XmlDocument
         Dim _ErrDescription As String
         Try
@@ -48,7 +51,9 @@ Module Module1
 
             Dim SqlScripts As XmlNode
             Dim root As XmlElement = doc.DocumentElement
-            SqlScripts = root.SelectSingleNode("/SqlMap/Script[@Type='" & ScriptType & "']/CommandClass[@Name='" & CommandClassName & "']")
+            SqlScripts =
+                root.SelectSingleNode(
+                    "/SqlMap/Script[@Type='" & ScriptType & "']/CommandClass[@Name='" & CommandClassName & "']")
             Return SqlScripts
         Catch ex As Exception
             _ErrDescription = ex.Message
@@ -59,7 +64,7 @@ Module Module1
 
 
     '增加脚本块
-    Function AddScriptType(ByVal ConfigFile As String, ByVal ScriptType As String, ByVal Version As String) As Boolean
+    Function AddScriptType(ConfigFile As String, ScriptType As String, Version As String) As Boolean
         If ConfigFile = "" Then Exit Function
         Dim doc As XmlDocument = New XmlDocument
         Dim _ErrDescription As String
@@ -82,7 +87,7 @@ Module Module1
                     _ErrDescription = "已经存在脚本类型" & ScriptType
                     Return False
                 End If
-                
+
             End If
         Catch ex As Exception
             _ErrDescription = ex.Message
@@ -90,11 +95,11 @@ Module Module1
     End Function
 
     ''' <summary>
-    ''' 在SQL配置文件里面获取连接字符串
+    '''     在SQL配置文件里面获取连接字符串
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Function GetConnectionConfig(ByVal ConfigFile As String, ByVal ScriptType As String) As String
+    Function GetConnectionConfig(ConfigFile As String, ScriptType As String) As String
         Dim doc As XmlDocument = New XmlDocument
         Dim _ErrDescription As String
         Try
@@ -108,7 +113,7 @@ Module Module1
                 Else
                     Return ""
                 End If
-                
+
             End If
         Catch ex As Exception
             _ErrDescription = ex.Message
@@ -117,14 +122,14 @@ Module Module1
     End Function
 
     ''' <summary>
-    '''  在SQL配置文件里面保存连接字符串
+    '''     在SQL配置文件里面保存连接字符串
     ''' </summary>
     ''' <param name="ConfigFile"></param>
     ''' <param name="ScriptType"></param>
     ''' <param name="ConnectionString"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Function SetConnectionConfig(ByVal ConfigFile As String, ByVal ScriptType As String, ByVal ConnectionString As String) As Boolean
+    Function SetConnectionConfig(ConfigFile As String, ScriptType As String, ConnectionString As String) As Boolean
         Dim doc As XmlDocument = New XmlDocument
         Dim _ErrDescription As String
         Try
@@ -148,7 +153,7 @@ Module Module1
     End Function
 
     '删除脚本块，包括下面的所有节点
-    Function DeleteScriptType(ByVal ConfigFile As String, ByVal ScriptType As String) As Boolean
+    Function DeleteScriptType(ConfigFile As String, ScriptType As String) As Boolean
         If ConfigFile = "" Then Exit Function
         Dim doc As XmlDocument = New XmlDocument
         Dim _ErrDescription As String
@@ -176,12 +181,12 @@ Module Module1
 
 
     ''' <summary>
-    ''' 获取已经存在的脚本类型
+    '''     获取已经存在的脚本类型
     ''' </summary>
     ''' <param name="ConfigFile">配置文件</param>
     ''' <param name="cmbScriptType">(数据库)脚本类型</param>
     ''' <remarks></remarks>
-    Sub GetExistsScriptType(ByVal ConfigFile As String, ByVal cmbScriptType As System.Windows.Forms.ComboBox)
+    Sub GetExistsScriptType(ConfigFile As String, cmbScriptType As ComboBox)
         If ConfigFile = "" Then Exit Sub
         cmbScriptType.Items.Clear()
         Dim SqlScripts As XmlNodeList = GetScriptNodeList(ConfigFile)
@@ -192,17 +197,16 @@ Module Module1
                 End If
             Next
         End If
-
     End Sub
 
     ''' <summary>
-    ''' 获取已经存在的脚本类型
+    '''     获取已经存在的脚本类型
     ''' </summary>
     ''' <param name="ConfigFile">配置文件</param>
     ''' <param name="ArrListItem"></param>
     ''' <param name="cmbScriptType">(数据库)脚本类型</param>
     ''' <remarks></remarks>
-    Sub GetExistsScriptType(ByVal ConfigFile As String, ByRef ArrListItem As ArrayList, ByVal cmbScriptType As System.Windows.Forms.ListBox)
+    Sub GetExistsScriptType(ConfigFile As String, ByRef ArrListItem As ArrayList, cmbScriptType As ListBox)
         If ConfigFile = "" Then Exit Sub
         ArrListItem.Clear()
         cmbScriptType.Items.Clear()
@@ -218,10 +222,9 @@ Module Module1
                 End If
             Next
         End If
-
     End Sub
 
-    Private Function GetScriptNodeList(ByVal ConfigFile As String) As XmlNodeList
+    Private Function GetScriptNodeList(ConfigFile As String) As XmlNodeList
         Dim doc As XmlDocument = New XmlDocument
         Dim _ErrDescription As String
         Try
@@ -235,14 +238,13 @@ Module Module1
             _ErrDescription = ex.Message
         End Try
         Return Nothing
-
     End Function
 
 #End Region
 
 #Region "命令组管理"
 
-    Sub GetClassNameList(ByVal ConfigFile As String, ByVal ScriptType As String, ByVal lstClassName As System.Windows.Forms.ListBox)
+    Sub GetClassNameList(ConfigFile As String, ScriptType As String, lstClassName As ListBox)
         Dim doc As XmlDocument = New XmlDocument
         Dim _ErrDescription As String
         lstClassName.Items.Clear()
@@ -265,7 +267,8 @@ Module Module1
     End Sub
 
     '添加命令组
-    Function AddCommandClass(ByVal ConfigFile As String, ByVal ScriptType As String, ByVal Name As String, ByVal ClassName As String, ByVal Description As String, ByVal CommandInterface As String) As Boolean
+    Function AddCommandClass(ConfigFile As String, ScriptType As String, Name As String, ClassName As String,
+                             Description As String, CommandInterface As String) As Boolean
         Dim doc As XmlDocument = New XmlDocument
         Dim _ErrDescription As String
         Try
@@ -289,14 +292,16 @@ Module Module1
     End Function
 
     '修改命令组
-    Function EditCommandClass(ByVal ConfigFile As String, ByVal ScriptType As String, ByVal OldName As String, ByVal NewName As String, ByVal ClassName As String, ByVal Description As String, ByVal CommandInterface As String) As Boolean
+    Function EditCommandClass(ConfigFile As String, ScriptType As String, OldName As String, NewName As String,
+                              ClassName As String, Description As String, CommandInterface As String) As Boolean
         Dim doc As XmlDocument = New XmlDocument
         Dim _ErrDescription As String
         Try
             doc.Load(ConfigFile) '可以考虑采用XML文件流的方式加快读取
             Dim node As XmlElement
             Dim root As XmlElement = doc.DocumentElement
-            node = root.SelectSingleNode("/SqlMap/Script[@Type='" & ScriptType & "']/CommandClass[@Name='" & OldName & "']")
+            node =
+                root.SelectSingleNode("/SqlMap/Script[@Type='" & ScriptType & "']/CommandClass[@Name='" & OldName & "']")
             If Not node Is Nothing Then
                 node.SetAttribute("Name", NewName)
                 node.SetAttribute("Class", ClassName)
@@ -311,7 +316,7 @@ Module Module1
     End Function
 
     '删除命令组
-    Function DeleteCommandClass(ByVal ConfigFile As String, ByVal ScriptType As String, ByVal Name As String) As Boolean
+    Function DeleteCommandClass(ConfigFile As String, ScriptType As String, Name As String) As Boolean
         Dim doc As XmlDocument = New XmlDocument
         Dim _ErrDescription As String
         Try
@@ -339,5 +344,4 @@ Module Module1
 
 
 #End Region
-
 End Module

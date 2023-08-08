@@ -1,25 +1,22 @@
 ﻿/*
  SQL 的查询级别示例：
 SELECT	FROM
-	ORDER BY
+    ORDER BY
 -----------------
 SELECT FROM
-	JOIN ON
-	WHERE
-		ORDER BY
+    JOIN ON
+    WHERE
+        ORDER BY
 ----------------
 SELECT FROM
-	JOIN ON
-	WHERE
-		GROUP BY
-			HAVEING
-				ORDER BY
- * 
+    JOIN ON
+    WHERE
+        GROUP BY
+            HAVEING
+                ORDER BY
+ *
  * 根据SQL查询级别，制定IOQL接口。
  */
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace PWMIS.DataMap.Entity
 {
@@ -47,7 +44,7 @@ namespace PWMIS.DataMap.Entity
 
     public interface IOQL3 : IOQL4
     {
-        OQL4 Having(object field,object Value,string sqlFunctionFormat);
+        OQL4 Having(object field, object Value, string sqlFunctionFormat);
         //OQL End { get; }
         //OQL4 OrderBy(object field);
     }
