@@ -4,7 +4,7 @@
 
 以前有一个著名的国产化妆品“*大宝SOD密*”，**SOD框架**虽然跟它没有什么关系，但是名字的确受到它的启发，因为SOD框架就是给程序员准备的“蜜糍”（一种含有蜂蜜的糍粑），简单灵活且非常容易“上手”。
 
-![SOD框架LOG](http://www.pwmis.com/sqlmap/images/sod.png)
+![SOD框架LOG](https://img2023.cnblogs.com/blog/114517/202307/114517-20230713130749182-678943864.png)
 
 **SOD框架是一个全功能数据开发框架**，框架的三大核心功能(**S**QL-MAP、**O**RM、**D**ata Controls)代表**三种数据开发模式（SQL开发模式/ORM开发模式/窗体控件开发模式）**，这三大功能名称的英文首字母缩写也是SOD框架名称的由来。SOD框架包含很多有用的功能组件，还包括多种企业级解决方案，以及相关的集成开发工具、图书和社区支持。
 
@@ -76,7 +76,8 @@ SOD框架包括以下功能：
 * QQ Group:18215717,154224970
 
 要了解更多，请看[这篇文章:.NET ORM 的 “SOD蜜”--零基础入门篇](https://www.cnblogs.com/bluedoctor/p/4306131.html)
-![SOD框架企业级应用数据架构实战](http://www.pwmis.com/sqlmap/images/sod_book_small_1.jpg)
+![SOD框架企业级应用数据架构实战](https://img2023.cnblogs.com/blog/114517/202307/114517-20230713140111639-2007281356.jpg)
+
  
 或者参考框架作者编著的图书：**《[SOD框架企业级应用数据架构实战](http://www.pwmis.com/sod/)》**，该书对SOD框架的企业级解决方案进行了详细的介绍。。
 
@@ -325,8 +326,21 @@ SOD框架支持微型ORM功能，它允许你直接控制查询返回的DataRead
 
             var userList = db2.QueryList<UserInfo>(sql_query, "zhangsan");
 ```
-上面的示例演示了两者结果映射方式，使用AdoHelper对象的MapToList方法可以直接操作返回的DataReader对象，根据SQL语句中的字段顺序定制读取查询结果字段值，这种方式由于是面向底层Ado.NET的操作，因此查询具有很高的性能。
+上面的示例演示了两种结果映射方式，使用AdoHelper对象的MapToList方法可以直接操作返回的DataReader对象，根据SQL语句中的字段顺序定制读取查询结果字段值，这种方式由于是面向底层Ado.NET的操作，因此查询具有很高的性能。
 另外一种方式就是使用AdoHelper对象的QueryList方法，它直接将SQL查询结果映射为一个POCO对象。
+```C#
+class User
+{
+  public int ID{get;set;}
+  public string Name{get;set;}
+  public bool Sex{get;set;}
+  public DateTime Birthday{get;set;}
+}
+
+//
+string sql_query = "SELECT [ID],[Name],[Sex],[BirthDate] FROM [TbUser] WHERE [LoginName]={0}";
+var userList= db2.QueryList<User>(sql_query,"zhangsan");
+```
 
 上面的示例还演示了SOD的微型ORM查询使用的“参数化查询”方式，相比较于直接的参数化查询，这里只需要使用参数的占位符来表示参数，就像Console.WriteLine()方法使用的参数一样。例如上面的示例中查询的参数是字段LoginName对于的查询参数，参数值是“zhangsan”。
 
@@ -360,8 +374,9 @@ SOD框架支持微型ORM功能，它允许你直接控制查询返回的DataRead
 
 ### 3.2，抽象SQL参数化查询
 对于参数化查询SQL语句写法不统一的问题，只需要再抽象出一种参数化查询的方式即可解决这个问题。在SOD框架中，对参数的定义统一采用##来处理，具体格式如下：
-> #参数名字[:参数类型],[数据类型],[参数长度],[参数输出输入类型]#
-
+```text
+  #参数名字[:参数类型],[数据类型],[参数长度],[参数输出输入类型]#
+```
 上面定义当中，中括号里面的内容都是可选的。参数定义的详细内容，请参看[PDF.NET（PWMIS数据开发框架）之SQL-MAP目标和规范](http://www.cnblogs.com/bluedoctor/archive/2011/05/07/2039527.html)
 
 采用抽象SQL参数查询，根据参数定义规范，上面对于myTable的更新语句可以写成下面的样子：
@@ -483,7 +498,20 @@ SOD框架的ORM功能支持普通的基于实体类的CRUD功能，还有框架�
 
 ORM本来是完成“对象-关系映射”的，但这里大多数的ORM都包含了“生成SQL”的功能，而要实现SQL那样的灵活性，那么我们必须分离出ORM这个关注点，将“生成SQL”的功能从ORM中抽取出来，这样我们就能够有更多的精力致力于发明一个面向对象的，用于ORM查询的语言，(ORM Query Language) ,这就是OQL。
 
-ORM查询语言，其实早就有了，从早期的Hibernate的HQL，到MS的Linq（Linq2SQL，EF其实内部都是使用Linq生成的SQL），它们都可以生成复杂的SQL语句，它们都是直接作用于ORM框架的。几乎在与Linq同一时期，SOD框架也发明了自己的ORM查询语言，称为OQL。下面提到的OQL，都是指的SOD框架的OQL。
+ORM查询语言，其实早就有了，从早期的Hibernate的HQL，到MS的Linq（Linq2SQL，EF其实内部都是使用Linq生成的SQL），它们都可以生成复杂的SQL语句，它们都是直接作用于ORM框架的。几乎在与Linq同一时期，SOD框架也发明了自己的ORM查询语言，称为OQL。下面提到的OQL，都是指的SOD框架的OQL。下面是使用OQL的一个经典示例：
+```C#
+UserEntity u = new UserEntity();
+u.FirstName = "zhang";
+//OQL表达式示例：
+var q = OQL.From(u)
+           .Select(u.ID,u.FirstName,u.LastName)
+           .Where(u.FirstName)
+           .OrderBy(u.ID)
+       .END;
+
+var userList = EntityQuery<UserEntity>.QueryList(q);
+```
+上面的查询构建了一个OQL表达式，用来查询用户表中所有姓”zhang“的用户，并且仅查询用户表的三个字段的内容。可以看到编写这个OQL表达式跟编写SQL查询语句非常相似，几乎没有使用门槛，体现了SOD框架简单易用的特点。EntityQuery泛型对象的QueryList方法执行OQL对象进行查询，默认情况下使用App.config的最后一个连接配置作为AdoHelper查询对象，例如本篇文章的db2对象。也可以通过该方法的重载方法传入指定的AdoHelper对象。
 
 有关OQL的由来以及OQL的详细语法和使用示例，请参考以下几篇文章：
 * [ORM查询语言（OQL）简介--概念篇](https://www.cnblogs.com/bluedoctor/archive/2012/10/06/2712699.html)
@@ -500,26 +528,25 @@ GOQL适合单表查询，可以仅定义一个对应数据表的接口类型来�
                .Select()
                .Where((cmp, obj) => cmp.Comparer(obj.LoginName, "=", "zhangsan"))
                .END;
-            var list1 = goql.ToList(db2);
+            var list1 = goql.ToList();
 
             //GOQL使用实体类类型进行查询
             var list11 = OQL.FromObject<UserEntity2>()
              .Select()
              .Where((cmp, obj) => cmp.Comparer(obj.LoginName, "=", "zhangsan"))
              .END
-             .ToList(db2);
+             .ToList();
 
             //GOQL复杂示例
             var list2 = OQL.FromObject<ITbUser>()
                 .Select(s => new object[] { s.ID, s.Name, s.Sex, s.BirthDate }) //选取指定字段属性查询
                 .Where((cmp, obj) => cmp.Property(obj.LoginName) == "zhangsan") //使用操作符重载的条件比较
                 .OrderBy((order, obj) => order.Desc(obj.ID))
-                .ToList(db2);
+                .ToList();
 ```
 OQL表达式总是以From方法开始，以END属性结束，通过OQL的链式语法，Select、Where、OrderBy方法总是以固定的顺序出现，因此无任何SQL编写经验的人也可以通过OQL写出正确的查询。
 GOQL对象通过调用OQL的FormObject泛型方法得到，之后的语法跟OQL一样，最后通过GOQL的ToList方法执行查询得到结果。
-ToList方法有重载，可以用一个AdoHelper对象做参数来对指定的数据库进行查询,如果不指定，则默认取最后一个连接配置对应的AdoHelper对象，例如：
-> var list=OQL.FromObject<TbUser>().Select().END.ToList();
+ToList方法有重载，可以用一个AdoHelper对象做参数来对指定的数据库进行查询。
 
 GOQL的复杂查询支持通过Select方法指定要查询的实体类属性字段，也可以在Where、OrderBy方法上使用Lambda表达式购置查询和排序条件。
 Where方法上使用了OQLCompare对象来生成查询条件对象，它有多种条件比较方法和方法重载，也支持操作符重载。
@@ -564,7 +591,7 @@ OQL对象的Form方法需要一个或者多个实体类对象实例作为参数�
 ```C#
             //OQL复杂查询示例
             var oql2 = OQL.From(ue)
-                .Select(new object[] { ue.ID, ue.Name, ue.Sex, ue.BirthDate })
+                .Select( ue.ID, ue.Name, ue.Sex, ue.BirthDate )
                 .Where(cmp => cmp.Property(ue.LoginName) == "zhangsan" & cmp.EqualValue(ue.Password))
                 .OrderBy(order => order.Desc(ue.ID))
                 .END;
@@ -873,12 +900,12 @@ SimpleOrder包含一个商品清单OrderItems，它是ISimpleOrderItem[]类型�
 上面的关联查询使用了OQL的InnerJoin查询，由于关联查询一般都需要将结果映射到一个新的结果类型，所以OQL的Select方法对于查询字段的选择延迟到EntityContainer对象的MapToList方法里面进行，
 MapToList方法可以将结果映射到一个已知的类型，包括实体类类型，也可以直接映射到一个匿名类型，如上面的示例。
 
-### 5.6,列表动态排序
+### 5.6，列表动态排序
 当页面数据以表格形式呈现给用户后，为方便用户查看数据，一般都允许用户对某些列进行自定义的排序，后端程序接收用户在前端的排序操作，根据用户选择的排序字段重新组织查询。
 
 假设用户正在查看订单用户信息列表页面，用户希望该列表以订单下单日期排序或者订单价格排序。在本例中，下单日期排序基本上就是订单表的自增字段排序了，所以本例的问题是按照OrderID字段排序还是OrderDate排序。下面是修改后的OQL语句写法示例：
 ```C#
-`   string orderField="OrderPrice"; //"OrderDate","OrderID"
+    string orderField="OrderPrice"; //"OrderDate","OrderID"
    
     SimpleOrderEntity soe = new SimpleOrderEntity();
     UserEntity ue = new UserEntity();
@@ -889,12 +916,8 @@ MapToList方法可以将结果映射到一个已知的类型，包括实体类�
           .OrderBy(soe[orderField],"desc")
           //等价于 .OrderBy(soe.OrderPrice,"desc")
      .END;
-
 ```
-这里实现动态排序的关键是利用了实体类的索引器属性，调用soe["OrderPrice"] 与调用 soe.OrderPrice 结果基本是一样的。同样的道理，在Where方法的条件比较中，
-也可以利用实体类索引器调用的方式，实现动态条件字段查询。如果是其它ORM框架要实现动态查询和动态排序代码编写是比较复杂的，没法做到SOD框架这么简单。
-
-
+这里实现动态排序的关键是利用了实体类的索引器属性，调用soe["OrderPrice"] 与调用 soe.OrderPrice 结果基本是一样的。同样的道理，在Where方法的条件比较中，也可以利用实体类索引器调用的方式，实现动态条件字段查询。如果是其它ORM框架要实现动态查询和动态排序代码编写是比较复杂的，没法做到SOD框架这么简单。
 
 ## 6，数据窗体
 SOD框架的数据窗体开发技术基于一套数据控件接口，实现了WebForm/WinForm/WPF的窗体数据绑定、数据收集与自动更新技术，实现了窗体表单数据的填充、收集、清除，和直接到数据库的CRUD功能。
