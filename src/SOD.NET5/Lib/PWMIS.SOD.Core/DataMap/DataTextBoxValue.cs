@@ -1,31 +1,32 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using PWMIS.Common;
 
 namespace PWMIS.DataMap
 {
     /// <summary>
-    ///     数据文本框、标签控件值读写通用类，可以处理WinForm，WebForm等窗体的数据文本框控件和标签控件。
+    /// 数据文本框、标签控件值读写通用类，可以处理WinForm，WebForm等窗体的数据文本框控件和标签控件。
     /// </summary>
     public class DataTextBoxValue
     {
-        private readonly IDataTextBox dataTextBox;
+        private IDataTextBox dataTextBox;
+        public string Text
+        {
+            get { return this.dataTextBox.Text; }
+            set { this.dataTextBox.Text = value; }
+        }
 
         public DataTextBoxValue(IDataTextBox dataTextBox)
         {
             this.dataTextBox = dataTextBox;
         }
 
-        public string Text
-        {
-            get => dataTextBox.Text;
-            set => dataTextBox.Text = value;
-        }
-
         public void SetValue(object obj)
         {
             if (obj == null || obj.ToString() == "")
             {
-                Text = "";
+                this.Text = "";
                 return;
             }
 
@@ -35,70 +36,74 @@ namespace PWMIS.DataMap
                 case TypeCode.String:
                     if (obj != DBNull.Value)
                     {
-                        if (!string.IsNullOrEmpty(dataTextBox.DataFormatString))
-                            Text = string.Format(dataTextBox.DataFormatString, obj);
+                        if (!string.IsNullOrEmpty( dataTextBox.DataFormatString ))
+                            this.Text = String.Format(dataTextBox.DataFormatString, obj.ToString());
                         else
-                            Text = obj.ToString().Trim();
+                            this.Text = obj.ToString().Trim();
                     }
                     else
                     {
-                        Text = "";
+                        this.Text = "";
                     }
-
                     break;
                 case TypeCode.Int32:
                     if (obj != DBNull.Value && obj.GetType() == typeof(int))
-                        Text = obj.ToString().Trim();
+                    {
+                        this.Text = obj.ToString().Trim();
+                    }
                     else
-                        Text = "";
+                    {
+                        this.Text = "";
+                    }
                     break;
                 case TypeCode.Decimal:
                     if (obj != DBNull.Value && (obj.GetType() == typeof(decimal) || obj.GetType() == typeof(double)))
                     {
                         if (!string.IsNullOrEmpty(dataTextBox.DataFormatString))
-                            Text = string.Format(dataTextBox.DataFormatString, obj);
+                            this.Text = String.Format(dataTextBox.DataFormatString, obj);
                         else
-                            Text = obj.ToString().Trim();
+                            this.Text = obj.ToString().Trim();
                     }
                     else
                     {
-                        Text = "";
+                        this.Text = "";
                     }
-
                     break;
                 case TypeCode.DateTime:
                     if (obj != DBNull.Value && obj.GetType() == typeof(DateTime))
                     {
                         if (!string.IsNullOrEmpty(dataTextBox.DataFormatString))
-                            Text = string.Format(dataTextBox.DataFormatString, obj);
+                        {
+                            this.Text = String.Format(dataTextBox.DataFormatString, obj);
+                        }
                         else
+                        {
                             //this.Text=((DateTime)obj).ToShortDateString().Trim();
                             //没有格式化信息，保留原有数据格式 dth,2008.4.4
-                            Text = ((DateTime)obj).ToString();
+                            this.Text = ((DateTime)obj).ToString();
+                        }
                     }
                     else
                     {
-                        Text = "";
+                        this.Text = "";
                     }
-
                     break;
                 case TypeCode.Double:
                 case TypeCode.Single:
                     if (obj != DBNull.Value && (obj.GetType() == typeof(double) || obj.GetType() == typeof(float)))
                     {
                         if (!string.IsNullOrEmpty(dataTextBox.DataFormatString))
-                            Text = string.Format(dataTextBox.DataFormatString, obj);
+                            this.Text = String.Format(dataTextBox.DataFormatString, obj);
                         else
-                            Text = obj.ToString().Trim();
+                            this.Text = obj.ToString().Trim();
                     }
                     else
                     {
-                        Text = "";
+                        this.Text = "";
                     }
-
                     break;
                 default:
-                    Text = obj.ToString().Trim();
+                    this.Text = obj.ToString().Trim();
                     break;
             }
         }
@@ -106,7 +111,6 @@ namespace PWMIS.DataMap
         public object GetValue()
         {
             #region 被注释的代码 2014.4.16
-
             //switch (dataTextBox.SysTypeCode)
             //{
             //    case TypeCode.String:
@@ -179,23 +183,29 @@ namespace PWMIS.DataMap
             //            return this.Text.Trim();
             //        }
             //}
-
             #endregion
 
-            if (dataTextBox.SysTypeCode == TypeCode.String) return Text;
-
-            var text = Text.Trim();
-            if (!string.IsNullOrEmpty(text))
-                try
+            if (dataTextBox.SysTypeCode == TypeCode.String)
+            {
+                return this.Text;
+            }
+            else
+            {
+                string text=this.Text.Trim();
+                if ( !string.IsNullOrEmpty(text))
                 {
-                    return Convert.ChangeType(text, dataTextBox.SysTypeCode);
+                    try
+                    {
+                        return Convert.ChangeType(text, dataTextBox.SysTypeCode);
+                    }
+                    catch
+                    {
+                        return DBNull.Value; 
+                    }
                 }
-                catch
-                {
-                    return DBNull.Value;
-                }
-
-            return DBNull.Value;
+                return DBNull.Value;
+            
+            }
         }
     }
 }

@@ -1,28 +1,24 @@
-﻿Imports System.ComponentModel
-Imports System.Configuration
-Imports System.Drawing.Design
-Imports System.IO
-Imports PDFDotNET.PDFDotNET
-Imports PWMIS.Common
-Imports PWMIS.DataProvider.Data
+﻿Imports PWMIS.DataProvider.Data
+Imports PWMIS.DataProvider.Adapter
+Imports System.ComponentModel
+Imports PDFDotNET
 
 Public Class frmEntityCreate
     Public CurrDbHelper As AdoHelper
     Public SourceTables As List(Of String)
     Public SourceViews As List(Of String)
-    Dim ReadOnly propWindow As New EntityCreateProperty
-    Dim ReadOnly isSqlServer2000 As Boolean
-    Dim dataSourceProductVersion As String
-    Dim ReadOnly dataSourceProductName As String
+    Dim propWindow As New EntityCreateProperty
+    Dim isSqlServer2000 As Boolean
+    Dim dataSourceProductVersion, dataSourceProductName As String
 
     ''' <summary>
-    '''     当前数据库名称
+    ''' 当前数据库名称
     ''' </summary>
     ''' <remarks></remarks>
     Public CurrDBName As String
 
-    Dim ReadOnly entityClassTemplate As XElement =
-                     <EntityTemplate>
+    Dim entityClassTemplate As XElement = _
+    <EntityTemplate>
         <FileHead>
             <![CDATA[
 ''' 
@@ -156,7 +152,7 @@ End NameSpace
         </VB>
     </EntityTemplate>
 
-    Dim dtMapInfo As DataTable
+    Dim dtMapInfo As Data.DataTable
 
 
     Public Sub New()
@@ -168,7 +164,7 @@ End NameSpace
         Me.CreateMapInfo()
     End Sub
 
-    Public Sub New(ado As AdoHelper, tables As List(Of String), views As List(Of String))
+    Public Sub New(ByVal ado As AdoHelper, ByVal tables As List(Of String), ByVal views As List(Of String))
 
         ' 此调用是 Windows 窗体设计器所必需的。
         InitializeComponent()
@@ -179,29 +175,28 @@ End NameSpace
         Me.SourceTables = tables
         Me.SourceViews = views
 
-        If CurrDbHelper.CurrentDBMSType = DBMSType.SqlServer Then
+        If CurrDbHelper.CurrentDBMSType = PWMIS.Common.DBMSType.SqlServer Then
             dataSourceProductName = "Microsoft SQL Server"
             '10.50.1600.1 --Microsoft SQL Server 2008 R2...
             'SQL2000   SP4   的版本应该是:     2000   -   8.00.2039
             Dim str As String = CurrDbHelper.ExecuteScalar("SELECT SERVERPROPERTY('ProductVersion')")
-            Dim mainVer = CInt(str.Split(New [Char]() {"."c})(0))
+            Dim mainVer As Integer = CInt(str.Split(New [Char]() {"."c})(0))
             If mainVer <= 8 Then
                 isSqlServer2000 = True
             End If
         End If
     End Sub
 
-    Function MakeClassText(className As String, sql As String, sql_tableName As String, entityMap As EntityMapType) _
-        As String
+    Function MakeClassText(ByVal className As String, ByVal sql As String, ByVal sql_tableName As String, ByVal entityMap As PWMIS.Common.EntityMapType) As String
         Dim ds As DataSet = CurrDbHelper.ExecuteDataSetSchema(sql, CommandType.Text, Nothing)
         Dim dt As DataTable = ds.Tables(0)
-        Dim str = "", str2 = ""
+        Dim str As String = "", str2 As String = ""
         Dim classText, propertyText, addProp As String
         Dim isPartial As Boolean = propWindow.UsePartialClass
         Dim langLine As String
         className = className.Replace(".", "_").Replace(" ", "_") _
-            .Replace("[", "").Replace("]", "") _
-            .Replace("#", "").Replace("@", "")
+              .Replace("[", "").Replace("]", "") _
+              .Replace("#", "").Replace("@", "")
 
         Select Case propWindow.Language
             Case DevelopLanguage.CSharp
@@ -225,7 +220,7 @@ End NameSpace
         End Select
 
         '处理架构
-        Dim strSchema = ""
+        Dim strSchema As String = ""
         Dim strTableName As String = sql_tableName
         Dim dotIndex As Integer = sql_tableName.IndexOf("."c)
         If dotIndex > 0 Then
@@ -248,12 +243,12 @@ End NameSpace
         classText = classText.Replace("[Schema]", strSchema)
 
         classText = classText.Replace("[NameSpace]", Me.propWindow.DefaultNamespace) _
-            .Replace("[ClassName]", className) _
-            .Replace("[SqlTableName]", strTableName) _
-            .Replace("[EntityMapType.Table]", "EntityMapType." & entityMap.ToString())
+        .Replace("[ClassName]", className) _
+                .Replace("[SqlTableName]", strTableName) _
+                .Replace("[EntityMapType.Table]", "EntityMapType." & entityMap.ToString())
 
 
-        Dim strPKs = "", strIdentity = ""
+        Dim strPKs As String = "", strIdentity As String = ""
         For Each col As DataColumn In dt.PrimaryKey
             strPKs &= "    PrimaryKeys.Add(""" & col.ColumnName & """)" & langLine
             If col.AutoIncrement Then
@@ -262,18 +257,18 @@ End NameSpace
         Next
         classText = classText.Replace("%PrimaryKey%", strPKs).Replace("%IdentityName%", strIdentity)
         Dim dtTableFiledDesc As DataTable = Nothing
-        If sql_tableName <> "" And entityMap = EntityMapType.Table Then
+        If sql_tableName <> "" And entityMap = PWMIS.Common.EntityMapType.Table Then
             '生成字段说明
             dtTableFiledDesc = Me.getSqlTableFieldDescription(Me.isSqlServer2000, strTableName)
 
         End If
+       
 
-
-        Dim perpertyNames = ""
-        Dim fieldDescriptions = ""
+        Dim perpertyNames As String = ""
+        Dim fieldDescriptions As String = ""
         For Each col As DataColumn In dt.Columns
             Dim strLength As String = IIf(col.MaxLength > 0, "," & col.MaxLength, "")
-            Dim fieldDesc = ""
+            Dim fieldDesc As String = ""
             If dtTableFiledDesc IsNot Nothing Then
                 For Each dr As DataRow In dtTableFiledDesc.Rows
                     If dr(1).ToString() = col.ColumnName Then
@@ -284,10 +279,10 @@ End NameSpace
             End If
 
             str += propertyText.Replace("[Name]", col.ColumnName.Replace(" ", "")) _
-                .Replace("<T>", col.DataType.ToString()) _
-                .Replace("[TypeCode]", col.DataType.ToString().Replace("System", "TypeCode")) _
-                .Replace("[,Length]", strLength) _
-                .Replace("[FieldDesc]", fieldDesc)
+            .Replace("<T>", col.DataType.ToString()) _
+            .Replace("[TypeCode]", col.DataType.ToString().Replace("System", "TypeCode")) _
+            .Replace("[,Length]", strLength) _
+                    .Replace("[FieldDesc]", fieldDesc)
 
             perpertyNames += """" & col.ColumnName & ""","
             fieldDescriptions += """" & fieldDesc & ""","
@@ -297,15 +292,16 @@ End NameSpace
         str2 = str2.Replace("%FieldDescriptions%", fieldDescriptions.TrimEnd(","c))
         classText = classText.Replace("%Propertys%", str).Replace("%AddProperty%", str2)
 
-
+       
         Return classText
     End Function
 
+   
 
-    Private Function getSqlTableFieldDescription(sqlServer2000 As Boolean, tableName As String) As DataTable
-        Dim sql = ""
-        Dim sqlDescription As XElement =
-                <DataBase>
+    Private Function getSqlTableFieldDescription(ByVal sqlServer2000 As Boolean, ByVal tableName As String) As DataTable
+        Dim sql As String = ""
+        Dim sqlDescription As XElement = _
+        <DataBase>
             <SqlServer>
                 <Ver2000>
                     <![CDATA[
@@ -378,7 +374,7 @@ ORDER
     End Function
 
     Private Sub CreateMapInfo()
-        dtMapInfo = New DataTable("mapInfo")
+        dtMapInfo = New Data.DataTable("mapInfo")
         dtMapInfo.Columns.Add("Selected", GetType(Boolean))
         dtMapInfo.Columns.Add("TableName", GetType(String))
         dtMapInfo.Columns.Add("TableType", GetType(String))
@@ -388,16 +384,16 @@ ORDER
         dtMapInfo.Columns(0).ReadOnly = False
         dtMapInfo.Columns(1).ReadOnly = True
         dtMapInfo.Columns(3).ReadOnly = False
-        dtMapInfo.PrimaryKey = New DataColumn() {dtMapInfo.Columns(1)}
+        dtMapInfo.PrimaryKey = New Data.DataColumn() {dtMapInfo.Columns(1)}
     End Sub
 
-    Private Sub frmEntityCreate_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmEntityCreate_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Dim count As Integer
 
         If SourceTables IsNot Nothing Then
             count += SourceTables.Count
             For Each table As String In SourceTables
-                Dim dr As DataRow = dtMapInfo.NewRow()
+                Dim dr As Data.DataRow = dtMapInfo.NewRow()
                 dr(0) = True
                 dr(1) = table
                 dr(2) = "表"
@@ -409,7 +405,7 @@ ORDER
         If SourceViews IsNot Nothing Then
             count += SourceViews.Count
             For Each table As String In SourceViews
-                Dim dr As DataRow = dtMapInfo.NewRow()
+                Dim dr As Data.DataRow = dtMapInfo.NewRow()
                 dr(0) = True
                 dr(1) = table
                 dr(2) = "视图"
@@ -442,11 +438,12 @@ ORDER
         'For Each i In result
         '    MessageBox.Show(i)
         'Next
+
+
     End Sub
 
-    Public Sub AddMapInfoItem(seleted As Boolean, tableName As String, tableType As String, mapEntityName As String,
-                              outPutFile As String, sqlMap As String)
-        Dim dr As DataRow = dtMapInfo.NewRow()
+    Public Sub AddMapInfoItem(ByVal seleted As Boolean, ByVal tableName As String, ByVal tableType As String, ByVal mapEntityName As String, ByVal outPutFile As String, ByVal sqlMap As String)
+        Dim dr As Data.DataRow = dtMapInfo.NewRow()
         dr(0) = seleted
         dr(1) = tableName
         dr(2) = tableType
@@ -456,8 +453,7 @@ ORDER
         dtMapInfo.Rows.Add(dr)
     End Sub
 
-    Private Sub dgMapInfo_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) _
-        Handles dgMapInfo.CellContentClick
+    Private Sub dgMapInfo_CellContentClick(ByVal sender As System.Object, ByVal e As System.Windows.Forms.DataGridViewCellEventArgs) Handles dgMapInfo.CellContentClick
 
         Dim dgv As DataGridView = sender
         If dgv.Columns(e.ColumnIndex).Name = "colFirstLook" Then
@@ -465,8 +461,8 @@ ORDER
             Dim tableName As String = rowView(1)
             Dim className As String = rowView(3)
             Dim sqlMap As String = GetSqlMapString(rowView)
-            Dim classText As String = Me.MakeClassText(className, sqlMap,
-                                                       tableName, GetEntityMapType(rowView(2)))
+            Dim classText As String = Me.MakeClassText(className, sqlMap, _
+                                      tableName, GetEntityMapType(rowView(2)))
             Dim frmCode As New frmCodeFile
             frmCode.Text = "PDF.NET 实体类 预览"
             frmCode.ContentText = GetFileHeadText() & classText
@@ -475,16 +471,16 @@ ORDER
         End If
     End Sub
 
-    Private Function GetEntityMapType(dataSource As String) As EntityMapType
-        Dim entityMap As EntityMapType
-        entityMap = IIf(dataSource = "表", EntityMapType.Table,
-                        (IIf(dataSource = "视图", EntityMapType.View,
-                             EntityMapType.SqlMap)))
+    Private Function GetEntityMapType(ByVal dataSource As String) As PWMIS.Common.EntityMapType
+        Dim entityMap As PWMIS.Common.EntityMapType
+        entityMap = IIf(dataSource = "表", PWMIS.Common.EntityMapType.Table, _
+                 (IIf(dataSource = "视图", PWMIS.Common.EntityMapType.View, _
+                                           PWMIS.Common.EntityMapType.SqlMap)))
         Return entityMap
     End Function
 
-    Private Sub btnMakeFile_Click(sender As Object, e As EventArgs) Handles btnMakeFile.Click
-        If Not Directory.Exists(Me.propWindow.OutputPath) Then
+    Private Sub btnMakeFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnMakeFile.Click
+        If Not System.IO.Directory.Exists(Me.propWindow.OutputPath) Then
             MessageBox.Show("指定的代码输出目录 " & Me.propWindow.OutputPath & " 不存在，请在属性窗口选择有效的路径。", "实体类生成器")
             Exit Sub
         End If
@@ -495,17 +491,17 @@ ORDER
         Me.Cursor = Cursors.WaitCursor
 
         Me.PrgBarMakeFile.Maximum = dtMapInfo.Rows.Count
-        Dim count = 0
+        Dim count As Integer = 0
         Me.txtMakeLog.Text = ""
 
         For Each row As DataRow In dtMapInfo.Rows
             If row(0) = True Then
                 '被选中的行
-                Dim entityMap As EntityMapType = GetEntityMapType(row(2))
+                Dim entityMap As PWMIS.Common.EntityMapType = GetEntityMapType(row(2))
                 Dim entityName As String = row("MapEntityName").ToString()
                 Dim tableName As String = row("TableName").ToString()
                 Dim outputFile As String = row("OutputFile").ToString()
-                If entityMap = EntityMapType.SqlMap Then
+                If entityMap = PWMIS.Common.EntityMapType.SqlMap Then
                     tableName = Me.propWindow.DefaultNamespace & "." & tableName
                 End If
                 If outputFile = "<默认>" Then
@@ -526,14 +522,13 @@ ORDER
                     mapSql = "SELECT * FROM " & Me.GetSchemeTableName(tableName)
                 End If
 
-                Dim classText As String = Me.MakeClassText(entityName, mapSql,
-                                                           tableName, entityMap)
+                Dim classText As String = Me.MakeClassText(entityName, mapSql, _
+                                          tableName, entityMap)
                 classText = GetFileHeadText() & classText
                 My.Computer.FileSystem.WriteAllText(outputFile, classText.Replace(vbLf, vbCrLf), False)
-                If entityMap = EntityMapType.SqlMap Then
+                If entityMap = PWMIS.Common.EntityMapType.SqlMap Then
                     CreateEntitySqlMapFile(Me.propWindow.OutputPath)
-                    WriteEntitySQLMapFile(Me.propWindow.OutputPath, Me.propWindow.DefaultNamespace,
-                                          row("TableName").ToString(), mapSql)
+                    WriteEntitySQLMapFile(Me.propWindow.OutputPath, Me.propWindow.DefaultNamespace, row("TableName").ToString(), mapSql)
                     Me.txtMakeLog.Text &= "向[SQL-实体类]映射文件EntitySqlMap.config 写入用户查询 " & tableName & vbCrLf
                 End If
             End If
@@ -544,7 +539,7 @@ ORDER
         Me.Cursor = Cursors.Default
     End Sub
 
-    Private Function GetSqlMapString(dr As DataRowView) As String
+    Private Function GetSqlMapString(ByVal dr As DataRowView) As String
         Dim sqlMap As String = dr("SQLMap").ToString()
         If sqlMap Is Nothing OrElse sqlMap = "" Then
             Dim tableType As String = dr("TableType")
@@ -555,7 +550,7 @@ ORDER
         Return sqlMap
     End Function
 
-    Private Sub btnSQLtoEntity_Click(sender As Object, e As EventArgs) Handles btnSQLtoEntity.Click
+    Private Sub btnSQLtoEntity_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSQLtoEntity.Click
         'RunProcessByConfig("EntityCodeMakerPath")
         If Me.dgMapInfo.SelectedRows().Count > 0 Then
             Dim dr As DataRowView = Me.dgMapInfo.SelectedRows(0).DataBoundItem
@@ -576,12 +571,12 @@ ORDER
         End If
     End Sub
 
-    Private Sub RunProcessByConfig(fileKey As String)
-        Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory
-        Dim fileName As String = ConfigurationManager.AppSettings(fileKey)
-        If File.Exists(fileName) Then
+    Private Sub RunProcessByConfig(ByVal fileKey As String)
+        System.Environment.CurrentDirectory = AppDomain.CurrentDomain.BaseDirectory
+        Dim fileName As String = System.Configuration.ConfigurationManager.AppSettings(fileKey)
+        If System.IO.File.Exists(fileName) Then
             Try
-                Process.Start(fileName)
+                System.Diagnostics.Process.Start(fileName)
             Catch ex As Exception
                 MessageBox.Show(ex.Message, "打开文件", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End Try
@@ -592,28 +587,28 @@ ORDER
         End If
     End Sub
 
-    Private Sub btnSqlMapEntity_Click(sender As Object, e As EventArgs) Handles btnSqlMapEntity.Click
+    Private Sub btnSqlMapEntity_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSqlMapEntity.Click
         Dim frmEFSql As New frmEntityFromSQL
         frmEFSql.ClassNamespace = Me.propWindow.DefaultNamespace
         frmEFSql.ShowDialog()
         With frmEFSql
             AddMapInfoItem(False, .TableName, "查询", .ClassName, "<默认>", .MapSQL)
         End With
+
     End Sub
 
-    Private Sub WriteEntitySQLMapFile(configFilePath As String, classNamespace As String, sqlName As String,
-                                      sql As String)
+    Private Sub WriteEntitySQLMapFile(ByVal configFilePath As String, ByVal classNamespace As String, ByVal sqlName As String, ByVal sql As String)
         Dim fileName As String = configFilePath & "EntitySqlMap.config"
         Dim xmlDoc As XElement = XElement.Load(fileName)
         Dim objNamespace = From element In xmlDoc.<Namespace> _
-                Where element.@name = classNamespace _
-                Select element
+                         Where element.@name = classNamespace _
+                         Select element
 
         If objNamespace.Count > 0 Then
             '存在该命名空间，准备添加或者修改节点
             Dim objMap = From element In objNamespace.<Map> _
-                    Where element.@name = sqlName _
-                    Select element
+                       Where element.@name = sqlName _
+                       Select element
 
             If objMap.Count > 0 Then
                 '修改
@@ -622,8 +617,8 @@ ORDER
                 objSql.Add(New XCData(sql))
             Else
                 '添加
-                Dim newMap As XElement =
-                        <Map name=<%= sqlName %>>
+                Dim newMap As XElement = _
+                <Map name=<%= sqlName %>>
                     <Sql>
                         <%= New XCData(sql) %>
                     </Sql>
@@ -631,8 +626,8 @@ ORDER
                 objNamespace(0).Add(newMap)
             End If
         Else
-            Dim newNamespace As XElement =
-                    <Namespace name=<%= classNamespace %>>
+            Dim newNamespace As XElement = _
+            <Namespace name=<%= classNamespace %>>
                 <Map name=<%= sqlName %>>
                     <Sql>
                         <%= New XCData(sql) %>
@@ -643,13 +638,14 @@ ORDER
 
         End If
         xmlDoc.Save(fileName)
+
     End Sub
 
-    Private Sub CreateEntitySqlMapFile(filePath As String)
+    Private Sub CreateEntitySqlMapFile(ByVal filePath As String)
         Dim fileName As String = filePath & "EntitySqlMap.config"
         If Not My.Computer.FileSystem.FileExists(fileName) Then
-            Dim xmlDoc As XElement =
-                    <configuration>
+            Dim xmlDoc As XElement = _
+       <configuration>
            <Namespace name="DemoNameSpace">
                <Map name="DemoSqlName">
                    <Sql>
@@ -660,19 +656,21 @@ ORDER
        </configuration>
             xmlDoc.Save(fileName)
         End If
+       
     End Sub
 
-    Private Sub btnMakeFile_DragEnter(sender As Object, e As DragEventArgs) Handles btnMakeFile.DragEnter
+    Private Sub btnMakeFile_DragEnter(ByVal sender As Object, ByVal e As System.Windows.Forms.DragEventArgs) Handles btnMakeFile.DragEnter
+
     End Sub
 
     ''' <summary>
-    '''     根据 "dbo.TableName" 格式的表名字，处理成 "[dbo].[TableName]" 的格式
+    ''' 根据 "dbo.TableName" 格式的表名字，处理成 "[dbo].[TableName]" 的格式
     ''' </summary>
     ''' <param name="sql_tableName"></param>
     ''' <returns></returns>
     ''' <remarks></remarks>
     Private Function GetSchemeTableName(sql_tableName As String) As String
-        Dim strScheme = ""
+        Dim strScheme As String = ""
         Dim strTableName As String = sql_tableName
         Dim dotIndex As Integer = sql_tableName.IndexOf("."c)
         If dotIndex > 0 Then
@@ -696,76 +694,73 @@ ORDER
 End Class
 
 Public Class EntityCreateProperty
-    Dim _outputPath As String = ".\Entity"
 
+    Dim _outputPath As String = ".\Entity"
     ''' <summary>
-    '''     代码输出目录
+    ''' 代码输出目录
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    <Category("常规"), Description("生成的代码文件所在的目录"), DefaultValue(".\"),
-        EditorAttribute(GetType(PropertyGridFolderItem), GetType(UITypeEditor))>
-    Property OutputPath As String
+    <Category("常规"), Description("生成的代码文件所在的目录"), DefaultValue(".\"), EditorAttribute(GetType(PDFDotNET.PropertyGridFolderItem), GetType(System.Drawing.Design.UITypeEditor))> _
+    Property OutputPath() As String
         Get
             Return _outputPath
         End Get
-        Set
+        Set(ByVal value As String)
             _outputPath = value
         End Set
     End Property
 
     Dim _defaultNamespace As String = ""
 
-    <Category("代码"), Description("生成的实体类默认的命名空间，通常默认是当前数据库编目名称。")>
-    Property DefaultNamespace As String
+    <Category("代码"), Description("生成的实体类默认的命名空间，通常默认是当前数据库编目名称。")> _
+    Property DefaultNamespace() As String
         Get
             Return _defaultNamespace
         End Get
-        Set
+        Set(ByVal value As String)
             _defaultNamespace = value
         End Set
     End Property
 
     Dim _usePartialClass As Boolean = True
-
     ''' <summary>
-    '''     是否使用分部类
+    ''' 是否使用分部类
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    <Category("代码"), Description("生成的代码文件是否使用分部类"), DefaultValue(True)>
-    Property UsePartialClass As Boolean
+    <Category("代码"), Description("生成的代码文件是否使用分部类"), DefaultValue(True)> _
+    Property UsePartialClass() As Boolean
         Get
             Return _usePartialClass
         End Get
-        Set
+        Set(ByVal value As Boolean)
             _usePartialClass = value
         End Set
     End Property
 
     Dim _language As DevelopLanguage
-
     ''' <summary>
-    '''     使用的语言
+    ''' 使用的语言
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    <Category("代码"), Description("使用的.NET开发语言"), DefaultValue(GetType(DevelopLanguage), "VB")>
-    Property Language As DevelopLanguage
+    <Category("代码"), Description("使用的.NET开发语言"), DefaultValue(GetType(DevelopLanguage), "VB")> _
+    Property Language() As DevelopLanguage
         Get
             Return _language
         End Get
-        Set
+        Set(ByVal value As DevelopLanguage)
             _language = value
         End Set
     End Property
 
     Private _defaultTableScheme As String
 
-    <Category("代码"), Description("表默认的架构名称,比如dbo"), DefaultValue("dbo")>
+    <Category("代码"), Description("表默认的架构名称,比如dbo"), DefaultValue("dbo")> _
     Public Property DefaultTableScheme As String
         Get
             If String.IsNullOrEmpty(_defaultTableScheme) Then
@@ -774,7 +769,7 @@ Public Class EntityCreateProperty
                 Return _defaultTableScheme
             End If
         End Get
-        Set
+        Set(value As String)
             _defaultTableScheme = value
         End Set
     End Property

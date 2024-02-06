@@ -1,43 +1,34 @@
-﻿Imports System.IO
-Imports System.Reflection
-Imports PWMIS.Common
-Imports PWMIS.DataProvider.Adapter
-Imports PWMIS.DataProvider.Data
+﻿Public Class frmDBLogin
 
-Public Class frmDBLogin
     Dim oldHeight As Integer
     Dim shortHeight As Integer
-
-    Dim ReadOnly _
-        DBEnginType As String() =
-            {"SQLServer数据库服务", "SQLServer数据库文件", "SQLServer CE", "Oracle数据库服务", "Access", "其它数据库驱动程序"}
-
-    Dim currDbmsType As DBMSType
+    Dim DBEnginType As String() = {"SQLServer数据库服务", "SQLServer数据库文件", "SQLServer CE", "Oracle数据库服务", "Access", "其它数据库驱动程序"}
+    Dim currDbmsType As PWMIS.Common.DBMSType
 
     ''' <summary>
-    '''     获取或者设置连接字符串
+    ''' 获取或者设置连接字符串
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property ConnectionString As String
+    Public Property ConnectionString() As String
         Get
             Return txtConnStr.Text
         End Get
-        Set
+        Set(ByVal value As String)
             txtConnStr.Text = value
         End Set
     End Property
 
     ''' <summary>
-    '''     获取数据提供程序，默认为空，将使用PDF.NET内置的提供程序
+    ''' 获取数据提供程序，默认为空，将使用PDF.NET内置的提供程序
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property Provider As String
+    Public ReadOnly Property Provider() As String
         Get
-            If Me.currDbmsType <> DBMSType.UNKNOWN Then
+            If Me.currDbmsType <> PWMIS.Common.DBMSType.UNKNOWN Then
                 Return txtProviderName.Text
             Else
                 Return ""
@@ -46,24 +37,24 @@ Public Class frmDBLogin
     End Property
 
     ''' <summary>
-    '''     获取服务器名称
+    ''' 获取服务器名称
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property ServerName As String
+    Public ReadOnly Property ServerName() As String
         Get
             Return Me.txtServerName.Text
         End Get
     End Property
 
     ''' <summary>
-    '''     当前选择的数据库类型
+    ''' 当前选择的数据库类型
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public ReadOnly Property DBMSType As DBMSType
+    Public ReadOnly Property DBMSType() As PWMIS.Common.DBMSType
         Get
             'Dim _DbEnginType As PWMIS.Common.DBMSType
             'Select Case Me.cmbDbEngine.SelectedValue
@@ -85,7 +76,7 @@ Public Class frmDBLogin
         End Get
     End Property
 
-    Private Sub chkMoreInfo_CheckedChanged(sender As Object, e As EventArgs) Handles chkMoreInfo.CheckedChanged
+    Private Sub chkMoreInfo_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles chkMoreInfo.CheckedChanged
         Me.Height = IIf(chkMoreInfo.Checked, oldHeight, shortHeight)
         If chkMoreInfo.Checked Then
             Me.txtConnStr.Text = MakeConnectionString()
@@ -93,7 +84,7 @@ Public Class frmDBLogin
     End Sub
 
 
-    Private Sub frmDBLogin_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmDBLogin_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         oldHeight = Me.Height
         shortHeight = Me.btnOK.Location.Y + Me.btnOK.Height + 40
 
@@ -102,8 +93,7 @@ Public Class frmDBLogin
         Me.btnFileBrowser.Visible = False
     End Sub
 
-    Private Sub cmbDbEngine_SelectedIndexChanged(sender As Object, e As EventArgs) _
-        Handles cmbDbEngine.SelectedIndexChanged
+    Private Sub cmbDbEngine_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbDbEngine.SelectedIndexChanged
         Me.txtLogName.Enabled = True
         Me.txtPwd.Enabled = True
         Me.btnProviderBrowser.Enabled = False
@@ -116,7 +106,7 @@ Public Class frmDBLogin
                 Me.cmbLoginType.DataSource = New String() {"Windows集成验证", "SQLServer 身份验证"}
                 Me.btnFileBrowser.Visible = False
                 Me.txtServerName.Text = ""
-                Me.currDbmsType = DBMSType.SqlServer
+                Me.currDbmsType = PWMIS.Common.DBMSType.SqlServer
                 Me.txtProviderName.Text = "PWMIS.DataProvider.Data.SqlServer,PWMIS.Core"
             Case "SQLServer数据库文件"
                 Me.lblServerName.Text = "文件地址："
@@ -126,7 +116,7 @@ Public Class frmDBLogin
                 Me.cmbLoginType.Enabled = True
                 Me.txtServerName.Text = ""
                 Me.OpenFileDialog1.Filter = "数据库文件*.mdf|*.mdf|所有文件|*.*"
-                Me.currDbmsType = DBMSType.SqlServer
+                Me.currDbmsType = PWMIS.Common.DBMSType.SqlServer
                 Me.txtProviderName.Text = "PWMIS.DataProvider.Data.SqlServer,PWMIS.Core"
             Case "SQLServer CE"
                 Me.lblServerName.Text = "文件地址："
@@ -137,7 +127,7 @@ Public Class frmDBLogin
                 Me.txtPwd.Enabled = True
                 Me.txtServerName.Text = ""
                 Me.OpenFileDialog1.Filter = "数据库文件*.sf|*sdf|所有文件|*.*"
-                Me.currDbmsType = DBMSType.SqlServerCe
+                Me.currDbmsType = PWMIS.Common.DBMSType.SqlServerCe
                 Me.txtProviderName.Text = "PWMIS.DataProvider.Data.SqlServerCe,PWMIS.Core"
             Case "Access"
                 Me.lblServerName.Text = "文件地址："
@@ -147,7 +137,7 @@ Public Class frmDBLogin
                 Me.cmbLoginType.Enabled = True
                 Me.txtServerName.Text = ""
                 Me.OpenFileDialog1.Filter = "Access2000-2003|*.mdb|Access2007|*.accdb|所有文件|*.*"
-                Me.currDbmsType = DBMSType.Access
+                Me.currDbmsType = PWMIS.Common.DBMSType.Access
                 Me.txtProviderName.Text = "PWMIS.DataProvider.Data.Access,PWMIS.Core"
             Case "Oracle数据库服务"
                 Me.lblServerName.Text = "服务名："
@@ -157,7 +147,7 @@ Public Class frmDBLogin
                 Me.btnFileBrowser.Visible = False
                 Me.btnProviderBrowser.Enabled = True
                 Me.txtServerName.Text = ""
-                Me.currDbmsType = DBMSType.Oracle
+                Me.currDbmsType = PWMIS.Common.DBMSType.Oracle
                 Me.txtProviderName.Text = "PWMIS.DataProvider.Data.Oracle,PWMIS.Core"
             Case Else
                 '其它数据库驱动程序
@@ -173,24 +163,25 @@ Public Class frmDBLogin
                 Me.btnFileBrowser.Enabled = False
                 Me.btnProviderBrowser.Enabled = True
         End Select
+
     End Sub
 
-    Private Sub ChangeUIbyDbmsType(dbmsType As DBMSType)
+    Private Sub ChangeUIbyDbmsType(ByVal dbmsType As PWMIS.Common.DBMSType)
         Select Case dbmsType
-            Case DBMSType.MySql, DBMSType.PostgreSQL
+            Case PWMIS.Common.DBMSType.MySql, PWMIS.Common.DBMSType.PostgreSQL
                 Me.lblServerName.Text = "服务器地址："
                 'Me.lblLoginType.Text = "登录类型："
                 Me.cmbLoginType.Enabled = False
                 'Me.cmbLoginType.DataSource = New String() {"Normal", "SysDBA"}
                 Me.btnFileBrowser.Visible = False
                 Me.txtServerName.Text = ""
-            Case DBMSType.SQLite
+            Case PWMIS.Common.DBMSType.SQLite
                 Me.lblServerName.Text = "文件地址："
                 Me.btnFileBrowser.Visible = True
                 Me.cmbLoginType.Enabled = False
                 Me.btnFileBrowser.Enabled = True
                 Me.OpenFileDialog1.Filter = "SQLite数据库文件|*.*"
-            Case DBMSType.Oracle
+            Case PWMIS.Common.DBMSType.Oracle
                 Me.lblServerName.Text = "服务器地址："
                 Me.lblLoginType.Text = "登录类型："
                 Me.cmbLoginType.Enabled = True
@@ -211,21 +202,22 @@ Public Class frmDBLogin
         End Select
     End Sub
 
-    Private Sub btnFileBrowser_Click(sender As Object, e As EventArgs) Handles btnFileBrowser.Click
+    Private Sub btnFileBrowser_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnFileBrowser.Click
         Me.OpenFileDialog1.FileName = ""
         Me.OpenFileDialog1.ShowDialog()
 
-        If Me.currDbmsType = DBMSType.SQLite Then
+        If Me.currDbmsType = PWMIS.Common.DBMSType.SQLite Then
             txtServerName.Text = Me.OpenFileDialog1.FileName
         ElseIf Me.cmbDbEngine.SelectedValue = "其它数据库驱动程序" And Me.OpenFileDialog1.FileName <> "" Then
 
         Else
             txtServerName.Text = Me.OpenFileDialog1.FileName
         End If
+
     End Sub
 
     Private Function MakeConnectionString() As String
-        Dim connStr = ""
+        Dim connStr As String = ""
         Select Case Me.cmbDbEngine.SelectedValue
             Case "SQLServer数据库服务" ', "SQLServer数据库文件", "SQLServer CE"
                 If Me.cmbLoginType.SelectedValue = "Windows集成验证" Then
@@ -234,8 +226,7 @@ Public Class frmDBLogin
                     connStr = "server=" & txtServerName.Text & ";uid=" & txtLogName.Text & ";pwd=" & txtPwd.Text
                 End If
             Case "SQLServer数据库文件"
-                connStr = "Data Source=.\SQLEXPRESS;AttachDbFilename=" & txtServerName.Text &
-                          ";Connect Timeout=30;User Instance=True;"
+                connStr = "Data Source=.\SQLEXPRESS;AttachDbFilename=" & txtServerName.Text & ";Connect Timeout=30;User Instance=True;"
                 If Me.cmbLoginType.SelectedValue = "Windows集成验证" Then
                     connStr &= "Integrated Security=True"
                 Else
@@ -254,14 +245,12 @@ Public Class frmDBLogin
                 End If
                 '
             Case "Oracle数据库服务"
-                connStr = "Data Source=" & Me.txtServerName.Text & ";User Id=" & txtLogName.Text & ";Password=" &
-                          txtPwd.Text & ";"
+                connStr = "Data Source=" & Me.txtServerName.Text & ";User Id=" & txtLogName.Text & ";Password=" & txtPwd.Text & ";"
             Case "其它数据库驱动程序"
-                If Me.currDbmsType = DBMSType.MySql _
-                   Or Me.currDbmsType = DBMSType.PostgreSQL Then
-                    connStr = "server=" & txtServerName.Text & ";User Id=" & txtLogName.Text & ";password=" &
-                              txtPwd.Text
-                ElseIf Me.currDbmsType = DBMSType.SQLite Then
+                If Me.currDbmsType = PWMIS.Common.DBMSType.MySql _
+                Or Me.currDbmsType = PWMIS.Common.DBMSType.PostgreSQL Then
+                    connStr = "server=" & txtServerName.Text & ";User Id=" & txtLogName.Text & ";password=" & txtPwd.Text
+                ElseIf Me.currDbmsType = PWMIS.Common.DBMSType.SQLite Then
                     connStr = "Data Source=" & txtServerName.Text
                 Else
                     connStr = Me.txtConnStr.Text
@@ -273,8 +262,7 @@ Public Class frmDBLogin
         Return connStr
     End Function
 
-    Private Sub cmbLoginType_SelectedIndexChanged(sender As Object, e As EventArgs) _
-        Handles cmbLoginType.SelectedIndexChanged
+    Private Sub cmbLoginType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbLoginType.SelectedIndexChanged
         If Me.cmbLoginType.SelectedValue = "Windows集成验证" Then
             Me.txtLogName.Enabled = False
             Me.txtPwd.Enabled = False
@@ -284,26 +272,26 @@ Public Class frmDBLogin
         End If
     End Sub
 
-    Private Sub lnkRefesh_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) _
-        Handles lnkRefesh.LinkClicked
+    Private Sub lnkRefesh_LinkClicked(ByVal sender As System.Object, ByVal e As System.Windows.Forms.LinkLabelLinkClickedEventArgs) Handles lnkRefesh.LinkClicked
         Me.txtConnStr.Text = MakeConnectionString()
     End Sub
 
-    Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
+    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
         If txtServerName.Text.Trim() = "" Then
             MessageBox.Show(Me.lblServerName.Text & " 不能为空！")
         Else
             Me.txtConnStr.Text = MakeConnectionString()
             Me.Close()
         End If
+        
     End Sub
 
-    Private Sub btnTestConn_Click(sender As Object, e As EventArgs) Handles btnTestConn.Click
+    Private Sub btnTestConn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTestConn.Click
 
         Me.ConnectionString = MakeConnectionString()
         If Me.ConnectionString <> "" Then
             Try
-                Dim db As AdoHelper = MyDB.GetDBHelperByProviderString(Me.Provider, Me.ConnectionString)
+                Dim db As PWMIS.DataProvider.Data.AdoHelper = PWMIS.DataProvider.Adapter.MyDB.GetDBHelperByProviderString(Me.Provider, Me.ConnectionString)
                 Dim conn As IDbConnection = db.GetDbConnection()
                 conn.Open()
                 conn.Close()
@@ -315,21 +303,22 @@ Public Class frmDBLogin
         End If
     End Sub
 
-    Private Sub btnCacle_Click(sender As Object, e As EventArgs) Handles btnCacle.Click
+    Private Sub btnCacle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCacle.Click
         Me.ConnectionString = ""
         Me.Close()
+
     End Sub
 
-    Private Sub btnProviderBrowser_Click(sender As Object, e As EventArgs) Handles btnProviderBrowser.Click
+    Private Sub btnProviderBrowser_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnProviderBrowser.Click
         Me.OpenFileDialog1.InitialDirectory = Application.StartupPath
         Me.OpenFileDialog1.FileName = ""
         Me.OpenFileDialog1.ShowDialog()
 
         If Me.OpenFileDialog1.FileName <> "" Then
-            Dim helperName = ""
-            Dim adoHelperType As Type = GetType(AdoHelper)
-            Dim ass As Assembly = Assembly.LoadFrom(Me.OpenFileDialog1.FileName)
-            Dim find = False
+            Dim helperName As String = ""
+            Dim adoHelperType As Type = GetType(PWMIS.DataProvider.Data.AdoHelper)
+            Dim ass As System.Reflection.Assembly = System.Reflection.Assembly.LoadFrom(Me.OpenFileDialog1.FileName)
+            Dim find As Boolean = False
             txtServerName.Text = ""
 
             For Each t As Type In ass.GetTypes()
@@ -339,10 +328,9 @@ Public Class frmDBLogin
                         helperName = t.FullName
                         If baseType.AssemblyQualifiedName = adoHelperType.AssemblyQualifiedName Then
                             find = True
-                            Me.txtProviderName.Text = helperName & "," &
-                                                      Path.GetFileNameWithoutExtension(Me.OpenFileDialog1.FileName)
-                            If Path.GetDirectoryName(Me.OpenFileDialog1.FileName) = Application.StartupPath Then
-                                Dim helper As AdoHelper = Activator.CreateInstance(t)
+                            Me.txtProviderName.Text = helperName & "," & System.IO.Path.GetFileNameWithoutExtension(Me.OpenFileDialog1.FileName)
+                            If System.IO.Path.GetDirectoryName(Me.OpenFileDialog1.FileName) = Application.StartupPath Then
+                                Dim helper As PWMIS.DataProvider.Data.AdoHelper = Activator.CreateInstance(t)
                                 Me.currDbmsType = helper.CurrentDBMSType
                                 ChangeUIbyDbmsType(Me.currDbmsType)
 
@@ -351,10 +339,7 @@ Public Class frmDBLogin
                             End If
                             Exit For
                         Else
-                            MessageBox.Show(
-                                "选定的程序集中实现AdoHelper的子类 [" & helperName &
-                                "]所在的程序集与当前程序集(PWMIS.Core.dll)不匹配，请重新编译你选定的程序集。" & vbCrLf &
-                                baseType.AssemblyQualifiedName & vbCrLf & adoHelperType.AssemblyQualifiedName)
+                            MessageBox.Show("选定的程序集中实现AdoHelper的子类 [" & helperName & "]所在的程序集与当前程序集(PWMIS.Core.dll)不匹配，请重新编译你选定的程序集。" & vbCrLf & baseType.AssemblyQualifiedName & vbCrLf & adoHelperType.AssemblyQualifiedName)
                             Exit Sub
                         End If
 
@@ -362,10 +347,10 @@ Public Class frmDBLogin
                 End If
             Next
             If Not find Then
-                MessageBox.Show("在选定的程序集中未找到实现[PWMIS.DataProvider.Data.AdoHelper]的子类。", "数据提供程序", MessageBoxButtons.OK,
-                                MessageBoxIcon.Error)
+                MessageBox.Show("在选定的程序集中未找到实现[PWMIS.DataProvider.Data.AdoHelper]的子类。", "数据提供程序", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
 
         End If
+
     End Sub
 End Class

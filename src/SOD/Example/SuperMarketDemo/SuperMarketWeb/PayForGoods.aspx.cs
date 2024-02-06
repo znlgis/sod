@@ -1,56 +1,63 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using SuperMarketBLL;
 using SuperMarketModel;
+using SuperMarketModel.ViewModel;
 
 namespace SuperMarketWeb
 {
-    public partial class PayForGoods : Page
+    public partial class PayForGoods : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
+            {
                 if (SuperMarketBIZ.Instance.CashierConsole != null)
                 {
-                    GridView1.DataSource = SuperMarketBIZ.Instance.CashierConsole;
-                    GridView1.DataBind();
+                    this.GridView1.DataSource = SuperMarketBIZ.Instance.CashierConsole;
+                    this.GridView1.DataBind();
 
                     btnOK.Enabled = false;
                     btnCancel.Enabled = false;
                 }
+            }
+          
         }
 
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var index = GridView1.SelectedIndex;
+            int index = GridView1.SelectedIndex;
             if (index != -1)
             {
-                var length = SuperMarketBIZ.Instance.CashierConsole[index].QueueLength;
+                int length = SuperMarketBIZ.Instance.CashierConsole[index].QueueLength;
                 lblQueue.Text = "当前收银台排队的顾客人数是：" + length;
             }
-
             ViewState["AddQueue"] = null;
         }
 
         /// <summary>
-        ///     显示排队信息
+        /// 显示排队信息
         /// </summary>
         private void showQueueInfo()
         {
-            var index = GridView1.SelectedIndex;
+            int index = GridView1.SelectedIndex;
             if (index != -1)
             {
-                var crBiz = SuperMarketBIZ.Instance.CashierConsole[index];
+                CashierRegisterBIZ crBiz=SuperMarketBIZ.Instance.CashierConsole[index];
                 if (ViewState["AddQueue"] != null && (bool)ViewState["AddQueue"])
                 {
-                    var length = crBiz.QueueLength;
-                    var name = crBiz.CurrCashier.CashierName;
+                    int length = crBiz.QueueLength;
+                    string name = crBiz.CurrCashier.CashierName;
 
-                    var customer = (Customer)Session["Curr_Customer"];
+                    Customer customer = (Customer)Session["Curr_Customer"];
                     if (crBiz.Waite(customer))
                     {
                         lblQueue.Text = "当前收银台排队的顾客人数是：" + length;
+                        
                     }
                     else
                     {
@@ -68,21 +75,24 @@ namespace SuperMarketWeb
                             btnCancel.Enabled = true;
                             btnWaite.Enabled = false;
                         }
+                       
                     }
                 }
                 else
                 {
                     lblQueue.Text = "请在此收银台排队！";
                 }
+                
+               
             }
         }
 
         protected void btnWaite_Click(object sender, EventArgs e)
         {
-            var index = GridView1.SelectedIndex;
+            int index = GridView1.SelectedIndex;
             if (index != -1)
             {
-                var scriptTemplate = @"
+                string scriptTemplate = @"
   <script type='text/javascript'>
         function AutoRefsh()
         {
@@ -94,30 +104,33 @@ namespace SuperMarketWeb
                 if (!btnOK.Enabled)
                 {
                     //同意支付的时候，页面不需要继续刷新
-                    var script = scriptTemplate.Replace("@btnID", btnWaite.ClientID);
-                    ClientScript.RegisterStartupScript(Page.GetType(), "autoRef", script);
+                    string script = scriptTemplate.Replace("@btnID", this.btnWaite.ClientID);
+                    this.ClientScript.RegisterStartupScript(this.Page.GetType(), "autoRef", script);
                 }
                 else
                 {
-                    ClientScript.RegisterStartupScript(Page.GetType(), "autoRef", "");
+                    this.ClientScript.RegisterStartupScript(this.Page.GetType(), "autoRef", "");
+                   
                 }
-
-
+               
+                
                 if (ViewState["AddQueue"] == null)
                 {
-                    var customer = (Customer)Session["Curr_Customer"];
+                    Customer customer = (Customer)Session["Curr_Customer"];
                     SuperMarketBIZ.Instance.CashierConsole[index].AddQueue(customer);
 
                     ViewState["AddQueue"] = true;
                 }
 
                 showQueueInfo();
+                
             }
+            
         }
 
         protected void btnOK_Click(object sender, EventArgs e)
         {
-            var index = GridView1.SelectedIndex;
+            int index = GridView1.SelectedIndex;
             if (index != -1)
             {
                 SuperMarketBIZ.Instance.CashierConsole[index].Processing();
@@ -128,10 +141,10 @@ namespace SuperMarketWeb
 
         protected void btnCancel_Click(object sender, EventArgs e)
         {
-            var index = GridView1.SelectedIndex;
+            int index = GridView1.SelectedIndex;
             if (index != -1)
             {
-                SuperMarketBIZ.Instance.CashierConsole[index].ExitQueue((Customer)Session["Curr_Customer"]);
+                SuperMarketBIZ.Instance.CashierConsole[index].ExitQueue ((Customer)Session["Curr_Customer"]);
                 //收款成功
                 Response.Redirect("Index.aspx");
             }
@@ -139,7 +152,7 @@ namespace SuperMarketWeb
 
         protected void btnQuitBuy_Click(object sender, EventArgs e)
         {
-            var index = GridView1.SelectedIndex;
+            int index = GridView1.SelectedIndex;
             if (index != -1)
             {
                 SuperMarketBIZ.Instance.CashierConsole[index].ExitQueue((Customer)Session["Curr_Customer"]);

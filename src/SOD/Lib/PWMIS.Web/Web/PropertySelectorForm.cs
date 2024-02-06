@@ -1,63 +1,75 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 using PWMIS.Common;
-using PWMIS.Core;
+using System.Reflection;
 using PWMIS.DataMap.Entity;
+using PWMIS.Core;
 
 namespace PWMIS.Windows
 {
     public partial class PropertySelectorForm : Form
     {
-        private readonly IDataControl currDataControl;
-        private readonly Dictionary<string, string> dictNames = new Dictionary<string, string>();
-        private string currentFieldName = "";
-        private List<KeyValuePair<string, string>> dataList;
-        private EntityFields ef;
-        private bool entityCheck = false; //检测输入的类型是否是实体类
+        List<KeyValuePair<string, string>> dataList ;
+        IDataControl currDataControl;
+        EntityFields ef;
+        Dictionary<string, string> dictNames = new Dictionary<string, string>();
+        bool entityCheck = false;//检测输入的类型是否是实体类
+        string currentFieldName = "";
 
-        public PropertySelectorForm(IDataControl control)
+        private string ConfigFileName
+        {
+            get { 
+                return  Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)+"\\PdfNetVSDataForm.ini";
+            }
+        }
+
+        public PropertySelectorForm(IDataControl control) 
         {
             InitializeComponent();
             currDataControl = control;
-            txtFullTypeName.Text = currDataControl.LinkObject;
+            this.txtFullTypeName.Text = currDataControl.LinkObject;
         }
 
-        private string ConfigFileName =>
-            Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\PdfNetVSDataForm.ini";
-
         /// <summary>
-        ///     数据控件选择的属性名称
+        /// 数据控件选择的属性名称
         /// </summary>
         public string PropertyName
         {
-            get
-            {
+            get {
                 if (cmbProperty.SelectedIndex >= 0)
                 {
-                    var propName = cmbProperty.SelectedValue.ToString();
+                    string propName = cmbProperty.SelectedValue.ToString();
                     if (ckbEntity.Checked)
+                    {
                         //string fieldName = ef.GetPropertyField(propName);
                         //return fieldName;
                         return currentFieldName;
+                    }
                     return propName;
                 }
-
-                return "";
+                else
+                    return "";
             }
         }
 
         private void PropertySelectorForm_Load(object sender, EventArgs e)
         {
-            if (File.Exists(ConfigFileName)) txtAssembly.Text = File.ReadAllText(ConfigFileName);
+            if (System.IO.File.Exists(this.ConfigFileName))
+            {
+                this.txtAssembly.Text = System.IO.File.ReadAllText(this.ConfigFileName);
+            }
             ckbEntity.Enabled = false;
         }
 
         private void btnCancle_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.Cancel;
-            Close();
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
@@ -66,16 +78,16 @@ namespace PWMIS.Windows
             {
                 if (ckbEntity.Checked)
                 {
-                    LocalLoader assLoader = null;
+                    LocalLoader assLoader =null;
                     try
                     {
-                        var fullName = txtAssembly.Text;
-                        var basePath = Path.GetDirectoryName(fullName);
-                        var propName = cmbProperty.SelectedValue.ToString();
+                        string fullName = this.txtAssembly.Text;
+                        string basePath = System.IO.Path.GetDirectoryName(fullName);
+                        string propName = cmbProperty.SelectedValue.ToString();
 
                         assLoader = new LocalLoader(basePath);
                         assLoader.LoadAssembly(fullName);
-                        var arr = assLoader.TableFieldName(txtFullTypeName.Text, propName);
+                        var arr = assLoader.TableFieldName(this.txtFullTypeName.Text, propName);
                         if (arr != null)
                         {
                             currDataControl.LinkObject = arr[0];
@@ -86,7 +98,7 @@ namespace PWMIS.Windows
                             MessageBox.Show(assLoader.ErrorMessage);
                         }
 
-                        DialogResult = DialogResult.OK;
+                        this.DialogResult = DialogResult.OK;
                     }
                     catch (Exception ex)
                     {
@@ -100,29 +112,29 @@ namespace PWMIS.Windows
                 }
                 else
                 {
-                    DialogResult = DialogResult.OK;
-                    currDataControl.LinkObject = txtFullTypeName.Text;
+                    this.DialogResult = DialogResult.OK;
+                    currDataControl.LinkObject = this.txtFullTypeName.Text;
                 }
-
+               
                 //不能使用SelectText 在不是只读的下拉框的情况下
-                var typeCodeName = cmbProperty.Text.Split('|')[1];
+                string typeCodeName = cmbProperty.Text.ToString().Split('|')[1];
                 currDataControl.SysTypeCode = (TypeCode)Enum.Parse(typeof(TypeCode), typeCodeName);
 
-                File.WriteAllText(ConfigFileName, txtAssembly.Text);
-                Close();
+                System.IO.File.WriteAllText(ConfigFileName, txtAssembly.Text);
+                this.Close();
             }
             else
             {
-                MessageBox.Show("请选择属性！");
+                MessageBox.Show("请选择属性！");   
             }
         }
 
         private void btnFile_Click(object sender, EventArgs e)
         {
-            openFileDialog1.FileName = "";
-            openFileDialog1.Filter = ".NET程序集|*.dll|.NET可执行程序|*.exe";
-            openFileDialog1.ShowDialog();
-            txtAssembly.Text = openFileDialog1.FileName;
+            this.openFileDialog1.FileName = "";
+            this.openFileDialog1.Filter = ".NET程序集|*.dll|.NET可执行程序|*.exe";
+            this.openFileDialog1.ShowDialog();
+            this.txtAssembly.Text = this.openFileDialog1.FileName;
         }
 
 
@@ -140,11 +152,12 @@ namespace PWMIS.Windows
         private void cmbClassName_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (dictNames.ContainsKey(cmbClassName.Text))
-                txtFullTypeName.Text = dictNames[cmbClassName.Text];
+                this.txtFullTypeName.Text = dictNames[ cmbClassName.Text];
         }
 
         private void cmbProperty_SelectedIndexChanged(object sender, EventArgs e)
         {
+           
         }
 
 
@@ -152,13 +165,15 @@ namespace PWMIS.Windows
         {
             if (cmbClassName.Items.Count == 0)
             {
-                if (txtAssembly.Text == "")
+                if (this.txtAssembly.Text == "")
                 {
                     MessageBox.Show("请输入程序集文件路径！");
                     return;
                 }
-
-                LoadClassNames(txtAssembly.Text);
+                else
+                {
+                    LoadClassNames(this.txtAssembly.Text);
+                }
             }
         }
 
@@ -166,60 +181,63 @@ namespace PWMIS.Windows
         {
             if (dataList == null)
             {
-                if (txtAssembly.Text == "")
+                if (this.txtAssembly.Text == "")
                 {
                     MessageBox.Show("请输入程序集文件路径！");
                     return;
                 }
-
-                LocalLoader assLoader = null;
-                try
+                else
                 {
-                    var fullName = txtAssembly.Text;
-                    var basePath = Path.GetDirectoryName(fullName);
-                    var coreFile = Path.Combine(basePath, "PWMIS.Core.dll");
-                    if (!File.Exists(coreFile))
-                        throw new Exception("未找到当前指定程序集目录下面的PDF.NET核心类库文件 PWMIS.Core.dll");
-
-                    assLoader = new LocalLoader(basePath);
-                    assLoader.LoadAssembly(fullName);
-                    dataList = assLoader.GetAllPropertyNames(txtFullTypeName.Text);
-                    if (dataList != null)
+                    LocalLoader assLoader = null;
+                    try
                     {
-                        cmbProperty.DisplayMember = "Key";
-                        cmbProperty.ValueMember = "Value";
-                        cmbProperty.DataSource = dataList;
+                        string fullName = this.txtAssembly.Text;
+                        string basePath = System.IO.Path.GetDirectoryName(fullName);
+                        string coreFile = System.IO.Path.Combine(basePath, "PWMIS.Core.dll");
+                        if (!System.IO.File.Exists(coreFile))
+                            throw new Exception("未找到当前指定程序集目录下面的PDF.NET核心类库文件 PWMIS.Core.dll");
 
-                        ckbEntity.Enabled = assLoader.IsEntityClass;
+                        assLoader = new LocalLoader(basePath);
+                        assLoader.LoadAssembly(fullName);
+                        dataList = assLoader.GetAllPropertyNames(this.txtFullTypeName.Text);
+                        if (dataList != null)
+                        {
+                            cmbProperty.DisplayMember = "Key";
+                            cmbProperty.ValueMember = "Value";
+                            cmbProperty.DataSource = dataList;
+
+                            this.ckbEntity.Enabled = assLoader.IsEntityClass;
+                        }
+                        else
+                        {
+                            MessageBox.Show(assLoader.ErrorMessage);
+                            this.ckbEntity.Enabled = false;
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        MessageBox.Show(assLoader.ErrorMessage);
-                        ckbEntity.Enabled = false;
+                        MessageBox.Show(ex.Message);
+                        return;
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
-                finally
-                {
-                    if (assLoader != null)
-                        assLoader.Unload();
+                    finally
+                    {
+                        if (assLoader != null)
+                            assLoader.Unload();
+                    }
                 }
             }
         }
-
+      
 
         /// <summary>
-        ///     加载程序集中的全部类型信息到字典中，FullClassName为Key，ClassName为Value
+        /// 加载程序集中的全部类型信息到字典中，FullClassName为Key，ClassName为Value
         /// </summary>
         /// <param name="fullName">程序集的名称</param>
         private void LoadClassNames(string fullName)
         {
-            var basePath = Path.GetDirectoryName(fullName);
-            var coreFile = Path.Combine(basePath, "PWMIS.Core.dll");
-            if (!File.Exists(coreFile))
+            string basePath = System.IO.Path.GetDirectoryName(fullName);
+            string coreFile = System.IO.Path.Combine(basePath, "PWMIS.Core.dll");
+            if (!System.IO.File.Exists(coreFile))
                 throw new Exception("未找到当前指定程序集目录下面的PDF.NET核心类库文件 PWMIS.Core.dll");
 
             LocalLoader assLoader = null;
@@ -227,23 +245,23 @@ namespace PWMIS.Windows
             {
                 assLoader = new LocalLoader(basePath);
                 assLoader.LoadAssembly(fullName);
-                var types = assLoader.GetAllTypeNames;
+                string[] types = assLoader.GetAllTypeNames;
 
                 dictNames.Clear();
-                var names = new List<string>();
-                foreach (var t in types)
+                List<string> names = new List<string>();
+                foreach (string t in types)
                 {
-                    var arr = t.Split(',');
+                    string[] arr = t.Split(',');
                     names.Add(arr[0]);
                     dictNames.Add(arr[0], arr[1]);
                 }
-
                 names.Sort();
-                cmbClassName.DataSource = names; //类型的全名称
+                cmbClassName.DataSource = names;//类型的全名称
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+                return;
             }
             finally
             {
@@ -251,5 +269,6 @@ namespace PWMIS.Windows
                     assLoader.Unload();
             }
         }
+
     }
 }

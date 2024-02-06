@@ -1,101 +1,110 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.UI;
-using PWMIS.DataForms.Adapter;
+using System.Web.UI.WebControls;
+using PWMIS.DataProvider.Adapter;
 using SuperMarketBLL;
+using SuperMarketModel.ViewModel;
 using SuperMarketDAL.Entitys;
+using PWMIS.DataForms.Adapter;
 
 namespace SuperMarketWeb.GoodsManage
 {
-    public partial class StockInfo : Page
+    public partial class StockInfo : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
-            {
-                var biz = new GoodsManageBIZ();
-
-                var nameList = biz.GetAllGoodsNames();
+            { 
+                GoodsManageBIZ biz = new GoodsManageBIZ();
+               
+                List<string> nameList = biz.GetAllGoodsNames();
                 nameList.Insert(0, "请选择");
-                ddlGoodsNames.DataSource = nameList;
-                ddlGoodsNames.DataBind();
+                this.ddlGoodsNames.DataSource = nameList;
+                this.ddlGoodsNames.DataBind();
             }
         }
 
         protected void btnSave_Click(object sender, EventArgs e)
         {
-            dtbSN.Text = ddlManufacturer.SelectedValue;
+            this.dtbSN.Text = this.ddlManufacturer.SelectedValue; 
             //保存数据
-            var ibCommandList = MyWebForm.Instance.AutoUpdateIBFormData(Controls);
+            List<IBCommand> ibCommandList = MyWebForm.Instance.AutoUpdateIBFormData(this.Controls);
             //获取插入的ID
             if (dlCHJLH.Text == "")
+            {
                 if (ibCommandList.Count > 0)
                 {
-                    var command = ibCommandList[0];
+                    IBCommand command = ibCommandList[0];
                     dlCHJLH.Text = command.InsertedID.ToString();
-                } //end if
-
+                }
+            }//end if
             lblMsg.Text = "保存成功！";
             //重新绑定数据
-            ProPageToolBar1.ReBindResultData();
+            this.ProPageToolBar1.ReBindResultData();
         }
 
-
+      
         protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblMsg.Text = "Selected id=" + GridView1.SelectedRow.Cells[1].Text;
             //关键，必须为主键控件赋值
-            dlCHJLH.Text = GridView1.SelectedRow.Cells[1].Text;
+            this.dlCHJLH.Text = GridView1.SelectedRow.Cells[1].Text;
             //填充数据
-            MyWebForm.Instance.AutoSelectIBForm(Controls);
+            MyWebForm.Instance.AutoSelectIBForm(this.Controls);
 
             //设置下拉框的选项
             //得到当前条码号
-            var sn = dtbSN.Text;
-            var biz = new GoodsManageBIZ();
-            var info = biz.GetGoodsBaseInfo(sn);
+            string sn = this.dtbSN.Text;
+            GoodsManageBIZ biz = new GoodsManageBIZ();
+            GoodsBaseInfo info = biz.GetGoodsBaseInfo(sn);
+            
+            this.ddlGoodsNames.Text = info.GoodsName;
 
-            ddlGoodsNames.Text = info.GoodsName;
+            List<GoodsBaseInfoVM> list = biz.GetGoodsBaseInfoWhithGoodsName(info.GoodsName);
+            this.ddlManufacturer.DataTextField = "Manufacturer";
+            this.ddlManufacturer.DataValueField = "SerialNumber";
+            this.ddlManufacturer.DataSource = list;
+            this.ddlManufacturer.DataBind();
 
-            var list = biz.GetGoodsBaseInfoWhithGoodsName(info.GoodsName);
-            ddlManufacturer.DataTextField = "Manufacturer";
-            ddlManufacturer.DataValueField = "SerialNumber";
-            ddlManufacturer.DataSource = list;
-            ddlManufacturer.DataBind();
+            this.ddlManufacturer.SelectedValue = sn;
 
-            ddlManufacturer.SelectedValue = sn;
+
         }
 
         protected void btnNew_Click(object sender, EventArgs e)
         {
-            MyWebForm.ClearIBData(Controls);
+            MyWebForm.ClearIBData(this.Controls);
         }
 
         protected void ddlGoodsNames_SelectedIndexChanged(object sender, EventArgs e)
         {
             lblMsg.Text = "请选择厂商";
-            var goodsName = ddlGoodsNames.SelectedItem.Text;
+            string goodsName = this.ddlGoodsNames.SelectedItem.Text;
             if (goodsName != "请选择")
             {
-                var biz = new GoodsManageBIZ();
-                var list = biz.GetGoodsBaseInfoWhithGoodsName(goodsName);
-                ddlManufacturer.DataTextField = "Manufacturer";
-                ddlManufacturer.DataValueField = "SerialNumber"; //"SerialNumber"
-                ddlManufacturer.DataSource = list;
-                ddlManufacturer.DataBind();
+                GoodsManageBIZ biz = new GoodsManageBIZ();
+                List<GoodsBaseInfoVM> list = biz.GetGoodsBaseInfoWhithGoodsName(goodsName);
+                this.ddlManufacturer.DataTextField = "Manufacturer";
+                this.ddlManufacturer.DataValueField = "SerialNumber";//"SerialNumber"
+                this.ddlManufacturer.DataSource = list ;
+                this.ddlManufacturer.DataBind();
             }
         }
 
         protected void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dlCHJLH.Text != "")
+            if (this.dlCHJLH.Text != "")
             {
-                var biz = new GoodsManageBIZ();
-                var info = new GoodsStock { GoodsID = int.Parse(dlCHJLH.Text) };
+                GoodsManageBIZ biz = new GoodsManageBIZ();
+                GoodsStock info = new GoodsStock() { GoodsID = int.Parse( this.dlCHJLH.Text) };
                 biz.DeleteGoodsStock(info);
                 lblMsg.Text = "删除成功！";
-                MyWebForm.ClearIBData(Controls);
+                MyWebForm.ClearIBData(this.Controls);
                 //重新绑定数据
-                ProPageToolBar1.ReBindResultData();
+                this.ProPageToolBar1.ReBindResultData();
             }
             else
             {

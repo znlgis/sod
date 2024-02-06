@@ -1,19 +1,15 @@
-﻿Imports System.IO
-Imports System.Text
-Imports PWMIS.DataProvider.Data
-
-Public Class frmExportData
+﻿Public Class frmExportData
     Public ExportTableName As String
     Public ExportTables As List(Of String)
     Public dbLeftChar As String = ""
     Public dbRightChar As String = ""
-    Public CurrDataBase As AdoHelper
+    Public CurrDataBase As PWMIS.DataProvider.Data.AdoHelper
     Public ExportTypeIndex As Integer = 2
 
     Dim isCancel As Boolean = False
     Dim isWorking As Boolean = False
 
-    Private Sub btnExpData_Click(sender As Object, e As EventArgs) Handles btnExpData.Click
+    Private Sub btnExpData_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnExpData.Click
         If Me.cmbExpType.Text = "SQL数据文件" Then
             Me.btnCancel.Text = "取消"
             Try
@@ -24,7 +20,7 @@ Public Class frmExportData
                     Exit Try
                 End If
 
-                Dim path As String = IO.Path.GetDirectoryName(Me.txtFileName.Text)
+                Dim path As String = System.IO.Path.GetDirectoryName(Me.txtFileName.Text)
                 If Me.ckListTables.CheckedItems.Count > 1 Then
                     '批量导出
                     For Each table As String In Me.ckListTables.CheckedItems
@@ -35,8 +31,7 @@ Public Class frmExportData
                     If ExportTableName Is Nothing Or ExportTableName = "" Then
                         MessageBox.Show("请选择要导出的表！", "数据导出", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     Else
-                        ExportSQLData(ExportTableName, Me.txtFileName.Text, Me.CurrDataBase, Me.dbLeftChar,
-                                      Me.dbRightChar)
+                        ExportSQLData(ExportTableName, Me.txtFileName.Text, Me.CurrDataBase, Me.dbLeftChar, Me.dbRightChar)
                     End If
 
                 End If
@@ -56,7 +51,7 @@ Public Class frmExportData
         End If
     End Sub
 
-    Private Sub btnBrowFile_Click(sender As Object, e As EventArgs) Handles btnBrowFile.Click
+    Private Sub btnBrowFile_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBrowFile.Click
         If Me.cmbExpType.Text = "SQL数据文件" Then
             Me.SaveFileDialog1.Filter = "SQL查询文件|*.sql|所有文件|*.*"
             Me.SaveFileDialog1.ShowDialog()
@@ -67,14 +62,13 @@ Public Class frmExportData
         Else
             MessageBox.Show("目前不支持导出该类型")
         End If
+
     End Sub
 
-    Private Function ExportSQLData(tableName As String, fileName As String, db As AdoHelper, dbLeftChar As String,
-                                   dbRightChar As String) As Boolean
+    Private Function ExportSQLData(ByVal tableName As String, ByVal fileName As String, ByVal db As PWMIS.DataProvider.Data.AdoHelper, ByVal dbLeftChar As String, ByVal dbRightChar As String) As Boolean
         'Dim tableName As String = Me.ExportTableName
         'Dim fileName As String = Me.txtFileName.Text
-        My.Computer.FileSystem.WriteAllText(fileName, "--SQL 数据文件导出，" & DateTime.Now.ToString() & "---" & vbCrLf, False,
-                                            Encoding.Default)
+        My.Computer.FileSystem.WriteAllText(fileName, "--SQL 数据文件导出，" & DateTime.Now.ToString() & "---" & vbCrLf, False, System.Text.Encoding.Default)
         Dim Sql As String = "SELECT * FROM " & dbLeftChar & tableName & dbRightChar & vbCrLf
 
         Dim rowIndex As Long = 0
@@ -86,9 +80,7 @@ Public Class frmExportData
             Me.lblProcessMsg.Text = "操作已经取消"
             Return False
         End If
-        If _
-            MessageBox.Show("表" & tableName & " 共有" & allCount & " 条记录，需要全部导出吗？", "数据导出", MessageBoxButtons.YesNo,
-                            MessageBoxIcon.Question) = DialogResult.No Then
+        If MessageBox.Show("表" & tableName & " 共有" & allCount & " 条记录，需要全部导出吗？", "数据导出", MessageBoxButtons.YesNo, MessageBoxIcon.Question) = DialogResult.No Then
             Me.lblProcessMsg.Text = "操作已经取消"
             Return False
         End If
@@ -113,18 +105,16 @@ Public Class frmExportData
             Dim resultSQL As String
             Dim fieldCount As Integer = reader.FieldCount
 
-            Dim writer As StreamWriter = My.Computer.FileSystem.OpenTextFileWriter(fileName, True, Encoding.Default)
+            Dim writer As System.IO.StreamWriter = My.Computer.FileSystem.OpenTextFileWriter(fileName, True, System.Text.Encoding.Default)
 
             Do While reader.Read()
-                Dim Values As New StringBuilder
-                For i = 0 To fieldCount - 1
+                Dim Values As New System.Text.StringBuilder
+                For i As Integer = 0 To fieldCount - 1
                     If reader.IsDBNull(i) Then
                         Values.Append("NULL")
                     Else
                         Dim tempStr As String = reader(i).ToString()
-                        If _
-                            fieldType(i) Is GetType(String) OrElse fieldType(i) Is GetType(DateTime) OrElse
-                            fieldType(i) Is GetType(Boolean) Then
+                        If fieldType(i) Is GetType(String) OrElse fieldType(i) Is GetType(DateTime) OrElse fieldType(i) Is GetType(Boolean) Then
                             tempStr = "'" & tempStr.Replace("'", "''") & "'"
                         End If
                         Values.Append(tempStr)
@@ -138,7 +128,7 @@ Public Class frmExportData
                 '输出进度信息
                 rowIndex += 1
                 If rowIndex Mod 50 = 0 Then
-                    Me.ProgressBar1.Value = rowIndex*100/allCount
+                    Me.ProgressBar1.Value = rowIndex * 100 / allCount
                     Me.lblProcessMsg.Text = "正在导出表：" & tableName & "," & rowIndex & allCount
                     Application.DoEvents()
                 End If
@@ -154,7 +144,7 @@ Public Class frmExportData
         Return True
     End Function
 
-    Private Sub cmbExpType_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbExpType.Click
+    Private Sub cmbExpType_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmbExpType.Click
         If Me.cmbExpType.Text = "SQL数据文件" Then
             Me.txtFileName.Text = ".\exp_sqldata_" & Me.ExportTableName & ".sql"
 
@@ -164,7 +154,7 @@ Public Class frmExportData
         End If
     End Sub
 
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         'Me.Close()
         Me.isCancel = True
         If Not isWorking Then
@@ -172,7 +162,7 @@ Public Class frmExportData
         End If
     End Sub
 
-    Private Sub frmExportData_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+    Private Sub frmExportData_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Me.cmbExpType.SelectedIndex = Me.ExportTypeIndex
         '初始化选择的表
         If Me.ExportTables IsNot Nothing Then
@@ -184,12 +174,18 @@ Public Class frmExportData
                 End If
             Next
         End If
+
     End Sub
 
 
-    Private Sub ckAll_CheckedChanged(sender As Object, e As EventArgs) Handles ckAll.CheckedChanged
-        For i = 0 To Me.ckListTables.Items.Count - 1
+    Private Sub ckAll_CheckedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ckAll.CheckedChanged
+        For i As Integer = 0 To Me.ckListTables.Items.Count - 1
             Me.ckListTables.SetItemChecked(i, ckAll.Checked)
         Next
+
     End Sub
+
+
+
+
 End Class

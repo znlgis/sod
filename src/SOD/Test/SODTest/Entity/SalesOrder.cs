@@ -5,10 +5,10 @@ using PWMIS.DataMap.Entity;
 namespace SODTest
 {
     /// <summary>
-    ///     订单
+    /// 订单
     /// </summary>
     [Serializable]
-    public class SalesOrder : EntityBase
+    public partial class SalesOrder : EntityBase
     {
         public SalesOrder()
         {
@@ -17,240 +17,213 @@ namespace SODTest
             PrimaryKeys.Add("iBillID");
         }
 
-        /// <summary>
-        ///     经销商名称
-        /// </summary>
-        public string CustomerName { get; set; }
-
         protected override void SetFieldNames()
         {
-            PropertyNames = new[]
-            {
-                "iBillID", "vcBillNo", "dtBillDate", "vcMemo", "iCustomerID", "CreationDate", "CreatedBy",
-                "LastUpdateDate", "LastUpdatedBy", "FlagApp", "AppDate", "AppUser", "iOrderTypeID", "iState",
-                "vcDesign", "vcDesignPhone", "numDayRequest", "numDay", "dtDelivery", "IsPicture", "vcBuy",
-                "vcBuyPhone", "vcBuyAddress", "vcImgFile"
-            };
+            PropertyNames = new string[] { "iBillID", "vcBillNo", "dtBillDate", "vcMemo", "iCustomerID", "CreationDate", "CreatedBy", "LastUpdateDate", "LastUpdatedBy", "FlagApp", "AppDate", "AppUser", "iOrderTypeID", "iState", "vcDesign", "vcDesignPhone", "numDayRequest", "numDay", "dtDelivery", "IsPicture", "vcBuy", "vcBuyPhone", "vcBuyAddress", "vcImgFile" };
         }
 
         #region Model
-
         /// <summary>
-        ///     主键
+        /// 主键
         /// </summary>
         public int iBillID
         {
-            get => getProperty<int>("iBillID");
-            set => setProperty("iBillID", value);
+            get { return getProperty<int>("iBillID"); }
+            set { setProperty("iBillID", value); }
         }
-
         /// <summary>
-        ///     单据号码
+        /// 单据号码
         /// </summary>
-        public string vcBillNo
+        public String vcBillNo
         {
-            get => getProperty<string>("vcBillNo");
-            set => setProperty("vcBillNo", value);
+            get { return getProperty<String>("vcBillNo"); }
+            set { setProperty("vcBillNo", value); }
         }
-
         /// <summary>
-        ///     单据日期
+        /// 单据日期
         /// </summary>
         public DateTime dtBillDate
         {
-            get => getProperty<DateTime>("dtBillDate");
-            set => setProperty("dtBillDate", value);
+            get { return getProperty<DateTime>("dtBillDate"); }
+            set { setProperty("dtBillDate", value); }
         }
-
         /// <summary>
-        ///     备注
+        /// 备注
         /// </summary>
-        public string vcMemo
+        public String vcMemo
         {
-            get => getProperty<string>("vcMemo");
-            set => setProperty("vcMemo", value);
+            get { return getProperty<String>("vcMemo"); }
+            set { setProperty("vcMemo", value); }
         }
-
         /// <summary>
-        ///     客户
+        /// 客户
         /// </summary>
         public int iCustomerID
         {
-            get => getProperty<int>("iCustomerID");
-            set => setProperty("iCustomerID", value);
+            get { return getProperty<int>("iCustomerID"); }
+            set { setProperty("iCustomerID", value); }
         }
-
         /// <summary>
-        ///     创建日期
+        /// 创建日期
         /// </summary>
         public DateTime CreationDate
         {
-            get => getProperty<DateTime>("CreationDate");
-            set => setProperty("CreationDate", value);
+            get { return getProperty<DateTime>("CreationDate"); }
+            set { setProperty("CreationDate", value); }
         }
-
         /// <summary>
-        ///     创建人
+        /// 创建人
         /// </summary>
-        public string CreatedBy
+        public String CreatedBy
         {
-            get => getProperty<string>("CreatedBy");
-            set => setProperty("CreatedBy", value);
+            get { return getProperty<String>("CreatedBy"); }
+            set { setProperty("CreatedBy", value); }
         }
-
         /// <summary>
-        ///     更新日期
+        /// 更新日期
         /// </summary>
         public DateTime LastUpdateDate
         {
-            get => getProperty<DateTime>("LastUpdateDate");
-            set => setProperty("LastUpdateDate", value);
+            get { return getProperty<DateTime>("LastUpdateDate"); }
+            set { setProperty("LastUpdateDate", value); }
         }
-
         /// <summary>
-        ///     更新人
+        /// 更新人
         /// </summary>
-        public string LastUpdatedBy
+        public String LastUpdatedBy
         {
-            get => getProperty<string>("LastUpdatedBy");
-            set => setProperty("LastUpdatedBy", value);
+            get { return getProperty<String>("LastUpdatedBy"); }
+            set { setProperty("LastUpdatedBy", value); }
         }
-
         /// <summary>
-        ///     确定标记
+        /// 确定标记
         /// </summary>
-        public string FlagApp
+        public String FlagApp
         {
-            get => getProperty<string>("FlagApp");
-            set => setProperty("FlagApp", value);
+            get { return getProperty<String>("FlagApp"); }
+            set { setProperty("FlagApp", value); }
         }
-
         /// <summary>
-        ///     确定日期
+        /// 确定日期
         /// </summary>
         public DateTime AppDate
         {
-            get => getProperty<DateTime>("AppDate");
-            set => setProperty("AppDate", value);
+            get { return getProperty<DateTime>("AppDate"); }
+            set { setProperty("AppDate", value); }
         }
-
         /// <summary>
-        ///     确定人
+        /// 确定人
         /// </summary>
-        public string AppUser
+        public String AppUser
         {
-            get => getProperty<string>("AppUser");
-            set => setProperty("AppUser", value);
+            get { return getProperty<String>("AppUser"); }
+            set { setProperty("AppUser", value); }
         }
-
         /// <summary>
-        ///     订单类型
+        /// 订单类型
         /// </summary>
-        public string iOrderTypeID
+        public String iOrderTypeID
         {
-            get => getProperty<string>("iOrderTypeID");
-            set => setProperty("iOrderTypeID", value);
+            get { return getProperty<String>("iOrderTypeID"); }
+            set { setProperty("iOrderTypeID", value); }
         }
-
         /// <summary>
-        ///     单据状态
+        /// 单据状态
         /// </summary>
         public int iState
         {
-            get => getProperty<int>("iState");
-            set => setProperty("iState", value);
+            get { return getProperty<int>("iState"); }
+            set { setProperty("iState", value); }
         }
-
         /// <summary>
-        ///     设计师
+        /// 设计师
         /// </summary>
-        public string vcDesign
+        public String vcDesign
         {
-            get => getProperty<string>("vcDesign");
-            set => setProperty("vcDesign", value);
+            get { return getProperty<String>("vcDesign"); }
+            set { setProperty("vcDesign", value); }
         }
-
         /// <summary>
-        ///     设计师电话
+        /// 设计师电话
         /// </summary>
-        public string vcDesignPhone
+        public String vcDesignPhone
         {
-            get => getProperty<string>("vcDesignPhone");
-            set => setProperty("vcDesignPhone", value);
+            get { return getProperty<String>("vcDesignPhone"); }
+            set { setProperty("vcDesignPhone", value); }
         }
-
         /// <summary>
-        ///     参考交付周期
+        /// 参考交付周期
         /// </summary>
         public int numDayRequest
         {
-            get => getProperty<int>("numDayRequest");
-            set => setProperty("numDayRequest", value);
+            get { return getProperty<int>("numDayRequest"); }
+            set { setProperty("numDayRequest", value); }
         }
-
         /// <summary>
-        ///     交付周期
+        /// 交付周期
         /// </summary>
         public int numDay
         {
-            get => getProperty<int>("numDay");
-            set => setProperty("numDay", value);
+            get { return getProperty<int>("numDay"); }
+            set { setProperty("numDay", value); }
         }
-
         /// <summary>
-        ///     参考交付日期
+        /// 参考交付日期
         /// </summary>
         public DateTime dtDelivery
         {
-            get => getProperty<DateTime>("dtDelivery");
-            set => setProperty("dtDelivery", value);
+            get { return getProperty<DateTime>("dtDelivery"); }
+            set { setProperty("dtDelivery", value); }
         }
-
         /// <summary>
-        ///     有无图纸
+        /// 有无图纸
         /// </summary>
         public int IsPicture
         {
-            get => getProperty<int>("IsPicture");
-            set => setProperty("IsPicture", value);
+            get { return getProperty<int>("IsPicture"); }
+            set { setProperty("IsPicture", value); }
         }
-
         /// <summary>
-        ///     客户信息
+        /// 客户信息
         /// </summary>
-        public string vcBuy
+        public String vcBuy
         {
-            get => getProperty<string>("vcBuy");
-            set => setProperty("vcBuy", value);
+            get { return getProperty<String>("vcBuy"); }
+            set { setProperty("vcBuy", value); }
         }
-
         /// <summary>
-        ///     客户电话
+        /// 客户电话
         /// </summary>
-        public string vcBuyPhone
+        public String vcBuyPhone
         {
-            get => getProperty<string>("vcBuyPhone");
-            set => setProperty("vcBuyPhone", value);
+            get { return getProperty<String>("vcBuyPhone"); }
+            set { setProperty("vcBuyPhone", value); }
         }
-
         /// <summary>
-        ///     客户地址
+        /// 客户地址
         /// </summary>
-        public string vcBuyAddress
+        public String vcBuyAddress
         {
-            get => getProperty<string>("vcBuyAddress");
-            set => setProperty("vcBuyAddress", value);
+            get { return getProperty<String>("vcBuyAddress"); }
+            set { setProperty("vcBuyAddress", value); }
         }
-
         /// <summary>
-        ///     图纸地址
+        /// 图纸地址
         /// </summary>
-        public string vcImgFile
+        public String vcImgFile
         {
-            get => getProperty<string>("vcImgFile");
-            set => setProperty("vcImgFile", value);
+            get { return getProperty<String>("vcImgFile"); }
+            set { setProperty("vcImgFile", value); }
         }
-
         #endregion Model
+
+        /// <summary>
+        /// 经销商名称
+        /// </summary>
+        public string CustomerName
+        {
+            get;
+            set;
+        }
     }
 }

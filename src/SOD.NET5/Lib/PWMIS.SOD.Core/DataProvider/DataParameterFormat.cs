@@ -1,29 +1,48 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Data;
 
 namespace PWMIS.DataProvider.Data
 {
-    internal class DataParameterFormat : IFormatProvider, ICustomFormatter
+    class DataParameterFormat: IFormatProvider, ICustomFormatter
     {
-        private readonly CommonDB DB; // = null;
-        private readonly List<IDataParameter> paras; // = new List<IDataParameter>();
+        private List<IDataParameter> paras;// = new List<IDataParameter>();
+        private CommonDB DB;// = null;
         private int paraIndex;
 
         public DataParameterFormat(CommonDB db)
         {
-            DB = db;
+            this.DB = db;
             paras = new List<IDataParameter>();
             paraIndex = 0;
         }
 
-        public IDataParameter[] DataParameters => paras.ToArray();
+        public IDataParameter[] DataParameters
+        {
+            get {
+                return paras.ToArray();
+            }
+        }
+
+        #region IFormatProvider 成员
+
+        public object GetFormat(Type formatType)
+        {
+            if (formatType == typeof(ICustomFormatter))
+                return this;
+            else
+                return null;
+
+        }
+
+        #endregion
 
         #region ICustomFormatter 成员
 
         public string Format(string format, object arg, IFormatProvider formatProvider)
         {
-            var paraName = DB.GetParameterChar + "P" + paraIndex++;
+            string paraName = DB.GetParameterChar + "P" + paraIndex++;
             if (format == null)
             {
                 paras.Add(DB.GetParameter(paraName, arg));
@@ -35,13 +54,12 @@ namespace PWMIS.DataProvider.Data
                     if (arg != null && arg.GetType() == typeof(decimal))
                     {
                         //decimal 类型，制定小数位数和精度
-                        var arr = format.Split('.');
+                        string[] arr = format.Split('.');
                         byte precision = 0;
                         byte scale = 0;
                         if (byte.TryParse(arr[0], out precision) && byte.TryParse(arr[1], out scale))
                         {
-                            var para = DB.GetParameter(paraName, DbType.Decimal, sizeof(decimal),
-                                ParameterDirection.Input, precision, scale);
+                            IDataParameter para = DB.GetParameter(paraName, DbType.Decimal, sizeof(decimal), ParameterDirection.Input, precision, scale);
                             paras.Add(para);
                         }
                         else
@@ -56,15 +74,15 @@ namespace PWMIS.DataProvider.Data
                 }
                 else
                 {
-                    if (arg != null)
+                    if (arg != null )
                     {
                         if (arg.GetType() == typeof(string))
                         {
                             //字符串类型，制定参数的长度 
-                            var size = 0;
+                            int size = 0;
                             if (int.TryParse(format, out size))
                             {
-                                var para = DB.GetParameter(paraName, DbType.String, size);
+                                IDataParameter para = DB.GetParameter(paraName, DbType.String, size);
                                 para.Value = arg;
                                 paras.Add(para);
                             }
@@ -81,26 +99,16 @@ namespace PWMIS.DataProvider.Data
                         {
                             paras.Add(DB.GetParameter(paraName, arg));
                         }
+                        
                     }
                     else
                     {
                         paras.Add(DB.GetParameter(paraName, arg));
                     }
-                } //end if
+                }//end if
+            
             }
-
             return paraName;
-        }
-
-        #endregion
-
-        #region IFormatProvider 成员
-
-        public object GetFormat(Type formatType)
-        {
-            if (formatType == typeof(ICustomFormatter))
-                return this;
-            return null;
         }
 
         #endregion

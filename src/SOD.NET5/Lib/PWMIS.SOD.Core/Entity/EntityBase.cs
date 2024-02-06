@@ -2,105 +2,103 @@
  * ========================================================================
  * Copyright(c) 2006-2010 PWMIS, All Rights Reserved.
  * Welcom use the PDF.NET (PWMIS Data Process Framework).
- * See more information,Please goto http://www.pwmis.com/sqlmap
+ * See more information,Please goto http://www.pwmis.com/sqlmap 
  * ========================================================================
  * 该类的作用
- *
+ * 
  * 作者：邓太华     时间：2008-10-12
  * 版本：V5.0
- *
- * 修改者：         时间：2013-3-26
+ * 
+ * 修改者：         时间：2013-3-26                
  * 修改说明：增加SetDefaultChanges 方法，用于跟属性默认值比较，从而设置属性是否更改过值
- *
- *  * 修改者：         时间：2013-4-5\6
+ * 
+ *  * 修改者：         时间：2013-4-5\6                
  * 修改说明：TableName 和 IdentityName 属性修改成受保护的属性，方便直接在GridView 控件中使用
  *           增加MapNewTableName 新方法来设置要更改的表名称
- *
- *  * 修改者：         时间：2013-8-16
+ *           
+ *  * 修改者：         时间：2013-8-16                
  * 修改说明：增加索引器，方便属性访问
- *
-  *  * 修改者：         时间：2013-10-7
+ *  
+  *  * 修改者：         时间：2013-10-7                
  * 修改说明：解决如果从部分选择查询出来的实体类，无法在应用中保存选择查询列之外的事实体属性值无法设置的问题。
- *
- *   * 修改者：         时间：2013-11-23
+ * 
+ *   * 修改者：         时间：2013-11-23                
  * 修改说明：放开实体类对索引属性访问的写入功能，例如下面的代码：
  *          UserModels um = new UserModels();
             um.AddPropertyName("TestName");
             um["TestName"] = 123;
             int testi =(int) um["TestName"];
- *
- *   *修改者：         时间：2014-3-4
+ * 
+ *   *修改者：         时间：2014-3-4   
  *   * 修改说明：增加设置和访问实体类外键字段名称的功能，以支持实体类的外键关系。可以设置多个外键字段。
- *
- *   *修改者：         时间：2014-10-14
+ *   
+ *   *修改者：         时间：2014-10-14 
  *   重新设置实体类的值得时候，重置修改状态 感谢网友 Panke 发现此Bug。
  *   该Bug会导致从数据库查询出来的实体类集合在修改数据以后，会重置其它元素的修改状态，从而导致只会修改一条记录
- *
- * *修改者：         时间：2014-10-21
+ *   
+ * *修改者：         时间：2014-10-21  
  *  新增 SetStringFieldSize 方法，用于使用API的方式设置字段长度
- *
- *  * 修改者：         时间：2014-11-9
+ *  
+ *  * 修改者：         时间：2014-11-9  
  *  新增 构造函数调用元数据初始化方法的功能，方便在使用代码生成器的时候不覆盖手写实体类代码
- *
- *  * 修改者：         时间：2015-2-11
+ *  
+ *  * 修改者：         时间：2015-2-11  
  *  修复 MapFrom 方法中，实体类的属性字段可能跟属性名称不一样 造成数据无法复制的问题
- *
- *  * 修改者：         时间：2015-3-3
+ *  
+ *  * 修改者：         时间：2015-3-3  
  *  增加 GetPropertyFieldNameIndex 内部方法，优化字段名查找效率
- *
-*  * 修改者：         时间：2015-4-22
+ *  
+*  * 修改者：         时间：2015-4-22  
  *  感谢网友 照嘉隆 发现重置属性修改状态的方法中,没有判断字符串属性的问题
  *  修正Select 的字段不在实体类中查询的问题
- *
- * * 修改者：         时间：2015-5-27
+ *  
+ * * 修改者：         时间：2015-5-27  
  *  实体类增加 GetChangedValues 方法，获取修改过的属性字段名称和值
- *
- *  * 修改者：         时间：2015-7-5
+ * 
+ *  * 修改者：         时间：2015-7-5  
  *  修改实体类字符串长度获取的Bug，当有同名字段的时候会出现问题，感谢网友 阳光尚好 发现此问题
- *
- *  * 修改者：         时间：2015-10-22
+ *  
+ *  * 修改者：         时间：2015-10-22  
  *  修改MapFrom 方法，增加设置修改状态的功能，感谢网友 石家庄-零点 提供此建议
- *
- *  * 修改者：         时间：2015-10-24
- *  修改MapToPOCO 方法，可以避免覆盖POCO对象不想赋值的属性，感谢网友 石家庄-零点 发现此问题
- *
- *
- *
- *  * 修改者：         时间：2015-12-4
+ *  
+ *  * 修改者：         时间：2015-10-24  
+ *  修改MapToPOCO 方法，可以避免覆盖POCO对象不想赋值的属性，感谢网友 石家庄-零点 发现此问题 
+ *  
+ * 
+ * 
+ *  * 修改者：         时间：2015-12-4  
  *  新增 GetGolbalEntityID 方法，解决在多线程环境下，获取字符串类型属性字段长度可能引起的问题，感谢网友 Rookie 发现该问题。
- *
- *  *修改者：         时间：2016-3-23
+ *  
+ *  *修改者：         时间：2016-3-23  
  *  新增 属性索引功能，加快实体类在多次使用的情况下的属性访问效率
- *
- *  * 修改者：         时间：2016-4-30
+ *  
+ *  * 修改者：         时间：2016-4-30  
  *  新增 属性字段描述功能，代码生成器可以将数据库表设计的字段说明信息生成到实体类上，方便运行时获取该信息。
- *
- *  * 修改者：         时间：2016-5-5
+ *  
+ *  * 修改者：         时间：2016-5-5  
  *  索引器设置数据增加类型相容转换处理，包括空字符串，可用于大批量文本数据导入情况
- *
- *  *  修改者：         时间：2016-5-5
+ *  
+ *  *  修改者：         时间：2016-5-5  
  *  索引器设置数据增加类型相容转换处理，包括空字符串，可用于大批量文本数据导入情况
  * ========================================================================
 */
-
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.ComponentModel;
-using System.Data;
 using PWMIS.Common;
 using PWMIS.Core;
 
 namespace PWMIS.DataMap.Entity
 {
     /// <summary>
-    ///     PDF.NET 5.5 实体类基础类
+    /// PDF.NET 5.5 实体类基础类
     /// </summary>
-    public abstract class EntityBase : INotifyPropertyChanged, ICloneable, IEntity
+    public abstract class EntityBase : INotifyPropertyChanged, ICloneable, PWMIS.Common.IEntity
     {
         #region 构造和初始化
-
         /// <summary>
-        ///     默认构造函数
+        /// 默认构造函数
         /// </summary>
         public EntityBase()
         {
@@ -108,46 +106,44 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        ///     初始化元数据扩展，比如在此中手工设置子实体类与父实体类的外键关系，
-        ///     如果在用户的分部类文件中重写该方法，可以防止代码生成器覆盖该方法
+        /// 初始化元数据扩展，比如在此中手工设置子实体类与父实体类的外键关系，
+        /// 如果在用户的分部类文件中重写该方法，可以防止代码生成器覆盖该方法
         /// </summary>
         protected virtual void InitMetaDataExt()
         {
-            Meta = EntityMetaData.GetSharedMeta(GetGolbalEntityID());
+            this.Meta = EntityMetaData.GetSharedMeta(this.GetGolbalEntityID());
         }
 
         /// <summary>
-        ///     获取实体类的全局标识，建议实体类具体实现类重写该方法，默认取类型全名称
+        /// 获取实体类的全局标识，建议实体类具体实现类重写该方法，默认取类型全名称
         /// </summary>
         /// <returns></returns>
         public virtual string GetGolbalEntityID()
         {
             return GetType().FullName;
         }
-
         #endregion
 
         #region 处理字符串属性与对应列的长度映射
-
         //为字符串字段指定长度，将有利于查询提高效率 edit at 2012.4.23
-        protected internal static Dictionary<string, SimplyField> StringFieldSize = new();
+        protected internal static Dictionary<string, SimplyField> StringFieldSize = new Dictionary<string, SimplyField>();
         //PropertyDesciption 暂不使用
         //protected internal static Dictionary<string, string> PropertyDesciption = new Dictionary<string, string>();
-
+        
         /// <summary>
-        ///     寻找字符串字段的长度，如果找不到，返回0，表示未指定
+        /// 寻找字符串字段的长度，如果找不到，返回0，表示未指定
         /// </summary>
         /// <param name="ownerName">字段的所有者，是一个标识</param>
         /// <param name="fieldName">字段名</param>
         /// <returns>字段的长度</returns>
         protected static SimplyField GetStringFieldSize(string ownerName, string fieldName)
         {
-            var key = string.Format("{0}_{1}", ownerName, fieldName);
+            string key = string.Format("{0}_{1}", ownerName,fieldName);
             if (StringFieldSize.ContainsKey(key))
                 return StringFieldSize[key];
-            return new SimplyField();
+            else
+                return new SimplyField();
         }
-
         protected internal SimplyField GetStringFieldSize(string fieldName)
         {
             //return GetStringFieldSize(TableName, fieldName);
@@ -158,25 +154,25 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        ///     设置字符串类型的属性字段在数据库读写的时候使用的字段长度。
-        ///     注意这这个设置将一直有效且只对字符串类型的字段有效，除非再次重新设置。
+        /// 设置字符串类型的属性字段在数据库读写的时候使用的字段长度。
+        /// 注意这这个设置将一直有效且只对字符串类型的字段有效，除非再次重新设置。
         /// </summary>
         /// <param name="fieldName">字段名称</param>
         /// <param name="length">字段长度</param>
         /// <param name="dbType">字符串字段的字段类型</param>
-        protected internal void SetStringFieldSize(string fieldName, int length, DbType dbType)
+        protected internal void SetStringFieldSize(string fieldName, int length,System.Data.DbType dbType)
         {
             if (length > 0)
             {
-                var key = string.Format("{0}_{1}", GetGolbalEntityID(), fieldName);
-                StringFieldSize[key] = new SimplyField(length, dbType);
+                string key = string.Format("{0}_{1}", GetGolbalEntityID(), fieldName);
+                StringFieldSize[key] = new SimplyField( length,dbType);
             }
         }
 
         #endregion
 
         #region 实体类基本映射信息（元数据映射）相关成员
-
+       
         //代码生成器会在新的EntityBase 子类对象构造函数中共享一个 Meta对象实例，
         //从而节省元数据所占用的内存（从SOD for .NET 5 开始）。
         protected internal EntityMetaData Meta { get; set; }
@@ -184,16 +180,16 @@ namespace PWMIS.DataMap.Entity
         // Meta = Meta with { TableName  = value };
 
         /// <summary>
-        ///     实体类的映射类型
+        /// 实体类的映射类型
         /// </summary>
-        protected internal EntityMapType EntityMap
+        protected internal PWMIS.Common.EntityMapType EntityMap 
         {
-            get => Meta.EntityMap;
-            set
+            get { return Meta.EntityMap; }
+            set 
             {
                 if (Meta.Sharing)
                 {
-                    if (Meta.EntityMap == EntityMapType.None)
+                    if (Meta.EntityMap== EntityMapType.None)
                         Meta.EntityMap = value;
                     else if (Meta.EntityMap != value)
                         Meta = Meta with { EntityMap = value, Sharing = false };
@@ -207,24 +203,23 @@ namespace PWMIS.DataMap.Entity
 
 
         /// <summary>
-        ///     设置实体类的对应的字段名称数组
-        ///     新版本子类可以实现这个细节,否则框架将反射获得该信息(该特性有利于简化手写的代码)。
-        ///     <remarks>为了兼容性,这里不作为抽象方法</remarks>
+        /// 设置实体类的对应的字段名称数组
+        /// 新版本子类可以实现这个细节,否则框架将反射获得该信息(该特性有利于简化手写的代码)。
+        /// <remarks>为了兼容性,这里不作为抽象方法</remarks>
         /// </summary>
         protected internal virtual void SetFieldNames()
         {
             //this.names = names;
             //如果子类未重写该方法，调用框架的数据库元数据获取方法
-            var ef = EntityFieldsCache.Item(GetType());
-            names = ef.Fields;
+            EntityFields ef=EntityFieldsCache.Item(this.GetType());
+            this.names = ef.Fields;
         }
 
         #region FieldDescription，已移除
-
-        /*
+        /* 
          * FieldDescription 描述信息功能极少使用，移除此功能
          *
-
+        
         /// <summary>
         /// 获取字段描述信息，默认无，如果需要请在具体的实现类里面重写该方法。
         /// 代码生成器可能会重写该方法。
@@ -276,20 +271,19 @@ namespace PWMIS.DataMap.Entity
         }
 
         */
-
         #endregion
 
         /// <summary>
-        ///     标识字段名称（有些数据库可能内置不支持），该字段不可更新，但是插入数据的时候可以获取该字段
+        /// 标识字段名称（有些数据库可能内置不支持），该字段不可更新，但是插入数据的时候可以获取该字段
         /// </summary>
         protected internal string IdentityName
         {
-            get => Meta.IdentityName;
+            get { return Meta.IdentityName; }
             set
             {
-                if (Meta.Sharing)
-                {
-                    if (string.IsNullOrEmpty(Meta.IdentityName))
+                if (Meta.Sharing) 
+                { 
+                    if(string.IsNullOrEmpty(Meta.IdentityName))
                         Meta.IdentityName = value;
                     else if (Meta.IdentityName != value)
                         Meta = Meta with { IdentityName = value, Sharing = false };
@@ -302,11 +296,11 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        ///     实体类映射的表的架构名字
+        /// 实体类映射的表的架构名字
         /// </summary>
         protected internal string Schema
         {
-            get => Meta.Schema;
+            get { return Meta.Schema; }
             set
             {
                 if (Meta.Sharing)
@@ -324,11 +318,11 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        ///     当前实体类对应的数据源名称，通常对应一个连接字符串名字，用于主子实体查询
+        /// 当前实体类对应的数据源名称，通常对应一个连接字符串名字，用于主子实体查询
         /// </summary>
         protected string DataSource
         {
-            get => Meta.DataSource;
+            get { return Meta.DataSource; }
             set
             {
                 if (Meta.Sharing)
@@ -348,19 +342,19 @@ namespace PWMIS.DataMap.Entity
         private string setingFieldName = string.Empty;
 
         /// <summary>
-        ///     外键
+        /// 外键
         /// </summary>
         private string foreignKeys = string.Empty;
 
-
+       
         /// <summary>
-        ///     实体类对应的数据库表名称
+        /// 实体类对应的数据库表名称
         /// </summary>
         protected internal string TableName
         {
-            set
+            set 
             {
-                if (Meta.Sharing)
+                if (Meta.Sharing) 
                 {
                     if (string.IsNullOrEmpty(Meta.TableName))
                         Meta.TableName = value;
@@ -376,18 +370,19 @@ namespace PWMIS.DataMap.Entity
             {
                 if (EntityMap == EntityMapType.SqlMap)
                 {
-                    var at = Meta.TableName.LastIndexOf('.');
+                    int at = Meta.TableName.LastIndexOf('.');
                     if (at > 0)
                         return Meta.TableName.Substring(at + 1);
-                    return Meta.TableName;
-                }
+                    else
+                        return Meta.TableName;
 
-                return GetTableName();
+                }
+                
+                return this.GetTableName();
             }
         }
-
         /// <summary>
-        ///     将实体类的表名称映射到一个新的表名称
+        /// 将实体类的表名称映射到一个新的表名称
         /// </summary>
         /// <param name="newTableName">新的表名称</param>
         /// <returns>是否成功</returns>
@@ -395,24 +390,23 @@ namespace PWMIS.DataMap.Entity
         {
             if (EntityMap == EntityMapType.Table)
             {
-                TableName = newTableName;
+                this.TableName = newTableName;
                 return true;
             }
-
             return false;
         }
 
         /// <summary>
-        ///     获取带架构的表名称，带中括号
+        /// 获取带架构的表名称，带中括号
         /// </summary>
         /// <returns></returns>
-        protected internal string GetSchemeTableName()
+        protected internal  string GetSchemeTableName()
         {
             if (!string.IsNullOrEmpty(Schema))
                 return string.Format("[{0}].[{1}]", Schema, TableName);
-            return string.Format("[{1}]", Schema, TableName);
+            else
+                return string.Format("[{1}]", Schema, TableName); 
         }
-
         #endregion
 
         #region 属性状态改变状态成员
@@ -421,7 +415,7 @@ namespace PWMIS.DataMap.Entity
         private bool[] changedlist;
 
         /// <summary>
-        ///     重置属性值的修改状态
+        /// 重置属性值的修改状态
         /// </summary>
         protected internal void ResetChanges()
         {
@@ -430,33 +424,35 @@ namespace PWMIS.DataMap.Entity
 
 
         /// <summary>
-        ///     重置实体类全部属性的修改标记。注意，EntityQuery将根据该标记决定更新哪些字段到数据库，
-        ///     它只更新标记为已经修改的实体类属性
+        /// 重置实体类全部属性的修改标记。注意，EntityQuery将根据该标记决定更新哪些字段到数据库，
+        /// 它只更新标记为已经修改的实体类属性
         /// </summary>
         /// <param name="flag">是否已经修改</param>
         public void ResetChanges(bool flag)
         {
             if (changedlist != null)
-                for (var i = 0; i < changedlist.Length; i++)
+            {
+                for (int i = 0; i < changedlist.Length; i++)
                     changedlist[i] = flag;
+            }
         }
 
         /// <summary>
-        ///     设置属性的值是否跟默认值一样，如果一样则表示该属性未更改过，例如在分布式系统中DTO转换到实体类对象后的处理。
-        ///     <remarks>2013.3.26 增加，用在WebService或者WCF的系统中</remarks>
+        /// 设置属性的值是否跟默认值一样，如果一样则表示该属性未更改过，例如在分布式系统中DTO转换到实体类对象后的处理。
+        /// <remarks>2013.3.26 增加，用在WebService或者WCF的系统中</remarks>
         /// </summary>
         public void SetDefaultChanges()
         {
-            for (var i = 0; i < PropertyValues.Length; i++)
+            for (int i = 0; i < PropertyValues.Length; i++)
             {
-                var value = PropertyValues[i];
+                object value = PropertyValues[i];
                 if (value != null && value != DBNull.Value)
                 {
-                    var type = value.GetType();
+                    Type type = value.GetType();
                     if (type.IsValueType)
                     {
-                        var newValue = Activator.CreateInstance(type);
-                        changedlist[i] = !newValue.Equals(value); //等于默认值，未改变
+                        object newValue = Activator.CreateInstance(type);
+                        changedlist[i] = !newValue.Equals(value);//等于默认值，未改变
                     }
                     else if (type == typeof(string))
                     {
@@ -473,17 +469,21 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        ///     属性值被改变的属性名列表
+        /// 属性值被改变的属性名列表
         /// </summary>
         protected internal List<string> PropertyChangedList
         {
             get
             {
-                var list = new List<string>();
+                List<string> list = new List<string>();
                 if (PropertyNames.Length > 0)
-                    for (var i = 0; i < changedlist.Length; i++)
+                {
+                    for (int i = 0; i < changedlist.Length; i++)
+                    {
                         if (changedlist[i])
                             list.Add(PropertyNames[i]);
+                    }
+                }
                 return list;
             }
         }
@@ -493,43 +493,42 @@ namespace PWMIS.DataMap.Entity
         #region 属性获取事件相关
 
         /// <summary>
-        ///     属性获取事件
+        /// 属性获取事件
         /// </summary>
         public event EventHandler<PropertyGettingEventArgs> PropertyGetting;
-
         /// <summary>
-        ///     获取属性的时候
+        /// 获取属性的时候
         /// </summary>
         /// <param name="name"></param>
         protected virtual void OnPropertyGeting(string name)
         {
-            if (PropertyGetting != null) PropertyGetting(this, new PropertyGettingEventArgs(name));
+            if (this.PropertyGetting != null)
+            {
+                this.PropertyGetting(this, new PropertyGettingEventArgs(name));
+            }
         }
-
         #endregion
 
         #region INotifyPropertyChanged 成员
-
         /// <summary>
-        ///     属性改变前事件
+        /// 属性改变前事件
         /// </summary>
         public event EventHandler<PropertyChangingEventArgs> PropertyChanging;
 
         /// <summary>
-        ///     属性改变事件
+        /// 属性改变事件
         /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
-
         /// <summary>
-        ///     触发属性改变事件
+        /// 触发属性改变事件
         /// </summary>
         /// <param name="propertyFieldName">属性改变事件对象</param>
         protected virtual void OnPropertyChanged(string propertyFieldName)
         {
-            if (PropertyChanged != null)
+            if (this.PropertyChanged != null)
             {
-                var currPropName = EntityFieldsCache.Item(GetType()).GetPropertyName(propertyFieldName);
-                PropertyChanged(this, new PropertyChangedEventArgs(currPropName));
+                string currPropName = EntityFieldsCache.Item(this.GetType()).GetPropertyName(propertyFieldName);
+                this.PropertyChanged(this, new PropertyChangedEventArgs(currPropName));
             }
         }
 
@@ -537,15 +536,17 @@ namespace PWMIS.DataMap.Entity
 
         #region IEntity 成员
 
-        private SharedStringList _primaryKeys;
-
+        SharedStringList _primaryKeys;
         /// <summary>
-        ///     主键字段名称列表
+        /// 主键字段名称列表
         /// </summary>
         public SharedStringList PrimaryKeys
         {
-            protected set => _primaryKeys = value;
-            get
+            protected set 
+            {
+                _primaryKeys = value;
+            }
+            get 
             {
                 if (_primaryKeys == null)
                     _primaryKeys = new SharedStringList(GetType());
@@ -555,11 +556,11 @@ namespace PWMIS.DataMap.Entity
 
         public string GetIdentityName()
         {
-            return IdentityName;
+            return this.IdentityName;
         }
 
         /// <summary>
-        ///     获取表名称。如果实体类有分表策略，那么请重写该方法。如果需要自动创建表且表名称中有空格字符，应重写该方法消除空格。
+        /// 获取表名称。如果实体类有分表策略，那么请重写该方法。如果需要自动创建表且表名称中有空格字符，应重写该方法消除空格。
         /// </summary>
         /// <returns></returns>
         public virtual string GetTableName()
@@ -569,7 +570,7 @@ namespace PWMIS.DataMap.Entity
 
 
         /// <summary>
-        ///     新增加实体虚拟字段属性，用来传递内容。注意不检查是否重复
+        /// 新增加实体虚拟字段属性，用来传递内容。注意不检查是否重复
         /// </summary>
         /// <param name="name"></param>
         public void AddPropertyName(string name)
@@ -577,23 +578,23 @@ namespace PWMIS.DataMap.Entity
             if (name == null || name.Length == 0) return;
             var strA = string.Empty;
 
-            var count = PropertyNames.Length + 1;
-            var temp = new string[count];
-            PropertyNames.CopyTo(temp, 0);
+            int count=this.PropertyNames.Length+1;
+            string[] temp = new string[count];
+            this.PropertyNames.CopyTo(temp, 0);
             temp[count - 1] = name;
-            PropertyNames = temp;
+            this.PropertyNames = temp;
 
-            var tempValue = new object[count];
-            PropertyValues.CopyTo(tempValue, 0);
-            PropertyValues = tempValue;
+            object[] tempValue = new object[count];
+            this.PropertyValues.CopyTo(tempValue, 0);
+            this.PropertyValues = tempValue;
 
-            var tempChanges = new bool[count];
-            changedlist.CopyTo(tempChanges, 0);
-            changedlist = tempChanges;
+            bool[] tempChanges = new bool[count];
+            this.changedlist.CopyTo(tempChanges, 0);
+            this.changedlist = tempChanges;
         }
 
         /// <summary>
-        ///     获取属性字段的位置索引，如果找不到，返回-1
+        /// 获取属性字段的位置索引，如果找不到，返回-1
         /// </summary>
         /// <param name="propertyFieldName">属性字段名</param>
         /// <returns>属性字段的位置索引，如果找不到，返回-1</returns>
@@ -602,63 +603,62 @@ namespace PWMIS.DataMap.Entity
             if (string.IsNullOrEmpty(propertyFieldName))
                 return -1;
             string temp = null;
-            var length = propertyFieldName.Length;
-            for (var i = 0; i < PropertyNames.Length; i++)
+            int length = propertyFieldName.Length;
+            for (int i = 0; i < PropertyNames.Length; i++)
             {
                 //原有代码的比较方式不太高效，详细测试代码及原理请参考文章 http://www.cnblogs.com/bluedoctor/p/3899892.html
                 //if (string.Compare(PropertyNames[i], propertyFieldName, true) == 0)
                 temp = PropertyNames[i];
                 if (temp != null && temp.Length == length
-                                 && string.Equals(temp, propertyFieldName, StringComparison.OrdinalIgnoreCase))
+                    && string.Equals(temp, propertyFieldName, StringComparison.OrdinalIgnoreCase))
+                {
                     return i;
+                }
             }
-
             return -1;
         }
 
         /// <summary>
-        ///     获取属性列的值，但不会产生属性获取事件
+        /// 获取属性列的值，但不会产生属性获取事件
         /// </summary>
         /// <param name="propertyFieldName">属性字段名称</param>
         /// <returns>属性值</returns>
         public object PropertyList(string propertyFieldName)
         {
-            var index = GetPropertyFieldNameIndex(propertyFieldName);
+            int index = GetPropertyFieldNameIndex(propertyFieldName);
             if (index == -1)
                 return null;
-            return PropertyValues[index];
+            else
+                return PropertyValues[index];
         }
 
         /// <summary>
-        ///     获取属性的值，如果没有，将返回属性类型的默认值；注意该方法调用将发起属性获取事件 。
+        /// 获取属性的值，如果没有，将返回属性类型的默认值；注意该方法调用将发起属性获取事件 。
         /// </summary>
         /// <param name="propertyName"></param>
         /// <returns></returns>
         public object GetPropertyValueWithEvent(string propertyName)
         {
-            var ef = EntityFieldsCache.Item(GetType());
-            var fieldName = ef.GetPropertyField(propertyName);
+            EntityFields ef = EntityFieldsCache.Item(this.GetType());
+            string fieldName = ef.GetPropertyField(propertyName);
             if (fieldName != null)
             {
-                OnPropertyGeting(fieldName);
-                var result = PropertyList(fieldName);
+                this.OnPropertyGeting(fieldName);
+                object result= PropertyList(fieldName);
                 if (result == null || result == DBNull.Value)
                 {
-                    var propType = ef.GetPropertyType(fieldName);
-                    result = Activator.CreateInstance(propType); //活动类型的默认值
+                    Type propType = ef.GetPropertyType(fieldName);
+                    result = Activator.CreateInstance(propType);//活动类型的默认值
                 }
-
                 return result;
             }
-
-            return new ArgumentOutOfRangeException("不存在指定的属性名：" + propertyName);
+            return new ArgumentOutOfRangeException("不存在指定的属性名："+propertyName);
         }
 
         //[NonSerialized()] 
         private string[] names;
-
         /// <summary>
-        ///     属性字段名列表
+        /// 属性字段名列表
         /// </summary>
         public virtual string[] PropertyNames
         {
@@ -666,10 +666,9 @@ namespace PWMIS.DataMap.Entity
             {
                 if (names == null)
                 {
-                    SetFieldNames();
+                    this.SetFieldNames();
                     changedlist = new bool[names.Length];
                 }
-
                 return names;
             }
             protected internal set
@@ -682,53 +681,51 @@ namespace PWMIS.DataMap.Entity
         #endregion
 
         #region ICloneable 成员
-
         /// <summary>
-        ///     获取当前对象的副本
+        /// 获取当前对象的副本
         /// </summary>
         /// <param name="isDeep">是否深度克隆</param>
         /// <returns>当前对象的副本</returns>
         public object Clone(bool isDeep)
         {
-            var result = MemberwiseClone();
+            object result= this.MemberwiseClone();
             if (isDeep)
             {
-                var entity = (EntityBase)result;
-                var Values = new object[PropertyNames.Length];
-                for (var i = 0; i < Values.Length; i++)
-                    Values[i] = PropertyValues[i];
+                EntityBase entity = (EntityBase)result;
+                object[] Values = new object[this.PropertyNames.Length];
+                for (int i = 0; i < Values.Length; i++)
+                    Values[i] = this.PropertyValues[i];
                 entity.SetPropertyValues(Values);
             }
-
             return result;
         }
 
         /// <summary>
-        ///     返回当前实体对象的深度克隆副本
+        /// 返回当前实体对象的深度克隆副本
         /// </summary>
         /// <returns></returns>
         public object Clone()
         {
-            return Clone(true);
+            return Clone(true );
         }
 
         #endregion
 
         #region 获取或者设置属性值
-
         /// <summary>
-        ///     获取属性值
+        /// 获取属性值
         /// </summary>
         /// <param name="propertyFieldName">属性字段名称</param>
         /// <param name="t">属性类型代码</param>
         /// <returns>属性值</returns>
         protected object getProperty(string propertyFieldName, TypeCode t)
         {
-            OnPropertyGeting(propertyFieldName);
+            this.OnPropertyGeting(propertyFieldName);
 
-            var Value = PropertyList(propertyFieldName);
+            object Value = PropertyList(propertyFieldName);
 
             if (Value == DBNull.Value || Value == null)
+            {
                 switch (t)
                 {
                     case TypeCode.String: return null;
@@ -744,32 +741,32 @@ namespace PWMIS.DataMap.Entity
                     default: return 0.0;
                 }
 
+            }
             return Value;
         }
 
         /// <summary>
-        ///     获取属性值
+        /// 获取属性值
         /// </summary>
         /// <typeparam name="T">值的类型</typeparam>
         /// <param name="propertyFieldName">属性名称</param>
         /// <returns>属性值</returns>
         protected T getProperty<T>(string propertyFieldName)
         {
-            OnPropertyGeting(propertyFieldName);
+            this.OnPropertyGeting(propertyFieldName);
             return CommonUtil.ChangeType<T>(PropertyList(propertyFieldName));
         }
 
         #region 实体类属性索引 2016.3.23
-
         //属性的索引号对应属性值的关系数组
-        private int[] propertyValueIndex;
+        private int[] propertyValueIndex = null;
 
 
         /// <summary>
-        ///     根据属性字段名称和属性索引号，获取属性的值；采用此方法将加快属性值的获取效率。
-        ///     建议实体类属性数量多余10个以上的时候使用本方法，效率将接近 Log(N)=1
-        ///     <example>
-        ///         <![CDATA[
+        /// 根据属性字段名称和属性索引号，获取属性的值；采用此方法将加快属性值的获取效率。
+        /// 建议实体类属性数量多余10个以上的时候使用本方法，效率将接近 Log(N)=1
+        /// <example>
+        /// <![CDATA[
         ///   public string Name
         ///   {
         ///       get{ return getProperty<string>("User Name",1);}
@@ -777,85 +774,85 @@ namespace PWMIS.DataMap.Entity
         ///   }
         /// 
         /// ]]>
-        ///     </example>
+        /// </example>
         /// </summary>
         /// <typeparam name="T">属性类型</typeparam>
         /// <param name="propertyFieldName">属性字段名</param>
         /// <param name="propertyIndex">属性的索引号</param>
         /// <returns>属性值</returns>
-        protected T getProperty<T>(string propertyFieldName, int propertyIndex)
+        protected T getProperty<T>(string propertyFieldName,int propertyIndex)
         {
-            OnPropertyGeting(propertyFieldName);
+            this.OnPropertyGeting(propertyFieldName);
             if (propertyIndex >= 0)
             {
-                var index = getPropertyValueIndex(propertyIndex);
+                int index = getPropertyValueIndex(propertyIndex);
                 if (index == -1)
                 {
                     index = GetPropertyFieldNameIndex(propertyFieldName);
                     if (index == -1)
-                        return default;
-                    propertyValueIndex[propertyIndex] = index;
+                        return default(T);
+                    else
+                        propertyValueIndex[propertyIndex] = index;
                 }
-
                 return CommonUtil.ChangeType<T>(PropertyValues[index]);
             }
-
-            return CommonUtil.ChangeType<T>(PropertyList(propertyFieldName));
+            else
+            {
+                return CommonUtil.ChangeType<T>(PropertyList(propertyFieldName));
+            }
         }
 
         /// <summary>
-        ///     根据实体类属性的索引号，获取实体类属性值的索引
+        /// 根据实体类属性的索引号，获取实体类属性值的索引
         /// </summary>
         /// <param name="propertyIndex">实体类属性的索引号</param>
         /// <returns></returns>
         private int getPropertyValueIndex(int propertyIndex)
         {
-            if (propertyIndex < 0)
+            if (propertyIndex <0 )
                 throw new Exception("当前实体类属性读取方法指定的 属性索引 值不能小于0 ");
             if (propertyValueIndex == null)
             {
                 //下面一行代码会阻塞多余的线程
-                var ef = EntityFieldsCache.Item(GetType());
-                var tempArr = new int[ef.Fields.Length];
-                for (var i = 0; i < tempArr.Length; i++)
-                    tempArr[i] = -1;
+                EntityFields ef = EntityFieldsCache.Item(this.GetType());
+                int[] tempArr = new int[ef.Fields.Length];
+                for (int i = 0; i < tempArr.Length; i++)
+                    tempArr[i] = -1; 
                 if (propertyValueIndex == null)
-                    propertyValueIndex = tempArr;
+                    propertyValueIndex = tempArr; 
             }
-
             if (propertyIndex > propertyValueIndex.Length)
                 throw new Exception("当前实体类属性读取方法指定的 属性索引 值（" + propertyIndex + "）大于可用的实体类属性数量");
-
+          
             return propertyValueIndex[propertyIndex];
         }
 
         #endregion
 
         #region 设置属性值的多个重载相关
-
         /// <summary>
-        ///     设置属性值
+        /// 设置属性值
         /// </summary>
         /// <param name="propertyFieldName">属性字段名</param>
         /// <param name="Value">要设置的值</param>
         protected internal void setProperty(string propertyFieldName, object Value)
         {
-            setPropertyValueAndLength(propertyFieldName, -1, Value, 0, DbType.Object);
+            setPropertyValueAndLength(propertyFieldName,-1, Value, 0, System.Data.DbType.Object);
         }
 
         /// <summary>
-        ///     根据属性字段名和属性的索引号设置属性的值，用于快速设置属性值的情况
+        /// 根据属性字段名和属性的索引号设置属性的值，用于快速设置属性值的情况
         /// </summary>
         /// <param name="propertyFieldName">属性字段名</param>
         /// <param name="propertyIndex">属性的索引号</param>
         /// <param name="Value">要设置的值</param>
-        protected internal void setProperty(string propertyFieldName, int propertyIndex, object Value)
+        protected internal void setProperty(string propertyFieldName,int propertyIndex, object Value)
         {
-            setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, 0, DbType.Object);
+            setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, 0, System.Data.DbType.Object);
         }
 
         /// <summary>
-        ///     设置字符串属性的值，如果值是字符类型且设置了最大长度大于0，那么不允许设置大于此长度的字符串
+        /// 设置字符串属性的值，如果值是字符类型且设置了最大长度大于0，那么不允许设置大于此长度的字符串
         /// </summary>
         /// <param name="propertyFieldName">属性字段名</param>
         /// <param name="Value">要设置的值</param>
@@ -866,19 +863,19 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        ///     设置字符串属性的值，如果值是字符类型且设置了最大长度大于0，那么不允许设置大于此长度的字符串
+        /// 设置字符串属性的值，如果值是字符类型且设置了最大长度大于0，那么不允许设置大于此长度的字符串
         /// </summary>
         /// <param name="propertyFieldName">属性字段名</param>
         /// <param name="Value">要设置的值</param>
         /// <param name="maxLength">字段最大长度，如果为负数，将生成varchar类型的参数</param>
         /// <param name="dbType">字段类型，如果指定，将优先以此参数为准</param>
-        protected internal void setProperty(string propertyFieldName, string Value, int maxLength, DbType dbType)
+        protected internal void setProperty(string propertyFieldName, string Value, int maxLength,System.Data.DbType dbType)
         {
-            setProperty(propertyFieldName, -1, Value, Math.Abs(maxLength), dbType);
+            setProperty(propertyFieldName, -1, Value,Math.Abs( maxLength), dbType);
         }
 
         /// <summary>
-        ///     设置byte[] 类型的属性字段的值
+        /// 设置byte[] 类型的属性字段的值
         /// </summary>
         /// <param name="propertyFieldName">属性字段名</param>
         /// <param name="Value">要设置的值</param>
@@ -887,11 +884,12 @@ namespace PWMIS.DataMap.Entity
         {
             if (Value != null && maxLength > 0 && Value.Length > maxLength)
                 throw new Exception("字段" + propertyFieldName + "的实际长度超出了最大长度" + maxLength);
-            setPropertyValueAndLength(propertyFieldName, -1, Value, maxLength, DbType.Byte);
+            else
+                setPropertyValueAndLength(propertyFieldName, -1, Value, maxLength, System.Data.DbType.Byte);
         }
 
         /// <summary>
-        ///     通过制定属性的索引号，设置属性值
+        /// 通过制定属性的索引号，设置属性值
         /// </summary>
         /// <param name="propertyFieldName">属性字段名</param>
         /// <param name="propertyIndex">属性字段的索引位置</param>
@@ -899,52 +897,52 @@ namespace PWMIS.DataMap.Entity
         /// <param name="maxLength">字符长度</param>
         protected internal void setProperty(string propertyFieldName, int propertyIndex, string Value, int maxLength)
         {
-            var dbType = DbType.String;
+            System.Data.DbType dbType = System.Data.DbType.String;
             if (maxLength <= 0)
-                dbType = DbType.AnsiString;
+                dbType = System.Data.DbType.AnsiString;
 
             if (Value != null && maxLength > 0 && Value.Length > maxLength)
                 throw new Exception("字段" + propertyFieldName + "的实际长度超出了最大长度" + maxLength);
-            setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, maxLength, dbType);
+            else
+                setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, maxLength,dbType);
         }
 
         /// <summary>
-        ///     通过制定属性的索引号，设置属性值
+        /// 通过制定属性的索引号，设置属性值
         /// </summary>
         /// <param name="propertyFieldName">属性字段名</param>
         /// <param name="propertyIndex">属性字段的索引位置</param>
         /// <param name="Value">字符串值</param>
         /// <param name="maxLength">字符长度</param>
         /// <param name="dbType">字段类型</param>
-        protected internal void setProperty(string propertyFieldName, int propertyIndex, string Value, int maxLength,
-            DbType dbType)
+        protected internal void setProperty(string propertyFieldName, int propertyIndex, string Value, int maxLength,System.Data.DbType dbType)
         {
             if (Value != null && maxLength > 0 && Value.Length > maxLength)
                 throw new Exception("字段" + propertyFieldName + "的实际长度超出了最大长度" + maxLength);
-            setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, maxLength, dbType);
+            else
+                setPropertyValueAndLength(propertyFieldName, propertyIndex, Value, maxLength,dbType);
         }
 
 
         /// <summary>
-        ///     设置属性值和长度信息
+        /// 设置属性值和长度信息
         /// </summary>
         /// <param name="propertyFieldName">属性字段名称</param>
         /// <param name="propertyIndex">属性字段索引位置</param>
         /// <param name="Value">属性值</param>
         /// <param name="length"></param>
         /// <param name="dbType">字段类型</param>
-        private void setPropertyValueAndLength(string propertyFieldName, int propertyIndex, object Value, int length,
-            DbType dbType)
+        private void setPropertyValueAndLength(string propertyFieldName,int propertyIndex, object Value,int length,System.Data.DbType dbType)
         {
             //
             //if (_IsTestWriteProperty)
             //    return;
 
-            if (PropertyChanging != null)
+            if (this.PropertyChanging != null)
             {
                 setingFieldName = propertyFieldName;
-                var changingArg = new PropertyChangingEventArgs(propertyFieldName, Value, length, dbType);
-                PropertyChanging(this, changingArg);
+                PropertyChangingEventArgs changingArg = new PropertyChangingEventArgs(propertyFieldName, Value, length, dbType);
+                this.PropertyChanging(this, changingArg);
                 if (changingArg.IsCancel)
                     return;
             }
@@ -962,34 +960,33 @@ namespace PWMIS.DataMap.Entity
             //}
             //用下面的代码替代 GetPropertyFieldNameIndex
 
-            var index = -1;
+            int index = -1;
             if (propertyIndex >= 0 && propertyValueIndex != null)
                 index = propertyValueIndex[propertyIndex];
-            if (index == -1)
+            if(index==-1)
                 index = GetPropertyFieldNameIndex(propertyFieldName);
             if (index >= 0)
             {
                 PropertyValues[index] = Value;
 
-                OnPropertyChanged(propertyFieldName);
+                this.OnPropertyChanged(propertyFieldName);
                 changedlist[index] = true;
                 return;
             }
-
             //可能实体类来自Select 部分字段
             //备份原来的名值组
-            var namesTemp = PropertyNames;
-            var valuesTemp = PropertyValues;
-            var changesTemp = changedlist;
+            string[] namesTemp = PropertyNames;
+            object[] valuesTemp = PropertyValues;
+            bool[] changesTemp = changedlist;
 
             //重置字段名数组，names 为空,PropertyNames调用将会触发调用子类重载的 SetFieldNames 方法。
             names = null;
             values = null;
-            //复制值
-            var setValueFlag = false;
-            for (var i = 0; i < PropertyNames.Length; i++)
+             //复制值
+            bool setValueFlag = false;
+            for (int i = 0; i < PropertyNames.Length; i++)
             {
-                var name = PropertyNames[i];
+                string name = PropertyNames[i];
                 if (propertyFieldName == name)
                 {
                     setValueFlag = true;
@@ -999,52 +996,57 @@ namespace PWMIS.DataMap.Entity
                 else
                 {
                     //如果未找到，说明原来实例对象的属性字段不在实体类的定义的属性字段中,否则，复制值
-                    for (var k = 0; k < namesTemp.Length; k++)
+                    for (int k = 0; k < namesTemp.Length; k++)
+                    {
                         if (namesTemp[k] == name)
                         {
                             PropertyValues[i] = valuesTemp[k];
                             changedlist[i] = changesTemp[k];
                             break;
                         }
+                    }
                 }
             }
-
             if (!setValueFlag)
+            { 
                 //要赋值的字段不在实体类定义的字段名中，抛出异常
-                throw new ArgumentException("属性字段名称 [" + propertyFieldName +
-                                            "] 无效，请检查实体类的当前属性定义和重载的SetFieldNames 方法中对PropertyNames 的设置。");
+                throw new ArgumentException("属性字段名称 [" + propertyFieldName + "] 无效，请检查实体类的当前属性定义和重载的SetFieldNames 方法中对PropertyNames 的设置。");
+            }
             //原来的代码已经优化
+          
         }
-
+        
         #endregion
 
         /// <summary>
-        ///     获取实体类的属性名值对对象
+        /// 获取实体类的属性名值对对象
         /// </summary>
         /// <returns></returns>
         public PropertyNameValues GetNameValues()
         {
-            var result = new PropertyNameValues();
-            result.PropertyNames = PropertyNames;
-            result.PropertyValues = PropertyValues;
+            PropertyNameValues result = new PropertyNameValues();
+            result.PropertyNames = this.PropertyNames;
+            result.PropertyValues = this.PropertyValues;
             return result;
         }
 
         /// <summary>
-        ///     获取实体类属性改变过的属性名称值对象
+        /// 获取实体类属性改变过的属性名称值对象
         /// </summary>
         /// <returns></returns>
         public PropertyNameValues GetChangedValues()
         {
-            var result = new PropertyNameValues();
-            var names = new List<string>();
-            var values = new List<object>();
-            for (var i = 0; i < PropertyNames.Length; i++)
-                if (changedlist[i])
+            PropertyNameValues result = new PropertyNameValues();
+            List<string> names = new List<string>();
+            List<object> values = new List<object>();
+            for (int i = 0; i < this.PropertyNames.Length; i++)
+            {
+                if (this.changedlist[i])
                 {
-                    names.Add(PropertyNames[i]);
-                    values.Add(PropertyValues[i]);
+                    names.Add(this.PropertyNames[i]);
+                    values.Add(this.PropertyValues[i]);                
                 }
+            }
 
             result.PropertyNames = names.ToArray();
             result.PropertyValues = values.ToArray();
@@ -1053,27 +1055,28 @@ namespace PWMIS.DataMap.Entity
 
         //[NonSerialized()] 
         private object[] values;
-
         /// <summary>
-        ///     属性值列表
+        /// 属性值列表
         /// </summary>
         public virtual object[] PropertyValues
         {
             get
             {
-                if (values == null) values = new object[PropertyNames.Length];
+                if (values == null)
+                {
+                    values = new object[PropertyNames.Length];
+                }
                 return values;
             }
-            protected internal set
-            {
+            protected internal set {
                 //重新设置实体类的值得时候，重只修改状态 感谢网友 Panke 发现此Bug
                 changedlist = new bool[names.Length];
-                values = value;
+                values = value; 
             }
         }
 
         /// <summary>
-        ///     设置所有属性的值
+        /// 设置所有属性的值
         /// </summary>
         /// <param name="values"></param>
         public void SetPropertyValues(object[] values)
@@ -1086,10 +1089,9 @@ namespace PWMIS.DataMap.Entity
         #endregion
 
         #region 索引器
-
         /// <summary>
-        ///     获取或者设置指定属性名称的值，属性名必须是一个PDF.NET实体类的属性（调用了getProperty 和 setProperty方法），不能是普通属性。
-        ///     如果属性不存在，获取该属性值将为null，而设置该属性值将抛出异常。
+        /// 获取或者设置指定属性名称的值，属性名必须是一个PDF.NET实体类的属性（调用了getProperty 和 setProperty方法），不能是普通属性。
+        /// 如果属性不存在，获取该属性值将为null，而设置该属性值将抛出异常。
         /// </summary>
         /// <param name="propertyName">属性名称</param>
         /// <returns></returns>
@@ -1097,49 +1099,47 @@ namespace PWMIS.DataMap.Entity
         {
             get
             {
-                var ef = EntityFieldsCache.Item(GetType());
-                var fieldName = ef.GetPropertyField(propertyName);
+                EntityFields ef = EntityFieldsCache.Item(this.GetType());
+                string fieldName = ef.GetPropertyField(propertyName);
                 if (fieldName != null)
                 {
-                    OnPropertyGeting(fieldName);
+                    this.OnPropertyGeting(fieldName);
                     return PropertyList(fieldName);
                 }
-
                 //获取虚拟的字段值
-                return PropertyList(propertyName);
-                ;
+                return PropertyList(propertyName); ;
             }
             set
             {
-                var ef = EntityFieldsCache.Item(GetType());
-                var fieldName = ef.GetPropertyField(propertyName);
+                EntityFields ef = EntityFieldsCache.Item(this.GetType());
+                string fieldName = ef.GetPropertyField(propertyName);
 
                 if (fieldName != null)
                 {
                     //如果是实体类基础定义的字段，必须检查设置的值得类型
                     //2017.5.5 增加类型相容转换处理，包括空字符串，可用于大批量文本数据导入情况
-                    var fieldType = ef.GetPropertyType(fieldName);
+                    Type fieldType = ef.GetPropertyType(fieldName);
                     try
                     {
-                        var Value = CommonUtil.ChangeType(value, fieldType);
-                        setProperty(fieldName, Value);
+                        object Value = CommonUtil.ChangeType(value, fieldType);
+                        this.setProperty(fieldName, Value);
                     }
                     catch (Exception ex)
                     {
                         throw new ArgumentException("实体类的属性字段" + propertyName + " 需要"
-                                                    + fieldType.Name + " 类型的值，但准备赋予的值不是该类型！", ex);
+                            + fieldType.Name + " 类型的值，但准备赋予的值不是该类型！",ex);
                     }
                 }
                 else
                 {
                     //设置虚拟的字段值
-                    setProperty(propertyName, value);
+                    this.setProperty(propertyName, value);
                 }
             }
         }
 
         /// <summary>
-        ///     获取指定索引位置的属性的值
+        /// 获取指定索引位置的属性的值
         /// </summary>
         /// <param name="index"></param>
         /// <returns></returns>
@@ -1147,45 +1147,42 @@ namespace PWMIS.DataMap.Entity
         {
             get
             {
-                if (index < 0 || index > PropertyNames.Length)
+                if (index < 0 || index > this.PropertyNames.Length)
                     return null;
-                var fieldName = PropertyNames[index];
-                OnPropertyGeting(fieldName);
+                string fieldName = this.PropertyNames[index];
+                this.OnPropertyGeting(fieldName);
                 return PropertyList(fieldName);
             }
         }
-
         #endregion
 
         #region 外键处理
-
         /// <summary>
-        ///     设置对应于父实体类的外键字段名称
+        /// 设置对应于父实体类的外键字段名称
         /// </summary>
         /// <typeparam name="Parent">父实体类</typeparam>
         /// <param name="fieldName">外键字段名称，必须是当前实体类使用的一个字段</param>
-        protected internal void SetForeignKey<Parent>(string fieldName) where Parent : EntityBase, new()
+      protected internal void SetForeignKey<Parent>(string fieldName) where Parent:EntityBase,new()
         {
-            var p = new Parent();
-            foreignKeys += "," + fieldName + "@" + p.GetTableName();
+            Parent p = new Parent();
+            this.foreignKeys += "," + fieldName+"@"+p.GetTableName();
         }
 
-        /// <summary>
-        ///     获取对应的父实体类的外键字段名称，如果没有，返回空字符串
-        /// </summary>
-        /// <typeparam name="Parent">父实体类</typeparam>
-        /// <returns>外键字段名称，必须是当前实体类使用的一个字段</returns>
-        public string GetForeignKey<Parent>() where Parent : EntityBase, new()
+       /// <summary>
+       /// 获取对应的父实体类的外键字段名称，如果没有，返回空字符串
+       /// </summary>
+      /// <typeparam name="Parent">父实体类</typeparam>
+      /// <returns>外键字段名称，必须是当前实体类使用的一个字段</returns>
+      public string GetForeignKey<Parent>() where Parent : EntityBase, new()
         {
-            var p = new Parent();
-            var tableName = p.GetTableName();
-            foreach (var str in foreignKeys.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            Parent p = new Parent();
+            string tableName = p.GetTableName();
+            foreach (string str in this.foreignKeys.Split(new char[]{','},StringSplitOptions.RemoveEmptyEntries))
             {
-                var arr = str.Split('@');
+                string[] arr = str.Split('@');
                 if (arr[1] == tableName)
                     return arr[0];
             }
-
             return "";
         }
 
@@ -1193,56 +1190,56 @@ namespace PWMIS.DataMap.Entity
 
         #region 实体类跟POCO类的相互映射
 
-        /// <summary>
-        ///     从POCO实体类获取跟当前实体类的属性名称相同的属性的值，拷贝到当前实体类中，完成数据的映射，并且会比较和设置属性值的改变状态
-        ///     要求拷贝的同名属性是读写属性且类型相同。
+      /// <summary>
+        /// 从POCO实体类获取跟当前实体类的属性名称相同的属性的值，拷贝到当前实体类中，完成数据的映射，并且会比较和设置属性值的改变状态
+        /// 要求拷贝的同名属性是读写属性且类型相同。
         /// </summary>
         /// <param name="pocoClass">POCO实体类，提供源数据</param>
         /// <param name="isChange">是否改变属性的修改状态</param>
         /// <returns>映射成功的属性数量</returns>
-        public int MapFrom(object pocoClass, bool isChange)
+        public int MapFrom(object pocoClass,bool isChange)
         {
-            if (pocoClass == null)
-                return 0;
-            var count = 0;
-            var fcount = PropertyNames.Length;
-            var accessors = new INamedMemberAccessor[fcount];
-            var drm = new DelegatedReflectionMemberAccessor();
-            var type = pocoClass.GetType();
-            var ef = EntityFieldsCache.Item(GetType());
+          if (pocoClass == null)
+              return 0;
+          int count = 0;
+          int fcount=this.PropertyNames.Length;
+          INamedMemberAccessor[] accessors = new INamedMemberAccessor[fcount];
+          DelegatedReflectionMemberAccessor drm = new DelegatedReflectionMemberAccessor();
+          Type type = pocoClass.GetType();
+          var ef= EntityFieldsCache.Item(this.GetType());
 
-            for (var i = 0; i < fcount; i++)
-            {
-                //实体类的属性字段可能跟属性名称不一样 edit at 2015.2.11
-                var perpertyName = ef.GetPropertyName(PropertyNames[i]);
-                accessors[i] = drm.TryFindAccessor(type, perpertyName);
-            }
+          for (int i = 0; i < fcount; i++)
+          {
+              //实体类的属性字段可能跟属性名称不一样 edit at 2015.2.11
+              string perpertyName= ef.GetPropertyName(PropertyNames[i]);
+              accessors[i] = drm.TryFindAccessor(type, perpertyName);
+          }
+          for (int i = 0; i < fcount; i++)
+          {
+              if (accessors[i] != null)
+              {
+                  object pocoPropValue = accessors[i].GetValue(pocoClass);
+                  //设置属性修改状态，需要比较值是否改变
+                  if (isChange && !object.Equals(this.PropertyValues[i], pocoPropValue))
+                  {
+                      this.changedlist[i] = true;
+                      this.PropertyValues[i] = pocoPropValue;
 
-            for (var i = 0; i < fcount; i++)
-                if (accessors[i] != null)
-                {
-                    var pocoPropValue = accessors[i].GetValue(pocoClass);
-                    //设置属性修改状态，需要比较值是否改变
-                    if (isChange && !Equals(PropertyValues[i], pocoPropValue))
-                    {
-                        changedlist[i] = true;
-                        PropertyValues[i] = pocoPropValue;
+                      count++;
+                  }
+                  else
+                  {
+                      this.PropertyValues[i] = pocoPropValue;
 
-                        count++;
-                    }
-                    else
-                    {
-                        PropertyValues[i] = pocoPropValue;
-
-                        count++;
-                    }
-                }
-
-            return count;
+                      count++;
+                  }
+              }
+          }
+          return count;
         }
 
         /// <summary>
-        ///     将当前实体类的属性值（非空值）映射到相同属性名称的POCO实体类中。要求拷贝的同名属性是读写属性且类型相同。
+        /// 将当前实体类的属性值（非空值）映射到相同属性名称的POCO实体类中。要求拷贝的同名属性是读写属性且类型相同。
         /// </summary>
         /// <param name="pocoClass">POCO实体类</param>
         /// <returns>映射成功的属性数量</returns>
@@ -1250,47 +1247,46 @@ namespace PWMIS.DataMap.Entity
         {
             if (pocoClass == null)
                 return 0;
-            var count = 0;
-            var fcount = PropertyNames.Length;
-            var accessors = new INamedMemberAccessor[fcount];
-            var drm = new DelegatedReflectionMemberAccessor();
-            var type = pocoClass.GetType();
-            var ef = EntityFieldsCache.Item(GetType());
-            for (var i = 0; i < fcount; i++)
+            int count = 0;
+            int fcount = this.PropertyNames.Length;
+            INamedMemberAccessor[] accessors = new INamedMemberAccessor[fcount];
+            DelegatedReflectionMemberAccessor drm = new DelegatedReflectionMemberAccessor();
+            Type type = pocoClass.GetType();
+            var ef = EntityFieldsCache.Item(this.GetType());
+            for (int i = 0; i < fcount; i++)
             {
                 //实体类的属性字段可能跟属性名称不一样 edit at 2015.10.24
-                var perpertyName = ef.GetPropertyName(PropertyNames[i]);
+                string perpertyName = ef.GetPropertyName(PropertyNames[i]);
                 accessors[i] = drm.TryFindAccessor(type, perpertyName);
             }
-
-            for (var i = 0; i < fcount; i++)
+            for (int i = 0; i < fcount; i++)
+            {
                 if (accessors[i] != null)
                 {
                     //this.PropertyValues[i] 可能为空，这会导致下面的赋值报错
                     //这种情况可能发生在实体类的数据是经过OQL部分Select 字段造成的，或者字段本身的值为NULL
-                    var Value = PropertyValues[i];
+                    object Value = this.PropertyValues[i];
                     if (Value != null && Value != DBNull.Value)
                     {
                         try
                         {
                             //属性名相同，但是类型不相同，可能出现转换错误。下面捕获异常给出明确提示。edit by bluedoctor,2022-5-3
-                            accessors[i].SetValue(pocoClass, PropertyValues[i]);
+                            accessors[i].SetValue(pocoClass, this.PropertyValues[i]);
                         }
                         catch (Exception ex)
                         {
-                            var errMsg = string.Format("尝试给对象{0} 的属性{1} 设置值的时候错误，详细请见内部错误。实体类同名属性的值：{2}", pocoClass,
-                                PropertyNames[i], PropertyValues[i]);
-                            var ex1 = new Exception(errMsg, ex);
+                            string errMsg = string.Format("尝试给对象{0} 的属性{1} 设置值的时候错误，详细请见内部错误。实体类同名属性的值：{2}", pocoClass.ToString(), PropertyNames[i], this.PropertyValues[i]);
+                            Exception ex1 = new Exception(errMsg, ex);
                             throw ex1;
                         }
-
                         count++;
                     }
                 }
-
+            }
             return count;
         }
 
-        #endregion
+      #endregion
+
     }
 }

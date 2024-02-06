@@ -1,5 +1,8 @@
-﻿using System.Data;
-using PWMIS.DataMap.Entity;
+﻿using PWMIS.DataMap.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace EntityTest
 {
@@ -13,6 +16,12 @@ namespace EntityTest
             //Schema = "dbo";
         }
 
+        //重写GetTableName方法后，必须重写SetFieldNames方法，否则可能堆栈溢出
+        protected override void SetFieldNames()
+        {
+            PropertyNames = new string[] { "User ID", "First Name", "Last Name", "Age" };
+        }
+
         //不重写GetTableName，直接分库来分表
         //public override string GetTableName()
         //{
@@ -21,11 +30,12 @@ namespace EntityTest
 
         public string GetDatabaseName()
         {
-            if (UserID < 1000)
+            if (this.UserID < 1000)
                 return "UserDB1";
-            if (UserID < 2000)
-                return "UserDB2";
-            return "UserDB3";
+            else if (this.UserID < 2000)
+                return "UserDB2"; 
+            else
+                return "UserDB3"; 
         }
 
         public string GetServerName()
@@ -35,33 +45,27 @@ namespace EntityTest
 
         public int UserID
         {
-            get => getProperty<int>("User ID");
-            set => setProperty("User ID", value);
+            get { return getProperty<int>("User ID"); }
+            set { setProperty("User ID", value); }
         }
 
         //指定 DbType.StringFixedLengt 类型，将对应 nchar 字段类型
         public string FirstName
         {
-            get => getProperty<string>("First Name");
-            set => setProperty("First Name", value, 20, DbType.StringFixedLength);
+            get { return getProperty<string>("First Name"); }
+            set { setProperty("First Name", value, 20, System.Data.DbType.StringFixedLength); }
         }
 
         public string LasttName
         {
-            get => getProperty<string>("Last Name");
-            set => setProperty("Last Name", value, 10);
+            get { return getProperty<string>("Last Name"); }
+            set { setProperty("Last Name", value, 10); }
         }
 
         public int Age
         {
-            get => getProperty<int>("Age");
-            set => setProperty("Age", value);
-        }
-
-        //重写GetTableName方法后，必须重写SetFieldNames方法，否则可能堆栈溢出
-        protected override void SetFieldNames()
-        {
-            PropertyNames = new[] { "User ID", "First Name", "Last Name", "Age" };
+            get { return getProperty<int>("Age"); }
+            set { setProperty("Age", value); }
         }
     }
 }

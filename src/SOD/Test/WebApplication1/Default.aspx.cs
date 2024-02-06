@@ -1,34 +1,43 @@
 ﻿using System;
-using System.Text;
+using System.Collections;
+using System.Configuration;
+using System.Data;
+using System.Web;
+using System.Web.Security;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
+using System.Text;
+using TestWebAppModel;
 using System.Xml;
 using System.Xml.Serialization;
-using TestWebAppModel;
+using System.Collections.Generic;
 
 namespace WebApplication1
 {
-    public partial class _Default : Page
+    public partial class _Default : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
             //Dictionary<string, int> StringFieldSize = new Dictionary<string, int>();
-
+            
 
             //序列化测试
-            var sb = new StringBuilder();
-            var xw = XmlWriter.Create(sb);
-            var xs = new XmlSerializer(typeof(Ser_UserInfo));
+            StringBuilder sb = new StringBuilder();
+            XmlWriter xw = XmlWriter.Create(sb);
+            XmlSerializer xs = new XmlSerializer(typeof(Ser_UserInfo));
 
 
-            var user = new Tb_UserInfo(); //创建一个用户对象 
+            Tb_UserInfo user = new Tb_UserInfo();//创建一个用户对象 
             user.UserName = "张三";
             user.ID = 20;
 
-            var sUser = new Ser_UserInfo(user);
+            Ser_UserInfo sUser = new Ser_UserInfo(user);
 
             xs.Serialize(xw, sUser);
 
-            TextBox1.Text = sb.ToString();
+            this.TextBox1.Text = sb.ToString();
         }
     }
 }

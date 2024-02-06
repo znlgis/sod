@@ -1,4 +1,5 @@
-﻿Imports System.Reflection
+﻿Imports System
+Imports System.Reflection
 Imports System.Runtime.InteropServices
 
 ' 有关程序集的常规信息通过下列属性集
@@ -7,12 +8,12 @@ Imports System.Runtime.InteropServices
 
 ' 查看程序集属性的值
 
-<Assembly: AssemblyTitle("PDFDotNET")>
-<Assembly: AssemblyDescription("PDF.NET SOD框架 集成开发工具")>
-<Assembly: AssemblyCompany("PWMIS")>
+<Assembly: AssemblyTitle("PDFDotNET")> 
+<Assembly: AssemblyDescription("PDF.NET SOD框架 集成开发工具")> 
+<Assembly: AssemblyCompany("PWMIS")> 
 <Assembly: AssemblyProduct("PDFDotNET")>
 <Assembly: AssemblyCopyright("Copyright © PWMIS 2019")>
-<Assembly: AssemblyTrademark("SOD")>
+<Assembly: AssemblyTrademark("SOD")> 
 
 <Assembly: ComVisible(False)>
 

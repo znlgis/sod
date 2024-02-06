@@ -1,17 +1,21 @@
-﻿using System.ComponentModel;
-using System.Windows.Forms;
+﻿using PWMIS.Windows.Mvvm;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Text;
 
 namespace PWMIS.Windows.Controls
 {
     /// <summary>
-    ///     命令按钮控件
+    /// 命令按钮控件
     /// </summary>
-    public partial class CommandButon : Button, ICommandControl
+    public partial class CommandButon :System.Windows.Forms.Button,ICommandControl
     {
         public CommandButon()
         {
             InitializeComponent();
-            ControlEvent = "Click";
+            this.ControlEvent = "Click";
         }
 
         public CommandButon(IContainer container)
@@ -19,24 +23,36 @@ namespace PWMIS.Windows.Controls
             container.Add(this);
 
             InitializeComponent();
-            ControlEvent = "Click";
+            this.ControlEvent = "Click";
         }
 
-        [Category("MVVM")]
-        [Description("命令接口对象名称")]
-        public string CommandName { get; set; }
+        [Category("MVVM"), Description("命令接口对象名称")]
+        public string CommandName
+        {
+            get;
+            set;
+        }
 
-        [Category("MVVM")]
-        [Description("当前窗体上提供给命令按钮执行命令的参数关联的参数对象")]
-        public string ParameterObject { get; set; }
+         [Category("MVVM"), Description("当前窗体上提供给命令按钮执行命令的参数关联的参数对象")]
+        public string ParameterObject
+        {
+            get;
+            set;
+        }
 
-        [Category("MVVM")]
-        [Description("关联的参数对象的属性名，执行命令方法的时候将使用它的值作为参数值")]
-        public string ParameterProperty { get; set; }
+         [Category("MVVM"), Description("关联的参数对象的属性名，执行命令方法的时候将使用它的值作为参数值")]
+        public string ParameterProperty
+        {
+            get;
+            set;
+        }
 
-        [Category("MVVM")]
-        [Description("命令关联的控件事件名称")]
-        public string ControlEvent { get; set; }
+         [Category("MVVM"), Description("命令关联的控件事件名称")]
+        public string ControlEvent
+        {
+            get;
+            set;
+        }
 
         /*
         private static readonly object Event_RaiseCommand = new object();
@@ -45,7 +61,7 @@ namespace PWMIS.Windows.Controls
         /// </summary>
         public event EventHandler RaiseCommand
         {
-            add
+            add 
             {
                 base.Events.AddHandler(Event_RaiseCommand, value);
             }
@@ -56,9 +72,12 @@ namespace PWMIS.Windows.Controls
         }
          */
 
-        [Category("MVVM")]
-        [Description("命令接口对象所在的对象名称")]
-        public string CommandObject { get; set; }
+         [Category("MVVM"), Description("命令接口对象所在的对象名称")]
+        public string CommandObject
+        {
+            get;
+            set;
+        }
 
         //[Browsable(false)]
         //public IMvvmCommand Command

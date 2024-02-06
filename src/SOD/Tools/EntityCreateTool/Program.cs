@@ -7,7 +7,7 @@ namespace EntityCreateTool
 {
     internal class Program
     {
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             //EntityCreateTool.exe MyNamespace abc.txt d:\\entitys
             if (args.Length < 3)
@@ -15,7 +15,7 @@ namespace EntityCreateTool
                 Console.WriteLine("SOD 实体类生成工具，命令行：");
                 Console.WriteLine("EntityCreateTool.exe <类命名空间> <表定义文件> <实体类文件输出目录> [DTO类文件输出目录]");
                 Console.WriteLine("表定义文件格式示例：");
-                var formatText = @"
+                string formatText = @"
 # 第一行以 table 开始，第二个单词为表名称，例如 Table1
 table	Table1
 # 该行内容将作为表的说明，下面一行作为表头。每个数据使用制表符分隔，从序号1开始定义第一个字段内容，直到空行结束，然后循环处理下一个表定义。
@@ -34,11 +34,14 @@ table	Table1
                 Console.WriteLine("* namespace:{0}", args[0]);
                 Console.WriteLine("* Table Define File:{0}", args[1]);
                 Console.WriteLine("* Entity File Output path:{0}", args[2]);
-                if (args.Length > 3) Console.WriteLine("DTO File Output path:{0}", args[3]);
+                if(args.Length > 3)
+                {
+                    Console.WriteLine("DTO File Output path:{0}", args[3]);
+                }
                 Console.WriteLine("*----------------------------------------------------------------------");
             }
 
-            var fileFormat = @"
+            string fileFormat = @"
 //-----------------------------------------------------------------
 // SOD Framework (https://github.com/znlgis/sod)
 // EntityCreateTool (Ver 1.0 Date:2023-5-1) Created SOD Entity File.
@@ -67,7 +70,7 @@ namespace #NameSpace#
     }
 }
 ";
-            var fileDtoFormat = @"
+            string fileDtoFormat = @"
 //-----------------------------------------------------------------
 // SOD Framework (https://github.com/znlgis/sod)
 // EntityCreateTool (Ver 1.0 Date:2023-5-1) Created DTO File.
@@ -94,17 +97,17 @@ namespace #NameSpace#
 }
 ";
 
-            var CreatedDate = DateTime.Now.ToString();
-            var strNameSpace = args[0];
-            var ClassName = "Sample";
-            var TableName = "TableName = \"Table1\";";
-            var IdentityName = "";
-            var PrimaryKeys = "";
-            var Propertys = "";
-            var PropertySummary = "/// ";
-            var ClassSummary = "/// ";
+            string CreatedDate = DateTime.Now.ToString();
+            string strNameSpace = args[0];
+            string ClassName = "Sample";
+            string TableName = "TableName = \"Table1\";";
+            string IdentityName = "";
+            string PrimaryKeys = "";
+            string Propertys = "";
+            string PropertySummary = "/// ";
+            string ClassSummary = "/// ";
 
-            var propertyFormat = @"
+            string propertyFormat = @"
         /// <summary>
         #Summary# 
         /// </summary>#Remarks#
@@ -114,7 +117,7 @@ namespace #NameSpace#
             set { setProperty(""#PropertyFiledName#"", value); }
         }
 ";
-            var propertyStrFormat = @"
+            string propertyStrFormat = @"
         /// <summary>
         #Summary#  
         /// </summary>#Remarks#
@@ -124,7 +127,7 @@ namespace #NameSpace#
             set { setProperty(""#PropertyFiledName#"", value,#FieldLength#); }
         }
 ";
-            var propertyDtoFormat = @"
+            string propertyDtoFormat = @"
         /// <summary>
         #Summary# 
         /// </summary>#Remarks#
@@ -135,136 +138,155 @@ namespace #NameSpace#
         }
 ";
 
-            var PropertyType = "int";
-            var PropertyName = "ID";
-            var PropertyFiledName = "ID";
-            var FieldLength = "250";
-            var Remarks = "";
+            string PropertyType = "int";
+            string PropertyName = "ID";
+            string PropertyFiledName = "ID";
+            string FieldLength = "250";
+            string Remarks = "";
 
-            var tableDefineFile = args[1];
-            var EntityOutDir = args[2];
-            var DtoOutDir = args.Length > 3 ? args[3] : "";
+            string tableDefineFile = args[1];
+            string EntityOutDir = args[2];
+            string DtoOutDir = args.Length>3? args[3]:"";
             try
             {
-                if (!Directory.Exists(EntityOutDir)) Directory.CreateDirectory(EntityOutDir);
-                if (DtoOutDir != "" && !Directory.Exists(DtoOutDir)) Directory.CreateDirectory(DtoOutDir);
+                if (!System.IO.Directory.Exists(EntityOutDir))
+                {
+                    System.IO.Directory.CreateDirectory(EntityOutDir);
+                }
+                if (DtoOutDir != "" && !System.IO.Directory.Exists(DtoOutDir))
+                {
+                    System.IO.Directory.CreateDirectory(DtoOutDir);
+                }
             }
-            catch
-            {
+            catch {
                 Console.WriteLine("Directory Access Error.\r\n Entity Out Dir:{0},\r\n DtoOutDir:{1}",
                     EntityOutDir, DtoOutDir);
                 Console.Read();
                 return;
             }
-
-            using (var sr = File.OpenText(tableDefineFile))
+           
+            using (StreamReader sr = File.OpenText(tableDefineFile))
             {
-                var s = "";
+                string s = "";
                 TableName = "";
                 string[] fieldDefine;
-                var propertyList = new List<string>();
-                var propertyDtoList = new List<string>();
+                List<string> propertyList = new List<string>();
+                List<string> propertyDtoList = new List<string>();
 
                 while ((s = sr.ReadLine()) != null)
                 {
                     if (s.StartsWith("#table"))
                     {
-                        var arr = s.Split(new[] { '\t', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        string[] arr = s.Split(new char[] { '\t', ' ' },StringSplitOptions.RemoveEmptyEntries);
                         if (arr.Length >= 2)
+                        {
                             if (TableName != "" && TableName != arr[1])
                             {
                                 //读取到新表的定义，处理上一个表的结果
                                 if (propertyList.Count > 0)
                                 {
-                                    var sb = new StringBuilder();
+                                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
                                     foreach (var property in propertyList)
                                     {
-                                        sb.Append(property);
+                                        sb.Append(property.ToString());
                                         sb.AppendLine();
                                     }
-
                                     Propertys = sb.ToString();
 
-                                    var entityFileText = fileFormat.Replace("#CreatedDate#", CreatedDate)
-                                        .Replace("#NameSpace#", strNameSpace + ".Entitys")
-                                        .Replace("#ClassName#", ClassName)
-                                        .Replace("#TableName#", TableName)
-                                        .Replace("#IdentityName#", IdentityName)
-                                        .Replace("#PrimaryKeys#", PrimaryKeys)
-                                        .Replace("#Propertys#", Propertys)
-                                        .Replace("#ClassSummary#", ClassSummary);
+                                    string entityFileText = fileFormat.Replace("#CreatedDate#", CreatedDate)
+                                       .Replace("#NameSpace#", strNameSpace+".Entitys")
+                                       .Replace("#ClassName#", ClassName)
+                                       .Replace("#TableName#", TableName)
+                                       .Replace("#IdentityName#", IdentityName)
+                                       .Replace("#PrimaryKeys#", PrimaryKeys)
+                                       .Replace("#Propertys#", Propertys)
+                                       .Replace("#ClassSummary#", ClassSummary);
 
                                     //Console.WriteLine(entityFileText);
                                     WriteFile(ClassName, EntityOutDir, ".cs", entityFileText);
                                     Console.WriteLine();
 
                                     //处理DTO文件
-                                    var sbDto = new StringBuilder();
+                                    System.Text.StringBuilder sbDto = new System.Text.StringBuilder();
                                     foreach (var property in propertyDtoList)
                                     {
-                                        sbDto.Append(property);
+                                        sbDto.Append(property.ToString());
                                         sbDto.AppendLine();
                                     }
-
                                     Propertys = sbDto.ToString();
 
-                                    var dtoFileText = fileDtoFormat.Replace("#CreatedDate#", CreatedDate)
-                                        .Replace("#NameSpace#", strNameSpace + ".DTO")
-                                        .Replace("#ClassName#", ClassName)
-                                        .Replace("#Propertys#", Propertys)
-                                        .Replace("#ClassSummary#", ClassSummary);
+                                    string dtoFileText = fileDtoFormat.Replace("#CreatedDate#", CreatedDate)
+                                     .Replace("#NameSpace#", strNameSpace + ".DTO")
+                                     .Replace("#ClassName#", ClassName)
+                                     .Replace("#Propertys#", Propertys)
+                                     .Replace("#ClassSummary#", ClassSummary);
 
                                     if (!string.IsNullOrEmpty(DtoOutDir))
+                                    {
                                         WriteFile(ClassName, DtoOutDir, ".cs", dtoFileText);
+                                    }
                                     else
+                                    {
                                         Console.WriteLine(dtoFileText);
+                                    }
                                     Console.WriteLine();
                                 }
-
                                 propertyList.Clear();
                                 propertyDtoList.Clear();
                             }
-
+                        }
                         TableName = string.Format("TableName = \"{0}\";", arr[1]);
-                        ClassName = arr[1].Replace(" ", "");
+                        ClassName = arr[1].Replace(" ","");
                         if (char.IsLower(ClassName[0]))
+                        {
                             //将首字母转换为大写
                             ClassName = string.Concat(char.ToUpper(ClassName[0]), ClassName.TrimStart(ClassName[0]));
-                        var nextLine = sr.ReadLine();
+                        }
+                        string nextLine = sr.ReadLine();
                         if (nextLine != null)
+                        {
                             ClassSummary = "/// " + nextLine;
+                        }
                         else
+                        {
                             ClassSummary = "/// ";
+                        }
                     }
-
                     //以数字序号开头，可能是字段定义
                     if (s.Length > 0 && char.IsNumber(s[0]))
                     {
                         FieldLength = "";
 
-                        var arr = s.Split('\t');
+                        string[] arr = s.Split('\t');
                         if (arr.Length != 8)
-                            arr = s.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                            arr = s.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); 
                         if (arr.Length != 8)
                             continue;
-                        fieldDefine = arr;
+                        else
+                            fieldDefine = arr;
 
                         PropertyFiledName = fieldDefine[1];
                         PropertyName = PropertyFiledName.Replace(" ", "");
                         if (!char.IsLetter(PropertyName[0]))
+                        {
                             //处理不合法的变量名
                             PropertyName = "P" + PropertyName;
+                        }
                         if (char.IsLower(PropertyName[0]))
+                        {
                             //将首字母转换为大写
-                            PropertyName = string.Concat(char.ToUpper(PropertyName[0]),
-                                PropertyName.TrimStart(PropertyName[0]));
+                            PropertyName=string.Concat(char.ToUpper(PropertyName[0]), PropertyName.TrimStart(PropertyName[0]));
+                        }
 
-                        //计算字段长度和类型
-                        var arr1 = fieldDefine[3].Split('(', ')');
+                            //计算字段长度和类型
+                        string[] arr1 = fieldDefine[3].Split(new char[] { '(', ')' });
                         if (arr1.Length > 1)
                         {
                             int length;
-                            if (int.TryParse(arr1[1], out length)) FieldLength = length.ToString();
+                            if (int.TryParse(arr1[1], out length))
+                            {
+                                FieldLength = length.ToString();
+                            }
                             PropertyType = ChangeDbType(arr1[0], length);
                         }
                         else
@@ -274,16 +296,20 @@ namespace #NameSpace#
 
                         //处理默认值
                         if (fieldDefine[4] == "自增" || fieldDefine[4].ToLower() == "identity")
+                        {
                             IdentityName = string.Format("IdentityName = \"{0}\";", PropertyFiledName);
+                        }
                         //处理主键
                         if (fieldDefine[6] == "是" || fieldDefine[6] == "√" || fieldDefine[6].ToUpper() == "Y")
+                        {
                             PrimaryKeys = string.Format("PrimaryKeys.Add(\"{0}\");", PropertyFiledName);
+                        }
                         //处理属性注释
-                        PropertySummary = "/// " + fieldDefine[2];
-                        Remarks = "";
+                        PropertySummary ="/// " + fieldDefine[2];
+                        Remarks= "";
                         if (!string.IsNullOrEmpty(fieldDefine[7].Trim()))
                         {
-                            var template1 = @"
+                            string template1 = @"
         /// <remarks>
         /// {0}
         /// </remarks>
@@ -291,8 +317,8 @@ namespace #NameSpace#
                             Remarks = string.Format(template1, fieldDefine[7]);
                         }
 
-                        var template = PropertyType == "string" ? propertyStrFormat : propertyFormat;
-                        var propertyItem = template.Replace("#PropertyType#", PropertyType)
+                            string template = PropertyType == "string" ? propertyStrFormat:propertyFormat;
+                        string propertyItem = template.Replace("#PropertyType#", PropertyType)
                             .Replace("#PropertyName#", PropertyName)
                             .Replace("#PropertyFiledName#", PropertyFiledName)
                             .Replace("#FieldLength#", FieldLength)
@@ -301,28 +327,30 @@ namespace #NameSpace#
 
                         propertyList.Add(propertyItem);
 
-                        var propertyDtoItem = propertyDtoFormat.Replace("#PropertyType#", PropertyType)
+                        string propertyDtoItem = propertyDtoFormat.Replace("#PropertyType#", PropertyType)
                             .Replace("#PropertyName#", PropertyName)
                             .Replace("#Summary#", PropertySummary)
                             .Replace("#Remarks#", Remarks);
 
                         propertyDtoList.Add(propertyDtoItem);
-                    } //end if
-                } //end while
+
+                    }//end if
+
+
+                }//end while
 
                 //读取到新表的定义，处理上一个表的结果
                 if (propertyList.Count > 0)
                 {
-                    var sb = new StringBuilder();
+                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
                     foreach (var property in propertyList)
                     {
-                        sb.Append(property);
+                        sb.Append(property.ToString());
                         sb.AppendLine();
                     }
-
                     Propertys = sb.ToString();
 
-                    var entityFileText = fileFormat.Replace("#CreatedDate#", CreatedDate)
+                    string entityFileText = fileFormat.Replace("#CreatedDate#", CreatedDate)
                         .Replace("#NameSpace#", strNameSpace)
                         .Replace("#ClassName#", ClassName)
                         .Replace("#TableName#", TableName)
@@ -336,41 +364,44 @@ namespace #NameSpace#
                     Console.WriteLine();
 
                     //处理DTO文件
-                    var sbDto = new StringBuilder();
+                    System.Text.StringBuilder sbDto = new System.Text.StringBuilder();
                     foreach (var property in propertyDtoList)
                     {
-                        sbDto.Append(property);
+                        sbDto.Append(property.ToString());
                         sbDto.AppendLine();
                     }
-
                     Propertys = sbDto.ToString();
 
-                    var dtoFileText = fileDtoFormat.Replace("#CreatedDate#", CreatedDate)
-                        .Replace("#NameSpace#", strNameSpace + ".DTO")
-                        .Replace("#ClassName#", ClassName)
-                        .Replace("#Propertys#", Propertys)
-                        .Replace("#ClassSummary#", ClassSummary);
+                    string dtoFileText = fileDtoFormat.Replace("#CreatedDate#", CreatedDate)
+                         .Replace("#NameSpace#", strNameSpace + ".DTO")
+                         .Replace("#ClassName#", ClassName)
+                         .Replace("#Propertys#", Propertys)
+                         .Replace("#ClassSummary#", ClassSummary);
 
                     if (!string.IsNullOrEmpty(DtoOutDir))
+                    {
                         WriteFile(ClassName, DtoOutDir, ".cs", dtoFileText);
+                    }
                     else
+                    {
                         Console.WriteLine(dtoFileText);
+                    }
                     Console.WriteLine();
                 }
-
                 propertyList.Clear();
                 propertyDtoList.Clear();
-            } //end using
+
+            }//end using
 
             Console.Read();
         }
 
-        private static string ChangeDbType(string dbType, int length)
+        private static string ChangeDbType(string dbType,int length)
         {
             dbType = dbType.ToLower();
             if (dbType == "varchar" || dbType == "nvarchar" || dbType == "nchar" || dbType == "char")
                 return "string";
-            if (dbType == "int" && length == 64)
+           if (dbType == "int" && length == 64)
                 return "long";
             if (dbType == "int" && length == 16)
                 return "short";
@@ -383,19 +414,20 @@ namespace #NameSpace#
             return dbType;
         }
 
-        private static void WriteFile(string className, string path, string fileExt, string fileContent)
-        {
-            var fileName = className + fileExt;
-            var fullPath = Path.Combine(path, fileName);
+        private static void WriteFile(string className, string path,string fileExt,string fileContent)
+        { 
+            string fileName= className + fileExt;
+            string fullPath = System.IO.Path.Combine(path, fileName);
             try
             {
-                File.WriteAllText(fullPath, fileContent, Encoding.UTF8);
-                Console.WriteLine("Save File OK. path: {0}", fullPath);
+                System.IO.File.WriteAllText(fullPath, fileContent, Encoding.UTF8);
+                Console.WriteLine("Save File OK. path: {0}",fullPath);
             }
-            catch (Exception ex)
+            catch(Exception ex)
             {
-                Console.WriteLine("Save File {0} Exception,Error Message:{1}", fullPath, ex.Message);
+                Console.WriteLine("Save File {0} Exception,Error Message:{1}", fullPath,ex.Message);
             }
+           
         }
     }
 }

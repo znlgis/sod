@@ -2,15 +2,17 @@
  * PDF.NET 数据开发框架
  * http://www.pwmis.com/sqlmap
  */
-
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using PWMIS.DataMap.Entity;
 
 namespace SuperMarketDAL.Entitys
 {
+
     /// <summary>
-    ///     商品销售信息实体
+    /// 商品销售信息实体
     /// </summary>
     public class GoodsSellDetail : EntityBase
     {
@@ -21,44 +23,44 @@ namespace SuperMarketDAL.Entitys
             IdentityName = "销售记录号";
         }
 
+        protected override void SetFieldNames()
+        {
+            PropertyNames = new string[] { "销售记录号", "销售单号", "商品条码", "单价", "数量" };
+        }
+
         public int DetailID
         {
-            get => getProperty<int>("销售记录号");
-            set => setProperty("销售记录号", value);
+            get { return getProperty<int>("销售记录号"); }
+            set { setProperty("销售记录号", value); }
         }
 
         public int NoteID
         {
-            get => getProperty<int>("销售单号");
-            set => setProperty("销售单号", value);
+            get { return getProperty<int>("销售单号"); }
+            set { setProperty("销售单号", value); }
         }
 
         public string SerialNumber
         {
-            get => getProperty<string>("商品条码");
-            set => setProperty("商品条码", value);
+            get { return getProperty<string>("商品条码"); }
+            set { setProperty("商品条码", value); }
         }
 
         public decimal GoodsPrice
         {
-            get => getProperty<decimal>("单价");
-            set => setProperty("单价", value);
+            get { return getProperty<decimal>("单价"); }
+            set { setProperty("单价", value); }
         }
 
         public int SellNumber
         {
-            get => getProperty<int>("数量");
-            set => setProperty("数量", value);
-        }
-
-        protected override void SetFieldNames()
-        {
-            PropertyNames = new[] { "销售记录号", "销售单号", "商品条码", "单价", "数量" };
+            get { return getProperty<int>("数量"); }
+            set { setProperty("数量", value); }
         }
     }
 
     /// <summary>
-    ///     商品销售单据实体
+    /// 商品销售单据实体
     /// </summary>
     public class GoodsSellNote : EntityBase
     {
@@ -69,51 +71,55 @@ namespace SuperMarketDAL.Entitys
             IdentityName = "销售单号";
         }
 
+        protected override void SetFieldNames()
+        {
+            PropertyNames = new string[] { "销售单号", "销售日期", "终端号","客户号", "销售员号", "销售类别" };
+        }
+
 
         public int NoteID
         {
-            get => getProperty<int>("销售单号");
-            set => setProperty("销售单号", value);
+            get { return getProperty<int>("销售单号"); }
+            set { setProperty("销售单号", value); }
         }
 
         public DateTime SellDate
         {
-            get => getProperty<DateTime>("销售日期");
-            set => setProperty("销售日期", value);
+            get { return getProperty<DateTime>("销售日期"); }
+            set { setProperty("销售日期", value); }
         }
 
         public string ManchinesNumber
         {
-            get => getProperty<string>("终端号");
-            set => setProperty("终端号", value);
+            get { return getProperty<string>("终端号"); }
+            set { setProperty("终端号", value); }
         }
 
         public string CustomerID
         {
-            get => getProperty<string>("客户号");
-            set => setProperty("客户号", value);
+            get { return getProperty<string>("客户号"); }
+            set { setProperty("客户号", value); }
         }
 
         public string SalesmanID
         {
-            get => getProperty<string>("销售员号");
-            set => setProperty("销售员号", value);
+            get { return getProperty<string>("销售员号"); }
+            set { setProperty("销售员号", value); }
         }
 
         public string SalesType
         {
-            get => getProperty<string>("销售类别");
-            set => setProperty("销售类别", value);
+            get { return getProperty<string>("销售类别"); }
+            set { setProperty("销售类别", value); }
         }
 
         /// <summary>
-        ///     详细销售记录
+        /// 详细销售记录
         /// </summary>
-        public List<GoodsSellDetail> GoodsSellDetails { get; set; }
-
-        protected override void SetFieldNames()
+        public List<GoodsSellDetail> GoodsSellDetails
         {
-            PropertyNames = new[] { "销售单号", "销售日期", "终端号", "客户号", "销售员号", "销售类别" };
+            get;
+            set;
         }
     }
 }

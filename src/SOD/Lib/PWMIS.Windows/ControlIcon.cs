@@ -1,6 +1,11 @@
-﻿namespace PWMIS.Windows
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace PWMIS.Windows
 {
-    public class ControlIcon
+   public  class ControlIcon
     {
     }
 }
+                                                  

@@ -1,21 +1,23 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace PWMIS.Core
 {
-    internal class RuntimeHandle
+    class RuntimeHandle
     {
-        public RuntimeHandle(RuntimeMethodHandle methodHandle, RuntimeTypeHandle typeHandle)
-        {
-            MethodHandle = methodHandle;
-            TypeHandle = typeHandle;
-            if (typeHandle != null)
-                IsGenericType = true;
-        }
+        public System.RuntimeMethodHandle MethodHandle { get; private set; }
 
-        public RuntimeMethodHandle MethodHandle { get; private set; }
-
-        public RuntimeTypeHandle TypeHandle { get; private set; }
+        public System.RuntimeTypeHandle TypeHandle { get; private set; }
 
         public bool IsGenericType { get; private set; }
+
+        public RuntimeHandle(RuntimeMethodHandle methodHandle, RuntimeTypeHandle typeHandle)
+        {
+            this.MethodHandle = methodHandle;
+            this.TypeHandle = typeHandle;
+            if (typeHandle != null)
+                this.IsGenericType = true;
+        }
     }
 }

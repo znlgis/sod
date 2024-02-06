@@ -1,34 +1,37 @@
-﻿using PWMIS.Common;
-using PWMIS.DataMap.Entity;
+﻿using PWMIS.DataMap.Entity;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace SqlMapDemo
 {
-    public class ScoreEntity : EntityBase
+    public class ScoreEntity:EntityBase
     {
         public ScoreEntity()
         {
             TableName = "Score";
-            EntityMap = EntityMapType.Table;
+            EntityMap = PWMIS.Common.EntityMapType.Table;
             PrimaryKeys.Add("stuID");
             IdentityName = "stuID";
         }
 
-        public int StudentID
-        {
-            get => getProperty<int>("stuID");
-            set => setProperty("stuID", value);
+        public int StudentID 
+        { 
+            get { return getProperty<int>("stuID"); }
+            set { setProperty("stuID", value); }
         }
 
         public string CategoryName
         {
-            get => getProperty<string>("category");
-            set => setProperty("category", value, 50);
+            get { return getProperty<string>("category"); }
+            set { setProperty("category", value,50); }
         }
 
         public int Score
         {
-            get => getProperty<int>("score");
-            set => setProperty("score", value);
+            get { return getProperty<int>("score"); }
+            set { setProperty("score", value); }
         }
     }
 }

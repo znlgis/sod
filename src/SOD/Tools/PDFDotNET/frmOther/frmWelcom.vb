@@ -1,19 +1,16 @@
-﻿Imports System.Configuration
-Imports CefSharp
+﻿Imports CefSharp
 Imports CefSharp.WinForms
 
 Public Class frmWelcom
-    Dim WithEvents WebBrowser1 As ChromiumWebBrowser
+    Dim WithEvents WebBrowser1 As CefSharp.WinForms.ChromiumWebBrowser
     Dim PageLoaded As Boolean
-
     ''' <summary>
-    '''     命令窗体
+    ''' 命令窗体
     ''' </summary>
     ''' <remarks></remarks>
     Public CommandForm As ICommand
-
     ''' <summary>
-    '''     父容器控件
+    ''' 父容器控件
     ''' </summary>
     Public ParentContainer As Control
 
@@ -28,13 +25,12 @@ Public Class frmWelcom
 
     Private Sub frmWelcom_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        If Not Cef.IsInitialized Then
-            Dim setting = New CefSettings()
+        If Not CefSharp.Cef.IsInitialized Then
+            Dim setting As CefSettings = New CefSettings()
             With setting
                 .Locale = "zh-CN"
                 .AcceptLanguageList = "zh-CN"
-                .UserAgent =
-                    "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
+                .UserAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
                 .MultiThreadedMessageLoop = True
                 .SetOffScreenRenderingBestPerformanceArgs()
             End With
@@ -46,16 +42,16 @@ Public Class frmWelcom
                 'SetOffScreenRenderingBestPerformanceArgs 已经调用此方法来设置相同的功能
             End If
 
-            Cef.Initialize(setting)
+            CefSharp.Cef.Initialize(setting)
 
         End If
         SendOperationStatusMessage("Web等待输入网址")
 
-        Me.WebBrowser1 = New ChromiumWebBrowser(Me.txtUrl.Text)
+        Me.WebBrowser1 = New CefSharp.WinForms.ChromiumWebBrowser(Me.txtUrl.Text)
         Me.panBody.Controls.Add(Me.WebBrowser1)
 
         If Not ParentContainer Is Nothing Then
-            Me.WebBrowser1.Size = New Size(ParentContainer.Width, ParentContainer.Height - 50)
+            Me.WebBrowser1.Size = New Drawing.Size(ParentContainer.Width, ParentContainer.Height - 50)
             Me.WebBrowser1.Dock = DockStyle.None
         Else
             btnNewTabWindow.Enabled = False
@@ -103,8 +99,7 @@ Public Class frmWelcom
     End Sub
 
     '独立窗口打开网页
-    Private Sub lnkNewWindow_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) _
-        Handles lnkNewWindow.LinkClicked
+    Private Sub lnkNewWindow_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lnkNewWindow.LinkClicked
         Dim window As New frmWelcom()
         window.CommandForm = Me.CommandForm
         window.HomeUrl = ""
@@ -114,19 +109,20 @@ Public Class frmWelcom
 
     Private Sub WebBrowser1_TitleChanged(sender As Object, e As TitleChangedEventArgs) Handles WebBrowser1.TitleChanged
         Me.Invoke(Sub()
-            Me.Text = e.Title + " @[SOD谷歌极简浏览器]"
-            PageLoaded = True
-        End Sub)
+                      Me.Text = e.Title + " @[SOD谷歌极简浏览器]"
+                      PageLoaded = True
+                  End Sub)
         SendOperationStatusMessage("Web页加载成功")
     End Sub
 
     Private Sub panBody_Resize(sender As Object, e As EventArgs) Handles panBody.Resize
         If PageLoaded Then
             If Not ParentContainer Is Nothing Then
-                Me.WebBrowser1.Size = New Size(ParentContainer.Width, ParentContainer.Height - 50)
+                Me.WebBrowser1.Size = New Drawing.Size(ParentContainer.Width, ParentContainer.Height - 50)
                 Me.WebBrowser1.Dock = DockStyle.None
             End If
         End If
+
     End Sub
 
     Private Sub btnNewTabWindow_Click(sender As Object, e As EventArgs) Handles btnNewTabWindow.Click
@@ -149,9 +145,9 @@ Public Class frmWelcom
     End Sub
 
     Private Sub LoadHotWebSiteInfo()
-        Dim hotCfg As String = ConfigurationManager.AppSettings("HotWebSite")
+        Dim hotCfg As String = System.Configuration.ConfigurationManager.AppSettings("HotWebSite")
         If Not String.IsNullOrEmpty(hotCfg) Then
-            Dim siteList = New List(Of KeyValuePair(Of String, String))
+            Dim siteList As List(Of KeyValuePair(Of String, String)) = New List(Of KeyValuePair(Of String, String))
             siteList.Add(New KeyValuePair(Of String, String)("常用网址", ""))
 
             Dim items As String() = hotCfg.Split(";")
@@ -165,10 +161,10 @@ Public Class frmWelcom
             cmbHotWebSite.DisplayMember = "Key"
             cmbHotWebSite.ValueMember = "Value"
         End If
+
     End Sub
 
-    Private Sub cmbHotWebSite_SelectedIndexChanged(sender As Object, e As EventArgs) _
-        Handles cmbHotWebSite.SelectedIndexChanged
+    Private Sub cmbHotWebSite_SelectedIndexChanged(sender As Object, e As EventArgs) Handles cmbHotWebSite.SelectedIndexChanged
         If cmbHotWebSite.SelectedIndex > 0 Then
             Dim url As String = cmbHotWebSite.SelectedValue
             Me.txtUrl.Text = url

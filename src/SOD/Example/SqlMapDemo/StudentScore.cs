@@ -1,4 +1,9 @@
-﻿namespace SqlMapDemo
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace SqlMapDemo
 {
     public class StudentScore
     {

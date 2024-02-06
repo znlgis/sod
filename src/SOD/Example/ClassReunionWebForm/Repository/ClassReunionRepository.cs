@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
-using PWMIS.Core.Extensions;
+﻿using PWMIS.Core.Extensions;
 using PWMIS.DataMap.Entity;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Web;
 using WebApplication2.Model;
 
 namespace WebApplication2.Repository
@@ -8,13 +12,10 @@ namespace WebApplication2.Repository
     public class ClassReunionRepository : DbContext
     {
         public ClassReunionRepository()
-            : base("accessConn")
+            : base("accessConn") 
         {
+        
         }
-
-        public List<ContactInfo> AllContactInfo => OQL.FromObject<ContactInfo>().ToList(CurrentDataBase);
-
-        public EntityQuery<ContactInfo> UserQuery => NewQuery<ContactInfo>();
 
         protected override bool CheckAllTableExists()
         {
@@ -24,13 +25,29 @@ namespace WebApplication2.Repository
             return true;
         }
 
+        public List<ContactInfo> AllContactInfo
+        {
+            get
+            {
+                return OQL.FromObject<ContactInfo>().ToList(CurrentDataBase);
+            }
+        }
+
         public ContactInfo GetUser(int id)
         {
             return OQL.FromObject<ContactInfo>()
-                .Select()
-                .Where((cmp, e) => cmp.Property(e.CID) == id)
-                .END
-                .ToObject(CurrentDataBase);
+                       .Select()
+                       .Where((cmp, e) => cmp.Property(e.CID) == id)
+                       .END
+                    .ToObject(CurrentDataBase);
+        }
+
+        public EntityQuery<ContactInfo> UserQuery
+        {
+            get
+            {
+                return base.NewQuery<ContactInfo>();
+            }
         }
     }
 }

@@ -1,4 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 
 namespace ConsoleTest
@@ -12,24 +18,24 @@ namespace ConsoleTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Text = textBox1.Text;
-            Close();
+            this.Text = this.textBox1.Text;
+            this.Close();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Text = textBox1.Text;
-            Close();
+            this.Text = this.textBox1.Text;
+            this.Close();
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Text = textBox1.Text;
+            this.Text = this.textBox1.Text;
         }
 
         private void Form1_Activated(object sender, EventArgs e)
         {
-            textBox1.Focus();
+            this.textBox1.Focus();
         }
     }
 }

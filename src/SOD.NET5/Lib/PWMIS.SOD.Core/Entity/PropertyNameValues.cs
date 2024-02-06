@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
@@ -7,49 +7,53 @@ using System.Xml.Serialization;
 namespace PWMIS.DataMap.Entity
 {
     /// <summary>
-    ///     属性名值对对象
+    /// 属性名值对对象
     /// </summary>
+    
     public class PropertyNameValues
     {
+       
         public string[] PropertyNames { get; set; }
 
         public object[] PropertyValues { get; set; }
+
+        
+
     }
 
     /// <summary>
-    ///     属性名值对序列化工具类
+    /// 属性名值对序列化工具类 
     /// </summary>
     public class PropertyNameValuesSerializer
     {
         public PropertyNameValuesSerializer(PropertyNameValues nameValues)
         {
-            CurrNameValues = nameValues;
+            this.CurrNameValues = nameValues;
         }
-
         public PropertyNameValues CurrNameValues { get; private set; }
 
         public string Serializer()
         {
-            var sb = new StringBuilder();
-            var xw = XmlWriter.Create(sb);
-            var xs = new XmlSerializer(typeof(PropertyNameValues));
+            StringBuilder sb = new StringBuilder();
+            XmlWriter xw = XmlWriter.Create(sb);
+            XmlSerializer xs = new XmlSerializer(typeof(PropertyNameValues));
             xs.Serialize(xw, CurrNameValues);
-            var strEntity = sb.ToString();
+            string strEntity = sb.ToString();
             return strEntity;
         }
 
         public T Deserialize<T>(string input) where T : EntityBase, new()
         {
-            var xs = new XmlSerializer(typeof(PropertyNameValues));
+            XmlSerializer xs = new XmlSerializer(typeof(PropertyNameValues));
             //XmlReader xw2 = XmlReader.Create(new System.IO.StringReader(strEntity));
-            var desObj = xs.Deserialize(new StringReader(input));
-            CurrNameValues = desObj as PropertyNameValues;
-            var des = CreateEntity<T>();
+            var desObj = xs.Deserialize(new System.IO.StringReader(input));
+            this.CurrNameValues = desObj as PropertyNameValues;
+            T des = CreateEntity<T>();
             return des;
         }
 
         /// <summary>
-        ///     根据当前类，构造一个新的实体类，注意当前类的属性和值必须跟要构造的实体类匹配，否则将引发异常
+        /// 根据当前类，构造一个新的实体类，注意当前类的属性和值必须跟要构造的实体类匹配，否则将引发异常
         /// </summary>
         /// <typeparam name="T">实体类类型</typeparam>
         /// <returns>实体类</returns>
@@ -61,10 +65,10 @@ namespace PWMIS.DataMap.Entity
                 throw new FormatException("属性值数组不能为空！");
             if (CurrNameValues.PropertyNames.Length != CurrNameValues.PropertyValues.Length)
                 throw new FormatException("属性名和值数组元素数量不匹配");
-            var entity = new T();
-            for (var i = 0; i < CurrNameValues.PropertyNames.Length; i++)
+            T entity = new T();
+            for (int i = 0; i < CurrNameValues.PropertyNames.Length; i++)
             {
-                var name = CurrNameValues.PropertyNames[i];
+                string name = CurrNameValues.PropertyNames[i];
                 entity[name] = CurrNameValues.PropertyValues[i];
             }
 
@@ -72,9 +76,9 @@ namespace PWMIS.DataMap.Entity
         }
 
         /// <summary>
-        ///     填充实体类
-        ///     <example>
-        ///         <code>
+        /// 填充实体类
+        /// <example>
+        /// <code>
         /// <![CDATA[
         ///  //WCF,WebService 等服务方法，para 仅包含实体类上更改过的数据，可调用实体类的GetChangedValues 方法得到
         ///  public void Dosomething(PropertyNameValues para)
@@ -86,7 +90,7 @@ namespace PWMIS.DataMap.Entity
         ///  }
         /// ]]>
         /// </code>
-        ///     </example>
+        /// </example>
         /// </summary>
         /// <param name="entity"></param>
         public void FillEntity(EntityBase entity)
@@ -98,11 +102,12 @@ namespace PWMIS.DataMap.Entity
             if (CurrNameValues.PropertyNames.Length != CurrNameValues.PropertyValues.Length)
                 throw new FormatException("属性名和值数组元素数量不匹配");
 
-            for (var i = 0; i < CurrNameValues.PropertyNames.Length; i++)
+            for (int i = 0; i < CurrNameValues.PropertyNames.Length; i++)
             {
-                var name = CurrNameValues.PropertyNames[i];
+                string name = CurrNameValues.PropertyNames[i];
                 entity[name] = CurrNameValues.PropertyValues[i];
             }
+
         }
     }
 }

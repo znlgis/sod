@@ -1,74 +1,72 @@
-﻿using System;
+﻿using Microsoft.OData.Client;
+using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
-using Microsoft.OData.Client;
-using Microsoft.OData.Edm;
-using Microsoft.OData.Edm.Csdl;
+using System.Text;
 
 namespace PWMIS.OData.Client
 {
     /// <summary>
-    ///     OData V4 Version ASP.NET WebAPI OData RestFull Client Context
-    ///     <remarks>v1.0 2015.4.1 http://www.pwmis.com/sqlmap </remarks>
+    /// OData V4 Version ASP.NET WebAPI OData RestFull Client Context
+    /// <remarks>v1.0 2015.4.1 http://www.pwmis.com/sqlmap </remarks>
     /// </summary>
     public class ODataV4ContextBase : DataServiceContext
     {
         /// <summary>
-        ///     V4 OData Init
+        /// V4 OData Init
         /// </summary>
         /// <param name="serviceRoot">V4 OData ASP.NET WebAPI url base</param>
-        public ODataV4ContextBase(string serviceRoot)
-            : base(new Uri(serviceRoot), ODataProtocolVersion.V4)
+        public ODataV4ContextBase(string  serviceRoot)
+            : base(new System.Uri( serviceRoot), ODataProtocolVersion.V4)
         {
             if (!serviceRoot.EndsWith("/"))
                 serviceRoot = serviceRoot + "/";
-            var gem = new GeneratedEdmModel(serviceRoot);
-            Format.LoadServiceModel = gem.GetEdmModel;
-            Format.UseJson();
+            GeneratedEdmModel gem = new GeneratedEdmModel(serviceRoot);
+            this.Format.LoadServiceModel = gem.GetEdmModel;
+            this.Format.UseJson();
         }
 
         /// <summary>
-        ///     Create a New OData Service Query
+        /// Create a New OData Service Query
         /// </summary>
         /// <typeparam name="T">entity Type class</typeparam>
         /// <param name="name">entitySetName</param>
         /// <returns></returns>
-        public IQueryable<T> CreateNewQuery<T>(string name) where T : class
+        public IQueryable<T> CreateNewQuery<T>(string name) where T:class
         {
             return base.CreateQuery<T>(name);
         }
 
-        private class GeneratedEdmModel
+        class GeneratedEdmModel
         {
-            private readonly string ServiceRootUrl;
-
+            private string ServiceRootUrl;
             public GeneratedEdmModel(string serviceRootUrl)
             {
-                ServiceRootUrl = serviceRootUrl;
+                this.ServiceRootUrl = serviceRootUrl;
             }
 
-            public IEdmModel GetEdmModel()
+            public Microsoft.OData.Edm.IEdmModel GetEdmModel()
             {
-                var metadataUrl = ServiceRootUrl + "$metadata";
+                string metadataUrl = ServiceRootUrl + "$metadata";
                 return LoadModelFromUrl(metadataUrl);
             }
 
-            private IEdmModel LoadModelFromUrl(string metadataUrl)
+            private Microsoft.OData.Edm.IEdmModel LoadModelFromUrl(string metadataUrl)
             {
-                var reader = CreateXmlReaderFromUrl(metadataUrl);
+                System.Xml.XmlReader reader = CreateXmlReaderFromUrl(metadataUrl);
                 try
                 {
-                    return CsdlReader.Parse(reader);
+                    return Microsoft.OData.Edm.Csdl.CsdlReader.Parse(reader);
                 }
                 finally
                 {
-                    ((IDisposable)reader).Dispose();
+                    ((System.IDisposable)(reader)).Dispose();
                 }
             }
 
-            private static XmlReader CreateXmlReaderFromUrl(string inputUri)
+            private static System.Xml.XmlReader CreateXmlReaderFromUrl(string inputUri)
             {
-                return XmlReader.Create(inputUri);
+                return System.Xml.XmlReader.Create(inputUri);
             }
         }
     }

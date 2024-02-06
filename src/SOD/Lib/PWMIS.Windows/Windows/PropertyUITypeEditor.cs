@@ -1,17 +1,22 @@
 ﻿using System;
-using System.ComponentModel;
+using System.Collections.Generic;
+using System.Text;
 using System.Drawing.Design;
-using System.Windows.Forms;
 using System.Windows.Forms.Design;
 using PWMIS.Common;
+using System.Windows.Forms;
+using System.ComponentModel;
 
 namespace PWMIS.Windows
 {
     public class PropertyUITypeEditor : UITypeEditor
     {
-        public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
+        public override UITypeEditorEditStyle GetEditStyle(System.ComponentModel.ITypeDescriptorContext context)
         {
-            if (context != null && context.Instance != null) return UITypeEditorEditStyle.Modal;
+            if (context != null && context.Instance != null)
+            {
+                return UITypeEditorEditStyle.Modal;
+            }
 
             return base.GetEditStyle(context);
         }
@@ -25,8 +30,8 @@ namespace PWMIS.Windows
                 editorService = (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
                 if (editorService != null)
                 {
-                    var control = (IDataControl)context.Instance;
-                    var dlg = new PropertySelectorForm(control);
+                    IDataControl control = (IDataControl)context.Instance;
+                    PropertySelectorForm dlg = new PropertySelectorForm(control);
                     if (dlg.ShowDialog() == DialogResult.OK)
                     {
                         value = dlg.PropertyName;
@@ -37,5 +42,6 @@ namespace PWMIS.Windows
 
             return value;
         }
+
     }
 }

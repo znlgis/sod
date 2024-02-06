@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using PWMIS.Common;
 
 namespace PWMIS.Core
 {
     /*
-     * http://www.cnblogs.com/nankezhishi/archive/2012/02/11/dynamicaccess.html
-     */
+      * http://www.cnblogs.com/nankezhishi/archive/2012/02/11/dynamicaccess.html
+      */
 
     /// <summary>
-    ///     Abstraction of the function of accessing member of a object at runtime.
+    /// Abstraction of the function of accessing member of a object at runtime.
     /// </summary>
     internal interface IMemberAccessor
     {
         /// <summary>
-        ///     Get the member value of an object.
+        /// Get the member value of an object.
         /// </summary>
         /// <param name="instance">The object to get the member value from.</param>
         /// <param name="memberName">The member name, could be the name of a property of field. Must be public member.</param>
@@ -22,7 +23,7 @@ namespace PWMIS.Core
         object GetValue(object instance, string memberName);
 
         /// <summary>
-        ///     Set the member value of an object.
+        /// Set the member value of an object.
         /// </summary>
         /// <param name="instance">The object to get the member value from.</param>
         /// <param name="memberName">The member name, could be the name of a property of field. Must be public member.</param>
@@ -39,45 +40,48 @@ namespace PWMIS.Core
 
     internal class PropertyAccessor<T, P> : INamedMemberAccessor
     {
-        private readonly MyFunc<T, P> GetValueDelegate;
-        private readonly MyAction<T, P> SetValueDelegate;
+        private MyFunc<T, P> GetValueDelegate;
+        private MyAction<T, P> SetValueDelegate;
+        private Type memberType;
 
         public PropertyAccessor(Type type, string propertyName)
         {
             var propertyInfo = type.GetProperty(propertyName);
             if (propertyInfo != null)
             {
-                if (propertyInfo.CanRead)
-                    GetValueDelegate =
-                        (MyFunc<T, P>)Delegate.CreateDelegate(typeof(MyFunc<T, P>), propertyInfo.GetGetMethod());
-                if (propertyInfo.CanWrite)
-                    SetValueDelegate =
-                        (MyAction<T, P>)Delegate.CreateDelegate(typeof(MyAction<T, P>), propertyInfo.GetSetMethod());
+                if(propertyInfo.CanRead)
+                    GetValueDelegate = (MyFunc<T, P>)Delegate.CreateDelegate(typeof(MyFunc<T, P>), propertyInfo.GetGetMethod());
+                if(propertyInfo.CanWrite)
+                    SetValueDelegate = (MyAction<T, P>)Delegate.CreateDelegate(typeof(MyAction<T, P>), propertyInfo.GetSetMethod());
             }
-
-            MemberType = propertyInfo.PropertyType;
+            this.memberType = propertyInfo.PropertyType;
         }
 
         public object GetValue(object instance)
         {
             if (GetValueDelegate != null)
                 return GetValueDelegate((T)instance);
-            return null;
+            else
+                return null;
         }
 
         public void SetValue(object instance, object newValue)
         {
-            if (SetValueDelegate != null)
+            if (SetValueDelegate!=null)
                 SetValueDelegate((T)instance, (P)newValue);
         }
 
 
-        public Type MemberType { get; }
+
+        public Type MemberType
+        {
+            get { return this.memberType; }
+        }
     }
 
     public class DelegatedReflectionMemberAccessor : IMemberAccessor
     {
-        private static readonly Dictionary<string, INamedMemberAccessor> accessorCache = new();
+        private static Dictionary<string, INamedMemberAccessor> accessorCache = new Dictionary<string, INamedMemberAccessor>();
 
         public object GetValue(object instance, string memberName)
         {
@@ -107,7 +111,7 @@ namespace PWMIS.Core
         }
 
         /// <summary>
-        ///     在指定的类型中寻找指定属性名称的属性访问器，如果找不到返回空。
+        /// 在指定的类型中寻找指定属性名称的属性访问器，如果找不到返回空。
         /// </summary>
         /// <param name="type">对象类型</param>
         /// <param name="memberName">属性名称</param>
@@ -117,7 +121,7 @@ namespace PWMIS.Core
             return FindAccessor(type, memberName, false);
         }
 
-        private INamedMemberAccessor FindAccessor(Type type, string memberName, bool throwError)
+        private INamedMemberAccessor FindAccessor(Type type, string memberName,bool throwError)
         {
             var key = type.FullName + memberName;
             INamedMemberAccessor accessor;
@@ -129,12 +133,10 @@ namespace PWMIS.Core
                 {
                     if (throwError)
                         throw new ArgumentException("实体类中没有属性名为" + memberName + " 的属性！");
-                    return null;
+                    else
+                        return null;
                 }
-
-                accessor = Activator.CreateInstance(
-                    typeof(PropertyAccessor<,>).MakeGenericType(type, propertyInfo.PropertyType), type,
-                    memberName) as INamedMemberAccessor;
+                accessor = Activator.CreateInstance(typeof(PropertyAccessor<,>).MakeGenericType(type, propertyInfo.PropertyType), type, memberName) as INamedMemberAccessor;
                 //下面一行在多线程环境下可能会出错，直接使用索引器不会出错。edit by bluedoctor,2022-5-3
                 //accessorCache.Add(key, accessor);
                 accessorCache[key] = accessor;
@@ -143,4 +145,5 @@ namespace PWMIS.Core
             return accessor;
         }
     }
+
 }

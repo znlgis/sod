@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using PWMIS.Common;
+using System.Linq;
+using System.Text;
 using PWMIS.DataMap.Entity;
+using PWMIS.Common;
 
 namespace ConsoleTest
 {
     public class LT_UserRoles : EntityBase
     {
-        public LT_UserRoles()
+   public LT_UserRoles()
         {
             TableName = "LT_UserRoles";
             EntityMap = EntityMapType.Table;
@@ -16,6 +18,8 @@ namespace ConsoleTest
 
             //PrimaryKeys.Add("主键字段名");
             PrimaryKeys.Add("ID");
+
+
         }
 
 
@@ -25,47 +29,59 @@ namespace ConsoleTest
         //}
 
 
+
         /// <summary>
+        /// 
         /// </summary>
-        public int ID
+        public System.Int32 ID
         {
-            get => getProperty<int>("ID");
-            set => setProperty("ID", value);
+            get { return getProperty<System.Int32>("ID"); }
+            set { setProperty("ID", value); }
         }
 
         /// <summary>
+        /// 
         /// </summary>
-        public string RoleName
+        public System.String RoleName
         {
-            get => getProperty<string>("RoleName");
-            set => setProperty("RoleName", value, 50);
+            get { return getProperty<System.String>("RoleName"); }
+            set { setProperty("RoleName", value, 50); }
         }
 
         /// <summary>
+        /// 
         /// </summary>
-        public string NickName
+        public System.String NickName
         {
-            get => getProperty<string>("RoleNickName");
-            set => setProperty("RoleNickName", value, 50);
+            get { return getProperty<System.String>("RoleNickName"); }
+            set { setProperty("RoleNickName", value, 50); }
         }
 
         /// <summary>
+        /// 
         /// </summary>
-        public string Description
+        public System.String Description
         {
-            get => getProperty<string>("Description");
-            set => setProperty("Description", value, 250);
+            get { return getProperty<System.String>("Description"); }
+            set { setProperty("Description", value, 250); }
         }
 
         /// <summary>
+        /// 
         /// </summary>
-        public DateTime AddTime
+        public System.DateTime AddTime
         {
-            get => getProperty<DateTime>("AddTime");
-            set => setProperty("AddTime", value);
+            get { return getProperty<System.DateTime>("AddTime"); }
+            set { setProperty("AddTime", value); }
         }
 
         //关联的实体类集合
-        public List<LT_Users> Users { get; set; }
+        public List<LT_Users> Users
+        {
+            get;
+            set;
+        }
+
     }
+
 }

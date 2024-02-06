@@ -5,9 +5,10 @@ using PWMIS.DataMap.Entity;
 namespace SODTest
 {
     /// <summary>
+    /// 
     /// </summary>
     [Serializable]
-    public class BCustomer : EntityBase
+    public partial class BCustomer : EntityBase
     {
         public BCustomer()
         {
@@ -19,146 +20,130 @@ namespace SODTest
 
         protected override void SetFieldNames()
         {
-            PropertyNames = new[]
-            {
-                "ISID", "vcCode", "vcName", "iAreaID", "iCityID", "vcEasyCode", "vcLinkMan", "vcLinkPhone", "vcLinkFax",
-                "vcLinkEmail", "vcLinkAddress", "InUse", "iParentID", "numDiscount", "CanSetSample"
-            };
+            PropertyNames = new string[] { "ISID", "vcCode", "vcName", "iAreaID", "iCityID", "vcEasyCode", "vcLinkMan", "vcLinkPhone", "vcLinkFax", "vcLinkEmail", "vcLinkAddress", "InUse", "iParentID", "numDiscount", "CanSetSample" };
         }
 
         #region Model
-
         /// <summary>
+        /// 
         /// </summary>
         public int ISID
         {
-            get => getProperty<int>("ISID");
-            set => setProperty("ISID", value);
+            get { return getProperty<int>("ISID"); }
+            set { setProperty("ISID", value); }
         }
-
         /// <summary>
-        ///     公司編碼
+        /// 公司編碼
         /// </summary>
-        public string vcCode
+        public String vcCode
         {
-            get => getProperty<string>("vcCode");
-            set => setProperty("vcCode", value);
+            get { return getProperty<String>("vcCode"); }
+            set { setProperty("vcCode", value); }
         }
-
         /// <summary>
-        ///     公司名稱
+        /// 公司名稱
         /// </summary>
-        public string vcName
+        public String vcName
         {
-            get => getProperty<string>("vcName");
-            set => setProperty("vcName", value);
+            get { return getProperty<String>("vcName"); }
+            set { setProperty("vcName", value); }
         }
-
         /// <summary>
-        ///     区域tb_BAreaID
+        /// 区域tb_BAreaID
         /// </summary>
         public int iAreaID
         {
-            get => getProperty<int>("iAreaID");
-            set => setProperty("iAreaID", value);
+            get { return getProperty<int>("iAreaID"); }
+            set { setProperty("iAreaID", value); }
         }
-
         /// <summary>
+        /// 
         /// </summary>
         public int iCityID
         {
-            get => getProperty<int>("iCityID");
-            set => setProperty("iCityID", value);
+            get { return getProperty<int>("iCityID"); }
+            set { setProperty("iCityID", value); }
         }
-
         /// <summary>
+        /// 
         /// </summary>
-        public string vcEasyCode
+        public String vcEasyCode
         {
-            get => getProperty<string>("vcEasyCode");
-            set => setProperty("vcEasyCode", value);
+            get { return getProperty<String>("vcEasyCode"); }
+            set { setProperty("vcEasyCode", value); }
         }
-
         /// <summary>
-        ///     联系人
+        /// 联系人
         /// </summary>
-        public string vcLinkMan
+        public String vcLinkMan
         {
-            get => getProperty<string>("vcLinkMan");
-            set => setProperty("vcLinkMan", value);
+            get { return getProperty<String>("vcLinkMan"); }
+            set { setProperty("vcLinkMan", value); }
         }
-
         /// <summary>
-        ///     电话
+        /// 电话
         /// </summary>
-        public string vcLinkPhone
+        public String vcLinkPhone
         {
-            get => getProperty<string>("vcLinkPhone");
-            set => setProperty("vcLinkPhone", value);
+            get { return getProperty<String>("vcLinkPhone"); }
+            set { setProperty("vcLinkPhone", value); }
         }
-
         /// <summary>
-        ///     传真
+        /// 传真
         /// </summary>
-        public string vcLinkFax
+        public String vcLinkFax
         {
-            get => getProperty<string>("vcLinkFax");
-            set => setProperty("vcLinkFax", value);
+            get { return getProperty<String>("vcLinkFax"); }
+            set { setProperty("vcLinkFax", value); }
         }
-
         /// <summary>
-        ///     Email
+        /// Email
         /// </summary>
-        public string vcLinkEmail
+        public String vcLinkEmail
         {
-            get => getProperty<string>("vcLinkEmail");
-            set => setProperty("vcLinkEmail", value);
+            get { return getProperty<String>("vcLinkEmail"); }
+            set { setProperty("vcLinkEmail", value); }
         }
-
         /// <summary>
-        ///     地址
+        /// 地址
         /// </summary>
-        public string vcLinkAddress
+        public String vcLinkAddress
         {
-            get => getProperty<string>("vcLinkAddress");
-            set => setProperty("vcLinkAddress", value);
+            get { return getProperty<String>("vcLinkAddress"); }
+            set { setProperty("vcLinkAddress", value); }
         }
-
         /// <summary>
+        /// 
         /// </summary>
-        public string InUse
+        public String InUse
         {
-            get => getProperty<string>("InUse");
-            set => setProperty("InUse", value);
+            get { return getProperty<String>("InUse"); }
+            set { setProperty("InUse", value); }
         }
-
         /// <summary>
-        ///     上级代理商
+        /// 上级代理商
         /// </summary>
         public int iParentID
         {
-            get => getProperty<int>("iParentID");
-            set => setProperty("iParentID", value);
+            get { return getProperty<int>("iParentID"); }
+            set { setProperty("iParentID", value); }
         }
-
         /// <summary>
-        ///     折扣
+        /// 折扣
         /// </summary>
         public decimal numDiscount
         {
-            get => getProperty<decimal>("numDiscount");
-            set => setProperty("numDiscount", value);
+            get { return getProperty<decimal>("numDiscount"); }
+            set { setProperty("numDiscount", value); }
         }
-
         /// <summary>
-        ///     是否可以下样单(0否1是)
+        /// 是否可以下样单(0否1是)
         /// </summary>
         public int CanSetSample
         {
-            get => getProperty<int>("CanSetSample");
-            set => setProperty("CanSetSample", value);
+            get { return getProperty<int>("CanSetSample"); }
+            set { setProperty("CanSetSample", value); }
         }
-
         #endregion Model
     }
 }

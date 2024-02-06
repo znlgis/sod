@@ -1,4 +1,5 @@
-﻿namespace EntityTest
+﻿using System;
+namespace EntityTest
 {
     public interface IUser
     {

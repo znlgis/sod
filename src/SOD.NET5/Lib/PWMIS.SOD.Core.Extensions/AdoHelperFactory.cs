@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Text;
 using PWMIS.DataProvider.Adapter;
 using PWMIS.DataProvider.Data;
 
@@ -7,7 +9,7 @@ namespace PWMIS.Core.Extensions
     public class AdoHelperFactory
     {
         /// <summary>
-        ///     从应用程序配置文件的数据连接配置信息中，根据连接名称信息构造AdoHelper实例对象，
+        /// 从应用程序配置文件的数据连接配置信息中，根据连接名称信息构造AdoHelper实例对象，
         ///     如果providerName配置为[SqlServer/Oracle/Odbc/SQLite]之一且大小写一致，
         ///     那么将直接构造AdoHelper实例对象而不使用任何反射过程。
         /// </summary>
@@ -17,10 +19,10 @@ namespace PWMIS.Core.Extensions
         {
             var connSetting = MyDB.GetDBConnectionSettingInfo(connectionName);
 
-            var providerName = connSetting.Item1;
-            var connectionString = connSetting.Item2;
-            var providerInfo = providerName.Split(',');
-            var helperAssembly = "";
+            string providerName = connSetting.Item1;
+            string connectionString = connSetting.Item2;
+            string[] providerInfo = providerName.Split(',');
+            string helperAssembly = "";
             string helperType;
 
             if (providerInfo.Length == 1)
@@ -49,10 +51,8 @@ namespace PWMIS.Core.Extensions
                         helper4.ConnectionString = connectionString;
                         return helper4;
                 }
-
                 if (helperAssembly == "")
-                    throw new Exception(
-                        "数据访问提供程序名错误。如果是简便名称（没有逗号分隔），必须是[SqlServer/Access/Oledb/Oracle/Odbc/SQLite]之一，且大小写一致。 ");
+                    throw new Exception("数据访问提供程序名错误。如果是简便名称（没有逗号分隔），必须是[SqlServer/Access/Oledb/Oracle/Odbc/SQLite]之一，且大小写一致。 ");
 
                 helperType = "PWMIS.DataProvider.Data." + providerName;
             }
@@ -61,7 +61,6 @@ namespace PWMIS.Core.Extensions
                 helperAssembly = providerInfo[1].Trim();
                 helperType = providerInfo[0].Trim();
             }
-
             return MyDB.GetDBHelper(helperAssembly, helperType, connectionString);
         }
     }

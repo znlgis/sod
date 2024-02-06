@@ -1,12 +1,9 @@
-Imports System.Collections.Generic
-Imports System.ComponentModel
-Imports System.Globalization
-Imports PWMIS.Common
 Imports PWMIS.DataMap.SqlMap
-Imports PWMIS.DataProvider.Adapter
+Imports PWMIS.Common
+Imports System.Collections.Generic
 
 Public Class frmParamsBuilder
-    Inherits Form
+    Inherits System.Windows.Forms.Form
 
 #Region " Windows 窗体设计器生成的代码 "
 
@@ -17,10 +14,11 @@ Public Class frmParamsBuilder
         InitializeComponent()
 
         '在 InitializeComponent() 调用之后添加任何初始化
+
     End Sub
 
     '窗体重写 dispose 以清理组件列表。
-    Protected Overloads Overrides Sub Dispose(disposing As Boolean)
+    Protected Overloads Overrides Sub Dispose(ByVal disposing As Boolean)
         If disposing Then
             If Not (components Is Nothing) Then
                 components.Dispose()
@@ -30,85 +28,83 @@ Public Class frmParamsBuilder
     End Sub
 
     'Windows 窗体设计器所必需的
-    Private components As IContainer
+    Private components As System.ComponentModel.IContainer
 
     '注意: 以下过程是 Windows 窗体设计器所必需的
     '可以使用 Windows 窗体设计器修改此过程。
     '不要使用代码编辑器修改它。
-    Friend WithEvents Label1 As Label
-    Friend WithEvents txtSQL As TextBox
-    Friend WithEvents btnParse As Button
-    Friend WithEvents DataGrid1 As DataGrid
-    Friend WithEvents btnOK As Button
-    Friend WithEvents btnCancel As Button
-    Friend WithEvents DataSet1 As DataSet
-    Friend WithEvents dtParams As DataTable
-    Friend WithEvents ParamName As DataColumn
-    Friend WithEvents PID As DataColumn
-    Friend WithEvents DataType As DataColumn
-    Friend WithEvents FieldType As DataColumn
-    Friend WithEvents FieldSize As DataColumn
-    Friend WithEvents ParaDirect As DataColumn
-    Friend WithEvents cmbDataType As ComboBox
-    Friend WithEvents cmbDBType As ComboBox
-    Friend WithEvents cmbParaDirect As ComboBox
-    Friend WithEvents btnQeuryTest As Button
-    Friend WithEvents paraTestValue As DataColumn
-    Friend WithEvents DataGrid2 As DataGrid
-
-    <DebuggerStepThrough>
-    Private Sub InitializeComponent()
-        Me.Label1 = New Label
-        Me.txtSQL = New TextBox
-        Me.btnParse = New Button
-        Me.DataGrid1 = New DataGrid
-        Me.DataSet1 = New DataSet
-        Me.dtParams = New DataTable
-        Me.PID = New DataColumn
-        Me.ParamName = New DataColumn
-        Me.DataType = New DataColumn
-        Me.FieldType = New DataColumn
-        Me.FieldSize = New DataColumn
-        Me.ParaDirect = New DataColumn
-        Me.paraTestValue = New DataColumn
-        Me.btnOK = New Button
-        Me.btnCancel = New Button
-        Me.cmbDataType = New ComboBox
-        Me.cmbDBType = New ComboBox
-        Me.cmbParaDirect = New ComboBox
-        Me.btnQeuryTest = New Button
-        Me.DataGrid2 = New DataGrid
-        CType(Me.DataGrid1, ISupportInitialize).BeginInit()
-        CType(Me.DataSet1, ISupportInitialize).BeginInit()
-        CType(Me.dtParams, ISupportInitialize).BeginInit()
-        CType(Me.DataGrid2, ISupportInitialize).BeginInit()
+    Friend WithEvents Label1 As System.Windows.Forms.Label
+    Friend WithEvents txtSQL As System.Windows.Forms.TextBox
+    Friend WithEvents btnParse As System.Windows.Forms.Button
+    Friend WithEvents DataGrid1 As System.Windows.Forms.DataGrid
+    Friend WithEvents btnOK As System.Windows.Forms.Button
+    Friend WithEvents btnCancel As System.Windows.Forms.Button
+    Friend WithEvents DataSet1 As System.Data.DataSet
+    Friend WithEvents dtParams As System.Data.DataTable
+    Friend WithEvents ParamName As System.Data.DataColumn
+    Friend WithEvents PID As System.Data.DataColumn
+    Friend WithEvents DataType As System.Data.DataColumn
+    Friend WithEvents FieldType As System.Data.DataColumn
+    Friend WithEvents FieldSize As System.Data.DataColumn
+    Friend WithEvents ParaDirect As System.Data.DataColumn
+    Friend WithEvents cmbDataType As System.Windows.Forms.ComboBox
+    Friend WithEvents cmbDBType As System.Windows.Forms.ComboBox
+    Friend WithEvents cmbParaDirect As System.Windows.Forms.ComboBox
+    Friend WithEvents btnQeuryTest As System.Windows.Forms.Button
+    Friend WithEvents paraTestValue As System.Data.DataColumn
+    Friend WithEvents DataGrid2 As System.Windows.Forms.DataGrid
+    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        Me.Label1 = New System.Windows.Forms.Label
+        Me.txtSQL = New System.Windows.Forms.TextBox
+        Me.btnParse = New System.Windows.Forms.Button
+        Me.DataGrid1 = New System.Windows.Forms.DataGrid
+        Me.DataSet1 = New System.Data.DataSet
+        Me.dtParams = New System.Data.DataTable
+        Me.PID = New System.Data.DataColumn
+        Me.ParamName = New System.Data.DataColumn
+        Me.DataType = New System.Data.DataColumn
+        Me.FieldType = New System.Data.DataColumn
+        Me.FieldSize = New System.Data.DataColumn
+        Me.ParaDirect = New System.Data.DataColumn
+        Me.paraTestValue = New System.Data.DataColumn
+        Me.btnOK = New System.Windows.Forms.Button
+        Me.btnCancel = New System.Windows.Forms.Button
+        Me.cmbDataType = New System.Windows.Forms.ComboBox
+        Me.cmbDBType = New System.Windows.Forms.ComboBox
+        Me.cmbParaDirect = New System.Windows.Forms.ComboBox
+        Me.btnQeuryTest = New System.Windows.Forms.Button
+        Me.DataGrid2 = New System.Windows.Forms.DataGrid
+        CType(Me.DataGrid1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DataSet1, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.dtParams, System.ComponentModel.ISupportInitialize).BeginInit()
+        CType(Me.DataGrid2, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.SuspendLayout()
         '
         'Label1
         '
-        Me.Label1.Location = New Drawing.Point(16, 15)
+        Me.Label1.Location = New System.Drawing.Point(16, 15)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New Size(100, 16)
+        Me.Label1.Size = New System.Drawing.Size(100, 16)
         Me.Label1.TabIndex = 0
         Me.Label1.Text = "查询语句："
         '
         'txtSQL
         '
         Me.txtSQL.AcceptsReturn = True
-        Me.txtSQL.Location = New Drawing.Point(16, 40)
+        Me.txtSQL.Location = New System.Drawing.Point(16, 40)
         Me.txtSQL.Multiline = True
         Me.txtSQL.Name = "txtSQL"
-        Me.txtSQL.ScrollBars = ScrollBars.Both
-        Me.txtSQL.Size = New Size(715, 142)
+        Me.txtSQL.ScrollBars = System.Windows.Forms.ScrollBars.Both
+        Me.txtSQL.Size = New System.Drawing.Size(715, 142)
         Me.txtSQL.TabIndex = 12
         Me.txtSQL.Text = "SQL"
         Me.txtSQL.WordWrap = False
         '
         'btnParse
         '
-        Me.btnParse.Location = New Drawing.Point(88, 8)
+        Me.btnParse.Location = New System.Drawing.Point(88, 8)
         Me.btnParse.Name = "btnParse"
-        Me.btnParse.Size = New Size(86, 25)
+        Me.btnParse.Size = New System.Drawing.Size(86, 25)
         Me.btnParse.TabIndex = 13
         Me.btnParse.Text = "(I)参数分析"
         '
@@ -117,27 +113,22 @@ Public Class frmParamsBuilder
         Me.DataGrid1.CaptionText = "参数信息表"
         Me.DataGrid1.DataMember = "tbParams"
         Me.DataGrid1.DataSource = Me.DataSet1
-        Me.DataGrid1.HeaderForeColor = SystemColors.ControlText
-        Me.DataGrid1.Location = New Drawing.Point(16, 188)
+        Me.DataGrid1.HeaderForeColor = System.Drawing.SystemColors.ControlText
+        Me.DataGrid1.Location = New System.Drawing.Point(16, 188)
         Me.DataGrid1.Name = "DataGrid1"
-        Me.DataGrid1.Size = New Size(715, 168)
+        Me.DataGrid1.Size = New System.Drawing.Size(715, 168)
         Me.DataGrid1.TabIndex = 16
         '
         'DataSet1
         '
         Me.DataSet1.DataSetName = "NewDataSet"
-        Me.DataSet1.Locale = New CultureInfo("zh-CN")
-        Me.DataSet1.Tables.AddRange(New DataTable() {Me.dtParams})
+        Me.DataSet1.Locale = New System.Globalization.CultureInfo("zh-CN")
+        Me.DataSet1.Tables.AddRange(New System.Data.DataTable() {Me.dtParams})
         '
         'dtParams
         '
-        Me.dtParams.Columns.AddRange(
-            New DataColumn() _
-                                        {Me.PID, Me.ParamName, Me.DataType, Me.FieldType, Me.FieldSize, Me.ParaDirect,
-                                         Me.paraTestValue})
-        Me.dtParams.Constraints.AddRange(
-            New Constraint() _
-                                            {New UniqueConstraint("Constraint1", New String() {"编号"}, False)})
+        Me.dtParams.Columns.AddRange(New System.Data.DataColumn() {Me.PID, Me.ParamName, Me.DataType, Me.FieldType, Me.FieldSize, Me.ParaDirect, Me.paraTestValue})
+        Me.dtParams.Constraints.AddRange(New System.Data.Constraint() {New System.Data.UniqueConstraint("Constraint1", New String() {"编号"}, False)})
         Me.dtParams.TableName = "tbParams"
         '
         'PID
@@ -184,50 +175,50 @@ Public Class frmParamsBuilder
         '
         'btnOK
         '
-        Me.btnOK.Location = New Drawing.Point(553, 9)
+        Me.btnOK.Location = New System.Drawing.Point(553, 9)
         Me.btnOK.Name = "btnOK"
-        Me.btnOK.Size = New Size(75, 23)
+        Me.btnOK.Size = New System.Drawing.Size(75, 23)
         Me.btnOK.TabIndex = 17
         Me.btnOK.Text = "(&Y)确定"
         '
         'btnCancel
         '
-        Me.btnCancel.DialogResult = DialogResult.Cancel
-        Me.btnCancel.Location = New Drawing.Point(656, 9)
+        Me.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel
+        Me.btnCancel.Location = New System.Drawing.Point(656, 9)
         Me.btnCancel.Name = "btnCancel"
-        Me.btnCancel.Size = New Size(75, 23)
+        Me.btnCancel.Size = New System.Drawing.Size(75, 23)
         Me.btnCancel.TabIndex = 18
         Me.btnCancel.Text = "(&C)取消"
         '
         'cmbDataType
         '
-        Me.cmbDataType.Location = New Drawing.Point(208, 233)
+        Me.cmbDataType.Location = New System.Drawing.Point(208, 233)
         Me.cmbDataType.Name = "cmbDataType"
-        Me.cmbDataType.Size = New Size(66, 20)
+        Me.cmbDataType.Size = New System.Drawing.Size(66, 20)
         Me.cmbDataType.TabIndex = 19
         Me.cmbDataType.Text = "DataType"
         '
         'cmbDBType
         '
-        Me.cmbDBType.Location = New Drawing.Point(280, 233)
+        Me.cmbDBType.Location = New System.Drawing.Point(280, 233)
         Me.cmbDBType.Name = "cmbDBType"
-        Me.cmbDBType.Size = New Size(75, 20)
+        Me.cmbDBType.Size = New System.Drawing.Size(75, 20)
         Me.cmbDBType.TabIndex = 20
         Me.cmbDBType.Text = "DBType"
         '
         'cmbParaDirect
         '
-        Me.cmbParaDirect.Location = New Drawing.Point(424, 233)
+        Me.cmbParaDirect.Location = New System.Drawing.Point(424, 233)
         Me.cmbParaDirect.Name = "cmbParaDirect"
-        Me.cmbParaDirect.Size = New Size(80, 20)
+        Me.cmbParaDirect.Size = New System.Drawing.Size(80, 20)
         Me.cmbParaDirect.TabIndex = 21
         Me.cmbParaDirect.Text = "Direction"
         '
         'btnQeuryTest
         '
-        Me.btnQeuryTest.Location = New Drawing.Point(208, 8)
+        Me.btnQeuryTest.Location = New System.Drawing.Point(208, 8)
         Me.btnQeuryTest.Name = "btnQeuryTest"
-        Me.btnQeuryTest.Size = New Size(92, 25)
+        Me.btnQeuryTest.Size = New System.Drawing.Size(92, 25)
         Me.btnQeuryTest.TabIndex = 22
         Me.btnQeuryTest.Text = "(&Q)查询测试"
         '
@@ -235,18 +226,18 @@ Public Class frmParamsBuilder
         '
         Me.DataGrid2.CaptionText = "查询结果"
         Me.DataGrid2.DataMember = ""
-        Me.DataGrid2.HeaderForeColor = SystemColors.ControlText
-        Me.DataGrid2.Location = New Drawing.Point(16, 363)
+        Me.DataGrid2.HeaderForeColor = System.Drawing.SystemColors.ControlText
+        Me.DataGrid2.Location = New System.Drawing.Point(16, 363)
         Me.DataGrid2.Name = "DataGrid2"
-        Me.DataGrid2.Size = New Size(715, 176)
+        Me.DataGrid2.Size = New System.Drawing.Size(715, 176)
         Me.DataGrid2.TabIndex = 23
         '
         'frmParamsBuilder
         '
         Me.AcceptButton = Me.btnOK
-        Me.AutoScaleBaseSize = New Size(6, 14)
+        Me.AutoScaleBaseSize = New System.Drawing.Size(6, 14)
         Me.CancelButton = Me.btnCancel
-        Me.ClientSize = New Size(746, 551)
+        Me.ClientSize = New System.Drawing.Size(746, 551)
         Me.Controls.Add(Me.DataGrid2)
         Me.Controls.Add(Me.btnQeuryTest)
         Me.Controls.Add(Me.cmbParaDirect)
@@ -258,16 +249,17 @@ Public Class frmParamsBuilder
         Me.Controls.Add(Me.btnParse)
         Me.Controls.Add(Me.txtSQL)
         Me.Controls.Add(Me.Label1)
-        Me.FormBorderStyle = FormBorderStyle.FixedDialog
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.MaximizeBox = False
         Me.Name = "frmParamsBuilder"
         Me.Text = "参数生成器"
-        CType(Me.DataGrid1, ISupportInitialize).EndInit()
-        CType(Me.DataSet1, ISupportInitialize).EndInit()
-        CType(Me.dtParams, ISupportInitialize).EndInit()
-        CType(Me.DataGrid2, ISupportInitialize).EndInit()
+        CType(Me.DataGrid1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DataSet1, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.dtParams, System.ComponentModel.ISupportInitialize).EndInit()
+        CType(Me.DataGrid2, System.ComponentModel.ISupportInitialize).EndInit()
         Me.ResumeLayout(False)
         Me.PerformLayout()
+
     End Sub
 
 #End Region
@@ -277,21 +269,21 @@ Public Class frmParamsBuilder
     Private _QueryType As String
 
     ''' <summary>
-    '''     数据库类型
+    ''' 数据库类型
     ''' </summary>
     ''' <value></value>
     ''' <returns></returns>
     ''' <remarks></remarks>
-    Public Property DataBaseType As DBMSType
+    Public Property DataBaseType() As DBMSType
 
 
-    Public Property SqlMapScript As String
-        Set
+    Public Property SqlMapScript() As String
+        Set(ByVal Value As String)
             _SqlMapScript = Value
             '进行参数初始化
             Dim sqlMap As New SqlMapper
             Dim connStr As String = ""
-            sqlMap.DataBase = MyDB.GetDBHelper(Me.DataBaseType, connStr)
+            sqlMap.DataBase = PWMIS.DataProvider.Adapter.MyDB.GetDBHelper(Me.DataBaseType, connStr)
             'sqlMap.DataBase.DataBaseType = Me.DataBaseType
 
             sqlMap.GetScriptInfo(_SqlMapScript)
@@ -321,35 +313,36 @@ Public Class frmParamsBuilder
         End Get
     End Property
 
-    Public Property SqlText As String
+    Public Property SqlText() As String
         Get
             Return Me.txtSQL.Text
         End Get
-        Set
+        Set(ByVal Value As String)
             Me.txtSQL.Text = Value
         End Set
     End Property
 
-    Public Property CommandType As String
+    Public Property CommandType() As String
         Get
             Return _CommandType
         End Get
-        Set
+        Set(ByVal Value As String)
             _CommandType = Value
         End Set
     End Property
 
-    Public Property QueryType As String
+    Public Property QueryType() As String
         Get
             Return _QueryType
         End Get
-        Set
+        Set(ByVal Value As String)
             _QueryType = Value
         End Set
     End Property
 
 
-    Private Sub frmParamsBuilder_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
+    Private Sub frmParamsBuilder_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         LoadSelectedType()
 
         'AddParameterData("@aaa", "String")
@@ -358,27 +351,25 @@ Public Class frmParamsBuilder
 
     Private Sub LoadSelectedType()
 
-        Dim ArrTemp() As String = [Enum].GetNames(GetType(TypeCode))
+        Dim ArrTemp() As String = System.Enum.GetNames(GetType(System.TypeCode))
         ReDim Preserve ArrTemp(ArrTemp.Length)
         ArrTemp(ArrTemp.Length - 1) = "<自动>"
         Me.cmbDataType.DataSource = ArrTemp
         Me.cmbDataType.Visible = False
 
-        ArrTemp = [Enum].GetNames(GetType(DbType))
+        ArrTemp = System.Enum.GetNames(GetType(System.Data.DbType))
         ReDim Preserve ArrTemp(ArrTemp.Length)
         ArrTemp(ArrTemp.Length - 1) = "<自动>"
         Me.cmbDBType.DataSource = ArrTemp
         Me.cmbDBType.Visible = False
-        ArrTemp = [Enum].GetNames(GetType(ParameterDirection))
+        ArrTemp = System.Enum.GetNames(GetType(System.Data.ParameterDirection))
         ReDim Preserve ArrTemp(ArrTemp.Length)
         ArrTemp(ArrTemp.Length - 1) = "<自动>"
         Me.cmbParaDirect.DataSource = ArrTemp
         Me.cmbParaDirect.Visible = False
     End Sub
 
-    Sub AddParameterData(sParamName As String, Optional ByVal sDataType As String = "",
-                         Optional ByVal sFieldType As String = "", Optional ByVal iSize As Integer = 0,
-                         Optional ByVal sParamDirect As String = "")
+    Sub AddParameterData(ByVal sParamName As String, Optional ByVal sDataType As String = "", Optional ByVal sFieldType As String = "", Optional ByVal iSize As Integer = 0, Optional ByVal sParamDirect As String = "")
         '除sParamName　外，空　表示未定义
         If sParamName = "" Then Exit Sub
         Dim dr As DataRow = Me.dtParams.NewRow()
@@ -390,7 +381,7 @@ Public Class frmParamsBuilder
         Me.dtParams.Rows.Add(dr)
     End Sub
 
-    Private Sub DataGrid1_CurrentCellChanged(sender As Object, e As EventArgs) Handles DataGrid1.CurrentCellChanged
+    Private Sub DataGrid1_CurrentCellChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles DataGrid1.CurrentCellChanged
         Select Case DataGrid1.CurrentCell.ColumnNumber
             Case 2
                 ShowSelectedComb(Me.cmbDataType)
@@ -411,40 +402,40 @@ Public Class frmParamsBuilder
         End Select
     End Sub
 
-    Private Sub ShowSelectedComb(myCmbCtr As ComboBox)
+    Private Sub ShowSelectedComb(ByVal myCmbCtr As System.Windows.Forms.ComboBox)
         myCmbCtr.Width = DataGrid1.GetCurrentCellBounds.Width
         myCmbCtr.Left = DataGrid1.Left + DataGrid1.GetCurrentCellBounds.Left
         myCmbCtr.Top = DataGrid1.Top + DataGrid1.GetCurrentCellBounds.Top
-        myCmbCtr.Text = IIf(DataGrid1.Item(DataGrid1.CurrentCell) Is DBNull.Value, "",
-                            DataGrid1.Item(DataGrid1.CurrentCell))
+        myCmbCtr.Text = IIf(DataGrid1.Item(DataGrid1.CurrentCell) Is System.DBNull.Value, "", DataGrid1.Item(DataGrid1.CurrentCell))
         myCmbCtr.Visible = True
     End Sub
 
-    Private Sub DataGrid1_Scroll(sender As Object, e As EventArgs) Handles DataGrid1.Scroll
+    Private Sub DataGrid1_Scroll(ByVal sender As Object, ByVal e As System.EventArgs) Handles DataGrid1.Scroll
         Me.cmbDataType.Visible = False
         Me.cmbDBType.Visible = False
         Me.cmbParaDirect.Visible = False
     End Sub
 
-    Private Sub cmbDataType_TextChanged(sender As Object, e As EventArgs) Handles cmbDataType.TextChanged
-        If DataGrid1.CurrentRowIndex <> - 1 And DataGrid1.CurrentCell.ColumnNumber = 2 Then
+    Private Sub cmbDataType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbDataType.TextChanged
+        If DataGrid1.CurrentRowIndex <> -1 And DataGrid1.CurrentCell.ColumnNumber = 2 Then
             DataGrid1.Item(DataGrid1.CurrentCell) = cmbDataType.SelectedItem
         End If
+
     End Sub
 
-    Private Sub cmbDBType_TextChanged(sender As Object, e As EventArgs) Handles cmbDBType.TextChanged
-        If DataGrid1.CurrentRowIndex <> - 1 And DataGrid1.CurrentCell.ColumnNumber = 3 Then
+    Private Sub cmbDBType_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbDBType.TextChanged
+        If DataGrid1.CurrentRowIndex <> -1 And DataGrid1.CurrentCell.ColumnNumber = 3 Then
             DataGrid1.Item(DataGrid1.CurrentCell) = cmbDBType.SelectedItem
         End If
     End Sub
 
-    Private Sub cmbParaDirect_TextChanged(sender As Object, e As EventArgs) Handles cmbParaDirect.TextChanged
-        If DataGrid1.CurrentRowIndex <> - 1 And DataGrid1.CurrentCell.ColumnNumber = 5 Then
+    Private Sub cmbParaDirect_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cmbParaDirect.TextChanged
+        If DataGrid1.CurrentRowIndex <> -1 And DataGrid1.CurrentCell.ColumnNumber = 5 Then
             DataGrid1.Item(DataGrid1.CurrentCell) = cmbParaDirect.SelectedItem
         End If
     End Sub
 
-    Private Sub btnParse_Click(sender As Object, e As EventArgs) Handles btnParse.Click
+    Private Sub btnParse_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnParse.Click
         Dim SqlParaNames As ArrayList = GetSqlParameterNames(txtSQL.Text)
         Dim ParamExists As Boolean
         '参数不存在方可添加
@@ -458,9 +449,10 @@ Public Class frmParamsBuilder
             Next
             If Not ParamExists Then AddParameterData(SqlParaNames(I))
         Next
+
     End Sub
 
-    Private Function GetSqlParameterNames(SQL As String) As ArrayList
+    Private Function GetSqlParameterNames(ByVal SQL As String) As ArrayList
         'Dim SQL As String = txtSQL.Text
         Dim ArrTemp As New ArrayList
         Dim strTemp As String
@@ -495,7 +487,7 @@ Public Class frmParamsBuilder
         Return ArrTemp
     End Function
 
-    Private Function GetSqlMapScript(SQL As String) As String
+    Private Function GetSqlMapScript(ByVal SQL As String) As String
         'Dim SQL As String = Me.txtSQL.Text
         Dim Paraname As String
         Dim ParamMapString As String
@@ -504,13 +496,13 @@ Public Class frmParamsBuilder
                 Paraname = .Item(1)
                 If Paraname <> "" Then
                     ParamMapString = Mid(Paraname, 2)
-                    If Not .Item(2) Is DBNull.Value AndAlso .Item(2) <> "<自动>" Then
+                    If Not .Item(2) Is System.DBNull.Value AndAlso .Item(2) <> "<自动>" Then
                         ParamMapString &= ":" & .Item(2)
-                        If Not .Item(3) Is DBNull.Value AndAlso .Item(3) <> "<自动>" Then
+                        If Not .Item(3) Is System.DBNull.Value AndAlso .Item(3) <> "<自动>" Then
                             ParamMapString &= "," & .Item(3)
-                            If Not .Item(4) Is DBNull.Value AndAlso .Item(4) <> 0 Then
+                            If Not .Item(4) Is System.DBNull.Value AndAlso .Item(4) <> 0 Then
                                 ParamMapString &= "," & .Item(4)
-                                If Not .Item(5) Is DBNull.Value AndAlso .Item(5) <> "<自动>" Then
+                                If Not .Item(5) Is System.DBNull.Value AndAlso .Item(5) <> "<自动>" Then
                                     ParamMapString &= "," & .Item(5)
                                 End If
                             End If
@@ -524,22 +516,22 @@ Public Class frmParamsBuilder
         Return SQL
     End Function
 
-    Private Sub btnOK_Click(sender As Object, e As EventArgs) Handles btnOK.Click
+    Private Sub btnOK_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnOK.Click
         _SqlMapScript = GetSqlMapScript(Me.txtSQL.Text)
         Me.Close()
     End Sub
 
-    Private Sub btnCancel_Click(sender As Object, e As EventArgs) Handles btnCancel.Click
+    Private Sub btnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel.Click
         Me.Close()
     End Sub
 
-    Private Sub DataGrid1_Click(sender As Object, e As EventArgs) Handles DataGrid1.Click
+    Private Sub DataGrid1_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles DataGrid1.Click
         Me.cmbDataType.Visible = False
         Me.cmbDBType.Visible = False
         Me.cmbParaDirect.Visible = False
     End Sub
 
-    Private Sub btnQeuryTest_Click(sender As Object, e As EventArgs) Handles btnQeuryTest.Click
+    Private Sub btnQeuryTest_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnQeuryTest.Click
         If CurrDataBase Is Nothing Then
             MsgBox("请先设置数据库连接（在主界面单击配置按钮）", MsgBoxStyle.Exclamation, "查询测试")
             Exit Sub
@@ -558,12 +550,13 @@ Public Class frmParamsBuilder
 
         For I As Integer = 0 To params.Length - 1
             Dim strValue As Object = dtParams.Rows(I)(6)
-            If strValue Is DBNull.Value Then
+            If strValue Is System.DBNull.Value Then
                 MsgBox("参数[" & params(I).ParameterName & "] 未赋值！", MsgBoxStyle.Critical, "查询测试")
                 Exit Sub
             End If
             params(I).Value = strValue
         Next
+
 
 
         For Each RP As String In sqlMap.ParamsReplaceable
@@ -586,8 +579,7 @@ Public Class frmParamsBuilder
         Try
             Select Case queryType
                 Case enumQueryType.Select
-                    Dim ds As DataSet = CurrDataBase.ExecuteDataSet(CurrDataBase.ConnectionString, commandType,
-                                                                    commandText, params)
+                    Dim ds As DataSet = CurrDataBase.ExecuteDataSet(CurrDataBase.ConnectionString, commandType, commandText, params)
                     DataGrid2.DataSource = ds.Tables(0)
                     MsgBox("查询数据集成功！")
                     If ds.Tables.Count > 1 Then
@@ -598,8 +590,7 @@ Public Class frmParamsBuilder
                         Next
                     End If
                 Case enumQueryType.Delete, enumQueryType.Update
-                    Dim count As Integer = CurrDataBase.ExecuteNonQuery(CurrDataBase.ConnectionString, commandType,
-                                                                        commandText, params)
+                    Dim count As Integer = CurrDataBase.ExecuteNonQuery(CurrDataBase.ConnectionString, commandType, commandText, params)
                     If count > 0 Then
                         MsgBox("命令执行成功，本次执行受影响的行数：" + CStr(count))
                     End If
@@ -609,5 +600,6 @@ Public Class frmParamsBuilder
         Catch ex As Exception
             MsgBox("查询失败：" + ex.Message + vbCrLf + "请先用参数分析检查是否还有替换参数。", MsgBoxStyle.Critical, "查询测试")
         End Try
+
     End Sub
 End Class
