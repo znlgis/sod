@@ -18,6 +18,7 @@
 	  <PackageTags>ORM,SqlMap</PackageTags>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <FileVersion>6.0.11.23</FileVersion>
   </PropertyGroup>
 	
   <ItemGroup>

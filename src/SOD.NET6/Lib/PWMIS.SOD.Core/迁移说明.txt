@@ -1,0 +1,15 @@
+﻿PDF.NET SOD框架 支持.NET 5.0 升级迁移说明
+PWMIS.Core 迁移说明
+------------------------------------------------
+1，修改程序集名称由 PWMIS.Core 为 PWMIS.SOD.Core
+2，程序集目标框架为 .NET Standard 2.0,以便支持.NET 4.7,4.8,.net core 2.0-3.1,.NET 5.0,.NET 6.0及之后版本
+3，从此程序集移除下面的数据访问驱动程序到独立的程序集
+  ODBC， OleDb/Access,SQLite,Oracle
+4，PWMIS.SOD.Core 仅直接支持SqlServer和ODBC驱动
+5，不再支持RemoteLoader功能，即无法在IDE里面直接反射调用Winform/WebForm控件
+6，DbContext类从PWMIS.SOD.Core.Extenstions移植到本程序集内
+7，MyDB不再支持通过应用程序配置文件配置EngineType 生成AdoHelper对象，也不再支持GetConnectionString方法
+8，ModelCast从PWMIS.SOD.Core.Extensions移动到PWMIS.SOD.Core项目，方便实体类和DTO类之间的转换
+
+迁移时间：2020.10.10
+深蓝医生

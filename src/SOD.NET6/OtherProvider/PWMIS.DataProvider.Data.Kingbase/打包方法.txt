@@ -1,0 +1,77 @@
+﻿要将项目引用的DLL文件打包到Nuget包中，需要修改项目文件。
+参考下面文章：
+《NuGet 打包并包含dll等资源的配置 解决方案》(https://www.cnblogs.com/microestc/articles/12963891.html)
+
+本项目文件修改如下：
+---------------------------------------------------------------
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>PWMIS.KingbaseClient</AssemblyName>
+    <Description>SOD框架支持.NET 6以及之后的版本的人大金仓数据提供程序</Description>
+    <Copyright>PWMIS.COM</Copyright>
+    <Version>6.0.2</Version>
+    <Company>PWMIS（程序员蜜糍）</Company>
+    <Authors>深蓝医生</Authors>
+    <PackageId>PWMIS.SOD.Kingbase.Provider</PackageId>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>SOD框架支持.NET 6以及之后的版本的人大金仓数据提供程序</Title>
+    <PackageProjectUrl>https://github.com/znlgis/sod</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/znlgis/sod</RepositoryUrl>
+    <PackageTags>SOD;SqlMap;ORM;DataForms;Kingbase</PackageTags>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageReadmeFile>国产化支持.md</PackageReadmeFile>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);LibContentTarget</TargetsForTfmSpecificBuildOutput>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
+  </PropertyGroup>
+  <Target Name="LibContentTarget">
+    <ItemGroup>
+      <TfmSpecificPackageFile Include="$(OutputPath)Kdbndp.dll" >
+        <PackagePath>lib\$(TargetFramework)</PackagePath>
+      </TfmSpecificPackageFile>
+    </ItemGroup>
+  </Target>
+  <ItemGroup>
+    <None Include="..\..\..\..\国产化支持.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\PWMIS.SOD.Core\PWMIS.SOD.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Kdbndp">
+      <HintPath>..\..\RefDll\Kdbndp.dll</HintPath>
+      <PrivateAssets>all</PrivateAssets>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resource.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
+
+------------------------------------------------
+注：由于Kdbndp.dll 直接从Nuget引用了，所以本文的打包方案不适用了。
+有关Kdbndp的使用，参考官方文档：
+客户端编程接口 ：
+https://help.kingbase.com.cn/v8/development/client-interfaces/index.html
+https://help.kingbase.com.cn/v8/development/client-interfaces/ado-net/ado-net-1.html#kingbasees-net-data-provider
+https://help.kingbase.com.cn/v8/development/develop-transfer/kes-vs-mysql/kes-vs-mysql-1.html
+

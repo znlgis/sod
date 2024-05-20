@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>PWMIS.DaMengClient</AssemblyName>
+    <Description>SOD框架支持.NET Core/.NET 5以及之后的版本的达梦数据提供程序</Description>
+    <Copyright>PWMIS.COM</Copyright>
+    <Version>6.0.0</Version>
+    <Company>PWMIS（程序员蜜糍）</Company>
+    <Authors>深蓝医生</Authors>
+    <PackageId>PWMIS.SOD.DaMeng.Provider</PackageId>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>SOD框架支持.NET 6以及之后的版本的达梦数据提供程序</Title>
+    <PackageProjectUrl>https://github.com/znlgis/sod</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/znlgis/sod</RepositoryUrl>
+    <PackageTags>SOD;SqlMap;ORM;DataForms;Dameng</PackageTags>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageReadmeFile>国产化支持.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\国产化支持.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DM.DmProvider" Version="8.3.1.24059" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\PWMIS.SOD.Core\PWMIS.SOD.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -35,6 +35,9 @@ namespace OQLTest
             //Console.Read();
 
             //p.TestMapOql();
+            p.TestV_userFavorites();
+            p.TestV_userFavorites2();
+
             p.Test1();
             p.Test2();
             p.Test3();
@@ -46,6 +49,7 @@ namespace OQLTest
             p.TestIfCondition2();
             p.TestChild();
             p.TestChild2();
+            p.TestChild3();
             p.TestOQLOrder();
             p.TestUpdate();
             p.TestDelete();
@@ -447,6 +451,29 @@ namespace OQLTest
             OQL q = OQL.From(user)
                 .Select()
                 .Where(cmp => cmp.Comparer(user.RoleID, "=", childFunc))
+                .END;
+
+            q.SelectStar = true;
+            Console.WriteLine("OQL by 高级子查询Test:\r\n{0}", q);
+            Console.WriteLine(q.PrintParameterInfo());
+        }
+
+        void TestChild3()
+        {
+            /*
+             SELECT * FROM [LT_Users] p WHERE ID =
+  (SELECT MAX(ID) FROM LT_Users WHERE  UserName=p.UserName)
+             */
+            Users user = new Users() ;
+            Users userParent = new Users();
+
+            OQLChildFunc child = parent => OQL.From(parent, user)
+              .Select().Max(user.ID, "")
+              .Where(cmp => cmp.Comparer(user.UserName, "=", userParent.UserName))
+              .END;
+            OQL q = OQL.From(userParent)
+                .Select()
+                .Where(cmp => cmp.Comparer(userParent.ID, "=", child))
                 .END;
 
             q.SelectStar = true;
@@ -984,6 +1011,100 @@ FROM [dbo].[OrderFailed]
             string sqlOrder2 = sob.Build(50, "Age>=20");
         }
 
+        private void TestV_userFavorites()
+        {
+            int pageSize = 2;
+            int pageCurrent = 2;
+
+            MyDbContext dbContext = new MyDbContext();
+            var db_cdr = dbContext.CurrentDataBase;
+
+            v_userFavorites entity0 = new v_userFavorites();
+            entity0.ID = new Random().Next();
+            entity0.Idx = 1;
+            entity0.Name = "test";
+            entity0.FavoritesID = 1;
+            entity0.note = "note";
+            entity0.PatientID = 1;
+            entity0.PatientName = "test";
+            dbContext.Add(entity0);
+
+            v_userFavorites entityQ = new v_userFavorites();
+            entityQ.Idx = 1;
+
+            OQLCompareFunc<v_userFavorites> cmpFun = (cmp, u) =>
+            {
+                OQLCompare cmpResult = null;
+                cmpResult = cmpResult & cmp.Comparer(entityQ.PatientID, OQLCompare.CompareType.Greater, 1);
+
+                return cmpResult;
+            };
+
+            OQL qList = OQL.From(entityQ).Select().Where(cmpFun).OrderBy(entityQ.PatientID, "desc").END;
+            //查询总条数
+            OQL qCount = OQL.From(entityQ).Select().Count(entityQ.ID, "").Where(cmpFun).END; 
+            dbContext.CurrentDataBase.Logger.WriteLog("================-TestV_userFavorites-Begin====1======================");
+            int listCount = EntityQuery<v_userFavorites>.QueryObject(qCount, db_cdr).ID;//总条数
+            //构造分页
+            qList.Limit(pageSize, pageCurrent);//分页大小，第几页
+            qList.PageWithAllRecordCount = listCount;
+            //获取分页后的实体列表
+            var list = EntityQuery<v_userFavorites>.QueryList(qList, db_cdr);
+
+            dbContext.CurrentDataBase.Logger.WriteLog("================-TestV_userFavorites-End=======1===================");
+            //调用Flush方法，用于立即查看日志
+            dbContext.CurrentDataBase.Logger.Flush();
+
+        }
+
+        private void TestV_userFavorites2()
+        {
+            int pageSize = 5;
+            int pageCurrent = 1;
+
+            MyDbContext dbContext = new MyDbContext();
+            var db_cdr = dbContext.CurrentDataBase;
+
+            v_userFavorites entity0 = new v_userFavorites();
+            entity0.ID = new Random().Next();
+            entity0.Idx = 1;
+            entity0.Name = "test";
+            entity0.FavoritesID = 1;
+            entity0.note = "note";
+            entity0.PatientID = 1;
+            entity0.PatientName = "test";
+            dbContext.Add(entity0);
+
+            v_userFavorites entityQ = new v_userFavorites();
+            entityQ.Idx = 1;
+
+       
+            OQLCompareFunc<v_userFavorites> cmpFun = (cmp, u) =>
+            {
+                OQLCompare cmpResult = null;
+                cmpResult = cmpResult & cmp.Comparer(entityQ.PatientID, OQLCompare.CompareType.Equal, 5);
+
+                return cmpResult;
+            };
+
+            OQL qList = OQL.From(entityQ).Select().Where(cmpFun).OrderBy(entityQ.PatientID, "desc").END;
+            //查询总条数
+            OQL qCount = OQL.From(entityQ).Select().Count(entityQ.ID, "").Where(cmpFun).END;
+
+            dbContext.CurrentDataBase.Logger.WriteLog("================-TestV_userFavorites-Begin=======2==================");
+            int listCount = EntityQuery<v_userFavorites>.QueryObject(qCount, db_cdr).ID;//总条数
+            //构造分页
+            qList.Limit(pageSize, pageCurrent);//分页大小，第几页
+            qList.PageWithAllRecordCount = listCount;
+            //获取分页后的实体列表
+            var list = EntityQuery<v_userFavorites>.QueryList(qList, db_cdr);
+
+            dbContext.CurrentDataBase.Logger.WriteLog("================-TestV_userFavorites-End=========2=================");
+            //调用Flush方法，用于立即查看日志
+            dbContext.CurrentDataBase.Logger.Flush();
+
+        }
+
     }
 
     
@@ -1210,6 +1331,8 @@ FROM [dbo].[OrderFailed]
             }//end for
             return -1;
         }
+
+
     }
 
 }

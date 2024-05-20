@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>SOD框架支持.NET 6以及之后的版本迁移升级的版本</Description>
+    <Version>6.0.0</Version>
+    <Copyright>PWMIS.COM</Copyright>
+    <Company>PWMIS（程序员蜜糍）</Company>
+    <Authors>深蓝医生</Authors>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>SOD框架核心库功能扩展</Title>
+    <PackageProjectUrl>https://github.com/znlgis/sod</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/znlgis/sod</RepositoryUrl>
+    <PackageId>PWMIS.SOD.Extensions</PackageId>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageIcon>sod.png</PackageIcon>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageReleaseNotes>SOD扩展库，包括OQL扩展、实体类扩展，以及OleDb、ODBC、Oracle和SQLite数据提供程序。</PackageReleaseNotes>
+    <PackageTags>SOD;SqlMap;ORM;DataForms;ODBC;OleDB;Oracle;SQLite</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\..\..\sod.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Data.Sqlite.Core" Version="3.1.8" />
+    <PackageReference Include="System.Data.Odbc" Version="8.0.0" />
+    <PackageReference Include="System.Data.OleDb" Version="8.0.0" />
+    <PackageReference Include="System.Data.OracleClient" Version="1.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PWMIS.SOD.Core\PWMIS.SOD.Core.csproj" />
+  </ItemGroup>
+
+</Project>

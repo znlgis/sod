@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>SOD框架支持.NET 6以及之后的版本迁移升级的版本</Description>
+    <Version>6.0.0</Version>
+    <Copyright>PWMIS.COM</Copyright>
+    <Company>PWMIS（程序员蜜糍）</Company>
+    <Authors>深蓝医生</Authors>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>SOD框架核心库</Title>
+    <PackageProjectUrl>https://github.com/znlgis/sod</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/znlgis/sod</RepositoryUrl>
+    <PackageId>PWMIS.SOD</PackageId>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <TargetFramework>net6.0</TargetFramework>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageIcon>sod.png</PackageIcon>
+    <PackageReleaseNotes>SOD核心库，包括SqlServer数据访问提供程序</PackageReleaseNotes>
+    <PackageTags>SOD;SqlMap;ORM;DataForms;SqlServer</PackageTags>
+  </PropertyGroup>
+	
+  <ItemGroup>
+    <Compile Remove="CommUtil\RemoteLoaderFactory.cs" />
+    <Compile Remove="DataProvider\Access.cs" />
+    <Compile Remove="DataProvider\ODBC.cs" />
+    <Compile Remove="DataProvider\OleDB.cs" />
+    <Compile Remove="DataProvider\Oracle.cs" />
+    <Compile Remove="DataProvider\SQLite.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\..\..\sod.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

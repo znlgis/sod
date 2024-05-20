@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>PWMIS.MySqlClient</AssemblyName>
+    <Description>SOD框架支持.NET Core/.NET 5以及之后的版本的MySQL数据提供程序</Description>
+    <Copyright>PWMIS.COM</Copyright>
+    <Version>6.0.0</Version>
+    <Company>PWMIS（程序员蜜糍）</Company>
+    <Authors>深蓝医生</Authors>
+    <PackageId>PWMIS.SOD.MySQL.Provider</PackageId>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>SOD框架支持.NET 6以及之后的版本的MySQL数据提供程序</Title>
+    <PackageProjectUrl>https://github.com/znlgis/sod</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/znlgis/sod</RepositoryUrl>
+    <PackageTags>SOD;SqlMap;ORM;DataForms;MySQL</PackageTags>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="8.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\PWMIS.SOD.Core\PWMIS.SOD.Core.csproj" />
+  </ItemGroup>
+
+</Project>

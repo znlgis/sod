@@ -6,6 +6,7 @@
  */
 using PWMIS.DataMap.Entity;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace ConsoleAppTest
@@ -46,7 +47,19 @@ namespace ConsoleAppTest
 
             se["AtTime"] = DateTime.Now.ToString();
             Console.WriteLine("AtTime:{0}", se.AtTime);
+            try
+            {
+                //字段长度超长测试
+                se.Name = new string('a', 101);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+           
             Console.ReadLine();
         }
+
+       
     }
 }

@@ -43,7 +43,7 @@ namespace PWMIS.DataProvider.Data
     /// </summary>
     public class CommandLog
     {
-        private const int BufferCount = 20;//每20条写入一次
+        private const int BufferCount = 2000;//每2000条写入一次，以应对疯狂的日志写入请求
         private static CommandLog _Instance;
         private static object lockObj = new object();
         private System.Diagnostics.Stopwatch watch = null;
@@ -346,19 +346,19 @@ namespace PWMIS.DataProvider.Data
     {
         public InnerLogWriter()
         {
-            this.LogBufferCount = 20;
+            this.LogBufferCount = 2000;
             this._logBuffer.Add("--SQLLog (Thread ID " + System.Threading.Thread.CurrentThread.ManagedThreadId + ") Init----");
         }
         public string DataLogFile { get; set; }
         public bool SaveCommandLog { get; set; }
         /// <summary>
-        /// 默认每满20条写入
+        /// 默认每满2000条写入
         /// </summary>
         public int LogBufferCount { get; set; }
 
         private List<string> _logBuffer = new List<string>();
         private DateTime _lastWrite = DateTime.Now;
-        private const int WriteTime = 20;//20秒写入一次
+        private const int WriteTime = 30;//30秒写入一次
         private static object sync_obj = new object();
 
         /// <summary>
@@ -419,7 +419,7 @@ namespace PWMIS.DataProvider.Data
                             System.IO.File.Move(DataLogFile, bakFilePath);
                         }
                        
-                        //edit at 2012.10.17 改成无锁异步写如日志文件，2017.9.30日修改，增加说明
+                        //edit at 2012.10.17 改成无锁异步写入日志文件，2017.9.30日修改，增加说明
                         //不能将fs 放到Using下面，会导致句柄无效
                         FileStream fs = new FileStream(DataLogFile, FileMode.Append, FileAccess.Write,
                             FileShare.Write, 2048, FileOptions.Asynchronous);

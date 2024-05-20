@@ -8,7 +8,7 @@ using PWMIS.DataMap.Entity;
 namespace UPMS.Core.Model
 {
     /// <summary>
-    /// 瀹炰綋鏄犲皠锛氫釜浜篲瑙掕壊鍏崇郴琛?
+    /// 
     /// </summary>
     public class Base_Person_RoleInfo : EntityBase
     {
@@ -24,7 +24,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 缂栧彿
+        /// 
         /// </summary>
         public string Id
         {
@@ -33,7 +33,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 涓汉缂栧彿
+        /// 
         /// </summary>
         public string PersonId
         {
@@ -42,7 +42,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 瑙掕壊缂栧彿
+        /// 
         /// </summary>
         public int RoleId
         {

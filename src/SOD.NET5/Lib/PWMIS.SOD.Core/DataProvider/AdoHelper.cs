@@ -30,6 +30,9 @@ using System.Collections.Generic;
 using PWMIS.Core;
 using PWMIS.DataProvider.Adapter;
 using PWMIS.Common;
+using System.Data.Common;
+using System.Threading.Tasks;
+
 namespace PWMIS.DataProvider.Data
 {
     /// <summary>
@@ -384,6 +387,151 @@ namespace PWMIS.DataProvider.Data
             IDataReader reader = FormatExecuteDataReader(sqlFormat, parameters);
             return QueryList<T>(reader);
         }
+
+        //异步方法
+
+        /// <summary>
+        /// 执行不返回值的查询，如果此查询出现了错误并且设置 OnErrorThrow 属性为 是，将抛出错误；否则将返回 -1，此时请检查ErrorMessage属性；
+        /// 如果此查询在事务中并且出现了错误，将根据 OnErrorRollback 属性设置是否自动回滚事务。
+        /// </summary>
+        /// <param name="SQL">SQL</param>
+        /// <param name="commandType">命令类型</param>
+        /// <param name="parameters">参数数组</param>
+        /// <returns>受影响的行数</returns>
+        public async Task<int> ExecuteNonQueryAsync(string SQL, CommandType commandType, IDataParameter[] parameters)
+        {
+            if (!OnCommandExecuting(ref SQL, commandType, parameters, CommandExecuteType.ExecuteNonQuery))
+                return -1;
+
+            ErrorMessage = "";
+            DbConnection conn = (DbConnection)GetConnection();
+            if (conn.State != ConnectionState.Open) //连接已经打开，不能切换连接字符串，感谢网友 “长的没礼貌”发现此Bug 
+                conn.ConnectionString = this.DataWriteConnectionString;
+            DbCommand cmd = conn.CreateCommand();
+            await CompleteCommandAsync(cmd, SQL, commandType, parameters);
+
+            int result = -1;
+            try
+            {
+                result =await cmd.ExecuteNonQueryAsync();
+                //如果开启事务，则由上层调用者决定何时提交事务
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                bool inTransaction = cmd.Transaction == null ? false : true;
+
+                //如果开启事务，那么此处应该回退事务
+                if (cmd.Transaction != null && OnErrorRollback)
+                    cmd.Transaction.Rollback();
+
+                OnCommandExecuteError(cmd, ErrorMessage, CommandExecuteType.ExecuteNonQuery);
+                if (OnErrorThrow)
+                {
+                    throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString, ex);
+                }
+            }
+            finally
+            {
+                OnCommandExected(cmd, result, CommandExecuteType.ExecuteNonQuery);
+                CloseConnection(conn, cmd);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 完善命令对象,处理命令对象关联的事务和连接，如果未打开连接这里将打开它
+        /// 注意：为提高效率，不再继续内部进行参数克隆处理，请多条SQL语句不要使用同名的参数对象
+        /// </summary>
+        /// <param name="cmd">命令对象</param>
+        /// <param name="SQL">SQL</param>
+        /// <param name="commandType">命令类型</param>
+        /// <param name="parameters">参数数组</param>
+        protected async Task CompleteCommandAsync(DbCommand cmd, string SQL, CommandType commandType, IDataParameter[] parameters)
+        {
+            //SQL 可能在OnExecuting 已经处理，因此PrepareSQL 对于某些Oracle大写的字段名，不会有影响
+            cmd.CommandText = SqlServerCompatible ? PrepareSQL(SQL, parameters) : SQL;
+            cmd.CommandType = commandType;
+            cmd.Transaction = (DbTransaction)this.Transaction;
+            if (this.CommandTimeOut > 0)
+                cmd.CommandTimeout = this.CommandTimeOut;
+
+            if (parameters != null)
+                for (int i = 0; i < parameters.Length; i++)
+                    if (parameters[i] != null)
+                    {
+                        if (commandType != CommandType.StoredProcedure)
+                        {
+                            //IDataParameter para = (IDataParameter)((ICloneable)parameters[i]).Clone();
+                            IDataParameter para = parameters[i];
+                            if (para.Value == null)
+                                para.Value = DBNull.Value;
+                            cmd.Parameters.Add(para);
+                        }
+                        else
+                        {
+                            //为存储过程带回返回值
+                            cmd.Parameters.Add(parameters[i]);
+                        }
+                    }
+
+            if (cmd.Connection.State != ConnectionState.Open)
+               await cmd.Connection.OpenAsync();
+            //增加日志处理
+            //dth,2008.4.8
+            //
+            //			if(SaveCommandLog )
+            //				RecordCommandLog(cmd);
+            //CommandLog.Instance.WriteLog(cmd,"AdoHelper");
+        }
+
+        /// <summary>
+        /// 根据查询返回数据阅读器对象
+        /// </summary>
+        /// <param name="SQL">SQL</param>
+        /// <param name="commandType">命令类型</param>
+        /// <param name="cmdBehavior">对查询和返回结果有影响的说明</param>
+        /// <param name="parameters">参数数组</param>
+        /// <returns>数据阅读器</returns>
+        protected async Task<DbDataReader> ExecuteDataReaderAsync(string SQL, CommandType commandType, CommandBehavior cmdBehavior,  IDataParameter[] parameters)
+        {
+            if (!OnCommandExecuting(ref SQL, commandType, parameters))
+                return null;
+            DbConnection conn = (DbConnection)GetConnection();
+            DbCommand cmd = conn.CreateCommand();
+            await CompleteCommandAsync(cmd, SQL, commandType, parameters);
+
+            DbDataReader reader = null;
+            try
+            {
+                //如果命令对象的事务对象为空，那么强制在读取完数据后关闭阅读器的数据库连接 2008.3.20
+                if (cmd.Transaction == null && cmdBehavior == CommandBehavior.Default)
+                    cmdBehavior = CommandBehavior.CloseConnection;
+                reader =await cmd.ExecuteReaderAsync(cmdBehavior);
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+                //只有出现了错误而且没有开启事务，可以关闭连结
+                //if (cmd.Transaction == null && conn.State == ConnectionState.Open)
+                //    conn.Close();
+                CloseConnection(conn, cmd);
+
+                bool inTransaction = cmd.Transaction == null ? false : true;
+                OnCommandExecuteError(cmd, ErrorMessage);
+                if (OnErrorThrow)
+                {
+                    throw new QueryException(ErrorMessage, cmd.CommandText, commandType, parameters, inTransaction, conn.ConnectionString, ex);
+                }
+            }
+            //必须等到 Reader关闭后才能得到记录行数，这里返回-1
+            OnCommandExected(cmd, -1);
+            cmd.Parameters.Clear();
+
+            return reader;
+        }
+
+
     }
 
     /// <summary>

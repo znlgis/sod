@@ -8,7 +8,7 @@ using PWMIS.DataMap.Entity;
 namespace UPMS.Core.Model
 {
     /// <summary>
-    /// 瀹炰綋鏄犲皠锛氫笟鍔″姛鑳借〃
+    /// 
     /// </summary>
     public class Base_FunctionInfo : EntityBase
     {
@@ -24,7 +24,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 鍔熻兘缂栧彿
+        /// 
         /// </summary>
         public string FunctionId
         {
@@ -33,7 +33,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 涓氬姟鍔熻兘鍚嶇О锛堣鍚嶇О涓哄乏渚у鑸簩绾х洰褰曞悕绉帮級
+        /// 
         /// </summary>
         public string FunctionName
         {
@@ -42,7 +42,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 澶囨敞锛堜富瑕佺敤浜庡尯鍒悓鍚嶇殑鍔熻兘锛?
+        /// 
         /// </summary>
         public string Remarks
         {
@@ -51,7 +51,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 涓氬姟妯″潡缂栧彿锛堝閿級
+        /// 
         /// </summary>
         public string ModuleId
         {
@@ -60,7 +60,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 瀵艰埅鍦板潃锛堝鏋滀负绌哄垯涓烘棤瀵艰埅锛?
+        /// 
         /// </summary>
         public string NavigateAddress
         {
@@ -69,7 +69,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 鎺掑簭锛堟ā鍧楀唴鎺掑簭锛?
+        /// 
         /// </summary>
         public int OrderIndex
         {
@@ -78,7 +78,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 鍒犻櫎鏍囪
+        /// 
         /// </summary>
         public int DeleteFlag
         {
@@ -87,7 +87,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 鎵╁睍鏍囪锛堝父鐢級
+        ///
         /// </summary>
         public int ExtendFlag
         {
@@ -96,7 +96,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 鎵╁睍鏍囪锛堝鐢級
+        /// 
         /// </summary>
         public int ExtendFlagBak
         {

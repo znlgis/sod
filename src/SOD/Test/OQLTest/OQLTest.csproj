@@ -83,10 +83,12 @@
     <Compile Include="Base_Role_FunctionInfo.cs" />
     <Compile Include="LT_UserRoles.cs" />
     <Compile Include="LT_Users.cs" />
+    <Compile Include="MyDbContext.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserEntity.cs" />
     <Compile Include="UserMessageEntity.cs" />
+    <Compile Include="v_userFavorites.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

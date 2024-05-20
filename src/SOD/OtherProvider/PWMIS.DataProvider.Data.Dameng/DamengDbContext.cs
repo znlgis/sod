@@ -27,7 +27,7 @@ namespace PWMIS.DataProvider.Data
             if (entity == null) entity = new T();
             var dsScheme = CurrentDataBase.GetSchema("Tables", null);
             string owner = CurrentDataBase.ConnectionUserID;
-            var rows = dsScheme.Select("OWNER='" + owner + "' and table_name='" + entity.GetTableName() + "'");
+            var rows = dsScheme.Select("TABLE_SCHEMA='" + owner + "' and TABLE_NAME='" + entity.GetTableName() + "'");
             if (rows.Length == 0)
             {
                 EntityCommand ecmd = new EntityCommand(entity, CurrentDataBase);

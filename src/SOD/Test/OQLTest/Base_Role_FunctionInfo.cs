@@ -8,7 +8,7 @@ using PWMIS.DataMap.Entity;
 namespace UPMS.Core.Model
 {
     /// <summary>
-    /// 瀹炰綋鏄犲皠锛氳鑹插姛鑳藉叧绯昏〃
+    /// 
     /// </summary>
     public class Base_Role_FunctionInfo : EntityBase
     {
@@ -24,7 +24,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 缂栧彿
+        /// ID
         /// </summary>
         public string Id
         {
@@ -33,7 +33,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 瑙掕壊缂栧彿
+        /// 角色ID
         /// </summary>
         public int RoleId
         {
@@ -42,7 +42,7 @@ namespace UPMS.Core.Model
         }
 
         /// <summary>
-        /// 鍔熻兘缂栧彿
+        /// 功能ID
         /// </summary>
         public string FunctionId
         {

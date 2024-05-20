@@ -80,6 +80,15 @@
  *  
  *  *  修改者：         时间：2016-5-5  
  *  索引器设置数据增加类型相容转换处理，包括空字符串，可用于大批量文本数据导入情况
+ *  
+ *   *  修改者：         时间：2023-11-23  
+ *  实体类在调用MapFrom方法从一个DTO对象复制数据的时候，将检查DTO对象属性的默认值，如果要复制的属性值是属性类型的默认值，
+ *  则不会设置该属性的修改状态为true，从而该属性对应的字段不会被保存或者修改。
+ *  *** 零元购问题 ***
+ *  使用该特性可以避免前端程序通过RPC或者WebAPI传递一个DTO对象到后台程序不小心将电商系统程序的商品价格修改成0元这个问题。
+ *  注：
+ *  如果想强制给实体类的属性设置值，请使用CopyTo<>扩展方法直接进行属性值拷贝，这种方式会给所有属性设置修改状态。
+ *  
  * ========================================================================
 */
 using System;
@@ -1190,13 +1199,40 @@ namespace PWMIS.DataMap.Entity
 
         #region 实体类跟POCO类的相互映射
 
-      /// <summary>
-        /// 从POCO实体类获取跟当前实体类的属性名称相同的属性的值，拷贝到当前实体类中，完成数据的映射，并且会比较和设置属性值的改变状态
-        /// 要求拷贝的同名属性是读写属性且类型相同。
+        private bool CheckIsDefaultValue(object value)
+        {
+            if (value == null) return true;
+            Type targetType = value.GetType();
+            if (targetType.IsValueType)
+            {
+                object obj = Activator.CreateInstance(targetType);
+                return object.Equals(value, obj);
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// 要设置的值不是默认值才认为数据改变了
         /// </summary>
-        /// <param name="pocoClass">POCO实体类，提供源数据</param>
-        /// <param name="isChange">是否改变属性的修改状态</param>
-        /// <returns>映射成功的属性数量</returns>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        private bool CheckIsChange(object source, object target)
+        {
+            if (source != null)
+                return object.Equals(source, target);
+            //source==null
+            if (!CheckIsDefaultValue(target)) 
+                return true;
+            return false;
+        }
+      /// <summary>
+      /// 从POCO实体类获取跟当前实体类的属性名称相同的属性的值，拷贝到当前实体类中，完成数据的映射，并且会比较和设置属性值的改变状态
+      /// 要求拷贝的同名属性是读写属性且类型相同。
+      /// </summary>
+      /// <param name="pocoClass">POCO实体类，提供源数据</param>
+      /// <param name="isChange">是否改变属性的修改状态</param>
+      /// <returns>映射成功的属性数量</returns>
         public int MapFrom(object pocoClass,bool isChange)
         {
           if (pocoClass == null)
@@ -1219,8 +1255,8 @@ namespace PWMIS.DataMap.Entity
               if (accessors[i] != null)
               {
                   object pocoPropValue = accessors[i].GetValue(pocoClass);
-                  //设置属性修改状态，需要比较值是否改变
-                  if (isChange && !object.Equals(this.PropertyValues[i], pocoPropValue))
+                    //设置属性修改状态，需要比较值是否改变 。避免“零元购” 调用CheckIsChange 方法判断，Edit At 2023-11-23
+                  if (isChange &&  CheckIsChange(this.PropertyValues[i], pocoPropValue))
                   {
                       this.changedlist[i] = true;
                       this.PropertyValues[i] = pocoPropValue;

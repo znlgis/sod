@@ -721,6 +721,12 @@ namespace ConsoleTest
                 Sex = user.Sex ?"男":"女"
             });
             Console.WriteLine("get AVG record count:"+ result.Count);
+            //下面的方式与EntityContainer对象查询结果等效
+            var list = EntityQuery<Table_User>.QueryList(q);
+            foreach (var item in list)
+            {
+                Console.WriteLine("Sex={0},AvgHeight={1}", item.Sex ? "男" : "女", item["AvgHeight"]);
+            }
         }
     }
 

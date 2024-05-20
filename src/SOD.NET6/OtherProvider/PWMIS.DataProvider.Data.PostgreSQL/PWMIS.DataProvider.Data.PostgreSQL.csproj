@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <AssemblyName>PWMIS.PostgreSQLClient</AssemblyName>
+    <RootNamespace>PWMIS.PostgreSQLClient</RootNamespace>
+    <Version>6.0.0</Version>
+    <Description>SOD框架支持.NET Core/.NET 5以及之后的版本迁移升级的版本的PostgreSql数据提供程序</Description>
+    <Copyright>PWMIS.COM</Copyright>
+    <Authors>深蓝医生</Authors>
+    <Company>PWMIS（程序员蜜糍）</Company>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Title>SOD框架支持.NET 6以及之后的版本的PostgreSql数据提供程序</Title>
+    <PackageProjectUrl>https://github.com/znlgis/sod</PackageProjectUrl>
+    <PackageTags>SOD;SqlMap;ORM;DataForms;PostgreSQL</PackageTags>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageId>PWMIS.SOD.PostgreSQL.Provider</PackageId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="8.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\PWMIS.SOD.Core\PWMIS.SOD.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
