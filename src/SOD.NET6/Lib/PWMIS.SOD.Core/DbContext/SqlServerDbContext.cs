@@ -53,6 +53,7 @@ namespace PWMIS.Core.Extensions
                 EntityCommand ecmd = new EntityCommand(entity, CurrentDataBase);
                 string sql = ecmd.CreateTableCommand;
                 CurrentDataBase.ExecuteNonQuery(sql);
+                CurrentDataBase.Logger.WriteLog(sql, "SqlServerDbContext");
                 return false;
             }
             return true;

@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="PWMIS.SOD" Version="6.0.0" />
-    <PackageReference Include="PWMIS.SOD.Kingbase.Provider" Version="6.0.1" />
+    <ProjectReference Include="..\..\Lib\PWMIS.SOD.Core\PWMIS.SOD.Core.csproj" />
+    <ProjectReference Include="..\..\OtherProvider\PWMIS.DataProvider.Data.Kingbase\PWMIS.DataProvider.Data.Kingbase.csproj" />
   </ItemGroup>
 
 </Project>

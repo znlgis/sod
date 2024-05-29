@@ -9,7 +9,7 @@ namespace KingbaseTest
     {
         public SimpleEntity()
         {
-            TableName = "SimpleTable2";
+            TableName = "SimpleTable6";
             IdentityName = "ID";
             PrimaryKeys.Add("ID");
         }

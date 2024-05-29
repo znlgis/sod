@@ -531,7 +531,15 @@ namespace PWMIS.DataProvider.Data
             return reader;
         }
 
-
+        /// <summary>
+        /// 创建参数数组
+        /// </summary>
+        /// <param name="para">参数对象</param>
+        /// <returns></returns>
+        public IDataParameter[] CreateParameters(params IDataParameter[] para)
+        {
+            return para;
+        }
     }
 
     /// <summary>

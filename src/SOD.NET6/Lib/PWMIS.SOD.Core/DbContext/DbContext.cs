@@ -6,6 +6,7 @@ using System.IO;
 using PWMIS.DataProvider.Data;
 using PWMIS.DataMap.Entity;
 using PWMIS.Core.Interface;
+using System.Linq;
 
 namespace PWMIS.Core.Extensions
 {
@@ -540,6 +541,50 @@ namespace PWMIS.Core.Extensions
         }
 
         #endregion
+
+        /// <summary>
+        /// 获取全部的表修改列的SQL语句
+        /// </summary>
+        /// <remarks>
+        /// 示例：GetModifyColumnSql(new string[]{"AtTime",typeof(DateTime),"timestamp without time zone"}
+        /// </remarks>
+        /// <param name="fieldNames">要修改的字段名数组，如果不指定，则匹配所有同类型的字段名</param>
+        /// <param name="sourceType">要匹配的属性字段类型</param>
+        /// <param name="targetDbType">要生成的目标数据库字段类型</param>
+        /// <returns></returns>
+        public string GetModifyColumnSql(string[] fieldNames, Type sourceType, string targetDbType)
+        {
+            //if (fieldNames == null || fieldNames.Length == 0)
+            //    return "请指定要处理的字段名";
+            if (string.IsNullOrEmpty(targetDbType))
+                return "目标数据库类型参数不能为空";
+            var entitys = this.ResolveAllEntitys();
+            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+            
+            foreach(var entity in entitys)
+            {
+                string tableName= entity.TableName;
+                foreach (string field in entity.PropertyNames)
+                {
+                    var cache = EntityFieldsCache.Item(entity.GetType());
+                    if (cache.GetPropertyType(field) == sourceType)
+                    {
+                        string sql = $"ALTER TABLE  [{tableName}] MODIFY COLUMN [{field}]  {targetDbType} ;";
+                        string sql1 = this.CurrentDataBase.GetPreparedSQL(sql);
+                        if (fieldNames == null || fieldNames.Length == 0)
+                        {
+                            sb.AppendLine(sql1);
+                        }
+                        else if (fieldNames.Contains(field))
+                        {
+                            sb.AppendLine(sql1);
+                        }
+                    }
+                }
+            }
+
+            return sb.ToString();
+        }
 
         /// <summary>
         /// 初始化DbContextProvider ,如果是SqlServer,Oracle之外的数据库，需要按照约定，提供XXXDbContext

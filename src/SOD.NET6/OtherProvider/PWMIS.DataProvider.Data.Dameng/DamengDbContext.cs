@@ -37,7 +37,10 @@ namespace PWMIS.DataProvider.Data
                 foreach (string item in sqlArr)
                 {
                     if (item.Length > 10) //去除回车行
+                    {
                         CurrentDataBase.ExecuteNonQuery(item);
+                        CurrentDataBase.Logger.WriteLog(sql, "DamengDbContext");
+                    }
                 }
                 return false;
             }

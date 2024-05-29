@@ -79,7 +79,7 @@ namespace PWMIS.DataProvider.Data
                 }
                 else
                 {
-                    para.Value=Value;
+                    para.Value = Value;
                 }
             }
             
@@ -101,10 +101,24 @@ namespace PWMIS.DataProvider.Data
             para.Size = size;
             return para;
         }
-
+        /// <summary>
+        /// 获取查询参数的数据库本机的字段类型名
+        /// </summary>
+        /// <param name="para">参数对象</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public override string GetNativeDbTypeName(IDataParameter para)
         {
-            return ((KdbndpParameter)para).KdbndpDbType.ToString();
+            KdbndpParameter kdbPara= para as KdbndpParameter;
+            if (kdbPara == null)
+                throw new ArgumentNullException("para 参数不能为空");
+
+            //2024-5-24 使用DataTypeName，解决 Kingbase V8 timestamp SELECT 参数化查询错误的问题
+            string dbTypeName = kdbPara.DataTypeName;
+            if (dbTypeName == null)
+                dbTypeName= kdbPara.KdbndpDbType.ToString();
+
+            return dbTypeName;
         }
 
         /// <summary>

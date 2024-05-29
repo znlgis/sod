@@ -71,6 +71,7 @@ namespace PWMIS.DataProvider.Data
                         sql = sql + ";\r\n" + initSql + ";\r\n";
                     }
                     CurrentDataBase.ExecuteNonQuery(sql);
+                    CurrentDataBase.Logger.WriteLog(sql, "MySQLDbContext");
                 }
             }
            

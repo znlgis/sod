@@ -38,6 +38,7 @@ namespace PWMIS.KingbaseClient
                     EntityCommand ecmd = new EntityCommand(entity, CurrentDataBase);
                     string sql = ecmd.CreateTableCommand;
                     CurrentDataBase.ExecuteNonQuery(sql);
+                    CurrentDataBase.Logger.WriteLog(sql, "KingbaseDbContext");
                     return false;
                 }
                 return true;
@@ -64,6 +65,7 @@ namespace PWMIS.KingbaseClient
                     EntityCommand ecmd = new EntityCommand(entity, CurrentDataBase);
                     string sql = ecmd.CreateTableCommand;
                     CurrentDataBase.ExecuteNonQuery(sql);
+                    CurrentDataBase.Logger.WriteLog(sql, "KingbaseDbContext");
                     return false;
                 }
                 return true;
