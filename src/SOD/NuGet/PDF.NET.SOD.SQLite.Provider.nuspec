@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>PDF.NET.SOD.SQLite.Provider</id>
-        <version>5.6.7.0</version>
+        <version>6.0.0</version>
         <title>PDF.NET SOD SQLite Provider</title>
         <authors>深蓝医生</authors>
         <license type="expression">LGPL-2.1-only</license>
@@ -12,11 +12,11 @@
         <summary />
         <tags>ORM SQL-MAP OQL PDF.NET SOD</tags>
         <dependencies>
-            <dependency id="System.Data.SQLite.Core" version="1.0.113.1" />
-            <dependency id="PDF.NET.SOD" version="5.6.7.0" />
+            <dependency id="System.Data.SQLite.Core" version="1.0.118" />
+            <dependency id="PDF.NET.SOD" version="6.0.0" />
         </dependencies>
     </metadata>
     <files>
-        <file src="..\OtherProvider\发布目录\PWMIS.SQLiteClient.dll" target="lib\net452\PWMIS.SQLiteClient.dll" />
+        <file src="..\OtherProvider\发布目录\PWMIS.SQLiteClient.dll" target="lib\net48\PWMIS.SQLiteClient.dll" />
     </files>
 </package>

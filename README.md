@@ -89,8 +89,9 @@ SOD框架包括以下功能：
 * QQ Group:18215717,154224970
 
 要了解更多，请看[这篇文章:.NET ORM 的 “SOD蜜”--零基础入门篇](https://www.cnblogs.com/bluedoctor/p/4306131.html)
-![SOD框架企业级应用数据架构实战](http://www.pwmis.com/sqlmap/images/sod_book_small_1.jpg)
+![SOD框架企业级应用数据架构实战](https://img2023.cnblogs.com/blog/114517/202307/114517-20230713140111639-2007281356.jpg)
 
+ 
 或者参考框架作者编著的图书：**《[SOD框架企业级应用数据架构实战](http://www.pwmis.com/sod/)》**，该书对SOD框架的企业级解决方案进行了详细的介绍。。
 
 # 二、快速入门
@@ -364,6 +365,19 @@ SOD框架支持微型ORM功能，它允许你直接控制查询返回的DataRead
 
 上面的示例演示了两者结果映射方式，使用AdoHelper对象的MapToList方法可以直接操作返回的DataReader对象，根据SQL语句中的字段顺序定制读取查询结果字段值，这种方式由于是面向底层Ado.NET的操作，因此查询具有很高的性能。
 另外一种方式就是使用AdoHelper对象的QueryList方法，它直接将SQL查询结果映射为一个POCO对象。
+```C#
+class User
+{
+  public int ID{get;set;}
+  public string Name{get;set;}
+  public bool Sex{get;set;}
+  public DateTime Birthday{get;set;}
+}
+
+//
+string sql_query = "SELECT [ID],[Name],[Sex],[BirthDate] FROM [TbUser] WHERE [LoginName]={0}";
+var userList= db2.QueryList<User>(sql_query,"zhangsan");
+```
 
 上面的示例还演示了SOD的微型ORM查询使用的“参数化查询”方式，相比较于直接的参数化查询，这里只需要使用参数的占位符来表示参数，就像Console.WriteLine()方法使用的参数一样。例如上面的示例中查询的参数是字段LoginName对于的查询参数，参数值是“zhangsan”。
 
@@ -550,6 +564,10 @@ var userList = EntityQuery<UserEntity>.QueryList(q);
 
 上面的查询构建了一个OQL表达式，用来查询用户表中所有姓”zhang“的用户，并且仅查询用户表的三个字段的内容。可以看到编写这个OQL表达式跟编写SQL查询语句非常相似，几乎没有使用门槛，体现了SOD框架简单易用的特点。
 
+var userList = EntityQuery<UserEntity>.QueryList(q);
+```
+上面的查询构建了一个OQL表达式，用来查询用户表中所有姓”zhang“的用户，并且仅查询用户表的三个字段的内容。可以看到编写这个OQL表达式跟编写SQL查询语句非常相似，几乎没有使用门槛，体现了SOD框架简单易用的特点。EntityQuery泛型对象的QueryList方法执行OQL对象进行查询，默认情况下使用App.config的最后一个连接配置作为AdoHelper查询对象，例如本篇文章的db2对象。也可以通过该方法的重载方法传入指定的AdoHelper对象。
+
 有关OQL的由来以及OQL的详细语法和使用示例，请参考以下几篇文章：
 
 * [ORM查询语言（OQL）简介--概念篇](https://www.cnblogs.com/bluedoctor/archive/2012/10/06/2712699.html)
@@ -568,21 +586,21 @@ GOQL适合单表查询，可以仅定义一个对应数据表的接口类型来�
                .Select()
                .Where((cmp, obj) => cmp.Comparer(obj.LoginName, "=", "zhangsan"))
                .END;
-            var list1 = goql.ToList(db2);
+            var list1 = goql.ToList();
 
             //GOQL使用实体类类型进行查询
             var list11 = OQL.FromObject<UserEntity2>()
              .Select()
              .Where((cmp, obj) => cmp.Comparer(obj.LoginName, "=", "zhangsan"))
              .END
-             .ToList(db2);
+             .ToList();
 
             //GOQL复杂示例
             var list2 = OQL.FromObject<ITbUser>()
                 .Select(s => new object[] { s.ID, s.Name, s.Sex, s.BirthDate }) //选取指定字段属性查询
                 .Where((cmp, obj) => cmp.Property(obj.LoginName) == "zhangsan") //使用操作符重载的条件比较
                 .OrderBy((order, obj) => order.Desc(obj.ID))
-                .ToList(db2);
+                .ToList();
 ```
 
 OQL表达式总是以From方法开始，以END属性结束，通过OQL的链式语法，Select、Where、OrderBy方法总是以固定的顺序出现，因此无任何SQL编写经验的人也可以通过OQL写出正确的查询。
@@ -640,7 +658,7 @@ OQL对象的Form方法需要一个或者多个实体类对象实例作为参数�
 ```C#
             //OQL复杂查询示例
             var oql2 = OQL.From(ue)
-                .Select(new object[] { ue.ID, ue.Name, ue.Sex, ue.BirthDate })
+                .Select( ue.ID, ue.Name, ue.Sex, ue.BirthDate )
                 .Where(cmp => cmp.Property(ue.LoginName) == "zhangsan" & cmp.EqualValue(ue.Password))
                 .OrderBy(order => order.Desc(ue.ID))
                 .END;
@@ -997,7 +1015,6 @@ MapToList方法可以将结果映射到一个已知的类型，包括实体类�
           .OrderBy(soe[orderField],"desc")
           //等价于 .OrderBy(soe.OrderPrice,"desc")
      .END;
-
 ```
 
 这里实现动态排序的关键是利用了实体类的索引器属性，调用soe["OrderPrice"] 与调用 soe.OrderPrice 结果基本是一样的。同样的道理，在Where方法的条件比较中，
