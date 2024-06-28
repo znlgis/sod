@@ -16,6 +16,7 @@
     <PackageTags>SOD;SqlMap;ORM;DataForms;Dameng</PackageTags>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PackageReadmeFile>国产化支持.md</PackageReadmeFile>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

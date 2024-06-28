@@ -23,7 +23,7 @@ Partial Class frmDataBaseExpert
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim TreeNode1 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("所有连接")
+        Dim TreeNode2 As System.Windows.Forms.TreeNode = New System.Windows.Forms.TreeNode("所有连接")
         Me.TreeView1 = New System.Windows.Forms.TreeView()
         Me.ContextMenuStrip1 = New System.Windows.Forms.ContextMenuStrip(Me.components)
         Me.tsmItemNewGroup = New System.Windows.Forms.ToolStripMenuItem()
@@ -57,142 +57,147 @@ Partial Class frmDataBaseExpert
             Or System.Windows.Forms.AnchorStyles.Left) _
             Or System.Windows.Forms.AnchorStyles.Right), System.Windows.Forms.AnchorStyles)
         Me.TreeView1.ContextMenuStrip = Me.ContextMenuStrip1
+        Me.TreeView1.Font = New System.Drawing.Font("宋体", 9.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.TreeView1.HideSelection = False
-        Me.TreeView1.Location = New System.Drawing.Point(0, 28)
+        Me.TreeView1.Location = New System.Drawing.Point(0, 35)
+        Me.TreeView1.Margin = New System.Windows.Forms.Padding(4)
         Me.TreeView1.Name = "TreeView1"
-        TreeNode1.Name = "root"
-        TreeNode1.Text = "所有连接"
-        Me.TreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode1})
-        Me.TreeView1.Size = New System.Drawing.Size(292, 237)
+        TreeNode2.Name = "root"
+        TreeNode2.Text = "所有连接"
+        Me.TreeView1.Nodes.AddRange(New System.Windows.Forms.TreeNode() {TreeNode2})
+        Me.TreeView1.Size = New System.Drawing.Size(388, 295)
         Me.TreeView1.TabIndex = 1
         '
         'ContextMenuStrip1
         '
+        Me.ContextMenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.ContextMenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsmItemNewGroup, Me.tsmItemEditGroup, Me.tsmItemDeleGroup, Me.ToolStripSeparator3, Me.tsmItemNewConn, Me.tsmItemCloseConn, Me.tsmItemDeleConn, Me.ToolStripSeparator1, Me.tsmiNewQuery, Me.tsmiNewGroupQuery, Me.tsmiExpTableData, Me.tsmiCreateEntity, Me.ToolStripSeparator2, Me.ToolStripMenuItem1, Me.tsmiProperty})
         Me.ContextMenuStrip1.Name = "ContextMenuStrip1"
-        Me.ContextMenuStrip1.Size = New System.Drawing.Size(149, 286)
+        Me.ContextMenuStrip1.Size = New System.Drawing.Size(169, 310)
         '
         'tsmItemNewGroup
         '
         Me.tsmItemNewGroup.Name = "tsmItemNewGroup"
-        Me.tsmItemNewGroup.Size = New System.Drawing.Size(148, 22)
+        Me.tsmItemNewGroup.Size = New System.Drawing.Size(168, 24)
         Me.tsmItemNewGroup.Text = "新键分组"
         '
         'tsmItemEditGroup
         '
         Me.tsmItemEditGroup.Name = "tsmItemEditGroup"
-        Me.tsmItemEditGroup.Size = New System.Drawing.Size(148, 22)
+        Me.tsmItemEditGroup.Size = New System.Drawing.Size(168, 24)
         Me.tsmItemEditGroup.Text = "修改分组"
         '
         'tsmItemDeleGroup
         '
         Me.tsmItemDeleGroup.Name = "tsmItemDeleGroup"
-        Me.tsmItemDeleGroup.Size = New System.Drawing.Size(148, 22)
+        Me.tsmItemDeleGroup.Size = New System.Drawing.Size(168, 24)
         Me.tsmItemDeleGroup.Text = "删除分组"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(145, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(165, 6)
         '
         'tsmItemNewConn
         '
         Me.tsmItemNewConn.Name = "tsmItemNewConn"
-        Me.tsmItemNewConn.Size = New System.Drawing.Size(148, 22)
+        Me.tsmItemNewConn.Size = New System.Drawing.Size(168, 24)
         Me.tsmItemNewConn.Text = "新建连接"
         '
         'tsmItemCloseConn
         '
         Me.tsmItemCloseConn.Name = "tsmItemCloseConn"
-        Me.tsmItemCloseConn.Size = New System.Drawing.Size(148, 22)
+        Me.tsmItemCloseConn.Size = New System.Drawing.Size(168, 24)
         Me.tsmItemCloseConn.Text = "关闭连接"
         '
         'tsmItemDeleConn
         '
         Me.tsmItemDeleConn.Name = "tsmItemDeleConn"
-        Me.tsmItemDeleConn.Size = New System.Drawing.Size(148, 22)
+        Me.tsmItemDeleConn.Size = New System.Drawing.Size(168, 24)
         Me.tsmItemDeleConn.Text = "删除连接"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(145, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(165, 6)
         '
         'tsmiNewQuery
         '
         Me.tsmiNewQuery.Name = "tsmiNewQuery"
-        Me.tsmiNewQuery.Size = New System.Drawing.Size(148, 22)
+        Me.tsmiNewQuery.Size = New System.Drawing.Size(168, 24)
         Me.tsmiNewQuery.Text = "新建表查询"
         '
         'tsmiNewGroupQuery
         '
         Me.tsmiNewGroupQuery.Name = "tsmiNewGroupQuery"
-        Me.tsmiNewGroupQuery.Size = New System.Drawing.Size(148, 22)
+        Me.tsmiNewGroupQuery.Size = New System.Drawing.Size(168, 24)
         Me.tsmiNewGroupQuery.Text = "多数据源查询"
         '
         'tsmiExpTableData
         '
         Me.tsmiExpTableData.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CSV文件ToolStripMenuItem, Me.Excel文件ToolStripMenuItem, Me.tsmiExpTableDataSQL})
         Me.tsmiExpTableData.Name = "tsmiExpTableData"
-        Me.tsmiExpTableData.Size = New System.Drawing.Size(148, 22)
+        Me.tsmiExpTableData.Size = New System.Drawing.Size(168, 24)
         Me.tsmiExpTableData.Text = "导出表数据"
         '
         'CSV文件ToolStripMenuItem
         '
         Me.CSV文件ToolStripMenuItem.Name = "CSV文件ToolStripMenuItem"
-        Me.CSV文件ToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.CSV文件ToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
         Me.CSV文件ToolStripMenuItem.Text = "CSV文件"
         '
         'Excel文件ToolStripMenuItem
         '
         Me.Excel文件ToolStripMenuItem.Name = "Excel文件ToolStripMenuItem"
-        Me.Excel文件ToolStripMenuItem.Size = New System.Drawing.Size(147, 22)
+        Me.Excel文件ToolStripMenuItem.Size = New System.Drawing.Size(181, 26)
         Me.Excel文件ToolStripMenuItem.Text = "Excel文件"
         '
         'tsmiExpTableDataSQL
         '
         Me.tsmiExpTableDataSQL.Name = "tsmiExpTableDataSQL"
-        Me.tsmiExpTableDataSQL.Size = New System.Drawing.Size(147, 22)
+        Me.tsmiExpTableDataSQL.Size = New System.Drawing.Size(181, 26)
         Me.tsmiExpTableDataSQL.Text = "SQL数据文件"
         '
         'tsmiCreateEntity
         '
         Me.tsmiCreateEntity.Name = "tsmiCreateEntity"
-        Me.tsmiCreateEntity.Size = New System.Drawing.Size(148, 22)
+        Me.tsmiCreateEntity.Size = New System.Drawing.Size(168, 24)
         Me.tsmiCreateEntity.Text = "生成实体类"
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(145, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(165, 6)
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(148, 22)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(168, 24)
         Me.ToolStripMenuItem1.Text = "刷新"
         '
         'tsmiProperty
         '
         Me.tsmiProperty.Name = "tsmiProperty"
-        Me.tsmiProperty.Size = New System.Drawing.Size(148, 22)
+        Me.tsmiProperty.Size = New System.Drawing.Size(168, 24)
         Me.tsmiProperty.Text = "属性"
         '
         'ToolStrip1
         '
+        Me.ToolStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsbNewConn})
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 0)
         Me.ToolStrip1.Name = "ToolStrip1"
-        Me.ToolStrip1.Size = New System.Drawing.Size(292, 25)
+        Me.ToolStrip1.Size = New System.Drawing.Size(389, 31)
         Me.ToolStrip1.TabIndex = 2
         Me.ToolStrip1.Text = "ToolStrip1"
         '
         'tsbNewConn
         '
+        Me.tsbNewConn.Font = New System.Drawing.Font("Microsoft YaHei UI", 9.0!)
         Me.tsbNewConn.Image = Global.PDFDotNET.My.Resources.Resources.SqlQuery
         Me.tsbNewConn.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsbNewConn.Name = "tsbNewConn"
-        Me.tsbNewConn.Size = New System.Drawing.Size(76, 22)
+        Me.tsbNewConn.Size = New System.Drawing.Size(93, 28)
         Me.tsbNewConn.Text = "新建连接"
         '
         'ImageList1
@@ -203,11 +208,11 @@ Partial Class frmDataBaseExpert
         '
         'frmDataBaseExpert
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(292, 265)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.ClientSize = New System.Drawing.Size(389, 331)
         Me.Controls.Add(Me.ToolStrip1)
         Me.Controls.Add(Me.TreeView1)
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.Name = "frmDataBaseExpert"
         Me.Text = "数据连接"
         Me.ContextMenuStrip1.ResumeLayout(False)

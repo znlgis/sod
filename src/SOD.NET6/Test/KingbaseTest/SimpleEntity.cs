@@ -12,7 +12,16 @@ namespace KingbaseTest
             TableName = "SimpleTable6";
             IdentityName = "ID";
             PrimaryKeys.Add("ID");
+            //如果未实现SetFieldNames方法，不可以在构造函数中调用持久化属性，否则会导致递归调用错误，例如：
+            this.AtTime = DateTime.Now;
         }
+
+        
+        protected override void SetFieldNames()
+        {
+            PropertyNames = new string[] { "ID","Name", "AtTime" };
+        }
+        
 
         public int ID 
         {

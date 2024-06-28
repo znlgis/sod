@@ -15,6 +15,7 @@
     <PackageTags>SOD;SqlMap;ORM;DataForms;PostgreSQL</PackageTags>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PackageId>PWMIS.SOD.PostgreSQL.Provider</PackageId>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

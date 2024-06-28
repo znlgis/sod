@@ -24,6 +24,10 @@
  * 
  * 修改者：      时间：2024-5-14   
  * 修改说明：增加 Kingbase 人大金仓数据库 自动创建表支持自增功能。
+ * 
+ * 修改者：      时间：2024-6-21   
+ * 修改说明：增加实体类构造函数内调用持久化属性程序正确性的检查。
+ * 
  * ========================================================================
 */
 using System;
@@ -517,6 +521,7 @@ namespace PWMIS.DataMap.Entity
     public class EntityFieldsCache
     {
         private static Dictionary<string, EntityFields> dict = new Dictionary<string, EntityFields>();
+        private static Dictionary<string,int> dictInitCount= new Dictionary<string,int>();
         private static object _syncObj = new object();
         /// <summary>
         /// 获取缓存项，如果没有，将自动创建一个
@@ -535,9 +540,19 @@ namespace PWMIS.DataMap.Entity
                 }
                 else
                 {
+                    if (!dictInitCount.TryGetValue(entityType.FullName, out var count))
+                    {
+                        dictInitCount.TryAdd(entityType.FullName, 1);
+                    }
+                    else
+                    {
+                        throw new MemberAccessException("在EntityBase子类型的构造函数内访问持久化属性成员错误，请重写SetFieldNames()方法！");
+                    }
                     EntityFields ef = new EntityFields();
                     if (ef.InitEntity(entityType)) //2015.2.5 修改
+                    { 
                         dict.Add(entityType.FullName, ef);
+                    }
                     return ef;
                 }
             }

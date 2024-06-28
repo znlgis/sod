@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-//using System.Linq;
-using System.Text;
+﻿using Kdbndp;
+using System;
 using System.Data;
-using Kdbndp;
+//using System.Linq;
 
 namespace PWMIS.DataProvider.Data
 {

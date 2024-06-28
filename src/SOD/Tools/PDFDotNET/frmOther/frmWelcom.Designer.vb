@@ -23,6 +23,7 @@ Partial Class frmWelcom
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.panHead = New System.Windows.Forms.Panel()
+        Me.cmbHotWebSite = New System.Windows.Forms.ComboBox()
         Me.btnNewTabWindow = New System.Windows.Forms.Button()
         Me.lnkNewWindow = New System.Windows.Forms.LinkLabel()
         Me.lnk12306 = New System.Windows.Forms.LinkLabel()
@@ -33,7 +34,6 @@ Partial Class frmWelcom
         Me.btnGo = New System.Windows.Forms.Button()
         Me.txtUrl = New System.Windows.Forms.TextBox()
         Me.panBody = New System.Windows.Forms.Panel()
-        Me.cmbHotWebSite = New System.Windows.Forms.ComboBox()
         Me.panHead.SuspendLayout()
         CType(Me.picGoHome, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picRefersh, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -56,18 +56,30 @@ Partial Class frmWelcom
         Me.panHead.Controls.Add(Me.txtUrl)
         Me.panHead.Dock = System.Windows.Forms.DockStyle.Top
         Me.panHead.Location = New System.Drawing.Point(0, 0)
-        Me.panHead.Margin = New System.Windows.Forms.Padding(4)
+        Me.panHead.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.panHead.Name = "panHead"
-        Me.panHead.Size = New System.Drawing.Size(1475, 78)
+        Me.panHead.Size = New System.Drawing.Size(1311, 65)
         Me.panHead.TabIndex = 0
+        '
+        'cmbHotWebSite
+        '
+        Me.cmbHotWebSite.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.cmbHotWebSite.ForeColor = System.Drawing.Color.Sienna
+        Me.cmbHotWebSite.FormattingEnabled = True
+        Me.cmbHotWebSite.Location = New System.Drawing.Point(1189, 18)
+        Me.cmbHotWebSite.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.cmbHotWebSite.Name = "cmbHotWebSite"
+        Me.cmbHotWebSite.Size = New System.Drawing.Size(112, 24)
+        Me.cmbHotWebSite.TabIndex = 9
         '
         'btnNewTabWindow
         '
         Me.btnNewTabWindow.FlatStyle = System.Windows.Forms.FlatStyle.System
         Me.btnNewTabWindow.Font = New System.Drawing.Font("黑体", 24.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.btnNewTabWindow.Location = New System.Drawing.Point(232, 12)
+        Me.btnNewTabWindow.Location = New System.Drawing.Point(206, 10)
+        Me.btnNewTabWindow.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.btnNewTabWindow.Name = "btnNewTabWindow"
-        Me.btnNewTabWindow.Size = New System.Drawing.Size(50, 50)
+        Me.btnNewTabWindow.Size = New System.Drawing.Size(44, 42)
         Me.btnNewTabWindow.TabIndex = 8
         Me.btnNewTabWindow.Text = "+"
         Me.btnNewTabWindow.UseVisualStyleBackColor = True
@@ -76,9 +88,9 @@ Partial Class frmWelcom
         '
         Me.lnkNewWindow.AutoSize = True
         Me.lnkNewWindow.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.lnkNewWindow.Location = New System.Drawing.Point(1064, 30)
+        Me.lnkNewWindow.Location = New System.Drawing.Point(946, 25)
         Me.lnkNewWindow.Name = "lnkNewWindow"
-        Me.lnkNewWindow.Size = New System.Drawing.Size(94, 24)
+        Me.lnkNewWindow.Size = New System.Drawing.Size(63, 16)
         Me.lnkNewWindow.TabIndex = 7
         Me.lnkNewWindow.TabStop = True
         Me.lnkNewWindow.Text = "+新窗口"
@@ -87,10 +99,10 @@ Partial Class frmWelcom
         '
         Me.lnk12306.AutoSize = True
         Me.lnk12306.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.lnk12306.Location = New System.Drawing.Point(1165, 30)
+        Me.lnk12306.Location = New System.Drawing.Point(1036, 25)
         Me.lnk12306.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lnk12306.Name = "lnk12306"
-        Me.lnk12306.Size = New System.Drawing.Size(166, 24)
+        Me.lnk12306.Size = New System.Drawing.Size(111, 16)
         Me.lnk12306.TabIndex = 6
         Me.lnk12306.TabStop = True
         Me.lnk12306.Text = "12306无声刷票"
@@ -99,10 +111,10 @@ Partial Class frmWelcom
         '
         Me.picGoHome.Cursor = System.Windows.Forms.Cursors.Hand
         Me.picGoHome.Image = Global.PDFDotNET.My.Resources.Resources.home
-        Me.picGoHome.Location = New System.Drawing.Point(175, 10)
-        Me.picGoHome.Margin = New System.Windows.Forms.Padding(4)
+        Me.picGoHome.Location = New System.Drawing.Point(156, 8)
+        Me.picGoHome.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.picGoHome.Name = "picGoHome"
-        Me.picGoHome.Size = New System.Drawing.Size(55, 55)
+        Me.picGoHome.Size = New System.Drawing.Size(49, 46)
         Me.picGoHome.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.picGoHome.TabIndex = 5
         Me.picGoHome.TabStop = False
@@ -111,10 +123,10 @@ Partial Class frmWelcom
         '
         Me.picRefersh.Cursor = System.Windows.Forms.Cursors.Hand
         Me.picRefersh.Image = Global.PDFDotNET.My.Resources.Resources.refresh
-        Me.picRefersh.Location = New System.Drawing.Point(119, 10)
-        Me.picRefersh.Margin = New System.Windows.Forms.Padding(4)
+        Me.picRefersh.Location = New System.Drawing.Point(106, 8)
+        Me.picRefersh.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.picRefersh.Name = "picRefersh"
-        Me.picRefersh.Size = New System.Drawing.Size(55, 55)
+        Me.picRefersh.Size = New System.Drawing.Size(49, 46)
         Me.picRefersh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.picRefersh.TabIndex = 4
         Me.picRefersh.TabStop = False
@@ -123,10 +135,10 @@ Partial Class frmWelcom
         '
         Me.picGofawerd.Cursor = System.Windows.Forms.Cursors.Hand
         Me.picGofawerd.Image = Global.PDFDotNET.My.Resources.Resources.gofawert
-        Me.picGofawerd.Location = New System.Drawing.Point(63, 10)
-        Me.picGofawerd.Margin = New System.Windows.Forms.Padding(4)
+        Me.picGofawerd.Location = New System.Drawing.Point(56, 8)
+        Me.picGofawerd.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.picGofawerd.Name = "picGofawerd"
-        Me.picGofawerd.Size = New System.Drawing.Size(55, 55)
+        Me.picGofawerd.Size = New System.Drawing.Size(49, 46)
         Me.picGofawerd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.picGofawerd.TabIndex = 3
         Me.picGofawerd.TabStop = False
@@ -135,10 +147,10 @@ Partial Class frmWelcom
         '
         Me.picGoback.Cursor = System.Windows.Forms.Cursors.Hand
         Me.picGoback.Image = Global.PDFDotNET.My.Resources.Resources.goback
-        Me.picGoback.Location = New System.Drawing.Point(8, 10)
-        Me.picGoback.Margin = New System.Windows.Forms.Padding(4)
+        Me.picGoback.Location = New System.Drawing.Point(7, 8)
+        Me.picGoback.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.picGoback.Name = "picGoback"
-        Me.picGoback.Size = New System.Drawing.Size(55, 55)
+        Me.picGoback.Size = New System.Drawing.Size(49, 46)
         Me.picGoback.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom
         Me.picGoback.TabIndex = 2
         Me.picGoback.TabStop = False
@@ -151,10 +163,10 @@ Partial Class frmWelcom
         Me.btnGo.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.btnGo.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.btnGo.ForeColor = System.Drawing.Color.Maroon
-        Me.btnGo.Location = New System.Drawing.Point(1002, 4)
-        Me.btnGo.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnGo.Location = New System.Drawing.Point(891, 3)
+        Me.btnGo.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.btnGo.Name = "btnGo"
-        Me.btnGo.Size = New System.Drawing.Size(55, 55)
+        Me.btnGo.Size = New System.Drawing.Size(49, 46)
         Me.btnGo.TabIndex = 1
         Me.btnGo.Text = "Go"
         Me.btnGo.UseVisualStyleBackColor = True
@@ -164,40 +176,30 @@ Partial Class frmWelcom
         Me.txtUrl.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle
         Me.txtUrl.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.txtUrl.ForeColor = System.Drawing.Color.Sienna
-        Me.txtUrl.Location = New System.Drawing.Point(285, 19)
-        Me.txtUrl.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtUrl.Location = New System.Drawing.Point(253, 16)
+        Me.txtUrl.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.txtUrl.Name = "txtUrl"
-        Me.txtUrl.Size = New System.Drawing.Size(709, 35)
+        Me.txtUrl.Size = New System.Drawing.Size(630, 26)
         Me.txtUrl.TabIndex = 0
         Me.txtUrl.Text = "http://www.pwmis.com/sqlmap"
         '
         'panBody
         '
         Me.panBody.Dock = System.Windows.Forms.DockStyle.Fill
-        Me.panBody.Location = New System.Drawing.Point(0, 78)
-        Me.panBody.Margin = New System.Windows.Forms.Padding(4)
+        Me.panBody.Location = New System.Drawing.Point(0, 65)
+        Me.panBody.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.panBody.Name = "panBody"
-        Me.panBody.Size = New System.Drawing.Size(1475, 563)
+        Me.panBody.Size = New System.Drawing.Size(1311, 469)
         Me.panBody.TabIndex = 1
-        '
-        'cmbHotWebSite
-        '
-        Me.cmbHotWebSite.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.cmbHotWebSite.ForeColor = System.Drawing.Color.Sienna
-        Me.cmbHotWebSite.FormattingEnabled = True
-        Me.cmbHotWebSite.Location = New System.Drawing.Point(1338, 22)
-        Me.cmbHotWebSite.Name = "cmbHotWebSite"
-        Me.cmbHotWebSite.Size = New System.Drawing.Size(125, 32)
-        Me.cmbHotWebSite.TabIndex = 9
         '
         'frmWelcom
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 18.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1475, 641)
+        Me.ClientSize = New System.Drawing.Size(1311, 534)
         Me.Controls.Add(Me.panBody)
         Me.Controls.Add(Me.panHead)
-        Me.Margin = New System.Windows.Forms.Padding(4)
+        Me.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.Name = "frmWelcom"
         Me.Text = "frmWelcom"
         Me.panHead.ResumeLayout(False)

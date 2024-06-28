@@ -23,6 +23,15 @@
         e.Points(2) = New Point(e.TabHeight + 2, 0)
     End Sub
 
+    Private Sub LoadWelcomForm()
+        Dim welcomForm As New frmWelcom
+        welcomForm.CommandForm = Me
+        welcomForm.ParentContainer = Me.TabControlMain
+        Me.TabControlMain.SetControlsSizeLocation()
+        Me.TabControlMain.TabPages.Add(welcomForm)
+
+    End Sub
+
     Private Sub frmMain_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         tpDataBaseExpert = Me.TabControlLeft.TabPages.Add(New frmDataBaseExpert(Me)) 'index=2
         tpSqlMapExpert = Me.TabControlLeft.TabPages.Add(New frmSqlMapExpert()) 'index=1
@@ -32,12 +41,7 @@
 
         TestWriteCfg()
         TestReadCfg()
-
-        Dim welcomForm As New frmWelcom
-        welcomForm.CommandForm = Me
-        welcomForm.ParentContainer = Me.TabControlMain
-        Me.TabControlMain.SetControlsSizeLocation()
-        Me.TabControlMain.TabPages.Add(welcomForm)
+        LoadWelcomForm()
 
     End Sub
 
@@ -298,5 +302,21 @@
         Me.TabControlMain.TabPages.Add(welcomForm)
     End Sub
 
+    Private Sub menuNewIEBrowser_Click(sender As Object, e As EventArgs) Handles menuNewIEBrowser.Click
+        Dim window As New frmWelcom()
+        window.CommandForm = Me
+        window.ParentContainer = Me.TabControlMain
+        window.HomeUrl = "https://www.nuget.org/packages?q=pwmis.sod"
+        window.Text = "[SOD谷歌极简浏览器]"
 
+        Me.TabControlMain.SetControlsSizeLocation()
+        Me.TabControlMain.TabPages.Add(window)
+
+    End Sub
+
+    Private Sub tsBtnHome_Click(sender As Object, e As EventArgs) Handles tsBtnHome.Click
+        If Me.TabControlMain.TabPages.Count = 0 OrElse TypeOf Me.TabControlMain.TabPages(0).Form IsNot frmWelcom Then
+            LoadWelcomForm()
+        End If
+    End Sub
 End Class

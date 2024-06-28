@@ -22,32 +22,32 @@ Partial Class frmDBLogin
     '不要使用代码编辑器修改它。
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Me.Panel1 = New System.Windows.Forms.Panel
-        Me.btnFileBrowser = New System.Windows.Forms.Button
-        Me.cmbLoginType = New System.Windows.Forms.ComboBox
-        Me.lblLoginType = New System.Windows.Forms.Label
-        Me.txtPwd = New System.Windows.Forms.TextBox
-        Me.Label4 = New System.Windows.Forms.Label
-        Me.txtLogName = New System.Windows.Forms.TextBox
-        Me.Label3 = New System.Windows.Forms.Label
-        Me.txtServerName = New System.Windows.Forms.TextBox
-        Me.lblServerName = New System.Windows.Forms.Label
-        Me.cmbDbEngine = New System.Windows.Forms.ComboBox
-        Me.Label1 = New System.Windows.Forms.Label
-        Me.btnOK = New System.Windows.Forms.Button
-        Me.btnCacle = New System.Windows.Forms.Button
-        Me.chkMoreInfo = New System.Windows.Forms.CheckBox
-        Me.Panel2 = New System.Windows.Forms.Panel
-        Me.lnkRefesh = New System.Windows.Forms.LinkLabel
-        Me.btnSaveConn = New System.Windows.Forms.Button
-        Me.btnTestConn = New System.Windows.Forms.Button
-        Me.txtConnStr = New System.Windows.Forms.TextBox
-        Me.Label5 = New System.Windows.Forms.Label
-        Me.PictureBox1 = New System.Windows.Forms.PictureBox
-        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog
-        Me.Label2 = New System.Windows.Forms.Label
-        Me.txtProviderName = New System.Windows.Forms.TextBox
-        Me.btnProviderBrowser = New System.Windows.Forms.Button
+        Me.Panel1 = New System.Windows.Forms.Panel()
+        Me.btnProviderBrowser = New System.Windows.Forms.Button()
+        Me.txtProviderName = New System.Windows.Forms.TextBox()
+        Me.Label2 = New System.Windows.Forms.Label()
+        Me.btnFileBrowser = New System.Windows.Forms.Button()
+        Me.cmbLoginType = New System.Windows.Forms.ComboBox()
+        Me.lblLoginType = New System.Windows.Forms.Label()
+        Me.txtPwd = New System.Windows.Forms.TextBox()
+        Me.Label4 = New System.Windows.Forms.Label()
+        Me.txtLogName = New System.Windows.Forms.TextBox()
+        Me.Label3 = New System.Windows.Forms.Label()
+        Me.txtServerName = New System.Windows.Forms.TextBox()
+        Me.lblServerName = New System.Windows.Forms.Label()
+        Me.cmbDbEngine = New System.Windows.Forms.ComboBox()
+        Me.Label1 = New System.Windows.Forms.Label()
+        Me.btnOK = New System.Windows.Forms.Button()
+        Me.btnCacle = New System.Windows.Forms.Button()
+        Me.chkMoreInfo = New System.Windows.Forms.CheckBox()
+        Me.Panel2 = New System.Windows.Forms.Panel()
+        Me.lnkRefesh = New System.Windows.Forms.LinkLabel()
+        Me.btnSaveConn = New System.Windows.Forms.Button()
+        Me.btnTestConn = New System.Windows.Forms.Button()
+        Me.txtConnStr = New System.Windows.Forms.TextBox()
+        Me.Label5 = New System.Windows.Forms.Label()
+        Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.Panel1.SuspendLayout()
         Me.Panel2.SuspendLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -72,16 +72,48 @@ Partial Class frmDBLogin
         Me.Panel1.Controls.Add(Me.cmbDbEngine)
         Me.Panel1.Controls.Add(Me.Label1)
         Me.Panel1.ForeColor = System.Drawing.SystemColors.ControlText
-        Me.Panel1.Location = New System.Drawing.Point(145, 12)
+        Me.Panel1.Location = New System.Drawing.Point(193, 15)
+        Me.Panel1.Margin = New System.Windows.Forms.Padding(4)
         Me.Panel1.Name = "Panel1"
-        Me.Panel1.Size = New System.Drawing.Size(412, 197)
+        Me.Panel1.Size = New System.Drawing.Size(549, 246)
         Me.Panel1.TabIndex = 8
+        '
+        'btnProviderBrowser
+        '
+        Me.btnProviderBrowser.Enabled = False
+        Me.btnProviderBrowser.Location = New System.Drawing.Point(465, 50)
+        Me.btnProviderBrowser.Margin = New System.Windows.Forms.Padding(4)
+        Me.btnProviderBrowser.Name = "btnProviderBrowser"
+        Me.btnProviderBrowser.Size = New System.Drawing.Size(61, 29)
+        Me.btnProviderBrowser.TabIndex = 21
+        Me.btnProviderBrowser.Text = "浏览"
+        Me.btnProviderBrowser.UseVisualStyleBackColor = True
+        '
+        'txtProviderName
+        '
+        Me.txtProviderName.Location = New System.Drawing.Point(147, 52)
+        Me.txtProviderName.Margin = New System.Windows.Forms.Padding(4)
+        Me.txtProviderName.Name = "txtProviderName"
+        Me.txtProviderName.ReadOnly = True
+        Me.txtProviderName.Size = New System.Drawing.Size(304, 25)
+        Me.txtProviderName.TabIndex = 20
+        '
+        'Label2
+        '
+        Me.Label2.AutoSize = True
+        Me.Label2.Location = New System.Drawing.Point(20, 65)
+        Me.Label2.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
+        Me.Label2.Name = "Label2"
+        Me.Label2.Size = New System.Drawing.Size(112, 15)
+        Me.Label2.TabIndex = 19
+        Me.Label2.Text = "数据提供程序："
         '
         'btnFileBrowser
         '
-        Me.btnFileBrowser.Location = New System.Drawing.Point(349, 70)
+        Me.btnFileBrowser.Location = New System.Drawing.Point(465, 88)
+        Me.btnFileBrowser.Margin = New System.Windows.Forms.Padding(4)
         Me.btnFileBrowser.Name = "btnFileBrowser"
-        Me.btnFileBrowser.Size = New System.Drawing.Size(46, 23)
+        Me.btnFileBrowser.Size = New System.Drawing.Size(61, 29)
         Me.btnFileBrowser.TabIndex = 18
         Me.btnFileBrowser.Text = "浏览"
         Me.btnFileBrowser.UseVisualStyleBackColor = True
@@ -89,65 +121,73 @@ Partial Class frmDBLogin
         'cmbLoginType
         '
         Me.cmbLoginType.FormattingEnabled = True
-        Me.cmbLoginType.Location = New System.Drawing.Point(110, 104)
+        Me.cmbLoginType.Location = New System.Drawing.Point(147, 130)
+        Me.cmbLoginType.Margin = New System.Windows.Forms.Padding(4)
         Me.cmbLoginType.Name = "cmbLoginType"
-        Me.cmbLoginType.Size = New System.Drawing.Size(177, 20)
+        Me.cmbLoginType.Size = New System.Drawing.Size(235, 23)
         Me.cmbLoginType.TabIndex = 17
         '
         'lblLoginType
         '
-        Me.lblLoginType.Location = New System.Drawing.Point(39, 111)
+        Me.lblLoginType.Location = New System.Drawing.Point(52, 139)
+        Me.lblLoginType.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblLoginType.Name = "lblLoginType"
-        Me.lblLoginType.Size = New System.Drawing.Size(65, 12)
+        Me.lblLoginType.Size = New System.Drawing.Size(87, 15)
         Me.lblLoginType.TabIndex = 16
         Me.lblLoginType.Text = "登录方式："
         Me.lblLoginType.TextAlign = System.Drawing.ContentAlignment.TopRight
         '
         'txtPwd
         '
-        Me.txtPwd.Location = New System.Drawing.Point(110, 162)
+        Me.txtPwd.Location = New System.Drawing.Point(147, 202)
+        Me.txtPwd.Margin = New System.Windows.Forms.Padding(4)
         Me.txtPwd.Name = "txtPwd"
         Me.txtPwd.PasswordChar = Global.Microsoft.VisualBasic.ChrW(42)
-        Me.txtPwd.Size = New System.Drawing.Size(177, 21)
+        Me.txtPwd.Size = New System.Drawing.Size(235, 25)
         Me.txtPwd.TabIndex = 15
         '
         'Label4
         '
         Me.Label4.AutoSize = True
-        Me.Label4.Location = New System.Drawing.Point(39, 168)
+        Me.Label4.Location = New System.Drawing.Point(52, 210)
+        Me.Label4.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(65, 12)
+        Me.Label4.Size = New System.Drawing.Size(82, 15)
         Me.Label4.TabIndex = 14
         Me.Label4.Text = "登录密码："
         '
         'txtLogName
         '
-        Me.txtLogName.Location = New System.Drawing.Point(110, 133)
+        Me.txtLogName.Location = New System.Drawing.Point(147, 166)
+        Me.txtLogName.Margin = New System.Windows.Forms.Padding(4)
         Me.txtLogName.Name = "txtLogName"
-        Me.txtLogName.Size = New System.Drawing.Size(177, 21)
+        Me.txtLogName.Size = New System.Drawing.Size(235, 25)
         Me.txtLogName.TabIndex = 13
         '
         'Label3
         '
         Me.Label3.AutoSize = True
-        Me.Label3.Location = New System.Drawing.Point(39, 140)
+        Me.Label3.Location = New System.Drawing.Point(52, 175)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(65, 12)
+        Me.Label3.Size = New System.Drawing.Size(82, 15)
         Me.Label3.TabIndex = 12
         Me.Label3.Text = "登录名称："
         '
         'txtServerName
         '
-        Me.txtServerName.Location = New System.Drawing.Point(110, 72)
+        Me.txtServerName.Location = New System.Drawing.Point(147, 90)
+        Me.txtServerName.Margin = New System.Windows.Forms.Padding(4)
         Me.txtServerName.Name = "txtServerName"
-        Me.txtServerName.Size = New System.Drawing.Size(229, 21)
+        Me.txtServerName.Size = New System.Drawing.Size(304, 25)
         Me.txtServerName.TabIndex = 11
         '
         'lblServerName
         '
-        Me.lblServerName.Location = New System.Drawing.Point(3, 75)
+        Me.lblServerName.Location = New System.Drawing.Point(4, 94)
+        Me.lblServerName.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblServerName.Name = "lblServerName"
-        Me.lblServerName.Size = New System.Drawing.Size(101, 21)
+        Me.lblServerName.Size = New System.Drawing.Size(135, 26)
         Me.lblServerName.TabIndex = 10
         Me.lblServerName.Text = "服务器名称："
         Me.lblServerName.TextAlign = System.Drawing.ContentAlignment.MiddleRight
@@ -155,25 +195,28 @@ Partial Class frmDBLogin
         'cmbDbEngine
         '
         Me.cmbDbEngine.FormattingEnabled = True
-        Me.cmbDbEngine.Location = New System.Drawing.Point(110, 16)
+        Me.cmbDbEngine.Location = New System.Drawing.Point(147, 20)
+        Me.cmbDbEngine.Margin = New System.Windows.Forms.Padding(4)
         Me.cmbDbEngine.Name = "cmbDbEngine"
-        Me.cmbDbEngine.Size = New System.Drawing.Size(229, 20)
+        Me.cmbDbEngine.Size = New System.Drawing.Size(304, 23)
         Me.cmbDbEngine.TabIndex = 9
         '
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(27, 24)
+        Me.Label1.Location = New System.Drawing.Point(36, 30)
+        Me.Label1.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(77, 12)
+        Me.Label1.Size = New System.Drawing.Size(97, 15)
         Me.Label1.TabIndex = 8
         Me.Label1.Text = "服务器类型："
         '
         'btnOK
         '
-        Me.btnOK.Location = New System.Drawing.Point(195, 226)
+        Me.btnOK.Location = New System.Drawing.Point(260, 282)
+        Me.btnOK.Margin = New System.Windows.Forms.Padding(4)
         Me.btnOK.Name = "btnOK"
-        Me.btnOK.Size = New System.Drawing.Size(75, 23)
+        Me.btnOK.Size = New System.Drawing.Size(100, 29)
         Me.btnOK.TabIndex = 9
         Me.btnOK.Text = "确定"
         Me.btnOK.UseVisualStyleBackColor = True
@@ -181,9 +224,10 @@ Partial Class frmDBLogin
         'btnCacle
         '
         Me.btnCacle.DialogResult = System.Windows.Forms.DialogResult.Cancel
-        Me.btnCacle.Location = New System.Drawing.Point(305, 226)
+        Me.btnCacle.Location = New System.Drawing.Point(407, 282)
+        Me.btnCacle.Margin = New System.Windows.Forms.Padding(4)
         Me.btnCacle.Name = "btnCacle"
-        Me.btnCacle.Size = New System.Drawing.Size(75, 23)
+        Me.btnCacle.Size = New System.Drawing.Size(100, 29)
         Me.btnCacle.TabIndex = 10
         Me.btnCacle.Text = "取消"
         Me.btnCacle.UseVisualStyleBackColor = True
@@ -191,9 +235,10 @@ Partial Class frmDBLogin
         'chkMoreInfo
         '
         Me.chkMoreInfo.AutoSize = True
-        Me.chkMoreInfo.Location = New System.Drawing.Point(435, 233)
+        Me.chkMoreInfo.Location = New System.Drawing.Point(580, 291)
+        Me.chkMoreInfo.Margin = New System.Windows.Forms.Padding(4)
         Me.chkMoreInfo.Name = "chkMoreInfo"
-        Me.chkMoreInfo.Size = New System.Drawing.Size(72, 16)
+        Me.chkMoreInfo.Size = New System.Drawing.Size(89, 19)
         Me.chkMoreInfo.TabIndex = 11
         Me.chkMoreInfo.Text = "高级选项"
         Me.chkMoreInfo.UseVisualStyleBackColor = True
@@ -207,59 +252,66 @@ Partial Class frmDBLogin
         Me.Panel2.Controls.Add(Me.btnTestConn)
         Me.Panel2.Controls.Add(Me.txtConnStr)
         Me.Panel2.Controls.Add(Me.Label5)
-        Me.Panel2.Location = New System.Drawing.Point(2, 264)
+        Me.Panel2.Location = New System.Drawing.Point(3, 330)
+        Me.Panel2.Margin = New System.Windows.Forms.Padding(4)
         Me.Panel2.Name = "Panel2"
-        Me.Panel2.Size = New System.Drawing.Size(555, 100)
+        Me.Panel2.Size = New System.Drawing.Size(739, 124)
         Me.Panel2.TabIndex = 12
         '
         'lnkRefesh
         '
         Me.lnkRefesh.AutoSize = True
-        Me.lnkRefesh.Location = New System.Drawing.Point(107, 15)
+        Me.lnkRefesh.Location = New System.Drawing.Point(143, 19)
+        Me.lnkRefesh.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lnkRefesh.Name = "lnkRefesh"
-        Me.lnkRefesh.Size = New System.Drawing.Size(29, 12)
+        Me.lnkRefesh.Size = New System.Drawing.Size(37, 15)
         Me.lnkRefesh.TabIndex = 4
         Me.lnkRefesh.TabStop = True
         Me.lnkRefesh.Text = "刷新"
         '
         'btnSaveConn
         '
-        Me.btnSaveConn.Location = New System.Drawing.Point(307, 72)
+        Me.btnSaveConn.Location = New System.Drawing.Point(409, 90)
+        Me.btnSaveConn.Margin = New System.Windows.Forms.Padding(4)
         Me.btnSaveConn.Name = "btnSaveConn"
-        Me.btnSaveConn.Size = New System.Drawing.Size(75, 23)
+        Me.btnSaveConn.Size = New System.Drawing.Size(100, 29)
         Me.btnSaveConn.TabIndex = 3
         Me.btnSaveConn.Text = "保存连接"
         Me.btnSaveConn.UseVisualStyleBackColor = True
         '
         'btnTestConn
         '
-        Me.btnTestConn.Location = New System.Drawing.Point(197, 72)
+        Me.btnTestConn.Location = New System.Drawing.Point(263, 90)
+        Me.btnTestConn.Margin = New System.Windows.Forms.Padding(4)
         Me.btnTestConn.Name = "btnTestConn"
-        Me.btnTestConn.Size = New System.Drawing.Size(75, 23)
+        Me.btnTestConn.Size = New System.Drawing.Size(100, 29)
         Me.btnTestConn.TabIndex = 2
         Me.btnTestConn.Text = "测试连接"
         Me.btnTestConn.UseVisualStyleBackColor = True
         '
         'txtConnStr
         '
-        Me.txtConnStr.Location = New System.Drawing.Point(26, 30)
+        Me.txtConnStr.Location = New System.Drawing.Point(35, 38)
+        Me.txtConnStr.Margin = New System.Windows.Forms.Padding(4)
         Me.txtConnStr.Name = "txtConnStr"
-        Me.txtConnStr.Size = New System.Drawing.Size(461, 21)
+        Me.txtConnStr.Size = New System.Drawing.Size(613, 25)
         Me.txtConnStr.TabIndex = 1
         '
         'Label5
         '
         Me.Label5.AutoSize = True
-        Me.Label5.Location = New System.Drawing.Point(26, 15)
+        Me.Label5.Location = New System.Drawing.Point(35, 19)
+        Me.Label5.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label5.Name = "Label5"
-        Me.Label5.Size = New System.Drawing.Size(77, 12)
+        Me.Label5.Size = New System.Drawing.Size(97, 15)
         Me.Label5.TabIndex = 0
         Me.Label5.Text = "连接字符串："
         '
         'PictureBox1
         '
         Me.PictureBox1.Image = Global.PDFDotNET.My.Resources.Resources.数据导出
-        Me.PictureBox1.Location = New System.Drawing.Point(-3, -2)
+        Me.PictureBox1.Location = New System.Drawing.Point(-4, -2)
+        Me.PictureBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.PictureBox1.Name = "PictureBox1"
         Me.PictureBox1.Size = New System.Drawing.Size(136, 335)
         Me.PictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize
@@ -270,40 +322,13 @@ Partial Class frmDBLogin
         '
         Me.OpenFileDialog1.FileName = "OpenFileDialog1"
         '
-        'Label2
-        '
-        Me.Label2.AutoSize = True
-        Me.Label2.Location = New System.Drawing.Point(15, 52)
-        Me.Label2.Name = "Label2"
-        Me.Label2.Size = New System.Drawing.Size(89, 12)
-        Me.Label2.TabIndex = 19
-        Me.Label2.Text = "数据提供程序："
-        '
-        'txtProviderName
-        '
-        Me.txtProviderName.Location = New System.Drawing.Point(110, 42)
-        Me.txtProviderName.Name = "txtProviderName"
-        Me.txtProviderName.ReadOnly = True
-        Me.txtProviderName.Size = New System.Drawing.Size(229, 21)
-        Me.txtProviderName.TabIndex = 20
-        '
-        'btnProviderBrowser
-        '
-        Me.btnProviderBrowser.Enabled = False
-        Me.btnProviderBrowser.Location = New System.Drawing.Point(349, 40)
-        Me.btnProviderBrowser.Name = "btnProviderBrowser"
-        Me.btnProviderBrowser.Size = New System.Drawing.Size(46, 23)
-        Me.btnProviderBrowser.TabIndex = 21
-        Me.btnProviderBrowser.Text = "浏览"
-        Me.btnProviderBrowser.UseVisualStyleBackColor = True
-        '
         'frmDBLogin
         '
         Me.AcceptButton = Me.btnOK
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 12.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.CancelButton = Me.btnCacle
-        Me.ClientSize = New System.Drawing.Size(569, 369)
+        Me.ClientSize = New System.Drawing.Size(759, 461)
         Me.Controls.Add(Me.Panel2)
         Me.Controls.Add(Me.PictureBox1)
         Me.Controls.Add(Me.chkMoreInfo)
@@ -311,6 +336,7 @@ Partial Class frmDBLogin
         Me.Controls.Add(Me.btnOK)
         Me.Controls.Add(Me.Panel1)
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "frmDBLogin"
         Me.Text = "连接到服务器"

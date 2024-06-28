@@ -28,7 +28,6 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
     <ApplicationIcon>app.ico</ApplicationIcon>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <FileUpgradeFlags>
@@ -153,6 +152,9 @@
   <PropertyGroup>
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CefSharp, Version=115.3.110.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CefSharp.Common.115.3.110\lib\net462\CefSharp.dll</HintPath>
@@ -162,6 +164,9 @@
     </Reference>
     <Reference Include="CefSharp.WinForms, Version=115.3.110.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CefSharp.WinForms.115.3.110\lib\net462\CefSharp.WinForms.dll</HintPath>
+    </Reference>
+    <Reference Include="PWMIS.Core">
+      <HintPath>..\..\OtherProvider\ToolsBin\PWMIS.Core.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -415,7 +420,6 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
-    <None Include="app.manifest" />
     <None Include="My Project\app.manifest" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
@@ -549,16 +553,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Lib\PWMIS.Core\PWMIS.Core.csproj">
-      <Project>{8F0F4237-4D13-40DD-AE8A-C3DE748B26E0}</Project>
-      <Name>PWMIS.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MdiTabControl\MdiTabControl.vbproj">
       <Project>{7f98f809-ce14-43d5-b3df-40d8f0b7a1af}</Project>
       <Name>MdiTabControl</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /y "$(SolutionDir)\Tools\PDFCodeMaker\bin\$(ConfigurationName)\*.dll" "$(TargetDir)\Tools\CodeMaker"

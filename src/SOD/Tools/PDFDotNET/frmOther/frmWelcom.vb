@@ -171,4 +171,14 @@ Public Class frmWelcom
             btnGo.PerformClick()
         End If
     End Sub
+
+    Private Sub WebBrowser1_AddressChanged(sender As Object, e As AddressChangedEventArgs) Handles WebBrowser1.AddressChanged
+        Dim myAction As Action(Of String) = New Action(Of String)(AddressOf AddressChange)
+        Me.Invoke(myAction, e.Address)
+    End Sub
+
+    Private Sub AddressChange(address As String)
+        Me.txtUrl.Text = address
+
+    End Sub
 End Class

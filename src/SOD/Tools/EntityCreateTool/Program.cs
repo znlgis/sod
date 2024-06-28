@@ -194,7 +194,7 @@ namespace #NameSpace#
                                     Propertys = sb.ToString();
 
                                     string entityFileText = fileFormat.Replace("#CreatedDate#", CreatedDate)
-                                       .Replace("#NameSpace#", strNameSpace+".Entitys")
+                                       .Replace("#NameSpace#", strNameSpace+".Entity")
                                        .Replace("#ClassName#", ClassName)
                                        .Replace("#TableName#", TableName)
                                        .Replace("#IdentityName#", IdentityName)
@@ -351,7 +351,7 @@ namespace #NameSpace#
                     Propertys = sb.ToString();
 
                     string entityFileText = fileFormat.Replace("#CreatedDate#", CreatedDate)
-                        .Replace("#NameSpace#", strNameSpace)
+                        .Replace("#NameSpace#", strNameSpace+".Entity")
                         .Replace("#ClassName#", ClassName)
                         .Replace("#TableName#", TableName)
                         .Replace("#IdentityName#", IdentityName)

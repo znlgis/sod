@@ -19,6 +19,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageReleaseNotes>SOD扩展库，包括OQL扩展、实体类扩展，以及OleDb、ODBC、Oracle和SQLite数据提供程序。</PackageReleaseNotes>
     <PackageTags>SOD;SqlMap;ORM;DataForms;ODBC;OleDB;Oracle;SQLite</PackageTags>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

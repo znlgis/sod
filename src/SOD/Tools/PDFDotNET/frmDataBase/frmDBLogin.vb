@@ -86,7 +86,7 @@
 
     Private Sub frmDBLogin_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         oldHeight = Me.Height
-        shortHeight = Me.btnOK.Location.Y + Me.btnOK.Height + 40
+        shortHeight = Me.btnOK.Location.Y + Me.btnOK.Height + 60
 
         Me.Height = shortHeight
         Me.cmbDbEngine.DataSource = Me.DBEnginType
@@ -154,7 +154,7 @@
                 'Me.lblServerName.Text = "数据提供程序："
                 Me.btnFileBrowser.Visible = True
                 Me.txtServerName.Text = ""
-                Me.OpenFileDialog1.Filter = "AdoHelp提供程序|*.dll"
+                Me.OpenFileDialog1.Filter = "SOD内置驱动程序|PWMIS.*.dll|其它数据驱动程序|*.dll"
                 Me.cmbLoginType.DataSource = Nothing
                 Me.cmbLoginType.Enabled = False
                 Me.txtLogName.Enabled = True
@@ -168,7 +168,7 @@
 
     Private Sub ChangeUIbyDbmsType(ByVal dbmsType As PWMIS.Common.DBMSType)
         Select Case dbmsType
-            Case PWMIS.Common.DBMSType.MySql, PWMIS.Common.DBMSType.PostgreSQL
+            Case PWMIS.Common.DBMSType.MySql, PWMIS.Common.DBMSType.PostgreSQL, PWMIS.Common.DBMSType.Kingbase, PWMIS.Common.DBMSType.Dameng
                 Me.lblServerName.Text = "服务器地址："
                 'Me.lblLoginType.Text = "登录类型："
                 Me.cmbLoginType.Enabled = False
@@ -248,7 +248,9 @@
                 connStr = "Data Source=" & Me.txtServerName.Text & ";User Id=" & txtLogName.Text & ";Password=" & txtPwd.Text & ";"
             Case "其它数据库驱动程序"
                 If Me.currDbmsType = PWMIS.Common.DBMSType.MySql _
-                Or Me.currDbmsType = PWMIS.Common.DBMSType.PostgreSQL Then
+                Or Me.currDbmsType = PWMIS.Common.DBMSType.PostgreSQL _
+                Or Me.currDbmsType = pwmis.common.dbmstype.Kingbase _
+                Or Me.currDbmsType = pwmis.common.dbmstype.Dameng Then
                     connStr = "server=" & txtServerName.Text & ";User Id=" & txtLogName.Text & ";password=" & txtPwd.Text
                 ElseIf Me.currDbmsType = PWMIS.Common.DBMSType.SQLite Then
                     connStr = "Data Source=" & txtServerName.Text
@@ -287,20 +289,19 @@
     End Sub
 
     Private Sub btnTestConn_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnTestConn.Click
-
-        Me.ConnectionString = MakeConnectionString()
-        If Me.ConnectionString <> "" Then
-            Try
-                Dim db As PWMIS.DataProvider.Data.AdoHelper = PWMIS.DataProvider.Adapter.MyDB.GetDBHelperByProviderString(Me.Provider, Me.ConnectionString)
-                Dim conn As IDbConnection = db.GetDbConnection()
-                conn.Open()
-                conn.Close()
-                MessageBox.Show("测试成功！", "测试连接", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Catch ex As Exception
-                MessageBox.Show(ex.Message, "测试连接", MessageBoxButtons.OK, MessageBoxIcon.Error)
-            End Try
-
+        If Me.ConnectionString = "" Then
+            Me.ConnectionString = MakeConnectionString()
         End If
+        Try
+            Dim db As PWMIS.DataProvider.Data.AdoHelper = PWMIS.DataProvider.Adapter.MyDB.GetDBHelperByProviderString(Me.Provider, Me.ConnectionString)
+            Dim conn As IDbConnection = db.GetDbConnection()
+            conn.Open()
+            conn.Close()
+            MessageBox.Show("测试成功！", "测试连接", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Catch ex As Exception
+            MessageBox.Show(ex.Message, "测试连接", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+
     End Sub
 
     Private Sub btnCacle_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCacle.Click
@@ -351,6 +352,11 @@
             End If
 
         End If
+
+    End Sub
+
+    Private Sub btnSaveConn_Click(sender As Object, e As EventArgs) Handles btnSaveConn.Click
+        Me.Close()
 
     End Sub
 End Class

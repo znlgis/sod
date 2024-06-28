@@ -218,7 +218,7 @@ namespace PWMIS.DataMap.Entity
         /// </summary>
         protected internal virtual void SetFieldNames()
         {
-            //this.names = names;
+            //this.names = new string[] { };
             //如果子类未重写该方法，调用框架的数据库元数据获取方法
             EntityFields ef=EntityFieldsCache.Item(this.GetType());
             this.names = ef.Fields;

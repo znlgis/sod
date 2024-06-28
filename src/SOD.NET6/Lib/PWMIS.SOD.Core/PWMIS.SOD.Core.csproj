@@ -19,6 +19,7 @@
     <PackageIcon>sod.png</PackageIcon>
     <PackageReleaseNotes>SOD核心库，包括SqlServer数据访问提供程序</PackageReleaseNotes>
     <PackageTags>SOD;SqlMap;ORM;DataForms;SqlServer</PackageTags>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
   </PropertyGroup>
 	
   <ItemGroup>

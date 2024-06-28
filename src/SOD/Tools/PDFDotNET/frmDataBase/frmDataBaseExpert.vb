@@ -165,6 +165,8 @@ Public Class frmDataBaseExpert
                 Else
                     conn = MyDB.GetDBHelper(temp, connStr)
                 End If
+
+                conn.OnErrorThrow = False
                 Me.CurrDataBase = conn
 
                 Me.CurrDbType = e.Node.Name
@@ -262,6 +264,7 @@ Public Class frmDataBaseExpert
 
                 If Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.SqlServer _
                 Or Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.MySql _
+                Or Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.Kingbase _
                 Or Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.PostgreSQL Then
                     Me.CurrDataBase.ConnectionString = oldSqlConnStr & ";DataBase=" & node.Name '直接使用 oldSqlConnStr 可能会出错
                 End If
@@ -407,9 +410,13 @@ Public Class frmDataBaseExpert
                 End If
 
 
-                
+
 
                 If node.Nodes.Count < 3 Then Exit Select '有些数据库没有存储过程
+
+                'If Me.CurrDataBase.cur
+                If Me.CurrDataBase.CurrentDBMSType = PWMIS.Common.DBMSType.Kingbase Then Exit Select
+
                 'PostgreSQL 没有单独的存储过程，统一成为函数
                 If Me.CurrDataBase.CurrentDBMSType <> PWMIS.Common.DBMSType.PostgreSQL Then
                     '显示所有存储过程
@@ -851,6 +858,8 @@ Public Class frmDataBaseExpert
                             Else
                                 ServerName = dbLogin.ServerName
                             End If
+                            ServerName = InputBox("请确认连接名称。", "数据连接管理", ServerName)
+
                             Dim connElement As XElement = _
                        <Connection DbType=<%= DbType %> Name=<%= ServerName %> ConnectionString=<%= dbLogin.ConnectionString %> Provider=<%= dbLogin.Provider %>/>
                             groupElement.Add(connElement)

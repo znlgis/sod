@@ -23,10 +23,11 @@ Partial Class frmMain
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmMain))
-        Dim ToolStripSystemRenderer1 As System.Windows.Forms.ToolStripSystemRenderer = New System.Windows.Forms.ToolStripSystemRenderer()
+        Dim ToolStripSystemRenderer3 As System.Windows.Forms.ToolStripSystemRenderer = New System.Windows.Forms.ToolStripSystemRenderer()
         Me.MenuStrip1 = New System.Windows.Forms.MenuStrip()
         Me.文件ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
+        Me.menuNewIEBrowser = New System.Windows.Forms.ToolStripMenuItem()
         Me.解决方案文件ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SQLMAP文件ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.查询窗口ToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -68,13 +69,14 @@ Partial Class frmMain
         Me.tsEntityCoder = New System.Windows.Forms.ToolStripButton()
         Me.ToolStripSeparator4 = New System.Windows.Forms.ToolStripSeparator()
         Me.tsBtnRun = New System.Windows.Forms.ToolStripButton()
+        Me.tsBtnHome = New System.Windows.Forms.ToolStripButton()
         Me.SplitContainer1 = New System.Windows.Forms.SplitContainer()
+        Me.TabControlLeft = New MdiTabControl.TabControl()
+        Me.TabControlMain = New MdiTabControl.TabControl()
         Me.OpenFileDialog1 = New System.Windows.Forms.OpenFileDialog()
         Me.ToolStripContainer1 = New System.Windows.Forms.ToolStripContainer()
         Me.StatusStrip1 = New System.Windows.Forms.StatusStrip()
         Me.OpreationStatusMsg = New System.Windows.Forms.ToolStripStatusLabel()
-        Me.TabControlLeft = New MdiTabControl.TabControl()
-        Me.TabControlMain = New MdiTabControl.TabControl()
         Me.MenuStrip1.SuspendLayout()
         Me.ToolStrip1.SuspendLayout()
         CType(Me.SplitContainer1, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -97,7 +99,7 @@ Partial Class frmMain
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
         Me.MenuStrip1.Padding = New System.Windows.Forms.Padding(9, 3, 0, 3)
-        Me.MenuStrip1.Size = New System.Drawing.Size(1056, 34)
+        Me.MenuStrip1.Size = New System.Drawing.Size(939, 30)
         Me.MenuStrip1.TabIndex = 1
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -105,97 +107,103 @@ Partial Class frmMain
         '
         Me.文件ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripMenuItem3, Me.打开ToolStripMenuItem, Me.tsmItemSaveFile, Me.退出ToolStripMenuItem})
         Me.文件ToolStripMenuItem.Name = "文件ToolStripMenuItem"
-        Me.文件ToolStripMenuItem.Size = New System.Drawing.Size(73, 28)
+        Me.文件ToolStripMenuItem.Size = New System.Drawing.Size(65, 24)
         Me.文件ToolStripMenuItem.Text = "&F 文件"
         '
         'ToolStripMenuItem3
         '
-        Me.ToolStripMenuItem3.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.解决方案文件ToolStripMenuItem, Me.SQLMAP文件ToolStripMenuItem, Me.查询窗口ToolStripMenuItem})
+        Me.ToolStripMenuItem3.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menuNewIEBrowser, Me.解决方案文件ToolStripMenuItem, Me.SQLMAP文件ToolStripMenuItem, Me.查询窗口ToolStripMenuItem})
         Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
-        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(228, 30)
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(207, 26)
         Me.ToolStripMenuItem3.Text = "&N 新建"
+        '
+        'menuNewIEBrowser
+        '
+        Me.menuNewIEBrowser.Name = "menuNewIEBrowser"
+        Me.menuNewIEBrowser.Size = New System.Drawing.Size(192, 26)
+        Me.menuNewIEBrowser.Text = "浏览器窗口"
         '
         '解决方案文件ToolStripMenuItem
         '
         Me.解决方案文件ToolStripMenuItem.Name = "解决方案文件ToolStripMenuItem"
-        Me.解决方案文件ToolStripMenuItem.Size = New System.Drawing.Size(212, 30)
+        Me.解决方案文件ToolStripMenuItem.Size = New System.Drawing.Size(192, 26)
         Me.解决方案文件ToolStripMenuItem.Text = "解决方案文件"
         '
         'SQLMAP文件ToolStripMenuItem
         '
         Me.SQLMAP文件ToolStripMenuItem.Name = "SQLMAP文件ToolStripMenuItem"
-        Me.SQLMAP文件ToolStripMenuItem.Size = New System.Drawing.Size(212, 30)
+        Me.SQLMAP文件ToolStripMenuItem.Size = New System.Drawing.Size(192, 26)
         Me.SQLMAP文件ToolStripMenuItem.Text = "SQL-MAP文件"
         '
         '查询窗口ToolStripMenuItem
         '
         Me.查询窗口ToolStripMenuItem.Name = "查询窗口ToolStripMenuItem"
-        Me.查询窗口ToolStripMenuItem.Size = New System.Drawing.Size(212, 30)
+        Me.查询窗口ToolStripMenuItem.Size = New System.Drawing.Size(192, 26)
         Me.查询窗口ToolStripMenuItem.Text = "查询窗口"
         '
         '打开ToolStripMenuItem
         '
         Me.打开ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menuOpenSqlMapConfig, Me.menuOpenMakedCodeFile})
         Me.打开ToolStripMenuItem.Name = "打开ToolStripMenuItem"
-        Me.打开ToolStripMenuItem.Size = New System.Drawing.Size(228, 30)
+        Me.打开ToolStripMenuItem.Size = New System.Drawing.Size(207, 26)
         Me.打开ToolStripMenuItem.Text = "&O 打开"
         '
         'menuOpenSqlMapConfig
         '
         Me.menuOpenSqlMapConfig.Name = "menuOpenSqlMapConfig"
-        Me.menuOpenSqlMapConfig.Size = New System.Drawing.Size(257, 30)
+        Me.menuOpenSqlMapConfig.Size = New System.Drawing.Size(230, 26)
         Me.menuOpenSqlMapConfig.Text = "SQL-MAP脚本文件"
         '
         'menuOpenMakedCodeFile
         '
         Me.menuOpenMakedCodeFile.Name = "menuOpenMakedCodeFile"
-        Me.menuOpenMakedCodeFile.Size = New System.Drawing.Size(257, 30)
+        Me.menuOpenMakedCodeFile.Size = New System.Drawing.Size(230, 26)
         Me.menuOpenMakedCodeFile.Text = "生成的.NET代码文件"
         '
         'tsmItemSaveFile
         '
         Me.tsmItemSaveFile.Name = "tsmItemSaveFile"
         Me.tsmItemSaveFile.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.S), System.Windows.Forms.Keys)
-        Me.tsmItemSaveFile.Size = New System.Drawing.Size(228, 30)
+        Me.tsmItemSaveFile.Size = New System.Drawing.Size(207, 26)
         Me.tsmItemSaveFile.Text = "保存文件"
         '
         '退出ToolStripMenuItem
         '
         Me.退出ToolStripMenuItem.Name = "退出ToolStripMenuItem"
-        Me.退出ToolStripMenuItem.Size = New System.Drawing.Size(228, 30)
+        Me.退出ToolStripMenuItem.Size = New System.Drawing.Size(207, 26)
         Me.退出ToolStripMenuItem.Text = "&X 退出"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menuItemUnDo, Me.ToolStripSeparator3, Me.menuItemEditCut, Me.menuItemEditCopy, Me.menuItemEditPast, Me.menuItemEditDelete})
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(73, 28)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(65, 24)
         Me.ToolStripMenuItem1.Text = "&E 编辑"
         '
         'menuItemUnDo
         '
         Me.menuItemUnDo.Name = "menuItemUnDo"
         Me.menuItemUnDo.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.Z), System.Windows.Forms.Keys)
-        Me.menuItemUnDo.Size = New System.Drawing.Size(194, 30)
+        Me.menuItemUnDo.Size = New System.Drawing.Size(179, 26)
         Me.menuItemUnDo.Text = "撤销"
         '
         'ToolStripSeparator3
         '
         Me.ToolStripSeparator3.Name = "ToolStripSeparator3"
-        Me.ToolStripSeparator3.Size = New System.Drawing.Size(191, 6)
+        Me.ToolStripSeparator3.Size = New System.Drawing.Size(176, 6)
         '
         'menuItemEditCut
         '
         Me.menuItemEditCut.Name = "menuItemEditCut"
         Me.menuItemEditCut.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.X), System.Windows.Forms.Keys)
-        Me.menuItemEditCut.Size = New System.Drawing.Size(194, 30)
+        Me.menuItemEditCut.Size = New System.Drawing.Size(179, 26)
         Me.menuItemEditCut.Text = "剪切"
         '
         'menuItemEditCopy
         '
         Me.menuItemEditCopy.Name = "menuItemEditCopy"
         Me.menuItemEditCopy.ShortcutKeyDisplayString = "Ctrl+C"
-        Me.menuItemEditCopy.Size = New System.Drawing.Size(194, 30)
+        Me.menuItemEditCopy.Size = New System.Drawing.Size(179, 26)
         Me.menuItemEditCopy.Text = "复制"
         '
         'menuItemEditPast
@@ -203,138 +211,138 @@ Partial Class frmMain
         Me.menuItemEditPast.Name = "menuItemEditPast"
         Me.menuItemEditPast.ShortcutKeyDisplayString = "Ctrl+V"
         Me.menuItemEditPast.ShortcutKeys = CType((System.Windows.Forms.Keys.Control Or System.Windows.Forms.Keys.V), System.Windows.Forms.Keys)
-        Me.menuItemEditPast.Size = New System.Drawing.Size(194, 30)
+        Me.menuItemEditPast.Size = New System.Drawing.Size(179, 26)
         Me.menuItemEditPast.Text = "粘贴"
         '
         'menuItemEditDelete
         '
         Me.menuItemEditDelete.Name = "menuItemEditDelete"
         Me.menuItemEditDelete.ShortcutKeys = System.Windows.Forms.Keys.Delete
-        Me.menuItemEditDelete.Size = New System.Drawing.Size(194, 30)
+        Me.menuItemEditDelete.Size = New System.Drawing.Size(179, 26)
         Me.menuItemEditDelete.Text = "删除"
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menuItemVConnExpert, Me.menuSqlMapExpert, Me.menuItemPdfNetSln})
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(75, 28)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(67, 24)
         Me.ToolStripMenuItem2.Text = "&V 视图"
         '
         'menuItemVConnExpert
         '
         Me.menuItemVConnExpert.Name = "menuItemVConnExpert"
-        Me.menuItemVConnExpert.Size = New System.Drawing.Size(266, 30)
+        Me.menuItemVConnExpert.Size = New System.Drawing.Size(237, 26)
         Me.menuItemVConnExpert.Text = "数据库资源管理器"
         '
         'menuSqlMapExpert
         '
         Me.menuSqlMapExpert.Name = "menuSqlMapExpert"
-        Me.menuSqlMapExpert.Size = New System.Drawing.Size(266, 30)
+        Me.menuSqlMapExpert.Size = New System.Drawing.Size(237, 26)
         Me.menuSqlMapExpert.Text = "SQL-MAP资源管理器"
         '
         'menuItemPdfNetSln
         '
         Me.menuItemPdfNetSln.Name = "menuItemPdfNetSln"
-        Me.menuItemPdfNetSln.Size = New System.Drawing.Size(266, 30)
+        Me.menuItemPdfNetSln.Size = New System.Drawing.Size(237, 26)
         Me.menuItemPdfNetSln.Text = "PDF.NET解决方案"
         '
         'T工具ToolStripMenuItem
         '
         Me.T工具ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menuSqlMapBuilder, Me.menuSqlMapCodeMaker, Me.menuEntityMaker, Me.menuSODBrowser})
         Me.T工具ToolStripMenuItem.Name = "T工具ToolStripMenuItem"
-        Me.T工具ToolStripMenuItem.Size = New System.Drawing.Size(73, 28)
+        Me.T工具ToolStripMenuItem.Size = New System.Drawing.Size(66, 24)
         Me.T工具ToolStripMenuItem.Text = "&T 工具"
         '
         'menuSqlMapBuilder
         '
         Me.menuSqlMapBuilder.Name = "menuSqlMapBuilder"
-        Me.menuSqlMapBuilder.Size = New System.Drawing.Size(325, 30)
+        Me.menuSqlMapBuilder.Size = New System.Drawing.Size(286, 26)
         Me.menuSqlMapBuilder.Text = "&M SQL-MAP配置文件管理器"
         '
         'menuSqlMapCodeMaker
         '
         Me.menuSqlMapCodeMaker.Name = "menuSqlMapCodeMaker"
-        Me.menuSqlMapCodeMaker.Size = New System.Drawing.Size(325, 30)
+        Me.menuSqlMapCodeMaker.Size = New System.Drawing.Size(286, 26)
         Me.menuSqlMapCodeMaker.Text = "&C SQL-MAP代码生成器"
         '
         'menuEntityMaker
         '
         Me.menuEntityMaker.Name = "menuEntityMaker"
-        Me.menuEntityMaker.Size = New System.Drawing.Size(325, 30)
+        Me.menuEntityMaker.Size = New System.Drawing.Size(286, 26)
         Me.menuEntityMaker.Text = "&E PDF.NET实体类生成器"
         '
         'menuSODBrowser
         '
         Me.menuSODBrowser.Name = "menuSODBrowser"
-        Me.menuSODBrowser.Size = New System.Drawing.Size(325, 30)
+        Me.menuSODBrowser.Size = New System.Drawing.Size(286, 26)
         Me.menuSODBrowser.Text = "&B SOD谷歌极简浏览器"
         '
         '配置ToolStripMenuItem
         '
         Me.配置ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menuIDEConfig, Me.menuCodeMakerConfig, Me.menuEntityMakerConfig, Me.menuSysConfig})
         Me.配置ToolStripMenuItem.Name = "配置ToolStripMenuItem"
-        Me.配置ToolStripMenuItem.Size = New System.Drawing.Size(76, 28)
+        Me.配置ToolStripMenuItem.Size = New System.Drawing.Size(68, 24)
         Me.配置ToolStripMenuItem.Text = "&G 配置"
         '
         'menuIDEConfig
         '
         Me.menuIDEConfig.Name = "menuIDEConfig"
-        Me.menuIDEConfig.Size = New System.Drawing.Size(302, 30)
+        Me.menuIDEConfig.Size = New System.Drawing.Size(267, 26)
         Me.menuIDEConfig.Text = "集成管理配置"
         '
         'menuCodeMakerConfig
         '
         Me.menuCodeMakerConfig.Name = "menuCodeMakerConfig"
-        Me.menuCodeMakerConfig.Size = New System.Drawing.Size(302, 30)
+        Me.menuCodeMakerConfig.Size = New System.Drawing.Size(267, 26)
         Me.menuCodeMakerConfig.Text = "SQL-MAP代码生成器配置"
         '
         'menuEntityMakerConfig
         '
         Me.menuEntityMakerConfig.Name = "menuEntityMakerConfig"
-        Me.menuEntityMakerConfig.Size = New System.Drawing.Size(302, 30)
+        Me.menuEntityMakerConfig.Size = New System.Drawing.Size(267, 26)
         Me.menuEntityMakerConfig.Text = "实体类生成器配置"
         '
         'menuSysConfig
         '
         Me.menuSysConfig.Name = "menuSysConfig"
-        Me.menuSysConfig.Size = New System.Drawing.Size(302, 30)
+        Me.menuSysConfig.Size = New System.Drawing.Size(267, 26)
         Me.menuSysConfig.Text = "系统配置"
         '
         'H帮助ToolStripMenuItem
         '
         Me.H帮助ToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.menuAbout, Me.menuPDFNetHelp, Me.menuOnlineHelp})
         Me.H帮助ToolStripMenuItem.Name = "H帮助ToolStripMenuItem"
-        Me.H帮助ToolStripMenuItem.Size = New System.Drawing.Size(77, 28)
+        Me.H帮助ToolStripMenuItem.Size = New System.Drawing.Size(69, 24)
         Me.H帮助ToolStripMenuItem.Text = "&H 帮助"
         '
         'menuAbout
         '
         Me.menuAbout.Name = "menuAbout"
-        Me.menuAbout.Size = New System.Drawing.Size(202, 30)
+        Me.menuAbout.Size = New System.Drawing.Size(183, 26)
         Me.menuAbout.Text = "关于"
         '
         'menuPDFNetHelp
         '
         Me.menuPDFNetHelp.Name = "menuPDFNetHelp"
-        Me.menuPDFNetHelp.Size = New System.Drawing.Size(202, 30)
+        Me.menuPDFNetHelp.Size = New System.Drawing.Size(183, 26)
         Me.menuPDFNetHelp.Text = "PDF.NET帮助"
         '
         'menuOnlineHelp
         '
         Me.menuOnlineHelp.Name = "menuOnlineHelp"
-        Me.menuOnlineHelp.Size = New System.Drawing.Size(202, 30)
+        Me.menuOnlineHelp.Size = New System.Drawing.Size(183, 26)
         Me.menuOnlineHelp.Text = "在线支持"
         '
         'ToolStrip1
         '
         Me.ToolStrip1.Dock = System.Windows.Forms.DockStyle.None
         Me.ToolStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
-        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsSqlMapper, Me.ToolStripSeparator1, Me.tsDALCoder, Me.ToolStripSeparator2, Me.tsEntityCoder, Me.ToolStripSeparator4, Me.tsBtnRun})
+        Me.ToolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsSqlMapper, Me.ToolStripSeparator1, Me.tsDALCoder, Me.ToolStripSeparator2, Me.tsEntityCoder, Me.ToolStripSeparator4, Me.tsBtnRun, Me.tsBtnHome})
         Me.ToolStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.VerticalStackWithOverflow
         Me.ToolStrip1.Location = New System.Drawing.Point(0, 34)
         Me.ToolStrip1.Name = "ToolStrip1"
         Me.ToolStrip1.Padding = New System.Windows.Forms.Padding(0, 0, 2, 0)
-        Me.ToolStrip1.Size = New System.Drawing.Size(30, 153)
+        Me.ToolStrip1.Size = New System.Drawing.Size(31, 185)
         Me.ToolStrip1.TabIndex = 6
         Me.ToolStrip1.Text = "ToolStrip1"
         '
@@ -344,13 +352,13 @@ Partial Class frmMain
         Me.tsSqlMapper.Image = Global.PDFDotNET.My.Resources.Resources.sql
         Me.tsSqlMapper.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsSqlMapper.Name = "tsSqlMapper"
-        Me.tsSqlMapper.Size = New System.Drawing.Size(27, 28)
+        Me.tsSqlMapper.Size = New System.Drawing.Size(28, 28)
         Me.tsSqlMapper.Text = "SQL-MAP配置文件管理"
         '
         'ToolStripSeparator1
         '
         Me.ToolStripSeparator1.Name = "ToolStripSeparator1"
-        Me.ToolStripSeparator1.Size = New System.Drawing.Size(27, 6)
+        Me.ToolStripSeparator1.Size = New System.Drawing.Size(28, 6)
         '
         'tsDALCoder
         '
@@ -358,13 +366,13 @@ Partial Class frmMain
         Me.tsDALCoder.Image = Global.PDFDotNET.My.Resources.Resources.SqlQuery
         Me.tsDALCoder.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsDALCoder.Name = "tsDALCoder"
-        Me.tsDALCoder.Size = New System.Drawing.Size(27, 28)
+        Me.tsDALCoder.Size = New System.Drawing.Size(28, 28)
         Me.tsDALCoder.Text = "SQL-MAP代码生成器"
         '
         'ToolStripSeparator2
         '
         Me.ToolStripSeparator2.Name = "ToolStripSeparator2"
-        Me.ToolStripSeparator2.Size = New System.Drawing.Size(27, 6)
+        Me.ToolStripSeparator2.Size = New System.Drawing.Size(28, 6)
         '
         'tsEntityCoder
         '
@@ -372,13 +380,13 @@ Partial Class frmMain
         Me.tsEntityCoder.Image = Global.PDFDotNET.My.Resources.Resources.field
         Me.tsEntityCoder.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsEntityCoder.Name = "tsEntityCoder"
-        Me.tsEntityCoder.Size = New System.Drawing.Size(27, 28)
+        Me.tsEntityCoder.Size = New System.Drawing.Size(28, 28)
         Me.tsEntityCoder.Text = "实体类生成器"
         '
         'ToolStripSeparator4
         '
         Me.ToolStripSeparator4.Name = "ToolStripSeparator4"
-        Me.ToolStripSeparator4.Size = New System.Drawing.Size(27, 6)
+        Me.ToolStripSeparator4.Size = New System.Drawing.Size(28, 6)
         '
         'tsBtnRun
         '
@@ -386,8 +394,17 @@ Partial Class frmMain
         Me.tsBtnRun.Image = CType(resources.GetObject("tsBtnRun.Image"), System.Drawing.Image)
         Me.tsBtnRun.ImageTransparentColor = System.Drawing.Color.Magenta
         Me.tsBtnRun.Name = "tsBtnRun"
-        Me.tsBtnRun.Size = New System.Drawing.Size(27, 28)
+        Me.tsBtnRun.Size = New System.Drawing.Size(28, 28)
         Me.tsBtnRun.Text = "运行"
+        '
+        'tsBtnHome
+        '
+        Me.tsBtnHome.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image
+        Me.tsBtnHome.Image = Global.PDFDotNET.My.Resources.Resources.home
+        Me.tsBtnHome.ImageTransparentColor = System.Drawing.Color.Magenta
+        Me.tsBtnHome.Name = "tsBtnHome"
+        Me.tsBtnHome.Size = New System.Drawing.Size(28, 28)
+        Me.tsBtnHome.Text = "浏览器首页"
         '
         'SplitContainer1
         '
@@ -396,7 +413,7 @@ Partial Class frmMain
         Me.SplitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1
         Me.SplitContainer1.ForeColor = System.Drawing.SystemColors.ControlText
         Me.SplitContainer1.Location = New System.Drawing.Point(0, 0)
-        Me.SplitContainer1.Margin = New System.Windows.Forms.Padding(4)
+        Me.SplitContainer1.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.SplitContainer1.Name = "SplitContainer1"
         '
         'SplitContainer1.Panel1
@@ -407,57 +424,10 @@ Partial Class frmMain
         '
         Me.SplitContainer1.Panel2.AutoScroll = True
         Me.SplitContainer1.Panel2.Controls.Add(Me.TabControlMain)
-        Me.SplitContainer1.Size = New System.Drawing.Size(1026, 533)
-        Me.SplitContainer1.SplitterDistance = 275
-        Me.SplitContainer1.SplitterWidth = 6
+        Me.SplitContainer1.Size = New System.Drawing.Size(908, 441)
+        Me.SplitContainer1.SplitterDistance = 321
+        Me.SplitContainer1.SplitterWidth = 5
         Me.SplitContainer1.TabIndex = 7
-        '
-        'OpenFileDialog1
-        '
-        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
-        '
-        'ToolStripContainer1
-        '
-        '
-        'ToolStripContainer1.BottomToolStripPanel
-        '
-        Me.ToolStripContainer1.BottomToolStripPanel.Controls.Add(Me.StatusStrip1)
-        '
-        'ToolStripContainer1.ContentPanel
-        '
-        Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.SplitContainer1)
-        Me.ToolStripContainer1.ContentPanel.Size = New System.Drawing.Size(1026, 533)
-        Me.ToolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill
-        '
-        'ToolStripContainer1.LeftToolStripPanel
-        '
-        Me.ToolStripContainer1.LeftToolStripPanel.Controls.Add(Me.ToolStrip1)
-        Me.ToolStripContainer1.Location = New System.Drawing.Point(0, 0)
-        Me.ToolStripContainer1.Name = "ToolStripContainer1"
-        Me.ToolStripContainer1.Size = New System.Drawing.Size(1056, 596)
-        Me.ToolStripContainer1.TabIndex = 8
-        Me.ToolStripContainer1.Text = "ToolStripContainer1"
-        '
-        'ToolStripContainer1.TopToolStripPanel
-        '
-        Me.ToolStripContainer1.TopToolStripPanel.Controls.Add(Me.MenuStrip1)
-        '
-        'StatusStrip1
-        '
-        Me.StatusStrip1.AutoSize = False
-        Me.StatusStrip1.Dock = System.Windows.Forms.DockStyle.None
-        Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
-        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpreationStatusMsg})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 0)
-        Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(1056, 29)
-        Me.StatusStrip1.TabIndex = 0
-        '
-        'OpreationStatusMsg
-        '
-        Me.OpreationStatusMsg.Name = "OpreationStatusMsg"
-        Me.OpreationStatusMsg.Size = New System.Drawing.Size(46, 24)
-        Me.OpreationStatusMsg.Text = "就绪"
         '
         'TabControlLeft
         '
@@ -466,10 +436,10 @@ Partial Class frmMain
         Me.TabControlLeft.DropButtonVisible = False
         Me.TabControlLeft.FontBoldOnSelect = False
         Me.TabControlLeft.Location = New System.Drawing.Point(0, 0)
-        Me.TabControlLeft.Margin = New System.Windows.Forms.Padding(4)
+        Me.TabControlLeft.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.TabControlLeft.MenuRenderer = Nothing
         Me.TabControlLeft.Name = "TabControlLeft"
-        Me.TabControlLeft.Size = New System.Drawing.Size(275, 533)
+        Me.TabControlLeft.Size = New System.Drawing.Size(321, 441)
         Me.TabControlLeft.TabCloseButtonImage = Nothing
         Me.TabControlLeft.TabCloseButtonImageDisabled = Nothing
         Me.TabControlLeft.TabCloseButtonImageHot = Nothing
@@ -491,9 +461,10 @@ Partial Class frmMain
         Me.TabControlMain.CloseButtonVisible = True
         Me.TabControlMain.Dock = System.Windows.Forms.DockStyle.Fill
         Me.TabControlMain.Location = New System.Drawing.Point(0, 0)
-        Me.TabControlMain.MenuRenderer = ToolStripSystemRenderer1
+        Me.TabControlMain.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.TabControlMain.MenuRenderer = ToolStripSystemRenderer3
         Me.TabControlMain.Name = "TabControlMain"
-        Me.TabControlMain.Size = New System.Drawing.Size(745, 533)
+        Me.TabControlMain.Size = New System.Drawing.Size(582, 441)
         Me.TabControlMain.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed
         Me.TabControlMain.TabBorderEnhanced = True
         Me.TabControlMain.TabBorderEnhanceWeight = MdiTabControl.TabControl.Weight.Soft
@@ -508,13 +479,61 @@ Partial Class frmMain
         Me.TabControlMain.TabPadLeft = 20
         Me.TabControlMain.TabTop = 1
         '
+        'OpenFileDialog1
+        '
+        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
+        '
+        'ToolStripContainer1
+        '
+        '
+        'ToolStripContainer1.BottomToolStripPanel
+        '
+        Me.ToolStripContainer1.BottomToolStripPanel.Controls.Add(Me.StatusStrip1)
+        '
+        'ToolStripContainer1.ContentPanel
+        '
+        Me.ToolStripContainer1.ContentPanel.Controls.Add(Me.SplitContainer1)
+        Me.ToolStripContainer1.ContentPanel.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.ToolStripContainer1.ContentPanel.Size = New System.Drawing.Size(908, 441)
+        Me.ToolStripContainer1.Dock = System.Windows.Forms.DockStyle.Fill
+        '
+        'ToolStripContainer1.LeftToolStripPanel
+        '
+        Me.ToolStripContainer1.LeftToolStripPanel.Controls.Add(Me.ToolStrip1)
+        Me.ToolStripContainer1.Location = New System.Drawing.Point(0, 0)
+        Me.ToolStripContainer1.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
+        Me.ToolStripContainer1.Name = "ToolStripContainer1"
+        Me.ToolStripContainer1.Size = New System.Drawing.Size(939, 497)
+        Me.ToolStripContainer1.TabIndex = 8
+        Me.ToolStripContainer1.Text = "ToolStripContainer1"
+        '
+        'ToolStripContainer1.TopToolStripPanel
+        '
+        Me.ToolStripContainer1.TopToolStripPanel.Controls.Add(Me.MenuStrip1)
+        '
+        'StatusStrip1
+        '
+        Me.StatusStrip1.AutoSize = False
+        Me.StatusStrip1.Dock = System.Windows.Forms.DockStyle.None
+        Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(24, 24)
+        Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.OpreationStatusMsg})
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 0)
+        Me.StatusStrip1.Name = "StatusStrip1"
+        Me.StatusStrip1.Size = New System.Drawing.Size(939, 26)
+        Me.StatusStrip1.TabIndex = 0
+        '
+        'OpreationStatusMsg
+        '
+        Me.OpreationStatusMsg.Name = "OpreationStatusMsg"
+        Me.OpreationStatusMsg.Size = New System.Drawing.Size(39, 20)
+        Me.OpreationStatusMsg.Text = "就绪"
+        '
         'frmMain
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(9.0!, 18.0!)
-        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1056, 596)
+        Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None
+        Me.ClientSize = New System.Drawing.Size(939, 497)
         Me.Controls.Add(Me.ToolStripContainer1)
-        Me.Margin = New System.Windows.Forms.Padding(4)
+        Me.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.Name = "frmMain"
         Me.Text = "PDF.NET 数据开发框架 -- 集成开发环境"
         Me.MenuStrip1.ResumeLayout(False)
@@ -589,4 +608,6 @@ Partial Class frmMain
     Friend WithEvents ToolStripContainer1 As ToolStripContainer
     Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents OpreationStatusMsg As ToolStripStatusLabel
+    Friend WithEvents menuNewIEBrowser As ToolStripMenuItem
+    Friend WithEvents tsBtnHome As ToolStripButton
 End Class

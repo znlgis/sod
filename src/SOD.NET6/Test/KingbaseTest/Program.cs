@@ -8,7 +8,43 @@ namespace KingbaseTest
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, SOD6!");
-            var helper = AdoHelper.CreateHelper("local");
+            SimpleEntity entity = new SimpleEntity();
+            SimpleEntity entity2 = new SimpleEntity();
+
+            var helper = AdoHelper.CreateHelper("local2");
+            //Kingbase 架构集合名字:
+            /*
+             * 不区分大小写：
+ "METADATACOLLECTIONS" 
+ "RESTRICTIONS" 
+ "DATASOURCEINFORMATION"
+ "DATATYPES"
+ "RESERVEDWORDS" 
+ "DATABASES" 
+ "SCHEMATA" 
+ "TABLES" 
+ "COLUMNS" 
+ "VIEWS" 
+ "USERS" 
+ "INDEXES" 
+ "INDEXCOLUMNS" 
+ "CONSTRAINTS"
+ "PRIMARYKEY" 
+ "UNIQUEKEYS" 
+ "FOREIGNKEYS" 
+ "CONSTRAINTCOLUMNS" 
+             * 
+             */
+            var schema0 = helper.GetSchema("TABLES", null);
+
+            String[] columnRestrictions = new String[4];
+            columnRestrictions[1] = "public";
+            columnRestrictions[2] = "mytable_202404";
+
+            //var schema = helper.GetSchema("Columns", columnRestrictions);
+            var schema2 = helper.GetSchema("DATASOURCEINFORMATION", null);
+
+
             string sqlCount = @"SELECT   COUNT( ""ID"") AS  ""ID"" 
 FROM ""Arm_2405""  
      WHERE    ""AtTime"" >= :P0 AND  ""AtTime"" <= :P1 ";
@@ -41,37 +77,6 @@ FROM ""Arm_2405""
             System.Data.IDataParameter[] paras3 = helper.CreateParameters(  p3 );
             var ds111 = helper.ExecuteDataSet(sqlSelect2, System.Data.CommandType.Text, paras3);
 
-            //Kingbase 架构集合名字:
-            /*
-             * 不区分大小写：
- "METADATACOLLECTIONS" 
- "RESTRICTIONS" 
- "DATASOURCEINFORMATION"
- "DATATYPES"
- "RESERVEDWORDS" 
- "DATABASES" 
- "SCHEMATA" 
- "TABLES" 
- "COLUMNS" 
- "VIEWS" 
- "USERS" 
- "INDEXES" 
- "INDEXCOLUMNS" 
- "CONSTRAINTS"
- "PRIMARYKEY" 
- "UNIQUEKEYS" 
- "FOREIGNKEYS" 
- "CONSTRAINTCOLUMNS" 
-             * 
-             */
-            var schema0 = helper.GetSchema("TABLES", null);
-
-            String[] columnRestrictions = new String[4];
-            columnRestrictions[1] = "public";
-            columnRestrictions[2] = "mytable_202404";
-
-            var schema = helper.GetSchema("Columns", columnRestrictions);
-            var schema2 = helper.GetSchema("DATASOURCEINFORMATION", null);
             
             helper.BeginTransaction();
             string sql_insert = "insert into devicesetstatus([EquipmentID]) values('123434567890');";
@@ -83,7 +88,7 @@ FROM ""Arm_2405""
             var ds3 = helper.ExecuteScalar(sql2);
             helper.Commit();
 
-            SimpleEntity entity = new SimpleEntity();
+            
             entity.Name = "Test_"+DateTime.Now.ToString("yyyyMMddHHmmss");
             entity.AtTime = DateTime.Now;
             LocalDbContext ctx = new LocalDbContext();

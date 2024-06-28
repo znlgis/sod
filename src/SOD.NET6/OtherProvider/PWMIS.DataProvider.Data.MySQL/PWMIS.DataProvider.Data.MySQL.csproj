@@ -15,6 +15,7 @@
     <RepositoryUrl>https://github.com/znlgis/sod</RepositoryUrl>
     <PackageTags>SOD;SqlMap;ORM;DataForms;MySQL</PackageTags>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
