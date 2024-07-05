@@ -4,21 +4,28 @@
 // Created Date: 2024-6-20 15:39:14
 // Please do not modify this file.
 //-----------------------------------------------------------------
+
+//-----------------------------------------------------------------
+// SOD Framework (https://github.com/znlgis/sod)
+// EntityCreateTool (Ver 1.0 Date:2023-5-1) Created DTO File.
+// Created Date: 2024-6-20 15:39:14
+// Please do not modify this file.
+//-----------------------------------------------------------------
 using SimpleDemo.Interface;
 
-namespace SimpleDemo.DTO
+namespace SimpleDemo.Model.Dtos
 {
     /// <summary>
     /// 1.设备信息 
     /// </summary>
-    public class EquipmentDto: IEquipment
+    public class EquipmentDto : IEquipment
     {
         public EquipmentDto()
         {
-           
+
         }
 
-        
+
         /// <summary>
         /// ID号 
         /// </summary>
@@ -28,8 +35,8 @@ namespace SimpleDemo.DTO
 
         public int ID
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -42,8 +49,8 @@ namespace SimpleDemo.DTO
 
         public string EquipmentID
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -52,8 +59,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public string EquipmentName
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -62,8 +69,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public string IP
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -72,8 +79,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public int Port
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -82,18 +89,18 @@ namespace SimpleDemo.DTO
         /// </summary>
         public string ParentService
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
         /// <summary>
         /// 设备类型 
         /// </summary>
-        public int EquipmentType
+        public string EquipmentType
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -102,8 +109,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public string EquipmentModel
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -112,8 +119,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public string InstallLocation
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -122,8 +129,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public string ManufacturerID
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -136,8 +143,8 @@ namespace SimpleDemo.DTO
 
         public string DevCodeGB
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -146,8 +153,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public double DLng
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -156,8 +163,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public double DLat
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -166,8 +173,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public int IAltitude
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -176,8 +183,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public string MacAddress
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -190,8 +197,8 @@ namespace SimpleDemo.DTO
 
         public string Maintenance
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -200,8 +207,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public string FirmwareVersion
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -210,8 +217,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public string UserName
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -220,8 +227,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public string Password
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -234,8 +241,8 @@ namespace SimpleDemo.DTO
 
         public int IsOnline
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -244,8 +251,8 @@ namespace SimpleDemo.DTO
         /// </summary>
         public DateTime AtOffLine
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
@@ -254,11 +261,11 @@ namespace SimpleDemo.DTO
         /// </summary>
         public string Memo
         {
-            get ;
-            set ;
+            get;
+            set;
         }
 
 
-       
+
     }
 }

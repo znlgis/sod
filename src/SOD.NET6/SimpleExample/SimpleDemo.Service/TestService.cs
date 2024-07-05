@@ -1,6 +1,6 @@
-﻿using SimpleDemo.DTO;
-using SimpleDemo.Interface.Infrastructure;
+﻿using SimpleDemo.Interface.Infrastructure;
 using SimpleDemo.Interface.IRepositories;
+using SimpleDemo.Model.Dtos;
 
 namespace SimpleDemo.Service
 {

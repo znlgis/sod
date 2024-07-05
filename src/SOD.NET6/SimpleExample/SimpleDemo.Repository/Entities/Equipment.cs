@@ -16,7 +16,7 @@ namespace SimpleDemo.Entity
     {
         public EquipmentEntity()
         {
-            TableName = "Equipment";
+            TableName = "Equipment2";
             IdentityName = "ID"; 
             PrimaryKeys.Add("ID");
         }
@@ -93,10 +93,10 @@ namespace SimpleDemo.Entity
         /// <summary>
         /// 设备类型 
         /// </summary>
-        public int EquipmentType
+        public string EquipmentType
         {
-            get { return getProperty<int>("EquipmentType"); }
-            set { setProperty("EquipmentType", value); }
+            get { return getProperty<string>("EquipmentType"); }
+            set { setProperty("EquipmentType", value,32); }
         }
 
 

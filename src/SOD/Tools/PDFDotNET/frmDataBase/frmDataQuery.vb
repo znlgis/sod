@@ -144,6 +144,17 @@
                 Me.txtExecuteMsg.Text &= vbCrLf & vbCrLf & DateTime.Now.ToString()
                 Me.txtExecuteMsg.Text &= vbCrLf & "执行时间(ms)：" & stopWatch.ElapsedMilliseconds
 
+                '清理网格控件的内存
+                For Each ctr In Me.TabPageGrid.Controls
+                    If TypeOf ctr Is DataGridView Then
+                        Dim dgv As DataGridView = ctr
+                        RemoveHandler dgv.CellFormatting, AddressOf DataGridView1_CellFormatting
+                        dgv.DataSource = Nothing
+                        dgv.Rows.Clear()
+                        GC.Collect()
+
+                    End If
+                Next
                 Me.TabPageGrid.Controls.Clear()
 
                 If acceptCount > 0 Or isUpdateSql Then
@@ -161,7 +172,7 @@
                 Dim grid1 As New DataGridView()
                 grid1.Dock = DockStyle.Fill
                 grid1.DataSource = dsResult.Tables(0)
-
+                AddHandler grid1.CellFormatting, AddressOf DataGridView1_CellFormatting
 
                 '创建多个网格控件，显示数据
                 If dsResult.Tables.Count > 1 Then
@@ -193,6 +204,16 @@
 
         End If
         Me.Cursor = Cursors.Default
+    End Sub
+
+    Private Sub DataGridView1_CellFormatting(sender As Object, e As DataGridViewCellFormattingEventArgs)
+        ' 检查是否为空单元格
+        If e.Value Is Nothing Or e.Value Is DBNull.Value Then
+            ' 将空单元格设置为"NULL"
+            e.Value = "<NULL>"
+            ' 设置单元格的样式为默认样式
+            e.FormattingApplied = True
+        End If
     End Sub
 
     Private Sub rtbQueryText_KeyDown(ByVal sender As System.Object, ByVal e As System.Windows.Forms.KeyEventArgs) Handles rtbQueryText.KeyDown

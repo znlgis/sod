@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using PWMIS.DataProvider.Data;
+using SimpleDemo.Model;
 using SimpleDemo.Service;
 
 namespace SimpleWebApi
@@ -25,6 +26,9 @@ namespace SimpleWebApi
 
         public void InitWork()
         {
+            long number = CommonUtil.NextSeqNumber();
+            string strSeqNum = CommonUtil.GetTimeSeqNumberString("ABC");
+            Console.WriteLine("Test SeqNumber:{0},SeqNumberString:{1}", number, strSeqNum);
             using (var scope = _provider.CreateScope())
             {
                 var testSrv = scope.ServiceProvider.GetService<TestService>();

@@ -6,4 +6,18 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="IData\**" />
+    <EmbeddedResource Remove="IData\**" />
+    <None Remove="IData\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="IIdentityProperty.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SimpleDemo.Model\SimpleDemo.Model.csproj" />
+  </ItemGroup>
+
 </Project>
