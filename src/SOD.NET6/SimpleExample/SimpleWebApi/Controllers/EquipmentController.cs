@@ -73,10 +73,21 @@ namespace SimpleWebApi.Controllers
         public int Delete(int id)
         {
             if (_service.Delete(id))
-                throw new Exception("server:测试删除错误");
-            //return id;
+            return id;
             else
-                return 0;
+                //    return 0;
+                throw new Exception("server error:ID不存在");
+        }
+
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns>操作受影响的行数</returns>
+        [HttpPost("BatchDelete")]
+        public int BatchDelete([FromBody] int[] value)
+        {
+            return _service.BatchDelete(value);
         }
     }
 }

@@ -27,7 +27,9 @@ namespace SimpleWebApi
             builder.Services.AddTransient<TestService>();
             builder.Services.AddTransient<IEquipmentService, EquipmentService>();
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(options =>
+                options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true
+            );
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

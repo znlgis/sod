@@ -40,7 +40,13 @@ namespace SimpleDemo.Interface.Infrastructure
         /// <param name="total">记录总数，如果小于等于0则会查询记录总数</param>
         /// <param name="filter">记录过滤条件</param>
         /// <returns></returns>
-        public PageResult<TObj> GetPageList(int pageSize, int pageNum, int total, string filter);
+        PageResult<TObj> GetPageList(int pageSize, int pageNum, int total, string filter);
 
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="tids">要删除数据的ID数组</param>
+        /// <returns>删除数据的条数</returns>
+        int BatchDelete(Tid[] tids);
     }
 }

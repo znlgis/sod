@@ -330,5 +330,19 @@ namespace SimpleDemo.Repository
             return pageResult;
         }
 
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="tids">要删除数据的ID数组</param>
+        /// <returns>删除数据的条数</returns>
+        public int BatchDelete(Tid[] tids)
+        {
+            TEntity entity = new TEntity();
+            OQL q = OQL.From(entity)
+                .Delete()
+                .Where(cmp => cmp.Comparer(entity.ID, "in", tids))
+                .END;
+            return EntityQuery.ExecuteOql(q, _dbContext.CurrentDataBase);
+        }
     }
 }

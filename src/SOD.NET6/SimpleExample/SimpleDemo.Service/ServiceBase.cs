@@ -70,5 +70,15 @@ namespace SimpleDemo.Service
                 Items = list
             };
         }
+
+        /// <summary>
+        /// 批量删除
+        /// </summary>
+        /// <param name="tids">要删除数据的ID数组</param>
+        /// <returns>删除数据的条数</returns>
+        public int BatchDelete(Tid[] tids)
+        {
+            return _repository.BatchDelete(tids);
+        }
     }
 }
