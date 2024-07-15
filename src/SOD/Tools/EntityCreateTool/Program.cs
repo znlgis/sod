@@ -26,6 +26,7 @@ table	Table1
 ";
                 Console.WriteLine(formatText);
                 Console.Read();
+                return;
             }
             else
             {
@@ -44,19 +45,20 @@ table	Table1
             string fileFormat = @"
 //-----------------------------------------------------------------
 // SOD Framework (https://github.com/znlgis/sod)
-// EntityCreateTool (Ver 1.0 Date:2023-5-1) Created SOD Entity File.
+// EntityCreateTool (Ver 1.1 Date:2023-5-1) Created SOD Entity File.
 // Created Date: #CreatedDate#
 // Please do not modify this file.
 //-----------------------------------------------------------------
 using System;
 using PWMIS.DataMap.Entity;
+using #NameSpace#.Interface;
 
-namespace #NameSpace#
+namespace #NameSpace#.Entity
 {
     /// <summary>
     #ClassSummary# 
     /// </summary>
-    public class #ClassName#Entity:EntityBase
+    public class #ClassName#Entity : EntityBase, I#ClassName#
     {
         public #ClassName#Entity()
         {
@@ -73,18 +75,19 @@ namespace #NameSpace#
             string fileDtoFormat = @"
 //-----------------------------------------------------------------
 // SOD Framework (https://github.com/znlgis/sod)
-// EntityCreateTool (Ver 1.0 Date:2023-5-1) Created DTO File.
+// EntityCreateTool (Ver 1.1 Date:2023-5-1) Created DTO File.
 // Created Date: #CreatedDate#
 // Please do not modify this file.
 //-----------------------------------------------------------------
 using System;
+using #NameSpace#.Interface
 
-namespace #NameSpace#
+namespace #NameSpace#.DTO
 {
     /// <summary>
     #ClassSummary# 
     /// </summary>
-    public class #ClassName#Dto
+    public class #ClassName#Dto : I#ClassName#
     {
         public #ClassName#Dto()
         {
@@ -164,7 +167,12 @@ namespace #NameSpace#
                 Console.Read();
                 return;
             }
-           
+
+            if (!System.IO.File.Exists(tableDefineFile))
+            {
+                Console.WriteLine("表结构定义文件 {0} 未找到。", tableDefineFile);
+                return;
+            }
             using (StreamReader sr = File.OpenText(tableDefineFile))
             {
                 string s = "";
@@ -172,6 +180,7 @@ namespace #NameSpace#
                 string[] fieldDefine;
                 List<string> propertyList = new List<string>();
                 List<string> propertyDtoList = new List<string>();
+                bool isReadonly = false;
 
                 while ((s = sr.ReadLine()) != null)
                 {
@@ -180,6 +189,16 @@ namespace #NameSpace#
                         string[] arr = s.Split(new char[] { '\t', ' ' },StringSplitOptions.RemoveEmptyEntries);
                         if (arr.Length >= 2)
                         {
+                            if (arr.Length >= 3 && arr[2].ToLower() == "readonly") //只读定义，不处理。
+                            {
+                                isReadonly = true;
+                                Console.WriteLine("table [{0}] define \"readonly\", skip it; ", arr[1]);
+                                continue;
+                            }
+                            else
+                            {
+                                isReadonly = false;
+                            }
                             if (TableName != "" && TableName != arr[1])
                             {
                                 //读取到新表的定义，处理上一个表的结果
@@ -194,7 +213,7 @@ namespace #NameSpace#
                                     Propertys = sb.ToString();
 
                                     string entityFileText = fileFormat.Replace("#CreatedDate#", CreatedDate)
-                                       .Replace("#NameSpace#", strNameSpace+".Entity")
+                                       .Replace("#NameSpace#", strNameSpace)
                                        .Replace("#ClassName#", ClassName)
                                        .Replace("#TableName#", TableName)
                                        .Replace("#IdentityName#", IdentityName)
@@ -216,7 +235,7 @@ namespace #NameSpace#
                                     Propertys = sbDto.ToString();
 
                                     string dtoFileText = fileDtoFormat.Replace("#CreatedDate#", CreatedDate)
-                                     .Replace("#NameSpace#", strNameSpace + ".DTO")
+                                     .Replace("#NameSpace#", strNameSpace)
                                      .Replace("#ClassName#", ClassName)
                                      .Replace("#Propertys#", Propertys)
                                      .Replace("#ClassSummary#", ClassSummary);
@@ -340,7 +359,7 @@ namespace #NameSpace#
                 }//end while
 
                 //读取到新表的定义，处理上一个表的结果
-                if (propertyList.Count > 0)
+                if (propertyList.Count > 0 && !isReadonly)
                 {
                     System.Text.StringBuilder sb = new System.Text.StringBuilder();
                     foreach (var property in propertyList)
@@ -420,8 +439,16 @@ namespace #NameSpace#
             string fullPath = System.IO.Path.Combine(path, fileName);
             try
             {
-                System.IO.File.WriteAllText(fullPath, fileContent, Encoding.UTF8);
-                Console.WriteLine("Save File OK. path: {0}",fullPath);
+                System.IO.FileInfo fi = new FileInfo(fullPath);
+                if(fi.Exists && fi.IsReadOnly)
+                {
+                    Console.WriteLine("The file \"{0}\" is readonly,please check out it.", fullPath);
+                }
+                else
+                {
+                    System.IO.File.WriteAllText(fullPath, fileContent, Encoding.UTF8);
+                    Console.WriteLine("Save File OK. path: \"{0}\"", fullPath);
+                }
             }
             catch(Exception ex)
             {
