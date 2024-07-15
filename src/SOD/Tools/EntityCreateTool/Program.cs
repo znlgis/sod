@@ -80,7 +80,7 @@ namespace #NameSpace#.Entity
 // Please do not modify this file.
 //-----------------------------------------------------------------
 using System;
-using #NameSpace#.Interface
+using #NameSpace#.Interface;
 
 namespace #NameSpace#.DTO
 {
@@ -370,7 +370,7 @@ namespace #NameSpace#.DTO
                     Propertys = sb.ToString();
 
                     string entityFileText = fileFormat.Replace("#CreatedDate#", CreatedDate)
-                        .Replace("#NameSpace#", strNameSpace+".Entity")
+                        .Replace("#NameSpace#", strNameSpace)
                         .Replace("#ClassName#", ClassName)
                         .Replace("#TableName#", TableName)
                         .Replace("#IdentityName#", IdentityName)
@@ -392,7 +392,7 @@ namespace #NameSpace#.DTO
                     Propertys = sbDto.ToString();
 
                     string dtoFileText = fileDtoFormat.Replace("#CreatedDate#", CreatedDate)
-                         .Replace("#NameSpace#", strNameSpace + ".DTO")
+                         .Replace("#NameSpace#", strNameSpace)
                          .Replace("#ClassName#", ClassName)
                          .Replace("#Propertys#", Propertys)
                          .Replace("#ClassSummary#", ClassSummary);
