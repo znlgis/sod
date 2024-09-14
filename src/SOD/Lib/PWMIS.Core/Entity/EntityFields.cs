@@ -71,7 +71,7 @@ namespace PWMIS.DataMap.Entity
         {
             get { return fields; }
         }
-
+        /* 2024.8 移除
         /// <summary>
         /// 获取或者设置字段对应的描述，跟 Fields相对应，优先采用实体类自身的定义
         /// </summary>
@@ -87,7 +87,7 @@ namespace PWMIS.DataMap.Entity
             }
             set { fieldDescriptions = value; }
         }
-
+        */
         /// <summary>
         /// 获取实体属性名称数组
         /// </summary>

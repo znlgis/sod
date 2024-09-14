@@ -4,6 +4,8 @@ Imports CefSharp.WinForms
 Public Class frmWelcom
     Dim WithEvents WebBrowser1 As CefSharp.WinForms.ChromiumWebBrowser
     Dim PageLoaded As Boolean
+    Dim HomePageLoaded As Boolean
+    Dim HomePageAddress As String = "http://www.pwmis.com/sqlmap/"
     ''' <summary>
     ''' 命令窗体
     ''' </summary>
@@ -112,7 +114,7 @@ Public Class frmWelcom
                       Me.Text = e.Title + " @[SOD谷歌极简浏览器]"
                       PageLoaded = True
                   End Sub)
-        SendOperationStatusMessage("Web页加载成功")
+        'SendOperationStatusMessage("Web页加载成功")
     End Sub
 
     Private Sub panBody_Resize(sender As Object, e As EventArgs) Handles panBody.Resize
@@ -179,6 +181,42 @@ Public Class frmWelcom
 
     Private Sub AddressChange(address As String)
         Me.txtUrl.Text = address
+        If Not HomePageLoaded Then
+            HomePageLoaded = True
+            If address <> HomePageAddress Then '可能进行了地址跳转
+                LoadSODPage()
+            End If
+        End If
+    End Sub
 
+    Private Sub LoadSODPage()
+        Dim path As String = System.IO.Path.GetDirectoryName(Application.ExecutablePath)
+        Dim sodFile As String = path & "\Document\PWMIS.SOD.6.0.1.html"
+        Dim url As String = "file:///" & sodFile.Replace("\", "/")
+        If Not System.IO.File.Exists(sodFile) Then
+            url = "https://www.nuget.org/packages/PWMIS.SOD"
+        End If
+        WebBrowser1.Load(url)
+    End Sub
+
+    Private Sub lnkSOD_LinkClicked(sender As Object, e As LinkLabelLinkClickedEventArgs) Handles lnkSOD.LinkClicked
+        LoadSODPage()
+    End Sub
+
+    Private Async Sub WebBrowser1_LoadingStateChanged(sender As Object, e As LoadingStateChangedEventArgs) Handles WebBrowser1.LoadingStateChanged
+        Dim text As String
+        If e.IsLoading Then
+            text = "Web页正在加载..."
+        Else
+            text = "页面加载完成."
+            If Not HomePageLoaded Then
+                Dim s As String = Await Me.WebBrowser1.GetMainFrame().GetTextAsync()
+                If s = "" Then '未联网
+                    LoadSODPage()
+                End If
+            End If
+
+        End If
+        SendOperationStatusMessage(text)
     End Sub
 End Class

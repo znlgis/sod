@@ -196,6 +196,7 @@ namespace PWMIS.DataMap.Entity
             this.names = ef.Fields;
         }
 
+        /* 实体描述信息 因使用率很少， 2024.8 移除
         /// <summary>
         /// 获取字段描述信息，默认无，如果需要请在具体的实现类里面重写该方法。
         /// 代码生成器可能会重写该方法。
@@ -205,6 +206,7 @@ namespace PWMIS.DataMap.Entity
         {
             return null;
         }
+        
 
         /// <summary>
         /// 获取所有字段的描述，跟字段名一一对应
@@ -222,6 +224,7 @@ namespace PWMIS.DataMap.Entity
             }
             return desc;
         }
+        
 
         /// <summary>
         /// 获取指定字段名对应的描述
@@ -245,7 +248,7 @@ namespace PWMIS.DataMap.Entity
                 throw new ArgumentOutOfRangeException(fieldName+" 不在实体类定义的字段范围内。");
             return GetFieldDescriptions()[index];
         }
-
+        */
 
         //[NonSerialized()] 
         private string _identity = string.Empty;

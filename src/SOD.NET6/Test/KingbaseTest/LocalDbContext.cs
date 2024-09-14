@@ -9,7 +9,7 @@ namespace KingbaseTest
 {
     class LocalDbContext : DbContext
     {
-        public LocalDbContext() : base("local")
+        public LocalDbContext() : base("local2")
         {
 
         }

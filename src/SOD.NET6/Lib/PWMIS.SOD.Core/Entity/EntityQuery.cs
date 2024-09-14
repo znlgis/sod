@@ -1128,7 +1128,7 @@ namespace PWMIS.DataMap.Entity
                 sqlBatchTemp = sql + "(" + fields.TrimStart(',') + ") ";
                 sql = sql + "(" + fields.TrimStart(',') + ") VALUES (" + values.TrimStart(',') + ")";
                 
-                if (db.CurrentDBMSType == DBMSType.SqlServer || db.CurrentDBMSType == DBMSType.MySql)
+                if (db.CurrentDBMSType == DBMSType.SqlServer || db.CurrentDBMSType == DBMSType.MySql || db.CurrentDBMSType == DBMSType.Kingbase)
                 {
                     List<IDataParameter> parasList = new List<IDataParameter>();
                     int batchSize = 10;
@@ -1184,10 +1184,10 @@ namespace PWMIS.DataMap.Entity
                         db.Rollback();
                         throw new Exception("执行事务查询出错，详细请查看内部异常", qex);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         db.Rollback();
-                        throw ex;
+                        throw;
                     }
                 }
                 else
@@ -1202,7 +1202,10 @@ namespace PWMIS.DataMap.Entity
                                 if (paras[i] != null)
                                 {
                                     //Access等数据库对参数类型有特殊要求，必须重新处理
-                                    paras[i] = db.GetParameter(paras[i].ParameterName, item.PropertyList(paras[i].SourceColumn));
+                                    //2024-9-14 解决记录参数对应的字段名问题
+                                    string field = paras[i].SourceColumn;
+                                    paras[i] = db.GetParameter(paras[i].ParameterName, item.PropertyList(field));
+                                    paras[i].SourceColumn=field;
                                 }
                             }
                             count += db.ExecuteNonQuery(sql, CommandType.Text, paras);
@@ -1215,10 +1218,10 @@ namespace PWMIS.DataMap.Entity
                         db.Rollback();
                         throw new Exception("执行事务查询出错，详细请查看内部异常", qex);
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         db.Rollback();
-                        throw ex;
+                        throw;
                     }
                 }
             }

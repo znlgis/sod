@@ -34,6 +34,7 @@ Partial Class frmWelcom
         Me.btnGo = New System.Windows.Forms.Button()
         Me.txtUrl = New System.Windows.Forms.TextBox()
         Me.panBody = New System.Windows.Forms.Panel()
+        Me.lnkSOD = New System.Windows.Forms.LinkLabel()
         Me.panHead.SuspendLayout()
         CType(Me.picGoHome, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.picRefersh, System.ComponentModel.ISupportInitialize).BeginInit()
@@ -44,6 +45,7 @@ Partial Class frmWelcom
         'panHead
         '
         Me.panHead.BackColor = System.Drawing.Color.White
+        Me.panHead.Controls.Add(Me.lnkSOD)
         Me.panHead.Controls.Add(Me.cmbHotWebSite)
         Me.panHead.Controls.Add(Me.btnNewTabWindow)
         Me.panHead.Controls.Add(Me.lnkNewWindow)
@@ -58,7 +60,7 @@ Partial Class frmWelcom
         Me.panHead.Location = New System.Drawing.Point(0, 0)
         Me.panHead.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.panHead.Name = "panHead"
-        Me.panHead.Size = New System.Drawing.Size(1311, 65)
+        Me.panHead.Size = New System.Drawing.Size(1394, 65)
         Me.panHead.TabIndex = 0
         '
         'cmbHotWebSite
@@ -66,10 +68,10 @@ Partial Class frmWelcom
         Me.cmbHotWebSite.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.cmbHotWebSite.ForeColor = System.Drawing.Color.Sienna
         Me.cmbHotWebSite.FormattingEnabled = True
-        Me.cmbHotWebSite.Location = New System.Drawing.Point(1189, 18)
+        Me.cmbHotWebSite.Location = New System.Drawing.Point(1269, 18)
         Me.cmbHotWebSite.Margin = New System.Windows.Forms.Padding(3, 2, 3, 2)
         Me.cmbHotWebSite.Name = "cmbHotWebSite"
-        Me.cmbHotWebSite.Size = New System.Drawing.Size(112, 24)
+        Me.cmbHotWebSite.Size = New System.Drawing.Size(112, 28)
         Me.cmbHotWebSite.TabIndex = 9
         '
         'btnNewTabWindow
@@ -90,7 +92,7 @@ Partial Class frmWelcom
         Me.lnkNewWindow.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
         Me.lnkNewWindow.Location = New System.Drawing.Point(946, 25)
         Me.lnkNewWindow.Name = "lnkNewWindow"
-        Me.lnkNewWindow.Size = New System.Drawing.Size(63, 16)
+        Me.lnkNewWindow.Size = New System.Drawing.Size(79, 20)
         Me.lnkNewWindow.TabIndex = 7
         Me.lnkNewWindow.TabStop = True
         Me.lnkNewWindow.Text = "+新窗口"
@@ -99,10 +101,10 @@ Partial Class frmWelcom
         '
         Me.lnk12306.AutoSize = True
         Me.lnk12306.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
-        Me.lnk12306.Location = New System.Drawing.Point(1036, 25)
+        Me.lnk12306.Location = New System.Drawing.Point(1116, 25)
         Me.lnk12306.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lnk12306.Name = "lnk12306"
-        Me.lnk12306.Size = New System.Drawing.Size(111, 16)
+        Me.lnk12306.Size = New System.Drawing.Size(139, 20)
         Me.lnk12306.TabIndex = 6
         Me.lnk12306.TabStop = True
         Me.lnk12306.Text = "12306无声刷票"
@@ -179,7 +181,7 @@ Partial Class frmWelcom
         Me.txtUrl.Location = New System.Drawing.Point(253, 16)
         Me.txtUrl.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.txtUrl.Name = "txtUrl"
-        Me.txtUrl.Size = New System.Drawing.Size(630, 26)
+        Me.txtUrl.Size = New System.Drawing.Size(630, 30)
         Me.txtUrl.TabIndex = 0
         Me.txtUrl.Text = "http://www.pwmis.com/sqlmap"
         '
@@ -189,14 +191,25 @@ Partial Class frmWelcom
         Me.panBody.Location = New System.Drawing.Point(0, 65)
         Me.panBody.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
         Me.panBody.Name = "panBody"
-        Me.panBody.Size = New System.Drawing.Size(1311, 469)
+        Me.panBody.Size = New System.Drawing.Size(1394, 469)
         Me.panBody.TabIndex = 1
+        '
+        'lnkSOD
+        '
+        Me.lnkSOD.AutoSize = True
+        Me.lnkSOD.Font = New System.Drawing.Font("宋体", 12.0!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(134, Byte))
+        Me.lnkSOD.Location = New System.Drawing.Point(1031, 25)
+        Me.lnkSOD.Name = "lnkSOD"
+        Me.lnkSOD.Size = New System.Drawing.Size(79, 20)
+        Me.lnkSOD.TabIndex = 10
+        Me.lnkSOD.TabStop = True
+        Me.lnkSOD.Text = "SOD框架"
         '
         'frmWelcom
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 15.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(1311, 534)
+        Me.ClientSize = New System.Drawing.Size(1394, 534)
         Me.Controls.Add(Me.panBody)
         Me.Controls.Add(Me.panHead)
         Me.Margin = New System.Windows.Forms.Padding(4, 3, 4, 3)
@@ -224,4 +237,5 @@ Partial Class frmWelcom
     Friend WithEvents lnkNewWindow As LinkLabel
     Friend WithEvents btnNewTabWindow As Button
     Friend WithEvents cmbHotWebSite As ComboBox
+    Friend WithEvents lnkSOD As LinkLabel
 End Class

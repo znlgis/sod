@@ -553,7 +553,12 @@ Public Class frmDataBaseExpert
                                     nodeColumns.Nodes.Add(childNode)
                                 Next
                             Else
-                                dtSchema = Me.CurrDataBase.GetSchema("Columns", New String() {Nothing, Nothing, tableName})
+                                dtSchema = Me.CurrDataBase.GetSchema("Columns", New String() {Nothing, Nothing, tableName, Nothing})
+                                If dtSchema Is Nothing Then
+                                    MessageBox.Show("获取列信息元数据失败。错误信息：" & vbCrLf & vbCrLf & Me.CurrDataBase.ErrorMessage)
+                                    Me.CurrDataBase.ErrorMessage = ""
+                                    Exit Select
+                                End If
                                 tableView = dtSchema.DefaultView
                                 tableView.Sort = "ordinal_position"
 

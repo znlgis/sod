@@ -17,14 +17,14 @@ Public Class frmEntityCreate
     ''' <remarks></remarks>
     Public CurrDBName As String
 
-    Dim entityClassTemplate As XElement = _
+    Dim entityClassTemplate As XElement =
     <EntityTemplate>
         <FileHead>
             <![CDATA[
 ''' 
-''本类由PWMIS 实体类生成工具(适用于 PWMIS.Core Version: 5.5.4 以上)自动生成
+''本类由PWMIS 实体类生成工具(适用于 PWMIS.Core Version: 6.0 以上)自动生成
 ''http://www.pwmis.com/sqlmap
-''使用前请先在项目工程中引用 PWMIS.Core.dll
+''使用前请先在项目工程中引用 PWMIS.Core.dll 或者安装Nuget包 PDF.NET.SOD 或者 PWMIS.SOD
 ''%DateTime%
 ''''
 ]]>
@@ -80,11 +80,7 @@ namespace [NameSpace]
            PropertyNames = new string[] { %PropertyNames% };
       }
 
-      protected override string[] SetFieldDescriptions()
-      {
-           //字段对应的描述
-           return new string[] { %FieldDescriptions% };
-      }
+     
 ]]>
             </AddProperty>
         </CS>
@@ -142,10 +138,7 @@ End NameSpace
            PropertyNames =  New String() { %PropertyNames% }
    End Sub
 
-   Protected Overrides Function SetFieldDescriptions() As String()
-           //字段对应的描述
-           return New String() { %FieldDescriptions% };
-   End Function
+   
 
 ]]>
             </AddProperty>
@@ -289,7 +282,7 @@ End NameSpace
         Next
 
         str2 = addProp.Replace("%PropertyNames%", perpertyNames.TrimEnd(","c))
-        str2 = str2.Replace("%FieldDescriptions%", fieldDescriptions.TrimEnd(","c))
+        'str2 = str2.Replace("%FieldDescriptions%", fieldDescriptions.TrimEnd(","c))
         classText = classText.Replace("%Propertys%", str).Replace("%AddProperty%", str2)
 
        

@@ -8,6 +8,19 @@ namespace KingbaseTest
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, SOD6!");
+            Test1();
+
+            SimpleEntity entity = new SimpleEntity();
+            entity.Name = "Test_" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            entity.AtTime = DateTime.Now;
+            LocalDbContext ctx = new LocalDbContext();
+            ctx.Add(entity);
+
+            Console.WriteLine("insert ok");
+        }
+
+        static void Test1()
+        {
             SimpleEntity entity = new SimpleEntity();
             SimpleEntity entity2 = new SimpleEntity();
 
@@ -39,9 +52,9 @@ namespace KingbaseTest
 
             String[] columnRestrictions = new String[4];
             columnRestrictions[1] = "public";
-            columnRestrictions[2] = "mytable_202404";
+            columnRestrictions[2] = "alarms_202404";
 
-            //var schema = helper.GetSchema("Columns", columnRestrictions);
+            var schema = helper.GetSchema("Columns", columnRestrictions);
             var schema2 = helper.GetSchema("DATASOURCEINFORMATION", null);
 
 
@@ -55,11 +68,11 @@ FROM ""Arm_2405""
             //var p0 = helper.GetParameter("P0", dt0.ToString("yyyy-MM-dd HH:mm:ss"));
             //var p1= helper.GetParameter("P1",dt1.ToString("yyyy-MM-dd HH:mm:ss"));
             var p0 = helper.GetParameter("P0", dt0);
-            var p1= helper.GetParameter("P1",dt1);
+            var p1 = helper.GetParameter("P1", dt1);
 
             System.Data.IDataParameter[] paras = helper.CreateParameters(p0, p1);
 
-            long count= (long)helper.ExecuteScalar(sqlCount, System.Data.CommandType.Text, paras);
+            long count = (long)helper.ExecuteScalar(sqlCount, System.Data.CommandType.Text, paras);
 
             string sqlSelect = @"select * from ""Arm_2405"" where ""szAlarmID"" = :P0 ";
             var p2 = helper.GetParameter("P0", "3399509722548600002.20240523091854121");
@@ -70,14 +83,14 @@ FROM ""Arm_2405""
             var ds1111 = helper.ExecuteDataSet(sqlSelect3);
 
             DateTime dt3 = new DateTime(2024, 5, 23, 9, 18, 54);
-                       
+
             string sqlSelect2 = @"select * from ""Arm_2405"" where ""AtTime"" = :P0 ";
             var p3 = helper.GetParameter("P0", dt3) as Kdbndp.KdbndpParameter;
             //p3.KdbndpDbType = KdbndpTypes.KdbndpDbType.Timestamp;
-            System.Data.IDataParameter[] paras3 = helper.CreateParameters(  p3 );
+            System.Data.IDataParameter[] paras3 = helper.CreateParameters(p3);
             var ds111 = helper.ExecuteDataSet(sqlSelect2, System.Data.CommandType.Text, paras3);
 
-            
+
             helper.BeginTransaction();
             string sql_insert = "insert into devicesetstatus([EquipmentID]) values('123434567890');";
             helper.ExecuteNonQuery(sql_insert);
@@ -88,8 +101,8 @@ FROM ""Arm_2405""
             var ds3 = helper.ExecuteScalar(sql2);
             helper.Commit();
 
-            
-            entity.Name = "Test_"+DateTime.Now.ToString("yyyyMMddHHmmss");
+
+            entity.Name = "Test_" + DateTime.Now.ToString("yyyyMMddHHmmss");
             entity.AtTime = DateTime.Now;
             LocalDbContext ctx = new LocalDbContext();
             ctx.Add(entity);
@@ -115,7 +128,7 @@ FROM ""Arm_2405""
             var localDb = (Kingbase)ctx.CurrentDataBase;
             var cb = localDb.ConnectionStringBuilder;
             Console.WriteLine("Kingbase Add Entity Data OK! Database User ID={0},\r\n " +
-                "Inserted Entity Identity Field value={1}", localDb.ConnectionUserID,entity.ID);
+                "Inserted Entity Identity Field value={1}", localDb.ConnectionUserID, entity.ID);
 
             //查询前10条数据
             var list = OQL.From<SimpleEntity>().Limit(10, 1).ToList();
