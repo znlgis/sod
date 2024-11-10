@@ -79,7 +79,7 @@ namespace PWMIS.DataProvider.Data
                 }
                 else
                 {
-                    para.Value = Value;
+                    para.Value = Value;//注意：如果是UTC格式的日期数据，保存到金仓数据库后时区不正确，需要应用程序使用LocalTime格式的日期数据。
                 }
             }
             

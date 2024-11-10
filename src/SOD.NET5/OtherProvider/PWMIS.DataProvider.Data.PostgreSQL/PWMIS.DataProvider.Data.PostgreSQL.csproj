@@ -4,8 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>PWMIS.PostgreSQLClient</AssemblyName>
     <RootNamespace>PWMIS.PostgreSQLClient</RootNamespace>
-    <Version>7.0.0-beta2</Version>
-    <Description>SOD框架支持.NET Core/.NET 5以及之后的版本迁移升级的版本的PostgreSql数据提供程序</Description>
+    <Version>7.0.1</Version>
+    <Description>SOD框架支持.NET Core/.NET 5以及之后的版本迁移升级的版本的PostgreSql数据提供程序
+.NET 6之后的版本请使用PWMIS.SOD的Nuget包</Description>
     <Copyright>PWMIS.COM</Copyright>
     <Authors>深蓝医生</Authors>
     <Company>PWMIS（程序员蜜糍）</Company>
@@ -18,7 +19,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Npgsql" Version="4.1.5" />
+    <PackageReference Include="Npgsql" Version="8.0.5" />
   </ItemGroup>
 
   <ItemGroup>

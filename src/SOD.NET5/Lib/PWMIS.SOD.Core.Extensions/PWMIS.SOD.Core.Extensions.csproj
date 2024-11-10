@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Description>SOD框架支持.NET 5以及之后的版本迁移升级的版本</Description>
-    <Version>7.0.0-beta2</Version>
+    <Description>SOD框架支持.NET 5以及之后的版本迁移升级的版本
+.NET 6之后的版本请使用PWMIS.SOD的Nuget包</Description>
+    <Version>7.0.1</Version>
     <Copyright>PWMIS.COM</Copyright>
     <Company>PWMIS（程序员蜜糍）</Company>
     <Authors>深蓝医生</Authors>

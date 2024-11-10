@@ -89,6 +89,8 @@
  *  注：
  *  如果想强制给实体类的属性设置值，请使用CopyTo<>扩展方法直接进行属性值拷贝，这种方式会给所有属性设置修改状态。
  *  
+ *   *  修改者：         时间：2024-11-1  
+ *   修正 MapFrom方法判断值是否发生改变的问题。
  * ========================================================================
 */
 using System;
@@ -1219,8 +1221,8 @@ namespace PWMIS.DataMap.Entity
         /// <returns></returns>
         private bool CheckIsChange(object source, object target)
         {
-            if (source != null)
-                return object.Equals(source, target);
+            if (source != null && source!=DBNull.Value)
+                return !object.Equals(source, target);
             //source==null
             if (!CheckIsDefaultValue(target)) 
                 return true;
@@ -1232,7 +1234,7 @@ namespace PWMIS.DataMap.Entity
       /// </summary>
       /// <param name="pocoClass">POCO实体类，提供源数据</param>
       /// <param name="isChange">是否改变属性的修改状态</param>
-      /// <returns>映射成功的属性数量</returns>
+      /// <returns>映射成功的属性数量，如果设置了修改状态检查，则返回修改的属性数量</returns>
         public int MapFrom(object pocoClass,bool isChange)
         {
           if (pocoClass == null)
@@ -1256,17 +1258,18 @@ namespace PWMIS.DataMap.Entity
               {
                   object pocoPropValue = accessors[i].GetValue(pocoClass);
                     //设置属性修改状态，需要比较值是否改变 。避免“零元购” 调用CheckIsChange 方法判断，Edit At 2023-11-23
-                  if (isChange &&  CheckIsChange(this.PropertyValues[i], pocoPropValue))
+                  if (isChange)
                   {
-                      this.changedlist[i] = true;
-                      this.PropertyValues[i] = pocoPropValue;
-
-                      count++;
+                        if (CheckIsChange(this.PropertyValues[i], pocoPropValue))
+                        {
+                            this.changedlist[i] = true;
+                            this.PropertyValues[i] = pocoPropValue;
+                            count++;
+                        }
                   }
                   else
                   {
                       this.PropertyValues[i] = pocoPropValue;
-
                       count++;
                   }
               }

@@ -2,8 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <Version>7.0.0-beta2</Version>
-    <Description>SOD框架支持.NET Core/.NET 5以及之后的版本迁移升级的版本</Description>
+    <Version>7.0.1</Version>
+    <Description>SOD框架支持.NET Core/.NET 5以及之后的版本迁移升级的版本
+.NET 6之后的版本请使用PWMIS.SOD的Nuget包</Description>
     <Copyright>PWMIS.COM</Copyright>
     <Company>PWMIS（程序员蜜糍）</Company>
     <Authors>深蓝医生</Authors>
@@ -31,9 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
-    <PackageReference Include="System.Data.Odbc" Version="4.7.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+    <PackageReference Include="System.Data.Odbc" Version="8.0.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
     <PackageReference Include="System.Reflection.Emit" Version="4.7.0" />
   </ItemGroup>
 

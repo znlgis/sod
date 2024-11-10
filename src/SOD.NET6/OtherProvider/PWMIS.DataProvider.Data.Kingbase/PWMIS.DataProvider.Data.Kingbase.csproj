@@ -5,7 +5,7 @@
     <AssemblyName>PWMIS.KingbaseClient</AssemblyName>
     <Description>SOD框架支持.NET 6以及之后的版本的人大金仓数据提供程序</Description>
     <Copyright>PWMIS.COM</Copyright>
-    <Version>6.0.5</Version>
+    <Version>6.0.6</Version>
     <Company>PWMIS（程序员蜜糍）</Company>
     <Authors>深蓝医生</Authors>
     <PackageId>PWMIS.SOD.Kingbase.Provider</PackageId>

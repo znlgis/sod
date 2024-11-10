@@ -1182,6 +1182,7 @@ namespace PWMIS.DataMap.Entity
                     catch (QueryException qex)
                     {
                         db.Rollback();
+                        
                         throw new Exception("执行事务查询出错，详细请查看内部异常", qex);
                     }
                     catch (Exception)

@@ -271,6 +271,8 @@ namespace #NameSpace#.DTO
                             ClassSummary = "/// ";
                         }
                     }
+                    if (isReadonly)
+                        continue;
                     //以数字序号开头，可能是字段定义
                     if (s.Length > 0 && char.IsNumber(s[0]))
                     {
