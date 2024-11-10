@@ -16,6 +16,8 @@
     <PackageTags>.NET;PostgreSql;ORM;SqlMap</PackageTags>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <PackageId>PDF.NET.SOD.PostgreSQL.Provider</PackageId>
+    <AssemblyVersion>6.1.11.10</AssemblyVersion>
+    <FileVersion>6.1.11.10</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

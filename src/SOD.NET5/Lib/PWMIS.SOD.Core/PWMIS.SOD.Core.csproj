@@ -10,7 +10,7 @@
     <Authors>深蓝医生</Authors>
     <NeutralLanguage></NeutralLanguage>
 	  <LangVersion>9.0</LangVersion>
-	  <AssemblyVersion>6.0.5.3</AssemblyVersion>
+	  <AssemblyVersion>6.1.0.11</AssemblyVersion>
 	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 	  <PackageId>PDF.NET.SOD.Core</PackageId>
 	  <Title>SOD框架核心库</Title>
@@ -19,7 +19,9 @@
 	  <PackageTags>ORM,SqlMap</PackageTags>
 	  <PackageReadmeFile>README.md</PackageReadmeFile>
 	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
-	  <FileVersion>6.0.11.23</FileVersion>
+	  <FileVersion>6.1.11.10</FileVersion>
+	  <IncludeSymbols>True</IncludeSymbols>
+	  <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 	
   <ItemGroup>

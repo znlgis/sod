@@ -15,6 +15,10 @@
     <RepositoryUrl>https://github.com/znlgis/sod</RepositoryUrl>
     <PackageId>PDF.NET.SOD</PackageId>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <IncludeSymbols>True</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <FileVersion>6.1.11.10</FileVersion>
+    <AssemblyVersion>6.1.11.10</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

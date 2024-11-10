@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>PWMIS.OracleClient</AssemblyName>
-    <Version>7.0.0-beta2</Version>
+    <Version>7.0.1</Version>
     <Description>SOD框架支持.NET Core/.NET 5以及之后的版本的Oracle数据提供程序
 .NET 6之后的版本请使用PWMIS.SOD的Nuget包</Description>
     <Copyright>PWMIS.COM</Copyright>
@@ -15,6 +15,9 @@
     <PackageProjectUrl>https://github.com/znlgis/sod</PackageProjectUrl>
     <PackageTags>.NET;Oraclel;ORM;SqlMap</PackageTags>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <AssemblyVersion>6.1.11.10</AssemblyVersion>
+    <FileVersion>6.1.11.10</FileVersion>
+    <PackAsTool>False</PackAsTool>
   </PropertyGroup>
 
   <ItemGroup>
