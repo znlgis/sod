@@ -93,11 +93,13 @@
             Dim fieldType As New Dictionary(Of Integer, Type) 'key=列的索引，Vlue=列的类型
 
             Dim tempSQL As String = "INSERT INTO " & dbLeftChar & tableName & dbRightChar & " ("
+            Dim ColumnOrdinal As Integer = 0
             For Each dv As DataRowView In scView
                 tempSQL &= dbLeftChar & dv("ColumnName").ToString() & dbRightChar & ","
-                fieldIndex.Add(dv("ColumnOrdinal"), dv("ColumnName"))
-                fieldType.Add(dv("ColumnOrdinal"), dv("DataType"))
-
+                'dv("ColumnOrdinal") MySQL从1开始，而不是从0开始，故不能使用它做key
+                fieldIndex.Add(ColumnOrdinal, dv("ColumnName"))
+                fieldType.Add(ColumnOrdinal, dv("DataType"))
+                ColumnOrdinal = ColumnOrdinal + 1
             Next
 
             tempSQL = tempSQL.TrimEnd(","c) & " ) VALUES( @@Values );" & vbCrLf
@@ -114,7 +116,10 @@
                         Values.Append("NULL")
                     Else
                         Dim tempStr As String = reader(i).ToString()
-                        If fieldType(i) Is GetType(String) OrElse fieldType(i) Is GetType(DateTime) OrElse fieldType(i) Is GetType(Boolean) Then
+                        'Dim fieldName = reader.GetName(i)
+                        'Dim fieldOrdinal = reader.GetOrdinal(fieldName)
+                        Dim currType As Type = fieldType(i)
+                        If currType Is GetType(String) OrElse currType Is GetType(DateTime) OrElse currType Is GetType(Boolean) Then
                             tempStr = "'" & tempStr.Replace("'", "''") & "'"
                         End If
                         Values.Append(tempStr)

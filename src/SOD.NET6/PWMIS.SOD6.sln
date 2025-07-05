@@ -31,15 +31,23 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DamengTest", "Test\DamengTe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SimpleExample", "SimpleExample", "{01847FBD-2B26-4929-B0AC-DEF0266BE397}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleWebApi", "SimpleExample\SimpleWebApi\SimpleWebApi.csproj", "{A1C3385D-D714-4851-8017-03DB5CB1746E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleWebApi", "SimpleExample\SimpleWebApi\SimpleWebApi.csproj", "{A1C3385D-D714-4851-8017-03DB5CB1746E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo.Interface", "SimpleExample\SimpleDemo.Interface\SimpleDemo.Interface.csproj", "{08072CDE-227F-4D43-B216-1582F19C0BAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDemo.Interface", "SimpleExample\SimpleDemo.Interface\SimpleDemo.Interface.csproj", "{08072CDE-227F-4D43-B216-1582F19C0BAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo.Model", "SimpleExample\SimpleDemo.Model\SimpleDemo.Model.csproj", "{AAF4E149-1A76-40C3-B1DB-C257E62E6E6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDemo.Model", "SimpleExample\SimpleDemo.Model\SimpleDemo.Model.csproj", "{AAF4E149-1A76-40C3-B1DB-C257E62E6E6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo.Service", "SimpleExample\SimpleDemo.Service\SimpleDemo.Service.csproj", "{900D2BA8-311D-46E0-82EF-96DF75DFD925}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDemo.Service", "SimpleExample\SimpleDemo.Service\SimpleDemo.Service.csproj", "{900D2BA8-311D-46E0-82EF-96DF75DFD925}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDemo.Repository", "SimpleExample\SimpleDemo.Repository\SimpleDemo.Repository.csproj", "{EC0B0FA8-8034-421F-B9B8-6DE545CE91BD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleDemo.Repository", "SimpleExample\SimpleDemo.Repository\SimpleDemo.Repository.csproj", "{EC0B0FA8-8034-421F-B9B8-6DE545CE91BD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{2A001020-ACC1-4EAA-B64E-3E5384D77349}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SODCodeGen", "Tools\SODCodeGen\SODCodeGen.csproj", "{08A4D89F-F39B-4FC2-922E-38754DAB5AF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.KingbaseNet6V9", "OtherProvider\PWMIS.DataProvider.Data.KingbaseNet6V9\PWMIS.DataProvider.Data.KingbaseNet6V9.csproj", "{5B143EE7-352C-4736-BB5E-892AF46A4B3F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PWMIS.DataProvider.Data.KingbaseNet8V9", "OtherProvider\PWMIS.DataProvider.Data.KingbaseNet8V9\PWMIS.DataProvider.Data.KingbaseNet8V9.csproj", "{8155301D-E684-4C0C-9C47-8E70B16CB2B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -107,6 +115,18 @@ Global
 		{EC0B0FA8-8034-421F-B9B8-6DE545CE91BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC0B0FA8-8034-421F-B9B8-6DE545CE91BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC0B0FA8-8034-421F-B9B8-6DE545CE91BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{08A4D89F-F39B-4FC2-922E-38754DAB5AF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{08A4D89F-F39B-4FC2-922E-38754DAB5AF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{08A4D89F-F39B-4FC2-922E-38754DAB5AF0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{08A4D89F-F39B-4FC2-922E-38754DAB5AF0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B143EE7-352C-4736-BB5E-892AF46A4B3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B143EE7-352C-4736-BB5E-892AF46A4B3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B143EE7-352C-4736-BB5E-892AF46A4B3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B143EE7-352C-4736-BB5E-892AF46A4B3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8155301D-E684-4C0C-9C47-8E70B16CB2B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8155301D-E684-4C0C-9C47-8E70B16CB2B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8155301D-E684-4C0C-9C47-8E70B16CB2B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8155301D-E684-4C0C-9C47-8E70B16CB2B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +147,9 @@ Global
 		{AAF4E149-1A76-40C3-B1DB-C257E62E6E6D} = {01847FBD-2B26-4929-B0AC-DEF0266BE397}
 		{900D2BA8-311D-46E0-82EF-96DF75DFD925} = {01847FBD-2B26-4929-B0AC-DEF0266BE397}
 		{EC0B0FA8-8034-421F-B9B8-6DE545CE91BD} = {01847FBD-2B26-4929-B0AC-DEF0266BE397}
+		{08A4D89F-F39B-4FC2-922E-38754DAB5AF0} = {2A001020-ACC1-4EAA-B64E-3E5384D77349}
+		{5B143EE7-352C-4736-BB5E-892AF46A4B3F} = {521B1FC5-C012-41A2-A692-EC14AACC9A28}
+		{8155301D-E684-4C0C-9C47-8E70B16CB2B6} = {521B1FC5-C012-41A2-A692-EC14AACC9A28}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A45F51F5-1687-4BFE-B248-EE3E5C487857}

@@ -47,6 +47,21 @@ namespace EntityTest
             Console.WriteLine("读取属性 user.Age:{0}", user.Age);
             Console.WriteLine("空值判断 user[\"Age\"]==null:{0}", user["Age"]==null);
 
+            //模型数据复制测试
+            UserDto userDto1 = new UserDto();
+            userDto1.UserID = 1;
+            userDto1.Age = 20;
+            userDto1.FirstName="zhang";
+            userDto1.LasttName = "san";
+            UserEntity useEntity1 = new UserEntity();
+            userDto1.CopyTo(useEntity1);
+            UserEntity useEntity2 = new UserEntity();
+            UserLnag lnag = new UserLnag();
+            //下面方法无法更新useEntity2数据
+            SetUpdateEntity(useEntity2, userDto1, lnag.GetType());
+
+            SetUpdateEntity2(useEntity2, userDto1, lnag.GetType());
+
             //分库分表测试
             Console.WriteLine("-------------测试分表分库----------------");
             TestPartitionEntity(100);
@@ -202,6 +217,28 @@ namespace EntityTest
             //查询分片的数据库，下面仅示例修改连接字符串，先注释下面一行代码
             //EntityQuery.ExecuteOql(insertQ1, helper);
 
+        }
+
+        static void SetUpdateEntity(object mainEntity, object source, Type langEntityType)
+        {
+            if (mainEntity == null) throw new ArgumentNullException("mainEntity");
+            if (source == null) throw new ArgumentNullException("source");
+            if (langEntityType == null) throw new ArgumentNullException("langEntityType");
+            var efc = EntityFieldsCache.Item(langEntityType);
+            if (efc == null) throw new ArgumentException("langEntityType's base type must is EntityBase ");
+            var propNames = efc.PropertyNames;
+            source.CopyTo(mainEntity, propNames);
+        }
+
+        static void SetUpdateEntity2<T>(T mainEntity, object source, Type langEntityType) where T : class,new()
+        {
+            if (mainEntity == null) throw new ArgumentNullException("mainEntity");
+            if (source == null) throw new ArgumentNullException("source");
+            if (langEntityType == null) throw new ArgumentNullException("langEntityType");
+            var efc = EntityFieldsCache.Item(langEntityType);
+            if (efc == null) throw new ArgumentException("langEntityType's base type must is EntityBase ");
+            var propNames = efc.PropertyNames;
+            source.CopyTo(mainEntity, propNames);
         }
     }
 }

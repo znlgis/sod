@@ -61,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserDto.cs" />
     <Compile Include="UserEntity.cs" />
+    <Compile Include="UserLnag.cs" />
     <Compile Include="UserPartitionEntity.cs" />
     <Compile Include="UserPartitionEntity2.cs" />
   </ItemGroup>

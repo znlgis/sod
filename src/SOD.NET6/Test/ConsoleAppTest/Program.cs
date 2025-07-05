@@ -18,6 +18,10 @@ namespace ConsoleAppTest
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
+            var proxy =new AopProxy<Example>( new Example());
+            var example= proxy.CreateProxy<Example>();
+            example.Add(1, 2);
+
             JsonObject json = new JsonObject();
             var node1 = System.Text.Json.JsonSerializer.SerializeToNode("aaa", typeof(string));
             var node2 = System.Text.Json.JsonSerializer.SerializeToNode(DateTime.Now, typeof(DateTime));

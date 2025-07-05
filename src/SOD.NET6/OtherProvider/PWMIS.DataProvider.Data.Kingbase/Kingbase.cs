@@ -177,7 +177,10 @@ namespace PWMIS.DataProvider.Data
         /// <returns></returns>
         protected override string PrepareSQL(string sql, IDataParameter[] parameters = null)
         {
-            return sql.Replace("[", "\"").Replace("]", "\"").Replace("@", ":");
+            if (_dbSplitChar != '[')
+                return sql.Replace('[', _dbSplitChar).Replace(']', _dbSplitChar).Replace('@', ':');
+            else
+                return sql;
         }
 
         /// <summary>
@@ -280,6 +283,39 @@ namespace PWMIS.DataProvider.Data
         {
             get {
                 return ((KdbndpConnectionStringBuilder)this.ConnectionStringBuilder).Username;
+            }
+        }
+
+        private string _DataBaseMode = "Oracle";
+        private char _dbSplitChar = '"';
+        /// <summary>
+        /// 获取或者设置数据库兼容模式，可以指定的模式有Oracle,MySQL,SQLServer,PostgreSQL,默认为Oracle
+        /// </summary>
+        public string DataBaseMode
+        {
+            get { return _DataBaseMode; }
+            set
+            {
+                string mode = value.ToLower();
+                if (mode == "oracle" || mode == "postgresql")
+                {
+                    _DataBaseMode = value;
+                    _dbSplitChar = '"';
+                }
+                else if (mode == "mysql")
+                {
+                    _DataBaseMode = value;
+                    _dbSplitChar = '`';
+                }
+                else if (mode == "sqlserver")
+                {
+                    _DataBaseMode = value;
+                    _dbSplitChar = '[';//']'
+                }
+                else
+                {
+                    throw new Exception("Kingbase Database_mode must one is Oracle,MySQL,SQLServer.");
+                }
             }
         }
     }

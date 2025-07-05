@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>PWMIS.KingbaseClient.Net8V9</AssemblyName>
+    <PackageId>PWMIS.SOD.Kingbase.Provider.Net8V9</PackageId>
+	  <Authors>深蓝医生</Authors>
+	  <Description>SOD框架支持.NET 8以及之后的版本的人大金仓数据(支持V9版本)提供程序</Description>
+	  <Copyright>PWMIS.COM</Copyright>
+	  <Version>6.0.1</Version>
+	  <Company>PWMIS（程序员蜜糍）</Company>
+	  <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+	  <Title>SOD框架支持.NET 8以及之后的版本的人大金仓数据提供程序</Title>
+	  <PackageProjectUrl>https://github.com/znlgis/sod</PackageProjectUrl>
+	  <RepositoryUrl>https://github.com/znlgis/sod</RepositoryUrl>
+	  <PackageTags>SOD;SqlMap;ORM;DataForms;Kingbase</PackageTags>
+	  <GenerateDocumentationFile>True</GenerateDocumentationFile>
+	  <PackageReadmeFile>国产化支持.md</PackageReadmeFile>
+	  <PackageLicenseExpression>LGPL-2.1-or-later</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\国产化支持.md" Link="国产化支持.md">
+      <PackagePath>\</PackagePath>
+      <Pack>True</Pack>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Kdbndp_V9" Version="8.0.2.422" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Lib\PWMIS.SOD.Core\PWMIS.SOD.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resource.Designer.cs">
+      <DependentUpon>Resource.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resource.resx">
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+      <Generator>ResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>

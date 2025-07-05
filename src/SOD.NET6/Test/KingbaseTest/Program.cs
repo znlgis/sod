@@ -8,7 +8,10 @@ namespace KingbaseTest
         static void Main(string[] args)
         {
             Console.WriteLine("Hello, SOD6!");
-            Test1();
+            //Test1();
+            var db = AdoHelper.CreateHelper("VmDB");
+            string sql = "SELECT nextval('deviceinfo_id_seq');SELECT currval('deviceinfo_id_seq');";
+            var obj= db.ExecuteScalar(sql);
 
             SimpleEntity entity = new SimpleEntity();
             entity.Name = "Test_" + DateTime.Now.ToString("yyyyMMddHHmmss");

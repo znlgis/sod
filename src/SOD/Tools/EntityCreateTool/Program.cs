@@ -419,6 +419,7 @@ namespace #NameSpace#.DTO
 
         private static string ChangeDbType(string dbType,int length)
         {
+            string type = dbType;
             dbType = dbType.ToLower();
             if (dbType == "varchar" || dbType == "nvarchar" || dbType == "nchar" || dbType == "char")
                 return "string";
@@ -432,7 +433,9 @@ namespace #NameSpace#.DTO
                 return "short";
             if (dbType == "bit")
                 return "bool";
-            return dbType;
+            if (dbType == "int" || dbType == "long" || dbType == "string" || dbType=="bool")
+                return dbType;
+            return type;
         }
 
         private static void WriteFile(string className, string path,string fileExt,string fileContent)
